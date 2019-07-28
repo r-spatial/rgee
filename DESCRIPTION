@@ -32,8 +32,13 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
+Depends:
+    R (>= 3.3.0),
+    reticulate,
 Suggests: 
     testthat (>= 2.1.0),
     covr
 Imports: 
     magrittr
+URL: https://github.com/ryali93/rgee
+BugReports: https://github.com/ryali93/rgee/issues
