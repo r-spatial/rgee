@@ -2,7 +2,7 @@
 % Please edit documentation in R/auth.R
 \name{ee_initialize}
 \alias{ee_initialize}
-\title{Initialize the Earth Engine library.}
+\title{Authenticate and Initialize the Earth Engine library.}
 \usage{
 ee_initialize(get_credentials = FALSE)
 }
@@ -10,9 +10,16 @@ ee_initialize(get_credentials = FALSE)
 \item{get_credentials}{TODO}
 }
 \description{
-Earth Engine uses the OAuth 2.0 protocol for authenticating clients.
-Running \code{ee_initialize} will prompt you through the authentication process
-using your web browser. See Setting Up Authentication Credentials in the
-\href{https://developers.google.com/earth-engine/python_install_manual}{Python API documentation}
-for additional details.
+R wrapper for ee.Initialize(): Authenticate and Initialize the Earth Engine API. See details.
+}
+\details{
+The \code{ee_initialize()} will allow you, via web-browser, obtain the
+\href{https://developers.google.com/earth-engine/python_install_manual#setting-up-authentication-credentials}{OAuth 2.0 Client Credential}
+. It is necessary for getting access to Google Earth Engine. Copy and
+paste the key into the R console when prompted for the key.
+}
+\examples{
+\dontrun{
+ee_initialize()
+}
 }

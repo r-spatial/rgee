@@ -4,26 +4,26 @@ Version: 0.0.1
 Authors@R: 
     c(person(given = "Fernando",
              family = "Prudencio",
-             role = c("trl"),
+             role = c("ctb"),
              email = "fjprudenciop@gmail.com"),
       person(given = "Julio",
              family = "Contreras",
-             role = c("trl"),
+             role = c("ctb"),
              email = "julius013199@gmail.com",
              comment = c(ORCID = "0000-0001-5579-8919")),
       person(given = "Antony",
              family = "Barja",
-             role = c("trl"),
+             role = c("ctb"),
              email = "antony.barja8@gmail.com",
              comment = c(ORCID = "0000-0001-5921-2858")),
       person(given = "Roy",
              family = "Yali",
-             role = c("aut", "cre"),
+             role = c("aut"),
              email = "ryali93@gmail.com",
              comment = c(ORCID = "0000-0003-4542-3755")),
       person(given = "Cesar",
              family = "Aybar",
-             role = c("aut"),
+             role = c("aut", "cre"),
              email = "csaybar@gmail.com",
              comment = c(ORCID = "0000-0003-2745-9535")))
 Description: R bindings for calling the Earth Engine API.
@@ -34,11 +34,13 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Depends:
     R (>= 3.3.0),
-    reticulate,
+    reticulate  ,
 Suggests: 
     testthat (>= 2.1.0),
     covr
 Imports: 
-    magrittr
+    magrittr,
+    leaflet,
+    mapview
 URL: https://github.com/ryali93/rgee
 BugReports: https://github.com/ryali93/rgee/issues
