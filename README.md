@@ -1,27 +1,54 @@
+
+<img src="https://raw.githubusercontent.com/csaybar/pal/master/man/figures/logo.png" align="right" width = 10%/>
+
 # rgee
 
-<!-- badges: start -->
-[![Travis build status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci.org/ryali93/rgee)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
-[![Codecov test coverage](https://codecov.io/gh/ryali93/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/ryali93/rgee?branch=master)
-<!-- badges: end -->
+[![Travis build
+status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci.org/ryali93/rgee)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-The goal of rgee is to ...
+### Buildings for the Python Earth Engine API
 
-## Installation
+**rgee** provides a convenient way to interact with the Google Earth
+Engine since R. It does not interact directly with the Earth Engine REST
+APIs but, through `reticulate`, create a stable bridge with the Python
+Earth Engine API.
 
-You can install the released version of rgee from [CRAN](https://CRAN.R-project.org) with:
+The main user relevant functions are:
+
+  - `ee_initialize`: Authenticate and Initialize the Earth Engine API.
+  - `ee_map`: Display a given ee\_Image, ee\_Feature,
+    ee\_FeatureCollection or ee\_ImageCollection using
+    [`mapview`](https://github.com/r-spatial/mapview).
+  - `ee_download`: Download Earth Engine objects (via
+    `googledrive::drive_download()`)
+
+## Installation (Not available yet)
+
+For CRAN release version of **rgee** use
 
 ``` r
 install.packages("rgee")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+To install the development version install the
+[devtools](https://cran.r-project.org/package=devtools)
+package.
 
 ``` r
-library(rgee)
-## basic example code
+devtools::install_github("ryali93/rgee")
 ```
 
+## Usage
+
+![workflow](https://raw.githubusercontent.com/ryali93/rgee/master/man/figures/rgee.png)
+
+## Contact
+
+Please file bug reports and feature requests at
+<https://github.com/ryali93/rgee/issues>
+
+In case of Pull Requests, please make sure to submit them to the develop
+branch of this repository.
