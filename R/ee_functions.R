@@ -87,6 +87,14 @@ ee_ImageCollection <- function(ID){
   ee_imagecollection_py(ID)
 }
 
+#' Soy una bonita funcion que no hace nada 4 :)
+#' @export
+ee_Geometry <- function(){
+  oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
+  ee_source_python(oauth_func_path)
+  ee_geometry_py()
+}
+
 
 #' Soy una bonita funcion que no hace nada 3 :)
 #' @param ID holi2
@@ -104,4 +112,22 @@ ee_FeatureCollection <- function(ID){
   oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
   ee_featurecollection_py(ID)
+}
+
+
+#' Soy una bonita funcion que no hace nada 4 :)
+#' @export
+ee_Reducer <- function(){
+  oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
+  ee_source_python(oauth_func_path)
+  ee_reducer_py()
+}
+
+
+#' Soy una bonita funcion que no hace nada 4 :)
+#' @export
+ee_Export <- function(){
+  oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
+  ee_source_python(oauth_func_path)
+  ee_export_py()
 }

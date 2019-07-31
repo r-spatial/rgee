@@ -13,6 +13,7 @@ ee_source_python <- function(oauth_func_path) {
 
 #' Initialize the Earth Engine library.
 #' @importFrom reticulate source_python
+#' @importFrom googledrive drive_auth
 #' @noRd
 #'
 ee_oauth <- function() {
@@ -20,6 +21,7 @@ ee_oauth <- function() {
   ee_source_python(oauth_func_path)
 
   ee_authenticate()
+  drive_auth()
   code <- readline("Enter authorisation code for Earth Engine API here: ")
   test <- try(request_ee_token(code), silent = T)
 

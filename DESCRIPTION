@@ -41,6 +41,10 @@ Suggests:
 Imports: 
     magrittr,
     leaflet,
-    mapview
+    geojsonlint,
+    geojsonio,
+    mapview,
+    googledrive,
+    stars
 URL: https://github.com/ryali93/rgee
 BugReports: https://github.com/ryali93/rgee/issues
