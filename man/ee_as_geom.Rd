@@ -2,13 +2,13 @@
 % Please edit documentation in R/ee_aux.R
 \name{ee_as_geom}
 \alias{ee_as_geom}
-\title{Soy una bonita que aun no hace nada}
+\title{Convert sf object to an ee_Geometry object}
 \usage{
 ee_as_geom(x)
 }
 \arguments{
-\item{x}{holi2}
+\item{x}{objet to be converted into an ee_Geometry.}
 }
 \description{
-Soy una bonita que aun no hace nada
+Convert sf object to an ee_Geometry object
 }

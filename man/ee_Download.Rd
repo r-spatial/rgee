@@ -2,17 +2,18 @@
 % Please edit documentation in R/ee_aux.R
 \name{ee_Download}
 \alias{ee_Download}
-\title{Soy una bonita que aun no hace nada}
+\title{Download your last EE export task "COMPLETED"}
 \usage{
-ee_Download(task, path = NULL, overwrite = FALSE)
+ee_Download(task, filename = NULL, overwrite = FALSE)
 }
 \arguments{
-\item{task}{holi2}
+\item{task}{List generated after finished correctly a EE task. See
+\code{ee_Export()} for details.}
 
-\item{path}{holi2}
+\item{filename}{Output filename.}
 
-\item{overwrite}{holi2}
+\item{overwrite}{A boolean indicating whether "filename" should be overwritten.}
 }
 \description{
-Soy una bonita que aun no hace nada
+Download your last EE export task "COMPLETED"
 }
