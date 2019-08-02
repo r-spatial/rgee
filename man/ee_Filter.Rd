@@ -4,10 +4,10 @@
 \alias{ee_Filter}
 \title{An object to represent collection filters.}
 \usage{
-ee_Filter(filter)
+ee_Filter(opt_filter = NULL)
 }
 \arguments{
-\item{filter}{Filter|List, optional}
+\item{opt_filter}{Optional filter to add.}
 }
 \value{
 Filter EarthEngine Python class

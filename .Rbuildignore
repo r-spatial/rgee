@@ -7,3 +7,7 @@
 ^docs$
 ^pkgdown$
 ^\.httr-oauth$
+^\.covrignore$
+^README.Rmd
+^CODE_OF_CONDUCT.md
+^LICENSE.md

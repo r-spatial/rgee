@@ -2,13 +2,36 @@
 % Please edit documentation in R/ee_show.R
 \name{ee_print}
 \alias{ee_print}
-\title{Return Information and Metadata of Earth Engine Objects}
+\title{Fetch and return metadata about Earth Engine Objects}
 \usage{
-ee_print(...)
+ee_print(..., ncol = 2, max_display = 10)
 }
 \arguments{
-\item{...}{Availabe for ee_Geometry, ee_Feature, ee_FeatureCollection, ee_Image or ee_ImageCollection.}
+\item{...}{Earth Engine Object. Available for: ee_Geometry, ee_Feature,
+ee_FeatureCollection, ee_Image or ee_ImageCollection.}
+
+\item{ncol}{Set how many columns should be created for display Earth Engine properties
+names.}
+
+\item{max_display}{Set the max number of properties to display.}
 }
 \description{
-Return Information and Metadata of Earth Engine Objects
+Fetch and return metadata about Earth Engine Objects
+}
+\details{
+For avoiding computing time extremely large and "EEException" related with memory consuming
+(\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
+just the first element of: ee_Image, ee_ImageCollection, ee_Feature
+and ee_FeatureCollection will be used to generated Earth Engine object properties.
+}
+\examples{
+\dontrun{
+library(rgee)
+ee_initialize()
+eeobject <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+  filter(ee_Filter()$eq("WRS_PATH", 44))$
+  filter(ee_Filter()$eq("WRS_ROW", 34))$
+  filterDate("2014-03-01", "2014-08-01")
+ee_print(eeobject, ncol = 2, max_display = 4)
+}
 }

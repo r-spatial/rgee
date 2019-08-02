@@ -4,7 +4,7 @@
 \alias{ee_Geometry}
 \title{Constructs an Earth Engine geometry.}
 \usage{
-ee_Geometry(geo_json, opt_proj = NULL, opt_geodesic = NULL,
+ee_Geometry(geo_json = NULL, opt_proj = NULL, opt_geodesic = NULL,
   opt_evenOdd = NULL)
 }
 \arguments{

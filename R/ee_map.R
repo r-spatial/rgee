@@ -55,7 +55,7 @@ ee_map <- function(eeobject,
     m@map = m@map %>%
       addWMSTiles(group=obj_name,baseUrl=tile,layers = "0") %>%
       setView(center[1], center[2], zoom = zoom_start) %>%
-      mapview:::mapViewLayersControl(names = c(obj_name))
+      ee_mapViewLayersControl(names = c(obj_name))
 
   } else if(eeobject$name() == 'ImageCollection') {
 
@@ -71,7 +71,7 @@ ee_map <- function(eeobject,
       m@map = m@map %>%
         addWMSTiles(group=obj_name[x],baseUrl=tile,layers = "0") %>%
         setView(center[1], center[2], zoom = zoom_start) %>%
-        mapview:::mapViewLayersControl(names = c(obj_name[x]))
+        ee_mapViewLayersControl(names = c(obj_name[x]))
     }
   }
   m
