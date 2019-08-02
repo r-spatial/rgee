@@ -5,7 +5,7 @@
 \title{Display a given EE object}
 \usage{
 ee_map(eeobject, vizparams, center, zoom_start = 8, max_nimage = 10,
-  obj_name = "mapobject", ...)
+  obj_name = "map", ...)
 }
 \arguments{
 \item{eeobject}{ee_Feature,ee_FeatureCollection,ee_Image or ee_ImageCollection;
@@ -17,7 +17,7 @@ the object to add to the map.}
 
 \item{zoom_start}{The zoom level.}
 
-\item{max_nimage}{Specify the max number of Image to display in an ee_ImageCollection.}
+\item{max_nimage}{Specify the max number of Image to display (parameter appropriate just for ee_ImageCollection objects).}
 
 \item{obj_name}{Character vector; Name of the map(or maps).}
 
