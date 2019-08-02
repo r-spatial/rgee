@@ -1,26 +1,26 @@
 #' Return Information and Metadata of Earth Engine Objects
 #' @param ... Availabe for ee_Geometry, ee_Feature, ee_FeatureCollection, ee_Image or ee_ImageCollection.
 #' @export
-ee_print <- function(...) {
+ee_print <- function(...,ncol=2,max_display=10) {
   parameters <- c(as.list(environment()), list(...))
   fc_metadata <- sprintf("%s/%s",tempdir(),deparse(substitute(...)))
-
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
-    if (identical(metadata_list$filename,as.character(parameters[[1]]))) {
-      ee_print_ee(metadata_list)
+    if (identical(metadata_list$filename,as.character(parameters[[3]]))) {
+      ee_print_ee(metadata_list,ncol,max_display)
     } else {
       metadata_list <- ee_createEElist(...)
-      ee_print_ee(metadata_list)
-      metadata_list$filename <- as.character(parameters[[1]])
+      ee_print_ee(metadata_list,ncol,max_display)
+      metadata_list$filename <- as.character(parameters[[3]])
       save(metadata_list,file = fc_metadata)
     }
   } else {
     metadata_list <- ee_createEElist(...)
-    ee_print_ee(metadata_list)
+    ee_print_ee(metadata_list,ncol,max_display)
     metadata_list$filename <- as.character(...)
     save(metadata_list,file = fc_metadata)
   }
+  invisible(metadata_list)
 }
 
 ee_createEElist <- function(eeobject) {
@@ -29,9 +29,9 @@ ee_createEElist <- function(eeobject) {
   } else if (identical(eeobject$name(),"ImageCollection")){
     metadata_list <- create_ee_ImageCollectionlist(eeobject)
   } else if (identical(eeobject$name(),"Geometry")){
-    metadata_list <- create_ee_Geometry(eeobject)
+    metadata_list <- create_ee_Geometrylist(eeobject)
   } else if (identical(eeobject$name(),"Feature")){
-    metadata_list <- create_ee_Feature(eeobject)
+    metadata_list <- create_ee_Featurelist(eeobject)
   } else if (identical(eeobject$name(),"FeatureCollection")){
     metadata_list <- create_ee_FeatureCollectionlist(eeobject)
   } else {
@@ -39,17 +39,17 @@ ee_createEElist <- function(eeobject) {
   }
 }
 
-ee_print_ee <- function(mtd) {
+ee_print_ee <- function(mtd,ncol,max_display) {
   if (identical(mtd$name,"ee_Image")) {
-    print_ee_Image(mtd)
+    print_ee_Image(mtd,ncol,max_display)
   } else if (identical(mtd$name,"ee_ImageCollection")){
-    print_ee_FeatureCollection(mtd)
+    print_ee_ImageCollection(mtd,ncol,max_display)
   } else if (identical(mtd$name,"ee_Geometry")){
-    print_ee_FeatureCollection(mtd)
+    print_ee_Geometry(mtd)
   } else if (identical(mtd$name,"ee_Feature")){
-    print_ee_FeatureCollection(mtd)
+    print_ee_Feature(mtd,ncol,max_display)
   } else if (identical(mtd$name,"ee_FeatureCollection")){
-    print_ee_FeatureCollection(mtd)
+    print_ee_FeatureCollection(mtd,ncol,max_display)
   } else {
     stop("ee_print only support: ee_Geometry, ee_Feature, ee_FeatureCollection, ee_Image and ee_ImageCollection.")
   }
@@ -78,7 +78,8 @@ create_ee_Imagelist <- function(eeobject) {
   img_npixels <- format(base_img$dimensions[1] * base_img$dimensions[2],
                         big.mark="'",small.interval=3)
   img_datatype <- toupper(base_img$data_type$precision)
-
+  img_properties_names <- names(img$properties)
+  img_properties_length <- length(img$properties)
   metadata_list <- list(name = name,
                         img_nbands=img_nbands,
                         img_bands_names = img_bands_names,
@@ -88,24 +89,109 @@ create_ee_Imagelist <- function(eeobject) {
                         img_scale = img_scale,
                         img_dimensions = img_dimensions,
                         img_npixels = img_npixels,
-                        img_datatype = img_datatype)
+                        img_datatype = img_datatype,
+                        img_properties_names = img_properties_names,
+                        img_properties_length = img_properties_length)
 }
 
 #' Save ee_ImageCollection metadata in a temporal file
 #' @noRd
 #'
-create_ee_ImageCollection_list <- function(eeobject){}
+create_ee_ImageCollectionlist <- function(eeobject){
+  # Image properties
+  ic <- eeobject$getInfo()
+  bands <- unlist(lapply(ic$bands, '[[', 'id'))
+  base_ic <- ic$features[[1]]
+  scale <- ee_Image(eeobject$first())$
+    select(bands[1])$
+    projection()$
+    nominalScale()$
+    getInfo()
+
+  name <- "ee_ImageCollection"
+  ic_nbands <- length(bands)
+  ic_bands_names <- bands
+  ic_epsg <- as.numeric(gsub("EPSG:","",base_ic$bands[[1]]$crs))
+  ic_proj4string <- st_crs(ic_epsg)$proj4string
+  ic_geotransform <- paste0(base_ic$bands[[1]]$crs_transform, collapse = " ")
+  ic_scale <- scale
+  ic_dimensions <-  do.call(sprintf, as.list(c("nrow:%s  ncol:%s", base_ic$bands[[1]]$dimensions)))
+  ic_npixels <- format(base_ic$bands[[1]]$dimensions[1] * base_ic$bands[[1]]$dimensions[2],
+                        big.mark="'",small.interval=3)
+  ic_datatype <- toupper(base_ic$bands[[1]]$data_type$precision)
+
+  ic_properties_ic = names(ic$properties)
+  ic_properties_i = names(ic$features[[1]]$properties)
+  ic_nimages <- eeobject$size()$getInfo()
+
+  metadata_list <- list(name = name,
+                        ic_nimages=ic_nimages,
+                        ic_nbands=ic_nbands,
+                        ic_bands_names = ic_bands_names,
+                        ic_epsg = ic_epsg,
+                        ic_proj4string = ic_proj4string,
+                        ic_geotransform = ic_geotransform,
+                        ic_scale = ic_scale,
+                        ic_dimensions = ic_dimensions,
+                        ic_npixels = ic_npixels,
+                        ic_datatype = ic_datatype,
+                        ic_properties_i = ic_properties_i,
+                        ic_properties_ic = ic_properties_ic
+                        )
+}
 
 #' Save ee_Geometry metadata in a temporal file
 #' @noRd
 #'
-create_ee_Geometry_list <- function(eeobject){}
+create_ee_Geometrylist <- function(eeobject){
+  # FeatureCollection properties
+  geom <- eeobject$getInfo()
+  projection_properties <- eeobject$projection()$getInfo()
+
+  name <- "ee_Geometry"
+  geom_type <- toupper(geom$type)
+  geom_ngeom <- length(geom$coordinates)
+  geom_epsg <- as.numeric(gsub("EPSG:","",projection_properties$crs))
+  geom_proj4string <- st_crs(geom_epsg)$proj4string
+  geom_geotransform <- paste0(projection_properties$transform,collapse = " ")
+  geom_geodesic <- eeobject$geodesic()$getInfo()
+
+  metadata_list <- list(name = name,
+                        geom_type=geom_type,
+                        geom_ngeom=geom_ngeom,
+                        geom_epsg = geom_epsg,
+                        geom_proj4string = geom_proj4string,
+                        geom_geotransform = geom_geotransform,
+                        geom_geodesic = geom_geodesic)
+}
 
 #' Save ee_Feature metadata in a temporal file
 #' @noRd
 #'
-create_ee_Feature_list <- function(eeobject){}
+create_ee_Featurelist <- function(eeobject){
+  feature <- eeobject$getInfo()
+  projection_properties <- eeobject$geometry()$projection()$getInfo()
 
+  name <- "ee_Feature"
+  ft_type <- feature$geometry$type
+  ft_ngeom <- length(feature$geometry)
+  ft_epsg <- as.numeric(gsub("EPSG:","",projection_properties$crs))
+  ft_proj4string <- st_crs(ft_epsg)$proj4string
+  ft_geotransform <- paste0(projection_properties$transform,collapse = " ")
+  ft_geodesic <- eeobject$geometry()$geodesic()$getInfo()
+  ft_properties_length <- length(feature$properties)
+  ft_properties_names <- names(feature$properties)
+
+  metadata_list <- list(name = name,
+                        ft_type = ft_type,
+                        ft_ngeom = ft_ngeom,
+                        ft_epsg = ft_epsg,
+                        ft_proj4string = ft_proj4string,
+                        ft_geotransform = ft_geotransform,
+                        ft_geodesic = ft_geodesic,
+                        ft_properties_length = ft_properties_length,
+                        ft_properties_names = ft_properties_names)
+}
 
 #' Save ee_FeatureCollection metadata in a temporal file
 #' @noRd
@@ -145,7 +231,7 @@ create_ee_FeatureCollectionlist <- function(eeobject) {
 
 #' ee_Image show function
 #' @noRd
-print_ee_Image <- function(mtd) {
+print_ee_Image <- function(mtd,ncol,max_display) {
   cat(sprintf("Class                          : %s \n", mtd$name))
   cat(sprintf("#Bands                         : %s \n", mtd$img_nbands))
   cat(sprintf("Bands names                    : %s \n", paste0(mtd$img_bands_names,collapse = " ")))
@@ -154,41 +240,79 @@ print_ee_Image <- function(mtd) {
   cat(sprintf("Geotransform                   : [%s] \n",mtd$img_geotransform))
   cat(sprintf("Scale (m)                      : %s \n",mtd$img_scale))
   cat(sprintf("Dimensions                     : %s \n",mtd$img_dimensions))
-  cat(sprintf("#Pixels                        : %s \n",mtd$img_npixels))
+  cat(sprintf("#Pixels by image               : %s \n",mtd$img_npixels))
   cat(sprintf("Data type                      : %s \n",mtd$img_datatype))
+  cat(sprintf("Image Properties               : %s \n",mtd$img_properties_length))
+  if (max_display != 0) cat(ee_create_table(mtd$img_properties_names,ncol,max_display))
 }
 
 #' Show ee_ImageCollection metadata
 #' @noRd
-print_ee_ImageCollection <- function(mtd) { }
+print_ee_ImageCollection <- function(mtd,ncol,max_display) {
+  cat(sprintf("Class                          : %s \n", mtd$name))
+  cat(sprintf("nImages                        : %s \n", mtd$ic_nimages))
+  cat(sprintf("nBands                         : %s \n", mtd$ic_nbands))
+  cat(sprintf("Bands names                    : %s \n", paste0(mtd$ic_bands_names,collapse = " ")))
+  cat(sprintf("EPSG (SRID)                    : %s \n",mtd$ic_epsg))
+  cat(sprintf("proj4string                    : %s \n",mtd$ic_proj4string))
+  cat(sprintf("Geotransform                   : [%s] \n",mtd$ic_geotransform))
+  cat(sprintf("Scale (m)                      : %s \n",mtd$ic_scale))
+  cat(sprintf("Dimensions                     : %s \n",mtd$ic_dimensions))
+  cat(sprintf("nPixels by image               : %s \n",mtd$ic_npixels))
+  cat(sprintf("Data type                      : %s \n",mtd$ic_datatype))
+  cat(sprintf("Image Properties               : %s \n",length(mtd$ic_properties_i)))
+  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_i,ncol,max_display))
+  cat(sprintf("ImageCollection Properties     : %s \n",length(mtd$ic_properties_ic)))
+  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_ic,ncol,max_display))
+}
 
 #' Show ee_Geometry metadata
 #' @noRd
-print_ee_Geometry <- function(mtd) { }
+print_ee_Geometry <- function(mtd) {
+  cat(sprintf("Class                          : %s \n", mtd$name))
+  cat(sprintf("Geometry type                  : %s \n",mtd$geom_type))
+  cat(sprintf("nGeometries                    : %s \n", mtd$geom_ngeom))
+  cat(sprintf("EPSG (SRID)                    : %s \n",mtd$geom_epsg))
+  cat(sprintf("proj4string                    : %s \n",mtd$geom_proj4string))
+  cat(sprintf("Geotransform                   : [%s] \n",mtd$geom_geotransform))
+  cat(sprintf("Geodesic                       : %s \n",mtd$geom_geodesic))
+}
 
 #' Show ee_Feature metadata
 #' @noRd
-print_ee_Feature <- function(mtd) { }
+print_ee_Feature <- function(mtd,ncol,max_display) {
+  cat(sprintf("Class                          : %s \n", mtd$name))
+  cat(sprintf("Geometry type                  : %s \n",mtd$ft_type))
+  cat(sprintf("nGeometries                    : %s \n", mtd$ft_ngeom))
+  cat(sprintf("EPSG (SRID)                    : %s \n",mtd$ft_epsg))
+  cat(sprintf("proj4string                    : %s \n",mtd$ft_proj4string))
+  cat(sprintf("Geotransform                   : [%s] \n",mtd$ft_geotransform))
+  cat(sprintf("Geodesic                       : %s \n",mtd$ft_geodesic))
+  cat(sprintf("nFeature properties            : %s \n",mtd$ft_properties_length))
+  if (max_display != 0) cat(ee_create_table(mtd$ft_properties_names,ncol,max_display))
+}
 
 #' Show ee_FeatureCollection metadata
 #' @noRd
-print_ee_FeatureCollection <- function(mtd) {
-  cat(sprintf("class                          : %s \n", mtd$name))
-  cat(sprintf("nfeatures                      : %s \n", mtd$fc_nfeatures))
-  cat(sprintf("geometry type                  : MULTI%s \n",mtd$fc_geometry_type))
-  cat(sprintf("epsg (SRID)                    : %s \n",mtd$fc_epsg))
+print_ee_FeatureCollection <- function(mtd,ncol,max_display) {
+  cat(sprintf("Class                          : %s \n", mtd$name))
+  cat(sprintf("nFeatures                      : %s \n", mtd$fc_nfeatures))
+  cat(sprintf("Geometry type                  : %s \n",mtd$fc_geometry_type))
+  cat(sprintf("EPSG (SRID)                    : %s \n",mtd$fc_epsg))
+  cat(sprintf("proj4string                    : %s \n",mtd$fc_proj4string))
   cat(sprintf("Geotransform                   : [%s] \n",mtd$fc_geotransform))
-  cat(sprintf("FeatureCollection properties   : %s \n",mtd$fc_properties_length))
-  cat(ee_create_table(mtd$fc_properties_names))
-  cat(sprintf("Feature properties             : %s \n",mtd$f_properties_length))
-  cat(ee_create_table(mtd$f_properties_names))
+  cat(sprintf("nFeatureCollection properties   : %s \n",mtd$fc_properties_length))
+  if (max_display != 0) cat(ee_create_table(mtd$fc_properties_names,ncol,max_display))
+  cat(sprintf("nFeature properties             : %s \n",mtd$f_properties_length))
+  if (max_display != 0) cat(ee_create_table(mtd$f_properties_names,ncol,max_display))
   invisible(mtd)
 }
 
 #' Create a table for being used in print_ee_*
 #' @noRd
-ee_create_table <- function(x) {
-  ncol <- 2
+
+ee_create_table <- function(x,ncol, max_display) {
+  if (length(x) > max_display) x <- x[1:max_display]
   rgx <- c(seq(1,length(x),ncol),length(x)+1)
   ngroups <- length(rgx) - 1
 

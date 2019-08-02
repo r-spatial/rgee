@@ -1,8 +1,8 @@
 import ee
 import webbrowser
 
-def ee_filter_py():
-  return ee.Filter
+def ee_filter_py(opt_filter):
+  return ee.Filter(opt_filter=opt_filter)
 
 def ee_image_py(args, version):
   return ee.Image(args, version)

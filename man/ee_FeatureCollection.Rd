@@ -8,12 +8,12 @@ ee_FeatureCollection(args, opt_column = NULL)
 }
 \arguments{
 \item{args}{constructor argument. One of:
-\enumerate {
+\enumerate{
 \item A string - assumed to be the name of a collection.
-\item A geometry.
-\item A feature.
-\item An array of features.
-\item A computed object - reinterpreted as a collection.
+\item{A geometry.}
+\item{A feature.}
+\item{An array of features.}
+\item{A computed object - reinterpreted as a collection.}
 }}
 
 \item{opt_column}{The name of the geometry column to use. Only useful with the

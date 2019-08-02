@@ -34,11 +34,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Depends:
     R (>= 3.3.0),
-    reticulate  ,
-Suggests: 
+    reticulate
+Suggests:
     testthat (>= 2.1.0),
     covr
-Imports: 
+Imports:
     magrittr,
     leaflet,
     geojsonlint,

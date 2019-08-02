@@ -57,10 +57,15 @@ ee_ImageCollection <- function(args) {
 #' walking the vertices in the given order. If unspecified, defaults to
 #' True.
 #' @export
-ee_Geometry <- function(geo_json, opt_proj=NULL, opt_geodesic=NULL,opt_evenOdd=NULL) {
+ee_Geometry <- function(geo_json=NULL, opt_proj=NULL, opt_geodesic=NULL,opt_evenOdd=NULL) {
   oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
-  ee_geometry_py(geo_json, opt_proj=opt_proj, opt_geodesic=opt_proj,opt_evenOdd=opt_proj)
+  if (is.null(geo_json)) {
+    fake_geom <- list(type="LineString",coordinates= list(c(0L,0L)))
+    ee_geometry_py(fake_geom, opt_proj=opt_proj, opt_geodesic=opt_proj,opt_evenOdd=opt_proj)
+  } else {
+    ee_geometry_py(geo_json, opt_proj=opt_proj, opt_geodesic=opt_proj,opt_evenOdd=opt_proj)
+  }
 }
 
 
@@ -87,12 +92,12 @@ ee_Feature <- function(geom, opt_properties=NULL){
 
 #' Constructs an Earth Engine FeatureCollection
 #' @param args constructor argument. One of:
-#'   \enumerate {
-#'     \item A string - assumed to be the name of a collection.
-#'     \item A geometry.
-#'     \item A feature.
-#'     \item An array of features.
-#'     \item A computed object - reinterpreted as a collection.
+#' \enumerate{
+#'   \item A string - assumed to be the name of a collection.
+#'     \item{A geometry.}
+#'     \item{A feature.}
+#'     \item{An array of features.}
+#'     \item{A computed object - reinterpreted as a collection.}
 #' }
 #' @param opt_column The name of the geometry column to use. Only useful with the
 #' string constructor.
@@ -105,7 +110,7 @@ ee_FeatureCollection <- function(args, opt_column=NULL) {
 
 #' An object to represent collection filters.
 #'
-#' @param filter Filter|List, optional
+#' @param opt_filter Optional filter to add.
 #' @details
 #' This constructor accepts the following args:
 #' \enumerate{
@@ -167,10 +172,10 @@ ee_FeatureCollection <- function(args, opt_column=NULL) {
 #' \item \strong{withinDistance():}
 #' }
 #' @export
-ee_Filter <- function(filter){
+ee_Filter <- function(opt_filter = NULL){
   oauth_func_path <- system.file("Python/ee_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
-  ee_filter_py(filter)
+  ee_filter_py(opt_filter = opt_filter)
 }
 
 #' Soy una bonita funcion que no hace nada 4 :)
