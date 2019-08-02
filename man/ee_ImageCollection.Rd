@@ -2,13 +2,20 @@
 % Please edit documentation in R/ee_functions.R
 \name{ee_ImageCollection}
 \alias{ee_ImageCollection}
-\title{Soy una bonita funcion que no hace nada 2 :)}
+\title{Representation for an Earth Engine ImageCollection}
 \usage{
-ee_ImageCollection(ID)
+ee_ImageCollection(args)
 }
 \arguments{
-\item{ID}{holi}
+\item{args}{ImageCollections can be constructed from the following arguments:
+\enumerate{
+\item A string: assumed to be the name of a collection,
+\item An array of images, or anything that can be used to construct an
+image.
+\item A single image.
+\item A computed object - reinterpreted as a collection.
+}}
 }
 \description{
-Soy una bonita funcion que no hace nada 2 :)
+Representation for an Earth Engine ImageCollection
 }

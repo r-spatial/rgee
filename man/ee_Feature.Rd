@@ -2,13 +2,34 @@
 % Please edit documentation in R/ee_functions.R
 \name{ee_Feature}
 \alias{ee_Feature}
-\title{Soy una bonita funcion que no hace nada 3 :)}
+\title{Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+\enumerate{
+\item An ee.Geometry.
+\item A GeoJSON Geometry.
+\item A GeoJSON Feature.
+\item A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.
+}}
 \usage{
-ee_Feature(ID)
+ee_Feature(geom, opt_properties = NULL)
 }
 \arguments{
-\item{ID}{holi2}
+\item{geom}{A geometry or feature.}
+
+\item{opt_properties}{A dictionary of metadata properties. If the first
+parameter is a Feature (instead of a geometry), this is unused.}
 }
 \description{
-Soy una bonita funcion que no hace nada 3 :)
+Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+\enumerate{
+\item An ee.Geometry.
+\item A GeoJSON Geometry.
+\item A GeoJSON Feature.
+\item A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.
+}
 }

@@ -4,7 +4,7 @@
 \alias{ee_Filter}
 \title{An object to represent collection filters.}
 \usage{
-ee_Filter(filter = NULL)
+ee_Filter(filter)
 }
 \arguments{
 \item{filter}{Filter|List, optional}

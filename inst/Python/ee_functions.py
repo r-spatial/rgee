@@ -4,21 +4,20 @@ import webbrowser
 def ee_filter_py():
   return ee.Filter
 
-def ee_image_py(ID):
-  return ee.Image(ID)
+def ee_image_py(args, version):
+  return ee.Image(args, version)
 
-#TODO
-def ee_geometry_py(ID):
-  return ee.Geometry(ID)
+def ee_imagecollection_py(args):
+  return ee.ImageCollection(args)
 
-def ee_feature_py(ID):
-  return ee.Feature(ID)
+def ee_geometry_py(geo_json, opt_proj, opt_geodesic,opt_evenOdd):
+  return ee.Geometry(geo_json, opt_proj, opt_geodesic,opt_evenOdd)
 
-def ee_imagecollection_py(ID):
-  return ee.ImageCollection(ID)
+def ee_feature_py(geom, opt_properties):
+  return ee.Feature(geom, opt_properties)
 
-def ee_featurecollection_py(ID):
-  return ee.FeatureCollection(ID)
+def ee_featurecollection_py(args, opt_column):
+  return ee.FeatureCollection(args, opt_column)
 
 def ee_reducer_py():
   return ee.Reducer

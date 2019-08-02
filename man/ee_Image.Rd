@@ -2,13 +2,25 @@
 % Please edit documentation in R/ee_functions.R
 \name{ee_Image}
 \alias{ee_Image}
-\title{Soy una bonita funcion que no hace nada 3 :)}
+\title{Constructs an Earth Engine image.}
 \usage{
-ee_Image(ID)
+ee_Image(args = NULL, version = NULL)
 }
 \arguments{
-\item{ID}{holi2}
+\item{args}{This constructor accepts a variety of arguments:
+\itemize{
+\item A string - an EarthEngine asset id,
+\item A string and a number - an EarthEngine asset id and version,
+\item A number - creates a constant image,
+\item An EEArray - creates a constant array image,
+\item A list - creates an image out of each element of the array and
+combines them into a single image,
+\item An ee.Image - returns the argument,
+\item Nothing - results in an empty transparent image.
+}}
+
+\item{version}{An optional asset version.}
 }
 \description{
-Soy una bonita funcion que no hace nada 3 :)
+Constructs an Earth Engine image.
 }

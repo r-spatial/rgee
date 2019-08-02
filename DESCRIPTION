@@ -45,6 +45,7 @@ Imports:
     geojsonio,
     mapview,
     googledrive,
-    stars
+    stars,
+    sf
 URL: https://github.com/ryali93/rgee
 BugReports: https://github.com/ryali93/rgee/issues
