@@ -1,7 +1,42 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-
-language: R
+language: r
+r:
+  - 3.6
 cache: packages
+sudo: required
+dist: trusty
+warnings_are_errors: false
+
+addons:
+  apt:
+  sources:
+  - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+
+before_install:
+  # install sf dependencies
+  - sudo apt-get update
+  - sudo apt-get remove python-pip python3-pip
+  - sudo -H pip install --upgrade pip
+  # earth engine api
+  - sudo apt-get install libffi-dev libssl-dev
+  - sudo -H pip install tld --ignore-installed six
+  - sudo -H pip install earthengine-api
+
+addons:
+  apt:
+    packages:
+      - python2.7
+      - libprotobuf-dev
+      - protobuf-compiler
+      - libv8-3.14-dev
+      - libjq-dev
+      - libudunits2-dev
+      - libproj-dev
+      - libgeos-dev
+      - libspatialite-dev
+      - libgdal-dev
+      - libjson-c-dev
+      - libnetcdf-dev
+      - netcdf-bin
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - Rscript -e 'library(covr); codecov()'
