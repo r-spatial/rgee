@@ -1,7 +1,35 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+language: r
+sudo: required
+dist: trusty
+latex: false
+r:
+  - 3.3
+  - 3.4
+  - 3.5
+  - 3.6
 
-language: R
-cache: packages
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+    packages:
+      - libudunits2-dev
+      - libnetcdf-dev
+      - libproj-dev
+      - libgeos-dev
+      - libgdal-dev
+      - netcdf-bin
+      - python2.7
+      - python-numpy
+      - python-scipy
+      - python-virtualenv
+      - python3-venv
+
+r_packages:
+  - covr
+  - devtools
+  - reticulate
+  - googledrive
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - Rscript -e 'library(covr);codecov()'
