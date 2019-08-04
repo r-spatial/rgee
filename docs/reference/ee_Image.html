@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Soy una bonita funcion que no hace nada 3 :) — ee_Image • rgee</title>
+<title>Constructs an Earth Engine image. — ee_Image • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Soy una bonita funcion que no hace nada 3 :) — ee_Image" />
+<meta property="og:title" content="Constructs an Earth Engine image. — ee_Image" />
 
-<meta property="og:description" content="Soy una bonita funcion que no hace nada 3 :)" />
+<meta property="og:description" content="Constructs an Earth Engine image." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,25 +102,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Soy una bonita funcion que no hace nada 3 :)</h1>
+    <h1>Constructs an Earth Engine image.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_functions.R'><code>R/ee_functions.R</code></a></small>
     <div class="hidden name"><code>ee_Image.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Soy una bonita funcion que no hace nada 3 :)</p>
+    <p>Constructs an Earth Engine image.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Image</span>(<span class='no'>ID</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_Image</span>(<span class='kw'>args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ID</th>
-      <td><p>holi2</p></td>
+      <th>args</th>
+      <td><p>This constructor accepts a variety of arguments:</p><ul>
+<li><p>A string - an EarthEngine asset id,</p></li>
+<li><p>A string and a number - an EarthEngine asset id and version,</p></li>
+<li><p>A number - creates a constant image,</p></li>
+<li><p>An EEArray - creates a constant array image,</p></li>
+<li><p>A list - creates an image out of each element of the array and
+combines them into a single image,</p></li>
+<li><p>An ee.Image - returns the argument,</p></li>
+<li><p>Nothing - results in an empty transparent image.</p></li>
+</ul></td>
+    </tr>
+    <tr>
+      <th>version</th>
+      <td><p>An optional asset version.</p></td>
     </tr>
     </table>
     

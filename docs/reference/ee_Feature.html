@@ -6,7 +6,16 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Soy una bonita funcion que no hace nada 3 :) — ee_Feature • rgee</title>
+<title>Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+<ol>
+<li><p>An ee.Geometry.</p></li>
+<li><p>A GeoJSON Geometry.</p></li>
+<li><p>A GeoJSON Feature.</p></li>
+<li><p>A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.</p></li>
+</ol> — ee_Feature • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +39,26 @@
 
 
 
-<meta property="og:title" content="Soy una bonita funcion que no hace nada 3 :) — ee_Feature" />
+<meta property="og:title" content="Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+<ol>
+<li><p>An ee.Geometry.</p></li>
+<li><p>A GeoJSON Geometry.</p></li>
+<li><p>A GeoJSON Feature.</p></li>
+<li><p>A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.</p></li>
+</ol> — ee_Feature" />
 
-<meta property="og:description" content="Soy una bonita funcion que no hace nada 3 :)" />
+<meta property="og:description" content="Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+An ee.Geometry.
+A GeoJSON Geometry.
+A GeoJSON Feature.
+A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.
+" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,25 +128,47 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Soy una bonita funcion que no hace nada 3 :)</h1>
+    <h1>Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:
+<ol>
+<li><p>An ee.Geometry.</p></li>
+<li><p>A GeoJSON Geometry.</p></li>
+<li><p>A GeoJSON Feature.</p></li>
+<li><p>A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.</p></li>
+</ol></h1>
     <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_functions.R'><code>R/ee_functions.R</code></a></small>
     <div class="hidden name"><code>ee_Feature.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Soy una bonita funcion que no hace nada 3 :)</p>
+    <p>Constructs an Earth Engine Feature
+Features can be constructed from one of the following arguments plus an
+optional dictionary of properties:</p><ol>
+<li><p>An ee.Geometry.</p></li>
+<li><p>A GeoJSON Geometry.</p></li>
+<li><p>A GeoJSON Feature.</p></li>
+<li><p>A computed object - reinterpreted as a geometry if properties
+are specified, and as a feature if they aren't.</p></li>
+</ol>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Feature</span>(<span class='no'>ID</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_Feature</span>(<span class='no'>geom</span>, <span class='kw'>opt_properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>ID</th>
-      <td><p>holi2</p></td>
+      <th>geom</th>
+      <td><p>A geometry or feature.</p></td>
+    </tr>
+    <tr>
+      <th>opt_properties</th>
+      <td><p>A dictionary of metadata properties. If the first
+parameter is a Feature (instead of a geometry), this is unused.</p></td>
     </tr>
     </table>
     
