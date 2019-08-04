@@ -1,35 +1,42 @@
 language: r
+r:
+  - 3.6
+cache: packages
 sudo: required
 dist: trusty
-latex: false
-r:
-  - 3.3
-  - 3.4
-  - 3.5
-  - 3.6
+warnings_are_errors: false
 
 addons:
   apt:
-    sources:
-      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+  sources:
+  - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+
+before_install:
+  # install sf dependencies
+  - sudo apt-get update
+  - sudo apt-get remove python-pip python3-pip
+  - sudo -H pip install --upgrade pip
+  # earth engine api
+  - sudo apt-get install libffi-dev libssl-dev
+  - sudo -H pip install tld --ignore-installed six
+  - sudo -H pip install earthengine-api
+
+addons:
+  apt:
     packages:
+      - python2.7
+      - libprotobuf-dev
+      - protobuf-compiler
+      - libv8-3.14-dev
+      - libjq-dev
       - libudunits2-dev
-      - libnetcdf-dev
       - libproj-dev
       - libgeos-dev
+      - libspatialite-dev
       - libgdal-dev
+      - libjson-c-dev
+      - libnetcdf-dev
       - netcdf-bin
-      - python2.7
-      - python-numpy
-      - python-scipy
-      - python-virtualenv
-      - python3-venv
-
-r_packages:
-  - covr
-  - devtools
-  - reticulate
-  - googledrive
 
 after_success:
-  - Rscript -e 'library(covr);codecov()'
+  - Rscript -e 'library(covr); codecov()'

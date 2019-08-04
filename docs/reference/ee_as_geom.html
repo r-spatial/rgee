@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>An object to represent collection filters. — ee_Filter • rgee</title>
+<title>Convert sf object to an ee_Geometry object — ee_as_geom • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="An object to represent collection filters. — ee_Filter" />
+<meta property="og:title" content="Convert sf object to an ee_Geometry object — ee_as_geom" />
 
-<meta property="og:description" content="An object to represent collection filters." />
+<meta property="og:description" content="Convert sf object to an ee_Geometry object" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,93 +102,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>An object to represent collection filters.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_functions.R'><code>R/ee_functions.R</code></a></small>
-    <div class="hidden name"><code>ee_Filter.Rd</code></div>
+    <h1>Convert sf object to an ee_Geometry object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_aux.R'><code>R/ee_aux.R</code></a></small>
+    <div class="hidden name"><code>ee_as_geom.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>An object to represent collection filters.</p>
+    <p>Convert sf object to an ee_Geometry object</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Filter</span>(<span class='kw'>opt_filter</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_as_geom</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>opt_filter</th>
-      <td><p>Optional filter to add.</p></td>
+      <th>x</th>
+      <td><p>objet to be converted into an ee_Geometry.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Filter EarthEngine Python class</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This constructor accepts the following args:</p><ol>
-<li><p>Another filter.</p></li>
-<li><p>A list of filters (which are implicitly AND ed together).</p></li>
-<li><p>A ComputedObject returning a filter. Users should not be making these;
-they are produced by the generator functions below.</p></li>
-</ol>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <ul>
-<li><p><strong>always():</strong></p></li>
-<li><p><strong>And():</strong></p></li>
-<li><p><strong>aside():</strong></p></li>
-<li><p><strong>calendarRange():</strong></p></li>
-<li><p><strong>contains():</strong></p></li>
-<li><p><strong>date():</strong></p></li>
-<li><p><strong>dateRangeContains():</strong></p></li>
-<li><p><strong>dayOfYear():</strong></p></li>
-<li><p><strong>disjoint():</strong></p></li>
-<li><p><strong>encode():</strong></p></li>
-<li><p><strong>eq():</strong></p></li>
-<li><p><strong>equals():</strong></p></li>
-<li><p><strong>freeze():</strong></p></li>
-<li><p><strong>geometry():</strong></p></li>
-<li><p><strong>getInfo():</strong></p></li>
-<li><p><strong>greaterThan():</strong></p></li>
-<li><p><strong>greaterThanOrEquals():</strong></p></li>
-<li><p><strong>gt():</strong></p></li>
-<li><p><strong>gte():</strong></p></li>
-<li><p><strong>hasGeometry():</strong></p></li>
-<li><p><strong>initialize():</strong></p></li>
-<li><p><strong>inList():</strong></p></li>
-<li><p><strong>intersects():</strong></p></li>
-<li><p><strong>isContained():</strong></p></li>
-<li><p><strong>isVariable():</strong></p></li>
-<li><p><strong>lessThan():</strong></p></li>
-<li><p><strong>lessThanOrEquals():</strong></p></li>
-<li><p><strong>listContains():</strong></p></li>
-<li><p><strong>lt():</strong></p></li>
-<li><p><strong>lte():</strong></p></li>
-<li><p><strong>maxDifference():</strong></p></li>
-<li><p><strong>metadata_():</strong></p></li>
-<li><p><strong>name():</strong></p></li>
-<li><p><strong>neq():</strong></p></li>
-<li><p><strong>never():</strong></p></li>
-<li><p><strong>Not():</strong></p></li>
-<li><p><strong>notEquals():</strong></p></li>
-<li><p><strong>notNull():</strong></p></li>
-<li><p><strong>Or():</strong></p></li>
-<li><p><strong>predicateCount():</strong></p></li>
-<li><p><strong>rangeContains():</strong></p></li>
-<li><p><strong>reset():</strong></p></li>
-<li><p><strong>serialize():</strong></p></li>
-<li><p><strong>stringContains():</strong></p></li>
-<li><p><strong>stringEndsWith():</strong></p></li>
-<li><p><strong>stringStartsWith():</strong></p></li>
-<li><p><strong>withinDistance():</strong></p></li>
-</ul>
     
 
   </div>
@@ -196,13 +130,7 @@ they are produced by the generator functions below.</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>

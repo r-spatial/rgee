@@ -5,11 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>R bindings for calling the Earth Engine API. • rgee</title>
+<title>R bindings for calling the Earth Engine API • rgee</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="R bindings for calling the Earth Engine API.">
+<script src="pkgdown.js"></script><meta property="og:title" content="R bindings for calling the Earth Engine API">
 <meta property="og:description" content="R bindings for calling the Earth Engine API.">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -66,25 +66,50 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
+    
+
+    
+    
+<p><img src="https://raw.githubusercontent.com/csaybar/pal/master/man/figures/logo.png" align="right" width="10%/"></p>
 <div id="rgee" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rgee" class="anchor"></a>rgee</h1></div>
-<!-- badges: start -->
-
-<p>The goal of rgee is to …</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the released version of rgee from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"rgee"</span>)</a></code></pre></div>
+<p><a href="https://travis-ci.org/ryali93/rgee"><img src="https://travis-ci.org/ryali93/rgee.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/ryali93/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a></p>
+<div id="buildings-for-the-python-earth-engine-api" class="section level3">
+<h3 class="hasAnchor">
+<a href="#buildings-for-the-python-earth-engine-api" class="anchor"></a>Buildings for the Python Earth Engine API</h3>
+<p><strong>rgee</strong> provides a convenient way to interact with the Google Earth Engine since R. It does not interact directly with the Earth Engine REST APIs but, through <code>reticulate</code>, create a stable bridge with the Python Earth Engine API.</p>
+<p>The main user relevant functions are:</p>
+<ul>
+<li>
+<code>ee_initialize</code>: Authenticate and Initialize the Earth Engine API.</li>
+<li>
+<code>ee_map</code>: Display a given ee_Image, ee_Feature, ee_FeatureCollection or ee_ImageCollection using <a href="https://github.com/r-spatial/mapview"><code>mapview</code></a>.</li>
+<li>
+<code>ee_download</code>: Download Earth Engine objects (via <code><a href="https://googledrive.tidyverse.org/reference/drive_download.html">googledrive::drive_download()</a></code>)</li>
+</ul>
 </div>
-<div id="example" class="section level2">
+<div id="installation-not-available-yet" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p>This is a basic example which shows you how to solve a common problem:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rgee)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">## basic example code</span></a></code></pre></div>
+<a href="#installation-not-available-yet" class="anchor"></a>Installation (Not available yet)</h2>
+<p>For CRAN release version of <strong>rgee</strong> use</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"rgee"</span>)</a></code></pre></div>
+<p>To install the development version install the <a href="https://cran.r-project.org/package=devtools">devtools</a> package.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"ryali93/rgee"</span>)</a></code></pre></div>
+</div>
+<div id="usage" class="section level2">
+<h2 class="hasAnchor">
+<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ryali93/rgee/master/man/figures/rgee.png" alt="workflow"><p class="caption">workflow</p>
+</div>
+</div>
+<div id="contact" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contact" class="anchor"></a>Contact</h2>
+<p>Please file bug reports and feature requests at <a href="https://github.com/ryali93/rgee/issues" class="uri">https://github.com/ryali93/rgee/issues</a></p>
+<p>In case of Pull Requests, please make sure to submit them to the develop branch of this repository.</p>
 </div>
 </div>
   </div>
@@ -115,16 +140,10 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://travis-ci.org/ryali93/rgee"><img src="https://travis-ci.org/ryali93/rgee.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/ryali93/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
-<li><a href="https://codecov.io/gh/ryali93/rgee?branch=master"><img src="https://codecov.io/gh/ryali93/rgee/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-</ul>
+      </div>
+
 </div>
-</div>
-</div>
+
 
       <footer><div class="copyright">
   <p>Developed by Roy Yali, Cesar Aybar.</p>

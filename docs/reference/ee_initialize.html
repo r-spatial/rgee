@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authenticate and Initialize the Earth Engine library. — ee_initialize • rgee</title>
+<title>Authenticate and Initialize the Earth Engine and Google Drive API — ee_initialize • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Authenticate and Initialize the Earth Engine library. — ee_initialize" />
+<meta property="og:title" content="Authenticate and Initialize the Earth Engine and Google Drive API — ee_initialize" />
 
-<meta property="og:description" content="R wrapper for ee.Initialize(): Authenticate and Initialize the Earth Engine API. See details." />
+<meta property="og:description" content="Authenticate and Initialize the Earth Engine and Google Drive API" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,34 +102,24 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Authenticate and Initialize the Earth Engine library.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/auth.R'><code>R/auth.R</code></a></small>
+    <h1>Authenticate and Initialize the Earth Engine and Google Drive API</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_auth.R'><code>R/ee_auth.R</code></a></small>
     <div class="hidden name"><code>ee_initialize.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R wrapper for ee.Initialize(): Authenticate and Initialize the Earth Engine API. See details.</p>
+    <p>Authenticate and Initialize the Earth Engine and Google Drive API</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_initialize</span>(<span class='kw'>get_credentials</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>get_credentials</th>
-      <td><p>TODO</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='fu'>ee_initialize</span>()</pre>
+        
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>ee_initialize()</code> will allow you, via web-browser, obtain the
-<a href='https://developers.google.com/earth-engine/python_install_manual#setting-up-authentication-credentials'>OAuth 2.0 Client Credential</a>
-. It is necessary for getting access to Google Earth Engine. Copy and
-paste the key into the R console when prompted for the key.</p>
+    <p>The <code>ee_initialize()</code> via web-browser asked to sign in to your Google account and
+grant permission for both google earth engine and google drive. The user credentials
+are save in the folder <code>~/.config/earthengine</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -140,7 +130,6 @@ paste the key into the R console when prompted for the key.</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
       
