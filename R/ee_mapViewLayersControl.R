@@ -20,6 +20,7 @@ ee_getCallEntryFromMap <- function(map, call) {
 # Add leaflet control button to map ---------------------------------------
 #' @author \href{https://github.com/tim-salabim}{tim-salabim}
 #' @importFrom leaflet addLayersControl
+#' @importFrom mapview mapviewGetOption
 #' @noRd
 ee_mapViewLayersControl <- function (map, map.types, names, native.crs = FALSE)
 {

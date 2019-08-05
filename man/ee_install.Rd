@@ -2,18 +2,13 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install}
 \alias{ee_install}
-\title{Install Earth Engine API packages}
+\title{Install rgee dependecies}
 \usage{
-ee_install(packages, envname = NULL, method = c("auto", "virtualenv",
-  "conda"), conda = "auto", python_version = NULL, ...)
+ee_install(packages, method = c("auto", "virtualenv", "conda"),
+  conda = "auto")
 }
 \arguments{
 \item{packages}{Character vector with package names to install.}
-
-\item{envname}{The name, or full path, of the environment in which Python
-packages are to be installed. When \code{NULL} (the default), the active
-environment as set by the \code{RETICULATE_PYTHON_ENV} variable will be used;
-if that is unset, then the \code{r-reticulate} environment will be used.}
 
 \item{method}{Installation method. By default, "auto" automatically finds a
 method that will work in the local environment. Change the default to force
@@ -22,12 +17,6 @@ available on Windows.}
 
 \item{conda}{conda Path to conda executable (or "auto" to find conda using
 the PATH and other conventional install locations).}
-
-\item{python_version}{The requested Python version. Ignored when attempting
-to install with a Python virtual environment.}
-
-\item{...}{Additional arguments passed to \code{\link[=conda_install]{conda_install()}}
-or \code{\link[=virtualenv_install]{virtualenv_install()}}.}
 }
 \description{
 Wrapping to reticulate::py_install(packages = "ee")
@@ -38,5 +27,5 @@ On Linux and OS X the "virtualenv" method will be used by default
 "conda" method is always used.
 }
 \author{
-\href{https://github.com/kevinushey}{Kevin Ushey} and \href{https://github.com/jjallaire}{J.J. Allaire}.
+\href{https://github.com/kevinushey}{Kevin Ushey} and \href{https://github.com/jjallaire}{J.J. Allaire}
 }
