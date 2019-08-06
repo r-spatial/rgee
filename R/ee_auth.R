@@ -62,7 +62,8 @@ ee_initialize <- function() {
   drive_auth(gd_cre_path())
   ee_init_py()
   cat(
-    "Earth Engine Python API is authenticated \n",
+    "",
+    "Earth Engine Python API is authenticated\n",
     "Google Drive API is authenticated"
   )
 }

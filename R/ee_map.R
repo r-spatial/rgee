@@ -1,15 +1,43 @@
-#' Display a given EE object
+#' Adds a given EE object to mapview as a layer.
 #'
-#' @param eeobject ee_Feature,ee_FeatureCollection,ee_Image or ee_ImageCollection;
-#' the object to add to the map.
-#' @param vizparams List; The visualization parameters. See Details
-#' @param center Character vector; the longitude and latitude of the map center
-#' @param  zoom_start The zoom level.
-#' @param obj_name Character vector; Name of the map(or maps).
-#' @param max_nimage Specify the max number of Image to display (parameter appropriate just for ee_ImageCollection objects).
-#' @param ... additional \link[mapview]{mapview} arguments could be passed.
+#' Display a given EE object (ee$Image, ee$Feature, ee$FeatureCollection
+#' or ee$ImageCollection) using the \code{\link[mapview]{mapview}} style.
+#'
+#' @param eeobject ee$Feature,ee$FeatureCollection, ee$Image or ee$ImageCollection.
+#' @param vizparams list; visualization parameters. See Details.
+#' @param center character vector; the longitude and latitude of the map center.
+#' @param  zoom_start zoom level.
+#' @param obj_name character vector; name of the map(or maps).
+#' @param max_nimage Max number of Image to display (Only relevant for ee$ImageCollection objects).
+#' @param ... additional \code{\link[mapview]{mapview}} arguments could be passed.
 #' @importFrom mapview mapview
 #' @importFrom leaflet addWMSTiles setView
+#'
+#' @details
+#' `ee_map` takes advantage of the `ee$*$getMapId(self,vis_params=NULL)` function for generating a provisial
+#' WMS service supported by Google Earth Engine. To achieve desirable visualization effects, you can
+#' provide visualization parameters to ee_map by the parameter vizparams. The
+#' \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
+#'
+#' \tabular{lll}{
+#'\strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
+#'\strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
+#'\strong{min}       \tab  Value(s) to map to 0                                                        \tab  number or list of three numbers, one for each band \cr
+#'\strong{max}       \tab  Value(s) to map to 255                                                      \tab  number or list of three numbers, one for each band \cr
+#'\strong{gain}      \tab  Value(s) by which to multiply each pixel value                              \tab  number or list of three numbers, one for each band \cr
+#'\strong{bias}      \tab  Value(s) to add to each DN                                                  \tab  number or list of three numbers, one for each band \cr
+#'\strong{gamma}     \tab  Gamma correction factor(s)                                                  \tab  number or list of three numbers, one for each band \cr
+#'\strong{palette}  \tab  List of CSS-style color strings (single-band images only)                   \tab  comma-separated list of hex strings                \cr
+#'\strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number                                             \cr
+#'\strong{format}    \tab  Either "jpg" or "png"                                                       \tab  string \cr
+#' }
+#'
+#' If you add a layer to the map without any additional parameters, by default the
+#' `ee_map` assigns the first three bands to red, green and blue, respectively.
+#' The default stretch is based on the type of data in the band (e.g. floats are
+#' stretched in <0,1>, 16-bit data are stretched to the full range of possible values),
+#' which may or may not be suitable.
+#'
 #' @examples
 #' \dontrun{
 #'library(rgee)
@@ -79,6 +107,8 @@ ee_map <- function(eeobject,
     m@object$tokens <- tokens
     m@object$names <- obj_name
     m@object$eeobject <- eeobject$name()
+  } else {
+    stop("Earth Engine object does not support")
   }
   m
 }
