@@ -2,13 +2,36 @@
 % Please edit documentation in R/ee_map.R
 \name{ee_map}
 \alias{ee_map}
+\alias{ee_map.default}
+\alias{ee_map.ee.geometry.Geometry}
+\alias{ee_map.ee.feature.Feature}
+\alias{ee_map.ee.featurecollection.FeatureCollection}
+\alias{ee_map.ee.image.Image}
+\alias{ee_map.ee.imagecollection.ImageCollection}
 \title{Adds a given EE object to mapview as a layer.}
 \usage{
-ee_map(eeobject, vizparams, center, zoom_start = 8, max_nimage = 10,
-  obj_name = "map", ...)
+ee_map(eeobject, vizparams, center, zoom_start = 8, obj_name = "map",
+  max_nimage = 10, ...)
+
+\method{ee_map}{default}(eeobject, ...)
+
+\method{ee_map}{ee.geometry.Geometry}(eeobject, vizparams, center,
+  zoom_start = 8, obj_name = "map", ...)
+
+\method{ee_map}{ee.feature.Feature}(eeobject, vizparams, center,
+  zoom_start = 8, obj_name = "map", ...)
+
+\method{ee_map}{ee.featurecollection.FeatureCollection}(eeobject,
+  vizparams, center, zoom_start = 8, obj_name = "map", ...)
+
+\method{ee_map}{ee.image.Image}(eeobject, vizparams, center,
+  zoom_start = 2, obj_name = "map", ...)
+
+\method{ee_map}{ee.imagecollection.ImageCollection}(eeobject, vizparams,
+  center, zoom_start = 2, obj_name = "map", max_nimage = 10, ...)
 }
 \arguments{
-\item{eeobject}{ee$Feature,ee$FeatureCollection, ee$Image or ee$ImageCollection.}
+\item{eeobject}{EE object.}
 
 \item{vizparams}{list; visualization parameters. See Details.}
 
@@ -16,20 +39,21 @@ ee_map(eeobject, vizparams, center, zoom_start = 8, max_nimage = 10,
 
 \item{zoom_start}{zoom level.}
 
-\item{max_nimage}{Max number of Image to display (Only relevant for ee$ImageCollection objects).}
-
 \item{obj_name}{character vector; name of the map(or maps).}
 
-\item{...}{additional \code{\link[mapview]{mapview}} arguments could be passed.}
+\item{max_nimage}{Max number of Image to display.}
+
+\item{...}{ignored}
 }
 \description{
-Display a given EE object (ee$Image, ee$Feature, ee$FeatureCollection
-or ee$ImageCollection) using the \code{\link[mapview]{mapview}} style.
+Display a given EE object (Geometry, Image, Feature, FeatureCollection
+or ImageCollection) using the \code{\link[mapview]{mapview}} style.
 }
 \details{
-\code{ee_map} takes advantage of the \code{ee$*$getMapId(self,vis_params=NULL)} function for generating a provisial
-WMS service supported by Google Earth Engine. To achieve desirable visualization effects, you can
-provide visualization parameters to ee_map by the parameter vizparams. The
+\code{ee_map} takes advantage of the getMapId function for generating a provisial
+WMS service supported by Google Earth Engine. To achieve desirable visualization effects, it is
+depend on the type of EE object. For neither Image or ImageCollection, you can provide visualization parameters to ee_map by
+the parameter vizparams. The
 \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
 
 \tabular{lll}{
@@ -45,36 +69,56 @@ provide visualization parameters to ee_map by the parameter vizparams. The
 \strong{format}    \tab  Either "jpg" or "png"                                                       \tab  string \cr
 }
 
-If you add a layer to the map without any additional parameters, by default the
-\code{ee_map} assigns the first three bands to red, green and blue, respectively.
-The default stretch is based on the type of data in the band (e.g. floats are
-stretched in <0,1>, 16-bit data are stretched to the full range of possible values),
-which may or may not be suitable.
+If you add a EE Image or ImageCollection object to the map without any additional parameters,
+by default \code{ee_map} assigns the first three bands to red, green and blue, respectively.
+The default stretch is based on the mixmax range ,  which may or may not be suitable.
+In the case of Geometry, Feature or FeatureCollection objects vizparams allow the next parameters:
+
+\itemize{
+\item color: A hex string in the format RRGGBB specifying the color to use for drawing the features.
+By default 000000.
+\item pointRadius: The radius of the point markers. By default 3.
+\item strokeWidth: The width of lines and polygon borders. By default 3.
+}
 }
 \examples{
 \dontrun{
 library(rgee)
 ee_initialize()
 
-#Ploting an ee_FeatureColletion
-eeobject <- ee_FeatureCollection('users/csaybar/DLdemos/train_set')
-center <- eeobject$geometry()$centroid()$getInfo()$coordinates
-vizparams = list(color='FF0000', strokeWidth=5)
-ee_map(eeobject,vizparams,center,obj_name = "Arequipa-landuse")
+# Case: Geometry*
+geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
+m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), obj_name = "Geometry-Arequipa")
+m1
 
-#Ploting an ee_Image
-collection = ee_ImageCollection('LANDSAT/LC08/C01/T1_TOA')$
- filter(ee_Filter()$eq('WRS_PATH', 44))$
- filter(ee_Filter()$eq('WRS_ROW', 34))$
- filterDate('2014-01-01', '2015-01-01')$
- sort('CLOUD_COVER')
+# Case: Feature
+eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")$first()
+m2 <- ee_map(ee$Feature(eeobject_fc), obj_name = "Feature-Arequipa")
+m2 + m1
 
-eeobject = collection$median()
-vizparams = list(bands=c('B4', 'B3', 'B2'),max=0.3)
-center = c(-122.3578,37.7726)
-ee_map(eeobject,vizparams,center,obj_name = 'SF')
+# Case: FeatureCollection
+eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")
+m3 <- ee_map(eeobject_fc,obj_name = 'FeatureCollection')
+m3+m1
 
-#Ploting an ee_ImageColection
-ee_map(collection,vizparams,center,obj_name = c('SF1',"SF2","SF3"),max_nimage = 3)
+# Case: Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),obj_name = "Image")
+m4+m1
+
+# Case: ImageCollection
+collection <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+  filter(ee_Filter()$eq("WRS_PATH", 44))$
+  filter(ee_Filter()$eq("WRS_ROW", 34))$
+  filterDate("2014-01-01", "2015-01-01")$
+  sort("CLOUD_COVER")
+
+m5 <- ee_map(eeobject = collection,
+             vizparams = list(bands = c('B4','B3','B2'), max=1),
+             #obj_name = "ImageCollection",
+             obj_name = c("Scene_2019","Scene_2016","Scene_2011"),
+             max_nimage = 3)
+
+m5 + m1 + m2 + m3 + m4
 }
 }
