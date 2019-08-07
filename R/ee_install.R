@@ -42,9 +42,16 @@ ee_check <- function(initialize=TRUE) {
 #'
 #' @export
 ee_install <- function(packages, method = c("auto", "virtualenv", "conda"), conda = "auto") {
-  py_discover_config()
-  py_install(packages = "ee",
-             method = method,
-             conda = conda)
+  if(Sys.info()["sysname"]=="Windows"){
+    tryCatch({
+      system(readLines("inst/install_pip.py"))
+      system("pip install earthengine-api")
+    })
+  }
+  if(Sys.info()["sysname"]=="Linux"){
+    py_discover_config()
+    py_install(packages = "ee",
+               method = method,
+               conda = conda)
+  }
 }
-
