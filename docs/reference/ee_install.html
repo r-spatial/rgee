@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install Earth Engine API packages — ee_install • rgee</title>
+<title>Install rgee dependecies — ee_install • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Install Earth Engine API packages — ee_install" />
+<meta property="og:title" content="Install rgee dependecies — ee_install" />
 
 <meta property="og:description" content="Wrapping to reticulate::py_install(packages = &quot;ee&quot;)" />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,7 +104,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install Earth Engine API packages</h1>
+    <h1>Install rgee dependecies</h1>
     <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
     <div class="hidden name"><code>ee_install.Rd</code></div>
     </div>
@@ -113,8 +115,8 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_install</span>(<span class='no'>packages</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>,
-  <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>python_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_install</span>(<span class='no'>packages</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>, <span class='st'>"conda"</span>),
+  <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -122,13 +124,6 @@
     <tr>
       <th>packages</th>
       <td><p>Character vector with package names to install.</p></td>
-    </tr>
-    <tr>
-      <th>envname</th>
-      <td><p>The name, or full path, of the environment in which Python
-packages are to be installed. When <code>NULL</code> (the default), the active
-environment as set by the <code>RETICULATE_PYTHON_ENV</code> variable will be used;
-if that is unset, then the <code>r-reticulate</code> environment will be used.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -141,16 +136,6 @@ available on Windows.</p></td>
       <th>conda</th>
       <td><p>conda Path to conda executable (or "auto" to find conda using
 the PATH and other conventional install locations).</p></td>
-    </tr>
-    <tr>
-      <th>python_version</th>
-      <td><p>The requested Python version. Ignored when attempting
-to install with a Python virtual environment.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to <code>conda_install()</code>
-or <code>virtualenv_install()</code>.</p></td>
     </tr>
     </table>
     
@@ -171,7 +156,7 @@ or <code>virtualenv_install()</code>.</p></td>
           </ul>
 
     <h2>Author</h2>
-    <p><a href='https://github.com/kevinushey'>Kevin Ushey</a> and <a href='https://github.com/jjallaire'>J.J. Allaire</a>.</p>
+    <p><a href='https://github.com/kevinushey'>Kevin Ushey</a> and <a href='https://github.com/jjallaire'>J.J. Allaire</a></p>
   </div>
 </div>
 

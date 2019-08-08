@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Display a given EE object — ee_map • rgee</title>
+<title>Adds a given EE object to mapview as a layer. — ee_map • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Display a given EE object — ee_map" />
+<meta property="og:title" content="Adds a given EE object to mapview as a layer. — ee_map" />
 
-<meta property="og:description" content="Display a given EE object" />
+<meta property="og:description" content="Display a given EE object (Geometry, Image, Feature, FeatureCollection
+or ImageCollection) using the mapview style." />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,53 +105,114 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Display a given EE object</h1>
+    <h1>Adds a given EE object to mapview as a layer.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_map.R'><code>R/ee_map.R</code></a></small>
     <div class="hidden name"><code>ee_map.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Display a given EE object</p>
+    <p>Display a given EE object (Geometry, Image, Feature, FeatureCollection
+or ImageCollection) using the <code><a href='https://www.rdocumentation.org/packages/mapview/topics/mapView'>mapview</a></code> style.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>,
+  <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for default</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ee.geometry.Geometry</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ee.feature.Feature</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ee.featurecollection.FeatureCollection</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>,
+  <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ee.image.Image</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
+<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>,
+  <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>eeobject</th>
-      <td><p>ee_Feature,ee_FeatureCollection,ee_Image or ee_ImageCollection;
-the object to add to the map.</p></td>
+      <td><p>EE object.</p></td>
     </tr>
     <tr>
       <th>vizparams</th>
-      <td><p>List; The visualization parameters. See Details</p></td>
+      <td><p>list; visualization parameters. See Details.</p></td>
     </tr>
     <tr>
       <th>center</th>
-      <td><p>Character vector; the longitude and latitude of the map center</p></td>
+      <td><p>character vector; the longitude and latitude of the map center.</p></td>
     </tr>
     <tr>
       <th>zoom_start</th>
-      <td><p>The zoom level.</p></td>
-    </tr>
-    <tr>
-      <th>max_nimage</th>
-      <td><p>Specify the max number of Image to display (parameter appropriate just for ee_ImageCollection objects).</p></td>
+      <td><p>zoom level.</p></td>
     </tr>
     <tr>
       <th>obj_name</th>
-      <td><p>Character vector; Name of the map(or maps).</p></td>
+      <td><p>character vector; name of the map(or maps).</p></td>
+    </tr>
+    <tr>
+      <th>max_nimage</th>
+      <td><p>Max number of Image to display.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>additional <a href='https://www.rdocumentation.org/packages/mapview/topics/mapView'>mapview</a> arguments could be passed.</p></td>
+      <td><p>ignored</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>ee_map</code> takes advantage of the getMapId function for generating a provisial
+WMS service supported by Google Earth Engine. To achieve desirable visualization effects, it is
+depend on the type of EE object. For neither Image or ImageCollection, you can provide visualization parameters to ee_map by
+the parameter vizparams. The
+<a href='https://developers.google.com/earth-engine/image_visualization'>parameters</a> available are:</p>
+<table class='table'>
+<tr><td></td><td><strong>Parameter</strong></td><td></td></tr>
+<tr><td></td><td><strong>Description</strong></td><td></td></tr>
+<tr><td><strong>Type</strong></td><td></td><td></td></tr>
+<tr><td><strong>bands</strong></td><td></td><td>Comma-delimited list of three band names to be mapped to RGB</td></tr>
+<tr><td>list</td><td></td><td><strong>min</strong></td></tr>
+<tr><td></td><td>Value(s) to map to 0</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td></td><td><strong>max</strong></td><td></td></tr>
+<tr><td>Value(s) to map to 255</td><td>number or list of three numbers, one for each band</td><td></td></tr>
+<tr><td><strong>gain</strong></td><td></td><td>Value(s) by which to multiply each pixel value</td></tr>
+<tr><td>number or list of three numbers, one for each band</td><td></td><td><strong>bias</strong></td></tr>
+<tr><td></td><td>Value(s) to add to each DN</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td></td><td><strong>gamma</strong></td><td></td></tr>
+<tr><td>Gamma correction factor(s)</td><td>number or list of three numbers, one for each band</td><td></td></tr>
+<tr><td><strong>palette</strong></td><td></td><td>List of CSS-style color strings (single-band images only)</td></tr>
+<tr><td>comma-separated list of hex strings</td><td></td><td><strong>opacity</strong></td></tr>
+<tr><td></td><td>The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque)</td><td>number</td></tr>
+<tr><td></td><td><strong>format</strong></td><td></td></tr>
+<tr><td>Either "jpg" or "png"</td><td>string</td><td></td></tr>
+</table>
+    <p>If you add a EE Image or ImageCollection object to the map without any additional parameters,
+by default <code>ee_map</code> assigns the first three bands to red, green and blue, respectively.
+The default stretch is based on the mixmax range ,  which may or may not be suitable.
+In the case of Geometry, Feature or FeatureCollection objects vizparams allow the next parameters:</p>
+<ul>
+<li><p>color: A hex string in the format RRGGBB specifying the color to use for drawing the features.
+By default 000000.</p></li>
+<li><p>pointRadius: The radius of the point markers. By default 3.</p></li>
+<li><p>strokeWidth: The width of lines and polygon borders. By default 3.</p></li>
+</ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -156,33 +220,49 @@ the object to add to the map.</p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_initialize.html'>ee_initialize</a></span>()
 
-<span class='co'>#Ploting an ee_FeatureColletion</span>
-<span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_FeatureCollection.html'>ee_FeatureCollection</a></span>(<span class='st'>'users/csaybar/DLdemos/train_set'</span>)
-<span class='no'>center</span> <span class='kw'>&lt;-</span> <span class='no'>eeobject</span>$<span class='fu'>geometry</span>()$<span class='fu'>centroid</span>()$<span class='fu'>getInfo</span>()$<span class='no'>coordinates</span>
-<span class='no'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>color</span><span class='kw'>=</span><span class='st'>'FF0000'</span>, <span class='kw'>strokeWidth</span><span class='kw'>=</span><span class='fl'>5</span>)
-<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>,<span class='no'>vizparams</span>,<span class='no'>center</span>,<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"Arequipa-landuse"</span>)
+<span class='co'># Case: Geometry*</span>
+<span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(-<span class='fl'>73.53522</span>, -<span class='fl'>15.75453</span>))
+<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>geom</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>pointRadius</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>color</span><span class='kw'>=</span><span class='st'>"FF0000"</span>), <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>)
+<span class='no'>m1</span>
 
-<span class='co'>#Ploting an ee_Image</span>
-<span class='no'>collection</span> <span class='kw'>=</span> <span class='fu'><a href='ee_ImageCollection.html'>ee_ImageCollection</a></span>(<span class='st'>'LANDSAT/LC08/C01/T1_TOA'</span>)$
- <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>'WRS_PATH'</span>, <span class='fl'>44</span>))$
- <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>'WRS_ROW'</span>, <span class='fl'>34</span>))$
- <span class='fu'>filterDate</span>(<span class='st'>'2014-01-01'</span>, <span class='st'>'2015-01-01'</span>)$
- <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='st'>'CLOUD_COVER'</span>)
+<span class='co'># Case: Feature</span>
+<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_FeatureCollection.html'>ee_FeatureCollection</a></span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
+<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)
+<span class='no'>m2</span> + <span class='no'>m1</span>
 
-<span class='no'>eeobject</span> <span class='kw'>=</span> <span class='no'>collection</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/median'>median</a></span>()
-<span class='no'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>, <span class='st'>'B3'</span>, <span class='st'>'B2'</span>),<span class='kw'>max</span><span class='kw'>=</span><span class='fl'>0.3</span>)
-<span class='no'>center</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>122.3578</span>,<span class='fl'>37.7726</span>)
-<span class='fu'>ee_map</span>(<span class='no'>eeobject</span>,<span class='no'>vizparams</span>,<span class='no'>center</span>,<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>'SF'</span>)
+<span class='co'># Case: FeatureCollection</span>
+<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_FeatureCollection.html'>ee_FeatureCollection</a></span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>eeobject_fc</span>,<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>'FeatureCollection'</span>)
+<span class='no'>m3</span>+<span class='no'>m1</span>
 
-<span class='co'>#Ploting an ee_ImageColection</span>
-<span class='fu'>ee_map</span>(<span class='no'>collection</span>,<span class='no'>vizparams</span>,<span class='no'>center</span>,<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'SF1'</span>,<span class='st'>"SF2"</span>,<span class='st'>"SF3"</span>),<span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='co'># Case: Image</span>
+<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
+<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>image</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>), <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>10000</span>),<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"Image"</span>)
+<span class='no'>m4</span>+<span class='no'>m1</span>
+
+<span class='co'># Case: ImageCollection</span>
+<span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_ImageCollection.html'>ee_ImageCollection</a></span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
+  <span class='fu'>filterDate</span>(<span class='st'>"2014-01-01"</span>, <span class='st'>"2015-01-01"</span>)$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='st'>"CLOUD_COVER"</span>)
+
+<span class='no'>m5</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>collection</span>,
+             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>), <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>1</span>),
+             <span class='co'>#obj_name = "ImageCollection",</span>
+             <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Scene_2019"</span>,<span class='st'>"Scene_2016"</span>,<span class='st'>"Scene_2011"</span>),
+             <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+
+<span class='no'>m5</span> + <span class='no'>m1</span> + <span class='no'>m2</span> + <span class='no'>m3</span> + <span class='no'>m4</span>
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#details">Details</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

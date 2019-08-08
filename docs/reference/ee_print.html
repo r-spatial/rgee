@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fetch and return metadata about Earth Engine Objects — ee_print • rgee</title>
+<title>Print and return metadata about Earth Engine Objects — ee_print • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Fetch and return metadata about Earth Engine Objects — ee_print" />
+<meta property="og:title" content="Print and return metadata about Earth Engine Objects — ee_print" />
 
-<meta property="og:description" content="Fetch and return metadata about Earth Engine Objects" />
+<meta property="og:description" content="Print and return metadata about Earth Engine Objects" />
+
+<meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,26 +104,45 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fetch and return metadata about Earth Engine Objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_show.R'><code>R/ee_show.R</code></a></small>
+    <h1>Print and return metadata about Earth Engine Objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_print.R'><code>R/ee_print.R</code></a></small>
     <div class="hidden name"><code>ee_print.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Fetch and return metadata about Earth Engine Objects</p>
+    <p>Print and return metadata about Earth Engine Objects</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>...</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='co'># S3 method for ee.geometry.Geometry</span>
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='co'># S3 method for ee.feature.Feature</span>
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='co'># S3 method for ee.featurecollection.FeatureCollection</span>
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>,
+  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='co'># S3 method for ee.image.Image</span>
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+
+<span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Earth Engine Object. Available for: ee_Geometry, ee_Feature,
-ee_FeatureCollection, ee_Image or ee_ImageCollection.</p></td>
+      <th>eeobject</th>
+      <td><p>Earth Engine Object. Available for: Geometry, Feature,
+FeatureCollection, Image or ImageCollection.</p></td>
     </tr>
     <tr>
       <th>ncol</th>
