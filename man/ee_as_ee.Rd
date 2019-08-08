@@ -34,3 +34,36 @@ ee_as_ee(x, ...)
 \description{
 Convert foreign R spatial object to an Earth Engine object
 }
+\examples{
+\dontrun{
+library(rgee)
+library(raster)
+ee_initialize()
+
+# character
+x <- system.file("shape/nc.shp", package="sf")
+ee$FeatureCollection(ee_as_ee(x),proj="EPSG:4326")
+
+# matrix
+ee_df <- matrix(rnorm(100),ncol = 5) \%>\% as.data.frame()
+ee_df <- ee_as_ee(ee_df,c("V1","V2"))
+
+ee_df$geometry()
+# sf
+x <- read_sf(system.file("shape/nc.shp", package="sf"))
+st_crs
+ee_as_ee(x)
+
+#sfc
+x <- read_sf(system.file("shape/nc.shp", package="sf"))$geometry
+ee_as_ee(x)
+
+#sfg
+x <- read_sf(system.file("shape/nc.shp", package="sf"))$geometry[[1]]
+ee_as_ee(x)
+
+#sp
+x <- shapefile(system.file("shape/nc.shp", package="sf"))
+ee_as_ee(x)
+}
+}
