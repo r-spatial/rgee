@@ -27,7 +27,7 @@ ee_as_ee(x, ...)
 \arguments{
 \item{x}{objet to be converted into an Earth Engine object.}
 
-\item{...}{additional \code{\link[sf]{st_as_sf}} arguments could be passed.}
+\item{...}{if x is a character additional \code{\link[sf]{st_read}} arguments could be passed.}
 
 \item{coords}{in case of point data: names or numbers of the numeric columns holding coordinates}
 }
