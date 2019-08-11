@@ -120,7 +120,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ncol = 2, 
 
   nfeatures <- eeobject$size()$getInfo()
 
-  metadata_list <- list(
+  mtd <- list(
     name = "ee_FeatureCollection",
     fc_nfeatures = nfeatures,
     fc_geometry_type = geometry_type,
@@ -268,6 +268,9 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject, ncol = 2, max_
 #' Create a friendly viz of EE properties
 #' @noRd
 ee_create_table <- function(x, ncol, max_display) {
+  if (length(x)==0) {
+    return("")
+  }
   if (length(x) > max_display) x <- x[1:max_display]
   rgx <- c(seq(1, length(x), ncol), length(x) + 1)
   ngroups <- length(rgx) - 1

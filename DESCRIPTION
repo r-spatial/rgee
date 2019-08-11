@@ -47,6 +47,8 @@ Imports:
     mapview,
     googledrive,
     stars,
+    getPass,
+    stringr,
     sf
 URL: https://github.com/ryali93/rgee
 BugReports: https://github.com/ryali93/rgee/issues

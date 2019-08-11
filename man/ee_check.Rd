@@ -14,6 +14,9 @@ bindings if they aren't yet available (defaults to FALSE).}
 Check if Python and the Google Earth Engine API are available on this system
 }
 \examples{
+\dontrun{
+# Simple install
 library(rgee)
 ee_check()
+}
 }

@@ -8,8 +8,8 @@ ee_source_python <- function(oauth_func_path) {
       silent = T
     )
     count <- count + 1
-  }
 }
+  }
 
 #' Authorize Earth Engine and Google Drive API
 #' @importFrom reticulate source_python
@@ -51,6 +51,7 @@ ee_oauth <- function() {
 #' }
 #' @export
 ee_initialize <- function() {
+  ee_check()
   credential_path <- path.expand("~/.config/earthengine")
   gd <- sprintf("%s/googledrive", credential_path)
   gee <- sprintf("%s/credentials", credential_path)

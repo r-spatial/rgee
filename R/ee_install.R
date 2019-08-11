@@ -5,21 +5,24 @@
 #' @importFrom reticulate py_available py_module_available
 #' @export
 #' @examples
+#' \dontrun{
+#' # Simple install
 #' library(rgee)
 #' ee_check()
+#' }
 #' @export
 ee_check <- function(initialize=TRUE) {
   python_test <- try(py_available(initialize = initialize), silent = T)
   if (!python_test) {
     stop("No Python version is found")
   }
-  cat("The Earth Engine Python API is correctly set up in your system!\n")
-
+  cat(" Python is correctly set up in your system!\n")
+  pydiscv <- py_discover_config()$python
   if (!py_module_available("ee")) {
-    stop(sprintf("No module named 'ee' found in %s. ",python_info$python),
-         "Try running rgee::ee_install()")
+    stop(sprintf("No module named 'ee' found in %s. ",pydiscv),
+         "Try running rgee::ee_install() and reboot")
   }
- cat("The Earth Engine Python API is correctly set up in your system!\n")
+ cat(" The Earth Engine Python API is correctly set up in your system!\n")
 }
 
 #' Install rgee dependecies
@@ -28,23 +31,50 @@ ee_check <- function(initialize=TRUE) {
 #'
 #' @author \href{https://github.com/kevinushey}{Kevin Ushey} and \href{https://github.com/jjallaire}{J.J. Allaire}
 #'
-#' @param packages Character vector with package names to install.
-#' @param method Installation method. By default, "auto" automatically finds a
-#'   method that will work in the local environment. Change the default to force
-#'   a specific installation method. Note that the "virtualenv" method is not
-#'   available on Windows.
-#' @param conda conda Path to conda executable (or "auto" to find conda using
-#'  the PATH and other conventional install locations).
+#' @param python_version The requested Python version.
+#' @param conda whether TRUE will use conda instead pip.
+#' @examples
+#' \dontrun{
+#' # Simple install
+#' library(rgee)
+#' ee_install()
 #'
-#' @details On Linux and OS X the "virtualenv" method will be used by default
-#'   ("conda" will be used if virtualenv isn't available). On Windows, the
-#'   "conda" method is always used.
-#'
+#' # Install Earth Engine Python API in a virtualenv
+#' library(reticulate)
+#' library(rgee)
+#' py_discover_config()
+#' virtualenv_create("rgee", python = "python2.7")
+#' use_virtualenv("rgee")
+#' py_discover_config()
+#' ee_install()
+#' }
 #' @export
-ee_install <- function(packages, method = c("auto", "virtualenv", "conda"), conda = "auto") {
-  py_discover_config()
-  py_install(packages = "ee",
-             method = method,
-             conda = conda)
+ee_install <- function(python_version, conda=FALSE) {
+  if (missing(python_version)) {
+      pydiscv <- py_discover_config()
+      python_version <- pydiscv$version
+  }
+  if (conda) {
+    msg_return <- suppressWarnings(system2("conda"))
+    if (msg_return!=0) {
+      stop("conda is not installed in the system, try using pip ee_install(conda=FALSE)")
+    } else {
+      system("conda install earthengine-api")
+    }
+  } else{
+    msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
+    if (msg_return!=0) {
+      stop("pip is not installed in your system, try using conda ee_install(conda=TRUE)")
+    } else {
+      install <- suppressWarnings(system2(sprintf("pip%s",python_version),"install earthengine-api"))
+      if (install !=0) {
+        python_version <- substring(python_version,1,1)
+        install <- system2(sprintf("pip%s",python_version),"install earthengine-api")
+        if (install !=0) {
+          stop("An unexpected error occurred when try to use pip")
+        }
+      }
+    }
+  }
+  cat("Earth Engine Python API installed successfully")
 }
-
