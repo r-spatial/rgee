@@ -4,6 +4,10 @@
   ee <<- reticulate::import("ee", delay_load = TRUE)
 }
 
+.onAttach <- function(libname, pkgname) {
+  options(rgee.print.option = "json")
+}
+
 #' Reattach ee as a reserved word
 #' @export
 ee_ee <- function() {
@@ -14,3 +18,5 @@ ee_ee <- function() {
     require(rgee)
   }
 }
+
+

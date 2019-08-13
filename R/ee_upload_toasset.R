@@ -1,40 +1,12 @@
-#' Upload to the asset
-#' @noRd
-#' @importFrom getPass getPass
-#'
-ee_upload <- function(user,filename,destination_path,metadata,nodatavalue) {
-  submitted_tasks_id = list()
-  verify_path_for_upload(destination_path)
-  if (!file.exists(filename)) stop("filename does not exist")
-
-  metadata_json <- metadata_tojson(metadata)
-  print(sprintf("gmail account: %s",user))
-  password <- getPass("gmail password:")
-  #google_session  #__get_google_auth_session(user, password)
-  driverdir = dirname(gd_cre_path())
-  driverdir
-  ee_get_google_auth_session(user, password, dirname)
+#' Upload a either an image or vector into Google Earth Engine using Selenium
+#' @author Cesar Aybar
+#' @export
+ee_upload_toasset <- function(x,user,destination_path,metadata,nodata) {
+  UseMethod("ee_upload_toasset")
 }
 
-
-ee_upload_toasset <- function() {
-}
-
-ee_upload_toasset.default <- function() {
-}
-
-
-ee_upload_toasset.character <- function() {
-}
-
-ee_upload_toasset.dataframe <- function() {
-}
-
-
-ee_upload_toasset.Spatial <- function() {
-}
-
-ee_upload_toasset.Raster <- function() {
+ee_upload_toasset.default <- function(x,user,destination_path,metadata,nodata) {
+  stop("x should be either an Image or a vector")
 }
 
 
@@ -48,8 +20,12 @@ ee_upload_toasset.sfc <- function() {
 ee_upload_toasset.sfg <- function() {
 }
 
+ee_upload_toasset.stars <- function(x,user,destination_path,metadata,nodata) {
 
-ee_upload_toasset.stars <- function() {
+
+
+  #gsid = __upload_file_gee(session=google_session,
+  #                         file_path='amarakaeri')
 }
 
 
@@ -69,14 +45,15 @@ verify_path_for_upload <- function(asset_id){
                  "write access there.")
     stop(sprintf(message,asset_id))
   }
+  return(folder)
 }
 
 #' Is a property key?
 #' @noRd
 allowed_property_key <- function(prop){
   google_prop_n <- c("description","provider_url","tags","time_end","time_start","title")
-  google_special_properties <- sprintf('system:%s',google_prop)
-  if (any(prop == google_special_properties) | grepl("^[A-Za-z0-9_]+$",prop)) {
+  google_special_properties <- sprintf('system:%s',google_prop_n)
+  if (any(prop == google_special_properties) | grepl("^[A-Za-z0-9_-]+$",prop)) {
     return(TRUE)
   } else {
     gsp_c <- paste(google_special_properties,collapse = ", ")
@@ -89,9 +66,14 @@ allowed_property_key <- function(prop){
 #' Passing of data_frame to list(json)
 #' @noRd
 metadata_tojson <- function(metadata) {
-  flat_metadata <- as.vector(metadata %>% as.matrix)
-  col_names <- all(mapply(allowed_property_key,colnames(flat_metadata))) # all elements are ok?
-  json_metadata <- lapply(1:nrow(metadata),function(x) as.list(metadata[x,]))
+  flat_metadata <- c(as.vector(metadata %>% as.matrix),colnames(metadata))
+  isok <- all(mapply(allowed_property_key,flat_metadata)) # all elements are ok?
+  if (ncol(metadata)>1) {
+    json_metadata <- lapply(1:nrow(metadata),function(x) as.list(metadata[x,]))
+  } else {
+    json_metadata <- list(list(metadata[[1]]))
+    names(json_metadata[[1]]) <- names(metadata)
+  }
   names(json_metadata) <- metadata[,1]
   return(json_metadata)
 }
@@ -123,4 +105,156 @@ ee_check_selenium_driver <- function(driverdir){
     driverdir = dirname(gd_cre_path())
   }
   print(ee_check_selenium_firefox(driverdir))
+}
+
+
+#' Check is selenium-firefox is correctly installed
+#' @noRd
+ee_get_google_auth_session <- function(username, password,dirname) {
+  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  ee_source_python(oauth_func_path)
+  cat("Getting upload authorization through Selenium ... please wait\n")
+  session <- ee_get_google_auth_session_py(username, password,dirname)
+  cat("Done!")
+  return(session)
+}
+
+#' Check the GEE asset
+#' @noRd
+ee_create_asset_path  <- function(destination_path) {
+  asset_path_exist <- is.null(ee$data$getInfo(destination_path))
+  if (asset_path_exist) {
+    ee$data$createAsset(list(type=ee$data$ASSET_TYPE_FOLDER), destination_path)
+    cat('GEE asset:',destination_path,'created')
+  }
+  else {
+    cat("GEE asset:",destination_path,"already exists, connecting ...")
+  }
+}
+
+#' get the cookies of https://code.earthengine.google.com using Selenium
+#' @noRd
+#' @importFrom getPass getPass
+#' @export
+ee_getsession <- function(user,filename,destination_path) {
+  if (!file.exists(filename)) stop("filename does not exist")
+  cat(sprintf("GMAIL ACCOUNT: %s\n",user))
+  password <- getPass("GMAIL PASSWORD:")
+  cat("GMAIL PASSWORD:",paste(rep("*",nchar(password)),collapse = ""),"\n")
+  driverdir <- dirname(gd_cre_path())
+  google_session <- ee_get_google_auth_session(user, password, driverdir)
+  return(google_session)
+}
+
+#' Is x a vector or a raster? (deprecated)
+#' @noRd
+image_or_vector <- function(x) {
+  isvector <- try(read_sf(x),silent = T)
+  if (any(class(isvector) %in% 'try-error')) {
+    israster <- try(read_stars(x),silent = T)
+    if (any(class(israster) %in% 'try-error')) {
+      return(NULL)
+    }
+    return("raster")
+  }
+  return("vector")
+}
+
+#' Return a gs://earthengine-uploads/* file
+#' @noRd
+#' @export
+ee_upload_file <- function(session, filename){
+  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  ee_source_python(oauth_func_path)
+  ee_upload_file_py(session, filename)
+}
+
+#'  Compile the manifest (*.JSON) using import json
+ee_create_json <- function(manifest, path) {
+  py$ee_create_json(towrite = path,manifest = manifest)
+}
+
+#'  Create the *.JSON (manifest) using import json
+#' @importFrom rgdal showWKT
+ee_create_manifest <- function(x,
+                               asset_id,
+                               uris,
+                               start_time=NULL,
+                               end_time=NULL,
+                               properties = NULL,
+                               pyramiding_policy = "MEAN"
+) {
+
+  affine_transform <- attr(x,"dimensions")
+  shear <- x %>% attr("dimensions") %>% attr("raster")
+  nbands <- (affine_transform$band$to - affine_transform$band$from) +1
+  band_names <- affine_transform$band$values
+  if (is.null(band_names)) band_names <- sprintf("b%s",1:nbands)
+
+
+  name <- sprintf("projects/earthengine-legacy/assets/%s",asset_id)
+  tilesets <- list(
+    crs = showWKT(st_crs(x)$proj4string),
+    sources = list(
+      list(
+        uris=uris,
+        affine_transform = list(
+          scale_x = affine_transform$x$delta,
+          shear_x = shear$affine[1],
+          translate_x = affine_transform$x$offset,
+          shear_y =  shear$affine[2],
+          scale_y = affine_transform$y$delta,
+          translate_y = affine_transform$y$offset
+        )
+      )
+    )
+  )
+
+  bands <- list()
+  for (b in 1:length(band_names)) {
+    bands[[b]] <- list(id=band_names[b],tileset_band_index=as.integer((b-1)))
+  }
+
+  if (is.null(end_time)) end_time <- 0L
+  if (is.null(start_time)) start_time <- 0L
+
+
+  manifest <- list(
+    name = name,
+    tilesets = list(tilesets),
+    bands = bands,
+    pyramiding_policy = pyramiding_policy,
+    end_time=list(seconds=end_time),
+    start_time=list(seconds=start_time)
+    )
+
+  if (is.null(properties)) {
+    return(manifest)
+  } else {
+    manifest$properties = properties
+    return(manifest)
+  }
+}
+
+
+
+#' Upload a Image to the asset
+#' @importFrom stars write_stars
+#' @export
+ee_upload_istars_to_asset <- function(x, type, user,destination_path,metadata) {
+  destination_path <- verify_path_for_upload(destination_path)
+
+  upload_tempdir <- tempdir()
+  filename <- sprintf("%s/%s.tif",upload_tempdir,gsub("\\..+","",names(x)))
+  suppressWarnings(write_stars(x,filename,type=type))
+  session <- ee_getsession(user = user,filename = filename,destination_path = destination_path)
+  ee_create_asset_path(destination_path)
+  filename_img <- gsub("\\..+","",basename(filename))
+  asset_full_path <- sprintf("%s/%s",destination_path, filename_img)
+  cat(sprintf("Uploading %s to gs://earthengine-uploads/..",names(x)))
+  gsid <- ee_upload_file(session, filename)
+  manifest <- ee_create_manifest(x,asset_full_path,gsid)
+  json_path <- sprintf("%s/manifest.json",upload_tempdir)
+  ee_create_json(manifest,json_path)
+  system(sprintf("earthengine upload image --manifest '%s'",json_path))
 }
