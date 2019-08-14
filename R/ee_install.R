@@ -77,4 +77,3 @@ ee_install <- function(python_version, conda=FALSE) {
     }
   }
   cat("Earth Engine Python API installed successfully")
-}
