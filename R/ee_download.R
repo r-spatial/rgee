@@ -145,7 +145,10 @@ ee_download_gcs <- function(){}
 #' ee_download_monitoring(eelist=TRUE)
 #' }
 #' @export
-ee_download_monitoring <- function(task, eeTaskList = FALSE) {
+ee_monitoring <- function(task, eeTaskList = FALSE) {
+  if (missing(task)) {
+    task <-ee$batch$Task$list()[[1]]
+  }
   if (eeTaskList) {
     cat("EETaskList:\n")
     task_list <- mapply( function(x) {

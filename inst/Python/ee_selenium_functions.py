@@ -18,8 +18,6 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-def ee_get_google_auth_session_py(username, password,dirname):
-    print("my message is this")
 
 def ee_get_google_auth_session_py(username, password,dirname):
     options = Options()
@@ -85,7 +83,8 @@ def ee_get_upload_url_py(session):
                 wait_exponential_multiplier=1000,
                 wait_exponential_max=4000,
                 stop_max_attempt_number=3)
-def ee_upload_file_py(session, file_path):
+
+def ee_file_to_gcs_py(session, file_path):
     with open(file_path, 'rb') as f:
         file_name=os.path.basename(file_path)
         upload_url = ee_get_upload_url_py(session)
@@ -99,7 +98,7 @@ def ee_upload_file_py(session, file_path):
             print(e)
 
 
-def ee_create_json(towrite,manifest):
+def ee_create_json_py(towrite,manifest):
   with open(towrite, 'w') as outfile:
           json.dump(manifest, outfile)
 

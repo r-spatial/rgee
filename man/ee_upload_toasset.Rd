@@ -2,13 +2,58 @@
 % Please edit documentation in R/ee_upload_toasset.R
 \name{ee_upload_toasset}
 \alias{ee_upload_toasset}
-\title{Upload a either an image or vector into Google Earth Engine using Selenium}
+\alias{ee_upload_toasset.default}
+\alias{ee_upload_toasset.sf}
+\alias{ee_upload_toasset.stars}
+\title{Upload sf or stars objects to GEE asset}
 \usage{
-ee_upload_toasset(x, user, destination_path, metadata, nodata)
+ee_upload_toasset(x, gmail_account, gee_asset_path, type = "Float32",
+  start_time = NULL, end_time = NULL, properties = NULL,
+  pyramiding_policy = "MEAN", one_by_one = TRUE, quiet = FALSE, ...)
+
+\method{ee_upload_toasset}{default}(x, ...)
+
+\method{ee_upload_toasset}{sf}(x, gmail_account, gee_asset_path,
+  type = "Float32", start_time = NULL, end_time = NULL,
+  properties = NULL, pyramiding_policy = "MEAN", one_by_one = TRUE,
+  quiet = FALSE, ...)
+
+\method{ee_upload_toasset}{stars}(x, gmail_account, gee_asset_path,
+  type = "Float32", start_time = NULL, end_time = NULL,
+  properties = NULL, pyramiding_policy = "MEAN", one_by_one = TRUE,
+  quiet = FALSE, ...)
+}
+\arguments{
+\item{x}{sf or stars object.}
+
+\item{gmail_account}{character; google account name (gmail address).}
+
+\item{gee_asset_path}{character; images destination path, full path for upload to Google Earth Engine,
+e.g. users/pinkiepie/myponycollection.}
+
+\item{type}{TODO}
+
+\item{start_time}{start period of acquiring data.}
+
+\item{end_time}{end period of acquiring data.}
+
+\item{properties}{data.frame; \href{https://developers.google.com/earth-engine/image_manifest}{Manifest upload}.
+See details}
+
+\item{pyramiding_policy}{character; determines how each pixel at a given level of the pyramid is
+computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".}
+
+\item{one_by_one}{TODO}
+
+\item{quiet}{logical; suppress info message}
+
+\item{...}{ignored}
 }
 \description{
-Upload a either an image or vector into Google Earth Engine using Selenium
+Send either images or vectors to Google Earth Engine asset through Selenium
 }
-\author{
-Cesar Aybar
+\examples{
+\dontrun{
+library(rgee)
+}
 }
