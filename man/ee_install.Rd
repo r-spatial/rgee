@@ -4,27 +4,31 @@
 \alias{ee_install}
 \title{Install rgee dependecies}
 \usage{
-ee_install(packages, method = c("auto", "virtualenv", "conda"),
-  conda = "auto")
+ee_install(python_version, conda = FALSE)
 }
 \arguments{
-\item{packages}{Character vector with package names to install.}
+\item{python_version}{The requested Python version.}
 
-\item{method}{Installation method. By default, "auto" automatically finds a
-method that will work in the local environment. Change the default to force
-a specific installation method. Note that the "virtualenv" method is not
-available on Windows.}
-
-\item{conda}{conda Path to conda executable (or "auto" to find conda using
-the PATH and other conventional install locations).}
+\item{conda}{whether TRUE will use conda instead pip.}
 }
 \description{
 Wrapping to reticulate::py_install(packages = "ee")
 }
-\details{
-On Linux and OS X the "virtualenv" method will be used by default
-("conda" will be used if virtualenv isn't available). On Windows, the
-"conda" method is always used.
+\examples{
+\dontrun{
+# Simple install
+library(rgee)
+ee_install()
+
+# Install Earth Engine Python API in a virtualenv
+library(reticulate)
+library(rgee)
+py_discover_config()
+virtualenv_create("rgee", python = "python2.7")
+use_virtualenv("rgee")
+py_discover_config()
+ee_install()
+}
 }
 \author{
 \href{https://github.com/kevinushey}{Kevin Ushey} and \href{https://github.com/jjallaire}{J.J. Allaire}

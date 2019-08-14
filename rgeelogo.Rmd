@@ -1,0 +1,66 @@
+---
+title: "Cesar Aybar"
+author: "Cesar Aybar & Antony Barja"
+date: "8/9/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Python libraries
+
+```{python libs}
+from matplotlib import pyplot as plt
+import numpy as np
+import ee
+import cartoee as cee # this packages is awesome!
+import cartopy.crs as ccrs
+ee.Initialize()
+```
+
+## 2. Setting variables
+
+```{python const}
+visualization = {'bands':'sst','min':-2,'max':30}
+# specify region to focus on
+bbox = [-180,-90,180,90]
+# create a new Goode homolosine projection centered on the Pacific
+projection = ccrs.InterruptedGoodeHomolosine(central_longitude=-180)
+```
+
+## 3. Getting images
+
+```{python eequery}
+sst = ee.ImageCollection('NASA/OCEANDATA/MODIS-Aqua/L3SMI')\
+        .select('sst')\
+        .filterDate(ee.Date('2013-01-01'), ee.Date('2017-12-31'))
+
+months = ee.List.sequence(1, 12)
+years = ee.List.sequence(2013, 2017)
+
+def agreggate_y(y):
+  def agreggate_m(m):
+    return sst.filter(ee.Filter.calendarRange(y, y, 'year'))\
+              .filter(ee.Filter.calendarRange(m, m, 'month'))\
+              .mean()\
+              .set('month', m).set('year', y)
+  return months.map(agreggate_m)
+
+mod_byMonthYear = ee.ImageCollection.fromImages(years.map(agreggate_y).flatten())
+
+size_list = mod_byMonthYear.size().getInfo()
+mod_byMonthYear_list = mod_byMonthYear.toList(size_list)
+```
+
+## 4. Plotting time
+
+```{python}
+ocean = ee.Image(mod_byMonthYear_list.get(0))
+ax = cee.getMap(ocean,visParams=visualization,region=bbox,
+                cmap='plasma',proj=projection)
+ax.coastlines()
+plt.savefig('demo.png', transparent=True,pad_inches=0,bbox_inches='tight')
+plt.show()
+```

@@ -49,13 +49,13 @@ ee_as_ee.data.frame <- function(x, coords, ...) {
 }
 
 #' @name ee_as_ee
+#' @importFrom sf st_read
 #' @export
 ee_as_ee.character <- function(x, ...) {
   oauth_func_path <- system.file("Python/ee_as_ee.py", package = "rgee")
   ee_source_python(oauth_func_path)
   eex <- st_read(x, quiet = TRUE, ...)
   if (!st_crs(eex)$epsg == 4326){
-
     eex <- st_transform(eex, 4326)
   }
   geojson_list <- geojson_json(eex)
@@ -94,7 +94,6 @@ ee_as_ee.sfg <- function(x,...) {
 #' @name ee_as_ee
 #' @export
 ee_as_ee.Spatial <- function(x,...) {
-  oauth_func_path <- system.file("Python/ee_as_ee.py", package = "rgee")
   ee_source_python(oauth_func_path)
   x <- as(x,"sf")
   if (!st_crs(x)$epsg == 4326) x <- st_transform(x, 4326)

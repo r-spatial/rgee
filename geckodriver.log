@@ -1,0 +1,98 @@
+1565734995187	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.W2UoQlTeInHQ"
+*** You are running in headless mode.
+1565734997269	Marionette	INFO	Listening on port 39867
+1565734997310	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:10160): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1565735224087	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.lCdDJrq6kHyw"
+*** You are running in headless mode.
+1565735225659	Marionette	INFO	Listening on port 41673
+1565735225704	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:10571): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1565735774237	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.GNleOv67ObId"
+*** You are running in headless mode.
+1565735775841	Marionette	INFO	Listening on port 39861
+1565735775957	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:11066): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1565735920057	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.ujIYIBXRQaR0"
+*** You are running in headless mode.
+1565735921724	Marionette	INFO	Listening on port 37581
+1565735921777	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:11266): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1565737113476	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.SQvV0Hz4C3S0"
+*** You are running in headless mode.
+1565737115807	Marionette	INFO	Listening on port 41847
+1565737115894	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:11908): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+
+###!!! [Parent][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+1565737211067	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.IqS6inytwLTM"
+*** You are running in headless mode.
+1565737212686	Marionette	INFO	Listening on port 45623
+1565737212777	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:12241): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+[Parent 12197, Gecko_IOThread] WARNING: pipe error (81): Connection reset by peer: file /build/firefox-esr-a3uW81/firefox-esr-60.7.2esr/ipc/chromium/src/chrome/common/ipc_channel_posix.cc, line 342
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping
+1565737264552	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.20vCuKJlgNGQ"
+*** You are running in headless mode.
+1565737266179	Marionette	INFO	Listening on port 44619
+1565737266264	Marionette	WARN	TLS certificate errors will be ignored for this session
+
+(/usr/lib/firefox-esr/firefox-esr:12409): dconf-WARNING **: Unable to open dconf/profile/user: Permission denied
+console.log: Accessibility service init or shutdown observer does not exist.
+JavaScript error: https://code.earthengine.google.com/javascript/playground.js, line 214: NS_ERROR_NOT_INITIALIZED: 
+*** UTM:SVC TimerManager:registerTimer called after profile-before-change notification. Ignoring timer registration for id: telemetry_modules_ping

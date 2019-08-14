@@ -11,3 +11,5 @@
 ^README.Rmd
 ^CODE_OF_CONDUCT.md
 ^LICENSE.md
+^tic\.R$
+^rgeelogo.Rmd
