@@ -33,7 +33,7 @@ ee_help <- function(module){
   rstudioapi::viewer(htmlFile)
 }
 
-ee_help(ee$Geometry)
+#ee_help(ee$Geometry)
 
 
 

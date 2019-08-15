@@ -70,7 +70,6 @@ def ee_check_selenium_firefox(driverdir):
 def retry_if_ee_error(exception):
     return isinstance(exception, ee.EEException)
 
-
 def ee_get_upload_url_py(session):
     rr=session.get("https://code.earthengine.google.com/assets/upload/geturl")
     try:
@@ -83,13 +82,15 @@ def ee_get_upload_url_py(session):
                 wait_exponential_multiplier=1000,
                 wait_exponential_max=4000,
                 stop_max_attempt_number=3)
-
-def ee_file_to_gcs_py(session, file_path):
+def ee_file_to_gcs_py(session, file_path,ftype,upload_url):
     with open(file_path, 'rb') as f:
         file_name=os.path.basename(file_path)
-        upload_url = ee_get_upload_url_py(session)
-        files = {'file': f}
-        m=MultipartEncoder( fields={'image_file':(file_name, f)})
+        if ftype == 'tif':
+          m=MultipartEncoder(fields={'image_file':(file_name, f)})
+        elif ftype == 'shapefile':
+          m=MultipartEncoder(fields={'table_file':(file_name, f)})
+        else:
+          pass
         try:
             resp = session.post(upload_url, data=m, headers={'Content-Type': m.content_type})
             gsid = resp.json()[0]
@@ -101,4 +102,3 @@ def ee_file_to_gcs_py(session, file_path):
 def ee_create_json_py(towrite,manifest):
   with open(towrite, 'w') as outfile:
           json.dump(manifest, outfile)
-
