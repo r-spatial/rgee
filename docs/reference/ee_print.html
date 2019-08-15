@@ -167,9 +167,9 @@ and ee_FeatureCollection will be used to generated Earth Engine object propertie
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_initialize.html'>ee_initialize</a></span>()
-<span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_ImageCollection.html'>ee_ImageCollection</a></span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
+<span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
   <span class='fu'>filterDate</span>(<span class='st'>"2014-03-01"</span>, <span class='st'>"2014-08-01"</span>)
 <span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>4</span>)
 <span class='co'># }</span></pre>

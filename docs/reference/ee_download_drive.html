@@ -123,7 +123,7 @@
     <tr>
       <th>task</th>
       <td><p>List generated after finished correctly a EE task. See
-<code><a href='ee_Export.html'>ee_Export()</a></code> for details.</p></td>
+<code>ee_Export()</code> for details.</p></td>
     </tr>
     <tr>
       <th>filename</th>
@@ -167,12 +167,12 @@
    <span class='no'>cloud</span> <span class='kw'>&lt;-</span> <span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>32L</span>)$
      <span class='fu'>And</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>128L</span>))$
      <span class='fu'>Or</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>8L</span>))
-   <span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='fu'><a href='ee_Reducer.html'>ee_Reducer</a></span>()$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
+   <span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='fu'>ee_Reducer</span>()$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
    <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>updateMask</span>(<span class='no'>cloud</span>$<span class='fu'>Not</span>())$<span class='fu'>updateMask</span>(<span class='no'>mask2</span>)
    <span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>))
  }
 
- <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_ImageCollection.html'>ee_ImageCollection</a></span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
+ <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_ImageCollection</span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
    <span class='fu'>filterBounds</span>(<span class='no'>ee_geom</span>)$
    <span class='fu'>filterDate</span>(<span class='st'>"2011-01-01"</span>, <span class='st'>"2011-12-31"</span>)$
    <span class='fu'>map</span>(<span class='no'>cloudMaskL457</span>)
@@ -189,7 +189,7 @@
    <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"NDVI_l5_2011_Amarakaeri"</span>
  )
  <span class='no'>task_img</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/start'>start</a></span>()
- <span class='fu'><a href='ee_download_monitoring.html'>ee_download_monitoring</a></span>(<span class='no'>task_img</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># optional</span>
+ <span class='fu'>ee_download_monitoring</span>(<span class='no'>task_img</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># optional</span>
  <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(
    <span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>,
    <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"amarakaeri.tif"</span>,
@@ -209,7 +209,7 @@
  )
 
  <span class='no'>task_vector</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/start'>start</a></span>()
- <span class='fu'><a href='ee_download_monitoring.html'>ee_download_monitoring</a></span>(<span class='no'>task_vector</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># optional</span>
+ <span class='fu'>ee_download_monitoring</span>(<span class='no'>task_vector</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># optional</span>
  <span class='no'>amk_geom</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(
    <span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_vector</span>,
    <span class='kw'>filename</span> <span class='kw'>=</span> <span class='st'>"amarakaeri.geojson"</span>,

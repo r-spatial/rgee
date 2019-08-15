@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check if Python and the Google Earth Engine API are available on this system — ee_check • rgee</title>
+<title>Create a folder or ImageCollection into GEE assets — ee_create_asset_path • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Check if Python and the Google Earth Engine API are available on this system — ee_check" />
+<meta property="og:title" content="Create a folder or ImageCollection into GEE assets — ee_create_asset_path" />
 
-<meta property="og:description" content="Check if Python and the Google Earth Engine API are available on this system" />
+<meta property="og:description" content="Create a folder or ImageCollection into GEE assets" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,44 +104,43 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check if Python and the Google Earth Engine API are available on this system</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
-    <div class="hidden name"><code>ee_check.Rd</code></div>
+    <h1>Create a folder or ImageCollection into GEE assets</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
+    <div class="hidden name"><code>ee_create_asset_path.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Check if Python and the Google Earth Engine API are available on this system</p>
+    <p>Create a folder or ImageCollection into GEE assets</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>(<span class='kw'>initialize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_create_asset_path</span>(<span class='no'>path_asset</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"folder"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>initialize</th>
-      <td><p>reticulate::py_available params. TRUE to attempt to initialize Python
-bindings if they aren't yet available (defaults to FALSE).</p></td>
+      <th>path_asset</th>
+      <td><p>a character vector containing a single path name.</p></td>
+    </tr>
+    <tr>
+      <th>asset_type</th>
+      <td><p>a character vector containing the asset type. 'folder' or 'imagecollection'.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>logical; suppress info message.</p></td>
     </tr>
     </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'># Simple install</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_check</span>()
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

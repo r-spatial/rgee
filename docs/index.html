@@ -148,12 +148,12 @@
 <a class="sourceLine" id="cb3-29" data-line-number="29">  cloud &lt;-<span class="st"> </span>qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(32L)<span class="op">$</span></a>
 <a class="sourceLine" id="cb3-30" data-line-number="30"><span class="st">    </span><span class="kw">And</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(128L))<span class="op">$</span></a>
 <a class="sourceLine" id="cb3-31" data-line-number="31"><span class="st">    </span><span class="kw">Or</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(8L))</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">  mask2 &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">mask</span>()<span class="op">$</span><span class="kw">reduce</span>(<span class="kw"><a href="reference/ee_Reducer.html">ee_Reducer</a></span>()<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>())</a>
+<a class="sourceLine" id="cb3-32" data-line-number="32">  mask2 &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">mask</span>()<span class="op">$</span><span class="kw">reduce</span>(<span class="kw">ee_Reducer</span>()<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>())</a>
 <a class="sourceLine" id="cb3-33" data-line-number="33">  image &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">updateMask</span>(cloud<span class="op">$</span><span class="kw">Not</span>())<span class="op">$</span><span class="kw">updateMask</span>(mask2)</a>
 <a class="sourceLine" id="cb3-34" data-line-number="34">  image<span class="op">$</span><span class="kw">normalizedDifference</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"B4"</span>, <span class="st">"B3"</span>))</a>
 <a class="sourceLine" id="cb3-35" data-line-number="35">}</a>
 <a class="sourceLine" id="cb3-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">ic_l5 &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_ImageCollection.html">ee_ImageCollection</a></span>(<span class="st">"LANDSAT/LT05/C01/T1_SR"</span>)<span class="op">$</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37">ic_l5 &lt;-<span class="st"> </span><span class="kw">ee_ImageCollection</span>(<span class="st">"LANDSAT/LT05/C01/T1_SR"</span>)<span class="op">$</span></a>
 <a class="sourceLine" id="cb3-38" data-line-number="38"><span class="st">  </span><span class="kw">filterBounds</span>(ee_geom)<span class="op">$</span></a>
 <a class="sourceLine" id="cb3-39" data-line-number="39"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2011-01-01"</span>, <span class="st">"2011-12-31"</span>)<span class="op">$</span></a>
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="st">  </span><span class="kw">map</span>(cloudMaskL457)</a>
@@ -169,7 +169,7 @@
 <a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="dt">fileNamePrefix =</span> <span class="st">"NDVI_l5_2011_Amarakaeri"</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8">)</a>
 <a class="sourceLine" id="cb4-9" data-line-number="9">task_img<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw"><a href="reference/ee_download_monitoring.html">ee_download_monitoring</a></span>(task_img, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw">ee_download_monitoring</span>(task_img, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
 <a class="sourceLine" id="cb4-11" data-line-number="11">img &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
 <a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="dt">task =</span> task_img,</a>
 <a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="dt">filename =</span> <span class="st">"amarakaeri.tif"</span>,</a>
@@ -189,7 +189,7 @@
 <a class="sourceLine" id="cb4-27" data-line-number="27">)</a>
 <a class="sourceLine" id="cb4-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb4-29" data-line-number="29">task_vector<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="kw"><a href="reference/ee_download_monitoring.html">ee_download_monitoring</a></span>(task_vector, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="kw">ee_download_monitoring</span>(task_vector, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
 <a class="sourceLine" id="cb4-31" data-line-number="31">amk_geom &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
 <a class="sourceLine" id="cb4-32" data-line-number="32">  <span class="dt">task =</span> task_vector,</a>
 <a class="sourceLine" id="cb4-33" data-line-number="33">  <span class="dt">filename =</span> <span class="st">"amarakaeri.geojson"</span>,</a>

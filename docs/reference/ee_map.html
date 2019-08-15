@@ -226,12 +226,12 @@ By default 000000.</p></li>
 <span class='no'>m1</span>
 
 <span class='co'># Case: Feature</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_FeatureCollection.html'>ee_FeatureCollection</a></span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
+<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
 <span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)
 <span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case: FeatureCollection</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_FeatureCollection.html'>ee_FeatureCollection</a></span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
+<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
 <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>eeobject_fc</span>,<span class='kw'>obj_name</span> <span class='kw'>=</span> <span class='st'>'FeatureCollection'</span>)
 <span class='no'>m3</span>+<span class='no'>m1</span>
 
@@ -241,9 +241,9 @@ By default 000000.</p></li>
 <span class='no'>m4</span>+<span class='no'>m1</span>
 
 <span class='co'># Case: ImageCollection</span>
-<span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_ImageCollection.html'>ee_ImageCollection</a></span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'><a href='ee_Filter.html'>ee_Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
+<span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
   <span class='fu'>filterDate</span>(<span class='st'>"2014-01-01"</span>, <span class='st'>"2015-01-01"</span>)$
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='st'>"CLOUD_COVER"</span>)
 
