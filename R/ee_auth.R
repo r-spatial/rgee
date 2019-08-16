@@ -12,8 +12,10 @@ ee_source_python <- function(oauth_func_path) {
   }
 
 #' Authorize Earth Engine and Google Drive API
+#' @author Cesar Aybar getting from JesJehle <https://github.com/JesJehle/earthEngineGrabR>
 #' @importFrom reticulate source_python
 #' @importFrom googledrive drive_auth
+#' @details Credentials will be saved into path.expand("~/.config/earthengine")
 #' @noRd
 ee_oauth <- function() {
   oauth_func_path <- system.file("Python/ee_auth.py", package = "rgee")
@@ -69,12 +71,16 @@ ee_initialize <- function() {
   )
 }
 
+
 #' Remove the Earth Engine and Google Drive credentials in this system
 #'
 #' @export
-ee_remove_credentials <- function() {
-  googledrive::drive_deauth(clear_cache = TRUE, verbose = TRUE)
-  file.remove(ee_credential)
+ee_remove_credentials <- function(path,quiet = TRUE) {
+  if (missing(path)) path <- dirname(rgee:::gd_cre_path())
+  ee_credentials <- sprintf("%s/credentials",path)
+  if (file.exists(rgee:::gd_cre_path())) file.remove(rgee:::gd_cre_path())
+  if (file.exists(ee_credentials)) file.remove(ee_credentials)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
 }
 
 #' Google drive credential route
@@ -82,3 +88,4 @@ ee_remove_credentials <- function() {
 gd_cre_path <- function() {
   sprintf("%s/googledrive", path.expand("~/.config/earthengine"))
 }
+

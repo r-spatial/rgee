@@ -4,7 +4,7 @@
 \alias{ee_remove_credentials}
 \title{Remove the Earth Engine and Google Drive credentials in this system}
 \usage{
-ee_remove_credentials()
+ee_remove_credentials(path, quiet = TRUE)
 }
 \description{
 Remove the Earth Engine and Google Drive credentials in this system

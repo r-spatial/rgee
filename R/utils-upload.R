@@ -43,37 +43,7 @@ dataframe_row_to_json <- function(drow) {
   }
 }
 
-#' Download geckover in their sytem
-#' @noRd
-ee_download_selenium_driver <- function(version='latest') {
-  oauth_func_path <- system.file("Python/ee_download_geckover.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  if (version == 'latest') version = NULL
-  directory = dirname(gd_cre_path())
-  os_type = Sys.info()[['sysname']]
-  if (os_type == "Linux") {
-    geckodown_linux(directory,version)
-  } else if(os_type == "Windows") {
-    geckodown_win(directory,version)
-  } else {
-    cat("Experimental: Only windows and derived linux OS are soported")
-    geckodown_linux(directory,version)
-  }
-}
-
-#' Check is selenium-firefox is correctly installed
-#' @noRd
-ee_check_selenium_driver <- function(driverdir){
-  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  if (missing(driverdir)) {
-    driverdir = dirname(gd_cre_path())
-  }
-  print(ee_check_selenium_firefox(driverdir))
-}
-
-
-#' Check is selenium-firefox is correctly installed
+#' Check is selenium-firefox is correctly installed TODO
 #' @noRd
 ee_get_google_auth_session <- function(username, password,dirname, quiet=FALSE) {
   oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
@@ -258,3 +228,5 @@ image_or_vector <- function(x) {
   }
   return("sf")
 }
+
+

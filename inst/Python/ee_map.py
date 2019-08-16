@@ -1,7 +1,6 @@
 import ee
 import sys
-#eeobject = r['eeobject']
-#vizparams= r['vizparams']
+
 EE_TILES = 'https://earthengine.googleapis.com/map/{mapid}/{{z}}/{{x}}/{{y}}?token={token}'
 def ee_map_py(eeobject,vizparams):
   if eeobject.name() is 'Geometry':

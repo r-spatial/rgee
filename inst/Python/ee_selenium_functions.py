@@ -52,21 +52,6 @@ def ee_get_google_auth_session_py(username, password,dirname):
     driver.close()
     return session
 
-def ee_check_selenium_firefox(driverdir):
-    options = Options()
-    options.add_argument('-headless')
-    authorization_url="https://www.google.com/"
-    if os.name=="nt":
-      path_driver = os.path.join(driverdir,"geckodriver.exe")
-      driver = Firefox(executable_path=path_driver)
-    elif os.name=="posix":
-      path_driver = os.path.join(driverdir,"geckodriver")
-      driver = Firefox(executable_path=path_driver)
-    driver.get(authorization_url)
-    driver.quit()
-    return("Selenium-Firefox (geckodriver) was installed correctly")
-
-
 def retry_if_ee_error(exception):
     return isinstance(exception, ee.EEException)
 
