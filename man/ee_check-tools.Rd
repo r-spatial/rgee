@@ -4,27 +4,65 @@
 \alias{ee_check-tools}
 \alias{ee_check}
 \alias{ee_check_python}
-\alias{ee_check_python_modules}
+\alias{ee_check_rgee_python_packages}
 \alias{ee_check_drivers}
 \alias{ee_check_credentials}
 \alias{ee_install_drivers}
+\alias{ee_install_rgee_python_packages}
+\alias{ee_install_ee}
+\alias{ee_install_python_package}
 \alias{ee_get_earthengine_path}
+\alias{ee_remove_credentials}
+\alias{ee_remove_drivers}
+\alias{ee_get_credentials}
 \title{Interface to handle Installation requirements}
 \usage{
 ee_check()
 
 ee_check_python()
 
-ee_check_python_modules()
+ee_check_rgee_python_packages()
 
-ee_check_drivers()
+ee_check_drivers(display_in_browser = TRUE)
 
 ee_check_credentials()
 
 ee_install_drivers(version = "latest")
 
+ee_install_rgee_python_packages(conda = FALSE, restart = TRUE)
+
+ee_install_ee(conda = FALSE, restart = TRUE)
+
+ee_install_python_package(pypackage, conda = FALSE, restart = TRUE)
+
 ee_get_earthengine_path()
+
+ee_remove_credentials(quiet = TRUE)
+
+ee_remove_drivers(quiet = TRUE)
+
+ee_get_credentials()
 }
 \description{
-R functions for handle: drivers (geckodrivers), credentials and python packages.
+R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
+}
+\details{
+It is neccessary restart RStudio to observe change when installing a python packages. Try
+rgee::ee_install_python_modules(restart=TRUE)
+}
+\examples{
+\dontrun{
+library(rgee)
+
+#The recommended way to use of rgee
+virtualenv_remove("rgee")
+virtualenv_create("rgee", python = "python3.5")
+use_virtualenv("rgee")
+
+ee_check()
+ee_install_rgee_python_packages() # Install rgee python packages
+ee_install_drivers() # Install selenim drivers
+ee_get_credentials() # Get credentials
+ee_check()
+}
 }

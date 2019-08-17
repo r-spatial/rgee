@@ -1,14 +1,32 @@
 #' Interface to handle Installation requirements
 #'
-#' R functions for handle: drivers (geckodrivers), credentials and python packages.
+#' R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
+#'
 #'
 #' @importFrom reticulate py_available py_module_available
 #' @name ee_check-tools
+#' @details It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
+#' compatible with Python3.
+#' @examples
+#' \dontrun{
+#'library(rgee)
+#'
+#'#The recommended way to use of rgee
+#'virtualenv_remove("rgee")
+#'virtualenv_create("rgee", python = "python3.5")
+#'use_virtualenv("rgee")
+#'
+#'ee_check()
+#'ee_install_rgee_python_packages() # Install rgee python packages
+#'ee_install_drivers() # Install selenim drivers
+#'ee_get_credentials() # Get credentials
+#'ee_check()
+#' }
 #' @export
 ee_check <- function() {
   ee_check_python()
-  ee_check_python_modules()
-  ee_check_drivers()
+  ee_check_rgee_python_packages()
+  ee_check_drivers(display_in_browser = F)
   ee_check_credentials()
 }
 
@@ -22,99 +40,36 @@ ee_check_python <- function() {
     stop("Unable to find a Python version, you will need to fix it before installing rgee. ",
          "More details through reticulate::py_available().")
   }
+  py_version <- as.numeric(substring(py_discover_config()$version,1,1))
+  if (py_version!=3) stop("rgee just run under Python3")
   return(TRUE)
 }
 
+
 #' @rdname ee_check-tools
 #' @export
-ee_check_python_modules <- function(){
-  oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  black_list_standard <- NULL
-  black_list_thirdpackage <- NULL
+ee_check_rgee_python_packages <- function() {
+  oauth_func_path <- system.file("Python/ee_check_utils_exist.py", package = "rgee")
+  rgee:::ee_source_python(oauth_func_path)
+
   cat("\n")
   cat("• Python Standard Libraries used in rgee: \n")
   # webbrowser
-  if (ee_check_py_webbrowser()) {
-    cat("    - webbrowser → status[✓]\n")
-     } else {
-    cat("    - webbrowser → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'webbowser')
-  }
+  ee_check_rgee_package("webbrowser")
+  ee_check_rgee_package("request")
+  ee_check_rgee_package("zipfile")
+  ee_check_rgee_package("tarfile")
+  ee_check_rgee_package("subprocess")
+  ee_check_rgee_package("retrying")
+  ee_check_rgee_package("ast")
+  ee_check_rgee_package("sys")
+  ee_check_rgee_package("os")
+  ee_check_rgee_package("platform")
+  ee_check_rgee_package("json")
 
-  # request
-  if (ee_check_py_request()) {
-    cat("    - request → status[✓]\n")
-  } else {
-    cat("    - request → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'request')
-  }
-
-  # zipfile
-  if (ee_check_py_zipfile()) {
-    cat("    - zipfile → status[✓]\n")
-  } else {
-    cat("    - zipfile → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'zipfile')
-  }
-
-  # tarfile
-  if (ee_check_py_tarfile()) {
-    cat("    - tarfile → status[✓]\n")
-  } else {
-    cat("    - tarfile → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'tarfile')
-  }
-
-  # subprocess
-  if (ee_check_py_subprocess()) {
-    cat("    - subprocess → status[✓]\n")
-  } else {
-    cat("    - subprocess → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'zipfile')
-  }
-
-  # retrying
-  if (ee_check_py_retrying()) {
-    cat("    - retrying → status[✓]\n")
-  } else {
-    cat("    - retrying → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'retrying')
-  }
-
-  # ast
-  if (ee_check_py_ast()) {
-    cat("    - ast → status[✓]\n")
-  } else {
-    cat("    - ast → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'ast')
-  }
-
-  # sys
-  if (ee_check_py_sys()) {
-    cat("    - sys → status[✓]\n")
-  } else {
-    cat("    - sys → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'sys')
-  }
-
-  # os
-  if (ee_check_py_os()) {
-    cat("    - os → status[✓]\n")
-  } else {
-    cat("    - os → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'os')
-  }
-
-  # time
-  if (ee_check_py_time()) {
-    cat("    - time → status[✓]\n")
-  } else {
-    cat("    - time → status[☓]\n")
-    black_list_standard <- c(black_list_standard,'time')
-  }
   cat("\n")
   cat("• Python Third-Party Libraries used in rgee: \n")
+
   #ee
   version_ee <- ee_check_py_ee()
   ee_cond <- is.character(version_ee)
@@ -124,91 +79,26 @@ ee_check_python_modules <- function(){
     } else {
       ee_message <- sprintf("Earth Engine Python API (ee) %s is installed correctly in your system,%s",
                             version_ee,
-                            "but rgee depends on 0.1.175. Please run ee_install_ee() for upgrading.")
-      warning(ee_message)
+                            "but rgee depends on 0.1.175. Please run ee_install_ee(restart=TRUE) for upgrading.")
+      stop(ee_message)
     }
   } else {
     cat("    - ee → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'ee')
   }
 
-  #selenium
-  version_selenium <- ee_check_py_selenium()
-  selenium_cond <- is.character(version_selenium)
-  if (selenium_cond) {
-      cat(sprintf("    - selenium → status[✓]: v%s\n",version_selenium))
-  } else {
-    cat("    - selenium → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'selenium')
-  }
-
-  #bs4
-  version_bs4 <- ee_check_py_bs4()
-  bs4_cond <- is.character(version_bs4)
-  if (bs4_cond) {
-    cat(sprintf("    - bs4 → status[✓]: v%s\n",version_bs4))
-  } else {
-    cat("    - bs4 → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'bs4')
-  }
-
-  #platform
-  version_platform <- ee_check_py_platform()
-  platform_cond <- is.character(version_platform)
-  if (platform_cond) {
-    cat(sprintf("    - platform → status[✓]: v%s\n",version_platform))
-  } else {
-    cat("    - platform → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'platform')
-  }
-
-  #json
-  version_json <- ee_check_py_json()
-  json_cond <- is.character(version_json)
-  if (json_cond) {
-    cat(sprintf("    - json → status[✓]: v%s\n",version_json))
-  } else {
-    cat("    - json → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'json')
-  }
-
-
-  #pysmartDL
-  version_pysmartDL <- ee_check_py_pysmartDL()
-  pysmartDL_cond <- is.character(version_pysmartDL)
-  if (pysmartDL_cond) {
-    cat(sprintf("    - pysmartDL → status[✓]: v%s\n",version_pysmartDL))
-  } else {
-    cat("    - pysmartDL → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'pysmartDL')
-  }
-
-  #requests_toolbelt
-  version_requests_toolbelt <- ee_check_py_requests_toolbelt()
-  requests_toolbelt_cond <- is.character(version_requests_toolbelt)
-  if (requests_toolbelt_cond) {
-    cat(sprintf("    - requests_toolbelt → status[✓]: v%s\n",version_requests_toolbelt))
-  } else {
-    cat("    - requests_toolbelt → status[☓]\n")
-    black_list_thirdpackage <- c(black_list_thirdpackage, 'requests_toolbelt')
-  }
-
-  # Aggregating missing packages
-  rgee_py_packages <- c(black_list_standard, black_list_thirdpackage)
-  if (!is.null(rgee_py_packages)) {
-    warning("Some packages do not still installed in this Python version, try as follow for fixed: \n",
-            paste0(collapse = "\n",sprintf("- ee_install_%s()",black_list_thirdpackage)))
-  }
-  return(TRUE)
+  ee_check_rgee_package("selenium")
+  ee_check_rgee_package("bs4")
+  ee_check_rgee_package("pysmartDL")
+  ee_check_rgee_package("requests_toolbelt")
 }
 
 #' @rdname ee_check-tools
 #' @export
-ee_check_drivers <- function() {
+ee_check_drivers <- function(display_in_browser = TRUE) {
   oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
   ee_source_python(oauth_func_path)
   driverdir <- ee_get_earthengine_path()
-  condition <- ee_check_drivers(driverdir)
+  condition <- ee_check_drivers_py(driverdir, display_in_browser)
   if (condition) {
     cat("\n")
     cat("• Geckodriver → status[✓]:",driverdir,"\n")
@@ -252,40 +142,26 @@ ee_install_drivers <- function(version='latest') {
   }
 }
 
-
-#' Install rgee dependecies
-#'
-#' Wrapping to reticulate::py_install(packages = "ee")
-#'
-#' @author \href{https://github.com/kevinushey}{Kevin Ushey} and \href{https://github.com/jjallaire}{J.J. Allaire}
-#'
-#' @param python_version The requested Python version.
-#' @param conda whether TRUE will use conda instead pip.
-#' @examples
-#' \dontrun{
-#' # Simple install
-#' library(rgee)
-#' ee_install()
-#'
-#' # Install Earth Engine Python API in a virtualenv
-#' library(reticulate)
-#' library(rgee)
-#' py_discover_config()
-#' virtualenv_create("rgee", python = "python2.7")
-#' use_virtualenv("rgee")
-#' py_discover_config()
-#' ee_install()
-#' }
+#' @rdname ee_check-tools
 #' @export
-ee_install_ee <- function(python_version, conda=FALSE) {
-  if (missing(python_version)) {
-    pydiscv <- py_discover_config()
-    python_version <- pydiscv$version
-  }
+ee_install_rgee_python_packages <- function(conda = FALSE, restart=TRUE) {
+  ee_install_ee(restart = FALSE, conda = conda)
+  ee_install_python_package("selenium",restart = FALSE, conda = conda)
+  ee_install_python_package("bs4",restart = FALSE, conda = conda)
+  ee_install_python_package("pysmartDL",restart = FALSE, conda = conda)
+  ee_install_python_package("requests_toolbelt",restart = restart, conda = conda)
+}
+
+
+#' @rdname ee_check-tools
+#' @export
+ee_install_ee <- function(conda=FALSE, restart=TRUE) {
+  pydiscv <- py_discover_config()
+  python_version <- pydiscv$version
   if (conda) {
     msg_return <- suppressWarnings(system2("conda"))
     if (msg_return!=0) {
-      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
+      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE, restart=TRUE)")
     } else {
       system("conda install earthengine-api==0.1.175 --upgrade")
     }
@@ -304,10 +180,103 @@ ee_install_ee <- function(python_version, conda=FALSE) {
       }
     }
   }
+  if (restart) .rs.restartR()
 }
+
+#' @rdname ee_check-tools
+#' @export
+ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
+  pydiscv <- py_discover_config()
+  python_version <- pydiscv$version
+  if (conda) {
+    msg_return <- suppressWarnings(system2("conda"))
+    if (msg_return!=0) {
+      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
+    } else {
+      system("conda install selenium --upgrade")
+    }
+  } else {
+    msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
+    if (msg_return!=0) {
+      stop("pip is not installed in your system, try using conda ee_install_ee(conda=TRUE)")
+    } else {
+      install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
+      if (install !=0) {
+        python_version <- substring(python_version,1,1)
+        install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
+        if (install !=0) {
+          stop("An unexpected error occurred when try to use pip")
+        }
+      }
+    }
+  }
+  if (restart) .rs.restartR()
+}
+
 
 #' @rdname ee_check-tools
 #' @export
 ee_get_earthengine_path <- function() {
   return(path.expand("~/.config/earthengine"))
+}
+
+#' @rdname ee_check-tools
+#' @export
+ee_remove_credentials <- function(quiet = TRUE) {
+  path <- ee_get_earthengine_path()
+  ee_credential <- sprintf("%s/credentials",path)
+  drive_credential <- sprintf("%s/googledrive",path)
+  if (file.exists(drive_credential)) file.remove(drive_credential)
+  if (file.exists(ee_credentials)) file.remove(ee_credentials)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
+}
+
+#' @rdname ee_check-tools
+#' @export
+ee_remove_drivers <- function(quiet = TRUE) {
+  path <- ee_get_earthengine_path()
+  gecko_driver_linux <- sprintf("%s/geckodriver",path)
+  gecko_driver_win <- sprintf("%s/googledrive.exe",path)
+  if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
+  if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
+}
+
+#' Check python packages
+ee_check_rgee_package <- function(rgee_package) {
+  oauth_func_path <- system.file("Python/ee_check_utils_exist.py", package = "rgee")
+  rgee:::ee_source_python(oauth_func_path)
+  version_rgeepackage <- eval(parse(text = sprintf("ee_check_py_%s()",rgee_package)))
+  rgeepackage_is_text <- is.character(version_rgeepackage)
+  rgeepackage_is_TRUE <- isTRUE(version_rgeepackage)
+  if (rgeepackage_is_text) {
+    cat(sprintf("    - %s → status[✓]: v%s\n",rgee_package, version_rgeepackage))
+  }
+  if (rgeepackage_is_TRUE) {
+    cat(sprintf("    - %s → status[✓]\n",rgee_package))
+  }
+  if (isFALSE(version_rgeepackage)) {
+    cat(sprintf("    - %s → status[☓]\n",rgee_package))
+    stop(sprintf("%s has not been installed in this Python version, try as follow for fixed: \n",rgee_package),
+         sprintf("• rgee::ee_install_python_package(%s, conda = FALSE, restart = TRUE)",rgee_package))
+  }
+}
+
+#' @rdname ee_check-tools
+#' @export
+ee_get_credentials <- function() {
+  oauth_func_path <- system.file("Python/ee_get_credentials.py", package = "rgee")
+  rgee:::ee_source_python(oauth_func_path)
+
+  credential_path <-  ee_get_earthengine_path()
+  gd_credentials <- sprintf("%s/googledrive", credential_path)
+  gee_credentials <- sprintf("%s/credentials", credential_path)
+
+  ee_authenticate_py()
+  code <- readline("Enter authorisation code for Earth Engine API here: ")
+  test <- try(request_ee_token_py(code), silent = T)
+  saveRDS(
+    drive_auth(reset = T, cache = F, verbose = F),
+    gd_cre_path()
+  )
 }
