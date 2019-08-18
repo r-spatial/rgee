@@ -1,3 +1,5 @@
+import ee
+
 def ee_sf_as_ee_py(x):
   # sf to ee
   return ee.FeatureCollection(eval(x)['features'])

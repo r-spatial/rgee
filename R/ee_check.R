@@ -152,6 +152,35 @@ ee_install_rgee_python_packages <- function(conda = FALSE, restart=TRUE) {
   ee_install_python_package("requests_toolbelt",restart = restart, conda = conda)
 }
 
+#' @rdname ee_check-tools
+#' @export
+ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
+  pydiscv <- py_discover_config()
+  python_version <- pydiscv$version
+  if (conda) {
+    msg_return <- suppressWarnings(system2("conda"))
+    if (msg_return!=0) {
+      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
+    } else {
+      system("conda install selenium --upgrade")
+    }
+  } else {
+    msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
+    if (msg_return!=0) {
+      stop("pip is not installed in your system, try using conda ee_install_ee(conda=TRUE)")
+    } else {
+      install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
+      if (install !=0) {
+        python_version <- substring(python_version,1,1)
+        install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
+        if (install !=0) {
+          stop("An unexpected error occurred when try to use pip")
+        }
+      }
+    }
+  }
+  if (restart) .rs.restartR()
+}
 
 #' @rdname ee_check-tools
 #' @export
@@ -185,40 +214,30 @@ ee_install_ee <- function(conda=FALSE, restart=TRUE) {
 
 #' @rdname ee_check-tools
 #' @export
-ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
-  pydiscv <- py_discover_config()
-  python_version <- pydiscv$version
-  if (conda) {
-    msg_return <- suppressWarnings(system2("conda"))
-    if (msg_return!=0) {
-      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
-    } else {
-      system("conda install selenium --upgrade")
-    }
-  } else {
-    msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
-    if (msg_return!=0) {
-      stop("pip is not installed in your system, try using conda ee_install_ee(conda=TRUE)")
-    } else {
-      install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
-      if (install !=0) {
-        python_version <- substring(python_version,1,1)
-        install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
-        if (install !=0) {
-          stop("An unexpected error occurred when try to use pip")
-        }
-      }
-    }
-  }
-  if (restart) .rs.restartR()
+ee_get_earthengine_path <- function() {
+  return(path.expand("~/.config/earthengine"))
 }
 
 
 #' @rdname ee_check-tools
 #' @export
-ee_get_earthengine_path <- function() {
-  return(path.expand("~/.config/earthengine"))
+ee_get_credentials <- function() {
+  oauth_func_path <- system.file("Python/ee_get_credentials.py", package = "rgee")
+  rgee:::ee_source_python(oauth_func_path)
+
+  credential_path <-  ee_get_earthengine_path()
+  gd_credentials <- sprintf("%s/googledrive", credential_path)
+  gee_credentials <- sprintf("%s/credentials", credential_path)
+
+  ee_authenticate_py()
+  code <- readline("Enter authorisation code for Earth Engine API here: ")
+  test <- try(request_ee_token_py(code), silent = T)
+  saveRDS(
+    drive_auth(reset = T, cache = F, verbose = F),
+    gd_cre_path()
+  )
 }
+
 
 #' @rdname ee_check-tools
 #' @export
@@ -260,23 +279,4 @@ ee_check_rgee_package <- function(rgee_package) {
     stop(sprintf("%s has not been installed in this Python version, try as follow for fixed: \n",rgee_package),
          sprintf("• rgee::ee_install_python_package(%s, conda = FALSE, restart = TRUE)",rgee_package))
   }
-}
-
-#' @rdname ee_check-tools
-#' @export
-ee_get_credentials <- function() {
-  oauth_func_path <- system.file("Python/ee_get_credentials.py", package = "rgee")
-  rgee:::ee_source_python(oauth_func_path)
-
-  credential_path <-  ee_get_earthengine_path()
-  gd_credentials <- sprintf("%s/googledrive", credential_path)
-  gee_credentials <- sprintf("%s/credentials", credential_path)
-
-  ee_authenticate_py()
-  code <- readline("Enter authorisation code for Earth Engine API here: ")
-  test <- try(request_ee_token_py(code), silent = T)
-  saveRDS(
-    drive_auth(reset = T, cache = F, verbose = F),
-    gd_cre_path()
-  )
 }

@@ -9,12 +9,12 @@
 \alias{ee_check_credentials}
 \alias{ee_install_drivers}
 \alias{ee_install_rgee_python_packages}
-\alias{ee_install_ee}
 \alias{ee_install_python_package}
+\alias{ee_install_ee}
 \alias{ee_get_earthengine_path}
+\alias{ee_get_credentials}
 \alias{ee_remove_credentials}
 \alias{ee_remove_drivers}
-\alias{ee_get_credentials}
 \title{Interface to handle Installation requirements}
 \usage{
 ee_check()
@@ -31,24 +31,24 @@ ee_install_drivers(version = "latest")
 
 ee_install_rgee_python_packages(conda = FALSE, restart = TRUE)
 
-ee_install_ee(conda = FALSE, restart = TRUE)
-
 ee_install_python_package(pypackage, conda = FALSE, restart = TRUE)
 
+ee_install_ee(conda = FALSE, restart = TRUE)
+
 ee_get_earthengine_path()
+
+ee_get_credentials()
 
 ee_remove_credentials(quiet = TRUE)
 
 ee_remove_drivers(quiet = TRUE)
-
-ee_get_credentials()
 }
 \description{
 R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
 }
 \details{
-It is neccessary restart RStudio to observe change when installing a python packages. Try
-rgee::ee_install_python_modules(restart=TRUE)
+It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
+compatible with Python3.
 }
 \examples{
 \dontrun{

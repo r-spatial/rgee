@@ -88,13 +88,3 @@ ee_as_ee.sfg <- function(x,...) {
   geojson_list <- geojson_json(x)
   ee_sfg_as_ee_py(geojson_list)
 }
-
-#' @name ee_as_ee
-#' @export
-ee_as_ee.Spatial <- function(x,...) {
-  ee_source_python(oauth_func_path)
-  x <- as(x,"sf")
-  if (!st_crs(x)$epsg == 4326) x <- st_transform(x, 4326)
-  geojson_list <- geojson_json(x)
-  ee_sf_as_ee_py(geojson_list)
-}

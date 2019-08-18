@@ -6,7 +6,6 @@
 \alias{ee_as_ee.sf}
 \alias{ee_as_ee.sfc}
 \alias{ee_as_ee.sfg}
-\alias{ee_as_ee.Spatial}
 \title{Convert R spatial object to an Earth Engine object}
 \usage{
 ee_as_ee(x, ...)
@@ -18,8 +17,6 @@ ee_as_ee(x, ...)
 \method{ee_as_ee}{sfc}(x, ...)
 
 \method{ee_as_ee}{sfg}(x, ...)
-
-\method{ee_as_ee}{Spatial}(x, ...)
 }
 \arguments{
 \item{x}{objet to be converted into an Earth Engine object.}

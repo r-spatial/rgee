@@ -1,6 +1,6 @@
-#' Move the results of an Earth Engine task to export from Google Drive to Hard disk
+#' Move results from Google Drive to Hard disk
 #'
-#' Download an EE export task saved in Google Drive.
+#' Transfer results of an "Earth Engine task to export: COMPLETED" from Google Drive to Hard disk
 #'
 #' @param task List generated after finished correctly a EE task. See
 #' `ee_Export()` for details.
@@ -9,105 +9,94 @@
 #' @importFrom googledrive drive_find drive_download
 #' @importFrom stars read_stars
 #' @importFrom readr read_csv
-#' @export
 #' @examples
 #' \dontrun{
-#'  library(rgee)
-#'  library(stars)
-#'  library(sf)
-#'  library(mapview)
+#' library(rgee)
+#' library(stars)
+#' library(sf)
 #'
-#'  ee_initialize()
+#' ee_Initialize()
 #'
-#'  # Communal Reserve Amarakaeri - Peru
-#'  xmin <- -71.132591318
-#'  xmax <- -70.953664315
-#'  ymin <- -12.892451233
-#'  ymax <- -12.731116372
-#'  x_mean <- (xmin + xmax) / 2
-#'  y_mean <- (ymin + ymax) / 2
+#' # Communal Reserve Amarakaeri - Peru
+#' xmin <- -71.132591318
+#' xmax <- -70.953664315
+#' ymin <- -12.892451233
+#' ymax <- -12.731116372
+#' x_mean <- (xmin + xmax) / 2
+#' y_mean <- (ymin + ymax) / 2
 #'
-#'  ROI <- c(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)
-#'  ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
-#'    list() %>%
-#'    st_polygon() %>%
-#'    st_sfc() %>%
-#'    st_set_crs(4326)
-#'  ee_geom <- ee_as_eegeom(ROI_polygon)
+#' ROI <- c(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)
+#' ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326)
+#' ee_geom <- ee_as_ee(ROI_polygon)
 #'
-#'  # Get the mean annual NDVI for 2011
-#'  cloudMaskL457 <- function(image) {
-#'    qa <- image$select("pixel_qa")
-#'    cloud <- qa$bitwiseAnd(32L)$
-#'      And(qa$bitwiseAnd(128L))$
-#'      Or(qa$bitwiseAnd(8L))
-#'    mask2 <- image$mask()$reduce(ee_Reducer()$min())
-#'    image <- image$updateMask(cloud$Not())$updateMask(mask2)
-#'    image$normalizedDifference(list("B4", "B3"))
-#'  }
-#'
-#'  ic_l5 <- ee_ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-#'    filterBounds(ee_geom)$
-#'    filterDate("2011-01-01", "2011-12-31")$
-#'    map(cloudMaskL457)
-#'  mean_l5 <- ic_l5$mean()$rename("NDVI")
-#'  mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
-#'  mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
-#'
-#'  # Download -> ee$Image
-#'  task_img <- ee$batch$Export$image$toDrive(
-#'    image = mean_l5_Amarakaeri,
-#'    description = "Amarakaeri_task_1",
-#'    folder = "Amarakaeri",
-#'    fileFormat = "GEOTIFF",
-#'    fileNamePrefix = "NDVI_l5_2011_Amarakaeri"
-#'  )
-#'  task_img$start()
-#'  ee_download_monitoring(task_img, eeTaskList = TRUE) # optional
-#'  img <- ee_download_drive(
-#'    task = task_img,
-#'    filename = "amarakaeri.tif",
-#'    overwrite = TRUE
-#'  )
-#'  plot(img)
-#'
-#'  # Download -> ee$FeatureCollection
-#'  amk_f <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
-#'  amk_fc <- ee$FeatureCollection(amk_f)
-#'  task_vector <- ee$batch$Export$table$toDrive(
-#'    collection = amk_fc,
-#'    description = "Amarakaeri_task_2",
-#'    folder = "Amarakaeri",
-#'    fileFormat = "GEOJSON",
-#'    fileNamePrefix = "geometry_Amarakaeri"
-#'  )
-#'
-#'  task_vector$start()
-#'  ee_download_monitoring(task_vector, eeTaskList = TRUE) # optional
-#'  amk_geom <- ee_download_drive(
-#'    task = task_vector,
-#'    filename = "amarakaeri.geojson",
-#'    overwrite = TRUE
-#'  )
-#'
-#'  plot(amk_geom$geometry, add = TRUE, border = "red", lwd = 3)
+#' # Get the mean annual NDVI for 2011
+#' cloudMaskL457 <- function(image) {
+#'   qa <- image$select("pixel_qa")
+#'   cloud <- qa$bitwiseAnd(32L)$
+#'     And(qa$bitwiseAnd(128L))$
+#'     Or(qa$bitwiseAnd(8L))
+#'   mask2 <- image$mask()$reduce(ee$Reducer$min())
+#'   image <- image$updateMask(cloud$Not())$updateMask(mask2)
+#'   image$normalizedDifference(list("B4", "B3"))
 #' }
-ee_download_drive <- function(task,filename=NULL,overwrite=FALSE) {
+#'
+#' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
+#'   filterBounds(ee_geom)$
+#'   filterDate("2011-01-01", "2011-12-31")$
+#'   map(cloudMaskL457)
+#' mean_l5 <- ic_l5$mean()$rename("NDVI")
+#' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
+#'
+#' # Download -> ee$Image
+#' task_img <- ee$batch$Export$image$toDrive(
+#'   image = mean_l5_Amarakaeri,
+#'   description = "Amarakaeri_task_1",
+#'   folder = "Amarakaeri",
+#'   fileFormat = "GEOTIFF",
+#'   fileNamePrefix = "my_image"
+#' )
+#' img <- ee_download_drive(task_img)
+#' plot(img)
+#' # Download -> ee$FeatureCollection
+#' amk_f <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
+#' amk_fc <- ee$FeatureCollection(amk_f)
+#' task_vector <- ee$batch$Export$table$toDrive(
+#'   collection = amk_fc,
+#'   description = "Amarakaeri_task_2",
+#'   folder = "Amarakaeri",
+#'   fileFormat = "GEOJSON",
+#'   fileNamePrefix = "geom_Amarakaeri"
+#' )
+#'
+#' task_vector$start()
+#' ee_monitoring() # optional
+#' amk_geom <- ee_download_drive(task = task_vector)
+#' plot(amk_geom$geometry,border = "red", lwd = 10)
+#' }
+#' @export
+ee_download_drive <- function(task, filename, overwrite=FALSE) {
+  drive_auth(sprintf("%s/googledrive",ee_get_earthengine_path()))
+  gd_folder <- basename(task$status()$output_url)
   gd_filename <- task$config$driveFileNamePrefix
-  query_gd <- sprintf("name contains '%s'",gd_filename)
-  files_gd <- try(drive_find(q = query_gd))
 
+  files_gd <- try(drive_find(q = sprintf("'%s' in parents", gd_folder),
+                             q = sprintf("name contains '%s'",gd_filename)))
   count <- 1
   while (any(class(files_gd) %in% "try-error") & count < 5) {
-    files_gd <- try(drive_find(q = query_gd))
+    files_gd <- try(drive_find(q = sprintf("'%s' in parents", gd_folder),
+                               q = sprintf("name contains '%s'",gd_filename)))
     count <- count + 1
   }
-
-  orgl_filename <- files_gd$drive_resource[[1]]$originalFilename
-  row_id <- mapply(grepl,task$id,orgl_filename) %>% which()
+  orgl_filename <- sapply(files_gd$drive_resource,function(x) x$originalFilename)
+  row_id <- grepl(task$id,orgl_filename) %>% which()
   to_download <- files_gd[row_id,]
 
-  if(is.null(filename)) filename <- tempfile()
+  if(missing(filename)) filename <- tempfile()
   download_mtd <- drive_download(to_download, filename, overwrite = overwrite)
 
   fileformat <- toupper(task$config$fileFormat)
@@ -130,10 +119,10 @@ ee_download_drive <- function(task,filename=NULL,overwrite=FALSE) {
 #' @export
 ee_download_gcs <- function(){}
 
+
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after finished correctly a EE task. See
-#' `ee_Export()` for details.
+#' @param task List generated after finished correctly a EE task, if it is missing the last one will be taken.
 #' @param eeTaskList Logical, if \code{TRUE}, all Earth Engine tasks will listing initially.
 #'
 #' @export
