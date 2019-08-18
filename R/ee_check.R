@@ -4,6 +4,7 @@
 #'
 #'
 #' @importFrom reticulate py_available py_module_available
+#' @importFrom googledrive drive_auth
 #' @name ee_check-tools
 #' @details It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
 #' compatible with Python3.
@@ -162,7 +163,7 @@ ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
     if (msg_return!=0) {
       stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
     } else {
-      system("conda install selenium --upgrade")
+      system("conda install pypackage --upgrade")
     }
   } else {
     msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
@@ -277,6 +278,6 @@ ee_check_rgee_package <- function(rgee_package) {
   if (isFALSE(version_rgeepackage)) {
     cat(sprintf("    - %s → status[☓]\n",rgee_package))
     stop(sprintf("%s has not been installed in this Python version, try as follow for fixed: \n",rgee_package),
-         sprintf("• rgee::ee_install_python_package(%s, conda = FALSE, restart = TRUE)",rgee_package))
+         sprintf("• rgee::ee_install_python_package('%s', conda = FALSE, restart = TRUE)",rgee_package))
   }
 }

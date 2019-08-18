@@ -10,4 +10,6 @@ ee_quota <- function() {
   ee_source_python(oauth_func_path)
   id <- ee$data$getAssetRoots()[[1]]$id
   cat("",py$quota(id))
+  invisible(TRUE)
 }
+
