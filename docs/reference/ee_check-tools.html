@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print and return metadata about Earth Engine Objects — ee_print • rgee</title>
+<title>Interface to handle Installation requirements — ee_check-tools • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Print and return metadata about Earth Engine Objects — ee_print" />
+<meta property="og:title" content="Interface to handle Installation requirements — ee_check-tools" />
 
-<meta property="og:description" content="Print and return metadata about Earth Engine Objects" />
+<meta property="og:description" content="R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,74 +104,92 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print and return metadata about Earth Engine Objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_print.R'><code>R/ee_print.R</code></a></small>
-    <div class="hidden name"><code>ee_print.Rd</code></div>
+    <h1>Interface to handle Installation requirements</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
+    <div class="hidden name"><code>ee_check-tools.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Print and return metadata about Earth Engine Objects</p>
+    <p>R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+    <pre class="usage"><span class='fu'>ee_check</span>()
 
-<span class='co'># S3 method for ee.geometry.Geometry</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_check_python</span>()
 
-<span class='co'># S3 method for ee.feature.Feature</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_check_rgee_python_packages</span>()
 
-<span class='co'># S3 method for ee.featurecollection.FeatureCollection</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>,
-  <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_check_drivers</span>(<span class='kw'>display_in_browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># S3 method for ee.image.Image</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_check_credentials</span>()
 
-<span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+<span class='fu'>ee_install_drivers</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>)
+
+<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>restart</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>restart</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>ee_install_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>restart</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>ee_get_earthengine_path</span>()
+
+<span class='fu'>ee_get_credentials</span>()
+
+<span class='fu'>ee_remove_credentials</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>eeobject</th>
-      <td><p>Earth Engine Object. Available for: Geometry, Feature,
-FeatureCollection, Image or ImageCollection.</p></td>
+      <th>display_in_browser</th>
+      <td><p>TODO</p></td>
     </tr>
     <tr>
-      <th>ncol</th>
-      <td><p>Set how many columns should be created for display Earth Engine properties
-names.</p></td>
+      <th>version</th>
+      <td><p>TODO</p></td>
     </tr>
     <tr>
-      <th>max_display</th>
-      <td><p>Set the max number of properties to display.</p></td>
+      <th>conda</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>restart</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>pypackage</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>TODO</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For avoiding computing time extremely large and "EEException" related with memory consuming
-(<a href='https://developers.google.com/earth-engine/ic_info'>See this Earth Engine Guide</a>)
-just the first element of: ee_Image, ee_ImageCollection, ee_Feature
-and ee_FeatureCollection will be used to generated Earth Engine object properties.</p>
+    <p>It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
+compatible with Python3.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_initialize</span>()
-<span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='fu'>ee_Filter</span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
-  <span class='fu'>filterDate</span>(<span class='st'>"2014-03-01"</span>, <span class='st'>"2014-08-01"</span>)
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+
+<span class='co'>#The recommended way to use of rgee</span>
+<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
+<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.5"</span>)
+<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
+
+<span class='fu'>ee_check</span>()
+<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
+<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
+<span class='fu'>ee_get_credentials</span>() <span class='co'># Get credentials</span>
+<span class='fu'>ee_check</span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

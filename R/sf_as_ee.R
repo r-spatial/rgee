@@ -1,17 +1,20 @@
-#' Convert R spatial object to an Earth Engine object
-#' @param x objet to be converted into an Earth Engine object.
+#' Convert R spatial object to an Google Earth Engine
+#'
+#' @name sf_as_ee
+#' @param x object to be converted into.
 #' @param ... if x is a character additional \code{\link[sf]{st_read}} arguments could be passed.
 #' @importFrom sf st_as_sf
 #' @importFrom geojsonio geojson_json
 #' @importFrom geojsonio geojson_list
 #' @details
-#' \code{ee_as_ee} try to transform R objects into a GeoJSON format. By the time a user sends an HTTP
+#' \code{sf_as_ee} try to transform R objects (sf) into a GeoJSON format. By the time a user sends an HTTP
 #' request to the Earth Engine Web REST APIs (by, e.g. using *$getInfo()), the GeoJSON will be
 #' encrusted to the message. Therefore, it is expected that large spatial objects (>500Kb) cause
 #' bottlenecks and plodding connections. See
 #' \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
 #' documentation for details. For leading with very large spatial objects, is a good practice firstly
 #' importing it to the GEE assets. See \code{\link[rgee]{ee_upload_toasset}} for details.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -44,9 +47,9 @@
 #' ee_as_ee(x)
 #' }
 #' @export
-ee_as_ee <- function(x, ...) UseMethod("ee_as_ee")
+sf_as_ee <- function(x, ...) UseMethod("ee_as_ee")
 
-#' @name ee_as_ee
+#' @rdname sf_as_ee
 #' @importFrom sf st_read
 #' @export
 ee_as_ee.character <- function(x, ...) {
@@ -60,7 +63,7 @@ ee_as_ee.character <- function(x, ...) {
   ee_sf_as_ee_py(geojson_list)
 }
 
-#' @name ee_as_ee
+#' @rdname sf_as_ee
 #' @export
 ee_as_ee.sf <- function(x,...) {
   oauth_func_path <- system.file("Python/ee_as_ee.py", package = "rgee")
@@ -70,7 +73,7 @@ ee_as_ee.sf <- function(x,...) {
   ee_sf_as_ee_py(geojson_list)
 }
 
-#' @name ee_as_ee
+#' @rdname sf_as_ee
 #' @export
 ee_as_ee.sfc <- function(x,...) {
   oauth_func_path <- system.file("Python/ee_as_ee.py", package = "rgee")
@@ -80,7 +83,7 @@ ee_as_ee.sfc <- function(x,...) {
   ee_sfc_as_ee_py(geojson_list)
 }
 
-#' @name ee_as_ee
+#' @rdname sf_as_ee
 #' @export
 ee_as_ee.sfg <- function(x,...) {
   oauth_func_path <- system.file("Python/ee_as_ee.py", package = "rgee")

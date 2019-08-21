@@ -6,6 +6,9 @@
 \usage{
 ee_check_rgee_package(rgee_package)
 }
+\arguments{
+\item{rgee_package}{package name to install}
+}
 \description{
 Check python packages
 }

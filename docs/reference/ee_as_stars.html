@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Monitoring Earth Engine task progress — ee_monitoring • rgee</title>
+<title>Create a stars object based on a Earth Engine image — ee_as_stars • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Monitoring Earth Engine task progress — ee_monitoring" />
+<meta property="og:title" content="Create a stars object based on a Earth Engine image — ee_as_stars" />
 
-<meta property="og:description" content="Monitoring Earth Engine task progress" />
+<meta property="og:description" content="Create a stars object based on a Earth Engine image" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -104,48 +104,60 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Monitoring Earth Engine task progress</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
-    <div class="hidden name"><code>ee_monitoring.Rd</code></div>
+    <h1>Create a stars object based on a Earth Engine image</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_as_stars.R'><code>R/ee_as_stars.R</code></a></small>
+    <div class="hidden name"><code>ee_as_stars.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Monitoring Earth Engine task progress</p>
+    <p>Create a stars object based on a Earth Engine image</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_monitoring</span>(<span class='no'>task</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_as_stars</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>scale</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>task</th>
-      <td><p>List generated after finished correctly a EE task, if it is missing the last one will be taken.</p></td>
+      <th>x</th>
+      <td><p>TODO</p></td>
     </tr>
     <tr>
-      <th>eeTaskList</th>
-      <td><p>Logical, if <code>TRUE</code>, all Earth Engine tasks will listing initially.</p></td>
+      <th>region</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>palette</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>crs</th>
+      <td><p>TODO</p></td>
     </tr>
     </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_initialize</span>()
-
-<span class='fu'>ee_download_monitoring</span>(<span class='kw'>eelist</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

@@ -94,6 +94,7 @@ ee_check_rgee_python_packages <- function() {
 }
 
 #' @rdname ee_check-tools
+#' @param display_in_browser TODO
 #' @export
 ee_check_drivers <- function(display_in_browser = TRUE) {
   oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
@@ -126,6 +127,7 @@ ee_check_credentials <- function() {
 
 
 #' @rdname ee_check-tools
+#' @param version TODO
 #' @export
 ee_install_drivers <- function(version='latest') {
   oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
@@ -144,6 +146,8 @@ ee_install_drivers <- function(version='latest') {
 }
 
 #' @rdname ee_check-tools
+#' @param conda TODO
+#' @param restart TODO
 #' @export
 ee_install_rgee_python_packages <- function(conda = FALSE, restart=TRUE) {
   ee_install_ee(restart = FALSE, conda = conda)
@@ -154,6 +158,7 @@ ee_install_rgee_python_packages <- function(conda = FALSE, restart=TRUE) {
 }
 
 #' @rdname ee_check-tools
+#' @param pypackage TODO
 #' @export
 ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
   pydiscv <- py_discover_config()
@@ -241,6 +246,7 @@ ee_get_credentials <- function() {
 
 
 #' @rdname ee_check-tools
+#' @param quiet TODO
 #' @export
 ee_remove_credentials <- function(quiet = TRUE) {
   path <- ee_get_earthengine_path()
@@ -263,6 +269,8 @@ ee_remove_drivers <- function(quiet = TRUE) {
 }
 
 #' Check python packages
+#' @param rgee_package package name to install
+#' @export
 ee_check_rgee_package <- function(rgee_package) {
   oauth_func_path <- system.file("Python/ee_check_utils_exist.py", package = "rgee")
   rgee:::ee_source_python(oauth_func_path)

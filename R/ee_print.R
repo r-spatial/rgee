@@ -330,7 +330,7 @@ ee_create_table <- function(x, ncol, max_display) {
 
 
 #' @export
-print.ee.computedobject.ComputedObject <- function(x,type = getOption("rgee.print.option")) {
+print.ee.computedobject.ComputedObject <- function(x,type = getOption("rgee.print.option"),...) {
   if (type == 'json') {
     str(x)
   } else if (type == 'simply') {

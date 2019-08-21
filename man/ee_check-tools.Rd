@@ -43,6 +43,19 @@ ee_remove_credentials(quiet = TRUE)
 
 ee_remove_drivers(quiet = TRUE)
 }
+\arguments{
+\item{display_in_browser}{TODO}
+
+\item{version}{TODO}
+
+\item{conda}{TODO}
+
+\item{restart}{TODO}
+
+\item{pypackage}{TODO}
+
+\item{quiet}{TODO}
+}
 \description{
 R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
 }
