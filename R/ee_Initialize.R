@@ -23,7 +23,7 @@ ee_Initialize <- function() {
 }
 
 
-#' Read and evaluate a Python script
+#' Read and evaluate a python script
 #' @author JesJehle <https://github.com/JesJehle/earthEngineGrabR>
 #' @noRd
 ee_source_python <- function(oauth_func_path) {

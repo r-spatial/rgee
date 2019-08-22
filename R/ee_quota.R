@@ -6,7 +6,7 @@
 #' }
 #' @export
 ee_quota <- function() {
-  oauth_func_path <- system.file("Python/ee_quota.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_quota.py", package = "rgee")
   ee_source_python(oauth_func_path)
   id <- ee$data$getAssetRoots()[[1]]$id
   cat("",py$quota(id))

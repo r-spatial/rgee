@@ -9,12 +9,12 @@ Status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci
 status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### Buildings for the Python Earth Engine API
+### Buildings for the python Earth Engine API
 
 **rgee** provides a quick-witted way to interact with Google Earth
 Engine since R. The idea is not interact directly with the Earth Engine
 Web REST API but, through
-[`reticulate`](https://rstudio.github.io/reticulate/) call the Python
+[`reticulate`](https://rstudio.github.io/reticulate/) call the python
 library `ee` from R.
 
 The main user relevant functions are:

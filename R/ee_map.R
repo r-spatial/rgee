@@ -109,7 +109,7 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
                                         center,
                                         zoom_start = 8,
                                         obj_name = "map", ...) {
-  oauth_func_path <- system.file("Python/ee_map.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
@@ -138,7 +138,7 @@ ee_map.ee.feature.Feature <- function(eeobject,
                                       center,
                                       zoom_start = 8,
                                       obj_name = "map", ...) {
-  oauth_func_path <- system.file("Python/ee_map.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
@@ -167,7 +167,7 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                           zoom_start = 8,
                                                           obj_name = "map",
                                                           ...) {
-  oauth_func_path <- system.file("Python/ee_map.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
@@ -196,7 +196,7 @@ ee_map.ee.image.Image <- function(eeobject,
                                   zoom_start = 2,
                                   obj_name = "map",
                                   ...) {
-  oauth_func_path <- system.file("Python/ee_map.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(eeobject)
@@ -236,7 +236,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
                                                       obj_name = "map",
                                                       max_nimage = 10,
                                                       ...) {
-  oauth_func_path <- system.file("Python/ee_map.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(ee$Image(eeobject$first()))
@@ -263,7 +263,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
   m <- mapview()
   tokens <- rep(NA, ee_size)
   for (x in 1:ee_size) {
-    eeobj <- ee_Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs Python(1)
+    eeobj <- ee_Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs python(1)
     tile <- ee_map_py(eeobj, vizparams)
     tokens[x] <- tile
     m@map <- m@map %>%

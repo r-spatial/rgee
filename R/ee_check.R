@@ -7,7 +7,7 @@
 #' @importFrom googledrive drive_auth
 #' @name ee_check-tools
 #' @details It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
-#' compatible with Python3.
+#' compatible with python3.
 #' @examples
 #' \dontrun{
 #'library(rgee)
@@ -36,13 +36,13 @@ ee_check <- function() {
 ee_check_python <- function() {
   python_test <- py_available(initialize = TRUE)
   if (python_test) {
-    cat("• The Python version is:", py_discover_config()$python, "\n")
+    cat("• The python version is:", py_discover_config()$python, "\n")
   } else {
-    stop("Unable to find a Python version, you will need to fix it before installing rgee. ",
+    stop("Unable to find a python version, you will need to fix it before installing rgee. ",
          "More details through reticulate::py_available().")
   }
   py_version <- as.numeric(substring(py_discover_config()$version,1,1))
-  if (py_version!=3) stop("rgee just run under Python3")
+  if (py_version!=3) stop("rgee just run under python3")
   return(TRUE)
 }
 
@@ -50,11 +50,11 @@ ee_check_python <- function() {
 #' @rdname ee_check-tools
 #' @export
 ee_check_rgee_python_packages <- function() {
-  oauth_func_path <- system.file("Python/ee_check_utils_exist.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_check_utils_exist.py", package = "rgee")
   rgee:::ee_source_python(oauth_func_path)
 
   cat("\n")
-  cat("• Python Standard Libraries used in rgee: \n")
+  cat("• python Standard Libraries used in rgee: \n")
   # webbrowser
   ee_check_rgee_package("webbrowser")
   ee_check_rgee_package("request")
@@ -69,7 +69,7 @@ ee_check_rgee_python_packages <- function() {
   ee_check_rgee_package("json")
 
   cat("\n")
-  cat("• Python Third-Party Libraries used in rgee: \n")
+  cat("• python Third-Party Libraries used in rgee: \n")
 
   #ee
   version_ee <- ee_check_py_ee()
@@ -78,7 +78,7 @@ ee_check_rgee_python_packages <- function() {
     if (version_ee == "0.1.175") {
       cat(sprintf("    - ee → status[✓]: v%s\n",version_ee))
     } else {
-      ee_message <- sprintf("Earth Engine Python API (ee) %s is installed correctly in your system,%s",
+      ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in your system,%s",
                             version_ee,
                             "but rgee depends on 0.1.175. Please run ee_install_ee(restart=TRUE) for upgrading.")
       stop(ee_message)
@@ -97,7 +97,7 @@ ee_check_rgee_python_packages <- function() {
 #' @param display_in_browser TODO
 #' @export
 ee_check_drivers <- function(display_in_browser = TRUE) {
-  oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_source_python(oauth_func_path)
   driverdir <- ee_get_earthengine_path()
   condition <- ee_check_drivers_py(driverdir, display_in_browser)
@@ -130,7 +130,7 @@ ee_check_credentials <- function() {
 #' @param version TODO
 #' @export
 ee_install_drivers <- function(version='latest') {
-  oauth_func_path <- system.file("Python/ee_check_utils.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_source_python(oauth_func_path)
   if (version == 'latest') version = NULL
   directory = dirname(gd_cre_path())
@@ -228,7 +228,7 @@ ee_get_earthengine_path <- function() {
 #' @rdname ee_check-tools
 #' @export
 ee_get_credentials <- function() {
-  oauth_func_path <- system.file("Python/ee_get_credentials.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_get_credentials.py", package = "rgee")
   rgee:::ee_source_python(oauth_func_path)
 
   credential_path <-  ee_get_earthengine_path()
@@ -272,7 +272,7 @@ ee_remove_drivers <- function(quiet = TRUE) {
 #' @param rgee_package package name to install
 #' @export
 ee_check_rgee_package <- function(rgee_package) {
-  oauth_func_path <- system.file("Python/ee_check_utils_exist.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_check_utils_exist.py", package = "rgee")
   rgee:::ee_source_python(oauth_func_path)
   version_rgeepackage <- eval(parse(text = sprintf("ee_check_py_%s()",rgee_package)))
   rgeepackage_is_text <- is.character(version_rgeepackage)
@@ -285,7 +285,7 @@ ee_check_rgee_package <- function(rgee_package) {
   }
   if (isFALSE(version_rgeepackage)) {
     cat(sprintf("    - %s → status[☓]\n",rgee_package))
-    stop(sprintf("%s has not been installed in this Python version, try as follow for fixed: \n",rgee_package),
+    stop(sprintf("%s has not been installed in this python version, try as follow for fixed: \n",rgee_package),
          sprintf("• rgee::ee_install_python_package('%s', conda = FALSE, restart = TRUE)",rgee_package))
   }
 }

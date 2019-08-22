@@ -61,7 +61,7 @@ R functions for checking, installing and removing: drivers (geckodrivers), crede
 }
 \details{
 It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
-compatible with Python3.
+compatible with python3.
 }
 \examples{
 \dontrun{

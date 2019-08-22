@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## 1. Python libraries
+## 1. python libraries
 
 ```{python libs}
 from matplotlib import pyplot as plt

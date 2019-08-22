@@ -46,7 +46,7 @@ dataframe_row_to_json <- function(drow) {
 #' Check is selenium-firefox is correctly installed TODO
 #' @noRd
 ee_get_google_auth_session <- function(username, password,dirname, quiet=FALSE) {
-  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
   if (!quiet) cat("Acquiring upload permissions ... please wait\n")
   session <- ee_get_google_auth_session_py(username, password,dirname)
@@ -99,7 +99,7 @@ ee_getsession <- function(gmail_account, quiet = FALSE) {
 #' @noRd
 #'
 ee_file_to_gcs <- function(session, filename,ftype,upload_url){
-  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
   ee_file_to_gcs_py(session, filename,ftype,upload_url)
 }
@@ -107,7 +107,7 @@ ee_file_to_gcs <- function(session, filename,ftype,upload_url){
 #' Check upload URL
 #' @noRd
 ee_get_upload_url <- function(session) {
-  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
   upload_url <- ee_get_upload_url_py(session)
   if (is.null(upload_url)) {
@@ -124,7 +124,7 @@ ee_get_upload_url <- function(session) {
 #' Compile the manifest (*.JSON) using import json
 #' @noRd
 ee_create_json <- function(manifest, path) {
-  oauth_func_path <- system.file("Python/ee_selenium_functions.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_source_python(oauth_func_path)
   ee_create_json_py(towrite = path,manifest = manifest)
 }

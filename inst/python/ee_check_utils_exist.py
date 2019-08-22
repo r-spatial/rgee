@@ -1,4 +1,4 @@
-#Python Standard Libraries
+#python Standard Libraries
 def ee_check_py_webbrowser():
   try:
     import webbrowser
