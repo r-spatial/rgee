@@ -8,7 +8,7 @@ import webbrowser
 >>> ee_authenticate_py()
 >>> request_ee_token_py(auth_code)
 
-These functions will be used in R/ee_check.R
+These functions are using in R/ee_check.R
 """
 
 

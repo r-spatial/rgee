@@ -8,12 +8,13 @@
 >>> geckodown_win(directory,vr)
 >>> geckodown_mac(directory,vr)
 
-The functions for download geckodriver, which are present in this module,
-are a slight modification of geeup, a Python CLI for Earth Engine Uploads with
-Selenium Support <https://github.com/samapriya/geeup>, the acknowledgement for
-these functions should be always given to Samapriya Roy.
+The functions in this module, which are using for download geckodriver,
+were obtained from geeup: a Python CLI for Earth Engine Uploads with Selenium
+Support <https://github.com/samapriya/geeup>, they have only experience slight
+modifications, therefore, the acknowledgement for these functions should be
+always given to Samapriya Roy.
 
-These functions will be used in R/ee_check.R
+These functions are using in R/ee_check.R
 """
 from __future__ import print_function
 

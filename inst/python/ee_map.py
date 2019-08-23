@@ -7,8 +7,9 @@ import sys
 
 >>> ee_map_py(eeobject, vizparams)
 
-These functions will be used in R/ee_map.R
+These functions are using in R/ee_map.R
 """
+
 EE_TILES = 'https://earthengine.googleapis.com/map/{mapid}/{{z}}/{{x}}/{{y}}?token={token}'
 
 def ee_map_py(eeobject, vizparams):
