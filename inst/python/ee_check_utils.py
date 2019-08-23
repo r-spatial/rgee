@@ -42,9 +42,8 @@ def ee_check_drivers_py(driverdir,display_in_browser=True):
     return(True)
 
 
-#' Download the last version of geckover
+#' Download the last version of geckodriver
 #' author: Samapriya Roy <https://github.com/samapriya/>
-#' modified by: Cesar Aybar <https://github.com/csaybar/>
 def geckodown_linux(directory,vr):
     comb="linux"+str(platform.machine()[-2:])+".tar.gz"
     source = requests.get("https://github.com/mozilla/geckodriver/releases/latest").text
@@ -73,6 +72,8 @@ def geckodown_linux(directory,vr):
     except Exception as e:
         print('Issues updating with error '+str(e))
 
+#' Download the last version of geckodriver
+#' author: Samapriya Roy <https://github.com/samapriya/>
 def geckodown_win(directory,vr):
     comb="win"+str(platform.machine()[-2:])+".zip"
     source=requests.get("https://github.com/mozilla/geckodriver/releases/latest").text

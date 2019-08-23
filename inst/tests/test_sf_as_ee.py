@@ -1,7 +1,6 @@
-import ee
 import unittest
+import ee
 from inst.python.sf_as_ee import *
-
 ee.Initialize()
 
 data_polygon = {

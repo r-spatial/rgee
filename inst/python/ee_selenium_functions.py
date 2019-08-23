@@ -38,13 +38,12 @@ def ee_get_google_auth_session_py(username, password,dirname):
     password = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
     password.send_keys(passw)
     task_pass = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="passwordNext"]')))
-    time.sleep(5)
+    time.sleep(1)
     task_pass.click()
     try:
-      WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id=":1c"]')))
-    except TimeoutException:
-      print("Enter to https://code.earthengine.google.com took too much time,"+
-            " please check your internet connection and restart.")
+      WebDriverWait(driver,3).until(EC.presence_of_element_located((By.XPATH,'//*[@id=":1c"]')))
+    except:
+      pass
     cookies = driver.get_cookies()
     session = requests.Session()
     for cookie in cookies:
