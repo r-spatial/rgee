@@ -36,7 +36,7 @@ ee_check <- function() {
 ee_check_python <- function() {
   python_test <- py_available(initialize = TRUE)
   if (python_test) {
-    cat("• The python version is:", py_discover_config()$python, "\n")
+    cat(">>> The python version is:", py_discover_config()$python, "\n")
   } else {
     stop("Unable to find a python version, you will need to fix it before installing rgee. ",
          "More details through reticulate::py_available().")
@@ -51,10 +51,10 @@ ee_check_python <- function() {
 #' @export
 ee_check_rgee_python_packages <- function() {
   oauth_func_path <- system.file("python/ee_check_utils_exist.py", package = "rgee")
-  rgee:::ee_source_python(oauth_func_path)
+  ee_source_python(oauth_func_path)
 
   cat("\n")
-  cat("• python Standard Libraries used in rgee: \n")
+  cat(">>> python Standard Libraries used in rgee: \n")
   # webbrowser
   ee_check_rgee_package("webbrowser")
   ee_check_rgee_package("request")
@@ -69,14 +69,14 @@ ee_check_rgee_python_packages <- function() {
   ee_check_rgee_package("json")
 
   cat("\n")
-  cat("• python Third-Party Libraries used in rgee: \n")
+  cat(">>> python Third-Party Libraries used in rgee: \n")
 
   #ee
   version_ee <- ee_check_py_ee()
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == "0.1.175") {
-      cat(sprintf("    - ee → status[✓]: v%s\n",version_ee))
+      cat(sprintf("    - ee -> status[ok]: v%s\n",version_ee))
     } else {
       ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in your system,%s",
                             version_ee,
@@ -84,7 +84,7 @@ ee_check_rgee_python_packages <- function() {
       stop(ee_message)
     }
   } else {
-    cat("    - ee → status[☓]\n")
+    cat("    - ee -> status[X]\n")
   }
 
   ee_check_rgee_package("selenium")
@@ -103,9 +103,9 @@ ee_check_drivers <- function(display_in_browser = TRUE) {
   condition <- ee_check_drivers_py(driverdir, display_in_browser)
   if (condition) {
     cat("\n")
-    cat("• Geckodriver → status[✓]:",driverdir,"\n")
+    cat(">>> Geckodriver -> status[ok]:",driverdir,"\n")
   } else {
-    warning("• Geckodriver → status[☓]. Try rgee::ee_install_drivers() to fixed.","\n")
+    warning(">>> Geckodriver -> status[X]. Try rgee::ee_install_drivers() to fixed.","\n")
   }
 }
 
@@ -119,9 +119,9 @@ ee_check_credentials <- function() {
   ex_drive_cred <- file.exists(drive_credentials)
   if (sum(ex_drive_cred,ex_ee_cred) == 2) {
     cat("\n")
-    cat("• Credentials → status[✓]:",driverdir,"\n")
+    cat(">>> Credentials -> status[ok]:",driverdir,"\n")
   } else {
-    warning("• Credentials → status[☓]. Try rgee::ee_get_credentials() to fixed.","\n")
+    warning(">>> Credentials -> status[X]. Try rgee::ee_get_credentials() to fixed.","\n")
   }
 }
 
@@ -229,7 +229,7 @@ ee_get_earthengine_path <- function() {
 #' @export
 ee_get_credentials <- function() {
   oauth_func_path <- system.file("python/ee_get_credentials.py", package = "rgee")
-  rgee:::ee_source_python(oauth_func_path)
+  ee_source_python(oauth_func_path)
 
   credential_path <-  ee_get_earthengine_path()
   gd_credentials <- sprintf("%s/googledrive", credential_path)
@@ -273,19 +273,19 @@ ee_remove_drivers <- function(quiet = TRUE) {
 #' @export
 ee_check_rgee_package <- function(rgee_package) {
   oauth_func_path <- system.file("python/ee_check_utils_exist.py", package = "rgee")
-  rgee:::ee_source_python(oauth_func_path)
+  ee_source_python(oauth_func_path)
   version_rgeepackage <- eval(parse(text = sprintf("ee_check_py_%s()",rgee_package)))
   rgeepackage_is_text <- is.character(version_rgeepackage)
   rgeepackage_is_TRUE <- isTRUE(version_rgeepackage)
   if (rgeepackage_is_text) {
-    cat(sprintf("    - %s → status[✓]: v%s\n",rgee_package, version_rgeepackage))
+    cat(sprintf("    - %s -> status[ok]: v%s\n",rgee_package, version_rgeepackage))
   }
   if (rgeepackage_is_TRUE) {
-    cat(sprintf("    - %s → status[✓]\n",rgee_package))
+    cat(sprintf("    - %s -> status[ok]\n",rgee_package))
   }
   if (isFALSE(version_rgeepackage)) {
-    cat(sprintf("    - %s → status[☓]\n",rgee_package))
+    cat(sprintf("    - %s -> status[X]\n",rgee_package))
     stop(sprintf("%s has not been installed in this python version, try as follow for fixed: \n",rgee_package),
-         sprintf("• rgee::ee_install_python_package('%s', conda = FALSE, restart = TRUE)",rgee_package))
+         sprintf(">>> rgee::ee_install_python_package('%s', conda = FALSE, restart = TRUE)",rgee_package))
   }
 }
