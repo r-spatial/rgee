@@ -1,1 +1,0 @@
-python -c "exec('try: from urllib2 import urlopen\nexcept: from urllib.request import urlopen');f=urlopen('https://bootstrap.pypa.io/get-pip.py').read();exec(f)"
