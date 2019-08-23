@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-"""Check Python modules
+"""Check if Python modules exist
 
 >>> ee_check_py_webbrowser()
 >>> ee_check_py_platform()
@@ -22,7 +22,7 @@
 >>> ee_check_py_pysmartDL()
 >>> ee_check_py_requests_toolbelt()
 
-The functions will be used since for R/ee_check.R
+These functions will be used in R/ee_check.R
 """
 def ee_check_py_webbrowser():
     try:
