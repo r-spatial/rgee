@@ -2,20 +2,11 @@ Package: rgee
 Title: R bindings for calling the Earth Engine API
 Version: 0.0.1
 Authors@R: 
-    c(person(given = "Fernando",
-             family = "Prudencio",
-             role = c("ctb"),
-             email = "fjprudenciop@gmail.com"),
-      person(given = "Julio",
+    c(person(given = "Julio",
              family = "Contreras",
              role = c("ctb"),
              email = "julius013199@gmail.com",
              comment = c(ORCID = "0000-0001-5579-8919")),
-      person(given = "Antony",
-             family = "Barja",
-             role = c("ctb"),
-             email = "antony.barja8@gmail.com",
-             comment = c(ORCID = "0000-0001-5921-2858")),
       person(given = "Roy",
              family = "Yali",
              role = c("aut"),
@@ -49,6 +40,7 @@ Imports:
     stars,
     getPass,
     stringr,
+    png,
     methods,
     rgdal,
     sf

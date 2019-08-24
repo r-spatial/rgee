@@ -38,7 +38,7 @@ dataframe_row_to_json <- function(drow) {
     return(NULL)
   } else {
     flat_metadata <- c(as.vector(drow %>% as.matrix),colnames(drow))
-    isok <- all(mapply(allowed_property_key,flat_metadata)) # all elements are ok?
+    all(mapply(allowed_property_key,flat_metadata)) # all elements are ok?
     return(as.list(drow))
   }
 }
@@ -47,9 +47,9 @@ dataframe_row_to_json <- function(drow) {
 #' @noRd
 ee_get_google_auth_session <- function(username, password,dirname, quiet=FALSE) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   if (!quiet) cat("Acquiring upload permissions ... please wait\n")
-  session <- ee_get_google_auth_session_py(username, password,dirname)
+  session <- ee_selenium_functions$ee_get_google_auth_session_py(username, password,dirname)
   if (!quiet) cat("Permissions adquired\n")
   return(session)
 }
@@ -100,16 +100,16 @@ ee_getsession <- function(gmail_account, quiet = FALSE) {
 #'
 ee_file_to_gcs <- function(session, filename,ftype,upload_url){
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  ee_file_to_gcs_py(session, filename,ftype,upload_url)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
+  ee_selenium_functions$ee_file_to_gcs_py(session, filename,ftype,upload_url)
 }
 
 #' Check upload URL
 #' @noRd
 ee_get_upload_url <- function(session) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  upload_url <- ee_get_upload_url_py(session)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
+  upload_url <- ee_selenium_functions$ee_get_upload_url_py(session)
   if (is.null(upload_url)) {
     stop('upload_url error: Maybe due slow internet connection, try again!')
   } else {
@@ -125,8 +125,8 @@ ee_get_upload_url <- function(session) {
 #' @noRd
 ee_create_json <- function(manifest, path) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-  ee_create_json_py(towrite = path,manifest = manifest)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
+  ee_selenium_functions$ee_create_json_py(towrite = path,manifest = manifest)
 }
 
 #' Create the *.JSON (manifest) using import json (0.1.189)

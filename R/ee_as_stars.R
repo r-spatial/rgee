@@ -7,15 +7,17 @@
 #' @param min TODO
 #' @param max TODO
 #' @param crs TODO
-#' @importFrom  stars st_set_dimensions st_as_stars
+#' @importFrom  stars st_set_dimensions st_as_stars write_stars
+#' @importFrom  utils download.file zip str
+#' @importFrom png readPNG
 #' @export
 ee_as_stars <- function(x, region, scale, palette = NULL, min = 0, max = 1, crs = 'EPSG:4326') {
   if (class(x)[1] != "ee.image.Image") stop("image is not a ee.image.Image class")
 
   if (!missing(region)) {
-    mapRegion <- ee$Geometry$Polygon(region)$getInfo()['coordinates'][[1]][[1]]
+    region <- ee$Geometry$Polygon(region)$getInfo()['coordinates'][[1]][[1]]
   } else {
-    mapRegion <- x$geometry()$bounds()$getInfo()['coordinates'][[1]][[1]]
+    region <- x$geometry()$bounds()$getInfo()['coordinates'][[1]][[1]]
   }
 
   mapR_df <- data.frame(do.call(rbind,region))
@@ -42,8 +44,8 @@ ee_as_stars <- function(x, region, scale, palette = NULL, min = 0, max = 1, crs 
   dimensions <- c(as.integer(ceiling(dim_x)),
                   as.integer(ceiling(dim_y)))
 
-  offset_x <- min(bound_df[1])
-  offset_y <- max(bound_df[2])
+  offset_x <- min(mapR_df[1])
+  offset_y <- max(mapR_df[2])
 
   scale_y <- scale_y*-1
   xmin <- offset_x
@@ -87,7 +89,6 @@ ee_as_stars <- function(x, region, scale, palette = NULL, min = 0, max = 1, crs 
   attr(stars_png,"dimensions") <- attr_dim
   return(stars_png)
 }
-
 
 read_png_as_stars <- function(x,band_name,mtx) {
   rotate_x <- t(mtx[,,x])

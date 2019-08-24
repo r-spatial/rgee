@@ -10,25 +10,25 @@
 \alias{ee_map.ee.imagecollection.ImageCollection}
 \title{Adds a given EE object to mapview as a layer.}
 \usage{
-ee_map(eeobject, vizparams, center, zoom_start = 8, obj_name = "map",
+ee_map(eeobject, vizparams, center, zoom_start = 8, objname = "map",
   max_nimage = 10, ...)
 
 \method{ee_map}{default}(eeobject, ...)
 
 \method{ee_map}{ee.geometry.Geometry}(eeobject, vizparams, center,
-  zoom_start = 8, obj_name = "map", ...)
+  zoom_start = 8, objname = "map", ...)
 
 \method{ee_map}{ee.feature.Feature}(eeobject, vizparams, center,
-  zoom_start = 8, obj_name = "map", ...)
+  zoom_start = 8, objname = "map", ...)
 
 \method{ee_map}{ee.featurecollection.FeatureCollection}(eeobject,
-  vizparams, center, zoom_start = 8, obj_name = "map", ...)
+  vizparams, center, zoom_start = 8, objname = "map", ...)
 
 \method{ee_map}{ee.image.Image}(eeobject, vizparams, center,
-  zoom_start = 2, obj_name = "map", ...)
+  zoom_start = 2, objname = "map", ...)
 
 \method{ee_map}{ee.imagecollection.ImageCollection}(eeobject, vizparams,
-  center, zoom_start = 2, obj_name = "map", max_nimage = 10, ...)
+  center, zoom_start = 2, objname = "map", max_nimage = 10, ...)
 }
 \arguments{
 \item{eeobject}{EE object.}
@@ -39,7 +39,7 @@ ee_map(eeobject, vizparams, center, zoom_start = 8, obj_name = "map",
 
 \item{zoom_start}{zoom level.}
 
-\item{obj_name}{character vector; name of the map(or maps).}
+\item{objname}{character vector; name of the map(or maps).}
 
 \item{max_nimage}{Max number of Image to display.}
 
@@ -88,35 +88,35 @@ ee_initialize()
 
 # Case: Geometry*
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), obj_name = "Geometry-Arequipa")
+m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), objname = "Geometry-Arequipa")
 m1
 
 # Case: Feature
-eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-m2 <- ee_map(ee$Feature(eeobject_fc), obj_name = "Feature-Arequipa")
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
+m2 <- ee_map(ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
 m2 + m1
 
 # Case: FeatureCollection
-eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")
-m3 <- ee_map(eeobject_fc,obj_name = 'FeatureCollection')
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+m3 <- ee_map(eeobject_fc,objname = 'FeatureCollection')
 m3+m1
 
 # Case: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),obj_name = "Image")
+m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),objname = "Image")
 m4+m1
 
 # Case: ImageCollection
-collection <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-  filter(ee_Filter()$eq("WRS_PATH", 44))$
-  filter(ee_Filter()$eq("WRS_ROW", 34))$
+collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+  filter(ee$Filter()$eq("WRS_PATH", 44))$
+  filter(ee$Filter()$eq("WRS_ROW", 34))$
   filterDate("2014-01-01", "2015-01-01")$
   sort("CLOUD_COVER")
 
 m5 <- ee_map(eeobject = collection,
              vizparams = list(bands = c('B4','B3','B2'), max=1),
-             #obj_name = "ImageCollection",
-             obj_name = c("Scene_2019","Scene_2016","Scene_2011"),
+             #objname = "ImageCollection",
+             objname = c("Scene_2019","Scene_2016","Scene_2011"),
              max_nimage = 3)
 
 m5 + m1 + m2 + m3 + m4

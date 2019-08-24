@@ -29,11 +29,11 @@ ee_check_credentials()
 
 ee_install_drivers(version = "latest")
 
-ee_install_rgee_python_packages(conda = FALSE, restart = TRUE)
+ee_install_rgee_python_packages(conda = FALSE)
 
-ee_install_python_package(pypackage, conda = FALSE, restart = TRUE)
+ee_install_python_package(pypackage, conda = FALSE)
 
-ee_install_ee(conda = FALSE, restart = TRUE)
+ee_install_ee(conda = FALSE)
 
 ee_get_earthengine_path()
 
@@ -49,8 +49,6 @@ ee_remove_drivers(quiet = TRUE)
 \item{version}{TODO}
 
 \item{conda}{TODO}
-
-\item{restart}{TODO}
 
 \item{pypackage}{TODO}
 

@@ -40,14 +40,14 @@ Print and return metadata about Earth Engine Objects
 \details{
 For avoiding computing time extremely large and "EEException" related with memory consuming
 (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
-just the first element of: ee_Image, ee_ImageCollection, ee_Feature
-and ee_FeatureCollection will be used to generated Earth Engine object properties.
+just the first element of: ee$Image, ee$ImageCollection, ee$Feature
+and ee$FeatureCollection will be used to generated Earth Engine object properties.
 }
 \examples{
 \dontrun{
 library(rgee)
 ee_initialize()
-eeobject <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee_Filter()$eq("WRS_PATH", 44))$
   filter(ee_Filter()$eq("WRS_ROW", 34))$
   filterDate("2014-03-01", "2014-08-01")

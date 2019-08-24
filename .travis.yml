@@ -2,19 +2,7 @@
 # Default configuration for use with tic package
 # tic documentation to get started: https://ropenscilabs.github.io/tic/
 # Usually you shouldn't need to change the first part of the file
-=======
-language: r
-r:
-  - 3.4
-cache: packages
-sudo: required
-dist: trusty
-warnings_are_errors: false
 
-addons:
-  apt:
-  sources:
-  - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
 # DO NOT CHANGE THE CODE BELOW
 before_install:
   - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
@@ -50,3 +38,6 @@ latex: false
 env:
   global:
   - MAKEFLAGS="-j 2"
+
+#services
+services:

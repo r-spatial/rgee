@@ -2,21 +2,21 @@
 % Please edit documentation in R/sf_as_ee.R
 \name{sf_as_ee}
 \alias{sf_as_ee}
-\alias{ee_as_ee.character}
-\alias{ee_as_ee.sf}
-\alias{ee_as_ee.sfc}
-\alias{ee_as_ee.sfg}
+\alias{sf_as_ee.character}
+\alias{sf_as_ee.sf}
+\alias{sf_as_ee.sfc}
+\alias{sf_as_ee.sfg}
 \title{Convert R spatial object to an Google Earth Engine}
 \usage{
 sf_as_ee(x, ...)
 
-ee_as_ee.character(x, ...)
+\method{sf_as_ee}{character}(x, ...)
 
-ee_as_ee.sf(x, ...)
+\method{sf_as_ee}{sf}(x, ...)
 
-ee_as_ee.sfc(x, ...)
+\method{sf_as_ee}{sfc}(x, ...)
 
-ee_as_ee.sfg(x, ...)
+\method{sf_as_ee}{sfg}(x, ...)
 }
 \arguments{
 \item{x}{object to be converted into.}

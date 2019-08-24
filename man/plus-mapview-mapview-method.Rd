@@ -17,20 +17,20 @@ mapview + mapview; adds data from the second map to the first
 }
 \examples{
 \dontrun{
-eeobject <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")
+eeobject <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
 center <- eeobject$geometry()$centroid()$getInfo()$coordinates
 vizparams <- list(color = "FF0000", strokeWidth = 5)
-m1 <- ee_map(eeobject, vizparams, center, obj_name = "Arequipa-landuse")
+m1 <- ee_map(eeobject, vizparams, center, objname = "Arequipa-landuse")
 
-collection <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-  filter(ee_Filter()$eq("WRS_PATH", 44))$
-  filter(ee_Filter()$eq("WRS_ROW", 34))$
+collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+  filter(ee$Filter()$eq("WRS_PATH", 44))$
+  filter(ee$Filter()$eq("WRS_ROW", 34))$
   filterDate("2014-01-01", "2015-01-01")$
   sort("CLOUD_COVER")
 eeobject <- collection$median()
 vizparams <- list(bands = c("B4", "B3", "B2"), max = 0.3)
 center <- c(-122.3578, 37.7726)
-m2 <- ee_map(eeobject, vizparams, center, obj_name = "SF")
+m2 <- ee_map(eeobject, vizparams, center, objname = "SF")
 m1 + m2
 }
 

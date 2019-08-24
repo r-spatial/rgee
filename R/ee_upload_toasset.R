@@ -88,6 +88,7 @@ ee_upload_toasset.character <- function(x, ...,
   }
 }
 
+#' TODO: BUG in line 112 check: preliminarly I change filename by  filenames
 #' @name ee_upload_toasset
 #' @export
 ee_upload_toasset.sf <- function(x, ...,
@@ -108,7 +109,7 @@ ee_upload_toasset.sf <- function(x, ...,
   shpname <- sprintf("%s/%s.shp", tempdir_gee, asset_filename)
   filenames <- sprintf("%s.%s", asset_filename, extensions)
   zipname <- sprintf("%s/%s.zip", tempdir_gee, asset_filename)
-  suppressWarnings(write_sf(x, filename))
+  suppressWarnings(write_sf(x, filenames))
   setwd(tempdir_gee)
   zip(zipfile = zipname, files = filenames)
 

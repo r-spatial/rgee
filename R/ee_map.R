@@ -8,7 +8,7 @@
 #' @param vizparams list; visualization parameters. See Details.
 #' @param center character vector; the longitude and latitude of the map center.
 #' @param  zoom_start zoom level.
-#' @param obj_name character vector; name of the map(or maps).
+#' @param objname character vector; name of the map(or maps).
 #'
 #' @details
 #' `ee_map` takes advantage of the getMapId function for generating a provisial
@@ -48,35 +48,35 @@
 #'
 #' # Case: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-#' m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), obj_name = "Geometry-Arequipa")
+#' m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), objname = "Geometry-Arequipa")
 #' m1
 #'
 #' # Case: Feature
-#' eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-#' m2 <- ee_map(ee$Feature(eeobject_fc), obj_name = "Feature-Arequipa")
+#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
+#' m2 <- ee_map(ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
 #' m2 + m1
 #'
 #' # Case: FeatureCollection
-#' eeobject_fc <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")
-#' m3 <- ee_map(eeobject_fc,obj_name = 'FeatureCollection')
+#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+#' m3 <- ee_map(eeobject_fc,objname = 'FeatureCollection')
 #' m3+m1
 #'
 #' # Case: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),obj_name = "Image")
+#' m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),objname = "Image")
 #' m4+m1
 #'
 #' # Case: ImageCollection
-#' collection <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-#'   filter(ee_Filter()$eq("WRS_PATH", 44))$
-#'   filter(ee_Filter()$eq("WRS_ROW", 34))$
+#' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
+#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-01-01", "2015-01-01")$
 #'   sort("CLOUD_COVER")
 #'
 #' m5 <- ee_map(eeobject = collection,
 #'              vizparams = list(bands = c('B4','B3','B2'), max=1),
-#'              #obj_name = "ImageCollection",
-#'              obj_name = c("Scene_2019","Scene_2016","Scene_2011"),
+#'              #objname = "ImageCollection",
+#'              objname = c("Scene_2019","Scene_2016","Scene_2011"),
 #'              max_nimage = 3)
 #'
 #' m5 + m1 + m2 + m3 + m4
@@ -89,7 +89,7 @@ ee_map <- function(eeobject,
                    vizparams,
                    center,
                    zoom_start = 8,
-                   obj_name = "map",
+                   objname = "map",
                    max_nimage = 10, ...) {
   UseMethod("ee_map")
 }
@@ -108,9 +108,9 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
                                         vizparams,
                                         center,
                                         zoom_start = 8,
-                                        obj_name = "map", ...) {
+                                        objname = "map", ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_map <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$centroid()$getInfo()$coordinates
@@ -118,15 +118,15 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
   vizparams <- ee_geom_exist_color(vizparams)
 
 
-  tile <- ee_map_py(eeobject, vizparams)
+  tile <- ee_map$ee_map_py(eeobject, vizparams)
   m <- mapview()
   m@map <- m@map %>%
-    addWMSTiles(group = obj_name, baseUrl = tile, layers = "0") %>%
+    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(obj_name))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
-  m@object$names <- obj_name
+  m@object$names <- objname
   m@object$eeobject <- eeobject$name()
   m
 }
@@ -137,24 +137,24 @@ ee_map.ee.feature.Feature <- function(eeobject,
                                       vizparams,
                                       center,
                                       zoom_start = 8,
-                                      obj_name = "map", ...) {
+                                      objname = "map", ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_map <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- ee_map_py(eeobject, vizparams)
+  tile <- ee_map$ee_map_py(eeobject, vizparams)
   m <- mapview()
   m@map <- m@map %>%
-    addWMSTiles(group = obj_name, baseUrl = tile, layers = "0") %>%
+    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(obj_name))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
-  m@object$names <- obj_name
+  m@object$names <- objname
   m@object$eeobject <- eeobject$name()
   m
 }
@@ -165,25 +165,25 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                           vizparams,
                                                           center,
                                                           zoom_start = 8,
-                                                          obj_name = "map",
+                                                          objname = "map",
                                                           ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_map <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- ee_map_py(eeobject, vizparams)
+  tile <- ee_map$ee_map_py(eeobject, vizparams)
   m <- mapview()
   m@map <- m@map %>%
-    addWMSTiles(group = obj_name, baseUrl = tile, layers = "0") %>%
+    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(obj_name))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
-  m@object$names <- obj_name
+  m@object$names <- objname
   m@object$eeobject <- eeobject$name()
   m
 }
@@ -194,10 +194,10 @@ ee_map.ee.image.Image <- function(eeobject,
                                   vizparams,
                                   center,
                                   zoom_start = 2,
-                                  obj_name = "map",
+                                  objname = "map",
                                   ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_map <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(eeobject)
   if (missing(center)) {
@@ -213,15 +213,15 @@ ee_map.ee.image.Image <- function(eeobject,
   }
   ee_match_img_geoviz(names(vizparams))
 
-  tile <- ee_map_py(eeobject, vizparams)
+  tile <- ee_map$ee_map_py(eeobject, vizparams)
   m <- mapview()
   m@map <- m@map %>%
-    addWMSTiles(group = obj_name, baseUrl = tile, layers = "0") %>%
+    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(obj_name))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
-  m@object$names <- obj_name
+  m@object$names <- objname
   m@object$eeobject <- eeobject$name()
   m
 }
@@ -233,11 +233,11 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
                                                       vizparams,
                                                       center,
                                                       zoom_start = 2,
-                                                      obj_name = "map",
+                                                      objname = "map",
                                                       max_nimage = 10,
                                                       ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_map <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(ee$Image(eeobject$first()))
   if (missing(center)) {
@@ -255,25 +255,25 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
 
   ee_size <- eeobject$size()$getInfo()
   if (ee_size > max_nimage) ee_size <- max_nimage
-  if (length(obj_name) == 1L) obj_name <- sprintf("%s_%02d", obj_name, 1:ee_size)
-  if (length(obj_name) != ee_size) stop("The length of ee_ImageCollection and 'obj_name' are different")
+  if (length(objname) == 1L) objname <- sprintf("%s_%02d", objname, 1:ee_size)
+  if (length(objname) != ee_size) stop("The length of ee$ImageCollection and 'objname' are different")
 
   eeobject_list <- eeobject$toList(ee_size) # collection to list
 
   m <- mapview()
   tokens <- rep(NA, ee_size)
   for (x in 1:ee_size) {
-    eeobj <- ee_Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs python(1)
-    tile <- ee_map_py(eeobj, vizparams)
+    eeobj <- ee$Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs python(1)
+    tile <- ee_map$ee_map_py(eeobj, vizparams)
     tokens[x] <- tile
     m@map <- m@map %>%
-      addWMSTiles(group = obj_name[x], baseUrl = tile, layers = "0") %>%
+      addWMSTiles(group = objname[x], baseUrl = tile, layers = "0") %>%
       setView(center[1], center[2], zoom = zoom_start) %>%
-      ee_mapViewLayersControl(names = c(obj_name[x]))
+      ee_mapViewLayersControl(names = c(objname[x]))
   }
 
   m@object$tokens <- tokens
-  m@object$names <- obj_name
+  m@object$names <- objname
   m@object$eeobject <- eeobject$name()
   m
 }
@@ -342,20 +342,20 @@ if (!isGeneric("+")) {
 #' @param e2 a mapview map from which the objects should be added to e1.
 #' @examples
 #' \dontrun{
-#' eeobject <- ee_FeatureCollection("users/csaybar/DLdemos/train_set")
+#' eeobject <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
 #' center <- eeobject$geometry()$centroid()$getInfo()$coordinates
 #' vizparams <- list(color = "FF0000", strokeWidth = 5)
-#' m1 <- ee_map(eeobject, vizparams, center, obj_name = "Arequipa-landuse")
+#' m1 <- ee_map(eeobject, vizparams, center, objname = "Arequipa-landuse")
 #'
-#' collection <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-#'   filter(ee_Filter()$eq("WRS_PATH", 44))$
-#'   filter(ee_Filter()$eq("WRS_ROW", 34))$
+#' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
+#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-01-01", "2015-01-01")$
 #'   sort("CLOUD_COVER")
 #' eeobject <- collection$median()
 #' vizparams <- list(bands = c("B4", "B3", "B2"), max = 0.3)
 #' center <- c(-122.3578, 37.7726)
-#' m2 <- ee_map(eeobject, vizparams, center, obj_name = "SF")
+#' m2 <- ee_map(eeobject, vizparams, center, objname = "SF")
 #' m1 + m2
 #' }
 #'

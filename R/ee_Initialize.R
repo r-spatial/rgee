@@ -24,17 +24,12 @@ ee_Initialize <- function() {
 
 
 #' Read and evaluate a python script
-#' @author JesJehle <https://github.com/JesJehle/earthEngineGrabR>
 #' @noRd
 ee_source_python <- function(oauth_func_path) {
-  load_test <- try(source_python(file = oauth_func_path, envir = parent.frame()))
-  count <- 1
-  while (class(load_test) == "try-error" & count < 5) {
-    load_test <- try(source_python(file = oauth_func_path),
-                     silent = T
-    )
-    count <- count + 1
-  }
+  module_name <- gsub("\\.py$","",basename(oauth_func_path))
+  module_path <- dirname(oauth_func_path)
+  ee_module <- import_from_path(module_name, path = module_path, convert = F)
+  ee_module
 }
 
 

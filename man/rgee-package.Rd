@@ -28,9 +28,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Fernando Prudencio \email{fjprudenciop@gmail.com} [contributor]
   \item Julio Contreras \email{julius013199@gmail.com} (0000-0001-5579-8919) [contributor]
-  \item Antony Barja \email{antony.barja8@gmail.com} (0000-0001-5921-2858) [contributor]
 }
 
 }

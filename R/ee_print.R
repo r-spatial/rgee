@@ -7,14 +7,14 @@
 #' @param max_display Set the max number of properties to display.
 #' @details For avoiding computing time extremely large and "EEException" related with memory consuming
 #' (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
-#' just the first element of: ee_Image, ee_ImageCollection, ee_Feature
-#' and ee_FeatureCollection will be used to generated Earth Engine object properties.
+#' just the first element of: ee$Image, ee$ImageCollection, ee$Feature
+#' and ee$FeatureCollection will be used to generated Earth Engine object properties.
 #' @importFrom sf st_crs
 #' @examples
 #' \dontrun{
 #' library(rgee)
 #' ee_initialize()
-#' eeobject <- ee_ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 #'   filter(ee_Filter()$eq("WRS_PATH", 44))$
 #'   filter(ee_Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-03-01", "2014-08-01")
@@ -72,7 +72,6 @@ ee_print.ee.feature.Feature <- function(eeobject, ncol = 2, max_display = 10) {
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
   } else {
-    metadata_list <- create_ee_Featurelist(eeobject)
     feature <- eeobject$getInfo()
     projection_properties <- eeobject$geometry()$projection()$getInfo()
 
@@ -137,7 +136,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ncol = 2, 
     nfeatures <- eeobject$size()$getInfo()
 
     mtd <- list(
-      name = "ee_FeatureCollection",
+      name = "FeatureCollection",
       fc_nfeatures = nfeatures,
       fc_geometry_type = geometry_type,
       fc_epsg = epsg,
@@ -175,7 +174,7 @@ ee_print.ee.image.Image <- function(eeobject, ncol = 2, max_display = 10) {
     base_img <- img$bands[[1]]
     scale <- eeobject$select(bands[1])$projection()$nominalScale()$getInfo()
 
-    name <- "ee_Image"
+    name <- "Image"
     img_nbands <- length(bands)
     img_bands_names <- bands
     img_epsg <- as.numeric(gsub("EPSG:", "", base_img$crs))
@@ -238,13 +237,13 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject, ncol = 2, max_
     ic <- eeobject$getInfo()
     bands <- unlist(lapply(ic$bands, "[[", "id"))
     base_ic <- ic$features[[1]]
-    scale <- ee_Image(eeobject$first())$
+    scale <- ee$Image(eeobject$first())$
       select(bands[1])$
       projection()$
       nominalScale()$
       getInfo()
 
-    name <- "ee_ImageCollection"
+    name <- "ImageCollection"
     ic_nbands <- length(bands)
     ic_bands_names <- bands
     ic_epsg <- as.numeric(gsub("EPSG:", "", base_ic$bands[[1]]$crs))

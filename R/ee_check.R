@@ -3,7 +3,7 @@
 #' R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
 #'
 #'
-#' @importFrom reticulate py_available py_module_available
+#' @importFrom reticulate py_available py_module_available py_discover_config source_python
 #' @importFrom googledrive drive_auth
 #' @name ee_check-tools
 #' @details It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
@@ -51,7 +51,7 @@ ee_check_python <- function() {
 #' @export
 ee_check_rgee_python_packages <- function() {
   oauth_func_path <- system.file("python/ee_check_utils_exist.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_check_utils_exist <- ee_source_python(oauth_func_path)
 
   cat("\n")
   cat(">>> python Standard Libraries used in rgee: \n")
@@ -72,15 +72,16 @@ ee_check_rgee_python_packages <- function() {
   cat(">>> python Third-Party Libraries used in rgee: \n")
 
   #ee
-  version_ee <- ee_check_py_ee()
+  version_ee <- ee_check_utils_exist$ee_check_py_ee()
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == "0.1.175") {
       cat(sprintf("    - ee -> status[ok]: v%s\n",version_ee))
     } else {
-      ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in your system,%s",
+      ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in your system,%s. %s",
                             version_ee,
-                            "but rgee depends on 0.1.175. Please run ee_install_ee(restart=TRUE) for upgrading.")
+                            "but rgee depends on 0.1.175. Please run ee_install_ee() for upgrading",
+                            "If the installation is successful, restart to see changes.")
       stop(ee_message)
     }
   } else {
@@ -98,9 +99,9 @@ ee_check_rgee_python_packages <- function() {
 #' @export
 ee_check_drivers <- function(display_in_browser = TRUE) {
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_check_utils <- ee_source_python(oauth_func_path)
   driverdir <- ee_get_earthengine_path()
-  condition <- ee_check_drivers_py(driverdir, display_in_browser)
+  condition <- ee_check_utils$ee_check_drivers_py(driverdir, display_in_browser)
   if (condition) {
     cat("\n")
     cat(">>> Geckodriver -> status[ok]:",driverdir,"\n")
@@ -131,36 +132,35 @@ ee_check_credentials <- function() {
 #' @export
 ee_install_drivers <- function(version='latest') {
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
-  ee_source_python(oauth_func_path)
+  ee_check_utils <- ee_source_python(oauth_func_path)
   if (version == 'latest') version = NULL
   directory = dirname(gd_cre_path())
   os_type = Sys.info()[['sysname']]
   if (os_type == "Linux") {
-    geckodown_linux(directory,version)
+    ee_check_utils$geckodown_linux(directory,version)
   } else if(os_type == "Windows") {
-    geckodown_win(directory,version)
+    ee_check_utils$geckodown_win(directory,version)
   } else {
-    warning("Experimental: Only windows and Linux distribution based on Debian are soported")
-    geckodown_linux(directory,version)
+    ee_check_utils$geckodown_mac(directory,version)
   }
 }
 
 #' @rdname ee_check-tools
 #' @param conda TODO
-#' @param restart TODO
 #' @export
-ee_install_rgee_python_packages <- function(conda = FALSE, restart=TRUE) {
-  ee_install_ee(restart = FALSE, conda = conda)
-  ee_install_python_package("selenium",restart = FALSE, conda = conda)
-  ee_install_python_package("bs4",restart = FALSE, conda = conda)
-  ee_install_python_package("pysmartDL",restart = FALSE, conda = conda)
-  ee_install_python_package("requests_toolbelt",restart = restart, conda = conda)
+ee_install_rgee_python_packages <- function(conda = FALSE) {
+  ee_install_ee(conda = conda)
+  ee_install_python_package("selenium", conda = conda)
+  ee_install_python_package("bs4", conda = conda)
+  ee_install_python_package("pysmartDL", conda = conda)
+  ee_install_python_package("requests_toolbelt", conda = conda)
+  cat("restart R to see changes")
 }
 
 #' @rdname ee_check-tools
 #' @param pypackage TODO
 #' @export
-ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
+ee_install_python_package <- function(pypackage,conda=FALSE) {
   pydiscv <- py_discover_config()
   python_version <- pydiscv$version
   if (conda) {
@@ -185,12 +185,11 @@ ee_install_python_package <- function(pypackage,conda=FALSE,restart=TRUE) {
       }
     }
   }
-  if (restart) .rs.restartR()
 }
 
 #' @rdname ee_check-tools
 #' @export
-ee_install_ee <- function(conda=FALSE, restart=TRUE) {
+ee_install_ee <- function(conda=FALSE) {
   pydiscv <- py_discover_config()
   python_version <- pydiscv$version
   if (conda) {
@@ -215,7 +214,6 @@ ee_install_ee <- function(conda=FALSE, restart=TRUE) {
       }
     }
   }
-  if (restart) .rs.restartR()
 }
 
 #' @rdname ee_check-tools
@@ -225,21 +223,22 @@ ee_get_earthengine_path <- function() {
 }
 
 
+
+
 #' @rdname ee_check-tools
 #' @export
 ee_get_credentials <- function() {
   oauth_func_path <- system.file("python/ee_get_credentials.py", package = "rgee")
-  ee_source_python(oauth_func_path)
-
+  ee_get_credentials <- ee_source_python(oauth_func_path)
   credential_path <-  ee_get_earthengine_path()
   gd_credentials <- sprintf("%s/googledrive", credential_path)
   gee_credentials <- sprintf("%s/credentials", credential_path)
 
-  ee_authenticate_py()
+  ee_get_credentials$ee_authenticate_py()
   code <- readline("Enter authorisation code for Earth Engine API here: ")
-  test <- try(request_ee_token_py(code), silent = T)
+  test <- try(ee_get_credentials$request_ee_token_py(code), silent = T)
   saveRDS(
-    drive_auth(reset = T, cache = F, verbose = F),
+    drive_auth(cache = F),
     gd_cre_path()
   )
 }
@@ -253,7 +252,7 @@ ee_remove_credentials <- function(quiet = TRUE) {
   ee_credential <- sprintf("%s/credentials",path)
   drive_credential <- sprintf("%s/googledrive",path)
   if (file.exists(drive_credential)) file.remove(drive_credential)
-  if (file.exists(ee_credentials)) file.remove(ee_credentials)
+  if (file.exists(ee_credential)) file.remove(ee_credential)
   if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
 }
 
@@ -286,6 +285,9 @@ ee_check_rgee_package <- function(rgee_package) {
   if (isFALSE(version_rgeepackage)) {
     cat(sprintf("    - %s -> status[X]\n",rgee_package))
     stop(sprintf("%s has not been installed in this python version, try as follow for fixed: \n",rgee_package),
-         sprintf(">>> rgee::ee_install_python_package('%s', conda = FALSE, restart = TRUE)",rgee_package))
+         sprintf(">>> rgee::ee_install_python_package('%s', conda = FALSE),",rgee_package),
+          " If the installation is successful, restart to see changes.")
   }
 }
+
+
