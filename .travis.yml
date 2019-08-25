@@ -1,43 +1,70 @@
-# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
-# Default configuration for use with tic package
-# tic documentation to get started: https://ropenscilabs.github.io/tic/
-# Usually you shouldn't need to change the first part of the file
+language: r
+sudo: required
+dist: trusty
+r:
+  - release
+deploy.skip_cleanup: true
+cache:
+  - packages
+  - ccache
+r_github_packages:
+  - r-lib/covr
+  - r-spatial/sf
+  - r-spatial/stars
 
-# DO NOT CHANGE THE CODE BELOW
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+    packages:
+      - libprotobuf-dev
+      - protobuf-compiler
+      - libv8-3.14-dev
+      - libjq-dev
+      - libudunits2-dev
+      - libproj-dev
+      - libgeos-dev
+      - libspatialite-dev
+      - libgdal-dev
+      - libjson-c-dev
+      - libnetcdf-dev
+      - netcdf-bin
+
 before_install:
+  # install sf dependencies
+  - sudo apt-get update
+  - sudo apt-get remove python3-pip
+  - sudo apt-get install python3-pip
+  #- ls -l /usr/bin/python*
+  - sudo -H pip3 install --upgrade pip
+  # earth engine api
+  - sudo apt-get install libffi-dev libssl-dev
   - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
   - R -q -e 'if (getRversion() < "3.2" && !requireNamespace("curl")) install.packages("curl")'
   - R -q -e 'remotes::install_github("ropenscilabs/tic", upgrade = "always"); print(tic::dsl_load()); tic::prepare_all_stages()'
   - R -q -e 'tic::before_install()'
-install: R -q -e 'tic::install()'
-after_install: R -q -e 'tic::after_install()'
-before_script: R -q -e 'tic::before_script()'
-script: R -q -e 'tic::script()'
-after_success: R -q -e 'tic::after_success()'
-after_failure: R -q -e 'tic::after_failure()'
+
+install:
+  - sudo -H pip3 install earthengine-api==0.1.175
+  - sudo -H pip3 install coveralls
+  - sudo -H pip3 install oauth2client
+  - sudo -H pip3 install earthengine-api
+  - sudo -H pip3 install selenium
+  - sudo -H pip3 install bs4
+  - sudo -H pip3 install pysmartDL
+  - sudo -H pip3 install requests_toolbelt
+  - R -q -e 'tic::install()'
+
+script:
+  - R -q -e 'tic::script()'
+  - ./travis_setup.py
+  #- python3 -m unittest discover -s inst/tests/
+after_success:
+  - R -q -e 'covr::codecov(quiet = FALSE)'
+
 before_deploy: R -q -e 'tic::before_deploy()'
 deploy:
   provider: script
   script: R -q -e 'tic::deploy()'
   on:
     all_branches: true
-after_deploy: R -q -e 'tic::after_deploy()'
-after_script: R -q -e 'tic::after_script()'
-# DO NOT CHANGE THE CODE ABOVE
-
-# Custom parts:
-
-# Header
-language: r
-sudo: false
-dist: xenial
-cache: packages
-latex: false
-
-#env
-env:
-  global:
-  - MAKEFLAGS="-j 2"
-
-#services
-services:

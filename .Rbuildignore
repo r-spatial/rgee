@@ -13,3 +13,4 @@
 ^LICENSE.md
 ^tic\.R$
 ^rgeelogo.Rmd
+^travis_setup\.py$

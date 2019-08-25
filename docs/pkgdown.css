@@ -1,12 +1,12 @@
-/* Sticky barter */
+/* Sticky footer */
 
 /**
- * Basic idea: https://philipwalton.github.io/solved-by-flexbox/demos/sticky-barter/
+ * Basic idea: https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
  * Details: https://github.com/philipwalton/solved-by-flexbox/blob/master/assets/css/components/site.css
  *
  * .Site -> body > .container
  * .Site-content -> body > .container .row
- * .barter -> barter
+ * .footer -> footer
  *
  * Key idea seems to be to ensure that .container and __all its parents__
  * have height set to 100%
@@ -29,7 +29,7 @@ body > .container .row {
   flex: 1 0 auto;
 }
 
-barter {
+footer {
   margin-top: 45px;
   padding: 35px 0 36px;
   border-top: 1px solid #e5e5e5;
@@ -37,16 +37,16 @@ barter {
   display: flex;
   flex-shrink: 0;
 }
-barter p {
+footer p {
   margin-bottom: 0;
 }
-barter div {
+footer div {
   flex: 1;
 }
-barter .pkgdown {
+footer .pkgdown {
   text-align: right;
 }
-barter p {
+footer p {
   margin-bottom: 0;
 }
 
