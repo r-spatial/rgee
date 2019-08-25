@@ -9,28 +9,30 @@ Status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci
 status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### Buildings for the python Earth Engine API
+### R bindings for calling th Python Earth Engine API
 
-**rgee** provides a quick-witted way to interact with Google Earth
-Engine since R. The idea is not interact directly with the Earth Engine
-Web REST API but, through
-[`reticulate`](https://rstudio.github.io/reticulate/) call the python
-library `ee` from R.
+**rgee** provides functions and classes to conveniently interact with
+Google Earth Engine since R. The main user relevant functions are:
 
-The main user relevant functions are:
-
-  - `ee_initialize`: Authenticate and Initialize the Earth Engine ang
+  - `ee`: The [EE Python
+    library](https://github.com/google/earthengine-api), use `$` instead
+    of `.`.
+  - `ee_initialize`: Authenticate and Initialize the Earth Engine and
     Google Drive API.
-  - `ee_map`: Display a given ee\_Image, ee\_Feature,
-    ee\_FeatureCollection or ee\_ImageCollection using the
-    [`mapview`](https://github.com/r-spatial/mapview) style.
-  - `ee_download_*`: Move the results of an Earth Engine task to export
-    to Hard disk.
-  - `ee_manage_*`: Google Earth Engine Batch Asset Manager.
-  - `ee_as_eegeom`: Convert foreign R geometry object to an Spatial
-    Earth Engine object.
-  - `ee_print`: Fetch and return metadata about Earth Engine Objects.
-  - `ee_upload`: Batch uploading to the asset using RSelenium.
+  - `ee_map`: Display a `ee$Image`, `ee$Feature`,
+    `ee$FeatureCollection`, or `ee$ImageCollection` through the
+    [`mapview`](https://github.com/r-spatial/mapview) R package.
+  - `ee_download_*`: Download the results of an “COMPLETED” Earth Engine
+    task.
+  - `sf_as_ee`: Pass sf objects to Earth Engine.
+  - `ee_print`: Fetch and return metadata about Earth Engine objects.
+  - `ee_upload`: Batch uploading to the asset using selenium.
+  - `ee_manage_*`: Google Earth Engine Batch Asset Manager. (UNDERDEV)
+
+It put together the main ideas behind of
+[geeup](https://github.com/samapriya/geeup),
+[geextract](https://github.com/loicdtx/landsat-extract-gee) and
+[cartoee](https://github.com/KMarkert/cartoee).
 
 ## Installation (Not available yet)
 
@@ -41,12 +43,35 @@ install.packages("rgee")
 ```
 
 To install the development version install the
-[devtools](https://cran.r-project.org/package=devtools)
-package.
+[devtools](https://cran.r-project.org/package=devtools) package.
 
 ``` r
 devtools::install_github("ryali93/rgee")
 ```
+
+## Windows
+
+Before install `rgee` be sure that
+[Rtools](https://cran.r-project.org/bin/windows/Rtools/) is installed in
+the system. System libraries are automatically downloaded from
+[rwinlib](https://github.com/rwinlib/).
+
+## Linux
+
+Please install the follow system libraries.
+
+### Ubuntu
+
+    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+    sudo apt-get update
+    sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libv8-3.14-dev libjson-c-dev
+
+## MacOS
+
+Use [Homebrew](https://brew.sh/) to install system libraries:
+
+    brew install pkg-config
+    brew install gdal
 
 ## How does it works?
 

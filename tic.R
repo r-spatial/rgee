@@ -14,3 +14,4 @@ get_stage("script") %>%
     dir.create(ee_dirname)
     write(json_key, sprintf("%s/credentials",ee_dirname))
   })
+
