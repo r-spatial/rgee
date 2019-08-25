@@ -47,7 +47,7 @@
 #' ee_as_ee(x)
 #' }
 #' @export
-sf_as_ee <- function(x, ...) UseMethod("ee_as_ee")
+sf_as_ee <- function(x, ...) UseMethod("sf_as_ee")
 
 #' @rdname sf_as_ee
 #' @importFrom sf st_read
@@ -70,7 +70,7 @@ sf_as_ee.sf <- function(x,...) {
   sf_as_ee <- ee_source_python(oauth_func_path)
   if (!st_crs(x)$epsg == 4326) x <- st_transform(x, 4326)
   geojson_list <- geojson_json(x)
-  sf_as_ee$ee_sf_as_ee_py(geojson_list)
+  sf_as_ee$sf_as_ee_py(geojson_list)
 }
 
 #' @rdname sf_as_ee
@@ -80,7 +80,7 @@ sf_as_ee.sfc <- function(x,...) {
   sf_as_ee <- ee_source_python(oauth_func_path)
   if (!st_crs(x)$epsg == 4326) x <- st_transform(x, 4326)
   geojson_list <- geojson_json(x)
-  sf_as_ee$ee_sfc_as_ee_py(geojson_list)
+  sf_as_ee$sfc_as_ee_py(geojson_list)
 }
 
 #' @rdname sf_as_ee
@@ -89,5 +89,6 @@ sf_as_ee.sfg <- function(x,...) {
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)
   geojson_list <- geojson_json(x)
-  sf_as_ee$ee_sfg_as_ee_py(geojson_list)
+  sf_as_ee$sfg_as_ee_py(geojson_list)
 }
+
