@@ -1,21 +1,22 @@
-#' Adds a given EE object to mapview as a layer.
+#' Adds a given Earth Engine (EE) spatial object to mapview as a layer.
 #'
-#' Display a given EE object (Geometry, Image, Feature, FeatureCollection
-#' or ImageCollection) using the \code{\link[mapview]{mapview}} style.
+#' Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
+#' FeatureCollection or ImageCollection) base on \href{mapview}{mapview}.
 #'
-#' @param eeobject EE object.
-#' @param ... ignored
-#' @param vizparams list; visualization parameters. See Details.
-#' @param center character vector; the longitude and latitude of the map center.
+#' @param eeobject An EE spatial object.
+#' @param vizparams A list that contains the visualization parameters. See details.
+#' @param center The longitude and latitude of the map center. If it is not defined,
+#' the centroid of the spatial EE object is taked.
 #' @param  zoom_start zoom level.
-#' @param objname character vector; name of the map(or maps).
-#'
+#' @param objname character vector. Name of the map, or maps in case that the EE object
+#' be an ImageCollection.
+#' @param ... Ignored.
 #' @details
-#' `ee_map` takes advantage of the getMapId function for generating a provisial
-#' WMS service supported by Google Earth Engine. To achieve desirable visualization effects, it is
-#' depend on the type of EE object. For neither Image or ImageCollection, you can provide visualization parameters to ee_map by
-#' the parameter vizparams. The
-#' \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
+#' `ee_map` takes advantage of the ee$Image()$getMapId python function for fetch and return
+#' a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
+#' visualization effects, it is depend on the type of spatial EE object . For neither Image or
+#' ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
+#' The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
 #'
 #' \tabular{lll}{
 #' \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
@@ -30,41 +31,45 @@
 #' \strong{format}    \tab  Either "jpg" or "png"                                                       \tab  string \cr
 #' }
 #'
-#' If you add a EE Image or ImageCollection object to the map without any additional parameters,
+#' If you add an Image or ImageCollection to the map without any additional parameters,
 #' by default `ee_map` assigns the first three bands to red, green and blue, respectively.
-#' The default stretch is based on the mixmax range ,  which may or may not be suitable.
-#' In the case of Geometry, Feature or FeatureCollection objects vizparams allow the next parameters:
-#'
+#' The default stretch is based on the min-max range.  For Geometry, Feature or
+#' FeatureCollection. The available vizparams are:
 #' \itemize{
-#'  \item color: A hex string in the format RRGGBB specifying the color to use for drawing the features.
+#'  \item \strong{color}: A hex string in the format RRGGBB specifying the color to use for drawing the features.
 #'  By default 000000.
-#'  \item pointRadius: The radius of the point markers. By default 3.
-#'  \item strokeWidth: The width of lines and polygon borders. By default 3.
+#'  \item \strong{pointRadius}: The radius of the point markers. By default 3.
+#'  \item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
 #' }
 #'@examples
 #' \dontrun{
 #' library(rgee)
-#' ee_initialize()
-#'
+#' ee_Initialize()
 #' # Case: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-#' m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), objname = "Geometry-Arequipa")
+#' m1 <- ee_map(eeobject = geom,
+#'              vizparams = list(pointRadius=10,color="FF0000"),
+#'              objname = "Geometry-Arequipa")
 #' m1
 #'
 #' # Case: Feature
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-#' m2 <- ee_map(ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
+#' m2 <- ee_map(eeobject = ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
 #' m2 + m1
 #'
 #' # Case: FeatureCollection
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' m3 <- ee_map(eeobject_fc,objname = 'FeatureCollection')
-#' m3+m1
+#' m3 <- ee_map(eeobject = eeobject_fc,objname = 'FeatureCollection')
+#' m3+m2+m1
 #'
 #' # Case: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),objname = "Image")
-#' m4+m1
+#' m4 <- ee_map(eeobject = image,
+#'              vizparams = list(bands = c('B4','B3','B2'),
+#'                               max=10000),
+#'              objname = "SF",
+#'              zoom_start = "8")
+#' m4
 #'
 #' # Case: ImageCollection
 #' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
@@ -75,22 +80,16 @@
 #'
 #' m5 <- ee_map(eeobject = collection,
 #'              vizparams = list(bands = c('B4','B3','B2'), max=1),
-#'              #objname = "ImageCollection",
 #'              objname = c("Scene_2019","Scene_2016","Scene_2011"),
-#'              max_nimage = 3)
-#'
-#' m5 + m1 + m2 + m3 + m4
+#'              max_nimage = 3,
+#'              zoom_start = 10)
+#' m5
 #' }
 #' @importFrom mapview mapview
 #' @importFrom leaflet addWMSTiles setView
 #' @importFrom sf st_polygon st_centroid st_coordinates
 #' @export
-ee_map <- function(eeobject,
-                   vizparams,
-                   center,
-                   zoom_start = 8,
-                   objname = "map",
-                   max_nimage = 10, ...) {
+ee_map <- function(eeobject, ...) {
   UseMethod("ee_map")
 }
 
@@ -98,8 +97,7 @@ ee_map <- function(eeobject,
 #' @name ee_map
 #' @export
 ee_map.default <- function(eeobject,...) {
-  stop("eeobject should be a Geometry, Feature, FeatureCollection, Image",
-       ", or ImageCollection Earth Engine object")
+  mapview()
 }
 
 #' @name ee_map
@@ -110,25 +108,16 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
                                         zoom_start = 8,
                                         objname = "map", ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_map <- ee_source_python(oauth_func_path)
+  map_py <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$centroid()$getInfo()$coordinates
-  ee_match_geom_geoviz(names(vizparams))
+
+  ee_match_geom_geoviz(names(vizparams)) # Are vizparams ok?
   vizparams <- ee_geom_exist_color(vizparams)
 
-
-  tile <- ee_map$ee_map_py(eeobject, vizparams)
-  m <- mapview()
-  m@map <- m@map %>%
-    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
-    setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(objname))
-
-  m@object$tokens <- tile
-  m@object$names <- objname
-  m@object$eeobject <- eeobject$name()
-  m
+  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
 }
 
 #' @name ee_map
@@ -139,24 +128,16 @@ ee_map.ee.feature.Feature <- function(eeobject,
                                       zoom_start = 8,
                                       objname = "map", ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_map <- ee_source_python(oauth_func_path)
+  map_py <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- ee_map$ee_map_py(eeobject, vizparams)
-  m <- mapview()
-  m@map <- m@map %>%
-    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
-    setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(objname))
-
-  m@object$tokens <- tile
-  m@object$names <- objname
-  m@object$eeobject <- eeobject$name()
-  m
+  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
 }
 
 #' @name ee_map
@@ -168,24 +149,16 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                           objname = "map",
                                                           ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_map <- ee_source_python(oauth_func_path)
+  map_py <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_geom_vizparams()
   if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- ee_map$ee_map_py(eeobject, vizparams)
-  m <- mapview()
-  m@map <- m@map %>%
-    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
-    setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(objname))
-
-  m@object$tokens <- tile
-  m@object$names <- objname
-  m@object$eeobject <- eeobject$name()
-  m
+  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
 }
 
 #' @name ee_map
@@ -197,7 +170,7 @@ ee_map.ee.image.Image <- function(eeobject,
                                   objname = "map",
                                   ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_map <- ee_source_python(oauth_func_path)
+  map_py <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(eeobject)
   if (missing(center)) {
@@ -211,19 +184,11 @@ ee_map.ee.image.Image <- function(eeobject,
       st_centroid() %>%
       st_coordinates()
   }
+
   ee_match_img_geoviz(names(vizparams))
 
-  tile <- ee_map$ee_map_py(eeobject, vizparams)
-  m <- mapview()
-  m@map <- m@map %>%
-    addWMSTiles(group = objname, baseUrl = tile, layers = "0") %>%
-    setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(objname))
-
-  m@object$tokens <- tile
-  m@object$names <- objname
-  m@object$eeobject <- eeobject$name()
-  m
+  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
 }
 
 #' @name ee_map
@@ -237,11 +202,12 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
                                                       max_nimage = 10,
                                                       ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
-  ee_map <- ee_source_python(oauth_func_path)
+  map_py <- ee_source_python(oauth_func_path)
 
   if (missing(vizparams)) vizparams <- ee_img_vizparams(ee$Image(eeobject$first()))
   if (missing(center)) {
     center <- eeobject$
+      first()$
       geometry()$
       getInfo()$coordinates[[1]] %>%
       unlist() %>%
@@ -264,7 +230,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
   tokens <- rep(NA, ee_size)
   for (x in 1:ee_size) {
     eeobj <- ee$Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs python(1)
-    tile <- ee_map$ee_map_py(eeobj, vizparams)
+    tile <- py_to_r(map_py$ee_map_py(eeobj, vizparams))
     tokens[x] <- tile
     m@map <- m@map %>%
       addWMSTiles(group = objname[x], baseUrl = tile, layers = "0") %>%
@@ -326,7 +292,9 @@ ee_img_vizparams <- function(x) {
   } else {
     min = 0 ; max = 255
   }
-  list(bands = x$bandNames()$getInfo()[1:3],min = min, max = max)
+  bands = x$bandNames()$getInfo()
+  if (length(bands) > 3) bands = bands[1:3]
+  list(bands = bands, min = min, max = max)
 }
 
 
@@ -376,3 +344,20 @@ setMethod(
     return(e1)
   }
 )
+
+
+
+#'Display a EE token using mapview
+#'@noRd
+create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
+  m <- mapview()
+  m@map <- m@map %>%
+    addWMSTiles(baseUrl = tile, group = objname, layers = "0") %>%
+    setView(center[1], center[2], zoom = zoom_start) %>%
+    rgee:::ee_mapViewLayersControl(names = c(objname))
+
+  m@object$tokens <- tile
+  m@object$names <- objname
+  m@object$eeobject <- eeobject$name()
+  m
+}

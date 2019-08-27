@@ -1,14 +1,16 @@
-#' Create a stars object based on a Earth Engine thumbnail
+#' Create a stars object based on an Earth Engine (EE) thumbnail image
 #'
-#' @param x Earth Engine Image object
-#' @param region Geospatial region of the image (E,S,W,N, earth engine geometry object,
+#' Wrapper function to download RGB image results
+#'
+#' @param x EE Image object
+#' @param region Geospatial region of the image (E,S,W,N, EE Geometry,
 #' GeoJSON, or sfg). By default, the whole image will be used.
-#' @param scale spatial pixel size.
-#' @param vizparams list; visualization parameters. See Details.
+#' @param scale pixel size.
+#' @param vizparams A list that contains the visualization parameters. See details.
 #' @param crs The target projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
-#'
+#' @param quiet logical; suppress info message.
 #' @details
-#' The `ee_as_thumbnail` function shares parameters with `ee_map`. The parameters are:
+#' The `ee_as_thumbnail` function shares parameters with \href{rgee}{eemap}. This parameters are:
 #'
 #' \tabular{lll}{
 #' \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
@@ -24,40 +26,59 @@
 #' }
 #'
 #' @importFrom  stars st_set_dimensions st_as_stars write_stars
+#' @importFrom sf st_crs
 #' @importFrom reticulate py_to_r
 #' @importFrom  utils download.file zip str
 #' @importFrom png readPNG
 #' @examples
 #' \dontrun{
-#' library(rgee)
 #' library(sf)
+#' library(rgee)
 #' library(stars)
+#' library(cptcity)
+#' library(rnaturalearth)
 #' ee_Initialize()
+#' world_map <- ne_countries(returnclass = "sf")[-7,][['geometry']]  #Remove Antarctica
 #'
-#' # Fetch a digital elevation model.
+#' dem_palette <- cpt(pal = "td_DEM_screen",n=10)
+#' ndvi_palette <- cpt(pal = "cb_div_RdYlGn_03",n=10)
+#'
+#'
+#' # This nice example has been adapted from https://github.com/kmarkert/cartoee
+#' # Example #01  - WORLD DEM
 #' image <- ee$Image('CGIAR/SRTM90_V4')
+#' region <- c(-180,-90,180,90)
 #'
-#' # params
-#' palette <- c('00A600','63C600','E6E600','E9BD3A','ECB176','EFC2B3','F2F2F2')
-#' vizparams1 <- list(min=0, max=3000)
-#' vizparams2 <- list(min=0, max=3000, palette=palette)
-#' outer = list(matrix(c(-84.6, 15.7,-84.6, -55.9,-32.9, -55.9,-32.9, 15.7,-84.6, 15.7),
-#'                     ncol=2, byrow=TRUE))
-#' region <- st_polygon(outer) %>% sf_as_ee
-#' # plot1
-#' my_thumbnail <- ee_as_thumbnail(x = image,region = region,scale = 1, vizparams = vizparams1)
-#' plot(my_thumbnail)
+#' world_dem <- ee_as_thumbnail(x = image,region=region,vizparams = list(min=0,max=5000))
+#' world_dem <- world_dem*5000
 #'
-#' # plot2
-#' my_thumbnail <- ee_as_thumbnail(x = image,region = region,scale = 1,vizparams = vizparams2)
-#' image(my_thumbnail, rgb = c(3,2,1))
+#' plot(world_dem[world_map],col=dem_palette,breaks='equal',reset=FALSE,main='World Elevation')
+#' plot(world_map, col = NA, border = 'black', add = TRUE, lwd = 1.5)
+#'
+#' # Example #02  - WORLD NDVI
+#' # function to add NDVI band to imagery
+#' calc_ndvi <- function(img) {
+#'   ndvi <- img$normalizedDifference(c('Nadir_Reflectance_Band2', 'Nadir_Reflectance_Band1'))
+#'   img$addBands(ndvi$rename('ndvi'))
+#' }
+#'
+#' # MODIS Nadir BRDF-Adjusted Reflectance with NDVI band
+#' modis = ee$ImageCollection('MODIS/006/MCD43A4')$
+#'   filterDate('2010-01-01','2016-01-01')$
+#'   map(calc_ndvi)
+#' visParams = list(min = -0.5, max = 0.85, bands = 'ndvi')
+#' modis_ndvi <- ee_as_thumbnail(x = modis$mean(),vizparams = visParams,region)
+#' plot(modis_ndvi[world_map], reset = FALSE, col = ndvi_palette,main = 'World NDVI')
+#' plot(world_map, col = NA, border = 'black', add = TRUE, lwd = 1.5)
 #' }
 #' @export
-ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326') {
+ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quiet=TRUE) {
   if (class(x)[1] != "ee.image.Image") stop("image is not a ee.image.Image class")
-
+  ee_crs <- sprintf("EPSG:%s",crs)
   if (missing(region)) {
     region <- x$geometry()$bounds()$getInfo()['coordinates'][[1]][[1]]
+    if (!quiet) warning("Region is missing, all whole image is used: \n",
+              "Region estimated: ",paste(region,collapse = " "))
   } else {
     region <- create_region(region)
   }
@@ -66,6 +87,12 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326
   min_max_x <- c(min(mapR_df[1]),max(mapR_df[1]))
   min_max_y <- c(min(mapR_df[2]),max(mapR_df[2]))
 
+  if (missing(scale)) {
+    scale <- c(512/diff(min_max_x), 512/diff(min_max_y))
+    if (!quiet) warning("scale is missing, dimensions of 512x512 taking by default. \n",
+                        "scale estimated: ",paste(scale,collapse = " "))
+  }
+
   if (length(scale) == 1L) {
     scale_x = scale
     scale_y = scale
@@ -73,15 +100,16 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326
     scale_x = scale[1]
     scale_y = scale[2]
   } else {
-    stop("the scale must be a single numeric value or a two-element ",
-         "vector which representing the cell size for x and y.")
+    stop("The scale must be a single numeric value or a two-element vector",
+         ", which represents the cell size for x and y.")
   }
 
   dim_x <- diff(min_max_x)/scale_x
   dim_y <- diff(min_max_y)/scale_y
 
   if (dim_y > 5000 | dim_x > 5000 ) {
-    warning(sprintf(" For large image (%sx%s) is preferible use rgee::ee_download_*()",dim_x,dim_y))
+    if (!quiet) warning(sprintf(" For large image (%sx%s) is preferible use rgee::ee_download_*()",
+                                dim_x,dim_y))
   }
 
   dimensions <- c(as.integer(ceiling(dim_x)),
@@ -98,18 +126,18 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326
 
   new_region <- list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
 
-  new_params <- list(crs = crs,
+  new_params <- list(crs = ee_crs,
                      dimensions = dimensions,
                      region = new_region)
   viz_params <- c(new_params, vizparams)
 
-  cat("Getting the thumbnail ... please wait")
-  print(viz_params)
+  if (!quiet) cat("Getting the thumbnail image fromm Earth Engine ... please wait")
   thumbnail_url <- x$getThumbURL(viz_params)
   z <- tempfile()
   download.file(thumbnail_url,z,mode="wb",quiet = TRUE)
   raw_image <- readPNG(z)
   bands <- (dim(raw_image)[3]-1):1
+
   if (length(bands)>2) {
     if (length(bands)==3) band_name <- c("R","G","B")
     stars_png <- mapply(read_png_as_stars,
@@ -130,6 +158,7 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326
     attr_dim$x$delta <- scale_x
     attr_dim$y$delta <- scale_y
     attr(stars_png,"dimensions") <- attr_dim
+    st_crs(stars_png) <- crs
     return(stars_png)
   } else {
     band_name <- "G"
@@ -146,6 +175,7 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 'EPSG:4326
     attr_dim$x$delta <- scale_x
     attr_dim$y$delta <- scale_y
     attr(stars_png,"dimensions") <- attr_dim
+    st_crs(stars_png) <- crs
     return(stars_png)
   }
 }

@@ -8,10 +8,9 @@
 \alias{ee_map.ee.featurecollection.FeatureCollection}
 \alias{ee_map.ee.image.Image}
 \alias{ee_map.ee.imagecollection.ImageCollection}
-\title{Adds a given EE object to mapview as a layer.}
+\title{Adds a given Earth Engine (EE) spatial object to mapview as a layer.}
 \usage{
-ee_map(eeobject, vizparams, center, zoom_start = 8, objname = "map",
-  max_nimage = 10, ...)
+ee_map(eeobject, ...)
 
 \method{ee_map}{default}(eeobject, ...)
 
@@ -31,30 +30,32 @@ ee_map(eeobject, vizparams, center, zoom_start = 8, objname = "map",
   center, zoom_start = 2, objname = "map", max_nimage = 10, ...)
 }
 \arguments{
-\item{eeobject}{EE object.}
+\item{eeobject}{An EE spatial object.}
 
-\item{vizparams}{list; visualization parameters. See Details.}
+\item{...}{Ignored.}
 
-\item{center}{character vector; the longitude and latitude of the map center.}
+\item{vizparams}{A list that contains the visualization parameters. See details.}
+
+\item{center}{The longitude and latitude of the map center. If it is not defined,
+the centroid of the spatial EE object is taked.}
 
 \item{zoom_start}{zoom level.}
 
-\item{objname}{character vector; name of the map(or maps).}
+\item{objname}{character vector. Name of the map, or maps in case that the EE object
+be an ImageCollection.}
 
 \item{max_nimage}{Max number of Image to display.}
-
-\item{...}{ignored}
 }
 \description{
-Display a given EE object (Geometry, Image, Feature, FeatureCollection
-or ImageCollection) using the \code{\link[mapview]{mapview}} style.
+Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
+FeatureCollection or ImageCollection) base on \href{mapview}{mapview}.
 }
 \details{
-\code{ee_map} takes advantage of the getMapId function for generating a provisial
-WMS service supported by Google Earth Engine. To achieve desirable visualization effects, it is
-depend on the type of EE object. For neither Image or ImageCollection, you can provide visualization parameters to ee_map by
-the parameter vizparams. The
-\href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
+\code{ee_map} takes advantage of the ee$Image()$getMapId python function for fetch and return
+a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
+visualization effects, it is depend on the type of spatial EE object . For neither Image or
+ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
+The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
 
 \tabular{lll}{
 \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
@@ -69,42 +70,46 @@ the parameter vizparams. The
 \strong{format}    \tab  Either "jpg" or "png"                                                       \tab  string \cr
 }
 
-If you add a EE Image or ImageCollection object to the map without any additional parameters,
+If you add an Image or ImageCollection to the map without any additional parameters,
 by default \code{ee_map} assigns the first three bands to red, green and blue, respectively.
-The default stretch is based on the mixmax range ,  which may or may not be suitable.
-In the case of Geometry, Feature or FeatureCollection objects vizparams allow the next parameters:
-
+The default stretch is based on the min-max range.  For Geometry, Feature or
+FeatureCollection. The available vizparams are:
 \itemize{
-\item color: A hex string in the format RRGGBB specifying the color to use for drawing the features.
+\item \strong{color}: A hex string in the format RRGGBB specifying the color to use for drawing the features.
 By default 000000.
-\item pointRadius: The radius of the point markers. By default 3.
-\item strokeWidth: The width of lines and polygon borders. By default 3.
+\item \strong{pointRadius}: The radius of the point markers. By default 3.
+\item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
 }
 }
 \examples{
 \dontrun{
 library(rgee)
-ee_initialize()
-
+ee_Initialize()
 # Case: Geometry*
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-m1 <- ee_map(geom,list(pointRadius=10,color="FF0000"), objname = "Geometry-Arequipa")
+m1 <- ee_map(eeobject = geom,
+             vizparams = list(pointRadius=10,color="FF0000"),
+             objname = "Geometry-Arequipa")
 m1
 
 # Case: Feature
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-m2 <- ee_map(ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
+m2 <- ee_map(eeobject = ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
 m2 + m1
 
 # Case: FeatureCollection
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-m3 <- ee_map(eeobject_fc,objname = 'FeatureCollection')
-m3+m1
+m3 <- ee_map(eeobject = eeobject_fc,objname = 'FeatureCollection')
+m3+m2+m1
 
 # Case: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-m4 <- ee_map(image,list(bands = c('B4','B3','B2'), max=10000),objname = "Image")
-m4+m1
+m4 <- ee_map(eeobject = image,
+             vizparams = list(bands = c('B4','B3','B2'),
+                              max=10000),
+             objname = "SF",
+             zoom_start = "8")
+m4
 
 # Case: ImageCollection
 collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
@@ -115,10 +120,9 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 
 m5 <- ee_map(eeobject = collection,
              vizparams = list(bands = c('B4','B3','B2'), max=1),
-             #objname = "ImageCollection",
              objname = c("Scene_2019","Scene_2016","Scene_2011"),
-             max_nimage = 3)
-
-m5 + m1 + m2 + m3 + m4
+             max_nimage = 3,
+             zoom_start = 10)
+m5
 }
 }

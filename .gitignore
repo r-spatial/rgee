@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 .httr-oauth
+inst/doc

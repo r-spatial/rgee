@@ -46,6 +46,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/rgee_animation.html">rgee_animation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
@@ -76,28 +88,30 @@
 <div id="rgee" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#rgee" class="anchor"></a>rgee</h1></div>
-<p><a href="https://travis-ci.org/ryali93/rgee"><img src="https://travis-ci.org/ryali93/rgee.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/ryali93/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a></p>
-<div id="buildings-for-the-python-earth-engine-api" class="section level3">
+<p><a href="https://travis-ci.org/csaybar/rgee"><img src="https://travis-ci.org/csaybar/rgee.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/ryali93/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a> <a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></p>
+<div id="r-bindings-for-calling-th-python-earth-engine-api" class="section level3">
 <h3 class="hasAnchor">
-<a href="#buildings-for-the-python-earth-engine-api" class="anchor"></a>Buildings for the python Earth Engine API</h3>
-<p><strong>rgee</strong> provides a quick-witted way to interact with Google Earth Engine since R. The idea is not interact directly with the Earth Engine Web REST API but, through <a href="https://rstudio.github.io/reticulate/"><code>reticulate</code></a> call the python library <code>ee</code> from R.</p>
-<p>The main user relevant functions are:</p>
+<a href="#r-bindings-for-calling-th-python-earth-engine-api" class="anchor"></a>R bindings for calling th Python Earth Engine API</h3>
+<p><strong>rgee</strong> provides functions and classes to conveniently interact with Google Earth Engine since R. The main user relevant functions are:</p>
 <ul>
 <li>
-<code>ee_initialize</code>: Authenticate and Initialize the Earth Engine ang Google Drive API.</li>
+<code>ee</code>: The <a href="https://github.com/google/earthengine-api">EE Python library</a>, use <code>$</code> instead of <code>.</code>.</li>
 <li>
-<code>ee_map</code>: Display a given ee_Image, ee_Feature, ee_FeatureCollection or ee_ImageCollection using the <a href="https://github.com/r-spatial/mapview"><code>mapview</code></a> style.</li>
+<code>ee_initialize</code>: Authenticate and Initialize the Earth Engine and Google Drive API.</li>
 <li>
-<code>ee_download_*</code>: Move the results of an Earth Engine task to export to Hard disk.</li>
+<code>ee_map</code>: Display a <code>ee$Image</code>, <code>ee$Feature</code>, <code>ee$FeatureCollection</code>, or <code>ee$ImageCollection</code> through the <a href="https://github.com/r-spatial/mapview"><code>mapview</code></a> R package.</li>
 <li>
-<code>ee_manage_*</code>: Google Earth Engine Batch Asset Manager.</li>
+<code>ee_download_*</code>: Download the results of an “COMPLETED” Earth Engine task.</li>
 <li>
-<code>ee_as_eegeom</code>: Convert foreign R geometry object to an Spatial Earth Engine object.</li>
+<code>sf_as_ee</code>: Pass sf objects to Earth Engine.</li>
 <li>
-<code>ee_print</code>: Fetch and return metadata about Earth Engine Objects.</li>
+<code>ee_print</code>: Fetch and return metadata about Earth Engine objects.</li>
 <li>
-<code>ee_upload</code>: Batch uploading to the asset using RSelenium.</li>
+<code>ee_upload</code>: Batch uploading to the asset using selenium.</li>
+<li>
+<code>ee_manage_*</code>: Google Earth Engine Batch Asset Manager. (UNDERDEV)</li>
 </ul>
+<p>It put together the main ideas behind of <a href="https://github.com/samapriya/geeup">geeup</a>, <a href="https://github.com/loicdtx/landsat-extract-gee">geextract</a> and <a href="https://github.com/KMarkert/cartoee">cartoee</a>.</p>
 </div>
 <div id="installation-not-available-yet" class="section level2">
 <h2 class="hasAnchor">
@@ -106,6 +120,30 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"rgee"</span>)</a></code></pre></div>
 <p>To install the development version install the <a href="https://cran.r-project.org/package=devtools">devtools</a> package.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"ryali93/rgee"</span>)</a></code></pre></div>
+</div>
+<div id="windows" class="section level2">
+<h2 class="hasAnchor">
+<a href="#windows" class="anchor"></a>Windows</h2>
+<p>Before install <code>rgee</code> be sure that <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> is installed in the system. System libraries are automatically downloaded from <a href="https://github.com/rwinlib/">rwinlib</a>.</p>
+</div>
+<div id="linux" class="section level2">
+<h2 class="hasAnchor">
+<a href="#linux" class="anchor"></a>Linux</h2>
+<p>Please install the follow system libraries.</p>
+<div id="ubuntu" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ubuntu" class="anchor"></a>Ubuntu</h3>
+<pre><code>sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+sudo apt-get update
+sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libv8-3.14-dev libjson-c-dev</code></pre>
+</div>
+</div>
+<div id="macos" class="section level2">
+<h2 class="hasAnchor">
+<a href="#macos" class="anchor"></a>MacOS</h2>
+<p>Use <a href="https://brew.sh/">Homebrew</a> to install system libraries:</p>
+<pre><code>brew install pkg-config
+brew install gdal</code></pre>
 </div>
 <div id="how-does-it-works" class="section level2">
 <h2 class="hasAnchor">
@@ -117,87 +155,87 @@
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rgee)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(readr)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stars)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(mapview)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw">ee_initialize</span>()</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co"># Communal Reserve Amarakaeri - Peru</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">xmin &lt;-<span class="st"> </span><span class="fl">-71.132591318</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">xmax &lt;-<span class="st"> </span><span class="fl">-70.953664315</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">ymin &lt;-<span class="st"> </span><span class="fl">-12.892451233</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">ymax &lt;-<span class="st"> </span><span class="fl">-12.731116372</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">x_mean &lt;-<span class="st"> </span>(xmin <span class="op">+</span><span class="st"> </span>xmax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">y_mean &lt;-<span class="st"> </span>(ymin <span class="op">+</span><span class="st"> </span>ymax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">ROI &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">ROI_polygon &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(ROI, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(<span class="dv">4326</span>)</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">ee_geom &lt;-<span class="st"> </span><span class="kw">ee_as_eegeom</span>(ROI_polygon)</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co"># Get the mean annual NDVI for 2011</span></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">cloudMaskL457 &lt;-<span class="st"> </span><span class="cf">function</span>(image) {</a>
-<a class="sourceLine" id="cb3-28" data-line-number="28">  qa &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">select</span>(<span class="st">"pixel_qa"</span>)</a>
-<a class="sourceLine" id="cb3-29" data-line-number="29">  cloud &lt;-<span class="st"> </span>qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(32L)<span class="op">$</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="st">    </span><span class="kw">And</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(128L))<span class="op">$</span></a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="st">    </span><span class="kw">Or</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(8L))</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">  mask2 &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">mask</span>()<span class="op">$</span><span class="kw">reduce</span>(<span class="kw">ee_Reducer</span>()<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>())</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">  image &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">updateMask</span>(cloud<span class="op">$</span><span class="kw">Not</span>())<span class="op">$</span><span class="kw">updateMask</span>(mask2)</a>
-<a class="sourceLine" id="cb3-34" data-line-number="34">  image<span class="op">$</span><span class="kw">normalizedDifference</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"B4"</span>, <span class="st">"B3"</span>))</a>
-<a class="sourceLine" id="cb3-35" data-line-number="35">}</a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">ic_l5 &lt;-<span class="st"> </span><span class="kw">ee_ImageCollection</span>(<span class="st">"LANDSAT/LT05/C01/T1_SR"</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="st">  </span><span class="kw">filterBounds</span>(ee_geom)<span class="op">$</span></a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2011-01-01"</span>, <span class="st">"2011-12-31"</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="st">  </span><span class="kw">map</span>(cloudMaskL457)</a>
-<a class="sourceLine" id="cb3-41" data-line-number="41">mean_l5 &lt;-<span class="st"> </span>ic_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()<span class="op">$</span><span class="kw">rename</span>(<span class="st">"NDVI"</span>)</a>
-<a class="sourceLine" id="cb3-42" data-line-number="42">mean_l5 &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw">reproject</span>(<span class="dt">crs =</span> <span class="st">"EPSG:4326"</span>, <span class="dt">scale =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb3-43" data-line-number="43">mean_l5_Amarakaeri &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/clip">clip</a></span>(ee_geom)</a></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Download -&gt; ee$Image</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">task_img &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>image<span class="op">$</span><span class="kw">toDrive</span>(</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">image =</span> mean_l5_Amarakaeri,</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_1"</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="dt">fileFormat =</span> <span class="st">"GEOTIFF"</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="dt">fileNamePrefix =</span> <span class="st">"NDVI_l5_2011_Amarakaeri"</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">task_img<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="kw">ee_download_monitoring</span>(task_img, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">img &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="dt">task =</span> task_img,</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="dt">filename =</span> <span class="st">"amarakaeri.tif"</span>,</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="dt">overwrite =</span> T</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(img)</a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co"># Download -&gt; ee$FeatureCollection</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19">amk_f &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ee<span class="op">$</span><span class="kw">Feature</span>(ee_geom, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">name =</span> <span class="st">"Amarakaeri"</span>))))</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20">amk_fc &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(amk_f)</a>
-<a class="sourceLine" id="cb4-21" data-line-number="21">task_vector &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span><span class="kw">toDrive</span>(</a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">  <span class="dt">collection =</span> amk_fc,</a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_2"</span>,</a>
-<a class="sourceLine" id="cb4-24" data-line-number="24">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
-<a class="sourceLine" id="cb4-25" data-line-number="25">  <span class="dt">fileFormat =</span> <span class="st">"GEOJSON"</span>,</a>
-<a class="sourceLine" id="cb4-26" data-line-number="26">  <span class="dt">fileNamePrefix =</span> <span class="st">"geometry_Amarakaeri"</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27">)</a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">task_vector<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="kw">ee_download_monitoring</span>(task_vector, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31">amk_geom &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">  <span class="dt">task =</span> task_vector,</a>
-<a class="sourceLine" id="cb4-33" data-line-number="33">  <span class="dt">filename =</span> <span class="st">"amarakaeri.geojson"</span>,</a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">)</a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(amk_geom<span class="op">$</span>geometry, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="kw">py_help</span>(ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span>toDrive)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rgee)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(readr)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stars)</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(mapview)</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="kw">ee_initialize</span>()</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># Communal Reserve Amarakaeri - Peru</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">xmin &lt;-<span class="st"> </span><span class="fl">-71.132591318</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11">xmax &lt;-<span class="st"> </span><span class="fl">-70.953664315</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12">ymin &lt;-<span class="st"> </span><span class="fl">-12.892451233</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13">ymax &lt;-<span class="st"> </span><span class="fl">-12.731116372</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">x_mean &lt;-<span class="st"> </span>(xmin <span class="op">+</span><span class="st"> </span>xmax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15">y_mean &lt;-<span class="st"> </span>(ymin <span class="op">+</span><span class="st"> </span>ymax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">ROI &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">ROI_polygon &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(ROI, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(<span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb5-23" data-line-number="23">ee_geom &lt;-<span class="st"> </span><span class="kw">ee_as_eegeom</span>(ROI_polygon)</a>
+<a class="sourceLine" id="cb5-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb5-25" data-line-number="25"></a>
+<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="co"># Get the mean annual NDVI for 2011</span></a>
+<a class="sourceLine" id="cb5-27" data-line-number="27">cloudMaskL457 &lt;-<span class="st"> </span><span class="cf">function</span>(image) {</a>
+<a class="sourceLine" id="cb5-28" data-line-number="28">  qa &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">select</span>(<span class="st">"pixel_qa"</span>)</a>
+<a class="sourceLine" id="cb5-29" data-line-number="29">  cloud &lt;-<span class="st"> </span>qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(32L)<span class="op">$</span></a>
+<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="st">    </span><span class="kw">And</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(128L))<span class="op">$</span></a>
+<a class="sourceLine" id="cb5-31" data-line-number="31"><span class="st">    </span><span class="kw">Or</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(8L))</a>
+<a class="sourceLine" id="cb5-32" data-line-number="32">  mask2 &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">mask</span>()<span class="op">$</span><span class="kw">reduce</span>(<span class="kw">ee_Reducer</span>()<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>())</a>
+<a class="sourceLine" id="cb5-33" data-line-number="33">  image &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">updateMask</span>(cloud<span class="op">$</span><span class="kw">Not</span>())<span class="op">$</span><span class="kw">updateMask</span>(mask2)</a>
+<a class="sourceLine" id="cb5-34" data-line-number="34">  image<span class="op">$</span><span class="kw">normalizedDifference</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"B4"</span>, <span class="st">"B3"</span>))</a>
+<a class="sourceLine" id="cb5-35" data-line-number="35">}</a>
+<a class="sourceLine" id="cb5-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb5-37" data-line-number="37">ic_l5 &lt;-<span class="st"> </span><span class="kw">ee_ImageCollection</span>(<span class="st">"LANDSAT/LT05/C01/T1_SR"</span>)<span class="op">$</span></a>
+<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="st">  </span><span class="kw">filterBounds</span>(ee_geom)<span class="op">$</span></a>
+<a class="sourceLine" id="cb5-39" data-line-number="39"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2011-01-01"</span>, <span class="st">"2011-12-31"</span>)<span class="op">$</span></a>
+<a class="sourceLine" id="cb5-40" data-line-number="40"><span class="st">  </span><span class="kw">map</span>(cloudMaskL457)</a>
+<a class="sourceLine" id="cb5-41" data-line-number="41">mean_l5 &lt;-<span class="st"> </span>ic_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()<span class="op">$</span><span class="kw">rename</span>(<span class="st">"NDVI"</span>)</a>
+<a class="sourceLine" id="cb5-42" data-line-number="42">mean_l5 &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw">reproject</span>(<span class="dt">crs =</span> <span class="st">"EPSG:4326"</span>, <span class="dt">scale =</span> <span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb5-43" data-line-number="43">mean_l5_Amarakaeri &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/clip">clip</a></span>(ee_geom)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Download -&gt; ee$Image</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">task_img &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>image<span class="op">$</span><span class="kw">toDrive</span>(</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="dt">image =</span> mean_l5_Amarakaeri,</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_1"</span>,</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="dt">fileFormat =</span> <span class="st">"GEOTIFF"</span>,</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">  <span class="dt">fileNamePrefix =</span> <span class="st">"NDVI_l5_2011_Amarakaeri"</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">task_img<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="kw">ee_download_monitoring</span>(task_img, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">img &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12">  <span class="dt">task =</span> task_img,</a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">  <span class="dt">filename =</span> <span class="st">"amarakaeri.tif"</span>,</a>
+<a class="sourceLine" id="cb6-14" data-line-number="14">  <span class="dt">overwrite =</span> T</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15">)</a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(img)</a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co"># Download -&gt; ee$FeatureCollection</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19">amk_f &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ee<span class="op">$</span><span class="kw">Feature</span>(ee_geom, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">name =</span> <span class="st">"Amarakaeri"</span>))))</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">amk_fc &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(amk_f)</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">task_vector &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span><span class="kw">toDrive</span>(</a>
+<a class="sourceLine" id="cb6-22" data-line-number="22">  <span class="dt">collection =</span> amk_fc,</a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_2"</span>,</a>
+<a class="sourceLine" id="cb6-24" data-line-number="24">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
+<a class="sourceLine" id="cb6-25" data-line-number="25">  <span class="dt">fileFormat =</span> <span class="st">"GEOJSON"</span>,</a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">  <span class="dt">fileNamePrefix =</span> <span class="st">"geometry_Amarakaeri"</span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27">)</a>
+<a class="sourceLine" id="cb6-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29">task_vector<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="kw">ee_download_monitoring</span>(task_vector, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31">amk_geom &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
+<a class="sourceLine" id="cb6-32" data-line-number="32">  <span class="dt">task =</span> task_vector,</a>
+<a class="sourceLine" id="cb6-33" data-line-number="33">  <span class="dt">filename =</span> <span class="st">"amarakaeri.geojson"</span>,</a>
+<a class="sourceLine" id="cb6-34" data-line-number="34">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb6-35" data-line-number="35">)</a>
+<a class="sourceLine" id="cb6-36" data-line-number="36"></a>
+<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(amk_geom<span class="op">$</span>geometry, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="kw">py_help</span>(ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span>toDrive)</a></code></pre></div>
 </div>
 <div id="contact" class="section level2">
 <h2 class="hasAnchor">

@@ -16,7 +16,12 @@ Authors@R:
              family = "Aybar",
              role = c("aut", "cre"),
              email = "csaybar@gmail.com",
-             comment = c(ORCID = "0000-0003-2745-9535")))
+             comment = c(ORCID = "0000-0003-2745-9535")),
+      person(given = "MariaElena",
+             family = "Aduato",
+             role = c("ctb"),
+             email = "2a.mariaelena@gmail.com",
+             comment = c(ORCID = "0000-0002-2154-2429")))
 Description: R bindings for calling the Earth Engine API.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
@@ -28,7 +33,9 @@ Depends:
     reticulate
 Suggests:
     testthat (>= 2.1.0),
-    covr
+    covr,
+    knitr,
+    rmarkdown
 Imports:
     magrittr,
     readr,
@@ -46,3 +53,4 @@ Imports:
     sf
 URL: https://github.com/ryali93/rgee
 BugReports: https://github.com/ryali93/rgee/issues
+VignetteBuilder: knitr

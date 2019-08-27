@@ -18,5 +18,3 @@ ee_restart <- function() {
     require(rgee)
   }
 }
-
-

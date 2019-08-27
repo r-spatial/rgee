@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Adds a given EE object to mapview as a layer. — ee_map • rgee</title>
+<title>Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,10 +30,10 @@
 
 
 
-<meta property="og:title" content="Adds a given EE object to mapview as a layer. — ee_map" />
+<meta property="og:title" content="Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map" />
 
-<meta property="og:description" content="Display a given EE object (Geometry, Image, Feature, FeatureCollection
-or ImageCollection) using the mapview style." />
+<meta property="og:description" content="Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
+FeatureCollection or ImageCollection) base on mapview." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -81,6 +81,18 @@ or ImageCollection) using the mapview style." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/rgee_animation.html">rgee_animation</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="../news/index.html">Changelog</a>
 </li>
@@ -105,20 +117,19 @@ or ImageCollection) using the mapview style." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Adds a given EE object to mapview as a layer.</h1>
+    <h1>Adds a given Earth Engine (EE) spatial object to mapview as a layer.</h1>
     <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_map.R'><code>R/ee_map.R</code></a></small>
     <div class="hidden name"><code>ee_map.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Display a given EE object (Geometry, Image, Feature, FeatureCollection
-or ImageCollection) using the <code><a href='https://www.rdocumentation.org/packages/mapview/topics/mapView'>mapview</a></code> style.</p>
+    <p>Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
+FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>,
-  <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for default</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
@@ -148,15 +159,20 @@ or ImageCollection) using the <code><a href='https://www.rdocumentation.org/pack
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>eeobject</th>
-      <td><p>EE object.</p></td>
+      <td><p>An EE spatial object.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Ignored.</p></td>
     </tr>
     <tr>
       <th>vizparams</th>
-      <td><p>list; visualization parameters. See Details.</p></td>
+      <td><p>A list that contains the visualization parameters. See details.</p></td>
     </tr>
     <tr>
       <th>center</th>
-      <td><p>character vector; the longitude and latitude of the map center.</p></td>
+      <td><p>The longitude and latitude of the map center. If it is not defined,
+the centroid of the spatial EE object is taked.</p></td>
     </tr>
     <tr>
       <th>zoom_start</th>
@@ -164,25 +180,22 @@ or ImageCollection) using the <code><a href='https://www.rdocumentation.org/pack
     </tr>
     <tr>
       <th>objname</th>
-      <td><p>character vector; name of the map(or maps).</p></td>
+      <td><p>character vector. Name of the map, or maps in case that the EE object
+be an ImageCollection.</p></td>
     </tr>
     <tr>
       <th>max_nimage</th>
       <td><p>Max number of Image to display.</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>ignored</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>ee_map</code> takes advantage of the getMapId function for generating a provisial
-WMS service supported by Google Earth Engine. To achieve desirable visualization effects, it is
-depend on the type of EE object. For neither Image or ImageCollection, you can provide visualization parameters to ee_map by
-the parameter vizparams. The
-<a href='https://developers.google.com/earth-engine/image_visualization'>parameters</a> available are:</p>
+    <p><code>ee_map</code> takes advantage of the ee$Image()$getMapId python function for fetch and return
+a mapid and token that is suitable for use in a <a href='mapview'>mapview</a>. To achieve desirable
+visualization effects, it is depend on the type of spatial EE object . For neither Image or
+ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
+The <a href='https://developers.google.com/earth-engine/image_visualization'>parameters</a> available are:</p>
 <table class='table'>
 <tr><td></td><td><strong>Parameter</strong></td><td></td></tr>
 <tr><td></td><td><strong>Description</strong></td><td></td></tr>
@@ -203,42 +216,46 @@ the parameter vizparams. The
 <tr><td></td><td><strong>format</strong></td><td></td></tr>
 <tr><td>Either "jpg" or "png"</td><td>string</td><td></td></tr>
 </table>
-    <p>If you add a EE Image or ImageCollection object to the map without any additional parameters,
+    <p>If you add an Image or ImageCollection to the map without any additional parameters,
 by default <code>ee_map</code> assigns the first three bands to red, green and blue, respectively.
-The default stretch is based on the mixmax range ,  which may or may not be suitable.
-In the case of Geometry, Feature or FeatureCollection objects vizparams allow the next parameters:</p>
-<ul>
-<li><p>color: A hex string in the format RRGGBB specifying the color to use for drawing the features.
+The default stretch is based on the min-max range.  For Geometry, Feature or
+FeatureCollection. The available vizparams are:</p><ul>
+<li><p><strong>color</strong>: A hex string in the format RRGGBB specifying the color to use for drawing the features.
 By default 000000.</p></li>
-<li><p>pointRadius: The radius of the point markers. By default 3.</p></li>
-<li><p>strokeWidth: The width of lines and polygon borders. By default 3.</p></li>
+<li><p><strong>pointRadius</strong>: The radius of the point markers. By default 3.</p></li>
+<li><p><strong>strokeWidth</strong>: The width of lines and polygon borders. By default 3.</p></li>
 </ul>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_initialize</span>()
-
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 <span class='co'># Case: Geometry*</span>
 <span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(-<span class='fl'>73.53522</span>, -<span class='fl'>15.75453</span>))
-<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>geom</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>pointRadius</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>color</span><span class='kw'>=</span><span class='st'>"FF0000"</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>)
+<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
+             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>pointRadius</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>color</span><span class='kw'>=</span><span class='st'>"FF0000"</span>),
+             <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>)
 <span class='no'>m1</span>
 
 <span class='co'># Case: Feature</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
-<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)
+<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)
 <span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case: FeatureCollection</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>eeobject_fc</span>,<span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>'FeatureCollection'</span>)
-<span class='no'>m3</span>+<span class='no'>m1</span>
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>,<span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>'FeatureCollection'</span>)
+<span class='no'>m3</span>+<span class='no'>m2</span>+<span class='no'>m1</span>
 
 <span class='co'># Case: Image</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='no'>image</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>), <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>10000</span>),<span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Image"</span>)
-<span class='no'>m4</span>+<span class='no'>m1</span>
+<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>image</span>,
+             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>),
+                              <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>10000</span>),
+             <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"SF"</span>,
+             <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='st'>"8"</span>)
+<span class='no'>m4</span>
 
 <span class='co'># Case: ImageCollection</span>
 <span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
@@ -249,11 +266,10 @@ By default 000000.</p></li>
 
 <span class='no'>m5</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>collection</span>,
              <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>), <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>1</span>),
-             <span class='co'>#objname = "ImageCollection",</span>
              <span class='kw'>objname</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Scene_2019"</span>,<span class='st'>"Scene_2016"</span>,<span class='st'>"Scene_2011"</span>),
-             <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
-<span class='no'>m5</span> + <span class='no'>m1</span> + <span class='no'>m2</span> + <span class='no'>m3</span> + <span class='no'>m4</span>
+             <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+             <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>m5</span>
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

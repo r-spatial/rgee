@@ -8,6 +8,7 @@ Status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 ### R bindings for calling th Python Earth Engine API
 

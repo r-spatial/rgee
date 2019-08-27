@@ -29,6 +29,7 @@ Authors:
 Other contributors:
 \itemize{
   \item Julio Contreras \email{julius013199@gmail.com} (0000-0001-5579-8919) [contributor]
+  \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (0000-0002-2154-2429) [contributor]
 }
 
 }
