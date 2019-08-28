@@ -10,6 +10,7 @@
 #' @param  zoom_start zoom level.
 #' @param objname character vector. Name of the map, or maps in case that the EE object
 #' be an ImageCollection.
+#' @param quiet logical; suppress info messages.
 #' @param ... Ignored.
 #' @details
 #' `ee_map` takes advantage of the ee$Image()$getMapId python function for fetch and return
@@ -41,15 +42,17 @@
 #'  \item \strong{pointRadius}: The radius of the point markers. By default 3.
 #'  \item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
 #' }
-#'@examples
+#' @examples
 #' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
 #' # Case: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-#' m1 <- ee_map(eeobject = geom,
-#'              vizparams = list(pointRadius=10,color="FF0000"),
-#'              objname = "Geometry-Arequipa")
+#' m1 <- ee_map(
+#'   eeobject = geom,
+#'   vizparams = list(pointRadius = 10, color = "FF0000"),
+#'   objname = "Geometry-Arequipa"
+#' )
 #' m1
 #'
 #' # Case: Feature
@@ -59,16 +62,20 @@
 #'
 #' # Case: FeatureCollection
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' m3 <- ee_map(eeobject = eeobject_fc,objname = 'FeatureCollection')
-#' m3+m2+m1
+#' m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+#' m3 + m2 + m1
 #'
 #' # Case: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' m4 <- ee_map(eeobject = image,
-#'              vizparams = list(bands = c('B4','B3','B2'),
-#'                               max=10000),
-#'              objname = "SF",
-#'              zoom_start = "8")
+#' m4 <- ee_map(
+#'   eeobject = image,
+#'   vizparams = list(
+#'     bands = c("B4", "B3", "B2"),
+#'     max = 10000
+#'   ),
+#'   objname = "SF",
+#'   zoom_start = "8"
+#' )
 #' m4
 #'
 #' # Case: ImageCollection
@@ -78,11 +85,13 @@
 #'   filterDate("2014-01-01", "2015-01-01")$
 #'   sort("CLOUD_COVER")
 #'
-#' m5 <- ee_map(eeobject = collection,
-#'              vizparams = list(bands = c('B4','B3','B2'), max=1),
-#'              objname = c("Scene_2019","Scene_2016","Scene_2011"),
-#'              max_nimage = 3,
-#'              zoom_start = 10)
+#' m5 <- ee_map(
+#'   eeobject = collection,
+#'   vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
+#'   objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
+#'   max_nimage = 3,
+#'   zoom_start = 10
+#' )
 #' m5
 #' }
 #' @importFrom mapview mapview
@@ -96,7 +105,7 @@ ee_map <- function(eeobject, ...) {
 
 #' @name ee_map
 #' @export
-ee_map.default <- function(eeobject,...) {
+ee_map.default <- function(eeobject, ...) {
   mapview()
 }
 
@@ -106,18 +115,41 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
                                         vizparams,
                                         center,
                                         zoom_start = 8,
-                                        objname = "map", ...) {
+                                        objname = "map",
+                                        quiet = FALSE,
+                                        ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   map_py <- ee_source_python(oauth_func_path)
 
-  if (missing(vizparams)) vizparams <- ee_geom_vizparams()
-  if (missing(center)) center <- eeobject$centroid()$getInfo()$coordinates
+  if (missing(vizparams)) {
+    vizparams <- ee_geom_vizparams()
+    vzn <- names(vizparams)
+    vzv <- as.character(vizparams)
+    if (!quiet) {
+      cat(
+        " vizparams is missing, the following params are assigned. \n",
+        sprintf(
+          "vizparams: {%s:'%s', %s:%s, %s:%s}\n", vzn[1], vzv[1],
+          vzn[2], vzv[2], vzn[3], vzv[3]
+        )
+      )
+    }
+  }
+  if (missing(center)) {
+    center <- eeobject$centroid()$getInfo()$coordinates
+    if (!quiet) {
+      cat(
+        " center is missing, the centroid of this EE Geometry is used: \n",
+        "center: ", paste(center, collapse = " "), "\n"
+      )
+    }
+  }
 
-  ee_match_geom_geoviz(names(vizparams)) # Are vizparams ok?
+  ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
   tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
-  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
+  create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
 #' @name ee_map
@@ -126,18 +158,41 @@ ee_map.ee.feature.Feature <- function(eeobject,
                                       vizparams,
                                       center,
                                       zoom_start = 8,
-                                      objname = "map", ...) {
+                                      objname = "map",
+                                      quiet = FALSE,
+                                      ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   map_py <- ee_source_python(oauth_func_path)
 
-  if (missing(vizparams)) vizparams <- ee_geom_vizparams()
-  if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+  if (missing(vizparams)) {
+    vizparams <- ee_geom_vizparams()
+    vzn <- names(vizparams)
+    vzv <- as.character(vizparams)
+    if (!quiet) {
+      cat(
+        " vizparams is missing, the following params are assigned. \n",
+        sprintf(
+          "vizparams: {%s:'%s', %s:%s, %s:%s}\n", vzn[1], vzv[1],
+          vzn[2], vzv[2], vzn[3], vzv[3]
+        )
+      )
+    }
+  }
+  if (missing(center)) {
+    center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+    if (!quiet) {
+      cat(
+        " center is missing, the centroid of this EE Feature is used: \n",
+        "center: ", paste(center, collapse = " "), "\n"
+      )
+    }
+  }
 
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
   tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
-  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
+  create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
 #' @name ee_map
@@ -147,18 +202,42 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                           center,
                                                           zoom_start = 8,
                                                           objname = "map",
+                                                          quiet = FALSE,
                                                           ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   map_py <- ee_source_python(oauth_func_path)
 
-  if (missing(vizparams)) vizparams <- ee_geom_vizparams()
-  if (missing(center)) center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+  if (missing(vizparams)) {
+    vizparams <- ee_geom_vizparams()
+    vzn <- names(vizparams)
+    vzv <- as.character(vizparams)
+
+    if (!quiet) {
+      cat(
+        " vizparams is missing, the following params are assigned. \n",
+        sprintf(
+          "vizparams: {%s:'%s', %s:%s, %s:%s}\n", vzn[1], vzv[1],
+          vzn[2], vzv[2], vzn[3], vzv[3]
+        )
+      )
+    }
+  }
+
+  if (missing(center)) {
+    center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+    if (!quiet) {
+      cat(
+        " center is missing, the centroid of this EE FeatureCollection is used: \n",
+        "center: ", paste(center, collapse = " "), "\n"
+      )
+    }
+  }
 
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
   tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
-  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
+  create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
 #' @name ee_map
@@ -166,13 +245,27 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
 ee_map.ee.image.Image <- function(eeobject,
                                   vizparams,
                                   center,
-                                  zoom_start = 2,
+                                  zoom_start = 8,
                                   objname = "map",
+                                  quiet = FALSE,
                                   ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   map_py <- ee_source_python(oauth_func_path)
 
-  if (missing(vizparams)) vizparams <- ee_img_vizparams(eeobject)
+  if (missing(vizparams)) {
+    vizparams <- ee_img_vizparams(eeobject)
+    vzn <- names(vizparams)
+    vzv <- as.character(vizparams)
+    if (!quiet) {
+      cat(
+        " vizparams is missing, the following params are assigned. \n",
+        sprintf(
+          "vizparams: {%s:'%s', %s:%s, %s:%s}\n", vzn[1], vzv[1],
+          vzn[2], vzv[2], vzn[3], vzv[3]
+        )
+      )
+    }
+  }
   if (missing(center)) {
     center <- eeobject$
       geometry()$
@@ -183,12 +276,18 @@ ee_map.ee.image.Image <- function(eeobject,
       st_polygon() %>%
       st_centroid() %>%
       st_coordinates()
+    if (!quiet) {
+      cat(
+        " center is missing, the centroid of this EE Image object is used: \n",
+        "center: ", paste(center, collapse = " "), "\n"
+      )
+    }
   }
 
   ee_match_img_geoviz(names(vizparams))
 
   tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
-  create_beauty_basemap(eeobject, tile, center, objname,zoom_start)
+  create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
 #' @name ee_map
@@ -197,14 +296,28 @@ ee_map.ee.image.Image <- function(eeobject,
 ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
                                                       vizparams,
                                                       center,
-                                                      zoom_start = 2,
+                                                      zoom_start = 8,
                                                       objname = "map",
                                                       max_nimage = 10,
+                                                      quiet = FALSE,
                                                       ...) {
   oauth_func_path <- system.file("python/ee_map.py", package = "rgee")
   map_py <- ee_source_python(oauth_func_path)
 
-  if (missing(vizparams)) vizparams <- ee_img_vizparams(ee$Image(eeobject$first()))
+  if (missing(vizparams)) {
+    vizparams <- ee_img_vizparams(ee$Image(eeobject$first()))
+    vzn <- names(vizparams)
+    vzv <- as.character(vizparams)
+    if (!quiet) {
+      cat(
+        " vizparams is missing, the following params are assigned. \n",
+        sprintf(
+          "vizparams: {%s:'%s', %s:%s, %s:%s}\n", vzn[1], vzv[1],
+          vzn[2], vzv[2], vzn[3], vzv[3]
+        )
+      )
+    }
+  }
   if (missing(center)) {
     center <- eeobject$
       first()$
@@ -216,6 +329,12 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
       st_polygon() %>%
       st_centroid() %>%
       st_coordinates()
+    if (!quiet) {
+      cat(
+        " center is missing, the centroid of this EE ImageCollection is used: \n",
+        "center: ", paste(center, collapse = " "), "\n"
+      )
+    }
   }
   ee_match_img_geoviz(names(vizparams))
 
@@ -229,7 +348,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
   m <- mapview()
   tokens <- rep(NA, ee_size)
   for (x in 1:ee_size) {
-    eeobj <- ee$Image(eeobject_list$get(x - 1)) # indice starts - R(0) vs python(1)
+    eeobj <- ee$Image(eeobject_list$get(x - 1)) # index init - R(0) vs Python(1)
     tile <- py_to_r(map_py$ee_map_py(eeobj, vizparams))
     tokens[x] <- tile
     m@map <- m@map %>%
@@ -244,37 +363,37 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
   m
 }
 
-#' Default Geometry parameters
+#' Default Geometry vizparams
 #' @noRd
 ee_geom_vizparams <- function() {
   list(color = "000000", strokeWidth = 3, pointRadius = 3)
 }
 
-#' The vizparams is setting correctly on Images?
+#' Making sure the vizparams names on Images are correct!
 #' @param x numeric vector; list names.
 #' @noRd
-ee_match_img_geoviz <- function(x){
-  band_names <- c("bands","min","max","gain","bias","gamma","palette","opacity","format")
+ee_match_img_geoviz <- function(x) {
+  band_names <- c("bands", "min", "max", "gain", "bias", "gamma", "palette", "opacity", "format")
   if (!all(x %in% band_names)) {
     stop("vizparams has not been setting correctly")
   }
 }
 
-#' The vizparams is setting correctly on Geometries?
+#' Making sure the vizparams names on Vectors are correct!
 #' @param x numeric vector; list names.
 #' @noRd
-ee_match_geom_geoviz <- function(x){
-  band_names <- c("color","pointRadius","strokeWidth")
+ee_match_geom_geoviz <- function(x) {
+  band_names <- c("color", "pointRadius", "strokeWidth")
   if (!all(x %in% band_names)) {
     stop("vizparams has not been setting correctly")
   }
 }
 
-#'Is color parameter setting on Geometries?
+#' Set colour whether it not exist.
 #' @param x list; visualization parameters
 #' @noRd
-ee_geom_exist_color <- function(x){
-  if (!any(names(x) %in% 'color')) {
+ee_geom_exist_color <- function(x) {
+  if (!any(names(x) %in% "color")) {
     x$color <- "000000"
   }
   x
@@ -285,16 +404,10 @@ ee_geom_exist_color <- function(x){
 #' @noRd
 ee_img_vizparams <- function(x) {
   precision <- x$getInfo()$bands[[1]]$data_type$precision
-  if (precision == "int") {
-    min = 0 ; max = 255
-  } else if(precision == "float"){
-    min = 0 ; max = 1
-  } else {
-    min = 0 ; max = 255
-  }
-  bands = x$bandNames()$getInfo()
-  if (length(bands) > 3) bands = bands[1:3]
-  list(bands = bands, min = min, max = max)
+  if (precision == "float") minmax <- c(0, 1) else minmax <- c(0, 255)
+  bands <- x$bandNames()$getInfo()
+  if (length(bands) > 3) bands <- bands[3:1]
+  list(bands = bands, min = minmax[1], max = minmax[2])
 }
 
 
@@ -302,7 +415,6 @@ if (!isGeneric("+")) {
   setGeneric("+", function(x, y, ...)
     standardGeneric("+"))
 }
-
 #' mapview + mapview; adds data from the second map to the first
 #'
 #' @author Adapted from \href{https://github.com/r-spatial/mapview/blob/95050618a4eab75c73fea6e50a6aa31dcd152f14/R/plus.R}{tim-salabim code}.
@@ -346,15 +458,14 @@ setMethod(
 )
 
 
-
-#'Display a EE token using mapview
-#'@noRd
+#' Create a mapview based on an EE token
+#' @noRd
 create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m <- mapview()
   m@map <- m@map %>%
     addWMSTiles(baseUrl = tile, group = objname, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    rgee:::ee_mapViewLayersControl(names = c(objname))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
   m@object$names <- objname

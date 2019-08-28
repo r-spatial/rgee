@@ -5,13 +5,13 @@
 \title{Create a stars object based on an Earth Engine (EE) thumbnail image}
 \usage{
 ee_as_thumbnail(x, region, scale, vizparams = NULL, crs = 4326,
-  quiet = TRUE)
+  quiet = FALSE)
 }
 \arguments{
 \item{x}{EE Image object}
 
 \item{region}{Geospatial region of the image (E,S,W,N, EE Geometry,
-GeoJSON, or sfg). By default, the whole image will be used.}
+GeoJSON, or sfg). By default, the whole image is used.}
 
 \item{scale}{pixel size.}
 
@@ -19,14 +19,13 @@ GeoJSON, or sfg). By default, the whole image will be used.}
 
 \item{crs}{The target projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').}
 
-\item{quiet}{logical; suppress info message.}
+\item{quiet}{logical; suppress info messages.}
 }
 \description{
-Wrapper function to download RGB image results
+Wrapper function to download RGB Image results
 }
 \details{
-The \code{ee_as_thumbnail} function shares parameters with \href{rgee}{eemap}. This parameters are:
-
+\code{ee_as_thumbnail} shares parameters with \href{rgee}{eemap}. This parameters are:
 \tabular{lll}{
 \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
 \strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
@@ -48,37 +47,37 @@ library(stars)
 library(cptcity)
 library(rnaturalearth)
 ee_Initialize()
-world_map <- ne_countries(returnclass = "sf")[-7,][['geometry']]  #Remove Antarctica
+world_map <- ne_countries(returnclass = "sf")[-7, ][["geometry"]] # Remove Antarctica
 
-dem_palette <- cpt(pal = "td_DEM_screen",n=10)
-ndvi_palette <- cpt(pal = "cb_div_RdYlGn_03",n=10)
+dem_palette <- cpt(pal = "td_DEM_screen", n = 10)
+ndvi_palette <- cpt(pal = "cb_div_RdYlGn_03", n = 10)
 
 
 # This nice example has been adapted from https://github.com/kmarkert/cartoee
 # Example #01  - WORLD DEM
-image <- ee$Image('CGIAR/SRTM90_V4')
-region <- c(-180,-90,180,90)
+image <- ee$Image("CGIAR/SRTM90_V4")
+region <- c(-180, -90, 180, 90)
 
-world_dem <- ee_as_thumbnail(x = image,region=region,vizparams = list(min=0,max=5000))
-world_dem <- world_dem*5000
+world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
+world_dem <- world_dem * 5000
 
-plot(world_dem[world_map],col=dem_palette,breaks='equal',reset=FALSE,main='World Elevation')
-plot(world_map, col = NA, border = 'black', add = TRUE, lwd = 1.5)
+plot(world_dem[world_map], col = dem_palette, breaks = "equal", reset = FALSE, main = "World Elevation")
+plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
 
 # Example #02  - WORLD NDVI
 # function to add NDVI band to imagery
 calc_ndvi <- function(img) {
-  ndvi <- img$normalizedDifference(c('Nadir_Reflectance_Band2', 'Nadir_Reflectance_Band1'))
-  img$addBands(ndvi$rename('ndvi'))
+  ndvi <- img$normalizedDifference(c("Nadir_Reflectance_Band2", "Nadir_Reflectance_Band1"))
+  img$addBands(ndvi$rename("ndvi"))
 }
 
 # MODIS Nadir BRDF-Adjusted Reflectance with NDVI band
-modis = ee$ImageCollection('MODIS/006/MCD43A4')$
-  filterDate('2010-01-01','2016-01-01')$
+modis <- ee$ImageCollection("MODIS/006/MCD43A4")$
+  filterDate("2010-01-01", "2016-01-01")$
   map(calc_ndvi)
-visParams = list(min = -0.5, max = 0.85, bands = 'ndvi')
-modis_ndvi <- ee_as_thumbnail(x = modis$mean(),vizparams = visParams,region)
-plot(modis_ndvi[world_map], reset = FALSE, col = ndvi_palette,main = 'World NDVI')
-plot(world_map, col = NA, border = 'black', add = TRUE, lwd = 1.5)
+visParams <- list(min = -0.5, max = 0.85, bands = "ndvi")
+modis_ndvi <- ee_as_thumbnail(x = modis$mean(), vizparams = visParams, region)
+plot(modis_ndvi[world_map], reset = FALSE, col = ndvi_palette, main = "World NDVI")
+plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
 }
 }

@@ -15,19 +15,21 @@ ee_map(eeobject, ...)
 \method{ee_map}{default}(eeobject, ...)
 
 \method{ee_map}{ee.geometry.Geometry}(eeobject, vizparams, center,
-  zoom_start = 8, objname = "map", ...)
+  zoom_start = 8, objname = "map", quiet = FALSE, ...)
 
 \method{ee_map}{ee.feature.Feature}(eeobject, vizparams, center,
-  zoom_start = 8, objname = "map", ...)
+  zoom_start = 8, objname = "map", quiet = FALSE, ...)
 
 \method{ee_map}{ee.featurecollection.FeatureCollection}(eeobject,
-  vizparams, center, zoom_start = 8, objname = "map", ...)
+  vizparams, center, zoom_start = 8, objname = "map", quiet = FALSE,
+  ...)
 
 \method{ee_map}{ee.image.Image}(eeobject, vizparams, center,
-  zoom_start = 2, objname = "map", ...)
+  zoom_start = 8, objname = "map", quiet = FALSE, ...)
 
 \method{ee_map}{ee.imagecollection.ImageCollection}(eeobject, vizparams,
-  center, zoom_start = 2, objname = "map", max_nimage = 10, ...)
+  center, zoom_start = 8, objname = "map", max_nimage = 10,
+  quiet = FALSE, ...)
 }
 \arguments{
 \item{eeobject}{An EE spatial object.}
@@ -43,6 +45,8 @@ the centroid of the spatial EE object is taked.}
 
 \item{objname}{character vector. Name of the map, or maps in case that the EE object
 be an ImageCollection.}
+
+\item{quiet}{logical; suppress info messages.}
 
 \item{max_nimage}{Max number of Image to display.}
 }
@@ -87,9 +91,11 @@ library(rgee)
 ee_Initialize()
 # Case: Geometry*
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-m1 <- ee_map(eeobject = geom,
-             vizparams = list(pointRadius=10,color="FF0000"),
-             objname = "Geometry-Arequipa")
+m1 <- ee_map(
+  eeobject = geom,
+  vizparams = list(pointRadius = 10, color = "FF0000"),
+  objname = "Geometry-Arequipa"
+)
 m1
 
 # Case: Feature
@@ -99,16 +105,20 @@ m2 + m1
 
 # Case: FeatureCollection
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-m3 <- ee_map(eeobject = eeobject_fc,objname = 'FeatureCollection')
-m3+m2+m1
+m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+m3 + m2 + m1
 
 # Case: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-m4 <- ee_map(eeobject = image,
-             vizparams = list(bands = c('B4','B3','B2'),
-                              max=10000),
-             objname = "SF",
-             zoom_start = "8")
+m4 <- ee_map(
+  eeobject = image,
+  vizparams = list(
+    bands = c("B4", "B3", "B2"),
+    max = 10000
+  ),
+  objname = "SF",
+  zoom_start = "8"
+)
 m4
 
 # Case: ImageCollection
@@ -118,11 +128,13 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filterDate("2014-01-01", "2015-01-01")$
   sort("CLOUD_COVER")
 
-m5 <- ee_map(eeobject = collection,
-             vizparams = list(bands = c('B4','B3','B2'), max=1),
-             objname = c("Scene_2019","Scene_2016","Scene_2011"),
-             max_nimage = 3,
-             zoom_start = 10)
+m5 <- ee_map(
+  eeobject = collection,
+  vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
+  objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
+  max_nimage = 3,
+  zoom_start = 10
+)
 m5
 }
 }
