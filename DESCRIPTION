@@ -9,7 +9,7 @@ Authors@R:
              comment = c(ORCID = "0000-0001-5579-8919")),
       person(given = "Roy",
              family = "Yali",
-             role = c("aut"),
+             role = c("ctb"),
              email = "ryali93@gmail.com",
              comment = c(ORCID = "0000-0003-4542-3755")),
       person(given = "Cesar",
@@ -30,27 +30,25 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Depends:
     R (>= 3.3.0),
-    reticulate
+    reticulate,
+    methods
 Suggests:
     testthat (>= 2.1.0),
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    googledrive,
+    googleCloudStorageR
 Imports:
+    stars,
+    rgdal,
+    sf,
     magrittr,
-    readr,
     leaflet,
-    geojsonlint,
     geojsonio,
     mapview,
-    googledrive,
-    stars,
     getPass,
-    stringr,
-    png,
-    methods,
-    rgdal,
-    sf
-URL: https://github.com/ryali93/rgee
-BugReports: https://github.com/ryali93/rgee/issues
+    png
+URL: https://github.com/csaybar/rgee
+BugReports: https://github.com/csaybar/rgee/issues
 VignetteBuilder: knitr

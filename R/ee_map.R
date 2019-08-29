@@ -135,8 +135,9 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
       )
     }
   }
+
   if (missing(center)) {
-    center <- eeobject$centroid()$getInfo()$coordinates
+    center <- ee_py_to_r(eeobject$centroid()$getInfo()$coordinates)
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE Geometry is used: \n",
@@ -148,7 +149,7 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  tile <- ee_py_to_r(map_py$ee_map_py(eeobject, vizparams))
   create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
@@ -179,7 +180,7 @@ ee_map.ee.feature.Feature <- function(eeobject,
     }
   }
   if (missing(center)) {
-    center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+    center <- ee_py_to_r(eeobject$geometry()$centroid()$getInfo()$coordinates)
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE Feature is used: \n",
@@ -224,7 +225,7 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
   }
 
   if (missing(center)) {
-    center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+    center <- ee_py_to_r(eeobject$geometry()$centroid()$getInfo()$coordinates)
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE FeatureCollection is used: \n",
@@ -236,7 +237,7 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
-  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  tile <- ee_py_to_r(map_py$ee_map_py(eeobject, vizparams))
   create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
@@ -266,6 +267,7 @@ ee_map.ee.image.Image <- function(eeobject,
       )
     }
   }
+
   if (missing(center)) {
     center <- eeobject$
       geometry()$
@@ -275,7 +277,8 @@ ee_map.ee.image.Image <- function(eeobject,
       list() %>%
       st_polygon() %>%
       st_centroid() %>%
-      st_coordinates()
+      st_coordinates() %>%
+      ee_py_to_r
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE Image object is used: \n",
@@ -286,7 +289,7 @@ ee_map.ee.image.Image <- function(eeobject,
 
   ee_match_img_geoviz(names(vizparams))
 
-  tile <- py_to_r(map_py$ee_map_py(eeobject, vizparams))
+  tile <- ee_py_to_r(map_py$ee_map_py(eeobject, vizparams))
   create_beauty_basemap(eeobject, tile, center, objname, zoom_start)
 }
 
@@ -328,7 +331,8 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
       list() %>%
       st_polygon() %>%
       st_centroid() %>%
-      st_coordinates()
+      st_coordinates() %>%
+      ee_py_to_r
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE ImageCollection is used: \n",
@@ -465,7 +469,7 @@ create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m@map <- m@map %>%
     addWMSTiles(baseUrl = tile, group = objname, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    ee_mapViewLayersControl(names = c(objname))
+    rgee:::ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
   m@object$names <- objname

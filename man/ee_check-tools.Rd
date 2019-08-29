@@ -15,7 +15,7 @@
 \alias{ee_get_credentials}
 \alias{ee_remove_credentials}
 \alias{ee_remove_drivers}
-\title{Interface to handle Installation requirements}
+\title{Interface to handle rgee installation requirements}
 \usage{
 ee_check()
 
@@ -58,14 +58,14 @@ ee_remove_drivers(quiet = TRUE)
 R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
 }
 \details{
-It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
-compatible with python3.
+It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
+compatible with Python 3.5 >.
 }
 \examples{
 \dontrun{
 library(rgee)
 
-#The recommended way to use of rgee
+# Recommended way to install external dependencies of rgee for Linux users
 virtualenv_remove("rgee")
 virtualenv_create("rgee", python = "python3.5")
 use_virtualenv("rgee")
@@ -75,5 +75,7 @@ ee_install_rgee_python_packages() # Install rgee python packages
 ee_install_drivers() # Install selenim drivers
 ee_get_credentials() # Get credentials
 ee_check()
+
+# Recommended way to install external dependencies of rgee for Windows users
 }
 }

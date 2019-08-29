@@ -6,7 +6,10 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("ee is a reserved word for the rgee package, try ee_restart() to reattach")
   options(rgee.print.option = "json")
+  options(rgee.gcs.auth = sprintf("%s/GCS_AUTH_FILE.json",ee_get_earthengine_path()))
 }
+
+
 
 #' Reattach ee as a reserved word
 #' @export
@@ -16,5 +19,18 @@ ee_restart <- function() {
   if (is_rgee_attached) {
     detach("package:rgee", unload = TRUE)
     require(rgee)
+  }
+}
+
+
+#' Convert between Python and R objects
+#' @param x A python object
+#' @export
+ee_py_to_r <- function(x) {
+  p_r = suppressWarnings(try(py_to_r(x),silent = TRUE))
+  if (class(p_r) %in% 'try-error') {
+    return(x)
+  } else {
+    return(p_r)
   }
 }

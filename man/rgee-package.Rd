@@ -13,22 +13,18 @@ R bindings for calling the Earth Engine API.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ryali93/rgee}
-  \item Report bugs at \url{https://github.com/ryali93/rgee/issues}
+  \item \url{https://github.com/csaybar/rgee}
+  \item Report bugs at \url{https://github.com/csaybar/rgee/issues}
 }
 
 }
 \author{
 \strong{Maintainer}: Cesar Aybar \email{csaybar@gmail.com} (0000-0003-2745-9535)
 
-Authors:
-\itemize{
-  \item Roy Yali \email{ryali93@gmail.com} (0000-0003-4542-3755)
-}
-
 Other contributors:
 \itemize{
   \item Julio Contreras \email{julius013199@gmail.com} (0000-0001-5579-8919) [contributor]
+  \item Roy Yali \email{ryali93@gmail.com} (0000-0003-4542-3755) [contributor]
   \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (0000-0002-2154-2429) [contributor]
 }
 

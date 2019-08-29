@@ -11,6 +11,7 @@ ee_quota <- function() {
   ee_quota <- ee_source_python(oauth_func_path)
   id <- ee$data$getAssetRoots()[[1]]$id
   message = ee_quota$quota(id)
-  cat(paste0(" ",message))
+  cat(paste0(" ",message,"\n"))
   invisible(TRUE)
 }
+

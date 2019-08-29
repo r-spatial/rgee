@@ -2,20 +2,22 @@
 % Please edit documentation in R/ee_download.R
 \name{ee_download_drive}
 \alias{ee_download_drive}
-\title{Move results from Google Drive to Hard disk}
+\title{Move Earth Engine (EE) results from Google Drive to Hard disk}
 \usage{
-ee_download_drive(task, filename, overwrite = FALSE)
+ee_download_drive(task, filename, overwrite = FALSE, quiet = TRUE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See
-\code{ee_Export()} for details.}
+\code{ee_help(ee$batch$Export)} for details.}
 
 \item{filename}{Output filename.}
 
 \item{overwrite}{A boolean indicating whether "filename" should be overwritten.}
+
+\item{quiet}{logical; suppress info message}
 }
 \description{
-Transfer results of an "Earth Engine task to export: COMPLETED" from Google Drive to Hard disk
+Transfer results of an EE task saved in Google Drive to Hard disk
 }
 \examples{
 \dontrun{
@@ -33,13 +35,13 @@ ymax <- -12.731116372
 x_mean <- (xmin + xmax) / 2
 y_mean <- (ymin + ymax) / 2
 
-ROI <- c(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)
+ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
 ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon() \%>\%
   st_sfc() \%>\%
   st_set_crs(4326)
-ee_geom <- ee_as_ee(ROI_polygon)
+ee_geom <- sf_as_ee(ROI_polygon)
 
 # Get the mean annual NDVI for 2011
 cloudMaskL457 <- function(image) {
@@ -47,9 +49,9 @@ cloudMaskL457 <- function(image) {
   cloud <- qa$bitwiseAnd(32L)$
     And(qa$bitwiseAnd(128L))$
     Or(qa$bitwiseAnd(8L))
-  mask2 <- image$mask()$reduce(ee$Reducer$min())
-  image <- image$updateMask(cloud$Not())$updateMask(mask2)
-  image$normalizedDifference(list("B4", "B3"))
+mask2 <- image$mask()$reduce(ee$Reducer$min())
+image <- image$updateMask(cloud$Not())$updateMask(mask2)
+image$normalizedDifference(list("B4", "B3"))
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
@@ -60,7 +62,7 @@ mean_l5 <- ic_l5$mean()$rename("NDVI")
 mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 
-# Download -> ee$Image
+# Download a EE Image
 task_img <- ee$batch$Export$image$toDrive(
   image = mean_l5_Amarakaeri,
   description = "Amarakaeri_task_1",
@@ -68,11 +70,13 @@ task_img <- ee$batch$Export$image$toDrive(
   fileFormat = "GEOTIFF",
   fileNamePrefix = "my_image"
 )
+task_img$start()
+ee_monitoring()
 img <- ee_download_drive(task_img)
 plot(img)
-# Download -> ee$FeatureCollection
-amk_f <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
-amk_fc <- ee$FeatureCollection(amk_f)
+
+# Download a EE FeatureCollection
+amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
   description = "Amarakaeri_task_2",
@@ -80,10 +84,9 @@ task_vector <- ee$batch$Export$table$toDrive(
   fileFormat = "GEOJSON",
   fileNamePrefix = "geom_Amarakaeri"
 )
-
 task_vector$start()
 ee_monitoring() # optional
 amk_geom <- ee_download_drive(task = task_vector)
-plot(amk_geom$geometry,border = "red", lwd = 10)
+plot(amk_geom$geometry, border = "red", lwd = 10)
 }
 }

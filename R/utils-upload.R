@@ -1,9 +1,10 @@
 #' Load info for an asset, given an asset id.
 #' @noRd
-#' @importFrom stringr str_extract_all boundary
-verify_path_for_upload <- function(asset_id){
+verify_path_for_upload <- function(asset_id) {
+  m <- gregexpr("[\\w']+", asset_id, perl=TRUE)
   folder <- asset_id %>%
-    str_extract_all(boundary("word"),simplify = TRUE) %>%
+    regmatches(m) %>%
+    '[['(1) %>%
     paste(collapse = "/")
   response <- ee$data$getInfo(folder)
   if (is.null(response)) {

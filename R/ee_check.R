@@ -1,18 +1,17 @@
-#' Interface to handle Installation requirements
+#' Interface to handle rgee installation requirements
 #'
 #' R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
-#'
 #'
 #' @importFrom reticulate py_available py_module_available py_discover_config source_python
 #' @importFrom googledrive drive_auth
 #' @name ee_check-tools
-#' @details It is neccessary restart RStudio to observe change when installing a python packages. Rgee only is
-#' compatible with python3.
+#' @details It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
+#' compatible with Python 3.5 >.
 #' @examples
 #' \dontrun{
 #'library(rgee)
 #'
-#'#The recommended way to use of rgee
+#' # Recommended way to install external dependencies of rgee for Linux users
 #'virtualenv_remove("rgee")
 #'virtualenv_create("rgee", python = "python3.5")
 #'use_virtualenv("rgee")
@@ -22,6 +21,8 @@
 #'ee_install_drivers() # Install selenim drivers
 #'ee_get_credentials() # Get credentials
 #'ee_check()
+#'
+#' # Recommended way to install external dependencies of rgee for Windows users
 #' }
 #' @export
 ee_check <- function() {
