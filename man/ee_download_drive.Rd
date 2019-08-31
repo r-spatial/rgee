@@ -32,9 +32,6 @@ xmin <- -71.132591318
 xmax <- -70.953664315
 ymin <- -12.892451233
 ymax <- -12.731116372
-x_mean <- (xmin + xmax) / 2
-y_mean <- (ymin + ymax) / 2
-
 ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
 ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   list() \%>\%
@@ -65,13 +62,12 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 # Download a EE Image
 task_img <- ee$batch$Export$image$toDrive(
   image = mean_l5_Amarakaeri,
-  description = "Amarakaeri_task_1",
   folder = "Amarakaeri",
   fileFormat = "GEOTIFF",
   fileNamePrefix = "my_image"
 )
 task_img$start()
-ee_monitoring()
+ee_monitoring(task_img)
 img <- ee_download_drive(task_img)
 plot(img)
 
@@ -79,13 +75,12 @@ plot(img)
 amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
-  description = "Amarakaeri_task_2",
   folder = "Amarakaeri",
   fileFormat = "GEOJSON",
   fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()
-ee_monitoring() # optional
+ee_monitoring(task_vector) # optional
 amk_geom <- ee_download_drive(task = task_vector)
 plot(amk_geom$geometry, border = "red", lwd = 10)
 }

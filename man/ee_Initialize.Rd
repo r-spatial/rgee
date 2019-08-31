@@ -2,17 +2,28 @@
 % Please edit documentation in R/ee_Initialize.R
 \name{ee_Initialize}
 \alias{ee_Initialize}
-\title{Authenticate and Initialize the Earth Engine and Google Drive API}
+\title{Authenticate and Initialize rgee}
 \usage{
-ee_Initialize()
+ee_Initialize(user, restart = FALSE, drive = FALSE, gcs = FALSE)
+}
+\arguments{
+\item{user}{Earth Engine user}
+
+\item{restart}{logical. Get credentials again.}
+
+\item{drive}{logical. If TRUE drive credential are cached in the system.}
+
+\item{gcs}{logical. If TRUE drive credential are cached in the system.}
 }
 \description{
-Authenticate and Initialize the Earth Engine and Google Drive API
+Authorize rgee to manage Earth Engine accounts. The \code{ee_initialize()} via web-browser asked to sign in
+to your Google account and grant permission for google earth engine.
 }
 \details{
-The \code{ee_initialize()} via web-browser asked to sign in to your Google account and
-grant permission for both google earth engine and google drive. The user credentials
-are save in the folder \code{~/.config/earthengine}.
+\code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via
+\code{gargle::token_fetch()}. By default, rgee do not need to them, these are just neccesary for exportation
+tasks. The user credentials are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not
+specified "anonymous" is setting by default.
 }
 \examples{
 \dontrun{

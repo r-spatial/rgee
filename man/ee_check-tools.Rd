@@ -12,7 +12,6 @@
 \alias{ee_install_python_package}
 \alias{ee_install_ee}
 \alias{ee_get_earthengine_path}
-\alias{ee_get_credentials}
 \alias{ee_remove_credentials}
 \alias{ee_remove_drivers}
 \title{Interface to handle rgee installation requirements}
@@ -37,8 +36,6 @@ ee_install_ee(conda = FALSE)
 
 ee_get_earthengine_path()
 
-ee_get_credentials()
-
 ee_remove_credentials(quiet = TRUE)
 
 ee_remove_drivers(quiet = TRUE)
@@ -52,7 +49,7 @@ ee_remove_drivers(quiet = TRUE)
 
 \item{pypackage}{TODO}
 
-\item{quiet}{TODO}
+\item{quiet}{logical; suppress info message}
 }
 \description{
 R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.

@@ -1,7 +1,7 @@
 #' Interface to handle rgee installation requirements
 #'
 #' R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
-#'
+#' @param quiet logical; suppress info message
 #' @importFrom reticulate py_available py_module_available py_discover_config source_python
 #' @importFrom googledrive drive_auth
 #' @name ee_check-tools
@@ -79,7 +79,7 @@ ee_check_rgee_python_packages <- function() {
     if (version_ee == "0.1.175") {
       cat(sprintf("    - ee -> status[ok]: v%s\n",version_ee))
     } else {
-      ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in your system,%s. %s",
+      ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in the system,%s. %s",
                             version_ee,
                             "but rgee depends on 0.1.175. Please run ee_install_ee() for upgrading",
                             "If the installation is successful, restart to see changes.")
@@ -223,51 +223,6 @@ ee_get_earthengine_path <- function() {
   return(path.expand("~/.config/earthengine"))
 }
 
-
-
-
-#' @rdname ee_check-tools
-#' @export
-ee_get_credentials <- function() {
-  oauth_func_path <- system.file("python/ee_get_credentials.py", package = "rgee")
-  ee_get_credentials <- ee_source_python(oauth_func_path)
-  credential_path <-  ee_get_earthengine_path()
-  gd_credentials <- sprintf("%s/googledrive", credential_path)
-  gee_credentials <- sprintf("%s/credentials", credential_path)
-
-  ee_get_credentials$ee_authenticate_py()
-  code <- readline("Enter authorisation code for Earth Engine API here: ")
-  test <- try(ee_get_credentials$request_ee_token_py(code), silent = T)
-  saveRDS(
-    drive_auth(cache = F),
-    gd_cre_path()
-  )
-}
-
-
-#' @rdname ee_check-tools
-#' @param quiet TODO
-#' @export
-ee_remove_credentials <- function(quiet = TRUE) {
-  path <- ee_get_earthengine_path()
-  ee_credential <- sprintf("%s/credentials",path)
-  drive_credential <- sprintf("%s/googledrive",path)
-  if (file.exists(drive_credential)) file.remove(drive_credential)
-  if (file.exists(ee_credential)) file.remove(ee_credential)
-  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
-}
-
-#' @rdname ee_check-tools
-#' @export
-ee_remove_drivers <- function(quiet = TRUE) {
-  path <- ee_get_earthengine_path()
-  gecko_driver_linux <- sprintf("%s/geckodriver",path)
-  gecko_driver_win <- sprintf("%s/googledrive.exe",path)
-  if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
-  if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
-  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
-}
-
 #' Check python packages
 #' @param rgee_package package name to install
 #' @export
@@ -292,3 +247,24 @@ ee_check_rgee_package <- function(rgee_package) {
 }
 
 
+#' @rdname ee_check-tools
+#' @export
+ee_remove_credentials <- function(quiet = TRUE) {
+  path <- ee_get_earthengine_path()
+  ee_credential <- sprintf("%s/credentials",path)
+  drive_credential <- sprintf("%s/googledrive",path)
+  if (file.exists(drive_credential)) file.remove(drive_credential)
+  if (file.exists(ee_credential)) file.remove(ee_credential)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
+}
+
+#' @rdname ee_check-tools
+#' @export
+ee_remove_drivers <- function(quiet = TRUE) {
+  path <- ee_get_earthengine_path()
+  gecko_driver_linux <- sprintf("%s/geckodriver",path)
+  gecko_driver_win <- sprintf("%s/googledrive.exe",path)
+  if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
+  if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
+}

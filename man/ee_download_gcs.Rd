@@ -57,9 +57,9 @@ cloudMaskL457 <- function(image) {
   cloud <- qa$bitwiseAnd(32L)$
     And(qa$bitwiseAnd(128L))$
     Or(qa$bitwiseAnd(8L))
-mask2 <- image$mask()$reduce(ee$Reducer$min())
-image <- image$updateMask(cloud$Not())$updateMask(mask2)
-image$normalizedDifference(list("B4", "B3"))
+  mask2 <- image$mask()$reduce(ee$Reducer$min())
+  image <- image$updateMask(cloud$Not())$updateMask(mask2)
+  image$normalizedDifference(list("B4", "B3"))
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
@@ -71,30 +71,28 @@ mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 
 # Download a EE Image
-task_img <- ee$batch$Export$image$toDrive(
+task_img <- ee$batch$Export$image$toCloudStorage(
   image = mean_l5_Amarakaeri,
-  description = "Amarakaeri_task_1",
-  folder = "Amarakaeri",
+  bucket = "bag_csaybar",
   fileFormat = "GEOTIFF",
   fileNamePrefix = "my_image"
 )
 task_img$start()
-ee_monitoring()
-img <- ee_download_drive(task_img)
+ee_monitoring(task_img)
+img <- ee_download_gcs(task_img)
 plot(img)
 
 # Download a EE FeatureCollection
 amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
-task_vector <- ee$batch$Export$table$toDrive(
+task_vector <- ee$batch$Export$table$toCloudStorage(
   collection = amk_fc,
-  description = "Amarakaeri_task_2",
-  folder = "Amarakaeri",
-  fileFormat = "GEOJSON",
+  bucket = "bag_csaybar",
+  fileFormat = "SHP",
   fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()
-ee_monitoring() # optional
-amk_geom <- ee_download_drive(task = task_vector)
+ee_monitoring(task_vector) # optional
+amk_geom <- ee_download_gcs(task = task_vector)
 plot(amk_geom$geometry, border = "red", lwd = 10)
 }
 }
