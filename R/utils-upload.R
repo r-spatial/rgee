@@ -49,8 +49,8 @@ dataframe_row_to_json <- function(drow) {
 ee_get_google_auth_session <- function(username, password,dirname, quiet=FALSE) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_selenium_functions <- ee_source_python(oauth_func_path)
-  if (!quiet) cat("Acquiring upload permissions ... please wait\n")
-  session <- ee_selenium_functions$ee_get_google_auth_session_py(username, password,dirname)
+  if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
+  session <- ee_selenium_functions$ee_get_google_auth_session_py(username, password, dirname)
   if (!quiet) cat("Permissions adquired\n")
   return(session)
 }
@@ -83,26 +83,13 @@ ee_create_asset_path  <- function(path_asset, asset_type='folder',quiet=FALSE) {
 }
 
 
-
-#' get the cookies of https://code.earthengine.google.com using Selenium
-#' @noRd
-#' @importFrom getPass getPass
-ee_getsession <- function(gmail_account, quiet = FALSE) {
-  if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", gmail_account))
-  password <- getPass("GMAIL PASSWORD:")
-  if (!quiet) cat("GMAIL PASSWORD:",paste(rep("*",nchar(password)),collapse = ""),"\n")
-  driverdir <- dirname(gd_cre_path())
-  google_session <- ee_get_google_auth_session(gmail_account, password, driverdir,quiet=quiet)
-  return(google_session)
-}
-
 #' Pass your local filename to google cloud storages (gs://earthengine-uploads/*)
 #' @noRd
 #'
-ee_file_to_gcs <- function(session, filename,ftype,upload_url){
+ee_file_to_gcs <- function(session, filename,ftype,upload_url) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- ee_source_python(oauth_func_path)
-  ee_selenium_functions$ee_file_to_gcs_py(session, filename,ftype,upload_url)
+  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions$ee_file_to_gcs_py(session, filename, ftype, upload_url)
 }
 
 #' Check upload URL
@@ -110,12 +97,17 @@ ee_file_to_gcs <- function(session, filename,ftype,upload_url){
 ee_get_upload_url <- function(session) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
   ee_selenium_functions <- ee_source_python(oauth_func_path)
-  upload_url <- ee_selenium_functions$ee_get_upload_url_py(session)
+  upload_url <- ee_py_to_r(ee_selenium_functions$ee_get_upload_url_py(session))
+  count<- 1
+  while (is.null(upload_url) & count < 5) {
+    upload_url <- ee_py_to_r(ee_selenium_functions$ee_get_upload_url_py(session))
+    count <- count + 1
+  }
   if (is.null(upload_url)) {
-    stop('upload_url error: Maybe due slow internet connection, try again!')
+    stop('Maybe due slow internet connection or a wrong google account password')
   } else {
     if (nchar(upload_url) > 500) {
-      stop('upload_url error: Maybe due slow internet connection, try again!')
+      stop('Maybe due slow internet connection or a wrong google account password')
     }
     return(upload_url)
   }
@@ -229,5 +221,3 @@ image_or_vector <- function(x) {
   }
   return("sf")
 }
-
-

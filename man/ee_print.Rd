@@ -7,35 +7,30 @@
 \alias{ee_print.ee.featurecollection.FeatureCollection}
 \alias{ee_print.ee.image.Image}
 \alias{ee_print.ee.imagecollection.ImageCollection}
-\title{Print and return metadata about Earth Engine Objects}
+\title{Print and return metadata about Spatial Earth Engine Objects}
 \usage{
-ee_print(eeobject, ncol = 2, max_display = 10)
+ee_print(eeobject, max_display = 10)
 
-\method{ee_print}{ee.geometry.Geometry}(eeobject, ncol = 2,
-  max_display = 10)
+\method{ee_print}{ee.geometry.Geometry}(eeobject, max_display = 10)
 
-\method{ee_print}{ee.feature.Feature}(eeobject, ncol = 2,
-  max_display = 10)
+\method{ee_print}{ee.feature.Feature}(eeobject, max_display = 10)
 
 \method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject,
-  ncol = 2, max_display = 10)
+  max_display = 10)
 
-\method{ee_print}{ee.image.Image}(eeobject, ncol = 2, max_display = 10)
+\method{ee_print}{ee.image.Image}(eeobject, max_display = 10)
 
-\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, ncol = 2,
+\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject,
   max_display = 10)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
 
-\item{ncol}{Set how many columns should be created for display Earth Engine properties
-names.}
-
 \item{max_display}{Set the max number of properties to display.}
 }
 \description{
-Print and return metadata about Earth Engine Objects
+Print and return metadata about Spatial Earth Engine Objects
 }
 \details{
 For avoiding computing time extremely large and "EEException" related with memory consuming
@@ -46,11 +41,11 @@ and ee$FeatureCollection will be used to generated Earth Engine object propertie
 \examples{
 \dontrun{
 library(rgee)
-ee_initialize()
+ee_Initialize()
 eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee_Filter()$eq("WRS_PATH", 44))$
   filter(ee_Filter()$eq("WRS_ROW", 34))$
   filterDate("2014-03-01", "2014-08-01")
-ee_print(eeobject, ncol = 2, max_display = 4)
+ee_print(eeobject, max_display = 4)
 }
 }

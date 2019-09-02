@@ -10,7 +10,7 @@
 \alias{ee_install_drivers}
 \alias{ee_install_rgee_python_packages}
 \alias{ee_install_python_package}
-\alias{ee_install_ee}
+\alias{ee_install_python_ee}
 \alias{ee_get_earthengine_path}
 \alias{ee_remove_credentials}
 \alias{ee_remove_drivers}
@@ -26,13 +26,13 @@ ee_check_drivers(display_in_browser = TRUE)
 
 ee_check_credentials()
 
-ee_install_drivers(version = "latest")
+ee_install_drivers(version)
 
 ee_install_rgee_python_packages(conda = FALSE)
 
 ee_install_python_package(pypackage, conda = FALSE)
 
-ee_install_ee(conda = FALSE)
+ee_install_python_ee(conda = FALSE)
 
 ee_get_earthengine_path()
 

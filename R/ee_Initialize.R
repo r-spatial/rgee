@@ -1,7 +1,8 @@
 #' Authenticate and Initialize rgee
 #'
 #' Authorize rgee to manage Earth Engine accounts. The \code{ee_initialize()} via web-browser asked to sign in
-#' to your Google account and grant permission for google earth engine.
+#' to your Google account and grant permission for google earth engine. This function is a wrapper around
+#' `rgee::ee$Initialize()`.
 #'
 #' @param user Earth Engine user
 #' @param restart logical. Get credentials again.
@@ -23,7 +24,7 @@ ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
     stop("user needs to be a google account (e.g. anonymous@gmail.com)")
   }
   user <- sub("\\@gmail.com$","",user)
-  credential_path <-  sprintf("%s/%s", ee_get_earthengine_path(),user)
+  credential_path <-  sprintf("%s/%s", path.expand("~/.config/earthengine") , user)
 
   dir.create(credential_path,showWarnings = FALSE)
 
@@ -41,8 +42,15 @@ ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
     if (!file.exists(gcs_credentials) & gcs) ee_get_credentials_gcs(credential_path)
   }
   file.copy(from = gee_credentials,
-            to = paste0(ee_get_earthengine_path(),"/credentials"),
+            to = paste0(path.expand("~/.config/earthengine"),"/credentials"),
             overwrite = TRUE)
+  ee_sessioninfo(user,gee_credentials,gd_credentials,gcs_credentials)
+
+  options(rgee.gcs.auth = gcs_credentials)
+  options(rgee.selenium.params = list(gmail_account = paste0(user,'@gmail.com'),
+                                      showpassword = FALSE,
+                                      cache = TRUE))
+
   ee$Initialize()
 }
 
@@ -52,17 +60,7 @@ ee_source_python <- function(oauth_func_path) {
   module_name <- gsub("\\.py$","",basename(oauth_func_path))
   module_path <- dirname(oauth_func_path)
   ee_module <- import_from_path(module_name, path = module_path, convert = F)
-  ee_module
 }
-
-
-#' Google drive credential route (DEPRECATED)
-#' @noRd
-gd_cre_path <- function() {
-  sprintf("%s/googledrive", path.expand("~/.config/earthengine"))
-}
-
-
 
 #' Authorize rgee
 #'
@@ -120,7 +118,20 @@ ee_get_credentials_drive <- function(save_credentials) {
 #' a GCS_AUTH_FILE argument (Manually).
 #' @noRd
 ee_get_credentials_gcs <- function(save_credentials) {
-  browseURL("https://console.cloud.google.com/apis/credentials/serviceaccountkey")
-  browseURL("https://github.com/csaybar/GCS_AUTH_FILE.json")
+  message(
+    "Unable to find GCS_AUTH_FILE.json in ", ee_get_earthengine_path(),". ",
+    "Firstly download and set correctly the Google Project JSON file.",
+    "A compresible tutorial you can find it here: \n",
+    "- https://github.com/csaybar/GCS_AUTH_FILE.json\n",
+    "- https://console.cloud.google.com/apis/credentials/serviceaccountkey (download link)\n"
+  )
 }
 
+#' Create session info inside the folder \code{~/.config/earthengine/USERS/}
+#' @noRd
+ee_sessioninfo <- function(user = NULL,ee_cre=NULL,drive_cre=NULL, gcs_ee = NULL) {
+  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", path.expand("~/.config/earthengine"))
+  df <- data.frame(user = user, ee_cre = ee_cre, drive_cre =  drive_cre,
+                   gcs_ee = gcs_ee)
+  write.table(df, sessioninfo,row.names = F)
+}

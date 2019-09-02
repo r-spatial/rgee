@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """Module for return quota usage details for the asset root with the given ID.
 
 >>> ee_get_google_auth_session_py(username, password, dirname)
@@ -26,14 +25,14 @@ import ast
 import sys
 import json
 import time
+import pickle
 import requests
-import retrying
 import selenium
 import subprocess
 
 from selenium import webdriver
-from selenium.webdriver import Firefox
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import Chrome
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
@@ -61,30 +60,31 @@ def ee_get_google_auth_session_py(username, password, dirname):
         >>> session = ee_get_google_auth_session_py(username, password, dirname)
     """
     options = Options()
-    options.add_argument('-headless')
-    authorization_url = 'https://code.earthengine.google.com'
+    authorization_url = 'https://code.earthengine.google.com/'
     uname = username
     passw = password
     if os.name == 'nt':
         path_driver = os.path.join(dirname, 'geckodriver.exe')
-        driver = Firefox(executable_path=path_driver,
+        driver = Chrome(executable_path=path_driver,
                          firefox_options=options)
     elif os.name == 'posix':
-        path_driver = os.path.join(dirname, 'geckodriver')
-        driver = Firefox(executable_path=path_driver,
-                         firefox_options=options)
+        path_driver = os.path.join(dirname, 'chromedriver')
+        driver = Chrome(executable_path=path_driver)
     driver.get(authorization_url)
     username = driver.find_element_by_xpath('//*[@id="identifierId"]')
     username.send_keys(uname)
     driver.find_element_by_id('identifierNext').click()
-    password = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
+    password = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
     password.send_keys(passw)
-    task_pass = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="passwordNext"]')))
+    task_pass = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="passwordNext"]')))
     time.sleep(1)
     task_pass.click()
     try:
-        WebDriverWait(driver,3).until(EC.presence_of_element_located((By.XPATH, '//*[@id=":1c"]')))
-    except:
+        element_g = "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div/div/form/span/section/div/div/div/div/ul/li[1]"
+        re_confirm =  WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,element_g)))
+        re_confirm.click()
+        #WebDriverWait(driver,20).until(EC.presence_of_element_located((By.XPATH, '//*[@id=":1c"]')))
+    except Exception as e:
         pass
     cookies = driver.get_cookies()
     session = requests.Session()
@@ -120,13 +120,11 @@ def ee_get_upload_url_py(session):
     try:
         d = ast.literal_eval(rr.text)
         return d['url']
+
     except Exception as e:
         print(e)
 
 
-@retrying.retry(retry_on_exception=retry_if_ee_error,
-                wait_exponential_multiplier=1000,
-                wait_exponential_max=4000, stop_max_attempt_number=3)
 def ee_file_to_gcs_py(session, file_path, ftype, upload_url):
     """ Upload a file to gs://earthengine-uploads/ via POST request
     Args:
@@ -159,15 +157,34 @@ def ee_file_to_gcs_py(session, file_path, ftype, upload_url):
         else:
             pass
         try:
-            resp = session.post(upload_url, data=m,
-                                headers={'Content-Type': m.content_type})
+            headers = {
+              'sec-fetch-mode': 'cors',
+              'origin': 'https://code.earthengine.google.com',
+              'accept-encoding': 'gzip, deflate, br',
+              'accept-language': 'en-US,en;q=0.9',
+              'content-type': m.content_type,
+              'accept': '*/*',
+              'referer': 'https://code.earthengine.google.com/',
+              'authority': 'code.earthengine.google.com',
+              'sec-fetch-site': 'same-origin'
+              }
+            resp = session.post(upload_url, data=m,headers = headers)
             gsid = resp.json()[0]
             return gsid
         except Exception as e:
-            print(e)
+            return resp
 
 def ee_create_json_py(towrite, manifest):
     with open(towrite, 'w') as outfile:
         json.dump(manifest, outfile)
+    return(True)
 
+def save_py_object(eeobject, filename):
+    with open(filename, 'wb') as pickle_file:
+      pickle.dump(eeobject, pickle_file)
+    return(True)
 
+def load_py_object(filename):
+    with open(filename, 'rb') as pickle_file:
+        py_pickle_file = pickle.load(pickle_file)
+    return py_pickle_file

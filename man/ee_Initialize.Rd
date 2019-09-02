@@ -17,7 +17,8 @@ ee_Initialize(user, restart = FALSE, drive = FALSE, gcs = FALSE)
 }
 \description{
 Authorize rgee to manage Earth Engine accounts. The \code{ee_initialize()} via web-browser asked to sign in
-to your Google account and grant permission for google earth engine.
+to your Google account and grant permission for google earth engine. This function is a wrapper around
+\code{rgee::ee$Initialize()}.
 }
 \details{
 \code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via

@@ -9,21 +9,16 @@ def exists(path):
 class test_ckeck_utils(unittest.TestCase):
     def test_geckodown(self):
       """
-      Is geckodrive URI still available?
+      Is googlechrome URI still available?
       """
-      comb_linux="linux64.tar.gz"
-      comb_windows="win64.zip"
-      comb_mac="macos.tar.gz"
-      source = requests.get("https://github.com/mozilla/geckodriver/releases/latest").text
-      soup = BeautifulSoup(source.encode("utf-8"),'lxml')
-      vr = str(soup.title.text.encode("utf-8")).split(' ')[1]
-      http_gecko = "https://github.com/mozilla/geckodriver/releases/download/"
-      container_linux = http_gecko+vr+"/geckodriver-"+vr+'-'+comb_linux
-      container_windows = http_gecko+vr+"/geckodriver-"+vr+'-'+comb_windows
-      container_macos = http_gecko+vr+"/geckodriver-"+vr+'-'+comb_mac
-      self.assertTrue(exists(container_linux))
-      self.assertTrue(exists(container_windows))
-      self.assertTrue(exists(container_macos))
+      download_chromedriver(directory,operating_system, version)
+      os_linux="linux"
+      os_windows="windows"
+      os_mac="macos"
+      directory = os.path.join(os.path.expanduser("~/.config/earthengine"),"csaybar/")
+      download_chromedriver(directory, os_windows, version='76.0.3809.126')
+      download_chromedriver(directory, os_mac, version='76.0.3809.126')
+      download_chromedriver(directory, os_linux, version='76.0.3809.126')
 
 if __name__ == '__main__':
     unittest.main(

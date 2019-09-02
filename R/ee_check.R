@@ -81,7 +81,7 @@ ee_check_rgee_python_packages <- function() {
     } else {
       ee_message <- sprintf("Earth Engine python API (ee) %s is installed correctly in the system,%s. %s",
                             version_ee,
-                            "but rgee depends on 0.1.175. Please run ee_install_ee() for upgrading",
+                            "but rgee depends on 0.1.175. Please run ee_install_python_ee() for upgrading",
                             "If the installation is successful, restart to see changes.")
       stop(ee_message)
     }
@@ -102,12 +102,12 @@ ee_check_drivers <- function(display_in_browser = TRUE) {
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_check_utils <- ee_source_python(oauth_func_path)
   driverdir <- ee_get_earthengine_path()
-  condition <- ee_check_utils$ee_check_drivers_py(driverdir, display_in_browser)
+  condition <- ee_py_to_r(ee_check_utils$ee_check_drivers_py(driverdir, display_in_browser))
   if (condition) {
     cat("\n")
-    cat(">>> Geckodriver -> status[ok]:",driverdir,"\n")
+    cat(">>> Chromedriver -> status[ok]:", driverdir,"\n")
   } else {
-    warning(">>> Geckodriver -> status[X]. Try rgee::ee_install_drivers() to fixed.","\n")
+    warning(">>> Chromedriver -> status[X]. Try rgee::ee_install_drivers() to fixed.","\n")
   }
 }
 
@@ -131,26 +131,30 @@ ee_check_credentials <- function() {
 #' @rdname ee_check-tools
 #' @param version TODO
 #' @export
-ee_install_drivers <- function(version='latest') {
+ee_install_drivers <- function(version) {
+  if (is.null(version)) {
+    stop(" Find the appropriate version of chromedriver visiting:\n",
+         ">>> chrome://settings/help",
+         ">>> https://sites.google.com/a/chromium.org/chromedriver/downloads\n"
+         )
+  }
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_check_utils <- ee_source_python(oauth_func_path)
-  if (version == 'latest') version = NULL
-  directory = dirname(gd_cre_path())
-  os_type = Sys.info()[['sysname']]
-  if (os_type == "Linux") {
-    ee_check_utils$geckodown_linux(directory,version)
-  } else if(os_type == "Windows") {
-    ee_check_utils$geckodown_win(directory,version)
-  } else {
-    ee_check_utils$geckodown_mac(directory,version)
-  }
+  directory = ee_get_earthengine_path()
+
+  os_type <- switch(Sys.info()[['sysname']],
+                    Windows= {'windows'},
+                    Linux  = {'linux'},
+                    Darwin = {'macos'})
+  ee_check_utils$download_chromedriver(directory, os_type, version)
+  return(TRUE)
 }
 
 #' @rdname ee_check-tools
 #' @param conda TODO
 #' @export
 ee_install_rgee_python_packages <- function(conda = FALSE) {
-  ee_install_ee(conda = conda)
+  ee_install_python_ee(conda = conda)
   ee_install_python_package("selenium", conda = conda)
   ee_install_python_package("bs4", conda = conda)
   ee_install_python_package("pysmartDL", conda = conda)
@@ -167,14 +171,14 @@ ee_install_python_package <- function(pypackage,conda=FALSE) {
   if (conda) {
     msg_return <- suppressWarnings(system2("conda"))
     if (msg_return!=0) {
-      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE)")
+      stop("conda is not installed in the system, try using pip ee_install_python_ee(conda=FALSE)")
     } else {
       system("conda install pypackage --upgrade")
     }
   } else {
     msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
     if (msg_return!=0) {
-      stop("pip is not installed in your system, try using conda ee_install_ee(conda=TRUE)")
+      stop("pip is not installed in your system, try using conda ee_install_python_ee(conda=TRUE)")
     } else {
       install <- suppressWarnings(system(sprintf("pip%s install %s --upgrade",python_version,pypackage)))
       if (install !=0) {
@@ -190,20 +194,20 @@ ee_install_python_package <- function(pypackage,conda=FALSE) {
 
 #' @rdname ee_check-tools
 #' @export
-ee_install_ee <- function(conda=FALSE) {
+ee_install_python_ee <- function(conda=FALSE) {
   pydiscv <- py_discover_config()
   python_version <- pydiscv$version
   if (conda) {
     msg_return <- suppressWarnings(system2("conda"))
     if (msg_return!=0) {
-      stop("conda is not installed in the system, try using pip ee_install_ee(conda=FALSE, restart=TRUE)")
+      stop("conda is not installed in the system, try using pip ee_install_python_ee(conda=FALSE, restart=TRUE)")
     } else {
       system("conda install earthengine-api==0.1.175 --upgrade")
     }
   } else{
     msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
     if (msg_return!=0) {
-      stop("pip is not installed in your system, try using conda ee_install_ee(conda=TRUE)")
+      stop("pip is not installed in your system, try using conda ee_install_python_ee(conda=TRUE)")
     } else {
       install <- suppressWarnings(system2(sprintf("pip%s",python_version),"install earthengine-api==0.1.175 --upgrade"))
       if (install !=0) {
@@ -220,7 +224,9 @@ ee_install_ee <- function(conda=FALSE) {
 #' @rdname ee_check-tools
 #' @export
 ee_get_earthengine_path <- function() {
-  return(path.expand("~/.config/earthengine"))
+  ee_path <- path.expand("~/.config/earthengine")
+  user <- read.table(sprintf("%s/rgee_sessioninfo.txt",ee_path),header = TRUE)[['user']]
+  return(sprintf("%s/%s/",ee_path,user))
 }
 
 #' Check python packages

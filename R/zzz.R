@@ -6,7 +6,6 @@
 .onAttach <- function(libname, pkgname) {
   packageStartupMessage("ee is a reserved word for the rgee package, try ee_restart() to reattach")
   options(rgee.print.option = "json")
-  options(rgee.gcs.auth = sprintf("%s/GCS_AUTH_FILE.json",ee_get_earthengine_path()))
 }
 
 

@@ -1,9 +1,7 @@
-#' Print and return metadata about Earth Engine Objects
+#' Print and return metadata about Spatial Earth Engine Objects
 #'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
-#' @param ncol Set how many columns should be created for display Earth Engine properties
-#'  names.
 #' @param max_display Set the max number of properties to display.
 #' @details For avoiding computing time extremely large and "EEException" related with memory consuming
 #' (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
@@ -13,21 +11,21 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_initialize()
+#' ee_Initialize()
 #' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 #'   filter(ee_Filter()$eq("WRS_PATH", 44))$
 #'   filter(ee_Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-03-01", "2014-08-01")
-#' ee_print(eeobject, ncol = 2, max_display = 4)
+#' ee_print(eeobject, max_display = 4)
 #' }
 #' @export
-ee_print <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print <- function(eeobject, max_display = 10) {
   UseMethod("ee_print")
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.geometry.Geometry <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print.ee.geometry.Geometry <- function(eeobject, max_display = 10) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
@@ -67,7 +65,7 @@ ee_print.ee.geometry.Geometry <- function(eeobject, ncol = 2, max_display = 10) 
 
 #' @name ee_print
 #' @export
-ee_print.ee.feature.Feature <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print.ee.feature.Feature <- function(eeobject, max_display = 10) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
@@ -107,12 +105,12 @@ ee_print.ee.feature.Feature <- function(eeobject, ncol = 2, max_display = 10) {
   cat(sprintf("Geotransform                   : [%s] \n", mtd$ft_geotransform))
   cat(sprintf("Geodesic                       : %s \n", mtd$ft_geodesic))
   cat(sprintf("nFeature properties            : %s \n", mtd$ft_properties_length))
-  if (max_display != 0) cat(ee_create_table(mtd$ft_properties_names, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$ft_properties_names, max_display))
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, max_display = 10) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
@@ -156,15 +154,15 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ncol = 2, 
   cat(sprintf("proj4string                    : %s \n", mtd$fc_proj4string))
   cat(sprintf("Geotransform                   : [%s] \n", mtd$fc_geotransform))
   cat(sprintf("nFeatureCollection properties  : %s \n", mtd$fc_properties_length))
-  if (max_display != 0) cat(ee_create_table(mtd$fc_properties_names, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$fc_properties_names, max_display))
   cat(sprintf("nFeature properties            : %s \n", mtd$f_properties_length))
-  if (max_display != 0) cat(ee_create_table(mtd$f_properties_names, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$f_properties_names, max_display))
   invisible(mtd)
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.image.Image <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print.ee.image.Image <- function(eeobject, max_display = 10) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
@@ -193,7 +191,6 @@ ee_print.ee.image.Image <- function(eeobject, ncol = 2, max_display = 10) {
       img_properties_names <- "N/A"
       img_properties_length <- 0
       img_npixels <- "N/A"
-      warning("Image geometry properties are doubtful, is it a world bounding image?")
     }
 
     mtd <- list(
@@ -223,13 +220,13 @@ ee_print.ee.image.Image <- function(eeobject, ncol = 2, max_display = 10) {
   cat(sprintf("#Pixels by image               : %s \n", mtd$img_npixels))
   cat(sprintf("Data type                      : %s \n", mtd$img_datatype))
   cat(sprintf("Image Properties               : %s \n", mtd$img_properties_length))
-  if (max_display != 0) cat(ee_create_table(mtd$img_properties_names, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$img_properties_names, max_display))
 
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.imagecollection.ImageCollection <- function(eeobject, ncol = 2, max_display = 10) {
+ee_print.ee.imagecollection.ImageCollection <- function(eeobject, max_display = 10) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata)) {
     load(fc_metadata)
@@ -287,14 +284,15 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject, ncol = 2, max_
   cat(sprintf("nPixels by image               : %s \n", mtd$ic_npixels))
   cat(sprintf("Data type                      : %s \n", mtd$ic_datatype))
   cat(sprintf("Image Properties               : %s \n", length(mtd$ic_properties_i)))
-  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_i, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_i, max_display))
   cat(sprintf("ImageCollection Properties     : %s \n", length(mtd$ic_properties_ic)))
-  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_ic, ncol, max_display))
+  if (max_display != 0) cat(ee_create_table(mtd$ic_properties_ic, max_display))
 }
 
 #' Create a friendly viz of EE properties
 #' @noRd
-ee_create_table <- function(x, ncol, max_display) {
+ee_create_table <- function(x, max_display) {
+  ncol <- 2
   if (length(x)==0) {
     return("")
   }

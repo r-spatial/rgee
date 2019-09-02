@@ -34,6 +34,15 @@ def ee_check_py_webbrowser():
     except:
         return False
 
+def ee_check_py_pickle():
+    try:
+        import pickle
+        try:
+            return pickle.__version__
+        except:
+            return True
+    except:
+        return False
 
 def ee_check_py_platform():
     try:
@@ -84,17 +93,6 @@ def ee_check_py_subprocess():
         import subprocess
         try:
             return subprocess.__version__
-        except:
-            return True
-    except:
-        return False
-
-
-def ee_check_py_retrying():
-    try:
-        import retrying
-        try:
-            return retrying.__version__
         except:
             return True
     except:
