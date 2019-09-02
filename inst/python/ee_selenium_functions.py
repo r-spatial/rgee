@@ -188,3 +188,7 @@ def load_py_object(filename):
     with open(filename, 'rb') as pickle_file:
         py_pickle_file = pickle.load(pickle_file)
     return py_pickle_file
+
+#It is necessary due 2^31-1 (.Machine$integer.max)
+def ee_Date_value(characterdate):
+  return str(ee.Date(characterdate).getInfo()['value'])

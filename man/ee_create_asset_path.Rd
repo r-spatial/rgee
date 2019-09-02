@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-upload.R
 \name{ee_create_asset_path}
 \alias{ee_create_asset_path}
-\title{Create a folder or ImageCollection into GEE assets}
+\title{Create a folder or ImageCollection into GEE assets (DEPRECATED)}
 \usage{
 ee_create_asset_path(path_asset, asset_type = "folder", quiet = FALSE)
 }
@@ -14,5 +14,5 @@ ee_create_asset_path(path_asset, asset_type = "folder", quiet = FALSE)
 \item{quiet}{logical; suppress info message.}
 }
 \description{
-Create a folder or ImageCollection into GEE assets
+Create a folder or ImageCollection into GEE assets (DEPRECATED)
 }

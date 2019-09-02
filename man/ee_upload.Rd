@@ -10,48 +10,37 @@
 \usage{
 ee_upload(x, ...)
 
-\method{ee_upload}{character}(x, ..., asset_filenames, properties = NULL,
-  pyramiding_policy = "MEAN", one_by_one = TRUE, bucket = NULL,
+\method{ee_upload}{character}(x, ..., filename, bucket = NULL,
+  properties = getOption("rgee.upload.properties"),
   selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
 
-\method{ee_upload}{sf}(x, ..., gmail_account, gee_asset_file,
-  cache = TRUE, quiet = FALSE)
+\method{ee_upload}{sf}(x, ..., filename, bucket = NULL,
+  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
 
-\method{ee_upload}{stars}(x, ..., gmail_account, gee_asset_file,
-  type = "Float32", properties = NULL, pyramiding_policy = "MEAN",
-  one_by_one = TRUE, cache = TRUE, quiet = FALSE)
+\method{ee_upload}{stars}(x, ..., filename, bucket = NULL,
+  properties = getOption("rgee.upload.properties"),
+  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
 
-\method{ee_upload}{stars_proxy}(x, ..., gmail_account, asset_filename,
-  properties = NULL, pyramiding_policy = "MEAN", one_by_one = TRUE,
-  cache = TRUE, quiet = FALSE)
+\method{ee_upload}{stars_proxy}(x, ..., filename, bucket = NULL,
+  properties = getOption("rgee.upload.properties"),
+  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
 }
 \arguments{
 \item{x}{character, sf or stars object.}
 
 \item{...}{ignored}
 
-\item{properties}{data.frame; \href{https://developers.google.com/earth-engine/image_manifest}{Manifest upload}.
-See details}
-
-\item{pyramiding_policy}{character; determines how each pixel at a given level of the pyramid is
-computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".}
-
-\item{one_by_one}{TODO}
-
-\item{quiet}{logical; suppress info message}
-
-\item{gmail_account}{character. Google account name.}
-
-\item{cache}{TODO}
-
-\item{type}{TODO}
-
-\item{asset_filename}{asset filename}
-
-\item{gee_asset_path}{character. images destination path, full path for upload to Google Earth Engine,
+\item{filename}{character. images destination path, full path for upload to Google Earth Engine,
 e.g. users/pinkiepie/myponycollection.}
 
-\item{showpassword}{TODO}
+\item{bucket}{bucketname you are uploading to}
+
+\item{properties}{data.frame; \href{https://developers.google.com/earth-engine/image_manifest}{Manifest upload}.}
+
+\item{selenium_params}{character; determines how each pixel at a given level of the pyramid is
+computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".}
+
+\item{quiet}{logical; suppress info message}
 }
 \description{
 Send either images or vectors to Google Earth Engine asset using Selenium
