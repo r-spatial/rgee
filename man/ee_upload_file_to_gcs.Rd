@@ -17,7 +17,7 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 \item{quiet}{logical; suppress info message}
 }
 \value{
-\itemize {
+\itemize{
 \item upload_url: URL for the new :class:\code{Request} object.
 \item destination_path: Is the destination path in the earth engine asset.
 \item asset_filename: Filename (inside earth engine)

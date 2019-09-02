@@ -13,16 +13,11 @@
 #' @param ... ignored
 #' @importFrom methods is as
 #' @details  TALKING ABOUT SELENIUM
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' }
+#' @name ee_upload
 #' @export
 ee_upload <- function(x, ...) {
   UseMethod("ee_upload")
 }
-
-# pyramiding_policy = "MEAN",
 
 #' @name ee_upload
 #' @export

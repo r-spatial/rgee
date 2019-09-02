@@ -48,8 +48,3 @@ Send either images or vectors to Google Earth Engine asset using Selenium
 \details{
 TALKING ABOUT SELENIUM
 }
-\examples{
-\dontrun{
-library(rgee)
-}
-}
