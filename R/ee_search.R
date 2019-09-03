@@ -35,7 +35,7 @@ ee_search_dataset <- function(quiet = FALSE,upgrade = FALSE) {
     ee_template <- "https://raw.githubusercontent.com/samapriya/Earth-Engine-Datasets-List/master/eed-%s.csv"
     ee_dataset <- suppressWarnings(try(read.csv(sprintf(ee_template, ee_date), stringsAsFactors = F), silent = TRUE))
     ncount <- 1
-    if (!quiet) cat("Downloading(Upgrading) the Earth Engine catalog ... please wait")
+    if (!quiet) cat("Downloading(Upgrading) the Earth Engine catalog ... please wait\n")
     while (class(ee_dataset) == "try-error" & ncount < 15) {
       ee_date <- ee_date - 1
       ee_dataset <- suppressWarnings(try(read.csv(sprintf(ee_template, ee_date), stringsAsFactors = F), silent = TRUE))

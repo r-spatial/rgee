@@ -14,7 +14,7 @@
 \alias{ee_search_title_list}
 \title{Interface to search into the Earth Engine Data Catalog}
 \usage{
-ee_search_dataset(quiet = FALSE, upgrade = TRUE)
+ee_search_dataset(quiet = FALSE, upgrade = FALSE)
 
 ee_search_startdate(ee_dataset, stardate)
 
