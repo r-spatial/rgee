@@ -97,7 +97,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -137,7 +137,13 @@
         <td>
           <p><code><a href="ee_Initialize.html">ee_Initialize()</a></code> </p>
         </td>
-        <td><p>Authenticate and Initialize the Earth Engine and Google Drive API</p></td>
+        <td><p>Authenticate and Initialize rgee</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_as_sf.html">ee_as_sf()</a></code> </p>
+        </td>
+        <td><p>Convert Earth Engine (EE) Table in a Simple Feature (sf)</p></td>
       </tr><tr>
         
         <td>
@@ -147,9 +153,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_drivers()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> <code><a href="ee_check-tools.html">ee_install_drivers()</a></code> <code><a href="ee_check-tools.html">ee_install_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_install_python_package()</a></code> <code><a href="ee_check-tools.html">ee_install_ee()</a></code> <code><a href="ee_check-tools.html">ee_get_earthengine_path()</a></code> <code><a href="ee_check-tools.html">ee_get_credentials()</a></code> <code><a href="ee_check-tools.html">ee_remove_credentials()</a></code> <code><a href="ee_check-tools.html">ee_remove_drivers()</a></code> </p>
+          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_drivers()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> <code><a href="ee_check-tools.html">ee_install_drivers()</a></code> <code><a href="ee_check-tools.html">ee_install_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_install_python_package()</a></code> <code><a href="ee_check-tools.html">ee_install_python_ee()</a></code> <code><a href="ee_check-tools.html">ee_get_earthengine_path()</a></code> <code><a href="ee_check-tools.html">ee_remove_credentials()</a></code> <code><a href="ee_check-tools.html">ee_remove_drivers()</a></code> </p>
         </td>
-        <td><p>Interface to handle Installation requirements</p></td>
+        <td><p>Interface to handle rgee installation requirements</p></td>
       </tr><tr>
         
         <td>
@@ -159,21 +165,30 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_create_asset_path.html">ee_create_asset_path()</a></code> </p>
-        </td>
-        <td><p>Create a folder or ImageCollection into GEE assets</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_download_drive.html">ee_download_drive()</a></code> </p>
         </td>
-        <td><p>Move results from Google Drive to Hard disk</p></td>
+        <td><p>Move Earth Engine (EE) results from Google Drive to Hard disk</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_download_gcs.html">ee_download_gcs()</a></code> </p>
         </td>
-        <td><p>Move the results of an Earth Engine task to export from Google Cloud Storage to Hard disk</p></td>
+        <td><p>Move EE results from Google Cloud Storage to Hard disk</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_extract.html">ee_extract()</a></code> </p>
+        </td>
+        <td><p>Extract values from Image EE spatial objects
+Extract values from a Image or ImageCollection spatial object at the locations
+of geometry object. You can use coordinates, ee.Geometries, ee.Features,
+ee.FeatureCollection and sf objects.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_manage-tools.html">ee_manage_create()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assetlist()</a></code> <code><a href="ee_manage-tools.html">ee_manage_quota()</a></code> <code><a href="ee_manage-tools.html">ee_manage_size()</a></code> <code><a href="ee_manage-tools.html">ee_manage_copy()</a></code> <code><a href="ee_manage-tools.html">ee_manage_move()</a></code> <code><a href="ee_manage-tools.html">ee_manage_set_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assets_access()</a></code> <code><a href="ee_manage-tools.html">ee_manage_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_cancel_all_running_taks()</a></code> </p>
+        </td>
+        <td><p>Create a folder or ImageCollection into GEE assets</p></td>
       </tr><tr>
         
         <td>
@@ -191,7 +206,13 @@
         <td>
           <p><code><a href="ee_print.html">ee_print()</a></code> </p>
         </td>
-        <td><p>Print and return metadata about Earth Engine Objects</p></td>
+        <td><p>Print and return metadata about Spatial Earth Engine Objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_py_to_r.html">ee_py_to_r()</a></code> </p>
+        </td>
+        <td><p>Convert between Python and R objects</p></td>
       </tr><tr>
         
         <td>
@@ -207,9 +228,21 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_upload_toasset.html">ee_upload_toasset()</a></code> </p>
+          <p><code><a href="ee_search-tools.html">ee_search_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> </p>
+        </td>
+        <td><p>Interface to search into the Earth Engine Data Catalog</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_upload.html">ee_upload()</a></code> </p>
         </td>
         <td><p>Upload sf or stars objects to GEE asset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_upload_file_to_gcs.html">ee_upload_file_to_gcs()</a></code> </p>
+        </td>
+        <td><p>Upload local files to google cloud storage</p></td>
       </tr><tr>
         
         <td>
@@ -237,7 +270,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">

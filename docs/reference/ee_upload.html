@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to handle rgee installation requirements — ee_check-tools • rgee</title>
+<title>Upload sf or stars objects to GEE asset — ee_upload • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Interface to handle rgee installation requirements — ee_check-tools" />
+<meta property="og:title" content="Upload sf or stars objects to GEE asset — ee_upload" />
 
-<meta property="og:description" content="R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages." />
+<meta property="og:description" content="Send either images or vectors to Google Earth Engine asset using Selenium" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -116,59 +116,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to handle rgee installation requirements</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
-    <div class="hidden name"><code>ee_check-tools.Rd</code></div>
+    <h1>Upload sf or stars objects to GEE asset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_upload.R'><code>R/ee_upload.R</code></a></small>
+    <div class="hidden name"><code>ee_upload.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.</p>
+    <p>Send either images or vectors to Google Earth Engine asset using Selenium</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>()
+    <pre class="usage"><span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
-<span class='fu'>ee_check_python</span>()
+<span class='co'># S3 method for character</span>
+<span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_rgee_python_packages</span>()
+<span class='co'># S3 method for sf</span>
+<span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_drivers</span>(<span class='kw'>display_in_browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='co'># S3 method for stars</span>
+<span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_credentials</span>()
-
-<span class='fu'>ee_install_drivers</span>(<span class='no'>version</span>)
-
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_install_python_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_get_earthengine_path</span>()
-
-<span class='fu'>ee_remove_credentials</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='co'># S3 method for stars_proxy</span>
+<span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>display_in_browser</th>
-      <td><p>TODO</p></td>
+      <th>x</th>
+      <td><p>character, sf or stars object.</p></td>
     </tr>
     <tr>
-      <th>version</th>
-      <td><p>TODO</p></td>
+      <th>...</th>
+      <td><p>ignored</p></td>
     </tr>
     <tr>
-      <th>conda</th>
-      <td><p>TODO</p></td>
+      <th>filename</th>
+      <td><p>character. images destination path, full path for upload to Google Earth Engine,
+e.g. users/pinkiepie/myponycollection.</p></td>
     </tr>
     <tr>
-      <th>pypackage</th>
-      <td><p>TODO</p></td>
+      <th>bucket</th>
+      <td><p>bucketname you are uploading to</p></td>
+    </tr>
+    <tr>
+      <th>properties</th>
+      <td><p>data.frame; <a href='https://developers.google.com/earth-engine/image_manifest'>Manifest upload</a>.</p></td>
+    </tr>
+    <tr>
+      <th>selenium_params</th>
+      <td><p>character; determines how each pixel at a given level of the pyramid is
+computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -178,27 +185,9 @@
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 &gt;.</p>
+    <p>TALKING ABOUT SELENIUM</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-
-<span class='co'># Recommended way to install external dependencies of rgee for Linux users</span>
-<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
-<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.5"</span>)
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
-
-<span class='fu'>ee_check</span>()
-<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
-<span class='fu'>ee_get_credentials</span>() <span class='co'># Get credentials</span>
-<span class='fu'>ee_check</span>()
-
-<span class='co'># Recommended way to install external dependencies of rgee for Windows users</span>
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -206,9 +195,7 @@ compatible with Python 3.5 &gt;.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

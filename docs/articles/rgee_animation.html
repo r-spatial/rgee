@@ -64,7 +64,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -84,7 +84,7 @@
       <h1>rgee_animation</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ryali93/rgee/blob/master/vignettes/rgee_animation.Rmd"><code>vignettes/rgee_animation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/csaybar/rgee/blob/master/vignettes/rgee_animation.Rmd"><code>vignettes/rgee_animation.Rmd</code></a></small>
       <div class="hidden name"><code>rgee_animation.Rmd</code></div>
 
     </div>
@@ -277,40 +277,52 @@
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Registered S3 method overwritten by 'geojsonlint':</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   method         from </span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;   print.location dplyr</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">modis_djf_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_djf_stars[world_map])</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">modis_djf_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_djf_stars, ORTHO_PROJ))</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_djf_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">mam &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> mam, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_mam_stars[world_map])</a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_mam_stars, ORTHO_PROJ))</a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_mam_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">jja &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
-<a class="sourceLine" id="cb7-24" data-line-number="24">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> jja, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-25" data-line-number="25">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_jja_stars[world_map])</a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_jja_stars, ORTHO_PROJ))</a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_jja_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb7-30" data-line-number="30">son &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
-<a class="sourceLine" id="cb7-31" data-line-number="31">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> son, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-32" data-line-number="32">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_son_stars[world_map])</a>
-<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
-<a class="sourceLine" id="cb7-34" data-line-number="34">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_son_stars, ORTHO_PROJ))</a>
-<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_son_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
-<a class="sourceLine" id="cb7-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb7-37" data-line-number="37"></a>
-<a class="sourceLine" id="cb7-38" data-line-number="38">modis_djf_stars<span class="op">$</span>season &lt;-<span class="st"> "DJF"</span></a>
-<a class="sourceLine" id="cb7-39" data-line-number="39">modis_mam_stars<span class="op">$</span>season &lt;-<span class="st"> "MAM"</span></a>
-<a class="sourceLine" id="cb7-40" data-line-number="40">modis_jja_stars<span class="op">$</span>season &lt;-<span class="st"> "JJA"</span></a>
-<a class="sourceLine" id="cb7-41" data-line-number="41">modis_son_stars<span class="op">$</span>season &lt;-<span class="st"> "SON"</span></a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43">modis_season &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(modis_djf_stars, modis_mam_stars, modis_jja_stars, modis_son_stars)</a></code></pre></div>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13">modis_djf_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_djf_stars[world_map])</a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15">modis_djf_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_djf_stars, ORTHO_PROJ))</a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_djf_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18">mam &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
+<a class="sourceLine" id="cb7-19" data-line-number="19">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> mam, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_mam_stars[world_map])</a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_mam_stars, ORTHO_PROJ))</a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_mam_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29">jja &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
+<a class="sourceLine" id="cb7-30" data-line-number="30">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> jja, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
+<a class="sourceLine" id="cb7-34" data-line-number="34">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_jja_stars[world_map])</a>
+<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
+<a class="sourceLine" id="cb7-36" data-line-number="36">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_jja_stars, ORTHO_PROJ))</a>
+<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_jja_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
+<a class="sourceLine" id="cb7-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb7-39" data-line-number="39">son &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
+<a class="sourceLine" id="cb7-40" data-line-number="40">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> son, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
+<a class="sourceLine" id="cb7-44" data-line-number="44">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_son_stars[world_map])</a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/lwgeom/topics/valid">st_make_valid</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_transform">st_transform</a></span>(modis_son_stars, ORTHO_PROJ))</a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/colnames">colnames</a></span>(modis_son_stars) &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>)</a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50">modis_djf_stars<span class="op">$</span>season &lt;-<span class="st"> "DJF"</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51">modis_mam_stars<span class="op">$</span>season &lt;-<span class="st"> "MAM"</span></a>
+<a class="sourceLine" id="cb7-52" data-line-number="52">modis_jja_stars<span class="op">$</span>season &lt;-<span class="st"> "JJA"</span></a>
+<a class="sourceLine" id="cb7-53" data-line-number="53">modis_son_stars<span class="op">$</span>season &lt;-<span class="st"> "SON"</span></a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"></a>
+<a class="sourceLine" id="cb7-55" data-line-number="55">modis_season &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(modis_djf_stars, modis_mam_stars, modis_jja_stars, modis_son_stars)</a></code></pre></div>
 <ol start="5" style="list-style-type: decimal">
 <li>GGanimate</li>
 </ol>
@@ -351,7 +363,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">

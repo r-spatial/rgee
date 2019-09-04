@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Authenticate and Initialize the Earth Engine and Google Drive API — ee_Initialize • rgee</title>
+<title>Authenticate and Initialize rgee — ee_Initialize • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Authenticate and Initialize the Earth Engine and Google Drive API — ee_Initialize" />
+<meta property="og:title" content="Authenticate and Initialize rgee — ee_Initialize" />
 
-<meta property="og:description" content="Authenticate and Initialize the Earth Engine and Google Drive API" />
+<meta property="og:description" content="Authorize rgee to manage Earth Engine accounts. The ee_initialize() via web-browser asked to sign in
+to your Google account and grant permission for google earth engine. This function is a wrapper around
+rgee::ee$Initialize()." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -99,7 +101,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -116,24 +118,48 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Authenticate and Initialize the Earth Engine and Google Drive API</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_Initialize.R'><code>R/ee_Initialize.R</code></a></small>
+    <h1>Authenticate and Initialize rgee</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Initialize.R'><code>R/ee_Initialize.R</code></a></small>
     <div class="hidden name"><code>ee_Initialize.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Authenticate and Initialize the Earth Engine and Google Drive API</p>
+    <p>Authorize rgee to manage Earth Engine accounts. The <code>ee_initialize()</code> via web-browser asked to sign in
+to your Google account and grant permission for google earth engine. This function is a wrapper around
+<code>rgee::ee$Initialize()</code>.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Initialize</span>()</pre>
-        
+    <pre class="usage"><span class='fu'>ee_Initialize</span>(<span class='no'>user</span>, <span class='kw'>restart</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>user</th>
+      <td><p>Earth Engine user</p></td>
+    </tr>
+    <tr>
+      <th>restart</th>
+      <td><p>logical. Get credentials again.</p></td>
+    </tr>
+    <tr>
+      <th>drive</th>
+      <td><p>logical. If TRUE drive credential are cached in the system.</p></td>
+    </tr>
+    <tr>
+      <th>gcs</th>
+      <td><p>logical. If TRUE drive credential are cached in the system.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>ee_initialize()</code> via web-browser asked to sign in to your Google account and
-grant permission for both google earth engine and google drive. The user credentials
-are save in the folder <code>~/.config/earthengine</code>.</p>
+    <p><code>ee_initialize()</code> give the possibility of authorize Google drive and Google Cloud Storage via
+<code><a href='https://gargle.r-lib.org/reference/token_fetch.html'>gargle::token_fetch()</a></code>. By default, rgee do not need to them, these are just neccesary for exportation
+tasks. The user credentials are save in the folder <code>~/.config/earthengine/USERS/</code>, if a user is not
+specified "anonymous" is setting by default.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -144,6 +170,7 @@ are save in the folder <code>~/.config/earthengine</code>.</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
       
@@ -155,7 +182,7 @@ are save in the folder <code>~/.config/earthengine</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">

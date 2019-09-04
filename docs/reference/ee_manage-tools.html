@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to handle rgee installation requirements — ee_check-tools • rgee</title>
+<title>Create a folder or ImageCollection into GEE assets — ee_manage-tools • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Interface to handle rgee installation requirements — ee_check-tools" />
+<meta property="og:title" content="Create a folder or ImageCollection into GEE assets — ee_manage-tools" />
 
-<meta property="og:description" content="R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages." />
+<meta property="og:description" content="Create a folder or ImageCollection into GEE assets" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -116,99 +116,82 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to handle rgee installation requirements</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
-    <div class="hidden name"><code>ee_check-tools.Rd</code></div>
+    <h1>Create a folder or ImageCollection into GEE assets</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_manage.R'><code>R/ee_manage.R</code></a></small>
+    <div class="hidden name"><code>ee_manage-tools.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.</p>
+    <p>Create a folder or ImageCollection into GEE assets</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>()
+    <pre class="usage"><span class='fu'>ee_manage_create</span>(<span class='no'>path_asset</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"folder"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_python</span>()
+<span class='fu'>ee_manage_delete</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_rgee_python_packages</span>()
+<span class='fu'>ee_manage_assetlist</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_drivers</span>(<span class='kw'>display_in_browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ee_manage_quota</span>()
 
-<span class='fu'>ee_check_credentials</span>()
+<span class='fu'>ee_manage_size</span>(<span class='no'>path_asset</span>)
 
-<span class='fu'>ee_install_drivers</span>(<span class='no'>version</span>)
+<span class='fu'>ee_manage_copy</span>(<span class='no'>path_asset</span>, <span class='no'>final_path</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_manage_move</span>(<span class='no'>path_asset</span>, <span class='no'>final_path</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_manage_set_properties</span>(<span class='no'>path_asset</span>, <span class='no'>properties</span>)
 
-<span class='fu'>ee_install_python_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_manage_delete_properties</span>(<span class='no'>path_asset</span>, <span class='no'>property</span>)
 
-<span class='fu'>ee_get_earthengine_path</span>()
+<span class='fu'>ee_manage_assets_access</span>(<span class='no'>path_asset</span>,
+  <span class='kw'>acl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.manage.getAssetAcl"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_remove_credentials</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ee_manage_task</span>(<span class='no'>quiet</span>)
 
-<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>ee_manage_cancel_all_running_taks</span>()</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>display_in_browser</th>
-      <td><p>TODO</p></td>
+      <th>path_asset</th>
+      <td><p>a character vector containing a single path name.</p></td>
     </tr>
     <tr>
-      <th>version</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>conda</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>pypackage</th>
-      <td><p>TODO</p></td>
+      <th>asset_type</th>
+      <td><p>a character vector containing the asset type. 'folder' or 'imagecollection'.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message</p></td>
+      <td><p>logical; suppress info message.</p></td>
+    </tr>
+    <tr>
+      <th>final_path</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>properties</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>property</th>
+      <td><p>TODO</p></td>
+    </tr>
+    <tr>
+      <th>acl</th>
+      <td><p>TODO</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 &gt;.</p>
-    
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-
-<span class='co'># Recommended way to install external dependencies of rgee for Linux users</span>
-<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
-<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.5"</span>)
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
-
-<span class='fu'>ee_check</span>()
-<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
-<span class='fu'>ee_get_credentials</span>() <span class='co'># Get credentials</span>
-<span class='fu'>ee_check</span>()
-
-<span class='co'># Recommended way to install external dependencies of rgee for Windows users</span>
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

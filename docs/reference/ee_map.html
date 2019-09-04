@@ -100,7 +100,7 @@ FeatureCollection or ImageCollection) base on mapview." />
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -118,7 +118,7 @@ FeatureCollection or ImageCollection) base on mapview." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Adds a given Earth Engine (EE) spatial object to mapview as a layer.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_map.R'><code>R/ee_map.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_map.R'><code>R/ee_map.R</code></a></small>
     <div class="hidden name"><code>ee_map.Rd</code></div>
     </div>
 
@@ -136,23 +136,25 @@ FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
 
 <span class='co'># S3 method for ee.geometry.Geometry</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
-  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for ee.feature.Feature</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
-  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for ee.featurecollection.FeatureCollection</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>,
-  <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+  <span class='no'>vizparams</span>, <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>)
 
 <span class='co'># S3 method for ee.image.Image</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>, <span class='no'>center</span>,
-  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='no'>...</span>)
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>,
-  <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='no'>...</span>)</pre>
+  <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,6 +184,10 @@ the centroid of the spatial EE object is taked.</p></td>
       <th>objname</th>
       <td><p>character vector. Name of the map, or maps in case that the EE object
 be an ImageCollection.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>logical; suppress info messages.</p></td>
     </tr>
     <tr>
       <th>max_nimage</th>
@@ -233,9 +239,11 @@ By default 000000.</p></li>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 <span class='co'># Case: Geometry*</span>
 <span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(-<span class='fl'>73.53522</span>, -<span class='fl'>15.75453</span>))
-<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
-             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>pointRadius</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>color</span><span class='kw'>=</span><span class='st'>"FF0000"</span>),
-             <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>)
+<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(
+  <span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>),
+  <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
+)
 <span class='no'>m1</span>
 
 <span class='co'># Case: Feature</span>
@@ -245,16 +253,20 @@ By default 000000.</p></li>
 
 <span class='co'># Case: FeatureCollection</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>,<span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>'FeatureCollection'</span>)
-<span class='no'>m3</span>+<span class='no'>m2</span>+<span class='no'>m1</span>
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)
+<span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case: Image</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>image</span>,
-             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>),
-                              <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>10000</span>),
-             <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"SF"</span>,
-             <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='st'>"8"</span>)
+<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(
+  <span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>image</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+    <span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>),
+    <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>10000</span>
+  ),
+  <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"SF"</span>,
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='st'>"8"</span>
+)
 <span class='no'>m4</span>
 
 <span class='co'># Case: ImageCollection</span>
@@ -264,11 +276,13 @@ By default 000000.</p></li>
   <span class='fu'>filterDate</span>(<span class='st'>"2014-01-01"</span>, <span class='st'>"2015-01-01"</span>)$
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='st'>"CLOUD_COVER"</span>)
 
-<span class='no'>m5</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>collection</span>,
-             <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'B4'</span>,<span class='st'>'B3'</span>,<span class='st'>'B2'</span>), <span class='kw'>max</span><span class='kw'>=</span><span class='fl'>1</span>),
-             <span class='kw'>objname</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Scene_2019"</span>,<span class='st'>"Scene_2016"</span>,<span class='st'>"Scene_2011"</span>),
-             <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-             <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>m5</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(
+  <span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>collection</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>), <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>1</span>),
+  <span class='kw'>objname</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Scene_2019"</span>, <span class='st'>"Scene_2016"</span>, <span class='st'>"Scene_2011"</span>),
+  <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>10</span>
+)
 <span class='no'>m5</span>
 <span class='co'># }</span></pre>
   </div>
@@ -287,7 +301,7 @@ By default 000000.</p></li>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to handle rgee installation requirements — ee_check-tools • rgee</title>
+<title>Upload local files to google cloud storage — ee_upload_file_to_gcs • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Interface to handle rgee installation requirements — ee_check-tools" />
+<meta property="og:title" content="Upload local files to google cloud storage — ee_upload_file_to_gcs" />
 
-<meta property="og:description" content="R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages." />
+<meta property="og:description" content="Upload images or tables into google cloud storage for EE asset ingestion tasks." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -116,59 +116,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to handle rgee installation requirements</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
-    <div class="hidden name"><code>ee_check-tools.Rd</code></div>
+    <h1>Upload local files to google cloud storage</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
+    <div class="hidden name"><code>ee_upload_file_to_gcs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.</p>
+    <p>Upload images or tables into google cloud storage for EE asset ingestion tasks.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>()
-
-<span class='fu'>ee_check_python</span>()
-
-<span class='fu'>ee_check_rgee_python_packages</span>()
-
-<span class='fu'>ee_check_drivers</span>(<span class='kw'>display_in_browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>ee_check_credentials</span>()
-
-<span class='fu'>ee_install_drivers</span>(<span class='no'>version</span>)
-
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_install_python_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_get_earthengine_path</span>()
-
-<span class='fu'>ee_remove_credentials</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_upload_file_to_gcs</span>(<span class='no'>x</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>display_in_browser</th>
-      <td><p>TODO</p></td>
+      <th>x</th>
+      <td><p>filename (character), sf or stars object.</p></td>
     </tr>
     <tr>
-      <th>version</th>
-      <td><p>TODO</p></td>
+      <th>bucket</th>
+      <td><p>bucketname you are uploading to</p></td>
     </tr>
     <tr>
-      <th>conda</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>pypackage</th>
-      <td><p>TODO</p></td>
+      <th>selenium_params</th>
+      <td><p>Optional parameters when bucket is NULL. See details</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -176,39 +151,31 @@
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    
+<ul>
+<li><p>upload_url: URL for the new :class:<code>Request</code> object.</p></li>
+<li><p>destination_path: Is the destination path in the earth engine asset.</p></li>
+<li><p>asset_filename: Filename (inside earth engine)</p></li>
+</ul>
+
+    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 &gt;.</p>
+    <p>laalla</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-
-<span class='co'># Recommended way to install external dependencies of rgee for Linux users</span>
-<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
-<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.5"</span>)
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
-
-<span class='fu'>ee_check</span>()
-<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
-<span class='fu'>ee_get_credentials</span>() <span class='co'># Get credentials</span>
-<span class='fu'>ee_check</span>()
-
-<span class='co'># Recommended way to install external dependencies of rgee for Windows users</span>
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

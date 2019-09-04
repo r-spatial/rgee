@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to handle rgee installation requirements — ee_check-tools • rgee</title>
+<title>Interface to search into the Earth Engine Data Catalog — ee_search-tools • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Interface to handle rgee installation requirements — ee_check-tools" />
+<meta property="og:title" content="Interface to search into the Earth Engine Data Catalog — ee_search-tools" />
 
-<meta property="og:description" content="R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages." />
+<meta property="og:description" content="R functions for searching in Earth Engine's public data archive." />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -116,96 +116,101 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to handle rgee installation requirements</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
-    <div class="hidden name"><code>ee_check-tools.Rd</code></div>
+    <h1>Interface to search into the Earth Engine Data Catalog</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_search.R'><code>R/ee_search.R</code></a></small>
+    <div class="hidden name"><code>ee_search-tools.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.</p>
+    <p>R functions for searching in Earth Engine's public data archive.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>()
+    <pre class="usage"><span class='fu'>ee_search_dataset</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upgrade</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_check_python</span>()
+<span class='fu'>ee_search_startdate</span>(<span class='no'>ee_dataset</span>, <span class='no'>stardate</span>)
 
-<span class='fu'>ee_check_rgee_python_packages</span>()
+<span class='fu'>ee_search_enddate</span>(<span class='no'>ee_dataset</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>())
 
-<span class='fu'>ee_check_drivers</span>(<span class='kw'>display_in_browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ee_search_type</span>(<span class='no'>ee_dataset</span>, <span class='no'>type</span>)
 
-<span class='fu'>ee_check_credentials</span>()
+<span class='fu'>ee_search_provider</span>(<span class='no'>ee_dataset</span>, <span class='no'>provider</span>)
 
-<span class='fu'>ee_install_drivers</span>(<span class='no'>version</span>)
+<span class='fu'>ee_search_provider_list</span>(<span class='no'>ee_dataset</span>)
 
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_search_tags</span>(<span class='no'>ee_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_search_title</span>(<span class='no'>ee_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_install_python_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_search_tagstitle</span>(<span class='no'>ee_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_get_earthengine_path</span>()
-
-<span class='fu'>ee_remove_credentials</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>ee_search_title_list</span>(<span class='no'>ee_dataset</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>display_in_browser</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>version</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>conda</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
-      <th>pypackage</th>
-      <td><p>TODO</p></td>
-    </tr>
-    <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message</p></td>
+      <td><p>logical. Suppress info message</p></td>
+    </tr>
+    <tr>
+      <th>upgrade</th>
+      <td><p>Logical. Whether the dataset must upgrade.</p></td>
+    </tr>
+    <tr>
+      <th>ee_dataset</th>
+      <td><p>data.frame. Generated by rgee::ee_search_Datasets(). It is updated and expanded weekly automatically.</p></td>
+    </tr>
+    <tr>
+      <th>stardate</th>
+      <td><p>Character. Start date of dataset availability.</p></td>
+    </tr>
+    <tr>
+      <th>enddate</th>
+      <td><p>Character. End date of dataset availability.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>Character. "Image", "ImageCollection" or a "table".</p></td>
+    </tr>
+    <tr>
+      <th>provider</th>
+      <td><p>Character. Name of the dataset provider. See ee_search_provider_list()</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Character vector. tags</p></td>
+    </tr>
+    <tr>
+      <th>logical_operator</th>
+      <td><p>Character. Available just for rgee::ee_search_tags and rgee::ee_search_title.
+'AND' represents inclusiveness between tags in searching and 'OR' exclusiveness.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 &gt;.</p>
+    <p>a data.frame.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-
-<span class='co'># Recommended way to install external dependencies of rgee for Linux users</span>
-<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
-<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.5"</span>)
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
-
-<span class='fu'>ee_check</span>()
-<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
-<span class='fu'>ee_get_credentials</span>() <span class='co'># Get credentials</span>
-<span class='fu'>ee_check</span>()
-
-<span class='co'># Recommended way to install external dependencies of rgee for Windows users</span>
-<span class='co'># }</span></pre>
+    <pre class="examples"><div class='input'><span class='co'># ee_search_provider_list()</span>
+<span class='co'># ee_search_title_list()</span>
+<span class='no'>myquery</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_dataset</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_startdate</span>(<span class='st'>"1981-01-01"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_enddate</span>(<span class='st'>"2010-01-01"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_type</span>(<span class='st'>"Image"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_provider</span>(<span class='st'>"WWF"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_tags</span>(<span class='st'>"srtm"</span>, <span class='st'>"flow"</span>, <span class='st'>"direction"</span>, <span class='st'>"dem"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>ee_search_title</span>(<span class='st'>"15"</span>, <span class='st'>"Flow"</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"AND"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ee_dataset(): could not find function "ee_dataset"</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>myquery</span>$<span class='no'>id</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(myquery$id): object 'myquery' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Move results from Google Drive to Hard disk — ee_download_drive • rgee</title>
+<title>Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive • rgee</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Move results from Google Drive to Hard disk — ee_download_drive" />
+<meta property="og:title" content="Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive" />
 
-<meta property="og:description" content="Transfer results of an &quot;Earth Engine task to export: COMPLETED&quot; from Google Drive to Hard disk" />
+<meta property="og:description" content="Transfer results of an EE task saved in Google Drive to Hard disk" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -99,7 +99,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -116,18 +116,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Move results from Google Drive to Hard disk</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
+    <h1>Move Earth Engine (EE) results from Google Drive to Hard disk</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
     <div class="hidden name"><code>ee_download_drive.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Transfer results of an "Earth Engine task to export: COMPLETED" from Google Drive to Hard disk</p>
+    <p>Transfer results of an EE task saved in Google Drive to Hard disk</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>ee_download_drive</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_download_drive</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,7 +135,7 @@
     <tr>
       <th>task</th>
       <td><p>List generated after finished correctly a EE task. See
-<code>ee_Export()</code> for details.</p></td>
+<code>ee_help(ee$batch$Export)</code> for details.</p></td>
     </tr>
     <tr>
       <th>filename</th>
@@ -144,6 +144,10 @@
     <tr>
       <th>overwrite</th>
       <td><p>A boolean indicating whether "filename" should be overwritten.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>logical; suppress info message</p></td>
     </tr>
     </table>
     
@@ -161,16 +165,13 @@
 <span class='no'>xmax</span> <span class='kw'>&lt;-</span> -<span class='fl'>70.953664315</span>
 <span class='no'>ymin</span> <span class='kw'>&lt;-</span> -<span class='fl'>12.892451233</span>
 <span class='no'>ymax</span> <span class='kw'>&lt;-</span> -<span class='fl'>12.731116372</span>
-<span class='no'>x_mean</span> <span class='kw'>&lt;-</span> (<span class='no'>xmin</span> + <span class='no'>xmax</span>) / <span class='fl'>2</span>
-<span class='no'>y_mean</span> <span class='kw'>&lt;-</span> (<span class='no'>ymin</span> + <span class='no'>ymax</span>) / <span class='fl'>2</span>
-
-<span class='no'>ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>xmin</span>, <span class='no'>ymin</span>, <span class='no'>xmin</span>, <span class='no'>ymax</span>, <span class='no'>xmax</span>, <span class='no'>ymax</span>, <span class='no'>xmax</span>, <span class='no'>ymin</span>, <span class='no'>xmin</span>, <span class='no'>ymin</span>)
+<span class='no'>ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='no'>xmin</span>, <span class='no'>ymin</span>, <span class='no'>xmax</span>, <span class='no'>ymin</span>, <span class='no'>xmax</span>, <span class='no'>ymax</span>, <span class='no'>xmin</span>, <span class='no'>ymax</span>, <span class='no'>xmin</span>, <span class='no'>ymin</span>)
 <span class='no'>ROI_polygon</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/sfc'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_crs'>st_set_crs</a></span>(<span class='fl'>4326</span>)
-<span class='no'>ee_geom</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_ee</span>(<span class='no'>ROI_polygon</span>)
+<span class='no'>ee_geom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>(<span class='no'>ROI_polygon</span>)
 
 <span class='co'># Get the mean annual NDVI for 2011</span>
 <span class='no'>cloudMaskL457</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>image</span>) {
@@ -178,9 +179,9 @@
   <span class='no'>cloud</span> <span class='kw'>&lt;-</span> <span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>32L</span>)$
     <span class='fu'>And</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>128L</span>))$
     <span class='fu'>Or</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>8L</span>))
-  <span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
-  <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>updateMask</span>(<span class='no'>cloud</span>$<span class='fu'>Not</span>())$<span class='fu'>updateMask</span>(<span class='no'>mask2</span>)
-  <span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>))
+<span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
+<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>updateMask</span>(<span class='no'>cloud</span>$<span class='fu'>Not</span>())$<span class='fu'>updateMask</span>(<span class='no'>mask2</span>)
+<span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>))
 }
 
 <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
@@ -191,31 +192,30 @@
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'>reproject</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>500</span>)
 <span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/clip'>clip</a></span>(<span class='no'>ee_geom</span>)
 
-<span class='co'># Download -&gt; ee$Image</span>
+<span class='co'># Download a EE Image</span>
 <span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>image</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
-  <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri_task_1"</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
   <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEOTIFF"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
 )
+<span class='no'>task_img</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/start'>start</a></span>()
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
 <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(<span class='no'>task_img</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>img</span>)
-<span class='co'># Download -&gt; ee$FeatureCollection</span>
-<span class='no'>amk_f</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>))))
-<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>amk_f</span>)
+
+<span class='co'># Download a EE FeatureCollection</span>
+<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>))))
 <span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
-  <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri_task_2"</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
   <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEOJSON"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"geom_Amarakaeri"</span>
 )
-
 <span class='no'>task_vector</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/start'>start</a></span>()
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>() <span class='co'># optional</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_vector</span>) <span class='co'># optional</span>
 <span class='no'>amk_geom</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_vector</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>,<span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -231,7 +231,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">

@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Create a stars object based on an Earth Engine (EE) thumbnail image — ee_as_thumbnail" />
 
-<meta property="og:description" content="Wrapper function to download RGB image results" />
+<meta property="og:description" content="Wrapper function to download RGB Image results" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -99,7 +99,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/ryali93/rgee">
+  <a href="https://github.com/csaybar/rgee">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -117,18 +117,18 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create a stars object based on an Earth Engine (EE) thumbnail image</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ryali93/rgee/blob/master/R/ee_as_thumbnail.R'><code>R/ee_as_thumbnail.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_as_thumbnail.R'><code>R/ee_as_thumbnail.R</code></a></small>
     <div class="hidden name"><code>ee_as_thumbnail.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Wrapper function to download RGB image results</p>
+    <p>Wrapper function to download RGB Image results</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>scale</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,7 +140,7 @@
     <tr>
       <th>region</th>
       <td><p>Geospatial region of the image (E,S,W,N, EE Geometry,
-GeoJSON, or sfg). By default, the whole image will be used.</p></td>
+GeoJSON, or sfg). By default, the whole image is used.</p></td>
     </tr>
     <tr>
       <th>scale</th>
@@ -156,14 +156,13 @@ GeoJSON, or sfg). By default, the whole image will be used.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message.</p></td>
+      <td><p>logical; suppress info messages.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The <code>ee_as_thumbnail</code> function shares parameters with <a href='rgee'>eemap</a>. This parameters are:</p>
-<table class='table'>
+    <p><code>ee_as_thumbnail</code> shares parameters with <a href='rgee'>eemap</a>. This parameters are:</p><table class='table'>
 <tr><td></td><td><strong>Parameter</strong></td><td></td></tr>
 <tr><td></td><td><strong>Description</strong></td><td></td></tr>
 <tr><td><strong>Type</strong></td><td></td><td></td></tr>
@@ -193,38 +192,38 @@ GeoJSON, or sfg). By default, the whole image will be used.</p></td>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>cptcity</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rnaturalearth</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='no'>world_map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries'>ne_countries</a></span>(<span class='kw'>returnclass</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)[-<span class='fl'>7</span>,]<span class='kw'>[[</span><span class='st'>'geometry'</span>]]  <span class='co'>#Remove Antarctica</span>
+<span class='no'>world_map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries'>ne_countries</a></span>(<span class='kw'>returnclass</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)[-<span class='fl'>7</span>, ]<span class='kw'>[[</span><span class='st'>"geometry"</span>]] <span class='co'># Remove Antarctica</span>
 
-<span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"td_DEM_screen"</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10</span>)
-<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"cb_div_RdYlGn_03"</span>,<span class='kw'>n</span><span class='kw'>=</span><span class='fl'>10</span>)
+<span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"td_DEM_screen"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"cb_div_RdYlGn_03"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 
 
 <span class='co'># This nice example has been adapted from https://github.com/kmarkert/cartoee</span>
 <span class='co'># Example #01  - WORLD DEM</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>'CGIAR/SRTM90_V4'</span>)
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>180</span>,-<span class='fl'>90</span>,<span class='fl'>180</span>,<span class='fl'>90</span>)
+<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
+<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>180</span>, -<span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>90</span>)
 
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>,<span class='kw'>region</span><span class='kw'>=</span><span class='no'>region</span>,<span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>max</span><span class='kw'>=</span><span class='fl'>5000</span>))
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span>*<span class='fl'>5000</span>
+<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))
+<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_dem</span>[<span class='no'>world_map</span>],<span class='kw'>col</span><span class='kw'>=</span><span class='no'>dem_palette</span>,<span class='kw'>breaks</span><span class='kw'>=</span><span class='st'>'equal'</span>,<span class='kw'>reset</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>main</span><span class='kw'>=</span><span class='st'>'World Elevation'</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>'black'</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_dem</span>[<span class='no'>world_map</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"World Elevation"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
 
 <span class='co'># Example #02  - WORLD NDVI</span>
 <span class='co'># function to add NDVI band to imagery</span>
 <span class='no'>calc_ndvi</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>img</span>) {
-  <span class='no'>ndvi</span> <span class='kw'>&lt;-</span> <span class='no'>img</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'Nadir_Reflectance_Band2'</span>, <span class='st'>'Nadir_Reflectance_Band1'</span>))
-  <span class='no'>img</span>$<span class='fu'>addBands</span>(<span class='no'>ndvi</span>$<span class='fu'>rename</span>(<span class='st'>'ndvi'</span>))
+  <span class='no'>ndvi</span> <span class='kw'>&lt;-</span> <span class='no'>img</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Nadir_Reflectance_Band2"</span>, <span class='st'>"Nadir_Reflectance_Band1"</span>))
+  <span class='no'>img</span>$<span class='fu'>addBands</span>(<span class='no'>ndvi</span>$<span class='fu'>rename</span>(<span class='st'>"ndvi"</span>))
 }
 
 <span class='co'># MODIS Nadir BRDF-Adjusted Reflectance with NDVI band</span>
-<span class='no'>modis</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>'MODIS/006/MCD43A4'</span>)$
-  <span class='fu'>filterDate</span>(<span class='st'>'2010-01-01'</span>,<span class='st'>'2016-01-01'</span>)$
+<span class='no'>modis</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"MODIS/006/MCD43A4"</span>)$
+  <span class='fu'>filterDate</span>(<span class='st'>"2010-01-01"</span>, <span class='st'>"2016-01-01"</span>)$
   <span class='fu'>map</span>(<span class='no'>calc_ndvi</span>)
-<span class='no'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.85</span>, <span class='kw'>bands</span> <span class='kw'>=</span> <span class='st'>'ndvi'</span>)
-<span class='no'>modis_ndvi</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>modis</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(),<span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='no'>visParams</span>,<span class='no'>region</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>modis_ndvi</span>[<span class='no'>world_map</span>], <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>ndvi_palette</span>,<span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>'World NDVI'</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>'black'</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
+<span class='no'>visParams</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.85</span>, <span class='kw'>bands</span> <span class='kw'>=</span> <span class='st'>"ndvi"</span>)
+<span class='no'>modis_ndvi</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>modis</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(), <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='no'>visParams</span>, <span class='no'>region</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>modis_ndvi</span>[<span class='no'>world_map</span>], <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>ndvi_palette</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"World NDVI"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -242,7 +241,7 @@ GeoJSON, or sfg). By default, the whole image will be used.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Roy Yali, Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
