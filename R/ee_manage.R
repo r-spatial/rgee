@@ -149,6 +149,83 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
   }
 }
 
+#' @name ee_check-tools
+#' @exports
+ee_manage_set_properties = function(path_asset, properties) {
+  path_asset = ee_verify_filename(path_asset,strict = TRUE)
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
+  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  header = ee$data$getInfo(path_asset)[['type']]
+  if (header %in% c("Image","ImageCollection","FeatureCollection")) {
+    if ("system:time_start" %in% names(properties)) {
+      properties[["system:time_start"]] =
+        ee_selenium_functions$ee_Date_value(properties[["system:time_start"]]) %>%
+        ee_py_to_r() %>%
+        as.numeric()
+    }
+
+    if ("system:time_end" %in% names(properties)) {
+      properties[["system:time_end"]] =
+        ee_selenium_functions$ee_Date_value(properties[["system:time_end"]]) %>%
+        ee_py_to_r() %>%
+        as.numeric()
+    }
+    ee$data$setAssetProperties(path_asset,properties)
+  } else {
+    stop("Impossible assign properties to a Folder")
+  }
+}
+
+#' @name ee_check-tools
+#' @exports
+ee_manage_delete_properties = function(path_asset, property) {
+  path_asset = ee_verify_filename(path_asset,strict = TRUE)
+  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
+  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  header = ee$data$getInfo(path_asset)[['type']]
+  if (header %in% c("Image","ImageCollection","FeatureCollection")) {
+    del_list = list()
+    del_list[property] = list(NULL)
+    ee$data$setAssetProperties(path_asset,del_list)
+  } else {
+    stop("Impossible delete properties to a Folder")
+  }
+}
+
+#' @name ee_check-tools
+#' @exports
+ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getAssetAcl"),quiet=FALSE) {
+  acl_m = acl
+  path_asset = ee_verify_filename(path_asset,strict = TRUE)
+  header = ee$data$getInfo(path_asset)[['type']]
+  if (is.null(acl_m[['all_users_can_read']]))  acl_m[['all_users_can_read']] = TRUE
+  if (header %in% c("Image","ImageCollection","FeatureCollection")) {
+    acl_m = lapply(acl_m, function(x) paste(x, collapse = '\" , \"'))
+    df_acl = data.frame(key = names(acl_m),value=unlist(acl_m))
+    df_acl_p = na.omit(df_acl[c("writers","readers"),])
+    create_jsondump = function(...) {
+      sprintf("{%s",
+              paste0(
+                sprintf('"%s": ["%s"]',...),
+                collapse = ", "
+              )
+      )
+    }
+    acl_m = do.call(create_jsondump, df_acl_p) %>%
+      paste0(
+        sprintf(', "all_users_can_read": %s}',tolower(acl_m[['all_users_can_read']]))
+      )
+    ee$data$setAssetAcl(path_asset,acl_m)
+    if (!quiet) cat('The ACL of',path_asset,'has been changed.\n')
+  } else if (header=="Folder") {
+    list_files = ee$data$getList(list(id=path_asset))
+    items = unlist(lapply(list_files, '[[',1))
+    mapply(ee_manage_assets_access, items,MoreArgs = list(acl = acl))
+  }
+  invisible(TRUE)
+}
+
+
 
 #' Verify is the EE path asset is correct
 #' @noRd

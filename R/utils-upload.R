@@ -265,15 +265,15 @@ ee_create_manifest_future <- function(x,
 #' @noRd
 ee_gcs_to_asset  <- function(gs_uri,filename, type = 'table' ,properties=NULL) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   tempdir_gee <- tempdir()
 
   if (!is.null(properties[['time_start']])) {
-    properties[['time_start']] <- as.numeric(py$ee_Date_value(properties[['time_start']]))
+    properties[['time_start']] <- as.numeric(ee_selenium_functions$ee_Date_value(properties[['time_start']]))
     names(properties)[which(names(properties) %in% 'time_start')]  <- 'system:time_start'
   }
   if (!is.null(properties[['time_end']])) {
-    properties[['time_end']] <- as.numeric(py$ee_Date_value(properties[['time_end']]))
+    properties[['time_end']] <- as.numeric(ee_selenium_functions$ee_Date_value(properties[['time_end']]))
     names(properties)[which(names(properties) %in% 'time_end')]  <- 'system:time_end'
   }
   if (!is.null(properties[['missingData']])) {

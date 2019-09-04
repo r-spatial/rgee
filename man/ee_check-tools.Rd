@@ -21,6 +21,9 @@
 \alias{ee_manage_size}
 \alias{ee_manage_copy}
 \alias{ee_manage_move}
+\alias{ee_manage_set_properties}
+\alias{ee_manage_delete_properties}
+\alias{ee_manage_assets_access}
 \title{Interface to handle rgee installation requirements}
 \usage{
 ee_check()
@@ -60,6 +63,13 @@ ee_manage_size(path_asset)
 ee_manage_copy(path_asset, final_path, quiet = FALSE)
 
 ee_manage_move(path_asset, final_path, quiet = FALSE)
+
+ee_manage_set_properties(path_asset, properties)
+
+ee_manage_delete_properties(path_asset, property)
+
+ee_manage_assets_access(path_asset,
+  acl = getOption("rgee.manage.getAssetAcl"), quiet = FALSE)
 }
 \arguments{
 \item{display_in_browser}{TODO}

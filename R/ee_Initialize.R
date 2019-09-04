@@ -46,11 +46,14 @@ ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
             overwrite = TRUE)
   ee_sessioninfo(user,gee_credentials,gd_credentials,gcs_credentials)
 
+  user_gmail = paste0(gsub("users/","",ee$data$getAssetRoots()[[1]]$id),"@gmail.com")
   options(rgee.gcs.auth = gcs_credentials)
   options(rgee.selenium.params = list(gmail_account = paste0(user,'@gmail.com'),
                                       showpassword = FALSE,
                                       cache = TRUE))
-
+  options(rgee.manage.getAssetAcl = list(writers=user_gmail,
+                                         readers=user_gmail,
+                                         all_users_can_read = TRUE))
   ee$Initialize()
 }
 
