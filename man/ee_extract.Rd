@@ -7,7 +7,8 @@ Extract values from a Image or ImageCollection spatial object at the locations
 of geometry object. You can use coordinates, ee.Geometries, ee.Features,
 ee.FeatureCollection and sf objects.}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, ...)
+ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE,
+  ...)
 }
 \arguments{
 \item{x}{ee$Image or ee$ImageCollection.}

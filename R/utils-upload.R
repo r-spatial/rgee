@@ -304,30 +304,3 @@ ee_gcs_to_asset  <- function(gs_uri,filename, type = 'table' ,properties=NULL) {
     system(sprintf("earthengine upload table --asset_id %s '%s'", filename, gs_uri))
   }
 }
-
-#' Create a folder or ImageCollection into GEE assets (DEPRECATED)
-#' @param path_asset a character vector containing a single path name.
-#' @param asset_type a character vector containing the asset type. 'folder' or 'imagecollection'.
-#' @param quiet logical; suppress info message.
-#' @export
-ee_create_asset_path  <- function(path_asset, asset_type='folder',quiet=FALSE) {
-
-  path_asset <- path_asset %>%
-    str_extract_all(boundary("word"),simplify = TRUE) %>%
-    paste(collapse = "/")
-
-  asset_path_exist <- is.null(ee$data$getInfo(path_asset))
-  if (asset_path_exist) {
-    if (asset_type == 'folder') {
-      ee$data$createAsset(list(type=ee$data$ASSET_TYPE_FOLDER), path_asset)
-    } else if (asset_type == 'imagecollection') {
-      ee$data$createAsset(list(type=ee$data$ASSET_TYPE_IMAGE_COLL), path_asset)
-    } else {
-      stop('Invalid asset_type parameter')
-    }
-    if (!quiet) cat('GEE asset:',path_asset,'created\n')
-  }
-  else {
-    if (!quiet) cat("GEE asset:",path_asset,"already exists\n")
-  }
-}

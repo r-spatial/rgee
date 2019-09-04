@@ -17,7 +17,7 @@
 #'   sf_as_ee()
 #' ee_nc_rain = ee_extract(terraclimate,ee_nc)
 #' ee_nc_rain
-ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, ...) {
+ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE, ...) {
   y = ee$FeatureCollection(y)$map(function(x) x$set('ID',x$get("system:index")))
   fun_name = gsub("Reducer.","",fun$getInfo()['type'])
   triplets = ee$ImageCollection(x)$map(function(image) {
