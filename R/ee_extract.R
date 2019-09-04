@@ -5,6 +5,8 @@
 #' @param x ee$Image or ee$ImageCollection.
 #' @param y ee$Geometry, ee$Feature, ee$FeatureCollection or sf object.
 #' @param fun ee$Reducer object. Function to summarize the values. See details.
+#' @param scale TODO
+#' @param sf TODO
 #' @param ... reduceRegions parameters. See Details.
 #' library(rgee)
 #' ee_Initialize()

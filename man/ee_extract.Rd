@@ -17,6 +17,10 @@ ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE,
 
 \item{fun}{ee$Reducer object. Function to summarize the values. See details.}
 
+\item{scale}{TODO}
+
+\item{sf}{TODO}
+
 \item{...}{reduceRegions parameters. See Details.
 library(rgee)
 ee_Initialize()

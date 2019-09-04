@@ -1,8 +1,12 @@
 #' Create a folder or ImageCollection into GEE assets
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @param path_asset a character vector containing a single path name.
 #' @param asset_type a character vector containing the asset type. 'folder' or 'imagecollection'.
 #' @param quiet logical; suppress info message.
+#' @param final_path TODO
+#' @param properties TODO
+#' @param property TODO
+#' @param acl TODO
 #'
 #' @export
 ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
@@ -24,7 +28,7 @@ ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
   }
 }
 
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @export
 ee_manage_delete = function(path_asset, quiet=FALSE) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
@@ -39,7 +43,7 @@ ee_manage_delete = function(path_asset, quiet=FALSE) {
   if (!quiet) cat('EE object deleted:',path_asset,'\n')
 }
 
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @export
 ee_manage_assetlist = function(path_asset, quiet=FALSE) {
   if (missing(path_asset)) path_asset = ee$data$getAssetRoots()[[1]]$id
@@ -58,7 +62,7 @@ ee_manage_assetlist = function(path_asset, quiet=FALSE) {
 }
 
 
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @export
 ee_manage_quota = function() {
   oauth_func_path <- system.file("python/ee_quota.py", package = "rgee")
@@ -71,7 +75,7 @@ ee_manage_quota = function() {
   invisible(quota)
 }
 
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @export
 ee_manage_size = function(path_asset) {
   if (missing(path_asset)) path_asset = ee$data$getAssetRoots()[[1]]$id
@@ -102,7 +106,7 @@ ee_manage_size = function(path_asset) {
   cat(header,":\n", msg_01,"\n", msg_02)
 }
 
-#' @name ee_check-tools
+#' @name ee_manage-tools
 #' @export
 ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
@@ -124,8 +128,8 @@ ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
   }
 }
 
-#' @name ee_check-tools
-#' @exports
+#' @name ee_manage-tools
+#' @export
 ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   final_path = ee_verify_filename(final_path,strict = FALSE)
@@ -149,8 +153,8 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
   }
 }
 
-#' @name ee_check-tools
-#' @exports
+#' @name ee_manage-tools
+#' @export
 ee_manage_set_properties = function(path_asset, properties) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
@@ -176,8 +180,8 @@ ee_manage_set_properties = function(path_asset, properties) {
   }
 }
 
-#' @name ee_check-tools
-#' @exports
+#' @name ee_manage-tools
+#' @export
 ee_manage_delete_properties = function(path_asset, property) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
@@ -192,8 +196,8 @@ ee_manage_delete_properties = function(path_asset, property) {
   }
 }
 
-#' @name ee_check-tools
-#' @exports
+#' @name ee_manage-tools
+#' @export
 ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getAssetAcl"),quiet=FALSE) {
   acl_m = acl
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
@@ -225,7 +229,38 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
   invisible(TRUE)
 }
 
+#' @name ee_manage-tools
+#' @export
+ee_manage_task = function(quiet) {
+  ee_temp = tempdir()
+  manage_task_file = sprintf("%s/ee_manage_task_file.csv", ee_temp)
+  if (!file.exists(manage_task_file)) {
+    py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
+    df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
+    status = py$genreport()
+    order_name = names(status[[1]])
+    df_status <- data.frame(matrix(unlist(status), nrow=length(status), byrow=TRUE),stringsAsFactors = FALSE)
+    colnames(df_status) = order_name
+    df_order = df_status[py_names]
+    colnames(df_order) = df_names
+    df_order$DestinationPath = sub(".*:\\s","",df_order$DestinationPath)
+    write.csv(df_order,manage_task_file,row.names = FALSE)
+  } else {
+    df_order = read.csv(manage_task_file,stringsAsFactors = FALSE)
+  }
+  return(df_order)
+}
 
+#' @name ee_manage-tools
+#' @export
+ee_manage_cancel_all_running_taks = function() {
+  all_taks = ee$data$getTaskList()
+  running = all_taks[which(unlist(lapply(all_taks, '[[','state')) == 'RUNNING')]
+  if (length(running) > 0) stop("There are not any tasks running")
+  for (z in seq_along(running)) {
+    ee$data$cancelTask(running[[z]][['id']])
+  }
+}
 
 #' Verify is the EE path asset is correct
 #' @noRd
