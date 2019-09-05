@@ -1,67 +1,50 @@
 
 <img src="https://raw.githubusercontent.com/ryali93/rgee/master/man/figures/logo.png" align="right" width = 15%/>
 
-# rgee
-
 [![Build
-Status](https://travis-ci.org/ryali93/rgee.svg?branch=master)](https://travis-ci.org/ryali93/rgee)
+Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-### R bindings for calling th Python Earth Engine API
+# rgee: R bindings for calling the Earth Engine API
 
-**rgee** provides functions and classes to conveniently interact with
-Google Earth Engine since R. The main user relevant functions are:
+`rgee` provides functions and classes to conveniently interact with
+Google Earth Engine since R. The package includes facilities for:
 
-  - `ee`: The [EE Python
-    library](https://github.com/google/earthengine-api), use `$` instead
-    of `.`.
-  - `ee_initialize`: Authenticate and Initialize the Earth Engine and
-    Google Drive API.
-  - `ee_map`: Display a `ee$Image`, `ee$Feature`,
-    `ee$FeatureCollection`, or `ee$ImageCollection` through the
-    [`mapview`](https://github.com/r-spatial/mapview) R package.
-  - `ee_download_*`: Download the results of an “COMPLETED” Earth Engine
-    task.
-  - `sf_as_ee`: Pass sf objects to Earth Engine.
-  - `ee_print`: Fetch and return metadata about Earth Engine objects.
-  - `ee_upload`: Batch uploading to the asset using selenium.
-  - `ee_manage_*`: Google Earth Engine Batch Asset Manager. (UNDERDEV)
+  - Initialization of the Earth Engine (EE) API, multi-user support.
+  - Installing Python dependencies effortlessly.
+  - Managing EE assets and tasks recursively.
+  - Displaying EE spatial objects in an interactive view on top of
+    specific basemaps.
+  - Generating metadata reports about EE objects.
+  - Uploading and downloading.
+  - Conversion of EE spatial object to sf and vice-versa.
 
-It put together the main ideas behind of
-[geeup](https://github.com/samapriya/geeup),
-[geextract](https://github.com/loicdtx/landsat-extract-gee) and
-[cartoee](https://github.com/KMarkert/cartoee).
+Access to Google Earth Engine is currently only available to [registered
+users](https://earthengine.google.com/).
 
-## Installation (Not available yet)
+## Installation
 
-For CRAN release version of **rgee** use
+Install development versions from github with
 
 ``` r
-install.packages("rgee")
+remotes::install_git("csaybar/rgee")
 ```
 
-To install the development version install the
-[devtools](https://cran.r-project.org/package=devtools) package.
-
-``` r
-devtools::install_github("ryali93/rgee")
-```
-
-## Windows
+### Windows
 
 Before install `rgee` be sure that
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/) is installed in
 the system. System libraries are automatically downloaded from
 [rwinlib](https://github.com/rwinlib/).
 
-## Linux
+### Linux
 
 Please install the follow system libraries.
 
-### Ubuntu
+#### Ubuntu
 
     sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
     sudo apt-get update
@@ -76,7 +59,7 @@ Use [Homebrew](https://brew.sh/) to install system libraries:
 
 ## How does it works?
 
-![workflow](https://raw.githubusercontent.com/ryali93/rgee/master/man/figures/rgee.png)
+![workflow](https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/rgee.png)
 
 ## Example
 
