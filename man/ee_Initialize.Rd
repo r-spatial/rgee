@@ -24,7 +24,7 @@ to your Google account and grant permission for google earth engine. This functi
 \code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via
 \code{gargle::token_fetch()}. By default, rgee do not need to them, these are just neccesary for exportation
 tasks. The user credentials are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not
-specified "anonymous" is setting by default.
+specified the usser in the last session is setting.
 }
 \examples{
 \dontrun{

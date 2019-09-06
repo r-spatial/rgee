@@ -12,47 +12,55 @@
 #' \code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via
 #' `gargle::token_fetch()`. By default, rgee do not need to them, these are just neccesary for exportation
 #' tasks. The user credentials are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not
-#' specified "anonymous" is setting by default.
+#' specified the usser in the last session is setting.
 #' @examples
 #' \dontrun{
 #' ee_initialize()
 #' }
 #' @export
 ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
-  if (missing(user)) user <- "anonymous@gmail.com"
-  if (!grepl("\\@gmail.com$",user)) {
-    stop("user needs to be a google account (e.g. anonymous@gmail.com)")
-  }
-  user <- sub("\\@gmail.com$","",user)
-  credential_path <-  sprintf("%s/%s", path.expand("~/.config/earthengine") , user)
-
-  dir.create(credential_path,showWarnings = FALSE)
-
-  gee_credentials <- sprintf("%s/credentials", credential_path)
-  gd_credentials <- sprintf("%s/googledrive", credential_path)
-  gcs_credentials <- sprintf("%s/GCS_AUTH_FILE.json", credential_path)
+  ee_path <- path.expand("~/.config/earthengine")
+  main_ee_credential <- sprintf("%s/credentials", ee_path)
 
   if (restart) {
-    ee_get_credentials_gee(credential_path)
-    if (drive) ee_get_credentials_drive(credential_path)
-    if (gcs) ee_get_credentials_gcs(credential_path)
-  } else {
-    if (!file.exists(gee_credentials)) ee_get_credentials_gee(credential_path)
-    if (!file.exists(gd_credentials) & drive) ee_get_credentials_drive(credential_path)
-    if (!file.exists(gcs_credentials) & gcs) ee_get_credentials_gcs(credential_path)
+    all_files <- list.files(ee_path,recursive = TRUE, include.dirs = TRUE, full.names = TRUE)
+    unlink(all_files)
   }
-  file.copy(from = gee_credentials,
-            to = paste0(path.expand("~/.config/earthengine"),"/credentials"),
-            overwrite = TRUE)
-  ee_sessioninfo(user,gee_credentials,gd_credentials,gcs_credentials)
 
-  user_gmail = paste0(gsub("users/","",ee$data$getAssetRoots()[[1]]$id),"@gmail.com")
+  if (!file.exists(main_ee_credential)) {
+    if (!missing(user)) {
+      if (!grepl("\\@gmail.com$",user)) {
+        stop("user needs to be a google account (e.g. anonymous@gmail.com)")
+      }
+      clean_user <- sub("\\@gmail.com$","",user)
+      user_ee_credential <- sprintf("%s/%s/credentials",ee_path, clean_user)
+      file.copy(from = user_ee_credential,
+                to = main_ee_credential,
+                overwrite = TRUE)
+    } else {
+      ee_get_credentials_gee()
+    }
+  } else {
+    clean_user = gsub("users/","",ee$data$getAssetRoots()[[1]]$id)
+    user <- paste0(asset_user_path,"@gmail.com")
+    user_ee_credential <- sprintf("%s/%s/credentials",ee_path, clean_user)
+  }
+
+  gee_credentials <- sprintf("%s/credentials", user_ee_credential)
+  gd_credentials <- sprintf("%s/googledrive", user_ee_credential)
+  gcs_credentials <- sprintf("%s/GCS_AUTH_FILE.json", user_ee_credential)
+
+  if (!file.exists(gd_credentials) & drive) ee_get_credentials_drive(credential_path)
+  if (!file.exists(gcs_credentials) & gcs) ee_get_credentials_gcs(credential_path)
+
+  ee_sessioninfo(clean_user,gee_credentials,gd_credentials,gcs_credentials)
+
   options(rgee.gcs.auth = gcs_credentials)
-  options(rgee.selenium.params = list(gmail_account = paste0(user,'@gmail.com'),
+  options(rgee.selenium.params = list(gmail_account = user,
                                       showpassword = FALSE,
                                       cache = TRUE))
-  options(rgee.manage.getAssetAcl = list(writers=user_gmail,
-                                         readers=user_gmail,
+  options(rgee.manage.getAssetAcl = list(writers=user,
+                                         readers=user,
                                          all_users_can_read = TRUE))
   ee$Initialize()
 }
@@ -76,15 +84,21 @@ ee_source_python <- function(oauth_func_path) {
 #' refreshed, as necessary.
 #' @param save_credentials path to save credentials.
 #' @noRd
-ee_get_credentials_gee <- function(save_credentials) {
+ee_get_credentials_gee <- function() {
   earthengine_auth <- ee$oauth$get_authorization_url()
   browseURL(earthengine_auth)
   auth_code <- getPass("Enter Earth Engine Authentication: ")
   token <- ee$oauth$request_token(auth_code)
   credential <- sprintf('{"refresh_token":"%s"}',token)
-  write(credential, sprintf("%s/credentials",save_credentials))
+  ee_path <- path.expand("~/.config/earthengine")
+  write(credential, sprintf("%s/credentials",ee_path))
+  ee$Initialize()
+  #Save an create a folder for future inits
+  id_user <- ee$data$getAssetRoots()[[1]]$id
+  user_name <- gsub("users/","",id_user)
+  dir.create(sprintf("%s/%s", ee_path, user_name),showWarnings = FALSE)
+  write(credential, sprintf("%s/%s/credentials", ee_path, user_name))
 }
-
 #' Authorize googledrive
 #'
 #' Authorize googledrive to view and manage your Drive files. This function is
