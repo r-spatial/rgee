@@ -8,20 +8,22 @@
 \alias{sf_as_ee.sfg}
 \title{Convert R spatial object to an Google Earth Engine}
 \usage{
-sf_as_ee(x, ...)
+sf_as_ee(x, check_ring_dir)
 
-\method{sf_as_ee}{character}(x, ...)
+\method{sf_as_ee}{character}(x, check_ring_dir = FALSE, ...)
 
-\method{sf_as_ee}{sf}(x, ...)
+\method{sf_as_ee}{sf}(x, check_ring_dir = FALSE)
 
-\method{sf_as_ee}{sfc}(x, ...)
+\method{sf_as_ee}{sfc}(x, check_ring_dir = FALSE)
 
-\method{sf_as_ee}{sfg}(x, ...)
+\method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE)
 }
 \arguments{
 \item{x}{object to be converted into.}
 
-\item{...}{if x is a character additional \code{\link[sf]{st_read}} arguments could be passed.}
+\item{check_ring_dir}{logical. see \link[sf]{st_read}.}
+
+\item{...}{\link[sf]{st_read} arguments might be passed.}
 }
 \description{
 Convert R spatial object to an Google Earth Engine

@@ -24,6 +24,9 @@
 #' sf_subset <- ee_as_sf(subset)
 #' plot(sf_subset)
 ee_as_sf <- function(x) {
+  if (!"ee.computedobject.ComputedObject" %in% class(x)) {
+    stop("x is not a Earth Engine object")
+  }
   x_local <- ee$FeatureCollection(x)$getInfo()
   class(x_local) <- "geo_list"
   x_local <- geojson_sf(x_local)
