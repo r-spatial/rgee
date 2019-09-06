@@ -1,7 +1,7 @@
 #' Authenticate and Initialize rgee
 #'
 #' Authorize rgee to manage Earth Engine accounts. The \code{ee_initialize()} via web-browser asked to sign in
-#' to your Google account and grant permission for google earth engine. This function is a wrapper around
+#' to your Google account and grant permission for managing google earth engine. This function is a wrapper around
 #' `rgee::ee$Initialize()`.
 #'
 #' @param user Earth Engine user
@@ -12,11 +12,9 @@
 #' \code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via
 #' `gargle::token_fetch()`. By default, rgee do not need to them, these are just neccesary for exportation
 #' tasks. The user credentials are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not
-#' specified the usser in the last session is setting.
+#' specified the user parameters of the last session will be used.
 #' @examples
-#' \dontrun{
 #' ee_initialize()
-#' }
 #' @export
 ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
   ee_path <- path.expand("~/.config/earthengine")
@@ -27,22 +25,33 @@ ee_Initialize <- function(user,restart = FALSE, drive = FALSE, gcs = FALSE) {
     unlink(all_files)
   }
 
-  if (!file.exists(main_ee_credential)) {
+  if (!file.exists(main_ee_credential) | !missing(user)) {
     if (!missing(user)) {
       if (!grepl("\\@gmail.com$",user)) {
         stop("user needs to be a google account (e.g. anonymous@gmail.com)")
       }
       clean_user <- sub("\\@gmail.com$","",user)
       user_ee_credential <- sprintf("%s/%s/credentials",ee_path, clean_user)
-      file.copy(from = user_ee_credential,
-                to = main_ee_credential,
-                overwrite = TRUE)
+      iscopy = file.copy(from = user_ee_credential,
+                         to = main_ee_credential,
+                         overwrite = TRUE)
+      if (!iscopy) {
+        ee_get_credentials_gee()
+        clean_user = gsub("users/","",ee$data$getAssetRoots()[[1]]$id)
+        n_user <- paste0(clean_user,"@gmail.com")
+        if (!identical(user,n_user)) {
+          stop("Credentials obtained does not correspond with ",
+               user, " but ", n_user)
+          unlink(paste0(ee_path,"/",gsub("@gmail.com","",user)))
+        }
+      }
     } else {
       ee_get_credentials_gee()
     }
   } else {
+    ee$Initialize()
     clean_user = gsub("users/","",ee$data$getAssetRoots()[[1]]$id)
-    user <- paste0(asset_user_path,"@gmail.com")
+    user <- paste0(clean_user,"@gmail.com")
     user_ee_credential <- sprintf("%s/%s/credentials",ee_path, clean_user)
   }
 
@@ -101,7 +110,7 @@ ee_get_credentials_gee <- function() {
 }
 #' Authorize googledrive
 #'
-#' Authorize googledrive to view and manage your Drive files. This function is
+#' Authorize googledrive to view and manage your drive files. This function is
 #' a wrapper around `googledrive::drive_auth()`.
 #'
 #' By default, you are directed to a web browser, asked to sign in to your Google
@@ -131,8 +140,10 @@ ee_get_credentials_drive <- function(save_credentials) {
 #' Authorize Google Cloud Storage to view and manage your gcs files.
 #'
 #' @param save_credentials Path to save credentials
-#'@details Set the file location of your download Google Project JSON file in
-#' a GCS_AUTH_FILE argument (Manually).
+#'@details
+#' GCS_AUTH_FILE.json is the authentication json file you have downloaded from your Google Project
+#' (https://console.cloud.google.com/apis/credentials/serviceaccountkey). Is necessary to save it (manually)
+#' inside the folder ~/.R/earthengine/USER/.
 #' @noRd
 ee_get_credentials_gcs <- function(save_credentials) {
   message(
