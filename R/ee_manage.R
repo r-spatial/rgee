@@ -7,6 +7,8 @@
 #' @param properties TODO
 #' @param property TODO
 #' @param acl TODO
+#' @importFrom stats na.omit
+#' @importFrom utils write.csv read.csv
 #'
 #' @export
 ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
@@ -90,14 +92,14 @@ ee_manage_size = function(path_asset) {
     nelements = fc$size()$getInfo()
     asset_size = fc$get('system:asset_size')$getInfo()
   } else if (header=="Image") {
-    img = ee$Image(asset)
+    img = ee$Image(path_asset)
     nelements = 1
     asset_size = img$get('system:asset_size')$getInfo()
   }else if (header=="folder") {
     #After 0.1.175 needs add --no-use_cloud_api
     nelements = length(system(sprintf("earthengine ls %s", path_asset), intern = TRUE))
-    asset_size = system(sprintf("earthengine du %s -s", path_asset), intern = TRUE) %>%
-      gsub("([0-9]+).*$", "\\1", .) %>%
+    asset_size = system(sprintf("earthengine du %s -s", path_asset), intern = TRUE)
+    asset_size <- gsub("([0-9]+).*$", "\\1", asset_size) %>%
       as.numeric() %>%
       ee_humansize()
   }
@@ -158,7 +160,7 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
 ee_manage_set_properties = function(path_asset, properties) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   header = ee$data$getInfo(path_asset)[['type']]
   if (header %in% c("Image","ImageCollection","FeatureCollection")) {
     if ("system:time_start" %in% names(properties)) {
@@ -185,7 +187,7 @@ ee_manage_set_properties = function(path_asset, properties) {
 ee_manage_delete_properties = function(path_asset, property) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   header = ee$data$getInfo(path_asset)[['type']]
   if (header %in% c("Image","ImageCollection","FeatureCollection")) {
     del_list = list()
@@ -232,12 +234,14 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
 #' @name ee_manage-tools
 #' @export
 ee_manage_task = function(quiet) {
+  oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
+  ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp = tempdir()
   manage_task_file = sprintf("%s/ee_manage_task_file.csv", ee_temp)
   if (!file.exists(manage_task_file)) {
     py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
     df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
-    status = py$genreport()
+    status = ee_manage_py$genreport()
     order_name = names(status[[1]])
     df_status <- data.frame(matrix(unlist(status), nrow=length(status), byrow=TRUE),stringsAsFactors = FALSE)
     colnames(df_status) = order_name

@@ -44,15 +44,15 @@ library(sf)
 ee_Initialize()
 
 # sf
-x <- read_sf(system.file("shape/nc.shp", package = "sf")) \%>\% st_transform(4326)
+x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\% st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
 # sfc
-x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry \%>\% st_transform(4326)
+x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry \%>\% st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
 # sfg
-x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
+x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
 }

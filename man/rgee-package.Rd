@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right'}}
 
-R bindings for calling the Earth Engine API.
+Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automatizing processes.
 }
 \seealso{
 Useful links:
@@ -23,7 +23,6 @@ Useful links:
 
 Other contributors:
 \itemize{
-  \item Julio Contreras \email{julius013199@gmail.com} (0000-0001-5579-8919) [contributor]
   \item Roy Yali \email{ryali93@gmail.com} (0000-0003-4542-3755) [contributor]
   \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (0000-0002-2154-2429) [contributor]
 }

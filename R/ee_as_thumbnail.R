@@ -25,7 +25,7 @@
 #' }
 #'
 #' @importFrom  stars st_set_dimensions st_as_stars write_stars
-#' @importFrom sf st_crs
+#' @importFrom sf st_crs<-
 #' @importFrom reticulate py_to_r
 #' @importFrom  utils download.file zip str
 #' @importFrom png readPNG
@@ -51,7 +51,8 @@
 #' world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 #' world_dem <- world_dem * 5000
 #'
-#' plot(world_dem[world_map], col = dem_palette, breaks = "equal", reset = FALSE, main = "World Elevation")
+#' plot(world_dem[world_map], col = dem_palette,
+#'      breaks = "equal", reset = FALSE, main = "World Elevation")
 #' plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
 #'
 #' # Example #02  - WORLD NDVI
@@ -67,7 +68,9 @@
 #'   map(calc_ndvi)
 #' visParams <- list(min = -0.5, max = 0.85, bands = "ndvi")
 #' modis_ndvi <- ee_as_thumbnail(x = modis$mean(), vizparams = visParams, region)
-#' plot(modis_ndvi[world_map], reset = FALSE, col = ndvi_palette, main = "World NDVI")
+#'
+#'plot(modis_ndvi[world_map], reset = FALSE,
+#'     col = ndvi_palette, main = "World NDVI")
 #' plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
 #' }
 #' @export

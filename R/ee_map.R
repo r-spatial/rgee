@@ -469,7 +469,7 @@ create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m@map <- m@map %>%
     addWMSTiles(baseUrl = tile, group = objname, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
-    rgee:::ee_mapViewLayersControl(names = c(objname))
+    ee_mapViewLayersControl(names = c(objname))
 
   m@object$tokens <- tile
   m@object$names <- objname

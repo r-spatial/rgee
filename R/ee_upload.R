@@ -12,6 +12,7 @@
 #' @param quiet logical; suppress info message
 #' @param ... ignored
 #' @importFrom methods is as
+#' @importFrom sf write_sf
 #' @details  TALKING ABOUT SELENIUM
 #' @name ee_upload
 #' @export
@@ -30,9 +31,9 @@ ee_upload.character <- function(x, ...,
 
   filename <- ee_verify_filename(filename)
   gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params)
-  if (image_or_vector(to_upload_file) == "sf") {
+  if (image_or_vector(x) == "sf") {
     ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
-  } else if (image_or_vector(to_upload_file) == "stars") {
+  } else if (image_or_vector(x) == "stars") {
     ee_gcs_to_asset(gs_uri, filename, type = 'image' ,properties=properties)
   } else {
     stop(sprintf("%s needs to be either a GeoTIFF or ESRI SHAPEFILE file", x))

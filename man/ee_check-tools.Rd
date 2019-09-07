@@ -50,6 +50,8 @@ ee_remove_credentials(user, quiet = TRUE)
 \item{pypackage}{TODO}
 
 \item{quiet}{logical; suppress info message}
+
+\item{user}{TODO}
 }
 \description{
 R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.

@@ -1,8 +1,3 @@
-library(testthat)
-library(rgee)
-library(raster)
-ee_Initialize()
-
 filename <- system.file("external/lux.shp", package="raster")
 context("rgee: sf_as_ee test")
 

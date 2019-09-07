@@ -2,8 +2,8 @@
 #'
 #' R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
 #' @param quiet logical; suppress info message
+#' @param user TODO
 #' @importFrom reticulate py_available py_module_available py_discover_config source_python
-#' @importFrom googledrive drive_auth
 #' @name ee_check-tools
 #' @details It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
 #' compatible with Python 3.5 >.

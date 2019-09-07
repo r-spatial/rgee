@@ -52,8 +52,8 @@ ee_search_startdate <- function(ee_dataset, stardate) {
   m <- gregexpr("[\\w']+", ee_dataset$start_date, perl = TRUE)
   ee_start_date <- ee_dataset$start_date %>%
     regmatches(m) %>%
-    lapply(fix_date) %>%
-    do.call(c, .)
+    lapply(fix_date)
+  m <-  do.call(c, m)
   stardate <- as.Date(stardate)
   ee_dataset_q = ee_dataset[which(ee_start_date > stardate), ]
   rownames(ee_dataset_q) = NULL
@@ -66,8 +66,8 @@ ee_search_enddate <- function(ee_dataset, enddate = Sys.Date()) {
   m <- gregexpr("[\\w']+", ee_dataset$end_date, perl = TRUE)
   ee_end_date <- ee_dataset$end_date %>%
     regmatches(m) %>%
-    lapply(fix_date) %>%
-    do.call(c, .)
+    lapply(fix_date)
+  m <- do.call(c, m)
   enddate <- as.Date(enddate)
   ee_dataset_q = ee_dataset[which(ee_end_date < enddate), ]
   rownames(ee_dataset_q) = NULL

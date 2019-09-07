@@ -8,6 +8,7 @@
 #' @param drive logical. If TRUE drive credential are cached in the system.
 #' @param gcs logical. If TRUE drive credential are cached in the system.
 #' @param quiet logical. Suppress info messages.
+#' @importFrom utils read.table browseURL write.table
 #' @details
 #' \code{ee_initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
 #'  Storage (googlecloudStorageR) via `gargle::token_fetch()`. By default, rgee do not need to them, these
@@ -31,7 +32,6 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
       user <- ee_get_credentials_gee()
       ee$Initialize()
     }
-
     if (file.exists(session_info)) {
       user <- read.table(file = sprintf("%s/rgee_sessioninfo.txt",ee_path),
                                header = TRUE)[['user']]
@@ -63,12 +63,29 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
   user_path_GCScredential <- sprintf("%s/GCS_AUTH_FILE.json", user_path)
 
   if (drive) {
-    if (!quiet) cat('Requesting googledrive authorization\n')
-    drive_auth(email = user_gmail, cache = TRUE)
+    if (!requireNamespace('googledrive', quietly = TRUE)) {
+      stop('The googledrive package is required to use rgee::ee_download_drive',
+           call. = FALSE)
+    } else {
+      if (!quiet) cat('Requesting googledrive authorization\n')
+      googledrive::drive_auth(email = user_gmail, cache = TRUE)
+    }
   }
+
   if (!file.exists(user_path_GCScredential) & gcs) {
-    if (!quiet) cat('Requesting google cloud storage authorization\n')
-    ee_get_credentials_gcs(user_path_GCScredential)
+    if (!requireNamespace('googleCloudStorageR', quietly = TRUE)) {
+      stop('The googleCloudStorageR package is required to use rgee::ee_download_gcs',
+           call. = FALSE)
+    } else {
+      if (!quiet) cat('Requesting google cloud storage authorization\n')
+      ee_get_credentials_gcs(user_path_GCScredential)
+      gcs_auth_tk <- try(googleCloudStorageR::gcs_auth(user_path_GCScredential))
+      if (any(class(gcs_auth_tk) %in% "try-error")) {
+        stop("Authentication is not possible, check if ",
+             user_path_GCScredential,
+             " a valid Google Project JSON file")
+      }
+    }
   }
 
   ee_sessioninfo(user = user, ee_cre = user_path_EEcredential,

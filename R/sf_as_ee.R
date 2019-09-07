@@ -4,7 +4,7 @@
 #' @param x sf object to be converted into a EE object.
 #' @param check_ring_dir logical. see \link[sf]{st_read}.
 #' @param ... \link[sf]{st_read} arguments might be included.
-#' @importFrom sf read_sf
+#' @importFrom sf st_read st_sf st_sfc
 #' @importFrom geojsonio geojson_json
 #' @details
 #' The conversion from sf to EE is a two-step process. Firstly, \code{sf_as_ee} transform
@@ -21,15 +21,15 @@
 #' ee_Initialize()
 #'
 #' # sf
-#' x <- read_sf(system.file("shape/nc.shp", package = "sf")) %>% st_transform(4326)
+#' x <- st_read(system.file("shape/nc.shp", package = "sf")) %>% st_transform(4326)
 #' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 #' ee_map(ee_x)
 #' # sfc
-#' x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry %>% st_transform(4326)
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry %>% st_transform(4326)
 #' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 #' ee_map(ee_x)
 #' # sfg
-#' x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
 #' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 #' ee_map(ee_x)
 #' @export

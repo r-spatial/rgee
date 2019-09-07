@@ -7,7 +7,6 @@
 #' @param filename Output filename.
 #' @param overwrite A boolean indicating whether "filename" should be overwritten.
 #' @param quiet logical; suppress info message
-#' @importFrom googledrive drive_find drive_download
 #' @importFrom stars read_stars
 #' @examples
 #' \dontrun{
@@ -80,9 +79,6 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, quiet = TRUE) {
     stop('The googledrive package is required to use rgee::ee_download_drive',
          call. = FALSE)
   } else {
-
-    googledrive_credentials_path <- sprintf("%s/googledrive", ee_get_earthengine_path())
-    googledrive::drive_auth(token = readRDS(googledrive_credentials_path), email = TRUE) #deprecated
 
     gd_folder <- basename(task$status()$output_url)
     gd_filename <- task$config$driveFileNamePrefix
@@ -218,10 +214,6 @@ ee_download_gcs <- function(task, filename, overwrite = FALSE,
   } else {
     gcs_bucket <- task$config$outputBucket
     gd_filename <- task$config$outputPrefix
-    gcs_auth_tk <- try(googleCloudStorageR::gcs_auth(GCS_AUTH_FILE)) #deprecated
-    if (any(class(gcs_auth_tk) %in% "try-error")) {
-      stop("Authentication is not possible, check the GCS_AUTH_FILE argument")
-    }
     if (missing(filename)) filename <- tempfile()
 
     fileformat <- get_fileformat(task)

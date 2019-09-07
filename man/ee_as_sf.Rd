@@ -2,27 +2,27 @@
 % Please edit documentation in R/ee_as_sf.R
 \name{ee_as_sf}
 \alias{ee_as_sf}
-\title{Convert Earth Engine (EE) Table in a Simple Feature (sf)}
+\title{Convert an EE table in a sf object}
 \usage{
 ee_as_sf(x)
 }
 \arguments{
-\item{x}{ee.Geometry, ee.Feature or ee.FeatureCollection object to be converted into sf.}
+\item{x}{EE table to be converted into a sf object.}
 }
 \value{
 An sf class object, see Details.
 }
 \description{
-Convert Earth Engine (EE) Table in a Simple Feature (sf)
+Convert an EE table in a sf object
 }
 \details{
-The type of sf object returned will depend on the input GeoJSON. Sometimes you will get
-back a POINTS class, and sometimes a POLYGON class, etc., depending on what the structure of the GeoJSON.
-The reading and writing of the CRS to/from geojson is inconsistent. You can directly set the CRS by passing
-a valid PROJ4 string or epsg code to the crs argument in st_read.
+For exporting large spatial objects is better creates export pipelines through \code{ee$batch$Export$table$*}
+and \code{rgee::ee_download_*} instead of using \code{ee_as_sf}. See
+\href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
+documentation for details.
 }
 \examples{
-library(ee)
+library(rgee)
 ee_Initialize()
 roi <- ee$Geometry$Polygon(list(
   c(-122.27577209472656, 37.891247253777074),
@@ -34,5 +34,12 @@ roi <- ee$Geometry$Polygon(list(
 blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
 subset <- blocks$filterBounds(roi)
 sf_subset <- ee_as_sf(subset)
+cat('Object size in Mb:', as.numeric(object.size(sf_subset)/10^6))
 plot(sf_subset)
+# Define an arbitrary region in which to compute random points.
+region <- ee$Geometry$Rectangle(-119.224, 34.669, -99.536, 50.064)
+# Create 1000 random points in the region.
+ee_randomPoints <- ee$FeatureCollection$randomPoints(region)
+sf_randomPoints <- ee_as_sf(ee_randomPoints)
+plot(sf_randomPoints)
 }

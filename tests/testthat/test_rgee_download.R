@@ -1,10 +1,3 @@
-library(testthat)
-library(rgee)
-library(stars)
-library(sf)
-
-ee_Initialize()
-
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318
 xmax <- -70.953664315

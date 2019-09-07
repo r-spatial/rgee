@@ -1,8 +1,10 @@
 library(testthat)
+library(raster)
+library(stars)
 library(rgee)
 library(sf)
-ee_Initialize()
 
+ee_Initialize()
 test_check("rgee")
 
 

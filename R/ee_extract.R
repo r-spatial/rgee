@@ -20,6 +20,9 @@
 #' ee_nc_rain = ee_extract(terraclimate,ee_nc)
 #' ee_nc_rain
 ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE, ...) {
+  oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
+  extract_py <- ee_source_python(oauth_func_path)
+
   y = ee$FeatureCollection(y)$map(function(x) x$set('ID',x$get("system:index")))
   fun_name = gsub("Reducer.","",fun$getInfo()['type'])
   triplets = ee$ImageCollection(x)$map(function(image) {
@@ -28,7 +31,7 @@ ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE, .
                         scale = scale)$
       map(function(f) f$set("imageId", image$id()))
   })$flatten()
-  table = py$table_format(triplets, 'ID', 'imageId',fun_name)
+  table = extract_py$table_format(triplets, 'ID', 'imageId',fun_name)
   #table = table_format(triplets, 'FIPS', 'imageId')
   table_geojson = table$getInfo()
   class(table_geojson) = "geo_list"

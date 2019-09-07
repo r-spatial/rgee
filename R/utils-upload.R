@@ -1,7 +1,7 @@
 #' Is x a vector or a raster?
 #' @noRd
 image_or_vector <- function(x) {
-  isvector <- try(read_sf(x),silent = T)
+  isvector <- try(st_read(x),silent = T)
   if (any(class(isvector) %in% 'try-error')) {
     israster <- try(read_stars(x),silent = T)
     if (any(class(israster) %in% 'try-error')) {
@@ -43,8 +43,8 @@ ee_vector_to_shapefile <- function(x) {
     return(x)
   } else {
     shp_file <- tempfile()
-    newshp <- paste0(tif_file,".shp")
-    write_sf(read_sf(x), newshp)
+    newshp <- paste0(shp_file,".shp")
+    write_sf(st_read(x), newshp)
     return(newshp)
   }
 }
@@ -101,31 +101,31 @@ ee_upload_file_to_gcs <- function(x,
 
   if (is.null(bucket)) {
     oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-    ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+    ee_selenium_functions <- ee_source_python(oauth_func_path)
 
     tempdir_gee <- tempdir()
     session_temp <- sprintf("%s/rgee_session_by_selenium.Rdata", tempdir_gee)
 
     # Geeting cookies from https://code.earthengine.google.com/
-    if (file.exists(session_temp) & cache == cache) {
+    if (file.exists(session_temp)) {
       session <- ee_selenium_functions$load_py_object(session_temp)
     } else {
-      if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", gmail_account))
+      if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$gmail_account))
       password <- getPass("GMAIL PASSWORD:")
       if (!quiet) {
-        if (!showpassword) {
+        if (!selenium_params$showpassword) {
           cat("GMAIL PASSWORD:",paste(rep("*",nchar(password)),collapse = ""),"\n")
         } else {
           cat("GMAIL PASSWORD:",password,"\n")
         }
       }
       if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
-      session <- ee_selenium_functions$ee_get_google_auth_session_py(username = gmail_account,
+      session <- ee_selenium_functions$ee_get_google_auth_session_py(username = selenium_params$gmail_account,
                                                                      password = password,
                                                                      dirname =  ee_get_earthengine_path())
       cookies_names = names(ee_py_to_r(session$cookies$get_dict()))
       if (!quiet) cat(sprintf("cookies catched: [%s]",paste0(cookies_names,collapse = ", ")))
-      if (ncookies>7) {
+      if (length(cookies_names)>7) {
         ee_selenium_functions$save_py_object(session, session_temp)
       } else {
         warnings("The number of cookies is suspiciously low.")
@@ -169,37 +169,15 @@ ee_upload_file_to_gcs <- function(x,
     } else {
       ee_path <- path.expand("~/.config/earthengine")
       user <- read.table(sprintf("%s/rgee_sessioninfo.txt",ee_path),header = TRUE)[['user']]
-      ee_Initialize(user = paste0(user,"@gmail.com"),gcs = TRUE)
-      gcs_global_bucket(bucket = bucket)
-      gcs_auth(getOption("rgee.gcs.auth"))
+      ee_Initialize(user_gmail = paste0(user,"@gmail.com"),gcs = TRUE)
+      googleCloudStorageR::gcs_global_bucket(bucket = bucket)
+      googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth")) #init?
       setwd(dirname(x))
-      gcs_upload(x, name = basename(x))
+      googleCloudStorageR::gcs_upload(x, name = basename(x))
       gcs_uri <- sprintf("gs://%s/%s", bucket, basename(x))
       return(gcs_uri)
     }
   }
-}
-
-#' Load info for an asset, given an asset id.
-#' @noRd
-ee_verify_filename <- function(filename) {
-  filename <- gsub("\\..+$","",filename)
-  ee_path_dirname <- dirname(filename)
-  m <- gregexpr("[\\w']+", ee_path_dirname, perl=TRUE)
-  folder <- ee_path_dirname %>%
-    regmatches(m) %>%
-    '[['(1) %>%
-    paste(collapse = "/")
-  response <- ee$data$getInfo(folder)
-  if (is.null(response)) {
-    message <- c("%s is not a valid destination.",
-                 "Make sure full path is provided e.g. users/user/nameofcollection",
-                 'or projects/myproject/myfolder/newcollection and that you have',
-                 "write access there.")
-    stop(sprintf(message,asset_id))
-  }
-  ee_filename <- sprintf("%s/%s",folder, basename(filename))
-  return(ee_filename)
 }
 
 #' Create the *.JSON (manifest) using import json (0.1.189)
