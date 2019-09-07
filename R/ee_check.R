@@ -225,8 +225,14 @@ ee_install_python_ee <- function(conda=FALSE) {
 #' @export
 ee_get_earthengine_path <- function() {
   ee_path <- path.expand("~/.config/earthengine")
-  user <- read.table(sprintf("%s/rgee_sessioninfo.txt",ee_path),header = TRUE)[['user']]
+  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", path.expand("~/.config/earthengine"))
+  if (file.exists(sessioninfo)) {
+    user <- read.table(sessioninfo,header = TRUE,stringsAsFactors = FALSE)[[1]]
+  } else {
+    user <- gsub("users/","",ee$data$getAssetRoots()[[1]]$id)
+  }
   return(sprintf("%s/%s/",ee_path,user))
+
 }
 
 #' Check python packages
@@ -252,18 +258,6 @@ ee_check_rgee_package <- function(rgee_package) {
   }
 }
 
-
-#' @rdname ee_check-tools
-#' @export
-ee_remove_credentials <- function(quiet = TRUE) {
-  path <- ee_get_earthengine_path()
-  ee_credential <- sprintf("%s/credentials",path)
-  drive_credential <- sprintf("%s/googledrive",path)
-  if (file.exists(drive_credential)) file.remove(drive_credential)
-  if (file.exists(ee_credential)) file.remove(ee_credential)
-  if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
-}
-
 #' @rdname ee_check-tools
 #' @export
 ee_remove_drivers <- function(quiet = TRUE) {
@@ -273,4 +267,13 @@ ee_remove_drivers <- function(quiet = TRUE) {
   if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
   if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
   if (!quiet) cat(sprintf("Credentials in %s has been removed.",path))
+}
+
+
+#' @rdname ee_check-tools
+#' @export
+ee_remove_credentials <- function(user , quiet = TRUE) {
+  ee_path <- path.expand("~/.config/earthengine/")
+  unlink(paste0(ee_path,user),recursive = TRUE)
+  invisible(TRUE)
 }

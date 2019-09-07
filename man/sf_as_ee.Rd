@@ -6,7 +6,7 @@
 \alias{sf_as_ee.sf}
 \alias{sf_as_ee.sfc}
 \alias{sf_as_ee.sfg}
-\title{Convert R spatial object to an Google Earth Engine}
+\title{Convert an sf object to EE object}
 \usage{
 sf_as_ee(x, check_ring_dir)
 
@@ -19,53 +19,40 @@ sf_as_ee(x, check_ring_dir)
 \method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE)
 }
 \arguments{
-\item{x}{object to be converted into.}
+\item{x}{sf object to be converted into a EE object.}
 
 \item{check_ring_dir}{logical. see \link[sf]{st_read}.}
 
-\item{...}{\link[sf]{st_read} arguments might be passed.}
+\item{...}{\link[sf]{st_read} arguments might be included.}
 }
 \description{
-Convert R spatial object to an Google Earth Engine
+Convert an sf object to EE object
 }
 \details{
-\code{sf_as_ee} try to transform R objects (sf) into a GeoJSON format. By the time a user sends an HTTP
-request to the Earth Engine Web REST APIs (by, e.g. using *$getInfo()), the GeoJSON will be
-encrusted to the message. Therefore, it is expected that large spatial objects (>500Kb) cause
-bottlenecks and plodding connections. See
+The conversion from sf to EE is a two-step process. Firstly, \code{sf_as_ee} transform
+sf objects into a GeoJSON format using \link[geojsonio]{geojson_json}. Secondly, the GeoJSON
+generated will be encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
+If the sf object is large spatial objects (>1Mb) it is expected that cause bottlenecks and
+plodding connections. See
 \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-documentation for details. For leading with very large spatial objects, is a good practice firstly
-importing it to the GEE assets. See \code{\link[rgee]{ee_upload_toasset}} for details.
+documentation for details. For leading with very large spatial objects, is recommended firstly
+importing it to the GEE assets. See \link[rgee]{ee_upload} for creating uploading pipelines.
 }
 \examples{
-\dontrun{
 library(rgee)
-ee_initialize()
+library(sf)
+ee_Initialize()
 
-# character
-x <- system.file("shape/nc.shp", package="sf")
-ee$FeatureCollection(ee_as_ee(x),proj="EPSG:4326")
-
-# matrix
-ee_df <- matrix(rnorm(100),ncol = 5) \%>\% as.data.frame()
-ee_df <- ee_as_ee(ee_df,c("V1","V2"))
-
-ee_df$geometry()
 # sf
-x <- read_sf(system.file("shape/nc.shp", package="sf"))
-st_crs
-ee_as_ee(x)
-
-#sfc
-x <- read_sf(system.file("shape/nc.shp", package="sf"))$geometry
-ee_as_ee(x)
-
-#sfg
-x <- read_sf(system.file("shape/nc.shp", package="sf"))$geometry[[1]]
-ee_as_ee(x)
-
-#sp
-x <- shapefile(system.file("shape/nc.shp", package="sf"))
-ee_as_ee(x)
-}
+x <- read_sf(system.file("shape/nc.shp", package = "sf")) \%>\% st_transform(4326)
+ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
+ee_map(ee_x)
+# sfc
+x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry \%>\% st_transform(4326)
+ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
+ee_map(ee_x)
+# sfg
+x <- read_sf(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
+ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
+ee_map(ee_x)
 }

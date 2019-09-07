@@ -19,7 +19,7 @@ ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
   st_polygon() %>%
   st_sfc() %>%
   st_set_crs(4326)
-ee_geom <- sf_as_ee(ROI_polygon)
+ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
 # Get the mean annual NDVI for 2011
 cloudMaskL457 <- function(image) {
   qa <- image$select("pixel_qa")

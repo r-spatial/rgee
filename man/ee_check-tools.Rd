@@ -12,8 +12,8 @@
 \alias{ee_install_python_package}
 \alias{ee_install_python_ee}
 \alias{ee_get_earthengine_path}
-\alias{ee_remove_credentials}
 \alias{ee_remove_drivers}
+\alias{ee_remove_credentials}
 \title{Interface to handle rgee installation requirements}
 \usage{
 ee_check()
@@ -36,9 +36,9 @@ ee_install_python_ee(conda = FALSE)
 
 ee_get_earthengine_path()
 
-ee_remove_credentials(quiet = TRUE)
-
 ee_remove_drivers(quiet = TRUE)
+
+ee_remove_credentials(user, quiet = TRUE)
 }
 \arguments{
 \item{display_in_browser}{TODO}

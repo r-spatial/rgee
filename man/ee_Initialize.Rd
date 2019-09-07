@@ -4,28 +4,29 @@
 \alias{ee_Initialize}
 \title{Authenticate and Initialize rgee}
 \usage{
-ee_Initialize(user, restart = FALSE, drive = FALSE, gcs = FALSE)
+ee_Initialize(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{user}{Earth Engine user}
-
-\item{restart}{logical. Get credentials again.}
+\item{user_gmail}{Optional. Allows user to target a specific Google identity.}
 
 \item{drive}{logical. If TRUE drive credential are cached in the system.}
 
 \item{gcs}{logical. If TRUE drive credential are cached in the system.}
+
+\item{quiet}{logical. Suppress info messages.}
 }
 \description{
-Authorize rgee to manage Earth Engine accounts. The \code{ee_initialize()} via web-browser asked to sign in
+Authorize rgee to manage Earth Engine resource The \code{ee_initialize()} via web-browser asked to sign in
 to your Google account and grant permission for managing google earth engine. This function is a wrapper around
 \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_initialize()} give the possibility of authorize Google drive and Google Cloud Storage via
-\code{gargle::token_fetch()}. By default, rgee do not need to them, these are just neccesary for exportation
-tasks. The user credentials are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not
-specified the user parameters of the last session will be used.
+\code{ee_initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
+Storage (googlecloudStorageR) via \code{gargle::token_fetch()}. By default, rgee do not need to them, these
+are just neccesary for exportation and importation tasks. The user credentials are save in the
+folder \code{~/.config/earthengine/USERS/}, if a user is not specified the parameters of the
+last session will be used.
 }
 \examples{
-ee_initialize()
+ee_Initialize()
 }

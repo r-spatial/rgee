@@ -80,8 +80,10 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, quiet = TRUE) {
     stop('The googledrive package is required to use rgee::ee_download_drive',
          call. = FALSE)
   } else {
+
     googledrive_credentials_path <- sprintf("%s/googledrive", ee_get_earthengine_path())
     googledrive::drive_auth(token = readRDS(googledrive_credentials_path), email = TRUE) #deprecated
+
     gd_folder <- basename(task$status()$output_url)
     gd_filename <- task$config$driveFileNamePrefix
 
