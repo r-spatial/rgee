@@ -48,3 +48,33 @@ Upload either images or vectors to Google Earth Engine asset
 \details{
 TALKING ABOUT SELENIUM
 }
+\examples{
+library(rgee)
+library(stars)
+library(sf)
+ee_Initialize(user_gmail = 'csaybar@gmail.com')
+
+filename <- "users/csaybar/rgee_upload/"
+ee_manage_create(filename)
+
+tif = system.file("tif/geomatrix.tif", package = "stars")
+geomatrix = read_stars(tif) \%>\% st_warp(crs=st_crs(4326))
+delta_geomatrix <- c(attr(geomatrix,'dimensions')$x$delta,attr(geomatrix,'dimensions')$y$delta*-1)
+plot(geomatrix)
+
+ee_upload(x = geomatrix,filename = paste0(filename,"geomatrix"))
+ee_geomatrix <- ee$Image(paste0(filename,"geomatrix"))
+geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
+                                   scale = delta_geomatrix,
+                                   vizparams = list(min = 0, max = 255))
+geomatrix_stars[geomatrix_stars<=0]=NA
+names(geomatrix_stars) <- 'geomatrix.tif'
+plot(geomatrix_stars)
+\dontrun{
+nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
+nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
+ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))
+ee_monitoring()
+help(ee_upload)
+}
+}

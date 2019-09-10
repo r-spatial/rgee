@@ -107,7 +107,7 @@ ee_check_drivers <- function(display_in_browser = TRUE) {
     cat("\n")
     cat(">>> Chromedriver -> status[ok]:", driverdir,"\n")
   } else {
-    warning(">>> Chromedriver -> status[X]. Try rgee::ee_install_drivers() to fixed.","\n")
+    warning(">>> Chromedriver -> status[X]. Try rgee::ee_install_drivers(version=) to fixed.","\n")
   }
 }
 

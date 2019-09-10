@@ -63,6 +63,7 @@
 #' plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5)
 #' @export
 ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quiet = FALSE) {
+
   if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
   ee_crs <- sprintf("EPSG:%s", crs)
   if (missing(region)) {
@@ -117,8 +118,8 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
   }
 
   dimensions <- c(
-    as.integer(ceiling(dim_x)),
-    as.integer(ceiling(dim_y))
+    as.integer(trunc(dim_x)),
+    as.integer(trunc(dim_y))
   )
 
   offset_x <- min(mapR_df[1])

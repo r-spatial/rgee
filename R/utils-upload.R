@@ -89,6 +89,21 @@ ee_upload_file_to_gcs <- function(x,
                                   bucket = NULL,
                                   selenium_params = getOption("rgee.selenium.params"),
                                   quiet = FALSE) {
+
+  check_warning <- tryCatch(expr = ee_check_drivers(),
+                            warning=function(w) w)
+  if (is(check_warning,'warning')) {
+    stop(
+      "'chromedriver' executable needs to be in PATH.",
+      " Find the appropriate version of chromedriver visiting:\n\n",
+      ">>> chrome://settings/help \n",
+      ">>> https://sites.google.com/a/chromium.org/chromedriver/downloads\n\n",
+      "Once you are sure of the version of Google Chrome of the system. Try, in case you ",
+      "are using Google Chrome 76.x.\n",
+      "rgee::ee_install_drivers(version='76.0.3809.126') to fixed."
+    )
+  }
+
   if (image_or_vector(x) == "sf") {
     x %>%
       ee_vector_to_shapefile() %>%
@@ -124,7 +139,7 @@ ee_upload_file_to_gcs <- function(x,
                                                                      password = password,
                                                                      dirname =  ee_get_earthengine_path())
       cookies_names = names(ee_py_to_r(session$cookies$get_dict()))
-      if (!quiet) cat(sprintf("cookies catched: [%s]",paste0(cookies_names,collapse = ", ")))
+      if (!quiet) cat(sprintf("cookies catched: [%s]\n",paste0(cookies_names,collapse = ", ")))
       if (length(cookies_names)>7) {
         ee_selenium_functions$save_py_object(session, session_temp)
       } else {
@@ -246,20 +261,20 @@ ee_gcs_to_asset  <- function(gs_uri,filename, type = 'table' ,properties=NULL) {
   ee_selenium_functions <- ee_source_python(oauth_func_path)
   tempdir_gee <- tempdir()
 
-  if (!is.null(properties[['time_start']])) {
-    properties[['time_start']] <- as.numeric(ee_selenium_functions$ee_Date_value(properties[['time_start']]))
-    names(properties)[which(names(properties) %in% 'time_start')]  <- 'system:time_start'
-  }
-  if (!is.null(properties[['time_end']])) {
-    properties[['time_end']] <- as.numeric(ee_selenium_functions$ee_Date_value(properties[['time_end']]))
-    names(properties)[which(names(properties) %in% 'time_end')]  <- 'system:time_end'
-  }
-  if (!is.null(properties[['missingData']])) {
-    missingData <- properties[['missingData']]
-    properties[['missingData']] <- NULL
-  }
-
   if (type == 'image') {
+
+    if (!is.null(properties[['time_start']])) {
+      py_date <- ee_py_to_r(ee_selenium_functions$ee_Date_value(properties[['time_start']]))
+      properties[['time_start']] <- as.numeric(py_date)
+      names(properties)[which(names(properties) %in% 'time_start')]  <- 'system:time_start'
+    }
+
+    if (!is.null(properties[['time_end']])) {
+      py_date <- ee_py_to_r(ee_selenium_functions$ee_Date_value(properties[['time_end']]))
+      properties[['time_end']] <- as.numeric(py_date)
+      names(properties)[which(names(properties) %in% 'time_end')]  <- 'system:time_end'
+    }
+
     main_payload <- list(id=filename,
                          tilesets = list(
                            list(
@@ -272,8 +287,6 @@ ee_gcs_to_asset  <- function(gs_uri,filename, type = 'table' ,properties=NULL) {
                            )
                          ),
                          properties = properties)
-
-    main_payload[['missingData']] <- list(value = missingData)
 
     json_path <- sprintf("%s/manifest.json", tempdir_gee)
     ee_selenium_functions$ee_create_json_py(towrite = json_path,manifest = main_payload)

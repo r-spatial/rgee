@@ -7,8 +7,9 @@
 #' @param asset_type Character. The asset type ('folder' or 'imagecollection').
 #' @param quiet Logical. Suppress info message.
 #' @param final_path Character. Name of the final EE asset to copy or move.
-#' @param properties List. Set of parameters to established as a property of an EE object.
+#' @param properties List. Set of parameters to established as a property of an EE object. See details.
 #' @param property Character. Name of a specific property to be deleted.
+#' @param cache Logical. TRUE save the report in the /temp directory.
 #' @param acl  A list describing the asset's Access Control List. See getOption("rgee.manage.getAssetAcl").
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv

@@ -55,6 +55,8 @@ ee_manage_cancel_all_running_taks()
 \item{property}{Character. Name of a specific property to be deleted.}
 
 \item{acl}{A list describing the asset's Access Control List. See getOption("rgee.manage.getAssetAcl").}
+
+\item{cache}{Logical. TRUE save the report in the /temp directory.}
 }
 \description{
 R functions for managing the Earth Engine Asset
