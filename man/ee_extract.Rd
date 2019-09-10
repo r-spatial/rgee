@@ -2,41 +2,90 @@
 % Please edit documentation in R/ee_extract.R
 \name{ee_extract}
 \alias{ee_extract}
-\title{Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects.}
+\title{Extract values from EE ImageCollections objects}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = TRUE,
-  ...)
+ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
+  sf = TRUE, ...)
 }
 \arguments{
 \item{x}{ee$Image or ee$ImageCollection.}
 
-\item{y}{ee$Geometry, ee$Feature, ee$FeatureCollection or sf object.}
+\item{y}{ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.}
 
 \item{fun}{ee$Reducer object. Function to summarize the values. See details.}
 
-\item{scale}{TODO}
+\item{scale}{A nominal scale in meters of the projection to work in.}
 
-\item{sf}{TODO}
+\item{id}{Character. Name of the column to be used as a geometry index.}
 
-\item{...}{reduceRegions parameters. See Details.
-library(rgee)
-ee_Initialize()
-terraclimate = ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-filterDate("2000-01-01","2001-01-01")$
-map(function(x) x$select("pr"))
+\item{sf}{Logical. TRUE returns a sf object}
 
-ee_nc = st_read(system.file("shape/nc.shp", package="sf")) %>%
-st_transform(4326) %>%
-sf_as_ee()
-ee_nc_rain = ee_extract(terraclimate,ee_nc)
-ee_nc_rain}
+\item{...}{reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.}
 }
 \description{
-Extract values from Image EE spatial objects
 Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
+of geometry object. You can use ee.Geometries, ee.Features,
 ee.FeatureCollection and sf objects.
+}
+\details{
+The fun arguments just admit Reducer objects that return one value. These are:
+\itemize{
+\item  \strong{allNonZero}: Returns a Reducer that returns 1 if all of its inputs
+are non-zero, 0 otherwise. \cr
+\item \strong{anyNonZero}: Returns a Reducer that returns 1 if any of its inputs are
+non-zero, 0 otherwise. \cr
+\item \strong{bitwiseAnd}: Returns a Reducer that computes the bitwise-and summation
+of its inputs.
+\item \strong{bitwiseOr}: Returns a Reducer that computes the bitwise-or summation of
+its inputs.
+\item \strong{count}: Returns a Reducer that computes the number of non-null inputs.
+\item \strong{first}: Returns a Reducer that returns the first of its inputs.
+\item \strong{firstNonNull}: Returns a Reducer that returns the first of its non-null inputs.
+\item \strong{kurtosis}: Returns a Reducer that Computes the kurtosis of its inputs.
+\item \strong{last}: Returns a Reducer that returns the last of its inputs.
+\item \strong{lastNonNull}: Returns a Reducer that returns the last of its non-null inputs.
+\item \strong{max}: Creates a reducer that outputs the maximum value of its (first) input.
+If numInputs is greater than one, also outputs the corresponding values of the additional
+inputs.
+\item \strong{mean}: Returns a Reducer that computes the (weighted) arithmetic mean of its inputs.
+\item \strong{median}: Create a reducer that will compute the median of the inputs.
+For small numbers of inputs (up to maxRaw) the median will be computed directly; for
+larger numbers of inputs the median will be derived from a histogram.
+\item \strong{min}: Creates a reducer that outputs the minimum value of its (first) input.  If
+numInputs is greater than one, also outputs the corresponding values of the
+additional inputs.
+\item \strong{mode}: Create a reducer that will compute the mode of the inputs.  For small
+numbers of inputs (up to maxRaw) the mode will be computed directly; for
+larger numbers of inputs the mode will be derived from a histogram.
+\item \strong{product}: Returns a Reducer that computes the product of its inputs.
+\item \strong{sampleStdDev}: Returns a Reducer that computes the sample standard deviation of its inputs.
+\item \strong{sampleVariance}: Returns a Reducer that computes the sample variance of its inputs.
+\item \strong{stdDev}: Returns a Reducer that computes the standard deviation of its inputs.
+\item \strong{sum}: Returns a Reducer that computes the (weighted) sum of its inputs.
+\item \strong{variance}: Returns a Reducer that computes the variance of its inputs.
+}
+}
+\examples{
+library(rgee)
+library(sf)
+ee_Initialize()
+
+terraclimate = ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
+  filterDate("2000-01-01","2001-01-01")$
+  map(function(x) x$select("pr"))
+
+nc = st_read(system.file("shape/nc.shp", package="sf"),quiet = TRUE) \%>\%
+  st_transform(4326) \%>\%
+  sf_as_ee()
+fun <- ee$Reducer$max()
+eenc_rain = ee_extract(x = terraclimate, y = nc, fun =  fun, id = "FIPSNO")
+plot(eenc_rain[2],main="2001 Jan Precipitation - Terraclimate", reset = FALSE)
+
+## time series
+dev.off()
+ee_nc <- ee_nc_rain
+st_geometry(ee_nc) = NULL
+time_serie <- as.numeric(ee_nc[1,2:12])
+plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = 'Precipitation')
+points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)
 }
