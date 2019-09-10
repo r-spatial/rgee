@@ -1,15 +1,66 @@
-#' Create a folder or ImageCollection into GEE assets
+#' Interface for manage the Earth Engine Asset
+#'
+#' R functions for managing the Earth Engine Asset
+#'
 #' @name ee_manage-tools
-#' @param path_asset a character vector containing a single path name.
-#' @param asset_type a character vector containing the asset type. 'folder' or 'imagecollection'.
-#' @param quiet logical; suppress info message.
-#' @param final_path TODO
-#' @param properties TODO
-#' @param property TODO
-#' @param acl TODO
+#' @param path_asset Character. Name of the EE asset e.g. users/user/nameofcollection.
+#' @param asset_type Character. The asset type ('folder' or 'imagecollection').
+#' @param quiet Logical. Suppress info message.
+#' @param final_path Character. Name of the final EE asset to copy or move.
+#' @param properties List. Set of parameters to established as a property of an EE object.
+#' @param property Character. Name of a specific property to be deleted.
+#' @param acl  A list describing the asset's Access Control List. See getOption("rgee.manage.getAssetAcl").
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv
 #'
+#' @examples
+#' library(rgee)
+#' # Change the user and google account to be able to reproduce
+#' ee_Initialize(user_gmail = 'csaybar@gmail.com')
+#' ee_manage_create('users/csaybar/rgee')
+#'
+#' # 1. List all the elements inside a folder or a ImageCollection
+#' ee_manage_assetlist(path_asset = 'users/csaybar/rgee')
+#'
+#' # 2. Create a Folder or a ImageCollection
+#' ee_manage_create('users/csaybar/rgee/rgee_folder',asset_type = 'folder')
+#' ee_manage_create('users/csaybar/rgee/rgee_ic',asset_type = 'imagecollection')
+#' ee_manage_assetlist('users/csaybar/rgee')
+#'
+#' # 3. Shows your Earth Engine quota
+#' ee_manage_quota()
+#'
+#' # 4. Estimate the size of a Image, ImageCollection, Table or Folder.
+#' ee_manage_size('users/csaybar/rgee')
+#'
+#' # 5. Move a EE object to another folder
+#' ee_manage_move(path_asset = 'users/csaybar/rgee/rgee_ic',
+#'                final_path = 'users/csaybar/rgee/rgee_folder/rgee_ic_moved')
+#' ee_manage_assetlist('users/csaybar/rgee/rgee_folder')
+#'
+#' # 6. Set properties to an EE object.
+#' ee_manage_set_properties(path_asset = 'users/csaybar/rgee/rgee_folder/rgee_ic_moved',
+#'                          properties = list(message='hello-world',language = 'R'))
+#' test_ic <- ee$ImageCollection('users/csaybar/rgee/rgee_folder/rgee_ic_moved')
+#' test_ic$getInfo()
+#'
+#' # 7. Delete properties
+#' ee_manage_delete_properties(path_asset = 'users/csaybar/rgee/rgee_folder/rgee_ic_moved',
+#'                             property = c("message","language"))
+#' test_ic$getInfo()
+#'
+#' # 8. Share EE objects -- Create a public dataset
+#' ee_manage_assets_access('users/csaybar/rgee/rgee_folder/rgee_ic_moved')
+#' ee$data$getAssetAcl('users/csaybar/rgee/rgee_folder/rgee_ic_moved')
+#'
+#' # 9. Create a report based on all tasks that is running or has finished
+#' ee_manage_task()
+#'
+#' # 10. Cancel all the running task
+#' ee_manage_cancel_all_running_taks()
+#'
+#' # 11. Delete EE objects or folders
+#' ee_manage_delete('users/csaybar/rgee/')
 #' @export
 ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
   asset_type = tolower(asset_type)
@@ -67,10 +118,10 @@ ee_manage_assetlist = function(path_asset, quiet=FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_quota = function() {
-  oauth_func_path <- system.file("python/ee_quota.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_quota <- ee_source_python(oauth_func_path)
   ID <- ee$data$getAssetRoots()[[1]]$id
-  quota = ee_quota$quota(ID)
+  quota = ee_py_to_r(ee_quota$quota(ID))
   total_msg = ee_humansize(as.numeric(quota[1]))
   used_msg = ee_humansize(as.numeric(quota[2]))
   cat(sprintf(' Total Quota: %s \n Used Quota: %s',total_msg, used_msg))
@@ -95,7 +146,7 @@ ee_manage_size = function(path_asset) {
     img = ee$Image(path_asset)
     nelements = 1
     asset_size = img$get('system:asset_size')$getInfo()
-  }else if (header=="folder") {
+  }else if (header=="Folder") {
     #After 0.1.175 needs add --no-use_cloud_api
     nelements = length(system(sprintf("earthengine ls %s", path_asset), intern = TRUE))
     asset_size = system(sprintf("earthengine du %s -s", path_asset), intern = TRUE)
@@ -105,7 +156,7 @@ ee_manage_size = function(path_asset) {
   }
   msg_01 = sprintf("- Size: %s\n", asset_size)
   msg_02 = sprintf("- # elements: %s\n",nelements)
-  cat(header,":\n", msg_01,"\n", msg_02)
+  cat(header,":\n", msg_01, msg_02)
 }
 
 #' @name ee_manage-tools
@@ -233,15 +284,15 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_task = function(quiet) {
+ee_manage_task = function(quiet, cache = TRUE) {
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp = tempdir()
   manage_task_file = sprintf("%s/ee_manage_task_file.csv", ee_temp)
-  if (!file.exists(manage_task_file)) {
+  if (!file.exists(manage_task_file) & cache) {
     py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
     df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
-    status = ee_manage_py$genreport()
+    status = ee_py_to_r(ee_manage_py$genreport())
     order_name = names(status[[1]])
     df_status <- data.frame(matrix(unlist(status), nrow=length(status), byrow=TRUE),stringsAsFactors = FALSE)
     colnames(df_status) = order_name

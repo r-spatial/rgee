@@ -1,6 +1,7 @@
-#' Upload sf or stars objects to GEE asset
+#' Upload sf or stars objects into a GEE asset
 #'
-#' Send either images or vectors to Google Earth Engine asset using Selenium
+#' Upload either images or vectors to Google Earth Engine asset
+#'
 #'
 #' @param x character, sf or stars object.
 #' @param filename character. images destination path, full path for upload to Google Earth Engine,

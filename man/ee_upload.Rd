@@ -6,7 +6,7 @@
 \alias{ee_upload.sf}
 \alias{ee_upload.stars}
 \alias{ee_upload.stars_proxy}
-\title{Upload sf or stars objects to GEE asset}
+\title{Upload sf or stars objects into a GEE asset}
 \usage{
 ee_upload(x, ...)
 
@@ -43,7 +43,7 @@ computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".}
 \item{quiet}{logical; suppress info message}
 }
 \description{
-Send either images or vectors to Google Earth Engine asset using Selenium
+Upload either images or vectors to Google Earth Engine asset
 }
 \details{
 TALKING ABOUT SELENIUM
