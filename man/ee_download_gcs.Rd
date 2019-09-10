@@ -8,8 +8,7 @@ ee_download_gcs(task, filename, overwrite = FALSE,
   GCS_AUTH_FILE = getOption("rgee.gcs.auth"), quiet = TRUE)
 }
 \arguments{
-\item{task}{List generated after finished correctly a EE task. See
-\code{ee_help(ee$batch$Export)} for details.}
+\item{task}{List generated after finished correctly a EE task. See details.}
 
 \item{filename}{Output filename.}
 
@@ -17,15 +16,18 @@ ee_download_gcs(task, filename, overwrite = FALSE,
 
 \item{GCS_AUTH_FILE}{Authentication json file you have downloaded from your Google Cloud Project}
 
-\item{quiet}{logical; suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \description{
-Transfer results of an Earth Engine (EE) task saved in Google Cloud Storage to Hard disk
+Move results of an EE task saved in Google Cloud Storage to Hard disk.
 }
 \details{
 The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud Project JSON file into
 \code{ee_get_earthengine_path()} with the name GCS_AUTH_FILE.json. It is necessary in order to
 attain that rgee can read the credentials automatically.
+
+The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
+the file into google cloud storage are obtained from ee$batch$Export$*$toCloudStorage(...)$start()$status().
 }
 \examples{
 \dontrun{

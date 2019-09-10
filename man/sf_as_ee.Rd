@@ -21,7 +21,7 @@ sf_as_ee(x, check_ring_dir)
 \arguments{
 \item{x}{sf object to be converted into a EE object.}
 
-\item{check_ring_dir}{logical. see \link[sf]{st_read}.}
+\item{check_ring_dir}{logical. See \link[sf]{st_read} and details.}
 
 \item{...}{\link[sf]{st_read} arguments might be included.}
 }
@@ -37,6 +37,10 @@ plodding connections. See
 \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
 documentation for details. For leading with very large spatial objects, is recommended firstly
 importing it to the GEE assets. See \link[rgee]{ee_upload} for creating uploading pipelines.
+
+Earth Engine is strict with polygon ring directions (exterior ring counter-clockwise, holes clockwise). When
+\code{check_ring_dir} is TRUE, it check every ring and revert them to counter clockwise for outer, and clockwise for
+inner (hole) rings. By default this is FALSE because it is an expensive operation.
 }
 \examples{
 library(rgee)

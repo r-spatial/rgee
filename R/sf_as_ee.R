@@ -2,7 +2,7 @@
 #'
 #' @name sf_as_ee
 #' @param x sf object to be converted into a EE object.
-#' @param check_ring_dir logical. see \link[sf]{st_read}.
+#' @param check_ring_dir logical. See \link[sf]{st_read} and details.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc
 #' @importFrom geojsonio geojson_json
@@ -15,6 +15,11 @@
 #' \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
 #' documentation for details. For leading with very large spatial objects, is recommended firstly
 #' importing it to the GEE assets. See \link[rgee]{ee_upload} for creating uploading pipelines.
+#'
+#' Earth Engine is strict with polygon ring directions (exterior ring counter-clockwise, holes clockwise). When
+#' `check_ring_dir` is TRUE, it check every ring and revert them to counter clockwise for outer, and clockwise for
+#' inner (hole) rings. By default this is FALSE because it is an expensive operation.
+#'
 #' @examples
 #' library(rgee)
 #' library(sf)
@@ -77,7 +82,7 @@ sf_as_ee.sfc <- function(x, check_ring_dir = FALSE) {
 #' @rdname sf_as_ee
 #' @export
 sf_as_ee.sfg <- function(x, check_ring_dir = FALSE) {
-  message("EPSG:4326 assigned as an coordinate reference system")
+  # message("EPSG:4326 assigned as an coordinate reference system")
   x <- st_sfc(x, check_ring_dir = check_ring_dir)
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)

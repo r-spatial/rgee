@@ -6,7 +6,7 @@
 \alias{rgee-package}
 \title{rgee: R bindings for calling the Earth Engine API}
 \description{
-\if{html}{\figure{logo.png}{options: align='right'}}
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automatizing processes.
 }
@@ -19,12 +19,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Cesar Aybar \email{csaybar@gmail.com} (0000-0003-2745-9535)
+\strong{Maintainer}: Cesar Aybar \email{csaybar@gmail.com} (\href{https://orcid.org/0000-0003-2745-9535}{ORCID})
 
 Other contributors:
 \itemize{
-  \item Roy Yali \email{ryali93@gmail.com} (0000-0003-4542-3755) [contributor]
-  \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (0000-0002-2154-2429) [contributor]
+  \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
+  \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
 }
 
 }

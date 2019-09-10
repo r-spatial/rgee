@@ -1,21 +1,27 @@
 #' Move Earth Engine (EE) results from Google Drive to Hard disk
 #'
-#' Transfer results of an EE task saved in Google Drive to Hard disk
+#' Move results of an EE task saved in Google Drive to Hard disk.
 #'
-#' @param task List generated after finished correctly a EE task. See
-#' `ee_help(ee$batch$Export)` for details.
-#' @param filename Output filename.
-#' @param overwrite A boolean indicating whether "filename" should be overwritten.
-#' @param quiet logical; suppress info message
+#' @param task List generated after finished correctly a EE task. See details.
+#' @param filename Character. Output filename. If absent, a temporary file is created.
+#' @param overwrite A boolean indicating whether "filename" should be overwritten if it exists.
+#' @param st logical. By default this is TRUE, returning a sf (stars) object for
+#' EE tables (images). If FALSE, the output filename is returned.
+#' @param quiet logical. Suppress info message
+#'
+#' @details
+#' The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
+#' the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().
+#' @return
+#' An sf, stars or character depending on the retunclass argument.
 #' @importFrom stars read_stars
 #' @examples
-#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
-#'
 #' ee_Initialize()
 #'
+#' # Example 1 -- Download a Image
 #' # Communal Reserve Amarakaeri - Peru
 #' xmin <- -71.132591318
 #' xmax <- -70.953664315
@@ -35,9 +41,9 @@
 #'   cloud <- qa$bitwiseAnd(32L)$
 #'     And(qa$bitwiseAnd(128L))$
 #'     Or(qa$bitwiseAnd(8L))
-#' mask2 <- image$mask()$reduce(ee$Reducer$min())
-#' image <- image$updateMask(cloud$Not())$updateMask(mask2)
-#' image$normalizedDifference(list("B4", "B3"))
+#'   mask2 <- image$mask()$reduce(ee$Reducer$min())
+#'   image <- image$updateMask(cloud$Not())$updateMask(mask2)
+#'   image$normalizedDifference(list("B4", "B3"))
 #' }
 #'
 #' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
@@ -48,19 +54,19 @@
 #' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 #' mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 #'
-#' # Download a EE Image
 #' task_img <- ee$batch$Export$image$toDrive(
 #'   image = mean_l5_Amarakaeri,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEOTIFF",
 #'   fileNamePrefix = "my_image"
 #' )
+#'
 #' task_img$start()
 #' ee_monitoring(task_img)
 #' img <- ee_download_drive(task_img)
 #' plot(img)
 #'
-#' # Download a EE FeatureCollection
+#' # Example 2 -- Download a Table
 #' amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
 #' task_vector <- ee$batch$Export$table$toDrive(
 #'   collection = amk_fc,
@@ -72,9 +78,8 @@
 #' ee_monitoring(task_vector) # optional
 #' amk_geom <- ee_download_drive(task = task_vector)
 #' plot(amk_geom$geometry, border = "red", lwd = 10)
-#' }
 #' @export
-ee_download_drive <- function(task, filename, overwrite = FALSE, quiet = TRUE) {
+ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet = TRUE) {
   if (!requireNamespace('googledrive', quietly = TRUE)) {
     stop('The googledrive package is required to use rgee::ee_download_drive',
          call. = FALSE)
@@ -124,19 +129,20 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, quiet = TRUE) {
 
 #' Move EE results from Google Cloud Storage to Hard disk
 #'
-#' Transfer results of an Earth Engine (EE) task saved in Google Cloud Storage to Hard disk
+#' Move results of an EE task saved in Google Cloud Storage to Hard disk.
 #'
-#' @param task List generated after finished correctly a EE task. See
-#' `ee_help(ee$batch$Export)` for details.
+#' @param task List generated after finished correctly a EE task. See details.
 #' @param filename Output filename.
 #' @param overwrite A boolean indicating whether "filename" should be overwritten.
 #' @param GCS_AUTH_FILE Authentication json file you have downloaded from your Google Cloud Project
-#' @param quiet logical; suppress info message
+#' @param quiet Logical. Suppress info message
 #' @details
 #' The best way to use `rgee::ee_download_gcs` is save the Google Cloud Project JSON file into
 #' `ee_get_earthengine_path()` with the name GCS_AUTH_FILE.json. It is necessary in order to
 #' attain that rgee can read the credentials automatically.
 #'
+#' The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
+#' the file into google cloud storage are obtained from ee$batch$Export$*$toCloudStorage(...)$start()$status().
 #' @examples
 #' \dontrun{
 #' library(rgee)

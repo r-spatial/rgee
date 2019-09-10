@@ -1,28 +1,44 @@
-#' Create a stars object based on an Earth Engine (EE) thumbnail image
+#' Create a stars object based on an EE thumbnail image
 #'
-#' Wrapper function to download RGB Image results
+#' Download EE thumbnail images and read them as stars objects. This function is
+#' a wrapper around \code{ee$Image()$getThumbURL()}.
 #'
 #' @param x EE Image object
-#' @param region Geospatial region of the image (E,S,W,N, EE Geometry,
-#' GeoJSON, or sfg). By default, the whole image is used.
+#' @param region Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
+#' or sfg). By default, the whole image is used.
 #' @param scale pixel size.
-#' @param vizparams A list that contains the visualization parameters. See details.
-#' @param crs The target projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
+#' @param vizparams A list that contains the visualization parameters.
+#' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
-#' `ee_as_thumbnail` shares parameters with \href{rgee}{eemap}. This parameters are:
+#'
+#' The arguments scale define the delta dimension of the stars object to be generated. It must be
+#' a single numeric value or a two-element vector, which represents the cell size for x and y. If it
+#' is not defined, 256 is taken by default as the dimension of x (from 1 to 256), and y will be computed by
+#' proportional scaling. Huge images might cause plodding connections.  See
+#' \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
+#' documentation for details.
+#'
+#' The vizparams set up the number of bands, in `ee_as_thumbnail` just is possible export one (G) or
+#' three band (RGB) images, additional  parameters can be passed on to control color, intensity,
+#' the max(min) value, etc. See below for a more compressible list of all the parameters that admit
+#' `ee_as_thumbnail`.
+#'
 #' \tabular{lll}{
 #' \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
 #' \strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
 #' \strong{min}       \tab  Value(s) to map to 0                                                        \tab  number or list of three numbers, one for each band \cr
-#' \strong{max}       \tab  Value(s) to map to 255                                                      \tab  number or list of three numbers, one for each band \cr
+#' \strong{max}       \tab  Value(s) to map to 1                                                      \tab  number or list of three numbers, one for each band \cr
 #' \strong{gain}      \tab  Value(s) by which to multiply each pixel value                              \tab  number or list of three numbers, one for each band \cr
 #' \strong{bias}      \tab  Value(s) to add to each DN                                                  \tab  number or list of three numbers, one for each band \cr
 #' \strong{gamma}     \tab  Gamma correction factor(s)                                                  \tab  number or list of three numbers, one for each band \cr
 #' \strong{palette}  \tab  List of CSS-style color strings (single-band images only)                   \tab  comma-separated list of hex strings                \cr
-#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number                                             \cr
-#' \strong{format}    \tab  Either "jpg" or "png"                                                       \tab  string \cr
+#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number \cr
 #' }
+#'
+#' Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for getting the CRS of an Earth Engine Image.
+#' @return
+#' An \link[sf]{sf} object
 #'
 #' @importFrom  stars st_set_dimensions st_as_stars write_stars
 #' @importFrom sf st_crs<-
@@ -30,49 +46,21 @@
 #' @importFrom  utils download.file zip str
 #' @importFrom png readPNG
 #' @examples
-#' \dontrun{
-#' library(sf)
 #' library(rgee)
 #' library(stars)
-#' library(cptcity)
-#' library(rnaturalearth)
 #' ee_Initialize()
-#' world_map <- ne_countries(returnclass = "sf")[-7, ][["geometry"]] # Remove Antarctica
-#'
-#' dem_palette <- cpt(pal = "td_DEM_screen", n = 10)
-#' ndvi_palette <- cpt(pal = "cb_div_RdYlGn_03", n = 10)
-#'
-#'
-#' # This nice example has been adapted from https://github.com/kmarkert/cartoee
-#' # Example #01  - WORLD DEM
+#' nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
+#' dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
+#'                  "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
+#' ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
+#'                   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
+#' # Example 01  - SRTM WORLD DEM
 #' image <- ee$Image("CGIAR/SRTM90_V4")
-#' region <- c(-180, -90, 180, 90)
-#'
+#' region <- nc$geometry[[1]]
 #' world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 #' world_dem <- world_dem * 5000
-#'
-#' plot(world_dem[world_map], col = dem_palette,
-#'      breaks = "equal", reset = FALSE, main = "World Elevation")
-#' plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
-#'
-#' # Example #02  - WORLD NDVI
-#' # function to add NDVI band to imagery
-#' calc_ndvi <- function(img) {
-#'   ndvi <- img$normalizedDifference(c("Nadir_Reflectance_Band2", "Nadir_Reflectance_Band1"))
-#'   img$addBands(ndvi$rename("ndvi"))
-#' }
-#'
-#' # MODIS Nadir BRDF-Adjusted Reflectance with NDVI band
-#' modis <- ee$ImageCollection("MODIS/006/MCD43A4")$
-#'   filterDate("2010-01-01", "2016-01-01")$
-#'   map(calc_ndvi)
-#' visParams <- list(min = -0.5, max = 0.85, bands = "ndvi")
-#' modis_ndvi <- ee_as_thumbnail(x = modis$mean(), vizparams = visParams, region)
-#'
-#'plot(modis_ndvi[world_map], reset = FALSE,
-#'     col = ndvi_palette, main = "World NDVI")
-#' plot(world_map, col = NA, border = "black", add = TRUE, lwd = 1.5)
-#' }
+#' plot(world_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
+#' plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5)
 #' @export
 ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quiet = FALSE) {
   if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
@@ -94,11 +82,11 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
   min_max_y <- c(min(mapR_df[2]), max(mapR_df[2]))
 
   if (missing(scale)) {
-    scale <- c(512 / diff(min_max_x), 512 / diff(min_max_y))
+    scale <- c(diff(min_max_x)/256,diff(min_max_x)/256)
     if (!quiet) {
       cat(
-        " scale is missing, a dimension of 512x512 taken by default. \n",
-        "scale: ", paste(scale, collapse = " "), "\n"
+        " scale is missing, 256 is taken by default as dimension of x (from 1 to 256). \n",
+        "scale (delta): ", paste(scale, collapse = " "), "\n"
       )
     }
   }
@@ -190,7 +178,6 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
       MoreArgs = list(mtx = raw_image)
     )[[1]]
     stars_png %>% st_set_dimensions(names = c("x", "y")) -> stars_png
-
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- offset_x
     attr_dim$y$offset <- offset_y
@@ -229,10 +216,6 @@ create_region <- function(x) {
     region <- sf_as_ee(x)$getInfo()["coordinates"]
   } else if (any(class(x) %in% "ee.geometry.Geometry")) {
     region <- x$getInfo()["coordinates"]
-  } else if (any(class(x) %in% "geojson")) {
-    oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-    sf_as_ee <- ee_source_python(oauth_func_path)
-    region <- sf_as_ee$sfg_as_ee_py(x)$getInfo()["coordinates"]
   } else if (any(class(x) %in% "numeric")) {
     xmin <- x[1]
     xmax <- x[3]
@@ -242,5 +225,5 @@ create_region <- function(x) {
     sfg_obj <- st_polygon(list(matrix(coord_x, ncol = 2, byrow = TRUE)))
     region <- sf_as_ee(sfg_obj)$getInfo()["coordinates"]
   }
-  invisible(py_to_r(region)[[1]])
+  invisible(ee_py_to_r(region)[[1]])
 }

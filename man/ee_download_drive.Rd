@@ -4,29 +4,38 @@
 \alias{ee_download_drive}
 \title{Move Earth Engine (EE) results from Google Drive to Hard disk}
 \usage{
-ee_download_drive(task, filename, overwrite = FALSE, quiet = TRUE)
+ee_download_drive(task, filename, overwrite = FALSE, st = TRUE,
+  quiet = TRUE)
 }
 \arguments{
-\item{task}{List generated after finished correctly a EE task. See
-\code{ee_help(ee$batch$Export)} for details.}
+\item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Output filename.}
+\item{filename}{Character. Output filename. If absent, a temporary file is created.}
 
-\item{overwrite}{A boolean indicating whether "filename" should be overwritten.}
+\item{overwrite}{A boolean indicating whether "filename" should be overwritten if it exists.}
 
-\item{quiet}{logical; suppress info message}
+\item{st}{logical. By default this is TRUE, returning a sf (stars) object for
+EE tables (images). If FALSE, the output filename is returned.}
+
+\item{quiet}{logical. Suppress info message}
+}
+\value{
+An sf, stars or character depending on the retunclass argument.
 }
 \description{
-Transfer results of an EE task saved in Google Drive to Hard disk
+Move results of an EE task saved in Google Drive to Hard disk.
+}
+\details{
+The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
+the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().
 }
 \examples{
-\dontrun{
 library(rgee)
 library(stars)
 library(sf)
-
 ee_Initialize()
 
+# Example 1 -- Download a Image
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318
 xmax <- -70.953664315
@@ -46,9 +55,9 @@ cloudMaskL457 <- function(image) {
   cloud <- qa$bitwiseAnd(32L)$
     And(qa$bitwiseAnd(128L))$
     Or(qa$bitwiseAnd(8L))
-mask2 <- image$mask()$reduce(ee$Reducer$min())
-image <- image$updateMask(cloud$Not())$updateMask(mask2)
-image$normalizedDifference(list("B4", "B3"))
+  mask2 <- image$mask()$reduce(ee$Reducer$min())
+  image <- image$updateMask(cloud$Not())$updateMask(mask2)
+  image$normalizedDifference(list("B4", "B3"))
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
@@ -59,19 +68,19 @@ mean_l5 <- ic_l5$mean()$rename("NDVI")
 mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 
-# Download a EE Image
 task_img <- ee$batch$Export$image$toDrive(
   image = mean_l5_Amarakaeri,
   folder = "Amarakaeri",
   fileFormat = "GEOTIFF",
   fileNamePrefix = "my_image"
 )
+
 task_img$start()
 ee_monitoring(task_img)
 img <- ee_download_drive(task_img)
 plot(img)
 
-# Download a EE FeatureCollection
+# Example 2 -- Download a Table
 amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
@@ -83,5 +92,4 @@ task_vector$start()
 ee_monitoring(task_vector) # optional
 amk_geom <- ee_download_drive(task = task_vector)
 plot(amk_geom$geometry, border = "red", lwd = 10)
-}
 }

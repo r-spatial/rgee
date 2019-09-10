@@ -24,7 +24,7 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
   main_ee_credential <- sprintf("%s/credentials", ee_path)
   session_info <- sprintf("%s/rgee_sessioninfo.txt",ee_path)
 
-  if (!quiet) cat('Requesting Earth Engine authorization\n')
+  if (!quiet) cat('Requesting Earth Engine authorization  ... ')
   if (missing(user_gmail)) {
     if (file.exists(main_ee_credential)) {
       ee$Initialize()
@@ -59,6 +59,7 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
     }
   }
 
+  if (!quiet) cat('DONE\n')
   user_path_EEcredential <- sprintf("%s/credentials", user_path)
   user_path_GCScredential <- sprintf("%s/GCS_AUTH_FILE.json", user_path)
 
@@ -67,17 +68,18 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
       stop('The googledrive package is required to use rgee::ee_download_drive',
            call. = FALSE)
     } else {
-      if (!quiet) cat('Requesting googledrive authorization\n')
+      if (!quiet) cat('Requesting Google Drive authorization ... ')
       googledrive::drive_auth(email = user_gmail, cache = TRUE)
+      if (!quiet) cat('DONE\n')
     }
   }
 
-  if (!file.exists(user_path_GCScredential) & gcs) {
+  if (gcs) {
     if (!requireNamespace('googleCloudStorageR', quietly = TRUE)) {
       stop('The googleCloudStorageR package is required to use rgee::ee_download_gcs',
            call. = FALSE)
     } else {
-      if (!quiet) cat('Requesting google cloud storage authorization\n')
+      if (!quiet) cat('Requesting Google Cloud Storage authorization ... ')
       ee_get_credentials_gcs(user_path_GCScredential)
       gcs_auth_tk <- try(googleCloudStorageR::gcs_auth(user_path_GCScredential))
       if (any(class(gcs_auth_tk) %in% "try-error")) {
@@ -85,6 +87,7 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
              user_path_GCScredential,
              " a valid Google Project JSON file")
       }
+      if (!quiet) cat('DONE\n')
     }
   }
 
@@ -149,13 +152,15 @@ ee_get_credentials_gee <- function() {
 #' inside the folder ~/.R/earthengine/USER/.
 #' @noRd
 ee_get_credentials_gcs <- function(user_path_GCScredential) {
-  message(
-    "Unable to find GCS_AUTH_FILE.json in ", user_path_GCScredential,". \n",
-    "Firstly download and set the Google Project JSON file in the path mentioned before.\n",
-    "A compresible tutorial you can find it here: \n",
-    "- https://github.com/csaybar/GCS_AUTH_FILE.json\n",
-    "- https://console.cloud.google.com/apis/credentials/serviceaccountkey (download link)\n"
-  )
+  if (!file.exists(user_path_GCScredential)) {
+    message(
+      "Unable to find GCS_AUTH_FILE.json in ", user_path_GCScredential,". \n",
+      "Firstly download and set the Google Project JSON file in the path mentioned before.\n",
+      "A compresible tutorial you can find it here: \n",
+      "- https://github.com/csaybar/GCS_AUTH_FILE.json\n",
+      "- https://console.cloud.google.com/apis/credentials/serviceaccountkey (download link)\n"
+    )
+  }
 }
 
 
