@@ -1,15 +1,15 @@
-#' Extract values from EE ImageCollections objects
+#' Extract values for EE ImageCollections objects
 #'
-#' Extract values from a Image or ImageCollection spatial object at the locations
+#' Extract values for a Image or ImageCollection spatial object at the locations
 #' of geometry object. You can use ee.Geometries, ee.Features,
 #' ee.FeatureCollection and sf objects.
 #' @param x ee$Image or ee$ImageCollection.
 #' @param y ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.
 #' @param fun ee$Reducer object. Function to summarize the values. See details.
 #' @param scale A nominal scale in meters of the projection to work in.
-#' @param sf Logical. TRUE returns a sf object
 #' @param id Character. Name of the column to be used as a geometry index.
 #' @param ... reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.
+#' @importFrom sf st_geometry st_geometry<-
 #' @details
 #' The fun arguments just admit Reducer objects that return one value. These are:
 #' \itemize{
@@ -52,28 +52,27 @@
 #' library(sf)
 #' ee_Initialize()
 #'
-#' terraclimate = ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-#'   filterDate("2000-01-01","2001-01-01")$
+#' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
+#'   filterDate("2000-01-01", "2001-01-01")$
 #'   map(function(x) x$select("pr"))
-#'
-#' nc = st_read(system.file("shape/nc.shp", package="sf"),quiet = TRUE) %>%
-#'   st_transform(4326) %>%
-#'   sf_as_ee()
-#' fun <- ee$Reducer$max()
-#' eenc_rain = ee_extract(x = terraclimate, y = nc, fun =  fun, id = "FIPSNO")
-#' plot(eenc_rain[2],main="2001 Jan Precipitation - Terraclimate", reset = FALSE)
-#'
+#' nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
+#'   st_transform(4326)
+#' # all(!nc$FIPS %in% nc$FIPS[duplicated(nc$FIPS)]) -- Unique ID?
+#' ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), id = "FIPS")
+#' ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
+#' plot(ee_nc_rain["X200006"], main = "2001 Jan Precipitation - Terraclimate", reset = FALSE)
 #' ## time series
 #' dev.off()
 #' ee_nc <- ee_nc_rain
-#' st_geometry(ee_nc) = NULL
-#' time_serie <- as.numeric(ee_nc[1,2:12])
-#' plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = 'Precipitation')
+#' st_geometry(ee_nc) <- NULL
+#' time_serie <- as.numeric(ee_nc[1, sprintf("X%s", 200001:200012)])
+#' main <- sprintf("2001 Precipitation - %s", ee_nc$NAME[1])
+#' plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
 #' points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)
 #' @export
-ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, sf = TRUE, ...) {
+ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, ...) {
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
-  extract_py <- rgee:::ee_source_python(oauth_func_path)
+  extract_py <- ee_source_python(oauth_func_path)
   if (any(c("sf", "sfc", "sfg") %in% class(y))) y <- sf_as_ee(y)
   if (is.null(id)) {
     y <- ee$FeatureCollection(y)$map(function(x) x$set("ID", x$get("system:index")))
@@ -88,20 +87,19 @@ ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, s
       scale = scale
     )$map(function(f) f$set("imageId", image$id()))
   })$flatten()
-  table <- extract_py$table_format(triplets, "ID", "imageId", fun_name)
-  if (sf) {
-    table_geojson <- ee_py_to_r(table$getInfo())
-    class(table_geojson) <- "geo_list"
-    table_sf <- geojson_sf(table_geojson)
-    geom_table <- st_geometry(table_sf)
-    st_geometry(table_sf) <- NULL
-    table_sf <- table_sf[, order(names(table_sf))]
-    table_sf <- st_sf(table_sf, geometry = geom_table)
-    if (!is.null(id)) {
-      names(table_sf)[names(table_sf) == "id"] <- id
-    }
-    return(table_sf)
-  } else {
-    return(table)
+  table <- extract_py$
+    table_format(triplets, "ID", "imageId", fun_name)$
+    map(function(feature){
+      feature$setGeometry(NULL)})
+
+  table_geojson <- ee_py_to_r(table$getInfo())
+  class(table_geojson) <- "geo_list"
+  table_sf <- geojson_sf(table_geojson)
+  geom_table <- st_geometry(table_sf)
+  st_geometry(table_sf) <- NULL
+  table_sf <- table_sf[, order(names(table_sf))]
+  if (!is.null(id)) {
+    names(table_sf)[names(table_sf) == "id"] <- id
   }
+  table_sf
 }

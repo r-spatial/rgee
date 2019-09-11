@@ -60,7 +60,7 @@
 #' world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 #' world_dem <- world_dem * 5000
 #' plot(world_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
-#' plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5)
+#' suppressWarnings(plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5))
 #' @export
 ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quiet = FALSE) {
 

@@ -26,7 +26,7 @@
 #'   ee_search_title("15", "Flow", logical_operator = "AND")
 #' print(myquery$id)
 #' @export
-ee_search_dataset <- function(quiet = FALSE,upgrade = FALSE) {
+ee_dataset <- function(quiet = FALSE,upgrade = FALSE) {
   ee_date <- Sys.Date()
   ee_dataset_file <- sprintf("%s/ee_dataset.csv", ee_get_earthengine_path())
   if (file.exists(ee_dataset_file) & !upgrade) {

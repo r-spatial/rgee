@@ -66,9 +66,12 @@ ee$data$getAssetRoots().\cr
 }
 }
 \examples{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)
+
+ ee_check_drivers()
 ee_Initialize(user_gmail = "csaybar@gmail.com")
 
 filename <- "users/csaybar/rgee_upload/"
@@ -89,7 +92,7 @@ names(geomatrix_stars) <- 'geomatrix.tif'
 plot(geomatrix_stars)
 
 #ee_manage_delete(filename) # Remove the folder created at the beginning
-\dontrun{
+
 nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
 nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
 ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))

@@ -20,9 +20,7 @@ knitr::opts_chunk$set(
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-[Google Earth Engine](https://earthengine.google.com/) (Gorelick et al., 2017) is a cloud-based platform that allows users both run geospatial analysis on Google's infrastructure and getting access to a petabyte-scale archive of remote sensing data. 
-
-The [Earth Engine API's](https://developers.google.com/earth-engine/) are composed of a set of modules that enable send queries through a REST API. The `rgee` package provides full access to them from within R and defines additional tools for automating processes.
+[Google Earth Engine](https://earthengine.google.com/) (Gorelick et al., 2017) is a cloud-based platform that allows users both run geospatial analysis on Google's infrastructure and getting access to a petabyte-scale archive of remote sensing data. The [Google Earth Engine API's](https://developers.google.com/earth-engine/) are composed of a set of modules that enable send queries through a REST API. The `rgee` package provides full access to them from within R and defines additional tools for automating processes.
 
 **Earth Engine Python API**:
 
@@ -45,7 +43,7 @@ image$bandNames()$getInfo()
 
 ## Features
 
-- Complete access to the Earth Engine API.
+- Complete access to the Earth Engine API from within R.
 - Multi-user support for Initialize ([ee_Initialize](https://csaybar.github.io/rgee/reference/ee_Initialize.html))
 - Installing Python dependencies effortlessly ([ee_install_*](https://csaybar.github.io/rgee/reference/ee_check-tools.html)).
 - Managing EE assets and tasks recursively ([ee_manage_*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html)).

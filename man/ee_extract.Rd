@@ -2,10 +2,10 @@
 % Please edit documentation in R/ee_extract.R
 \name{ee_extract}
 \alias{ee_extract}
-\title{Extract values from EE ImageCollections objects}
+\title{Extract values for EE ImageCollections objects}
 \usage{
 ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
-  sf = TRUE, ...)
+  ...)
 }
 \arguments{
 \item{x}{ee$Image or ee$ImageCollection.}
@@ -18,12 +18,10 @@ ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
 
 \item{id}{Character. Name of the column to be used as a geometry index.}
 
-\item{sf}{Logical. TRUE returns a sf object}
-
 \item{...}{reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.}
 }
 \description{
-Extract values from a Image or ImageCollection spatial object at the locations
+Extract values for a Image or ImageCollection spatial object at the locations
 of geometry object. You can use ee.Geometries, ee.Features,
 ee.FeatureCollection and sf objects.
 }
@@ -70,22 +68,21 @@ library(rgee)
 library(sf)
 ee_Initialize()
 
-terraclimate = ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01","2001-01-01")$
+terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
+  filterDate("2000-01-01", "2001-01-01")$
   map(function(x) x$select("pr"))
-
-nc = st_read(system.file("shape/nc.shp", package="sf"),quiet = TRUE) \%>\%
-  st_transform(4326) \%>\%
-  sf_as_ee()
-fun <- ee$Reducer$max()
-eenc_rain = ee_extract(x = terraclimate, y = nc, fun =  fun, id = "FIPSNO")
-plot(eenc_rain[2],main="2001 Jan Precipitation - Terraclimate", reset = FALSE)
-
+nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) \%>\%
+  st_transform(4326)
+# all(!nc$FIPS \%in\% nc$FIPS[duplicated(nc$FIPS)]) -- Unique ID?
+ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), id = "FIPS")
+ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
+plot(ee_nc_rain["X200006"], main = "2001 Jan Precipitation - Terraclimate", reset = FALSE)
 ## time series
 dev.off()
 ee_nc <- ee_nc_rain
-st_geometry(ee_nc) = NULL
-time_serie <- as.numeric(ee_nc[1,2:12])
-plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = 'Precipitation')
+st_geometry(ee_nc) <- NULL
+time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200001:200012)])
+main <- sprintf("2001 Precipitation - \%s", ee_nc$NAME[1])
+plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
 points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_search.R
 \name{ee_search-tools}
 \alias{ee_search-tools}
-\alias{ee_search_dataset}
+\alias{ee_dataset}
 \alias{ee_search_startdate}
 \alias{ee_search_enddate}
 \alias{ee_search_type}
@@ -14,7 +14,7 @@
 \alias{ee_search_title_list}
 \title{Interface to search into the Earth Engine Data Catalog}
 \usage{
-ee_search_dataset(quiet = FALSE, upgrade = FALSE)
+ee_dataset(quiet = FALSE, upgrade = FALSE)
 
 ee_search_startdate(ee_dataset, stardate)
 

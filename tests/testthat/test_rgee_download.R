@@ -1,3 +1,10 @@
+library(raster)
+library(stars)
+library(rgee)
+library(sf)
+ee_Initialize(user_gmail = 'csaybar', drive = TRUE, gcs = TRUE)
+
+context("rgee: ee_download test")
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318
 xmax <- -70.953664315
@@ -13,36 +20,25 @@ ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
   st_sfc() %>%
   st_set_crs(4326)
 ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
-# Get the mean annual NDVI for 2011
-cloudMaskL457 <- function(image) {
-  qa <- image$select("pixel_qa")
-  cloud <- qa$bitwiseAnd(32L)$
-    And(qa$bitwiseAnd(128L))$
-    Or(qa$bitwiseAnd(8L))
-  mask2 <- image$mask()$reduce(ee$Reducer$min())
-  image <- image$updateMask(cloud$Not())$updateMask(mask2)
-  image$normalizedDifference(list("B4", "B3"))
-}
 
-ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_geom)$
-  filterDate("2011-01-01", "2011-12-31")$
-  map(cloudMaskL457)
-
-mean_l5 <- ic_l5$mean()$rename("NDVI")
-mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
-mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
-
+# Elevation map
+ic_srtm <- image <- ee$Image("CGIAR/SRTM90_V4")$reproject(crs = "EPSG:4326", scale = 500)
+mean_srtm_Amarakaeri <- ic_srtm$clip(ee_geom)
 
 # Testing parameters ------------------------------------------------------
 fc_test <- ee$FeatureCollection(ee$Feature(ee_geom,list('test'='feature')))
-image_test <- mean_l5_Amarakaeri
+image_test <- mean_srtm_Amarakaeri
 imageExportFormatOptions_1 <- list(patchDimensions= c(10L, 10L),compressed =  TRUE)
 imageExportFormatOptions_2 <- list(patchDimensions= c(10L, 10L),compressed =  FALSE)
 vectorExportFormatOptions_1 <- list(compressed =  TRUE)
 vectorExportFormatOptions_2 <- list(compressed =  FALSE)
 
-context("rgee: ee_download test")
+googledrive::drive_rm("rgee_testing")
+googledrive::drive_mkdir("rgee_testing")
+googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+buckets <- googleCloudStorageR::gcs_list_objects()
+gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
+mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
 
 ### IMAGES
 # 1. GEOTIFF - DRIVE
@@ -56,7 +52,7 @@ test_that("GEOTIFF_DRIVE",{
   task_img$start()
   ee_monitoring(task_img)
   img <- ee_download_drive(task = task_img)
-  expect_equal(mean(img[[1]]), 0.69, tolerance = .01)
+  expect_is(img, "stars")
 })
 
 
@@ -101,7 +97,7 @@ test_that("GEOTIFF_GCS",{
   task_img$start()
   ee_monitoring(task_img)
   img <- ee_download_gcs(task = task_img)
-  expect_equal(mean(img[[1]]), 0.69, tolerance = .01)
+  expect_is(img, 'stars')
 })
 
 # 5. CTFRECORD_IMAGE - GCS
@@ -316,6 +312,7 @@ test_that("CTFRECORD_VECTOR_GCS",{
   vector <- ee_download_gcs(task = task_vector)
   expect_equal(vector, TRUE)
 })
+
 # 20. TFRECORD_VECTOR - GCS
 test_that("TFRECORD_VECTOR_GCS",{
   task_vector <- ee$batch$Export$table$toCloudStorage(
@@ -330,3 +327,10 @@ test_that("TFRECORD_VECTOR_GCS",{
   vector <- ee_download_gcs(task = task_vector)
   expect_equal(vector, TRUE)
 })
+
+googledrive::drive_rm("rgee_testing")
+googledrive::drive_mkdir("rgee_testing")
+googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+buckets <- googleCloudStorageR::gcs_list_objects()
+gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
+mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)

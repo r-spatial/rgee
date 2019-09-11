@@ -86,7 +86,6 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet
     stop('The googledrive package is required to use rgee::ee_download_drive',
          call. = FALSE)
   } else {
-
     gd_folder <- basename(task$status()$output_url)
     gd_filename <- task$config$driveFileNamePrefix
 
@@ -233,10 +232,16 @@ ee_download_gcs <- function(task, filename, overwrite = FALSE,
     filenames_hd <- sort_harddisk_files(filenames_hd, fileformat)
 
     for(z in seq_along(filenames_hd)) {
-      googleCloudStorageR::gcs_get_object(object_name = filenames_gcs[z],
-                                          bucket = gcs_bucket,
-                                          saveToDisk = filenames_hd[z],
-                                          overwrite = TRUE)
+      intent = try(googleCloudStorageR::gcs_get_object(object_name = filenames_gcs[z],
+                                                       bucket = gcs_bucket,
+                                                       saveToDisk = filenames_hd[z],
+                                                       overwrite = TRUE),silent = TRUE)
+      if (class(intent)=='try-error') {
+        googleCloudStorageR::gcs_get_object(object_name = gsub("ee_export","",filenames_gcs[z]),
+                                            bucket = gcs_bucket,
+                                            saveToDisk = filenames_hd[z],
+                                            overwrite = TRUE)
+      }
     }
     read_filenames(filenames_hd, fileformat, quiet = quiet)
   }
@@ -289,7 +294,7 @@ get_format_suffix <-function(x) {
   image_tf_sx <-  list(".json", ".tfrecord")
   suffix <- list(".tif","ee_export.csv","ee_export.geojson","ee_export.kml",
                  "ee_export.kmz",shp_sx, image_tf_sx, image_ctf_sx,
-                 "ee_export.tfrecord.gz", "ee_export.tfrecord.gz")
+                 "ee_export.gz", "ee_export.gz")
   names(suffix) <- c("GEOTIFF" , "CSV", "GEOJSON", "KML",
                      "KMZ","SHP","TFRECORD_IMAGE","CTFRECORD_IMAGE",
                      "TFRECORD_VECTOR","CTFRECORD_VECTOR")

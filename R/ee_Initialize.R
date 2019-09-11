@@ -9,6 +9,7 @@
 #' @param gcs logical. If TRUE drive credential are cached in the system.
 #' @param quiet logical. Suppress info messages.
 #' @importFrom utils read.table browseURL write.table
+#' @importFrom reticulate import_from_path
 #' @details
 #' \code{ee_initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
 #'  Storage (googlecloudStorageR) via `gargle::token_fetch()`. By default, rgee do not need to them, these
@@ -18,7 +19,7 @@
 #' @examples
 #' ee_Initialize()
 #' @export
-ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE) {
+ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = TRUE) {
 
   ee_path <- path.expand("~/.config/earthengine")
   main_ee_credential <- sprintf("%s/credentials", ee_path)
@@ -69,7 +70,7 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
            call. = FALSE)
     } else {
       if (!quiet) cat('Requesting Google Drive authorization ... ')
-      googledrive::drive_auth(email = user_gmail, cache = TRUE)
+      googledrive::drive_auth(email = sprintf("%s@gmail.com",user))
       if (!quiet) cat('DONE\n')
     }
   }

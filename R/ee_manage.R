@@ -90,7 +90,7 @@ ee_manage_delete = function(path_asset, quiet=FALSE) {
   if (is.null(response)) stop("path_asset does not exist!")
   if (response$type %in% c('Folder','ImageCollection')) {
     list_files = ee$data$getList(list(id=path_asset))
-    items = unlist(lapply(list_files, '[[',1))
+    items = unlist(lapply(list_files, '[[','id'))
     mapply(ee_manage_delete, items)
   }
   ee$data$deleteAsset(path_asset)

@@ -4,7 +4,7 @@
 \alias{ee_Initialize}
 \title{Authenticate and Initialize rgee}
 \usage{
-ee_Initialize(user_gmail, drive = FALSE, gcs = FALSE, quiet = FALSE)
+ee_Initialize(user_gmail, drive = FALSE, gcs = FALSE, quiet = TRUE)
 }
 \arguments{
 \item{user_gmail}{Optional. Allows user to target a specific Google identity.}

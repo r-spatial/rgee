@@ -107,7 +107,7 @@ ee_check_drivers <- function(display_in_browser = TRUE) {
     cat("\n")
     cat(">>> Chromedriver -> status[ok]:", driverdir,"\n")
   } else {
-    warning(">>> Chromedriver -> status[X]. Try rgee::ee_install_drivers(version=) to fixed.","\n")
+    warning(">>> Chromedriver -> status[X]. Try rgee::ee_install_drivers() to fixed.","\n")
   }
 }
 
@@ -132,8 +132,9 @@ ee_check_credentials <- function() {
 #' @param version TODO
 #' @export
 ee_install_drivers <- function(version) {
-  if (is.null(version)) {
-    stop(" Find the appropriate version of chromedriver visiting:\n",
+  if (missing(version)) {
+    stop('version was not defined.',
+         " Find the appropriate version of chromedriver visiting:\n",
          ">>> chrome://settings/help",
          ">>> https://sites.google.com/a/chromium.org/chromedriver/downloads\n"
          )
