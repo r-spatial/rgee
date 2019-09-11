@@ -2,65 +2,59 @@ language: r
 sudo: required
 dist: trusty
 r:
-  - release
+- release
 deploy.skip_cleanup: true
 cache:
-  - packages
-  - ccache
+- packages
+- ccache
 r_github_packages:
-  - r-lib/covr
-  - r-spatial/sf
-  - r-spatial/stars
-
+- r-lib/covr
+- r-spatial/sf
+- r-spatial/stars
 addons:
   apt:
     sources:
-      - sourceline: 'ppa:ubuntugis/ubuntugis-unstable'
+    - sourceline: ppa:ubuntugis/ubuntugis-unstable
     packages:
-      - libprotobuf-dev
-      - protobuf-compiler
-      - libv8-3.14-dev
-      - libjq-dev
-      - libudunits2-dev
-      - libproj-dev
-      - libgeos-dev
-      - libspatialite-dev
-      - libgdal-dev
-      - libjson-c-dev
-      - libnetcdf-dev
-      - netcdf-bin
-
+    - libprotobuf-dev
+    - protobuf-compiler
+    - libv8-3.14-dev
+    - libjq-dev
+    - libudunits2-dev
+    - libproj-dev
+    - libgeos-dev
+    - libspatialite-dev
+    - libgdal-dev
+    - libjson-c-dev
+    - libnetcdf-dev
+    - netcdf-bin
 before_install:
-  # install sf dependencies
-  - sudo apt-get update
-  - sudo apt-get remove python3-pip
-  - sudo apt-get install python3-pip
-  #- ls -l /usr/bin/python*
-  - sudo -H pip3 install --upgrade pip
-  # earth engine api
-  - sudo apt-get install libffi-dev libssl-dev
-  - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
-  - R -q -e 'if (getRversion() < "3.2" && !requireNamespace("curl")) install.packages("curl")'
-  - R -q -e 'remotes::install_github("ropenscilabs/tic", upgrade = "always"); print(tic::dsl_load()); tic::prepare_all_stages()'
-  - R -q -e 'tic::before_install()'
-
+- sudo apt-get update
+- sudo apt-get remove python3-pip
+- sudo apt-get install python3-pip
+- sudo -H pip3 install --upgrade pip
+- sudo apt-get install libffi-dev libssl-dev
+- R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
+- R -q -e 'if (getRversion() < "3.2" && !requireNamespace("curl")) install.packages("curl")'
+- R -q -e 'remotes::install_github("ropenscilabs/tic", upgrade = "always"); print(tic::dsl_load());
+  tic::prepare_all_stages()'
+- R -q -e 'tic::before_install()'
+- openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in cd26ed5dc626f11802a652e81d02762e_aybar1994@gmail.com.enc -out cd26ed5dc626f11802a652e81d02762e_aybar1994@gmail.com -d
+- openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in GCS_AUTH_FILE.json.enc -out GCS_AUTH_FILE.json -d
 install:
-  - sudo -H pip3 install earthengine-api==0.1.175
-  - sudo -H pip3 install coveralls
-  - sudo -H pip3 install oauth2client
-  - sudo -H pip3 install earthengine-api
-  - sudo -H pip3 install selenium
-  - sudo -H pip3 install bs4
-  - sudo -H pip3 install pysmartDL
-  - sudo -H pip3 install requests_toolbelt
-  - R -q -e 'tic::install()'
-
+- sudo -H pip3 install earthengine-api==0.1.175
+- sudo -H pip3 install coveralls
+- sudo -H pip3 install oauth2client
+- sudo -H pip3 install earthengine-api
+- sudo -H pip3 install selenium
+- sudo -H pip3 install bs4
+- sudo -H pip3 install pysmartDL
+- sudo -H pip3 install requests_toolbelt
+- R -q -e 'tic::install()'
 script:
-  - R -q -e 'tic::script()'
-  #- python3 -m unittest discover -s inst/tests/
+- R -q -e 'tic::script()'
 after_success:
-  - R -q -e 'covr::codecov(quiet = FALSE)'
-
+- R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
 deploy:
   provider: script
