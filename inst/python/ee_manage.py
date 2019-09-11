@@ -4,6 +4,7 @@
 import ee
 import os
 import datetime
+
 """ Generate a table with all the tasks that is running or has finished.
 
 >>> genreport()
@@ -16,7 +17,6 @@ functions should be always given to Samapriya Roy.
 
 These functions are using in R/ee_manage.R
 """
-
 def genreport():
     """ Generated report includes taskId, data time, task status and type
     Args:

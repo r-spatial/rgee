@@ -50,6 +50,7 @@
 #' @examples
 #' library(rgee)
 #' library(sf)
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
@@ -98,8 +99,9 @@ ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, .
   geom_table <- st_geometry(table_sf)
   st_geometry(table_sf) <- NULL
   table_sf <- table_sf[, order(names(table_sf))]
+  table_sf['id'] = NULL
   if (!is.null(id)) {
-    names(table_sf)[names(table_sf) == "id"] <- id
+    names(table_sf)[names(table_sf) == "ID"] <- id
   }
   table_sf
 }

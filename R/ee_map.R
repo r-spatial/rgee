@@ -44,6 +44,7 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' # Case: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))

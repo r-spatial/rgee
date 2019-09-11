@@ -28,5 +28,7 @@ folder \code{~/.config/earthengine/USERS/}, if a user is not specified the param
 last session will be used.
 }
 \examples{
+library(rgee)
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 }

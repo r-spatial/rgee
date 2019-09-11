@@ -35,8 +35,9 @@
 #' library(stars)
 #' library(sf)
 #'
-#'  ee_check_drivers()
-#' ee_Initialize(user_gmail = "csaybar@gmail.com")
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(user_gmail = "csaybar")
+#' ee_check_drivers()
 #'
 #' filename <- "users/csaybar/rgee_upload/"
 #' ee_manage_create(filename)

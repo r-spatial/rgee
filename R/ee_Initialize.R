@@ -9,7 +9,7 @@
 #' @param gcs logical. If TRUE drive credential are cached in the system.
 #' @param quiet logical. Suppress info messages.
 #' @importFrom utils read.table browseURL write.table
-#' @importFrom reticulate import_from_path
+#' @importFrom reticulate import_from_path import
 #' @details
 #' \code{ee_initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
 #'  Storage (googlecloudStorageR) via `gargle::token_fetch()`. By default, rgee do not need to them, these
@@ -17,10 +17,12 @@
 #'  folder \code{~/.config/earthengine/USERS/}, if a user is not specified the parameters of the
 #'  last session will be used.
 #' @examples
+#' library(rgee)
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' @export
 ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = TRUE) {
-
+  #assign("ee",value =  import("ee", delay_load = TRUE), envir = .GlobalEnv)
   ee_path <- path.expand("~/.config/earthengine")
   main_ee_credential <- sprintf("%s/credentials", ee_path)
   session_info <- sprintf("%s/rgee_sessioninfo.txt",ee_path)
