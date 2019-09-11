@@ -16,6 +16,7 @@
 #' An sf, stars or character depending on the retunclass argument.
 #' @importFrom stars read_stars
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -78,6 +79,7 @@
 #' ee_monitoring(task_vector) # optional
 #' amk_geom <- ee_download_drive(task = task_vector)
 #' plot(amk_geom$geometry, border = "red", lwd = 10)
+#' }
 #' @export
 ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet = TRUE) {
   if (!requireNamespace('googledrive', quietly = TRUE)) {

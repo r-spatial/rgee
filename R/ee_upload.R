@@ -1,24 +1,39 @@
 #' Upload sf or stars objects into a GEE asset
 #'
-
 #' Upload either images or vectors to Google Earth Engine asset
 #'
 #' @param x Character, sf or stars object to upload into a GEE asset.
 #' @param filename Character. Asset destination path, e.g. users/pinkiepie/myponycollection.
 #' @param bucket bucketname you are uploading to. See details.
 #' @param properties List. Set of parameters to established as a property of an EE object. See details.
-#' @param selenium_params TODO
+#' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
 #' @param quiet Logical. Suppress info message.
 #' @param ... ignored
 #' @importFrom methods is as
 #' @importFrom sf write_sf
-#' @details  TALKING ABOUT SELENIUM
+#' @details
+#' It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
+#' (GCS) bucket. Earth Engine provides a provisional for free space into GCS through
+#' gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
+#' for getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs} for details.
+#' Install and check the Selenium drivers for Google Chrome is possible as follow:\cr
+#' - rgee::ee_install_drivers()\cr
+#' - rgee::ee_check_drivers()\cr
+#'
+#' The properties argument is just available for image uploads, is you are interesting in setting
+#' properties in FeatureCollection. Please use \link{ee_manage_set_properties} after \link{ee_upload}.
+#'
+#' The selenium_params argument is a three-element list consisting of:\cr
+#'  - gmail_account: The google account. If it is not specified, it will obtained from
+#'  ee$data$getAssetRoots().\cr
+#'  - showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
+#'  - cache: Logical. TRUE will use the cookies saved on the /temp directory.
 #' @name ee_upload
 #' @examples
 #' library(rgee)
 #' library(stars)
 #' library(sf)
-#' ee_Initialize(user_gmail = 'csaybar@gmail.com')
+#' ee_Initialize(user_gmail = "csaybar@gmail.com")
 #'
 #' filename <- "users/csaybar/rgee_upload/"
 #' ee_manage_create(filename)
@@ -36,12 +51,15 @@
 #' geomatrix_stars[geomatrix_stars<=0]=NA
 #' names(geomatrix_stars) <- 'geomatrix.tif'
 #' plot(geomatrix_stars)
+#'
+#' #ee_manage_delete(filename) # Remove the folder created at the beginning
 #' \dontrun{
 #' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
 #' nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
 #' ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))
 #' ee_monitoring()
-#' help(ee_upload)
+#' ee_manage_set_properties(path_asset = paste0(filename,"arequipa"),
+#'                          properties = list(message='hello-world',language = 'R'))
 #' }
 #' @export
 ee_upload <- function(x, ...) {

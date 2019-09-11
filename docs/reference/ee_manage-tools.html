@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a folder or ImageCollection into GEE assets — ee_manage-tools • rgee</title>
+<title>Interface for manage the Earth Engine Asset — ee_manage-tools • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,12 @@
 
 
 
-<meta property="og:title" content="Create a folder or ImageCollection into GEE assets — ee_manage-tools" />
 
-<meta property="og:description" content="Create a folder or ImageCollection into GEE assets" />
-
+<meta property="og:title" content="Interface for manage the Earth Engine Asset — ee_manage-tools" />
+<meta property="og:description" content="R functions for managing the Earth Engine Asset" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +98,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -116,15 +117,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a folder or ImageCollection into GEE assets</h1>
+    <h1>Interface for manage the Earth Engine Asset</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_manage.R'><code>R/ee_manage.R</code></a></small>
     <div class="hidden name"><code>ee_manage-tools.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Create a folder or ImageCollection into GEE assets</p>
-    
+    <p>R functions for managing the Earth Engine Asset</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_manage_create</span>(<span class='no'>path_asset</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"folder"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -148,50 +147,206 @@
 <span class='fu'>ee_manage_assets_access</span>(<span class='no'>path_asset</span>,
   <span class='kw'>acl</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.manage.getAssetAcl"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_manage_task</span>(<span class='no'>quiet</span>)
+<span class='fu'>ee_manage_task</span>(<span class='no'>quiet</span>, <span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ee_manage_cancel_all_running_taks</span>()</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path_asset</th>
-      <td><p>a character vector containing a single path name.</p></td>
+      <td><p>Character. Name of the EE asset e.g. users/user/nameofcollection.</p></td>
     </tr>
     <tr>
       <th>asset_type</th>
-      <td><p>a character vector containing the asset type. 'folder' or 'imagecollection'.</p></td>
+      <td><p>Character. The asset type ('folder' or 'imagecollection').</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message.</p></td>
+      <td><p>Logical. Suppress info message.</p></td>
     </tr>
     <tr>
       <th>final_path</th>
-      <td><p>TODO</p></td>
+      <td><p>Character. Name of the final EE asset to copy or move.</p></td>
     </tr>
     <tr>
       <th>properties</th>
-      <td><p>TODO</p></td>
+      <td><p>List. Set of parameters to established as a property of an EE object. See details.</p></td>
     </tr>
     <tr>
       <th>property</th>
-      <td><p>TODO</p></td>
+      <td><p>Character. Name of a specific property to be deleted.</p></td>
     </tr>
     <tr>
       <th>acl</th>
-      <td><p>TODO</p></td>
+      <td><p>A list describing the asset's Access Control List. See getOption("rgee.manage.getAssetAcl").</p></td>
+    </tr>
+    <tr>
+      <th>cache</th>
+      <td><p>Logical. TRUE save the report in the /temp directory.</p></td>
     </tr>
     </table>
-    
 
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='co'># Change the user and google account to be able to reproduce</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>'csaybar@gmail.com'</span>)</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'><span class='fu'>ee_manage_create</span>(<span class='st'>'users/csaybar/rgee'</span>)</div><div class='output co'>#&gt; GEE asset: users/csaybar/rgee created</div><div class='input'>
+<span class='co'># 1. List all the elements inside a folder or a ImageCollection</span>
+<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/csaybar/rgee'</span>)</div><div class='output co'>#&gt; data frame with 0 columns and 0 rows</div><div class='input'>
+<span class='co'># 2. Create a Folder or a ImageCollection</span>
+<span class='fu'>ee_manage_create</span>(<span class='st'>'users/csaybar/rgee/rgee_folder'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'folder'</span>)</div><div class='output co'>#&gt; GEE asset: users/csaybar/rgee/rgee_folder created</div><div class='input'><span class='fu'>ee_manage_create</span>(<span class='st'>'users/csaybar/rgee/rgee_ic'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'imagecollection'</span>)</div><div class='output co'>#&gt; GEE asset: users/csaybar/rgee/rgee_ic created</div><div class='input'><span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/csaybar/rgee'</span>)</div><div class='output co'>#&gt;                               ID            TYPE
+#&gt; 2     users/csaybar/rgee/rgee_ic ImageCollection
+#&gt; 1 users/csaybar/rgee/rgee_folder          Folder</div><div class='input'>
+<span class='co'># 3. Shows your Earth Engine quota</span>
+<span class='fu'>ee_manage_quota</span>()</div><div class='output co'>#&gt;  Total Quota: 250.00 GB 
+#&gt;  Used Quota: 778.14 MB</div><div class='input'>
+<span class='co'># 4. Estimate the size of a Image, ImageCollection, Table or Folder.</span>
+<span class='fu'>ee_manage_size</span>(<span class='st'>'users/csaybar/rgee'</span>)</div><div class='output co'>#&gt; Folder :
+#&gt;  - Size: 0 B
+#&gt;  - # elements: 2</div><div class='input'>
+<span class='co'># 5. Move a EE object to another folder</span>
+<span class='fu'>ee_manage_move</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/csaybar/rgee/rgee_ic'</span>,
+               <span class='kw'>final_path</span> <span class='kw'>=</span> <span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; Done</div><div class='input'><span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/csaybar/rgee/rgee_folder'</span>)</div><div class='output co'>#&gt;                                             ID            TYPE
+#&gt; 1 users/csaybar/rgee/rgee_folder/rgee_ic_moved ImageCollection</div><div class='input'>
+<span class='co'># 6. Set properties to an EE object.</span>
+<span class='fu'>ee_manage_set_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>,
+                         <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))
+<span class='no'>test_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>)
+<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()</div><div class='output co'>#&gt; $features
+#&gt; list()
+#&gt; 
+#&gt; $id
+#&gt; [1] "users/csaybar/rgee/rgee_folder/rgee_ic_moved"
+#&gt; 
+#&gt; $properties
+#&gt; $properties$language
+#&gt; [1] "R"
+#&gt; 
+#&gt; $properties$message
+#&gt; [1] "hello-world"
+#&gt; 
+#&gt; 
+#&gt; $version
+#&gt; [1] 1878938063
+#&gt; 
+#&gt; $type
+#&gt; [1] "ImageCollection"
+#&gt; 
+#&gt; $bands
+#&gt; list()
+#&gt; </div><div class='input'>
+<span class='co'># 7. Delete properties</span>
+<span class='fu'>ee_manage_delete_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>,
+                            <span class='kw'>property</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"message"</span>,<span class='st'>"language"</span>))
+<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()</div><div class='output co'>#&gt; $id
+#&gt; [1] "users/csaybar/rgee/rgee_folder/rgee_ic_moved"
+#&gt; 
+#&gt; $version
+#&gt; [1] 1880803599
+#&gt; 
+#&gt; $features
+#&gt; list()
+#&gt; 
+#&gt; $type
+#&gt; [1] "ImageCollection"
+#&gt; 
+#&gt; $bands
+#&gt; list()
+#&gt; </div><div class='input'>
+<span class='co'># 8. Share EE objects -- Create a public dataset</span>
+<span class='fu'>ee_manage_assets_access</span>(<span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; The ACL of users/csaybar/rgee/rgee_folder/rgee_ic_moved has been changed.</div><div class='input'><span class='no'>ee</span>$<span class='no'>data</span>$<span class='fu'>getAssetAcl</span>(<span class='st'>'users/csaybar/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; $owners
+#&gt; [1] "csaybar@gmail.com"
+#&gt; 
+#&gt; $readers
+#&gt; [1] "csaybar@gmail.com"
+#&gt; 
+#&gt; $all_users_can_read
+#&gt; [1] TRUE
+#&gt; 
+#&gt; $writers
+#&gt; [1] "csaybar@gmail.com"
+#&gt; </div><div class='input'>
+<span class='co'># 9. Create a report based on all tasks that is running or has finished</span>
+<span class='fu'>ee_manage_task</span>()</div><div class='output co'>#&gt;                          ID     State
+#&gt; 1  PTVMRXDVLFIN2SZBK6BGJXHW COMPLETED
+#&gt; 2  MJFZIMQHV36M4KSJYJWBMHPU COMPLETED
+#&gt; 3  TWNCBPOU5BZVXVXSOKRG2EOB COMPLETED
+#&gt; 4  MV4WJRHX36H4ZIOSYB4B2EEK    FAILED
+#&gt; 5  XZZXVPZOMRBHJURCHWLNXZIR COMPLETED
+#&gt; 6  SHLX6ZAMXESKP72MBFJGDS4O COMPLETED
+#&gt; 7  H5UO5VZTQWUA7ITC62Z2NIE5    FAILED
+#&gt; 8  MCVBEUWB55TSEPMA335NXMBT COMPLETED
+#&gt; 9  TTNEWGY62MA5GL6ZYX4YD747 COMPLETED
+#&gt; 10 DZJXKUAI2RHJU7SZ35RCFWRI COMPLETED
+#&gt; 11 JVTVMLH5S6A7OVTLVQEG7PDZ COMPLETED
+#&gt; 12 KKPCN4MYGKS76RQYHQ3RMUQX COMPLETED
+#&gt; 13 2XMHMTDA7FENFGQ5JCH6N5BC COMPLETED
+#&gt; 14 YZJATEQVYFTCPGPOKQZFR6A2 COMPLETED
+#&gt; 15 FREOXBCBXVY45LS6LXJRJAGP COMPLETED
+#&gt;                               DestinationPath            Type
+#&gt; 1                           myExportImageTask    EXPORT_IMAGE
+#&gt; 2         users/csaybar/rgee_upload/geomatrix          INGEST
+#&gt; 3          users/csaybar/rgee_upload/L7_stars          INGEST
+#&gt; 4  users/csaybar/rgee_upload/arequipaL7_stars          INGEST
+#&gt; 5  users/csaybar/rgee_upload/arequipaL7_stars          INGEST
+#&gt; 6  users/csaybar/rgee_upload/arequipaarequipa          INGEST
+#&gt; 7                   users/csaybar/rgee_upload          INGEST
+#&gt; 8                           myExportTableTask EXPORT_FEATURES
+#&gt; 9                           myExportImageTask    EXPORT_IMAGE
+#&gt; 10                    users/csaybar/L7_ETM22s          INGEST
+#&gt; 11                         users/csaybar/xxxx          INGEST
+#&gt; 12                     users/csaybar/L7_ETMs2          INGEST
+#&gt; 13             users/csaybar/file6ef723f4ae4b          INGEST
+#&gt; 14             users/csaybar/file6ef76af6cb1e          INGEST
+#&gt; 15                      users/csaybar/L7_ETMs          INGEST
+#&gt;                  Start DeltaToCreate(s) DeltaToCompletedTask(s)
+#&gt; 1  2019-09-10 19:25:30 5.78099989891052         9.0789999961853
+#&gt; 2  2019-09-10 06:04:03 6.64199995994568        23.8129999637604
+#&gt; 3  2019-09-10 05:54:49 4.40499997138977        20.1119999885559
+#&gt; 4  2019-09-10 05:37:12 4.47299981117249       0.705000162124634
+#&gt; 5  2019-09-10 05:35:11 6.19799995422363        23.6330001354218
+#&gt; 6  2019-09-10 05:08:52 4.90100002288818        544.118000030518
+#&gt; 7  2019-09-10 04:58:29 5.99699997901917       0.569000005722046
+#&gt; 8  2019-09-09 19:02:11 7.44099998474121        5.93299984931946
+#&gt; 9  2019-09-09 19:01:12 3.18499994277954        9.25399994850159
+#&gt; 10 2019-09-01 02:44:57 6.91200017929077        25.4869999885559
+#&gt; 11 2019-09-01 02:42:17 5.72699999809265        19.1160001754761
+#&gt; 12 2019-08-31 23:12:38 6.58400011062622        26.0720000267029
+#&gt; 13 2019-08-31 20:59:57 5.68899989128113        23.2569999694824
+#&gt; 14 2019-08-31 20:29:13 11.2030000686646        23.6689999103546
+#&gt; 15 2019-08-31 20:13:31 4.08299994468689         29.055999994278
+#&gt;                                                            ErrorMessage
+#&gt; 1                                                                  NULL
+#&gt; 2                                                                  NULL
+#&gt; 3                                                                  NULL
+#&gt; 4  Cannot overwrite asset 'users/csaybar/rgee_upload/arequipaL7_stars'.
+#&gt; 5                                                                  NULL
+#&gt; 6                                                                  NULL
+#&gt; 7                   Cannot overwrite asset 'users/csaybar/rgee_upload'.
+#&gt; 8                                                                  NULL
+#&gt; 9                                                                  NULL
+#&gt; 10                                                                 NULL
+#&gt; 11                                                                 NULL
+#&gt; 12                                                                 NULL
+#&gt; 13                                                                 NULL
+#&gt; 14                                                                 NULL
+#&gt; 15                                                                 NULL</div><div class='input'>
+<span class='co'># 10. Cancel all the running task</span>
+<span class='fu'>ee_manage_cancel_all_running_taks</span>()
+
+<span class='co'># 11. Delete EE objects or folders</span>
+<span class='fu'>ee_manage_delete</span>(<span class='st'>'users/csaybar/rgee/'</span>)</div><div class='output co'>#&gt; EE object deleted: users/csaybar/rgee/rgee_folder/rgee_ic_moved 
+#&gt; EE object deleted: users/csaybar/rgee/rgee_folder 
+#&gt; EE object deleted: users/csaybar/rgee </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

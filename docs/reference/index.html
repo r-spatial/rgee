@@ -8,11 +8,13 @@
 
 <title>Function reference • rgee</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,10 +32,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
 
+<meta property="og:title" content="Function reference" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -94,7 +97,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -143,17 +145,17 @@
         <td>
           <p><code><a href="ee_as_sf.html">ee_as_sf()</a></code> </p>
         </td>
-        <td><p>Convert Earth Engine (EE) Table in a Simple Feature (sf)</p></td>
+        <td><p>Convert an EE table in a sf object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_as_thumbnail.html">ee_as_thumbnail()</a></code> </p>
         </td>
-        <td><p>Create a stars object based on an Earth Engine (EE) thumbnail image</p></td>
+        <td><p>Create a stars object based on an EE thumbnail image</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_drivers()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> <code><a href="ee_check-tools.html">ee_install_drivers()</a></code> <code><a href="ee_check-tools.html">ee_install_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_install_python_package()</a></code> <code><a href="ee_check-tools.html">ee_install_python_ee()</a></code> <code><a href="ee_check-tools.html">ee_get_earthengine_path()</a></code> <code><a href="ee_check-tools.html">ee_remove_credentials()</a></code> <code><a href="ee_check-tools.html">ee_remove_drivers()</a></code> </p>
+          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_drivers()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> <code><a href="ee_check-tools.html">ee_install_drivers()</a></code> <code><a href="ee_check-tools.html">ee_install_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_install_python_package()</a></code> <code><a href="ee_check-tools.html">ee_install_python_ee()</a></code> <code><a href="ee_check-tools.html">ee_get_earthengine_path()</a></code> <code><a href="ee_check-tools.html">ee_remove_drivers()</a></code> <code><a href="ee_check-tools.html">ee_remove_credentials()</a></code> </p>
         </td>
         <td><p>Interface to handle rgee installation requirements</p></td>
       </tr><tr>
@@ -179,16 +181,13 @@
         <td>
           <p><code><a href="ee_extract.html">ee_extract()</a></code> </p>
         </td>
-        <td><p>Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects.</p></td>
+        <td><p>Extract values from EE ImageCollections objects</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_manage-tools.html">ee_manage_create()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assetlist()</a></code> <code><a href="ee_manage-tools.html">ee_manage_quota()</a></code> <code><a href="ee_manage-tools.html">ee_manage_size()</a></code> <code><a href="ee_manage-tools.html">ee_manage_copy()</a></code> <code><a href="ee_manage-tools.html">ee_manage_move()</a></code> <code><a href="ee_manage-tools.html">ee_manage_set_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assets_access()</a></code> <code><a href="ee_manage-tools.html">ee_manage_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_cancel_all_running_taks()</a></code> </p>
         </td>
-        <td><p>Create a folder or ImageCollection into GEE assets</p></td>
+        <td><p>Interface for manage the Earth Engine Asset</p></td>
       </tr><tr>
         
         <td>
@@ -216,12 +215,6 @@ ee.FeatureCollection and sf objects.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_quota.html">ee_quota()</a></code> </p>
-        </td>
-        <td><p>Returns quota usage details for the asset root with the given ID.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_restart.html">ee_restart()</a></code> </p>
         </td>
         <td><p>Reattach ee as a reserved word</p></td>
@@ -236,7 +229,7 @@ ee.FeatureCollection and sf objects.</p></td>
         <td>
           <p><code><a href="ee_upload.html">ee_upload()</a></code> </p>
         </td>
-        <td><p>Upload sf or stars objects to GEE asset</p></td>
+        <td><p>Upload sf or stars objects into a GEE asset</p></td>
       </tr><tr>
         
         <td>
@@ -254,7 +247,7 @@ ee.FeatureCollection and sf objects.</p></td>
         <td>
           <p><code><a href="sf_as_ee.html">sf_as_ee()</a></code> </p>
         </td>
-        <td><p>Convert R spatial object to an Google Earth Engine</p></td>
+        <td><p>Convert an sf object to EE object</p></td>
       </tr>
     </tbody>
     </table>

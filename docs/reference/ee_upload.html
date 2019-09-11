@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Upload sf or stars objects to GEE asset — ee_upload • rgee</title>
+<title>Upload sf or stars objects into a GEE asset — ee_upload • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,12 @@
 
 
 
-<meta property="og:title" content="Upload sf or stars objects to GEE asset — ee_upload" />
 
-<meta property="og:description" content="Send either images or vectors to Google Earth Engine asset using Selenium" />
-
+<meta property="og:title" content="Upload sf or stars objects into a GEE asset — ee_upload" />
+<meta property="og:description" content="Upload either images or vectors to Google Earth Engine asset" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +98,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -116,15 +117,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Upload sf or stars objects to GEE asset</h1>
+    <h1>Upload sf or stars objects into a GEE asset</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_upload.R'><code>R/ee_upload.R</code></a></small>
     <div class="hidden name"><code>ee_upload.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Send either images or vectors to Google Earth Engine asset using Selenium</p>
-    
+    <p>Upload either images or vectors to Google Earth Engine asset</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>)
@@ -147,13 +146,13 @@
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
   <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>character, sf or stars object.</p></td>
+      <td><p>Character, sf or stars object to upload into a GEE asset.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -161,41 +160,88 @@
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>character. images destination path, full path for upload to Google Earth Engine,
-e.g. users/pinkiepie/myponycollection.</p></td>
+      <td><p>Character. Asset destination path, e.g. users/pinkiepie/myponycollection.</p></td>
     </tr>
     <tr>
       <th>bucket</th>
-      <td><p>bucketname you are uploading to</p></td>
+      <td><p>bucketname you are uploading to. See details.</p></td>
     </tr>
     <tr>
       <th>properties</th>
-      <td><p>data.frame; <a href='https://developers.google.com/earth-engine/image_manifest'>Manifest upload</a>.</p></td>
+      <td><p>List. Set of parameters to established as a property of an EE object. See details.</p></td>
     </tr>
     <tr>
       <th>selenium_params</th>
-      <td><p>character; determines how each pixel at a given level of the pyramid is
-computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".</p></td>
+      <td><p>List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message</p></td>
+      <td><p>Logical. Suppress info message.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>TALKING ABOUT SELENIUM</p>
-    
+    <p>It is necessary, for uploading process, get authorization to read &amp; write into a Google Cloud Storage
+(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
+gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
+for getting access to the URI mentioned bellow, see <a href='ee_upload_file_to_gcs.html'>ee_upload_file_to_gcs</a> for details.
+Install and check the Selenium drivers for Google Chrome is possible as follow:<br /></p><ul>
+<li><p>rgee::ee_install_drivers()<br /></p></li>
+<li><p>rgee::ee_check_drivers()<br /></p></li>
+</ul>
+    <p>The properties argument is just available for image uploads, is you are interesting in setting
+properties in FeatureCollection. Please use <a href='ee_manage-tools.html'>ee_manage_set_properties</a> after ee_upload.</p>
+<p>The selenium_params argument is a three-element list consisting of:<br /></p><ul>
+<li><p>gmail_account: The google account. If it is not specified, it will obtained from
+ee$data$getAssetRoots().<br /></p></li>
+<li><p>showpassword: Logical. After put the google account into <a href='https://www.rdocumentation.org/packages/getPass/topics/getPass'>getPass</a>, should be shown?.</p></li>
+<li><p>cache: Logical. TRUE will use the cookies saved on the /temp directory.</p></li>
+</ul>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>stars</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>"csaybar@gmail.com"</span>)</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'>
+<span class='no'>filename</span> <span class='kw'>&lt;-</span> <span class='st'>"users/csaybar/rgee_upload/"</span>
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_create</a></span>(<span class='no'>filename</span>)</div><div class='output co'>#&gt; GEE asset: users/csaybar/rgee_upload already exists</div><div class='input'>
+<span class='no'>tif</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"tif/geomatrix.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
+<span class='no'>geomatrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stars/topics/read_stars'>read_stars</a></span>(<span class='no'>tif</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stars/topics/st_warp'>st_warp</a></span>(<span class='kw'>crs</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_crs'>st_crs</a></span>(<span class='fl'>4326</span>))
+<span class='no'>delta_geomatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>x</span>$<span class='no'>delta</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/attr'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>y</span>$<span class='no'>delta</span>*-<span class='fl'>1</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>geomatrix</span>)</div><div class='img'><img src='ee_upload-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>geomatrix</span>,<span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))</div><div class='output co'>#&gt; 
+#&gt; &gt;&gt;&gt; Chromedriver -&gt; status[ok]: /home/aybarpc01/.config/earthengine/csaybar/ 
+#&gt; GMAIL ACCOUNT: csaybar@gmail.com
+#&gt; Please enter password in TK window (Alt+Tab)
+#&gt; GMAIL PASSWORD: **************** 
+#&gt; Acquiring uploading permissions ... please wait
+#&gt; cookies catched: [APISID, SID, SAPISID, SSID, NID, HSID, CONSENT, SIDCC, _ga, _gid, _gat, SACSID]
+#&gt; Uploading /tmp/RtmphBRLxb/geomatrix.tif to gs://earthengine-uploads/ </div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>ee_geomatrix</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))
+<span class='no'>geomatrix_stars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_as_thumbnail.html'>ee_as_thumbnail</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>ee_geomatrix</span>,
+                                   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='no'>delta_geomatrix</span>,
+                                   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>255</span>))</div><div class='output co'>#&gt;  region is missing, the centroid of this EE Image is used: 
+#&gt;  region:  c(-104.847473787408, 10.1192377588295) c(-104.846172920447, 10.1192377588295) c(-104.846172920447, 10.1204889343473) c(-104.847473787408, 10.1204889343473) c(-104.847473787408, 10.1192377588295) 
+#&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='input'><span class='no'>geomatrix_stars</span>[<span class='no'>geomatrix_stars</span><span class='kw'>&lt;=</span><span class='fl'>0</span>]<span class='kw'>=</span><span class='fl'>NA</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/names'>names</a></span>(<span class='no'>geomatrix_stars</span>) <span class='kw'>&lt;-</span> <span class='st'>'geomatrix.tif'</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>geomatrix_stars</span>)</div><div class='img'><img src='ee_upload-2.png' alt='' width='700' height='433' /></div><div class='input'>
+#ee_manage_delete(filename) # Remove the folder created at the beginning
+</div><span class='co'># NOT RUN {</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
+<span class='no'>nc_s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/warning'>suppressWarnings</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/geos_unary'>st_simplify</a></span>(<span class='no'>nc</span>, <span class='kw'>preserveTopology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dTolerance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>))
+<span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc_s</span>,<span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"arequipa"</span>))
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_set_properties</a></span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"arequipa"</span>),
+                         <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-          </ul>
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

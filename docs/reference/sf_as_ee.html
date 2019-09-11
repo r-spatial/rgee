@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert R spatial object to an Google Earth Engine — sf_as_ee • rgee</title>
+<title>Convert an sf object to EE object — sf_as_ee • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,12 @@
 
 
 
-<meta property="og:title" content="Convert R spatial object to an Google Earth Engine — sf_as_ee" />
 
-<meta property="og:description" content="Convert R spatial object to an Google Earth Engine" />
-
+<meta property="og:title" content="Convert an sf object to EE object — sf_as_ee" />
+<meta property="og:description" content="Convert an sf object to EE object" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +98,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -116,94 +117,104 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert R spatial object to an Google Earth Engine</h1>
+    <h1>Convert an sf object to EE object</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/sf_as_ee.R'><code>R/sf_as_ee.R</code></a></small>
     <div class="hidden name"><code>sf_as_ee.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Convert R spatial object to an Google Earth Engine</p>
-    
+    <p>Convert an sf object to EE object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>check_ring_dir</span>)
 
 <span class='co'># S3 method for character</span>
-<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for sf</span>
-<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for sfc</span>
-<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for sfg</span>
-<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
-    
+<span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>object to be converted into.</p></td>
+      <td><p>sf object to be converted into a EE object.</p></td>
+    </tr>
+    <tr>
+      <th>check_ring_dir</th>
+      <td><p>logical. See <a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a> and details.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>if x is a character additional <code><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></code> arguments could be passed.</p></td>
+      <td><p><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a> arguments might be included.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>sf_as_ee</code> try to transform R objects (sf) into a GeoJSON format. By the time a user sends an HTTP
-request to the Earth Engine Web REST APIs (by, e.g. using *$getInfo()), the GeoJSON will be
-encrusted to the message. Therefore, it is expected that large spatial objects (&gt;500Kb) cause
-bottlenecks and plodding connections. See
+    <p>The conversion from sf to EE is a two-step process. Firstly, <code>sf_as_ee</code> transform
+sf objects into a GeoJSON format using <a href='https://www.rdocumentation.org/packages/geojsonio/topics/geojson_json'>geojson_json</a>. Secondly, the GeoJSON
+generated will be encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
+If the sf object is large spatial objects (&gt;1Mb) it is expected that cause bottlenecks and
+plodding connections. See
 <a href='https://developers.google.com/earth-engine/client_server#client-and-server-functions'>Client vs Server</a>
-documentation for details. For leading with very large spatial objects, is a good practice firstly
-importing it to the GEE assets. See <code>ee_upload_toasset</code> for details.</p>
-    
+documentation for details. For leading with very large spatial objects, is recommended firstly
+importing it to the GEE assets. See <a href='ee_upload.html'>ee_upload</a> for creating uploading pipelines.</p>
+<p>Earth Engine is strict with polygon ring directions (exterior ring counter-clockwise, holes clockwise). When
+<code>check_ring_dir</code> is TRUE, it check every ring and revert them to counter clockwise for outer, and clockwise for
+inner (hole) rings. By default this is FALSE because it is an expensive operation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_initialize</span>()
-
-<span class='co'># character</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>)
-<span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'>ee_as_ee</span>(<span class='no'>x</span>),<span class='kw'>proj</span><span class='kw'>=</span><span class='st'>"EPSG:4326"</span>)
-
-<span class='co'># matrix</span>
-<span class='no'>ee_df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>100</span>),<span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>5</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>()
-<span class='no'>ee_df</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_ee</span>(<span class='no'>ee_df</span>,<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"V1"</span>,<span class='st'>"V2"</span>))
-
-<span class='no'>ee_df</span>$<span class='fu'>geometry</span>()
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'>
 <span class='co'># sf</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read_sf</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
-<span class='no'>st_crs</span>
-<span class='fu'>ee_as_ee</span>(<span class='no'>x</span>)
-
-<span class='co'>#sfc</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read_sf</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))$<span class='no'>geometry</span>
-<span class='fu'>ee_as_ee</span>(<span class='no'>x</span>)
-
-<span class='co'>#sfg</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read_sf</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]]
-<span class='fu'>ee_as_ee</span>(<span class='no'>x</span>)
-
-<span class='co'>#sp</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>shapefile</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
-<span class='fu'>ee_as_ee</span>(<span class='no'>x</span>)
-<span class='co'># }</span></pre>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_transform'>st_transform</a></span>(<span class='fl'>4326</span>)</div><div class='output co'>#&gt; Reading layer `nc' from data source `/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/sf/shape/nc.shp' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 100 features and 14 fields
+#&gt; geometry type:  MULTIPOLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+#&gt; epsg (SRID):    4267
+#&gt; proj4string:    +proj=longlat +datum=NAD27 +no_defs</div><div class='input'><span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_x</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
+#&gt;  center is missing, the centroid of this EE FeatureCollection is used: 
+#&gt;  center:  -79.4004113801615 35.5595134054197 </div><div class='input'><span class='co'># sfc</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>))$<span class='no'>geometry</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_transform'>st_transform</a></span>(<span class='fl'>4326</span>)</div><div class='output co'>#&gt; Reading layer `nc' from data source `/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/sf/shape/nc.shp' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 100 features and 14 fields
+#&gt; geometry type:  MULTIPOLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+#&gt; epsg (SRID):    4267
+#&gt; proj4string:    +proj=longlat +datum=NAD27 +no_defs</div><div class='input'><span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_x</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
+#&gt;  center is missing, the centroid of this EE Geometry is used: 
+#&gt;  center:  -79.4004113801615 35.5595134054197 </div><div class='input'><span class='co'># sfg</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>))$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]]</div><div class='output co'>#&gt; Reading layer `nc' from data source `/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/sf/shape/nc.shp' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 100 features and 14 fields
+#&gt; geometry type:  MULTIPOLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
+#&gt; epsg (SRID):    4267
+#&gt; proj4string:    +proj=longlat +datum=NAD27 +no_defs</div><div class='input'><span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(<span class='no'>x</span>, <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_x</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
+#&gt;  center is missing, the centroid of this EE Geometry is used: 
+#&gt;  center:  -81.4982290170462 36.4313955999418 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

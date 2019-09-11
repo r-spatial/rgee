@@ -8,11 +8,13 @@
 
 <title>Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map • rgee</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,13 +32,13 @@
 
 
 
-<meta property="og:title" content="Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map" />
 
+<meta property="og:title" content="Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map" />
 <meta property="og:description" content="Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
 FeatureCollection or ImageCollection) base on mapview." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -97,7 +99,6 @@ FeatureCollection or ImageCollection) base on mapview." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -123,10 +124,8 @@ FeatureCollection or ImageCollection) base on mapview." />
     </div>
 
     <div class="ref-description">
-    
     <p>Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
 FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
@@ -155,7 +154,7 @@ FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
 <span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>vizparams</span>,
   <span class='no'>center</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"map"</span>, <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -194,7 +193,7 @@ be an ImageCollection.</p></td>
       <td><p>Max number of Image to display.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>ee_map</code> takes advantage of the ee$Image()$getMapId python function for fetch and return
@@ -210,7 +209,7 @@ The <a href='https://developers.google.com/earth-engine/image_visualization'>par
 <tr><td>list</td><td></td><td><strong>min</strong></td></tr>
 <tr><td></td><td>Value(s) to map to 0</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td></td><td><strong>max</strong></td><td></td></tr>
-<tr><td>Value(s) to map to 255</td><td>number or list of three numbers, one for each band</td><td></td></tr>
+<tr><td>Value(s) to map to 1</td><td>number or list of three numbers, one for each band</td><td></td></tr>
 <tr><td><strong>gain</strong></td><td></td><td>Value(s) by which to multiply each pixel value</td></tr>
 <tr><td>number or list of three numbers, one for each band</td><td></td><td><strong>bias</strong></td></tr>
 <tr><td></td><td>Value(s) to add to each DN</td><td>number or list of three numbers, one for each band</td></tr>
@@ -219,8 +218,7 @@ The <a href='https://developers.google.com/earth-engine/image_visualization'>par
 <tr><td><strong>palette</strong></td><td></td><td>List of CSS-style color strings (single-band images only)</td></tr>
 <tr><td>comma-separated list of hex strings</td><td></td><td><strong>opacity</strong></td></tr>
 <tr><td></td><td>The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque)</td><td>number</td></tr>
-<tr><td></td><td><strong>format</strong></td><td></td></tr>
-<tr><td>Either "jpg" or "png"</td><td>string</td><td></td></tr>
+<tr><td></td><td></td><td><strong>Parameter</strong></td></tr>
 </table>
     <p>If you add an Image or ImageCollection to the map without any additional parameters,
 by default <code>ee_map</code> assigns the first three bands to red, green and blue, respectively.
@@ -231,7 +229,6 @@ By default 000000.</p></li>
 <li><p><strong>pointRadius</strong>: The radius of the point markers. By default 3.</p></li>
 <li><p><strong>strokeWidth</strong>: The width of lines and polygon borders. By default 3.</p></li>
 </ul>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
@@ -290,9 +287,7 @@ By default 000000.</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

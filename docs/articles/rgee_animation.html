@@ -96,13 +96,13 @@
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</span></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Loading required package: reticulate</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Registered S3 method overwritten by 'dplyr':</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;   method         from     </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;   print.location geojsonio</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; ee is a reserved word for the rgee package, try ee_restart() to reattach</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stars)</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt; Loading required package: abind</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; ee is a reserved word for the rgee package, try ee_restart() to reattach</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stars)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Loading required package: abind</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; Registered S3 method overwritten by 'dplyr':</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;   method         from     </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;   print.location geojsonio</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt; Attaching package: 'dplyr'</span></a>
 <a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; The following objects are masked from 'package:stats':</span></a>
@@ -122,11 +122,12 @@
 <li>Initialize and Datasets</li>
 </ol>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>() <span class="co"># Initialize earth engine</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">ndvi_palette &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/cptcity/topics/cpt">cpt</a></span>(<span class="dt">pal =</span> <span class="st">"cb_div_RdYlGn_03"</span>) <span class="co"># palette</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">modis &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">ImageCollection</span>(<span class="st">"MODIS/006/MCD43A4"</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">world_map &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries">ne_countries</a></span>(<span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">land &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(<span class="st">"USDOS/LSIB_SIMPLE/2017"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Requesting Earth Engine authorization  ... DONE</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">ndvi_palette &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/cptcity/topics/cpt">cpt</a></span>(<span class="dt">pal =</span> <span class="st">"cb_div_RdYlGn_03"</span>) <span class="co"># palette</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">modis &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">ImageCollection</span>(<span class="st">"MODIS/006/MCD43A4"</span>)</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">world_map &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries">ne_countries</a></span>(<span class="dt">returnclass =</span> <span class="st">"sf"</span>)</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">land &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(<span class="st">"USDOS/LSIB_SIMPLE/2017"</span>)</a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Functions</li>
 </ol>
@@ -277,8 +278,8 @@
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; Registered S3 method overwritten by 'geojsonlint':</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;   method         from </span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;   print.location dplyr</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  scale is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  scale (delta):  1.40625 1.40625 </span></a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb7-13" data-line-number="13">modis_djf_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_djf_stars[world_map])</a>
 <a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
@@ -287,8 +288,8 @@
 <a class="sourceLine" id="cb7-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb7-18" data-line-number="18">mam &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
 <a class="sourceLine" id="cb7-19" data-line-number="19">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> mam, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt;  scale is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt;  scale (delta):  1.40625 1.40625 </span></a>
 <a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb7-23" data-line-number="23">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_mam_stars[world_map])</a>
 <a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
@@ -298,8 +299,8 @@
 <a class="sourceLine" id="cb7-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb7-29" data-line-number="29">jja &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
 <a class="sourceLine" id="cb7-30" data-line-number="30">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> jja, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
-<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;  scale is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt;  scale (delta):  1.40625 1.40625 </span></a>
 <a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb7-34" data-line-number="34">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_jja_stars[world_map])</a>
 <a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
@@ -308,8 +309,8 @@
 <a class="sourceLine" id="cb7-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb7-39" data-line-number="39">son &lt;-<span class="st"> </span>modis_ndvi<span class="op">$</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(ee<span class="op">$</span>Filter<span class="op">$</span><span class="kw">calendarRange</span>(<span class="dv">9</span>, <span class="dv">12</span>, <span class="st">"month"</span>))<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()</a>
 <a class="sourceLine" id="cb7-40" data-line-number="40">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(<span class="dt">x =</span> son, <span class="dt">vizparams =</span> visParams, <span class="dt">region =</span> region)</a>
-<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt;  scale is missing, a dimension of 512x512 taken by default. </span></a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt;  scale:  1.42222222222222 2.84444444444444 </span></a>
+<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt;  scale is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt;  scale (delta):  1.40625 1.40625 </span></a>
 <a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb7-44" data-line-number="44">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_as_sf">st_as_sf</a></span>(modis_son_stars[world_map])</a>
 <a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></a>
@@ -357,6 +358,7 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>

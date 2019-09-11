@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a stars object based on an Earth Engine (EE) thumbnail image — ee_as_thumbnail • rgee</title>
+<title>Create a stars object based on an EE thumbnail image — ee_as_thumbnail • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,13 @@
 
 
 
-<meta property="og:title" content="Create a stars object based on an Earth Engine (EE) thumbnail image — ee_as_thumbnail" />
 
-<meta property="og:description" content="Wrapper function to download RGB Image results" />
-
+<meta property="og:title" content="Create a stars object based on an EE thumbnail image — ee_as_thumbnail" />
+<meta property="og:description" content="Download EE thumbnail images and read them as stars objects. This function is
+a wrapper around ee$Image()$getThumbURL()." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +99,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -116,20 +118,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a stars object based on an Earth Engine (EE) thumbnail image</h1>
+    <h1>Create a stars object based on an EE thumbnail image</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_as_thumbnail.R'><code>R/ee_as_thumbnail.R</code></a></small>
     <div class="hidden name"><code>ee_as_thumbnail.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Wrapper function to download RGB Image results</p>
-    
+    <p>Download EE thumbnail images and read them as stars objects. This function is
+a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>scale</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>,
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -139,8 +140,8 @@
     </tr>
     <tr>
       <th>region</th>
-      <td><p>Geospatial region of the image (E,S,W,N, EE Geometry,
-GeoJSON, or sfg). By default, the whole image is used.</p></td>
+      <td><p>Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
+or sfg). By default, the whole image is used.</p></td>
     </tr>
     <tr>
       <th>scale</th>
@@ -148,21 +149,34 @@ GeoJSON, or sfg). By default, the whole image is used.</p></td>
     </tr>
     <tr>
       <th>vizparams</th>
-      <td><p>A list that contains the visualization parameters. See details.</p></td>
+      <td><p>A list that contains the visualization parameters.</p></td>
     </tr>
     <tr>
       <th>crs</th>
-      <td><p>The target projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').</p></td>
+      <td><p>The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').</p></td>
     </tr>
     <tr>
       <th>quiet</th>
       <td><p>logical; suppress info messages.</p></td>
     </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An <a href='https://www.rdocumentation.org/packages/sf/topics/sf'>sf</a> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>ee_as_thumbnail</code> shares parameters with <a href='rgee'>eemap</a>. This parameters are:</p><table class='table'>
+    <p>The arguments scale define the delta dimension of the stars object to be generated. It must be
+a single numeric value or a two-element vector, which represents the cell size for x and y. If it
+is not defined, 256 is taken by default as the dimension of x (from 1 to 256), and y will be computed by
+proportional scaling. Huge images might cause plodding connections.  See
+<a href='https://developers.google.com/earth-engine/client_server#client-and-server-functions'>Client vs Server</a>
+documentation for details.</p>
+<p>The vizparams set up the number of bands, in <code>ee_as_thumbnail</code> just is possible export one (G) or
+three band (RGB) images, additional  parameters can be passed on to control color, intensity,
+the max(min) value, etc. See below for a more compressible list of all the parameters that admit
+<code>ee_as_thumbnail</code>.</p>
+<table class='table'>
 <tr><td></td><td><strong>Parameter</strong></td><td></td></tr>
 <tr><td></td><td><strong>Description</strong></td><td></td></tr>
 <tr><td><strong>Type</strong></td><td></td><td></td></tr>
@@ -170,7 +184,7 @@ GeoJSON, or sfg). By default, the whole image is used.</p></td>
 <tr><td>list</td><td></td><td><strong>min</strong></td></tr>
 <tr><td></td><td>Value(s) to map to 0</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td></td><td><strong>max</strong></td><td></td></tr>
-<tr><td>Value(s) to map to 255</td><td>number or list of three numbers, one for each band</td><td></td></tr>
+<tr><td>Value(s) to map to 1</td><td>number or list of three numbers, one for each band</td><td></td></tr>
 <tr><td><strong>gain</strong></td><td></td><td>Value(s) by which to multiply each pixel value</td></tr>
 <tr><td>number or list of three numbers, one for each band</td><td></td><td><strong>bias</strong></td></tr>
 <tr><td></td><td>Value(s) to add to each DN</td><td>number or list of three numbers, one for each band</td></tr>
@@ -179,60 +193,40 @@ GeoJSON, or sfg). By default, the whole image is used.</p></td>
 <tr><td><strong>palette</strong></td><td></td><td>List of CSS-style color strings (single-band images only)</td></tr>
 <tr><td>comma-separated list of hex strings</td><td></td><td><strong>opacity</strong></td></tr>
 <tr><td></td><td>The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque)</td><td>number</td></tr>
-<tr><td></td><td><strong>format</strong></td><td></td></tr>
-<tr><td>Either "jpg" or "png"</td><td>string</td><td></td></tr>
+<tr><td></td><td></td><td><strong>Parameter</strong></td></tr>
 </table>
-    
+    <p>Use <code>ee$Image()$geometry()$projection()$crs()$getInfo()</code> for getting the CRS of an Earth Engine Image.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>stars</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>cptcity</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rnaturalearth</span>)
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='no'>world_map</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/rnaturalearth/topics/ne_countries'>ne_countries</a></span>(<span class='kw'>returnclass</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)[-<span class='fl'>7</span>, ]<span class='kw'>[[</span><span class='st'>"geometry"</span>]] <span class='co'># Remove Antarctica</span>
-
-<span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"td_DEM_screen"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/cptcity/topics/cpt'>cpt</a></span>(<span class='kw'>pal</span> <span class='kw'>=</span> <span class='st'>"cb_div_RdYlGn_03"</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-
-
-<span class='co'># This nice example has been adapted from https://github.com/kmarkert/cartoee</span>
-<span class='co'># Example #01  - WORLD DEM</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.5.1, GDAL 2.1.2, PROJ 4.9.3</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'><span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/home/aybarpc01/Github/rgee/inst/shp/arequipa.shp' using driver `ESRI Shapefile'
+#&gt; Simple feature collection with 1 feature and 2 fields
+#&gt; geometry type:  POLYGON
+#&gt; dimension:      XY
+#&gt; bbox:           xmin: -75.07333 ymin: -17.28501 xmax: -70.80408 ymax: -14.63274
+#&gt; epsg (SRID):    4326
+#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</div><div class='input'><span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
+                 <span class='st'>"#F4C84E"</span>, <span class='st'>"#D59F3C"</span>, <span class='st'>"#A36D2D"</span>, <span class='st'>"#C6A889"</span>, <span class='st'>"#FFFFFF"</span>)
+<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"#FC8D59"</span>, <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC9964"</span>, <span class='st'>"#FED89C"</span>, <span class='st'>"#FFFFBF"</span>,
+                  <span class='st'>"#FFFFBF"</span>, <span class='st'>"#DAEF9F"</span>, <span class='st'>"#9DD46A"</span>, <span class='st'>"#91CF60"</span>, <span class='st'>"#91CF60"</span>)
+<span class='co'># Example 01  - SRTM WORLD DEM</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>180</span>, -<span class='fl'>90</span>, <span class='fl'>180</span>, <span class='fl'>90</span>)
-
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_dem</span>[<span class='no'>world_map</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"World Elevation"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
-
-<span class='co'># Example #02  - WORLD NDVI</span>
-<span class='co'># function to add NDVI band to imagery</span>
-<span class='no'>calc_ndvi</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>img</span>) {
-  <span class='no'>ndvi</span> <span class='kw'>&lt;-</span> <span class='no'>img</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Nadir_Reflectance_Band2"</span>, <span class='st'>"Nadir_Reflectance_Band1"</span>))
-  <span class='no'>img</span>$<span class='fu'>addBands</span>(<span class='no'>ndvi</span>$<span class='fu'>rename</span>(<span class='st'>"ndvi"</span>))
-}
-
-<span class='co'># MODIS Nadir BRDF-Adjusted Reflectance with NDVI band</span>
-<span class='no'>modis</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"MODIS/006/MCD43A4"</span>)$
-  <span class='fu'>filterDate</span>(<span class='st'>"2010-01-01"</span>, <span class='st'>"2016-01-01"</span>)$
-  <span class='fu'>map</span>(<span class='no'>calc_ndvi</span>)
-<span class='no'>visParams</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> -<span class='fl'>0.5</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.85</span>, <span class='kw'>bands</span> <span class='kw'>=</span> <span class='st'>"ndvi"</span>)
-<span class='no'>modis_ndvi</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>modis</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(), <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='no'>visParams</span>, <span class='no'>region</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>modis_ndvi</span>[<span class='no'>world_map</span>], <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>ndvi_palette</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"World NDVI"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>world_map</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)
-<span class='co'># }</span></pre>
+<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]]
+<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
+#&gt; <span class='message'>  method                 from</span>
+#&gt; <span class='message'>  as.character.form_file httr</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'geojsonlint':</span>
+#&gt; <span class='message'>  method         from     </span>
+#&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt;  scale is missing, 256 is taken by default as dimension of x (from 1 to 256). 
+#&gt;  scale (delta):  0.01667672421875 0.01667672421875 
+#&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='input'><span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>world_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>)</div><div class='output co'>#&gt; <span class='message'>although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: ignoring all but the first attribute</span></div><div class='img'><img src='ee_as_thumbnail-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
+      <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

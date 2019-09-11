@@ -26,33 +26,50 @@ ee_upload(x, ...)
   selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
 }
 \arguments{
-\item{x}{character, sf or stars object.}
+\item{x}{Character, sf or stars object to upload into a GEE asset.}
 
 \item{...}{ignored}
 
-\item{filename}{character. images destination path, full path for upload to Google Earth Engine,
-e.g. users/pinkiepie/myponycollection.}
+\item{filename}{Character. Asset destination path, e.g. users/pinkiepie/myponycollection.}
 
-\item{bucket}{bucketname you are uploading to}
+\item{bucket}{bucketname you are uploading to. See details.}
 
-\item{properties}{data.frame; \href{https://developers.google.com/earth-engine/image_manifest}{Manifest upload}.}
+\item{properties}{List. Set of parameters to established as a property of an EE object. See details.}
 
-\item{selenium_params}{character; determines how each pixel at a given level of the pyramid is
-computed from the aggregation. "MEAN" (default), "MODE" and "SAMPLE".}
+\item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
 
-\item{quiet}{logical; suppress info message}
+\item{quiet}{Logical. Suppress info message.}
 }
 \description{
 Upload either images or vectors to Google Earth Engine asset
 }
 \details{
-TALKING ABOUT SELENIUM
+It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
+(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
+gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
+for getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs} for details.
+Install and check the Selenium drivers for Google Chrome is possible as follow:\cr
+\itemize{
+\item rgee::ee_install_drivers()\cr
+\item rgee::ee_check_drivers()\cr
+}
+
+The properties argument is just available for image uploads, is you are interesting in setting
+properties in FeatureCollection. Please use \link{ee_manage_set_properties} after \link{ee_upload}.
+
+The selenium_params argument is a three-element list consisting of:\cr
+\itemize{
+\item gmail_account: The google account. If it is not specified, it will obtained from
+ee$data$getAssetRoots().\cr
+\item showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
+\item cache: Logical. TRUE will use the cookies saved on the /temp directory.
+}
 }
 \examples{
 library(rgee)
 library(stars)
 library(sf)
-ee_Initialize(user_gmail = 'csaybar@gmail.com')
+ee_Initialize(user_gmail = "csaybar@gmail.com")
 
 filename <- "users/csaybar/rgee_upload/"
 ee_manage_create(filename)
@@ -70,11 +87,14 @@ geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
 geomatrix_stars[geomatrix_stars<=0]=NA
 names(geomatrix_stars) <- 'geomatrix.tif'
 plot(geomatrix_stars)
+
+#ee_manage_delete(filename) # Remove the folder created at the beginning
 \dontrun{
 nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
 nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
 ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))
 ee_monitoring()
-help(ee_upload)
+ee_manage_set_properties(path_asset = paste0(filename,"arequipa"),
+                         properties = list(message='hello-world',language = 'R'))
 }
 }

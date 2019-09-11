@@ -6,16 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects. — ee_extract • rgee</title>
+<title>Extract values from EE ImageCollections objects — ee_extract • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -33,18 +32,14 @@ ee.FeatureCollection and sf objects. — ee_extract • rgee</title>
 
 
 
-<meta property="og:title" content="Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects. — ee_extract" />
 
-<meta property="og:description" content="Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
+<meta property="og:title" content="Extract values from EE ImageCollections objects — ee_extract" />
+<meta property="og:description" content="Extract values from a Image or ImageCollection spatial object at the locations
+of geometry object. You can use ee.Geometries, ee.Features,
 ee.FeatureCollection and sf objects." />
-
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -105,7 +100,6 @@ ee.FeatureCollection and sf objects." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -125,26 +119,20 @@ ee.FeatureCollection and sf objects." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects.</h1>
+    <h1>Extract values from EE ImageCollections objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_extract.R'><code>R/ee_extract.R</code></a></small>
     <div class="hidden name"><code>ee_extract.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Extract values from Image EE spatial objects
-Extract values from a Image or ImageCollection spatial object at the locations
-of geometry object. You can use coordinates, ee.Geometries, ee.Features,
+    <p>Extract values from a Image or ImageCollection spatial object at the locations
+of geometry object. You can use ee.Geometries, ee.Features,
 ee.FeatureCollection and sf objects.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -154,7 +142,7 @@ ee.FeatureCollection and sf objects.</p>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>ee$Geometry, ee$Feature, ee$FeatureCollection or sf object.</p></td>
+      <td><p>ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.</p></td>
     </tr>
     <tr>
       <th>fun</th>
@@ -162,35 +150,85 @@ ee.FeatureCollection and sf objects.</p>
     </tr>
     <tr>
       <th>scale</th>
-      <td><p>TODO</p></td>
+      <td><p>A nominal scale in meters of the projection to work in.</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>Character. Name of the column to be used as a geometry index.</p></td>
     </tr>
     <tr>
       <th>sf</th>
-      <td><p>TODO</p></td>
+      <td><p>Logical. TRUE returns a sf object</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>reduceRegions parameters. See Details.
-library(rgee)
-ee_Initialize()
-terraclimate = ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-filterDate("2000-01-01","2001-01-01")$
-map(function(x) x$select("pr"))</p>
-<p>ee_nc = st_read(system.file("shape/nc.shp", package="sf")) <!-- %&gt;% -->
-st_transform(4326) <!-- %&gt;% -->
-sf_as_ee()
-ee_nc_rain = ee_extract(terraclimate,ee_nc)
-ee_nc_rain</p></td>
+      <td><p>reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.</p></td>
     </tr>
     </table>
-    
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The fun arguments just admit Reducer objects that return one value. These are:</p><ul>
+<li><p><strong>allNonZero</strong>: Returns a Reducer that returns 1 if all of its inputs
+are non-zero, 0 otherwise. <br /></p></li>
+<li><p><strong>anyNonZero</strong>: Returns a Reducer that returns 1 if any of its inputs are
+non-zero, 0 otherwise. <br /></p></li>
+<li><p><strong>bitwiseAnd</strong>: Returns a Reducer that computes the bitwise-and summation
+of its inputs.</p></li>
+<li><p><strong>bitwiseOr</strong>: Returns a Reducer that computes the bitwise-or summation of
+its inputs.</p></li>
+<li><p><strong>count</strong>: Returns a Reducer that computes the number of non-null inputs.</p></li>
+<li><p><strong>first</strong>: Returns a Reducer that returns the first of its inputs.</p></li>
+<li><p><strong>firstNonNull</strong>: Returns a Reducer that returns the first of its non-null inputs.</p></li>
+<li><p><strong>kurtosis</strong>: Returns a Reducer that Computes the kurtosis of its inputs.</p></li>
+<li><p><strong>last</strong>: Returns a Reducer that returns the last of its inputs.</p></li>
+<li><p><strong>lastNonNull</strong>: Returns a Reducer that returns the last of its non-null inputs.</p></li>
+<li><p><strong>max</strong>: Creates a reducer that outputs the maximum value of its (first) input.
+If numInputs is greater than one, also outputs the corresponding values of the additional
+inputs.</p></li>
+<li><p><strong>mean</strong>: Returns a Reducer that computes the (weighted) arithmetic mean of its inputs.</p></li>
+<li><p><strong>median</strong>: Create a reducer that will compute the median of the inputs.
+For small numbers of inputs (up to maxRaw) the median will be computed directly; for
+larger numbers of inputs the median will be derived from a histogram.</p></li>
+<li><p><strong>min</strong>: Creates a reducer that outputs the minimum value of its (first) input.  If
+numInputs is greater than one, also outputs the corresponding values of the
+additional inputs.</p></li>
+<li><p><strong>mode</strong>: Create a reducer that will compute the mode of the inputs.  For small
+numbers of inputs (up to maxRaw) the mode will be computed directly; for
+larger numbers of inputs the mode will be derived from a histogram.</p></li>
+<li><p><strong>product</strong>: Returns a Reducer that computes the product of its inputs.</p></li>
+<li><p><strong>sampleStdDev</strong>: Returns a Reducer that computes the sample standard deviation of its inputs.</p></li>
+<li><p><strong>sampleVariance</strong>: Returns a Reducer that computes the sample variance of its inputs.</p></li>
+<li><p><strong>stdDev</strong>: Returns a Reducer that computes the standard deviation of its inputs.</p></li>
+<li><p><strong>sum</strong>: Returns a Reducer that computes the (weighted) sum of its inputs.</p></li>
+<li><p><strong>variance</strong>: Returns a Reducer that computes the variance of its inputs.</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'>
+<span class='no'>terraclimate</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
+  <span class='fu'>filterDate</span>(<span class='st'>"2000-01-01"</span>,<span class='st'>"2001-01-01"</span>)$
+  <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>))
+
+<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_read'>st_read</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>),<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_transform'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
+<span class='no'>fun</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>()
+<span class='no'>eenc_rain</span> <span class='kw'>=</span> <span class='fu'>ee_extract</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>fun</span> <span class='kw'>=</span>  <span class='no'>fun</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"FIPSNO"</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>eenc_rain</span>[<span class='fl'>2</span>],<span class='kw'>main</span><span class='kw'>=</span><span class='st'>"2001 Jan Precipitation - Terraclimate"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='ee_extract-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## time series</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/grDevices/topics/dev'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
+#&gt;           1 </div><div class='input'><span class='no'>ee_nc</span> <span class='kw'>&lt;-</span> <span class='no'>ee_nc_rain</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'ee_nc_rain' not found</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/st_geometry'>st_geometry</a></span>(<span class='no'>ee_nc</span>) <span class='kw'>=</span> <span class='kw'>NULL</span></div><div class='output co'>#&gt; <span class='error'>Error in st_geometry(ee_nc) = NULL: object 'ee_nc' not found</span></div><div class='input'><span class='no'>time_serie</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='no'>ee_nc</span>[<span class='fl'>1</span>,<span class='fl'>2</span>:<span class='fl'>12</span>])</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'ee_nc' not found</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>time_serie</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"pp (mm/month)"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>'Precipitation'</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5,     main = "Precipitation"): object 'time_serie' not found</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/points'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in points(time_serie, pch = 20, lwd = 1.5, cex = 1.5): object 'time_serie' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

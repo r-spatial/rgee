@@ -6,13 +6,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert Earth Engine (EE) Table in a Simple Feature (sf) — ee_as_sf • rgee</title>
+<title>Convert an EE table in a sf object — ee_as_sf • rgee</title>
+
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,12 @@
 
 
 
-<meta property="og:title" content="Convert Earth Engine (EE) Table in a Simple Feature (sf) — ee_as_sf" />
 
-<meta property="og:description" content="Convert Earth Engine (EE) Table in a Simple Feature (sf)" />
-
+<meta property="og:title" content="Convert an EE table in a sf object — ee_as_sf" />
+<meta property="og:description" content="Convert an EE table in a sf object" />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +98,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -116,118 +117,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert Earth Engine (EE) Table in a Simple Feature (sf)</h1>
+    <h1>Convert an EE table in a sf object</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_as_sf.R'><code>R/ee_as_sf.R</code></a></small>
     <div class="hidden name"><code>ee_as_sf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    
-    <p>Convert Earth Engine (EE) Table in a Simple Feature (sf)</p>
-    
+    <p>Convert an EE table in a sf object</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_sf</span>(<span class='no'>x</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>ee.Geometry, ee.Feature or ee.FeatureCollection object to be converted into sf.</p></td>
+      <td><p>EE table to be converted into a sf object.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An sf class object, see Details.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The type of sf object returned will depend on the input GeoJSON. Sometimes you will get
-back a POINTS class, and sometimes a POLYGON class, etc., depending on what the structure of the GeoJSON.
-The reading and writing of the CRS to/from geojson is inconsistent. You can directly set the CRS by passing
-a valid PROJ4 string or epsg code to the crs argument in st_read.</p>
-    
+    <p>For exporting large spatial objects is better creates export pipelines through <code>ee$batch$Export$table$*</code>
+and <code>rgee::ee_download_*</code> instead of using <code>ee_as_sf</code>. See
+<a href='https://developers.google.com/earth-engine/client_server#client-and-server-functions'>Client vs Server</a>
+documentation for details.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>ee</span>)</div><div class='output co'>#&gt; <span class='error'>Error in library(ee): there is no package called ‘ee’</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Server returned HTTP code: 404</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 994, in getAssetRoots</span>
-#&gt; <span class='error'>    return send_('/buckets', {}, 'GET')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 1196, in send_</span>
-#&gt; <span class='error'>    'Server returned HTTP code: %d' % response.status)</span></div><div class='input'><span class='no'>roi</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Polygon</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'><span class='no'>roi</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Polygon</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>122.27577209472656</span>, <span class='fl'>37.891247253777074</span>),
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>122.27577209472656</span>, <span class='fl'>37.86875557241152</span>),
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>122.24040985107422</span>, <span class='fl'>37.86875557241152</span>),
   <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(-<span class='fl'>122.24040985107422</span>, <span class='fl'>37.891247253777074</span>)
-))</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Server returned HTTP code: 404</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/geometry.py", line 399, in Polygon</span>
-#&gt; <span class='error'>    return Geometry(Geometry._parseArgs('Polygon', 3, all_args))</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/computedobject.py", line 32, in __call__</span>
-#&gt; <span class='error'>    return type.__call__(cls, *args, **kwargs)</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/geometry.py", line 62, in __init__</span>
-#&gt; <span class='error'>    self.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/geometry.py", line 127, in initialize</span>
-#&gt; <span class='error'>    apifunction.ApiFunction.importApi(cls, 'Geometry', 'Geometry')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 181, in importApi</span>
-#&gt; <span class='error'>    cls.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 152, in initialize</span>
-#&gt; <span class='error'>    signatures = data.getAlgorithms()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 650, in getAlgorithms</span>
-#&gt; <span class='error'>    return send_('/algorithms', {}, 'GET')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 1196, in send_</span>
-#&gt; <span class='error'>    'Server returned HTTP code: %d' % response.status)</span></div><div class='input'>
-<span class='no'>blocks</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"TIGER/2010/Blocks"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Server returned HTTP code: 404</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/computedobject.py", line 32, in __call__</span>
-#&gt; <span class='error'>    return type.__call__(cls, *args, **kwargs)</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/featurecollection.py", line 43, in __init__</span>
-#&gt; <span class='error'>    self.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/featurecollection.py", line 85, in initialize</span>
-#&gt; <span class='error'>    super(FeatureCollection, cls).initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/collection.py", line 32, in initialize</span>
-#&gt; <span class='error'>    apifunction.ApiFunction.importApi(cls, 'Collection', 'Collection')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 181, in importApi</span>
-#&gt; <span class='error'>    cls.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 152, in initialize</span>
-#&gt; <span class='error'>    signatures = data.getAlgorithms()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 650, in getAlgorithms</span>
-#&gt; <span class='error'>    return send_('/algorithms', {}, 'GET')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 1196, in send_</span>
-#&gt; <span class='error'>    'Server returned HTTP code: %d' % response.status)</span></div><div class='input'><span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='no'>blocks</span>$<span class='fu'>filterBounds</span>(<span class='no'>roi</span>)</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'blocks' not found</span></div><div class='input'><span class='no'>sf_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>subset</span>)</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Server returned HTTP code: 404</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/computedobject.py", line 32, in __call__</span>
-#&gt; <span class='error'>    return type.__call__(cls, *args, **kwargs)</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/featurecollection.py", line 43, in __init__</span>
-#&gt; <span class='error'>    self.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/featurecollection.py", line 85, in initialize</span>
-#&gt; <span class='error'>    super(FeatureCollection, cls).initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/collection.py", line 32, in initialize</span>
-#&gt; <span class='error'>    apifunction.ApiFunction.importApi(cls, 'Collection', 'Collection')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 181, in importApi</span>
-#&gt; <span class='error'>    cls.initialize()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/apifunction.py", line 152, in initialize</span>
-#&gt; <span class='error'>    signatures = data.getAlgorithms()</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 650, in getAlgorithms</span>
-#&gt; <span class='error'>    return send_('/algorithms', {}, 'GET')</span>
-#&gt; <span class='error'>  File "/usr/local/lib/python3.5/dist-packages/ee/data.py", line 1196, in send_</span>
-#&gt; <span class='error'>    'Server returned HTTP code: %d' % response.status)</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sf_subset</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(sf_subset): object 'sf_subset' not found</span></div></pre>
+))
+
+<span class='no'>blocks</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"TIGER/2010/Blocks"</span>)
+<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='no'>blocks</span>$<span class='fu'>filterBounds</span>(<span class='no'>roi</span>)
+<span class='no'>sf_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>subset</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cat'>cat</a></span>(<span class='st'>'Object size in Mb:'</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/object.size'>object.size</a></span>(<span class='no'>sf_subset</span>)/<span class='fl'>10</span>^<span class='fl'>6</span>))</div><div class='output co'>#&gt; Object size in Mb: 0.6172</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sf_subset</span>)</div><div class='img'><img src='ee_as_sf-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Define an arbitrary region in which to compute random points.</span>
+<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(-<span class='fl'>119.224</span>, <span class='fl'>34.669</span>, -<span class='fl'>99.536</span>, <span class='fl'>50.064</span>)
+<span class='co'># Create 1000 random points in the region.</span>
+<span class='no'>ee_randomPoints</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='fu'>randomPoints</span>(<span class='no'>region</span>)
+<span class='no'>sf_randomPoints</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>ee_randomPoints</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sf_randomPoints</span>)</div><div class='img'><img src='ee_as_sf-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 

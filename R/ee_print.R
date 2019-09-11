@@ -9,15 +9,13 @@
 #' and ee$FeatureCollection will be used to generated Earth Engine object properties.
 #' @importFrom sf st_crs
 #' @examples
-#' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
 #' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-#'   filter(ee_Filter()$eq("WRS_PATH", 44))$
-#'   filter(ee_Filter()$eq("WRS_ROW", 34))$
+#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
+#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-03-01", "2014-08-01")
-#' ee_print(eeobject, max_display = 4)
-#' }
+#' ee_print(eeobject, max_display = 118)
 #' @export
 ee_print <- function(eeobject, max_display = 10) {
   UseMethod("ee_print")

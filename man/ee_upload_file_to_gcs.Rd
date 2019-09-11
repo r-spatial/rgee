@@ -12,20 +12,27 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 
 \item{bucket}{bucketname you are uploading to}
 
-\item{selenium_params}{Optional parameters when bucket is NULL. See details}
+\item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
 
-\item{quiet}{logical; suppress info message}
+\item{quiet}{Logical. Suppress info message.}
 }
 \value{
-\itemize{
-\item upload_url: URL for the new :class:\code{Request} object.
-\item destination_path: Is the destination path in the earth engine asset.
-\item asset_filename: Filename (inside earth engine)
-}
+Character indicating the full name of the x argument inside gs://earthengine-uploads/
 }
 \description{
 Upload images or tables into google cloud storage for EE asset ingestion tasks.
 }
 \details{
-laalla
+It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
+(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
+gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
+for getting access to the URI mentioned bellow. The process for getting access to gs://earthengine-uploads/
+was written entirely in Python and is as follow:
+\itemize{
+\item{1. }{Connecting to https://code.earthengine.google.com/ through selenium.}
+\item{2. }{Download all the cookies and saved in a request object.}
+\item{3. }{Get the URL for ingest the data  temporarily.}
+\item{4. }{Create the request headers.}
+\item{5. }{Upload the x argument to GCS via POST request.}
+}
 }

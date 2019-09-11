@@ -30,6 +30,7 @@ The task argument needs "COMPLETED" task state to work, since the parameters nec
 the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().
 }
 \examples{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)
@@ -92,4 +93,5 @@ task_vector$start()
 ee_monitoring(task_vector) # optional
 amk_geom <- ee_download_drive(task = task_vector)
 plot(amk_geom$geometry, border = "red", lwd = 10)
+}
 }

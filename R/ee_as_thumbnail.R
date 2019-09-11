@@ -40,10 +40,10 @@
 #' @return
 #' An \link[sf]{sf} object
 #'
-#' @importFrom  stars st_set_dimensions st_as_stars write_stars
+#' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom sf st_crs<-
 #' @importFrom reticulate py_to_r
-#' @importFrom  utils download.file zip str
+#' @importFrom utils download.file zip str
 #' @importFrom png readPNG
 #' @examples
 #' library(rgee)

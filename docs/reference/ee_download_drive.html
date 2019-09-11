@@ -8,11 +8,13 @@
 
 <title>Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive • rgee</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,12 +32,12 @@
 
 
 
+
 <meta property="og:title" content="Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive" />
-
-<meta property="og:description" content="Transfer results of an EE task saved in Google Drive to Hard disk" />
-
+<meta property="og:description" content="Move results of an EE task saved in Google Drive to Hard disk." />
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -96,7 +98,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/csaybar/rgee">
@@ -122,44 +123,54 @@
     </div>
 
     <div class="ref-description">
-    
-    <p>Transfer results of an EE task saved in Google Drive to Hard disk</p>
-    
+    <p>Move results of an EE task saved in Google Drive to Hard disk.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_download_drive</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>ee_download_drive</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>st</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>task</th>
-      <td><p>List generated after finished correctly a EE task. See
-<code>ee_help(ee$batch$Export)</code> for details.</p></td>
+      <td><p>List generated after finished correctly a EE task. See details.</p></td>
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>Output filename.</p></td>
+      <td><p>Character. Output filename. If absent, a temporary file is created.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean indicating whether "filename" should be overwritten.</p></td>
+      <td><p>A boolean indicating whether "filename" should be overwritten if it exists.</p></td>
+    </tr>
+    <tr>
+      <th>st</th>
+      <td><p>logical. By default this is TRUE, returning a sf (stars) object for
+EE tables (images). If FALSE, the output filename is returned.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical; suppress info message</p></td>
+      <td><p>logical. Suppress info message</p></td>
     </tr>
     </table>
-    
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An sf, stars or character depending on the retunclass argument.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
+the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>sf</span>)
-
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
+<span class='co'># Example 1 -- Download a Image</span>
 <span class='co'># Communal Reserve Amarakaeri - Peru</span>
 <span class='no'>xmin</span> <span class='kw'>&lt;-</span> -<span class='fl'>71.132591318</span>
 <span class='no'>xmax</span> <span class='kw'>&lt;-</span> -<span class='fl'>70.953664315</span>
@@ -179,9 +190,9 @@
   <span class='no'>cloud</span> <span class='kw'>&lt;-</span> <span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>32L</span>)$
     <span class='fu'>And</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>128L</span>))$
     <span class='fu'>Or</span>(<span class='no'>qa</span>$<span class='fu'>bitwiseAnd</span>(<span class='fl'>8L</span>))
-<span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>updateMask</span>(<span class='no'>cloud</span>$<span class='fu'>Not</span>())$<span class='fu'>updateMask</span>(<span class='no'>mask2</span>)
-<span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>))
+  <span class='no'>mask2</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>mask</span>()$<span class='fu'>reduce</span>(<span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>())
+  <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>image</span>$<span class='fu'>updateMask</span>(<span class='no'>cloud</span>$<span class='fu'>Not</span>())$<span class='fu'>updateMask</span>(<span class='no'>mask2</span>)
+  <span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>))
 }
 
 <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
@@ -192,19 +203,19 @@
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'>reproject</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>500</span>)
 <span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/clip'>clip</a></span>(<span class='no'>ee_geom</span>)
 
-<span class='co'># Download a EE Image</span>
 <span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>image</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
   <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEOTIFF"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
 )
+
 <span class='no'>task_img</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/start'>start</a></span>()
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
 <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(<span class='no'>task_img</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/sf/topics/plot'>plot</a></span>(<span class='no'>img</span>)
 
-<span class='co'># Download a EE FeatureCollection</span>
+<span class='co'># Example 2 -- Download a Table</span>
 <span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>))))
 <span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
@@ -222,7 +233,8 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

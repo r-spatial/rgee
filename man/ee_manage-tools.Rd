@@ -50,7 +50,7 @@ ee_manage_cancel_all_running_taks()
 
 \item{final_path}{Character. Name of the final EE asset to copy or move.}
 
-\item{properties}{List. Set of parameters to established as a property of an EE object.}
+\item{properties}{List. Set of parameters to established as a property of an EE object. See details.}
 
 \item{property}{Character. Name of a specific property to be deleted.}
 
