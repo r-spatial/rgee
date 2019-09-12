@@ -7,18 +7,19 @@
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/ryali93/rgee)
+[![Codecov test
+coverage](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee?branch=master)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 [Google Earth Engine](https://earthengine.google.com/) (Gorelick et al.,
 2017) is a cloud-based platform that allows users both run geospatial
 analysis on Google’s infrastructure and getting access to a
-petabyte-scale archive of remote sensing data.
-
-The [Earth Engine API’s](https://developers.google.com/earth-engine/)
-are composed of a set of modules that enable send queries through a REST
-API. The `rgee` package provides full access to them from within R and
-defines additional tools for automating processes.
+petabyte-scale archive of remote sensing data. The [Google Earth Engine
+API’s](https://developers.google.com/earth-engine/) are composed of a
+set of modules that enable send queries through a REST API. The `rgee`
+package provides full access to them from within R and defines
+additional tools for automating processes.
 
 **Earth Engine Python API**:
 
@@ -35,7 +36,6 @@ image.bandNames().getInfo()
 ``` r
 library(rgee)
 ee_Initialize()
-#> Requesting Earth Engine authorization  ... DONE
 image <- ee$Image('CGIAR/SRTM90_V4')
 image$bandNames()$getInfo()
 #> [1] "elevation"
@@ -43,7 +43,7 @@ image$bandNames()$getInfo()
 
 ## Features
 
-  - Complete access to the Earth Engine API.
+  - Complete access to the Earth Engine API from within R.
   - Multi-user support for Initialize
     ([ee\_Initialize](https://csaybar.github.io/rgee/reference/ee_Initialize.html))
   - Installing Python dependencies effortlessly
