@@ -33,19 +33,27 @@ before_install:
 - sudo apt-get remove python3-pip
 - sudo apt-get install python3-pip
 - sudo -H pip3 install --upgrade pip
-- sudo apt-get install libffi-dev libssl-dev
+#- sudo apt-get install libffi-dev libssl-dev
+#- wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
+#- tar -zxf openssl-1.1.1d.tar.gz && cd openssl-1.1.1d
+#- ./config
+#- sudo apt install make gcc
+#- make test
+#- sudo mv /usr/bin/openssl ~/tmp
+#- sudo make install
+#- sudo ln -s /usr/local/bin/openssl /usr/bin/openssl
+#- sudo ldconfig
+#- openssl version
+#- cd /home/travis/build/csaybar/rgee
 - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
 - R -q -e 'if (getRversion() < "3.2" && !requireNamespace("curl")) install.packages("curl")'
 - R -q -e 'remotes::install_github("ropenscilabs/tic", upgrade = "always"); print(tic::dsl_load());
   tic::prepare_all_stages()'
 - R -q -e 'tic::before_install()'
-- openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in cd26ed5dc626f11802a652e81d02762e_aybar1994@gmail.com.enc -out cd26ed5dc626f11802a652e81d02762e_aybar1994@gmail.com -d
-- openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in GCS_AUTH_FILE.json.enc -out GCS_AUTH_FILE.json -d
 install:
 - sudo -H pip3 install earthengine-api==0.1.175
 - sudo -H pip3 install coveralls
 - sudo -H pip3 install oauth2client
-- sudo -H pip3 install earthengine-api
 - sudo -H pip3 install selenium
 - sudo -H pip3 install bs4
 - sudo -H pip3 install pysmartDL

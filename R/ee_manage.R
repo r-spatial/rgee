@@ -17,9 +17,9 @@
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
-#' # Change the user and google account to be able to reproduce
-#' ee_Initialize(user_gmail = 'aybar1994')
+#' ee_Initialize()
 #'
+#' # Change google account to be able to reproduce
 #' ee_manage_create('users/aybar1994/rgee')
 #'
 #' # 1. List all the elements inside a folder or a ImageCollection
@@ -266,7 +266,7 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
     create_jsondump = function(...) {
       sprintf("{%s",
               paste0(
-                sprintf('"%s": ["%s@gmail.com"]',...),
+                sprintf('"%s": ["%s"]',...),
                 collapse = ", "
               )
       )

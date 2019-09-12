@@ -76,9 +76,9 @@ ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, .
   extract_py <- ee_source_python(oauth_func_path)
   if (any(c("sf", "sfc", "sfg") %in% class(y))) y <- sf_as_ee(y)
   if (is.null(id)) {
-    y <- ee$FeatureCollection(y)$map(function(x) x$set("ID", x$get("system:index")))
+    y <- ee$FeatureCollection(y)$map(function(x) x$set("ee_ID", x$get("system:index")))
   } else {
-    y <- ee$FeatureCollection(y)$map(function(x) x$set("ID", x$get(id)))
+    y <- ee$FeatureCollection(y)$map(function(x) x$set("ee_ID", x$get(id)))
   }
   fun_name <- gsub("Reducer.", "", fun$getInfo()["type"])
   triplets <- ee$ImageCollection(x)$map(function(image) {
@@ -89,19 +89,18 @@ ee_extract <- function(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, .
     )$map(function(f) f$set("imageId", image$id()))
   })$flatten()
   table <- extract_py$
-    table_format(triplets, "ID", "imageId", fun_name)$
+    table_format(triplets, "ee_ID", "imageId", fun_name)$
     map(function(feature){
       feature$setGeometry(NULL)})
 
   table_geojson <- ee_py_to_r(table$getInfo())
   class(table_geojson) <- "geo_list"
   table_sf <- geojson_sf(table_geojson)
-  geom_table <- st_geometry(table_sf)
   st_geometry(table_sf) <- NULL
   table_sf <- table_sf[, order(names(table_sf))]
   table_sf['id'] = NULL
   if (!is.null(id)) {
-    names(table_sf)[names(table_sf) == "ID"] <- id
+    names(table_sf)[names(table_sf) == "ee_ID"] <- id
   }
   table_sf
 }

@@ -97,6 +97,10 @@ ee_Initialize <- function(user_gmail, drive = FALSE, gcs = FALSE, quiet = TRUE) 
   ee_sessioninfo(user = user, ee_cre = user_path_EEcredential,
                         gcs_ee = user_path_GCScredential)
 
+  if (!grepl("@gmail.com",user_gmail)) {
+    user_gmail <- paste0(user_gmail,"@gmail.com")
+  }
+
   options(rgee.gcs.auth = user_path_GCScredential)
   options(rgee.selenium.params = list(gmail_account = user_gmail,
                                       showpassword = FALSE,
