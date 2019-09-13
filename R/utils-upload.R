@@ -101,13 +101,14 @@ ee_upload_file_to_gcs <- function(x,
                             warning=function(w) w)
   if (is(check_warning,'warning')) {
     stop(
-      "'chromedriver' executable needs to be in PATH.",
-      " Find the appropriate version of chromedriver visiting:\n\n",
-      ">>> chrome://settings/help \n",
-      ">>> https://sites.google.com/a/chromium.org/chromedriver/downloads\n\n",
-      "Once you are sure of the version of Google Chrome of the system. Try, in case you ",
-      "are using Google Chrome 76.x.\n",
-      "rgee::ee_install_drivers(version='76.0.3809.126') to fixed."
+      "'chromedriver' executable needs to be in the path: ",
+      rgee::ee_get_earthengine_path(),
+      ".The appropriate version of chromedriver depends on your GoogleChrome version. ",
+      "\n\n>>> Figure out GoogleChrome version of their system on: chrome://settings/help\n",
+      ">>> After that choose a stable version of chromedriver on: https://sites.google.com/a/chromium.org/chromedriver/downloads\n\n",
+      "Once you are sure of the version of Google Chrome and chromedriver of their system,\n",
+      "try rgee::ee_install_drivers(version=...). For instance, if you are using Google Chrome v76.x",
+      " might use rgee::ee_install_drivers(version='76.0.3809.126') to fix the error"
     )
   }
 

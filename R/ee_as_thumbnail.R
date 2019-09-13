@@ -6,20 +6,18 @@
 #' @param x EE Image object
 #' @param region Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
 #' or sfg). By default, the whole image is used.
-#' @param scale pixel size.
+#' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
 #' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
-#'
-#' The arguments scale define the delta dimension of the stars object to be generated. It must be
-#' a single numeric value or a two-element vector, which represents the cell size for x and y. If it
-#' is not defined, 256 is taken by default as the dimension of x (from 1 to 256), and y will be computed by
-#' proportional scaling. Huge images might cause plodding connections.  See
+#' The argument dimensions will define the "from" & "to" parameters of the stars object to be generated. It must be
+#' a single numeric value or a two-element vector. If not defined, 256 is taken by default as the dimension of
+#' x (from 1 to 256), and y will be computed by proportional scaling. Huge images might cause plodding connections.  See
 #' \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-#' documentation for details.
+#' for details.
 #'
-#' The vizparams set up the number of bands, in `ee_as_thumbnail` just is possible export one (G) or
+#' The vizparams set up the number of bands. In `ee_as_thumbnail` just is possible export one (G) or
 #' three band (RGB) images, additional  parameters can be passed on to control color, intensity,
 #' the max(min) value, etc. See below for a more compressible list of all the parameters that admit
 #' `ee_as_thumbnail`.
@@ -55,16 +53,15 @@
 #'                  "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
 #' ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
 #'                   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
-#' # Example 01  - SRTM WORLD DEM
+#' # Example 01  - SRTM AREQUIPA-PERU
 #' image <- ee$Image("CGIAR/SRTM90_V4")
 #' region <- nc$geometry[[1]]
-#' world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
-#' world_dem <- world_dem * 5000
-#' plot(world_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
+#' arequipa_dem <- ee_as_thumbnail(x = image,dimensions = 128, region = region, vizparams = list(min = 0, max = 5000))
+#' arequipa_dem <- arequipa_dem * 5000
+#' plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
 #' suppressWarnings(plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5))
 #' @export
-ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quiet = FALSE) {
-
+ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326, quiet = FALSE) {
   if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
   ee_crs <- sprintf("EPSG:%s", crs)
   if (missing(region)) {
@@ -79,66 +76,33 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
     region <- create_region(region)
   }
 
-  mapR_df <- data.frame(do.call(rbind, region))
-  min_max_x <- c(min(mapR_df[1]), max(mapR_df[1]))
-  min_max_y <- c(min(mapR_df[2]), max(mapR_df[2]))
+  region_df <- data.frame(do.call(rbind, region)) %>%
+    `names<-`(c('x','y'))
 
-  if (missing(scale)) {
-    scale <- c(diff(min_max_x)/256,diff(min_max_x)/256)
+  if (missing(dimensions)) {
+    dimensions <- 256
     if (!quiet) {
       cat(
-        " scale is missing, 256 is taken by default as dimension of x (from 1 to 256). \n",
-        "scale (delta): ", paste(scale, collapse = " "), "\n"
+        " dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). \n"
       )
     }
   }
 
-  if (length(scale) == 1L) {
-    scale_x <- scale
-    scale_y <- scale
-  } else if (length(scale) == 2L) {
-    scale_x <- scale[1]
-    scale_y <- scale[2]
-  } else {
-    stop(
-      " The scale must be a single numeric value or a two-element vector",
-      ", which represent the cell size for x and y."
-    )
-  }
-
-  dim_x <- diff(min_max_x) / scale_x
-  dim_y <- diff(min_max_y) / scale_y
-
-  if (dim_y > 5000 | dim_x > 5000) {
+  if (max(dimensions) > 5000) {
     if (!quiet) {
       cat(sprintf(
         " For large image (%sx%s) is preferible use rgee::ee_download_*()\n",
-        dim_x, dim_y
+        dimensions[1],dimensions[2]
       ))
     }
   }
 
-  dimensions <- c(
-    as.integer(trunc(dim_x)),
-    as.integer(trunc(dim_y))
-  )
-
-  offset_x <- min(mapR_df[1])
-  offset_y <- max(mapR_df[2])
-
-  scale_y <- scale_y * -1
-  xmin <- offset_x
-  xmax <- offset_x + dimensions[1] * scale_x
-  ymin <- offset_y + dimensions[2] * scale_y
-  ymax <- offset_y
-
-  new_region <- list(c(xmin, ymin), c(xmin, ymax), c(xmax, ymax), c(xmax, ymin), c(xmin, ymin))
-
   new_params <- list(
     crs = ee_crs,
-    dimensions = dimensions,
-    region = new_region
+    dimensions = as.integer(dimensions),
+    region = region
   )
+
   viz_params <- c(new_params, vizparams)
 
   if (!quiet) cat("Getting the thumbnail image from Earth Engine ... please wait\n")
@@ -164,10 +128,11 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
     stars_png
 
     attr_dim <- attr(stars_png, "dimensions")
-    attr_dim$x$offset <- offset_x
-    attr_dim$y$offset <- offset_y
-    attr_dim$x$delta <- scale_x
-    attr_dim$y$delta <- scale_y
+    attr_dim$x$offset <- min(region_df['x'])
+    attr_dim$y$offset <- max(region_df['y'])
+    attr_dim$x$delta <- (max(region_df['x']) - min(region_df['x']))/attr_dim$x$to
+    attr_dim$y$delta <- (min(region_df['y']) - max(region_df['y']))/attr_dim$y$to
+
     attr(stars_png, "dimensions") <- attr_dim
     st_crs(stars_png) <- crs
     return(stars_png)
@@ -180,11 +145,12 @@ ee_as_thumbnail <- function(x, region, scale, vizparams = NULL, crs = 4326, quie
       MoreArgs = list(mtx = raw_image)
     )[[1]]
     stars_png %>% st_set_dimensions(names = c("x", "y")) -> stars_png
+    sss <- as(stars_png,'Raster')
     attr_dim <- attr(stars_png, "dimensions")
-    attr_dim$x$offset <- offset_x
-    attr_dim$y$offset <- offset_y
-    attr_dim$x$delta <- scale_x
-    attr_dim$y$delta <- scale_y
+    attr_dim$x$offset <- min(region_df['x'])
+    attr_dim$y$offset <- max(region_df['y'])
+    attr_dim$x$delta <- (max(region_df['x']) - min(region_df['x']))/attr_dim$x$to
+    attr_dim$y$delta <- (min(region_df['y']) - max(region_df['y']))/attr_dim$y$to
     attr(stars_png, "dimensions") <- attr_dim
     st_crs(stars_png) <- crs
     return(stars_png)

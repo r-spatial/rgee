@@ -4,7 +4,7 @@
 \alias{ee_as_thumbnail}
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
-ee_as_thumbnail(x, region, scale, vizparams = NULL, crs = 4326,
+ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
   quiet = FALSE)
 }
 \arguments{
@@ -13,7 +13,7 @@ ee_as_thumbnail(x, region, scale, vizparams = NULL, crs = 4326,
 \item{region}{Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
 or sfg). By default, the whole image is used.}
 
-\item{scale}{pixel size.}
+\item{dimensions}{A number or pair of numbers in format XY.}
 
 \item{vizparams}{A list that contains the visualization parameters.}
 
@@ -29,14 +29,13 @@ Download EE thumbnail images and read them as stars objects. This function is
 a wrapper around \code{ee$Image()$getThumbURL()}.
 }
 \details{
-The arguments scale define the delta dimension of the stars object to be generated. It must be
-a single numeric value or a two-element vector, which represents the cell size for x and y. If it
-is not defined, 256 is taken by default as the dimension of x (from 1 to 256), and y will be computed by
-proportional scaling. Huge images might cause plodding connections.  See
+The argument dimensions will define the "from" & "to" parameters of the stars object to be generated. It must be
+a single numeric value or a two-element vector. If not defined, 256 is taken by default as the dimension of
+x (from 1 to 256), and y will be computed by proportional scaling. Huge images might cause plodding connections.  See
 \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-documentation for details.
+for details.
 
-The vizparams set up the number of bands, in \code{ee_as_thumbnail} just is possible export one (G) or
+The vizparams set up the number of bands. In \code{ee_as_thumbnail} just is possible export one (G) or
 three band (RGB) images, additional  parameters can be passed on to control color, intensity,
 the max(min) value, etc. See below for a more compressible list of all the parameters that admit
 \code{ee_as_thumbnail}.
@@ -65,11 +64,11 @@ dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
                  "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
 ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
                   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
-# Example 01  - SRTM WORLD DEM
+# Example 01  - SRTM AREQUIPA-PERU
 image <- ee$Image("CGIAR/SRTM90_V4")
 region <- nc$geometry[[1]]
-world_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
-world_dem <- world_dem * 5000
-plot(world_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
+arequipa_dem <- ee_as_thumbnail(x = image,dimensions = 128, region = region, vizparams = list(min = 0, max = 5000))
+arequipa_dem <- arequipa_dem * 5000
+plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
 suppressWarnings(plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5))
 }
