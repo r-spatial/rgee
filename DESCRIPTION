@@ -36,6 +36,8 @@ Imports:
     mapview,
     geojsonio,
     getPass,
+    crayon,
+    cli,
     png
 Suggests:
     testthat (>= 2.1.0),
@@ -44,6 +46,7 @@ Suggests:
     rmarkdown,
     googledrive,
     googleCloudStorageR,
+    geojsonlint,
     raster,
     lwgeom
 URL: https://github.com/csaybar/rgee

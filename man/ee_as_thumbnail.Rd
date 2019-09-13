@@ -67,7 +67,7 @@ ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
 # Example 01  - SRTM AREQUIPA-PERU
 image <- ee$Image("CGIAR/SRTM90_V4")
 region <- nc$geometry[[1]]
-arequipa_dem <- ee_as_thumbnail(x = image,dimensions = 128, region = region, vizparams = list(min = 0, max = 5000))
+arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 arequipa_dem <- arequipa_dem * 5000
 plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
 suppressWarnings(plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5))

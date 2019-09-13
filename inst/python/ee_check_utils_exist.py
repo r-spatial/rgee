@@ -5,11 +5,10 @@
 
 >>> ee_check_py_webbrowser()
 >>> ee_check_py_platform()
->>> ee_check_py_request()
+>>> ee_check_py_requests()
 >>> ee_check_py_zipfile()
 >>> ee_check_py_tarfile()
 >>> ee_check_py_subprocess()
->>> ee_check_py_retrying()
 >>> ee_check_py_ast()
 >>> ee_check_py_sys()
 >>> ee_check_py_os()
@@ -55,11 +54,11 @@ def ee_check_py_platform():
         return False
 
 
-def ee_check_py_request():
+def ee_check_py_requests():
     try:
-        import request
+        import requests
         try:
-            return request.__version__
+            return requests.__version__
         except:
             return True
     except:

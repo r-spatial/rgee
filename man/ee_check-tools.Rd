@@ -7,14 +7,7 @@
 \alias{ee_check_rgee_python_packages}
 \alias{ee_check_drivers}
 \alias{ee_check_credentials}
-\alias{ee_install_drivers}
-\alias{ee_install_rgee_python_packages}
-\alias{ee_install_python_package}
-\alias{ee_install_python_ee}
-\alias{ee_get_earthengine_path}
-\alias{ee_remove_drivers}
-\alias{ee_remove_credentials}
-\title{Interface to handle rgee installation requirements}
+\title{Interface to check non-R rgee dependencies}
 \usage{
 ee_check()
 
@@ -22,59 +15,16 @@ ee_check_python()
 
 ee_check_rgee_python_packages()
 
-ee_check_drivers(display_in_browser = TRUE)
+ee_check_drivers()
 
 ee_check_credentials()
-
-ee_install_drivers(version)
-
-ee_install_rgee_python_packages(conda = FALSE)
-
-ee_install_python_package(pypackage, conda = FALSE)
-
-ee_install_python_ee(conda = FALSE)
-
-ee_get_earthengine_path()
-
-ee_remove_drivers(quiet = TRUE)
-
-ee_remove_credentials(user, quiet = TRUE)
-}
-\arguments{
-\item{display_in_browser}{TODO}
-
-\item{version}{TODO}
-
-\item{conda}{TODO}
-
-\item{pypackage}{TODO}
-
-\item{quiet}{logical; suppress info message}
-
-\item{user}{TODO}
 }
 \description{
-R functions for checking, installing and removing: drivers (geckodrivers), credentials and python packages.
-}
-\details{
-It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 >.
+R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials
 }
 \examples{
 \dontrun{
 library(rgee)
-
-# Recommended way to install external dependencies of rgee for Linux users
-virtualenv_remove("rgee")
-virtualenv_create("rgee", python = "python3.5")
-use_virtualenv("rgee")
-
 ee_check()
-ee_install_rgee_python_packages() # Install rgee python packages
-ee_install_drivers() # Install selenim drivers
-ee_get_credentials() # Get credentials
-ee_check()
-
-# Recommended way to install external dependencies of rgee for Windows users
 }
 }

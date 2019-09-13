@@ -19,7 +19,7 @@ import urllib
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
-def ee_check_drivers_py(driverdir, display_in_browser=True):
+def ee_check_drivers_py(driverdir, display_in_browser=False):
     """Check if selenium works in their system
 
     Args:
@@ -46,7 +46,7 @@ def ee_check_drivers_py(driverdir, display_in_browser=True):
         else:
             try:
                 driver = Chrome(executable_path=path_driver,
-                                chrome_options=options)
+                                options=options)
             except:
                 return False
     else:
@@ -59,7 +59,7 @@ def ee_check_drivers_py(driverdir, display_in_browser=True):
         else:
             try:
                 driver = Chrome(executable_path=path_driver,
-                                chrome_options=options)
+                                options=options)
             except:
                 return False
     driver.get(authorization_url)

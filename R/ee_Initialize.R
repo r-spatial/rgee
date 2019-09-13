@@ -179,3 +179,17 @@ ee_sessioninfo <- function(user = NULL,ee_cre=NULL, gcs_ee = NULL) {
   write.table(df, sessioninfo,row.names = F)
 }
 
+
+#' Get the path where rgee save the credentials
+#' @export
+ee_get_earthengine_path <- function() {
+  ee_path <- path.expand("~/.config/earthengine")
+  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", path.expand("~/.config/earthengine"))
+  if (file.exists(sessioninfo)) {
+    user <- read.table(sessioninfo,header = TRUE,stringsAsFactors = FALSE)[[1]]
+  } else {
+    user <- gsub("users/","",ee$data$getAssetRoots()[[1]]$id)
+  }
+  return(sprintf("%s/%s/",ee_path,user))
+
+}
