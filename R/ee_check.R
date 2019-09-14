@@ -109,14 +109,12 @@ ee_check_drivers <- function() {
 #' @export
 ee_check_credentials <- function() {
   driverdir <- ee_get_earthengine_path()
-  googledrivedir <- path.expand("~/.R/gargle/gargle-oauth/")
-
   ee_credentials <- sprintf("%s/credentials",driverdir)
-  drive_credentials <- list.files(googledrivedir)
+  drive_credentials <- list.files(driverdir,"@gmail.com",full.names = TRUE)[1]
   gcs_credentials <- sprintf("%s/GCS_AUTH_FILE.json",driverdir)
 
   ex_ee_cred <- file.exists(ee_credentials)
-  ex_drive_cred <- drive_credentials > 0
+  ex_drive_cred <- file.exists(drive_credentials)
   ex_gcs_cred <- file.exists(drive_credentials)
 
   cli::cat_line(crayon::blue(cli::symbol$circle_filled),

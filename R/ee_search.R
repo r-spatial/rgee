@@ -32,7 +32,7 @@
 #' @export
 ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
   ee_date <- Sys.Date()
-  ee_dataset_file <- sprintf("%s/ee_dataset.csv", ee_get_earthengine_path())
+  ee_dataset_file <- sprintf("%s/ee_dataset.csv", path.expand("~/.config/earthengine"))
   if (file.exists(ee_dataset_file) & !upgrade) {
     ee_dataset <- read.csv(ee_dataset_file, stringsAsFactors = FALSE)
   } else {
