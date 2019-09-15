@@ -10,49 +10,49 @@
 \alias{ee_remove_credentials}
 \title{Interface to install non-R rgee dependencies}
 \usage{
-ee_install_drivers(version)
+ee_install_drivers(GoogleChromeVersion)
 
-ee_install_rgee_python_packages(conda = FALSE)
+ee_install_rgee_python_packages(conda = FALSE, quiet = quiet)
 
-ee_install_python_package(pypackage, conda = FALSE)
+ee_install_python_package(pypackage, conda = FALSE, quiet = FALSE)
 
-ee_install_python_ee(conda = FALSE)
+ee_install_python_ee(conda = FALSE, quiet = FALSE)
 
 ee_remove_drivers(quiet = TRUE)
 
 ee_remove_credentials(user, quiet = TRUE)
 }
 \arguments{
-\item{version}{TODO}
+\item{GoogleChromeVersion}{Google Chrome version of this system.}
 
-\item{conda}{TODO}
+\item{conda}{If TRUE conda is used instead of pip. conda executable needs setting in PATH.}
 
-\item{pypackage}{TODO}
+\item{quiet}{logical. Suppress info message}
 
-\item{quiet}{logical; suppress info message}
+\item{pypackage}{character. Package names to install.}
 
-\item{user}{TODO}
+\item{user}{character. User to remove credentials}
 }
 \description{
 R functions for installing and removing Python Selenium Chromedriver and Third-Party Python packages.
 }
 \details{
-It is neccessary restart RStudio to observe change when installing a python packages. rgee only is
-compatible with Python 3.5 >.
+It is neccessary restart R to observe change when installing a Python packages. rgee only is
+compatible with Python version 3.5 >.
 }
 \examples{
 \dontrun{
 library(rgee)
 
-# Recommended way to install external dependencies of rgee for Linux users
+# Recommended way to use rgee for Linux users
 virtualenv_remove("rgee")
-virtualenv_create("rgee", python = "python3.5")
-use_virtualenv("rgee")
+virtualenv_create("rgee", python = "python3.7")
+use_virtualenv("rgee") # Restart R
 
 ee_check()
 ee_install_rgee_python_packages() # Install rgee python packages
 ee_install_drivers() # Install selenim drivers
-ee_get_credentials() # Get credentials
+ee_Initialize(drive=TRUE,gcs=TRUE) # Install credentials
 ee_check()
 
 # Recommended way to install external dependencies of rgee for Windows users

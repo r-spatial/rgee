@@ -2,6 +2,7 @@
 #'
 #' R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials
 #' @name ee_check-tools
+#' @param quiet logical. Suppress info message
 #' @importFrom reticulate py_available py_module_available py_discover_config source_python
 #' @examples
 #' \dontrun{
@@ -16,20 +17,21 @@ ee_check <- function() {
   ee_check_credentials()
 }
 
+
 #' @rdname ee_check-tools
 #' @export
-ee_check_python <- function() {
+ee_check_python <- function(quiet = FALSE) {
   python_test <- py_available(initialize = TRUE)
   if (python_test) {
-    cli::cat_line(crayon::blue(cli::symbol$circle_filled),
-             crayon::blue("  Python version found: "),
-             crayon::green(py_discover_config()$python))
+    py_version <- as.numeric(py_discover_config()$version)
+    if (!quiet) cli::cat_line(crayon::blue(cli::symbol$circle_filled),
+                              crayon::blue("  Python version found: "),
+                              crayon::green(py_discover_config()$python,sprintf("v%s",py_version)))
   } else {
     stop("Unable to find a Python version, you will need to fix it before installing rgee. ",
          "More details through reticulate::py_available()")
   }
-  py_version <- as.numeric(py_discover_config()$version)
-  if (py_version < 3.5) stop("rgee just run under Python 3.5 >")
+  if (py_version < 3.5) stop("rgee just run under Python 3.5 >=")
   return(invisible(TRUE))
 }
 
@@ -88,7 +90,7 @@ ee_check_drivers <- function() {
   display_in_browser = FALSE
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_check_utils <- ee_source_python(oauth_func_path)
-  driverdir <- ee_get_earthengine_path()
+  driverdir <- path.expand("~/.config/earthengine")
   condition <- ee_py_to_r(ee_check_utils$ee_check_drivers_py(driverdir, display_in_browser))
 
   cli::cat_line("\n", crayon::blue(cli::symbol$circle_filled),
@@ -108,7 +110,7 @@ ee_check_drivers <- function() {
 #' @rdname ee_check-tools
 #' @export
 ee_check_credentials <- function() {
-  driverdir <- ee_get_earthengine_path()
+  driverdir <- path.expand("~/.config/earthengine")
   ee_credentials <- sprintf("%s/credentials",driverdir)
   drive_credentials <- list.files(driverdir,"@gmail.com",full.names = TRUE)[1]
   gcs_credentials <- sprintf("%s/GCS_AUTH_FILE.json",driverdir)

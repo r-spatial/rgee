@@ -11,13 +11,16 @@
 \usage{
 ee_check()
 
-ee_check_python()
+ee_check_python(quiet = FALSE)
 
 ee_check_rgee_python_packages()
 
 ee_check_drivers()
 
 ee_check_credentials()
+}
+\arguments{
+\item{quiet}{logical. Suppress info message}
 }
 \description{
 R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials

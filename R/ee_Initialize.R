@@ -27,7 +27,7 @@ ee_Initialize <- function(user_gmail = NULL,
                           gcs = FALSE,
                           assethome = NULL,
                           quiet = FALSE) {
-
+  ee_check_python(quiet=TRUE)
   list_ids <- ee_get_asset_gmail(user_gmail, assethome)
   user_gmail <- list_ids$user_gmail
   assethome <- gsub("\\.", "", list_ids$assethome)[1]
