@@ -9,6 +9,7 @@
 #' @param gcs logical. If TRUE drive credential are cached in the system.
 #' @param assethome character. Home folder's names of you EE Assets.
 #' @param quiet logical. Suppress info messages.
+#' @param checkpy logical. Check if the current Python version of this system is admitted by rgee.
 #' @importFrom utils read.table browseURL write.table
 #' @importFrom reticulate import_from_path import
 #' @import getPass getPass
@@ -26,8 +27,9 @@ ee_Initialize <- function(user_gmail = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           assethome = NULL,
+                          checkpy = FALSE,
                           quiet = FALSE) {
-  ee_check_python(quiet=TRUE)
+  if (checkpy) ee_check_python(quiet=quiet)
   list_ids <- ee_get_asset_gmail(user_gmail, assethome)
   user_gmail <- list_ids$user_gmail
   assethome <- gsub("\\.", "", list_ids$assethome)[1]
@@ -116,7 +118,7 @@ ee_create_credentials_earthengine <- function(assethome) {
       write(credential, main_ee_credential)
     } else {
       path_name <- sprintf("%s/%s/", ee_path, gsub("users/","",assethome))
-      dir.create(path_name, showWarnings = FALSE)
+      dir.create(path_name, showWarnings = FALSE,recursive = TRUE)
       write(credential, main_ee_credential)
       write(credential, user_ee_credential)
     }

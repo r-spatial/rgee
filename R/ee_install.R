@@ -67,16 +67,22 @@ ee_install_python_package <- function(pypackage, conda = FALSE, quiet = FALSE) {
   pydiscv <- py_discover_config()
   python_version <- pydiscv$version
   if (conda) {
-    msg_return <- suppressWarnings(system2("conda"))
-    if (msg_return != 0) {
+    msg_return <- suppressWarnings(system("conda --v", show.output.on.console = FALSE))
+    if (msg_return != 1) {
       stop("conda is not installed in the system, try using pip ee_install_python_ee(conda=FALSE)")
     } else {
-      system("conda install pypackage --upgrade")
+      to_run = sprintf("conda install -c conda-forge %s --debug", pypackage)
+      if (!quiet) cat('Running:',to_run, ' ... please wait\n')
+      tryCatch(expr = system(to_run,invisible = FALSE, timeout = 20),
+               warning = function(w)
+                 stop('Conda exceeded the default timeout. Run in Terminal: ',
+                         to_run,' . After that restart R to see changes.'))
+
     }
   } else {
     msg_return <- system2(sprintf("python%s", python_version), " -m pip --version")
     if (msg_return != 0) {
-      stop("pip is not installed in your system, try using conda ee_install_python_ee(conda=TRUE)")
+      stop("pip is not installed, try using conda ee_install_python_ee(conda=TRUE)")
     } else {
       install <- suppressWarnings(
         suppressMessages(
@@ -100,19 +106,24 @@ ee_install_python_package <- function(pypackage, conda = FALSE, quiet = FALSE) {
 #' @rdname ee_install-tools
 #' @export
 ee_install_python_ee <- function(conda=FALSE, quiet = FALSE) {
-  pydiscv <- py_discover_config()
-  python_version <- pydiscv$version
   if (conda) {
-    msg_return <- suppressWarnings(system2("conda"))
-    if (msg_return!=0) {
+    msg_return <- suppressWarnings(system("conda", show.output.on.console = FALSE))
+    if (msg_return!=1) {
       stop("conda is not installed in the system, try using pip ee_install_python_ee(conda=FALSE, restart=TRUE)")
     } else {
-      system("conda install earthengine-api==0.1.175 --upgrade")
+      to_run = "conda install -c conda-forge earthengine-api=0.1.175 --debug"
+      if (!quiet) cat('Running:',to_run, ' ... please wait\n')
+      tryCatch(expr = system(to_run,invisible = FALSE, timeout = 20),
+               warning = function(w)
+                 stop('Conda exceeded the default timeout. Run in Terminal: ',
+                         to_run,' . After that restart R to see changes.'))
     }
   } else{
+    pydiscv <- py_discover_config()
+    python_version <- pydiscv$version
     msg_return <- system2(sprintf("python%s",python_version)," -m pip --version")
     if (msg_return!=0) {
-      stop("pip is not installed in your system, try using conda ee_install_python_ee(conda=TRUE)")
+      stop("pip is not installed, try using conda ee_install_python_ee(conda=TRUE)")
     } else {
       install <- suppressWarnings(
         suppressMessages(
