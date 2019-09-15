@@ -5,7 +5,7 @@
 \title{Authenticate and Initialize Earth Engine}
 \usage{
 ee_Initialize(user_gmail = NULL, drive = FALSE, gcs = FALSE,
-  assethome = NULL, quiet = FALSE)
+  assethome = NULL, checkpy = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{user_gmail}{optional. Allows user to target a specific Google identity.}
@@ -15,6 +15,8 @@ ee_Initialize(user_gmail = NULL, drive = FALSE, gcs = FALSE,
 \item{gcs}{logical. If TRUE drive credential are cached in the system.}
 
 \item{assethome}{character. Home folder's names of you EE Assets.}
+
+\item{checkpy}{logical. Check if the current Python version of this system is admitted by rgee.}
 
 \item{quiet}{logical. Suppress info messages.}
 }

@@ -18,7 +18,6 @@
 >>> ee_check_py_ee()
 >>> ee_check_py_selenium()
 >>> ee_check_py_bs4()
->>> ee_check_py_pysmartDL()
 >>> ee_check_py_requests_toolbelt()
 
 These functions will be used in R/ee_check.R
@@ -174,14 +173,6 @@ def ee_check_py_bs4():
     try:
         import bs4
         return bs4.__version__
-    except:
-        return False
-
-
-def ee_check_py_pysmartDL():
-    try:
-        import pySmartDL
-        return pySmartDL.__version__
     except:
         return False
 

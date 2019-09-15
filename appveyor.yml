@@ -1,4 +1,17 @@
 # DO NOT CHANGE the "init" and "install" sections below
+image: Visual Studio 2015
+
+environment:
+  NOT_CRAN: true
+  USE_RTOOLS: true
+  PATH: "%PATH%;C:\\MinGW\\bin;C:\\MinGW\\msys\\1.0;C:\\MinGW\\msys\\1.0\\bin"
+  R_CHECK_ARGS: "--no-manual --as-cran --no-examples --no-tests"
+  matrix:
+    - PYTHON: "C:\\Python35"
+      RETICULATE_PYTHON: "C:\\Python35"
+
+matrix:
+  fast_finish: true
 
 # Download script file from GitHub
 init:
@@ -7,38 +20,32 @@ init:
         Invoke-WebRequest http://raw.github.com/krlmlr/r-appveyor/master/scripts/appveyor-tool.ps1 -OutFile "..\appveyor-tool.ps1"
         Import-Module '..\appveyor-tool.ps1'
 
-install:
-  - ps: Bootstrap
-  - cmd: Rscript -e "writeLines('options(repos = \'https://cloud.r-project.org\')', '~/.Rprofile')"
-  - cmd: Rscript -e "getOption('repos')"
-  - cmd: Rscript -e "if (!requireNamespace('remotes')) install.packages('remotes', type = 'binary')"
-  - cmd: Rscript -e "if (getRversion() < '3.2' && !requireNamespace('curl')) install.packages('curl', type = 'binary')"
-  - cmd: Rscript -e "options(pkgType = 'binary'); remotes::install_github('ropenscilabs/tic', upgrade = 'always'); print(tic::dsl_load()); tic::prepare_all_stages()"
 
-before_build: Rscript -e "tic::before_install()"
-build_script: Rscript -e "tic::install()"
-after_build: Rscript -e "tic::after_install()"
-before_test: Rscript -e "tic::before_script()"
-test_script: Rscript -e "tic::script()"
-on_success: Rscript -e "try(tic::after_success(), silent = TRUE)"
-on_failure: Rscript -e "tic::after_failure()"
-before_deploy: Rscript -e "tic::before_deploy()"
-deploy_script: Rscript -e "tic::deploy()"
-after_deploy: Rscript -e "tic::after_deploy()"
-on_finish: Rscript -e "tic::after_script()"
+install:
+  ps: Bootstrap
+
+cache:
+  - C:\RLibrary
 
 # Adapt as necessary starting from here
+build_script:
+  - "%PYTHON%\\python.exe -m pip install setuptools numpy earthengine-api==0.1.175 coveralls"
+  - "%PYTHON%\\python.exe -m pip install oauth2client selenium bs4 requests_toolbelt"
+  - travis-tool.sh install_deps
 
-#on_failure:
-#  - 7z a failure.zip *.Rcheck\*
-#  - appveyor PushArtifact failure.zip
+test_script:
+  - travis-tool.sh run_tests
 
+# Adapt as necessary starting from here
+on_failure:
+  - 7z a failure.zip *.Rcheck\*
+  - appveyor PushArtifact failure.zip
 #environment:
-  # The example below will not work for your repository,
-  # you need to encrypt your own token.
-  # Please follow https://ci.appveyor.com/tools/encrypt .
-  #GITHUB_PAT:
-  #  secure: VXO22OHLkl4YhVIomSMwCZyOTx03Xf2WICaVng9xH7gISlAg8a+qrt1DtFtk8sK5
+# The example below will not work for your repository,
+# you need to encrypt your own token.
+# Please follow https://ci.appveyor.com/tools/encrypt .
+#GITHUB_PAT:
+#  secure: VXO22OHLkl4YhVIomSMwCZyOTx03Xf2WICaVng9xH7gISlAg8a+qrt1DtFtk8sK5
 
 artifacts:
   - path: '*.Rcheck\**\*.log'

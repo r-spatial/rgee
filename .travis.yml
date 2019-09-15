@@ -56,7 +56,6 @@ install:
 - sudo -H pip3 install oauth2client
 - sudo -H pip3 install selenium
 - sudo -H pip3 install bs4
-- sudo -H pip3 install pysmartDL
 - sudo -H pip3 install requests_toolbelt
 - R -q -e 'tic::install()'
 script:

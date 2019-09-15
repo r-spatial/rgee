@@ -80,7 +80,6 @@ ee_check_rgee_python_packages <- function() {
   }
   ee_check_py_package("selenium")
   ee_check_py_package("bs4")
-  ee_check_py_package("pysmartDL")
   ee_check_py_package("requests_toolbelt")
 }
 

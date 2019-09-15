@@ -17,7 +17,12 @@ get_stage("before_install") %>%
 
     reticulate_dir  <- path.expand("~/.Renviron")
     fileConn<-file(reticulate_dir)
-    writeLines('RETICULATE_PYTHON="/usr/bin/python3"', fileConn)
+    if (Sys.info()[['sysname']] == 'Linux') {
+      writeLines('RETICULATE_PYTHON="/usr/bin/python3"', fileConn)
+    } else {
+      writeLines('RETICULATE_PYTHON="C:\\Python36"', fileConn)
+    }
+
     close(fileConn)
 
     #GOOGLE EARTH ENGINE
@@ -25,7 +30,6 @@ get_stage("before_install") %>%
     json_key <- toJSON(list(refresh_token = key))
     ee_dirname <- path.expand("~/.config/earthengine")
     dir.create(ee_dirname, recursive = TRUE,showWarnings = FALSE)
-    dir.create(paste0(ee_dirname,'/aybar1994/'), recursive = TRUE,showWarnings = FALSE)
     write(json_key, sprintf("%s/credentials",ee_dirname))
 
     #GOOGLE DRIVE & CLOUD STORAGE
