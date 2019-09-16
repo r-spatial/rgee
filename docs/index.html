@@ -6,12 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>R bindings for calling the Earth Engine API • rgee</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R bindings for calling the Earth Engine API">
-<meta property="og:description" content="Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automatizing processes.">
-<meta property="og:image" content="/logo.png">
+<meta property="og:description" content="Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automating processes.">
+<meta property="og:image" content="http://csaybar.github.io/rgee/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -19,8 +26,8 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container template-home">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -31,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -39,34 +46,52 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
-</li>
+      </ul>
+<ul class="nav navbar-nav navbar-right">
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-book"></span>
+     
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/rgee_animation.html">rgee_animation</a>
+      <a href="articles/installation.html">Installation</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="articles/faq.html">
+    <span class="fa fa-question-circle-o"></span>
+     
+    faq
+  </a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/csaybar/rgee">
+  <a href="news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    news
+  </a>
+</li>
+<li>
+  <a href="reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li>
+  <a href="https://github.com/csaybar/rgee/">
     <span class="fa fa-github fa-lg"></span>
      
+    github
   </a>
 </li>
       </ul>
@@ -78,37 +103,83 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
-<p><img src="https://raw.githubusercontent.com/ryali93/rgee/master/man/figures/logo.png" align="right" width="15%/"></p>
-<p><a href="https://travis-ci.org/csaybar/rgee"><img src="https://travis-ci.org/csaybar/rgee.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/ryali93/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/ryali93/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a> <a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></p>
-<div id="rgee-r-bindings-for-calling-the-earth-engine-api" class="section level1">
+      </header><div class="row">
+  <div class="contents col-md-9">
+
+<p><img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width="15%/"></p>
+<div id="google-earth-engine-for-r" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#rgee-r-bindings-for-calling-the-earth-engine-api" class="anchor"></a>rgee: R bindings for calling the Earth Engine API</h1></div>
-<p><code>rgee</code> provides functions and classes to conveniently interact with Google Earth Engine since R. The package includes facilities for:</p>
+<a href="#google-earth-engine-for-r" class="anchor"></a>Google Earth Engine for R</h1></div>
+<p><a href="https://travis-ci.org/csaybar/rgee"><img src="https://travis-ci.org/csaybar/rgee.svg?branch=master" alt="Build Status"></a> <a href="https://ci.appveyor.com/project/csaybar/rgee"><img src="https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://codecov.io/gh/csaybar/rgee?branch=master"><img src="https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a> <a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="lifecycle"></a></p>
+<p><a href="https://earthengine.google.com/">Google Earth Engine</a> is a cloud-based platform that allows users getting access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. The <code>rgee</code> package provides full access to the <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R and defines additional tools for automating processes.</p>
+<p><strong>Earth Engine Python API</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="im">import</span> ee</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">ee.Initialize()</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">image <span class="op">=</span> ee.Image(<span class="st">'CGIAR/SRTM90_V4'</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">image.bandNames().getInfo()</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; ['elevation']</span></a></code></pre></div>
+<p><strong>rgee:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">image &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">Image</span>(<span class="st">'CGIAR/SRTM90_V4'</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">image<span class="op">$</span><span class="kw">bandNames</span>()<span class="op">$</span><span class="kw">getInfo</span>()</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; [1] "elevation"</span></a></code></pre></div>
+<div id="todo" class="section level2">
+<h2 class="hasAnchor">
+<a href="#todo" class="anchor"></a>TODO</h2>
 <ul>
-<li>Initialization of the Earth Engine (EE) API, multi-user support.</li>
-<li>Installing Python dependencies effortlessly.</li>
-<li>Managing EE assets and tasks recursively.</li>
-<li>Displaying EE spatial objects in an interactive view on top of specific basemaps.</li>
-<li>Generating metadata reports about EE objects.</li>
-<li>Uploading and downloading.</li>
-<li>Conversion of EE spatial object to sf and vice-versa.</li>
+<li>Improve documentation.</li>
+<li>Generate better examples.</li>
+<li>py_help: Generate compressible documentation in an html format.</li>
+<li>Unit testing</li>
 </ul>
-<p>Access to Google Earth Engine is currently only available to <a href="https://earthengine.google.com/">registered users</a>.</p>
+</div>
+<div id="features" class="section level2">
+<h2 class="hasAnchor">
+<a href="#features" class="anchor"></a>Features</h2>
+<ul>
+<li>
+<a href="https://developers.google.com/earth-engine/"><strong>ee$…:</strong></a> Complete access to the Earth Engine API from within
+R.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_Initialize.html"><strong>ee_Initialize:</strong></a> Multi-user support for Initialize Earth Engine, a wrapper around <code>ee$Initialize</code>.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_check-tools.html"><strong>ee_install:</strong></a> Interface for installing Selenium drivers and Python packages effortlessly.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_check-tools.html"><strong>ee_check:</strong></a> Interface for dependencies checking.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_manage-tools.html"><strong>ee_manage:</strong></a> Manage EE assets and tasks recursively.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_map.html"><strong>ee_map:</strong></a> Display EE spatial objects using <a href="https://r-spatial.github.io/mapview/">mapview</a>.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_print.html"><strong>ee_print:</strong></a> Print EE metadata.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_upload.html"><strong>ee_upload:</strong></a> Upload ESRI shapefiles or GeoTIFF’s to Earth Engine.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_download.html"><strong>ee_download:</strong></a> Download EE spatial objects.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_upload.html"><strong>ee_as_sf</strong></a> &amp; <a href="https://csaybar.github.io/rgee/reference/ee_download.html"><strong>sf_as_ee:</strong></a> Convert EE tables (Feature Collection) to sf and vice-versa.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_download.html"><strong>ee_as_thumbnail:</strong></a> Create a stars object based on an EE thumbnail image.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_upload.html"><strong>ee_extract:</strong></a> Extract values for EE ImageCollections, similarly to <a href="https://www.rdocumentation.org/packages/raster/versions/3.0-2/topics/extract">raster::extract</a>.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_search.html"><strong>ee_search:</strong></a> Search among the Earth Engine Data Catalog.</li>
+<li>
+<a href="https://csaybar.github.io/rgee/reference/ee_help.html"><strong>ee_help:</strong></a> Display the Earth Engine documentation.</li>
+</ul>
+<p><strong>NOTE: Access to Google Earth Engine is currently only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
+</div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install development versions from github with</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_git">install_git</a></span>(<span class="st">"csaybar/rgee"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_git.html">install_git</a></span>(<span class="st">"csaybar/rgee"</span>)</a></code></pre></div>
 <div id="windows" class="section level3">
 <h3 class="hasAnchor">
 <a href="#windows" class="anchor"></a>Windows</h3>
-<p>Before install <code>rgee</code> be sure that <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> is installed in the system. System libraries are automatically downloaded from <a href="https://github.com/rwinlib/">rwinlib</a>.</p>
+<p>Before install <code>rgee</code> be sure that <a href="https://cran.r-project.org/bin/windows/Rtools/">Rtools</a> is installed in the system. The static libraries will automatically downloaded from <a href="https://github.com/rwinlib/">rwinlib</a>.</p>
 </div>
 <div id="linux" class="section level3">
 <h3 class="hasAnchor">
@@ -117,118 +188,65 @@
 <div id="ubuntu" class="section level4">
 <h4 class="hasAnchor">
 <a href="#ubuntu" class="anchor"></a>Ubuntu</h4>
-<pre><code>sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-sudo apt-get update
-sudo apt-get install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libv8-3.14-dev libjson-c-dev</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">sudo add<span class="op">-</span>apt<span class="op">-</span>repository ppa<span class="op">:</span>ubuntugis<span class="op">/</span>ubuntugis<span class="op">-</span>unstable</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">sudo apt<span class="op">-</span>get update</a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">sudo apt<span class="op">-</span>get install libprotobuf<span class="op">-</span>dev protobuf<span class="op">-</span>compiler libv8<span class="fl">-3.14</span><span class="op">-</span>dev libjq<span class="op">-</span>dev libudunits2<span class="op">-</span>dev libproj<span class="op">-</span>dev libgeos<span class="op">-</span>dev libspatialite<span class="op">-</span>dev libgdal<span class="op">-</span>dev libjson<span class="op">-</span>c<span class="op">-</span>dev libnetcdf<span class="op">-</span>dev netcdf<span class="op">-</span>bin</a></code></pre></div>
 </div>
 </div>
-</div>
-<div id="macos" class="section level2">
-<h2 class="hasAnchor">
-<a href="#macos" class="anchor"></a>MacOS</h2>
+<div id="macos" class="section level3">
+<h3 class="hasAnchor">
+<a href="#macos" class="anchor"></a>MacOS</h3>
 <p>Use <a href="https://brew.sh/">Homebrew</a> to install system libraries:</p>
-<pre><code>brew install pkg-config
-brew install gdal</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">brew install pkg<span class="op">-</span>config</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">brew install gdal</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">brew install netcdf</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">brew install libgit2</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">brew install udunits</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">brew install curl</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">brew install sqlite</a></code></pre></div>
+</div>
+<div id="docker-image-recommended-way-to-use-rgee" class="section level3">
+<h3 class="hasAnchor">
+<a href="#docker-image-recommended-way-to-use-rgee" class="anchor"></a>Docker image (Recommended way to use rgee)</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">docker run <span class="op">-</span>d <span class="op">-</span>p <span class="dv">8787</span><span class="op">:</span><span class="dv">8787</span> <span class="op">-</span>e USER=rgee <span class="op">-</span>e PASSWORD=rgee <span class="op">--</span>name rgee<span class="op">-</span>dev csaybar<span class="op">/</span>rgee</a></code></pre></div>
+<p>After that, in your preferred browser, run:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="dv">127</span>.<span class="dv">0</span>.<span class="fl">0.1</span><span class="op">:</span><span class="dv">8787</span></a></code></pre></div>
+</div>
 </div>
 <div id="how-does-it-works" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-does-it-works" class="anchor"></a>How does it works?</h2>
-<div class="figure">
-<img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/rgee.png" alt="workflow"><p class="caption">workflow</p>
+<p><img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/rgee.png" alt="workflow"></p>
 </div>
-</div>
-<div id="example" class="section level2">
+<div id="credits" class="section level2">
 <h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rgee)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(readr)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(stars)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(mapview)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw">ee_initialize</span>()</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co"># Communal Reserve Amarakaeri - Peru</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">xmin &lt;-<span class="st"> </span><span class="fl">-71.132591318</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">xmax &lt;-<span class="st"> </span><span class="fl">-70.953664315</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">ymin &lt;-<span class="st"> </span><span class="fl">-12.892451233</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">ymax &lt;-<span class="st"> </span><span class="fl">-12.731116372</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">x_mean &lt;-<span class="st"> </span>(xmin <span class="op">+</span><span class="st"> </span>xmax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">y_mean &lt;-<span class="st"> </span>(ymin <span class="op">+</span><span class="st"> </span>ymax) <span class="op">/</span><span class="st"> </span><span class="dv">2</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17">ROI &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)</a>
-<a class="sourceLine" id="cb4-18" data-line-number="18">ROI_polygon &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(ROI, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st">st_polygon</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/sfc">st_sfc</a></span>() <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/st_crs">st_set_crs</a></span>(<span class="dv">4326</span>)</a>
-<a class="sourceLine" id="cb4-23" data-line-number="23">ee_geom &lt;-<span class="st"> </span><span class="kw">ee_as_eegeom</span>(ROI_polygon)</a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co"># Get the mean annual NDVI for 2011</span></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27">cloudMaskL457 &lt;-<span class="st"> </span><span class="cf">function</span>(image) {</a>
-<a class="sourceLine" id="cb4-28" data-line-number="28">  qa &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">select</span>(<span class="st">"pixel_qa"</span>)</a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">  cloud &lt;-<span class="st"> </span>qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(32L)<span class="op">$</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30"><span class="st">    </span><span class="kw">And</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(128L))<span class="op">$</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="st">    </span><span class="kw">Or</span>(qa<span class="op">$</span><span class="kw">bitwiseAnd</span>(8L))</a>
-<a class="sourceLine" id="cb4-32" data-line-number="32">  mask2 &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">mask</span>()<span class="op">$</span><span class="kw">reduce</span>(<span class="kw">ee_Reducer</span>()<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">min</a></span>())</a>
-<a class="sourceLine" id="cb4-33" data-line-number="33">  image &lt;-<span class="st"> </span>image<span class="op">$</span><span class="kw">updateMask</span>(cloud<span class="op">$</span><span class="kw">Not</span>())<span class="op">$</span><span class="kw">updateMask</span>(mask2)</a>
-<a class="sourceLine" id="cb4-34" data-line-number="34">  image<span class="op">$</span><span class="kw">normalizedDifference</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="st">"B4"</span>, <span class="st">"B3"</span>))</a>
-<a class="sourceLine" id="cb4-35" data-line-number="35">}</a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37">ic_l5 &lt;-<span class="st"> </span><span class="kw">ee_ImageCollection</span>(<span class="st">"LANDSAT/LT05/C01/T1_SR"</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"><span class="st">  </span><span class="kw">filterBounds</span>(ee_geom)<span class="op">$</span></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2011-01-01"</span>, <span class="st">"2011-12-31"</span>)<span class="op">$</span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="st">  </span><span class="kw">map</span>(cloudMaskL457)</a>
-<a class="sourceLine" id="cb4-41" data-line-number="41">mean_l5 &lt;-<span class="st"> </span>ic_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/mean">mean</a></span>()<span class="op">$</span><span class="kw">rename</span>(<span class="st">"NDVI"</span>)</a>
-<a class="sourceLine" id="cb4-42" data-line-number="42">mean_l5 &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw">reproject</span>(<span class="dt">crs =</span> <span class="st">"EPSG:4326"</span>, <span class="dt">scale =</span> <span class="dv">500</span>)</a>
-<a class="sourceLine" id="cb4-43" data-line-number="43">mean_l5_Amarakaeri &lt;-<span class="st"> </span>mean_l5<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/clip">clip</a></span>(ee_geom)</a></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Download -&gt; ee$Image</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">task_img &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>image<span class="op">$</span><span class="kw">toDrive</span>(</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">image =</span> mean_l5_Amarakaeri,</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_1"</span>,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="dt">fileFormat =</span> <span class="st">"GEOTIFF"</span>,</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">  <span class="dt">fileNamePrefix =</span> <span class="st">"NDVI_l5_2011_Amarakaeri"</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">task_img<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="kw">ee_download_monitoring</span>(task_img, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">img &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">  <span class="dt">task =</span> task_img,</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">  <span class="dt">filename =</span> <span class="st">"amarakaeri.tif"</span>,</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">  <span class="dt">overwrite =</span> T</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">)</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(img)</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="co"># Download -&gt; ee$FeatureCollection</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19">amk_f &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ee<span class="op">$</span><span class="kw">Feature</span>(ee_geom, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(<span class="dt">name =</span> <span class="st">"Amarakaeri"</span>))))</a>
-<a class="sourceLine" id="cb5-20" data-line-number="20">amk_fc &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">FeatureCollection</span>(amk_f)</a>
-<a class="sourceLine" id="cb5-21" data-line-number="21">task_vector &lt;-<span class="st"> </span>ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span><span class="kw">toDrive</span>(</a>
-<a class="sourceLine" id="cb5-22" data-line-number="22">  <span class="dt">collection =</span> amk_fc,</a>
-<a class="sourceLine" id="cb5-23" data-line-number="23">  <span class="dt">description =</span> <span class="st">"Amarakaeri_task_2"</span>,</a>
-<a class="sourceLine" id="cb5-24" data-line-number="24">  <span class="dt">folder =</span> <span class="st">"Amarakaeri"</span>,</a>
-<a class="sourceLine" id="cb5-25" data-line-number="25">  <span class="dt">fileFormat =</span> <span class="st">"GEOJSON"</span>,</a>
-<a class="sourceLine" id="cb5-26" data-line-number="26">  <span class="dt">fileNamePrefix =</span> <span class="st">"geometry_Amarakaeri"</span></a>
-<a class="sourceLine" id="cb5-27" data-line-number="27">)</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb5-29" data-line-number="29">task_vector<span class="op">$</span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/start">start</a></span>()</a>
-<a class="sourceLine" id="cb5-30" data-line-number="30"><span class="kw">ee_download_monitoring</span>(task_vector, <span class="dt">eeTaskList =</span> <span class="ot">TRUE</span>) <span class="co"># optional</span></a>
-<a class="sourceLine" id="cb5-31" data-line-number="31">amk_geom &lt;-<span class="st"> </span><span class="kw"><a href="reference/ee_download_drive.html">ee_download_drive</a></span>(</a>
-<a class="sourceLine" id="cb5-32" data-line-number="32">  <span class="dt">task =</span> task_vector,</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33">  <span class="dt">filename =</span> <span class="st">"amarakaeri.geojson"</span>,</a>
-<a class="sourceLine" id="cb5-34" data-line-number="34">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb5-35" data-line-number="35">)</a>
-<a class="sourceLine" id="cb5-36" data-line-number="36"></a>
-<a class="sourceLine" id="cb5-37" data-line-number="37"><span class="kw"><a href="https://www.rdocumentation.org/packages/sf/topics/plot">plot</a></span>(amk_geom<span class="op">$</span>geometry, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">border =</span> <span class="st">"red"</span>, <span class="dt">lwd =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb5-38" data-line-number="38"><span class="kw">py_help</span>(ee<span class="op">$</span>batch<span class="op">$</span>Export<span class="op">$</span>table<span class="op">$</span>toDrive)</a></code></pre></div>
+<a href="#credits" class="anchor"></a>Credits</h2>
+<p>The rgee has been inspired by the following third-party R/Python packages:</p>
+<ul>
+<li><strong><a href="https://github.com/appelmar/gdalcubes">gdalcubes - Marius Appel</a></strong></li>
+<li>
+<strong><a href="https://github.com/tracek/gee_asset_manager">gee_asset_manager - Lukasz Tracewski</a></strong><br>
+</li>
+<li><strong><a href="https://github.com/samapriya/geeup">geeup - Samapriya Roy</a></strong></li>
+<li><strong><a href="https://github.com/samapriya/gee_asset_manager_addon">geeadd - Samapriya Roy</a></strong></li>
+<li><strong><a href="https://github.com/KMarkert/cartoee">cartoee - Kel Markert</a></strong></li>
+<li><strong><a href="https://github.com/gee-community/gee_tools">geetools - Rodrigo E. Principe</a></strong></li>
+<li><strong><a href="https://github.com/loicdtx/landsat-extract-gee">landsat-extract-gee - Loïc Dutrieux</a></strong></li>
+<li><strong><a href="https://github.com/JesJehle/earthEngineGrabR">earthEngineGrabR - JesJehle</a></strong></li>
+</ul>
 </div>
-<div id="contact" class="section level2">
+<div id="contributing" class="section level2">
 <h2 class="hasAnchor">
-<a href="#contact" class="anchor"></a>Contact</h2>
-<p>Please file bug reports and feature requests at <a href="https://github.com/ryali93/rgee/issues" class="uri">https://github.com/ryali93/rgee/issues</a></p>
-<p>In case of Pull Requests, please make sure to submit them to the develop branch of this repository.</p>
+<a href="#contributing" class="anchor"></a>Contributing</h2>
+<ul>
+<li>
+<code>rgee</code> welcomes any kind of contributions. Please check the <a href="">rgee Community Code of Conduct</a> for details.</li>
+<li>Are you interested in creating a pull request?. Make sure the code follows the <a href="https://style.tidyverse.org/">tidyverse style guide</a> and to submit them to the develop branch of this repository.</li>
+<li>Please file bug reports and feature requests at <a href="https://github.com/csaybar/rgee/issues" class="uri">https://github.com/csaybar/rgee/issues</a>.</li>
+</ul>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -251,14 +269,12 @@ brew install gdal</code></pre>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Cesar Aybar <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2745-9535" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
+<li>Cesar Aybar <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2745-9535" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID"></a> </li>
 <li><a href="authors.html">All authors...</a></li>
 </ul>
 </div>
 
-
-      </div>
-
+  </div>
 </div>
 
 
@@ -267,12 +283,14 @@ brew install gdal</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>

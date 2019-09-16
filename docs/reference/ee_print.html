@@ -8,23 +8,32 @@
 
 <title>Print and return metadata about Spatial Earth Engine Objects — ee_print • rgee</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +44,7 @@
 
 <meta property="og:title" content="Print and return metadata about Spatial Earth Engine Objects — ee_print" />
 <meta property="og:description" content="Print and return metadata about Spatial Earth Engine Objects" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -51,12 +60,13 @@
 <![endif]-->
 
 
+
   </head>
 
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
@@ -67,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -75,34 +85,52 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa fas fa-book"></span>
+     
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/rgee_animation.html">rgee_animation</a>
+      <a href="../articles/installation.html">Installation</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../articles/faq.html">
+    <span class="fa fa-question-circle-o"></span>
+     
+    faq
+  </a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/csaybar/rgee">
+<li>
+  <a href="../news/index.html">
+    <span class="fa fa-newspaper-o"></span>
+     
+    news
+  </a>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fa fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li>
+  <a href="https://github.com/csaybar/rgee/">
     <span class="fa fa-github fa-lg"></span>
      
+    github
   </a>
 </li>
       </ul>
@@ -112,6 +140,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -167,10 +196,12 @@ just the first element of: ee$Image, ee$ImageCollection, ee$Feature
 and ee$FeatureCollection will be used to generated Earth Engine object properties.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; Requesting Earth Engine authorization  ... DONE</div><div class='input'><span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/funprog'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/filter'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/funprog'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+<span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/funprog.html'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
+  <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/funprog.html'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_ROW"</span>, <span class='fl'>34</span>))$
   <span class='fu'>filterDate</span>(<span class='st'>"2014-03-01"</span>, <span class='st'>"2014-08-01"</span>)
 <span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>118</span>)</div><div class='output co'>#&gt; Class                          : ImageCollection 
 #&gt; nImages                        : 9 
@@ -184,79 +215,79 @@ and ee$FeatureCollection will be used to generated Earth Engine object propertie
 #&gt; nPixels by image               : 59'763'461 
 #&gt; Data type                      : FLOAT 
 #&gt; Image Properties               : 118 
-#&gt;                                |        RADIANCE_ADD_BAND_11        |       REFLECTANCE_ADD_BAND_9       |
-#&gt;                                |        RADIANCE_ADD_BAND_6         |      REFLECTANCE_MULT_BAND_7       |
-#&gt;                                |       GEOMETRIC_RMSE_MODEL_Y       |       REFLECTANCE_ADD_BAND_5       |
-#&gt;                                |              UTM_ZONE              |        RADIANCE_ADD_BAND_8         |
-#&gt;                                |       GEOMETRIC_RMSE_MODEL_X       |           MAP_PROJECTION           |
-#&gt;                                |        K1_CONSTANT_BAND_11         |      REFLECTANCE_MULT_BAND_9       |
-#&gt;                                |      REFLECTANCE_MULT_BAND_4       |              CPF_NAME              |
-#&gt;                                |          LANDSAT_SCENE_ID          |        RADIANCE_ADD_BAND_5         |
-#&gt;                                |        COLLECTION_CATEGORY         |           DATE_ACQUIRED            |
-#&gt;                                |       REFLECTANCE_ADD_BAND_8       |        K2_CONSTANT_BAND_11         |
-#&gt;                                |        RADIANCE_ADD_BAND_2         |          ELEVATION_SOURCE          |
-#&gt;                                |        RADIANCE_MULT_BAND_6        |    google:registration_offset_y    |
-#&gt;                                |        RADIANCE_MULT_BAND_3        |         COLLECTION_NUMBER          |
-#&gt;                                |         IMAGE_QUALITY_OLI          |       REFLECTANCE_ADD_BAND_1       |
-#&gt;                                |        RADIANCE_ADD_BAND_3         |        RADIANCE_MULT_BAND_7        |
-#&gt;                                |              WRS_ROW               |         SATURATION_BAND_6          |
-#&gt;                                |      REFLECTANCE_MULT_BAND_3       |        RADIANCE_ADD_BAND_7         |
-#&gt;                                |          THERMAL_SAMPLES           |         SATURATION_BAND_5          |
-#&gt;                                |           THERMAL_LINES            |     GRID_CELL_SIZE_REFLECTIVE      |
-#&gt;                                |           BPF_NAME_TIRS            |          REFLECTIVE_LINES          |
-#&gt;                                |      TIRS_SSM_POSITION_STATUS      |        GEOMETRIC_RMSE_MODEL        |
-#&gt;                                |            BPF_NAME_OLI            |        RADIANCE_ADD_BAND_1         |
-#&gt;                                |      REFLECTANCE_MULT_BAND_8       |      REFLECTANCE_MULT_BAND_1       |
-#&gt;                                |        RADIANCE_MULT_BAND_9        |           SUN_ELEVATION            |
-#&gt;                                |         PANCHROMATIC_LINES         |         SATURATION_BAND_8          |
-#&gt;                                |       REFLECTANCE_ADD_BAND_6       |             REQUEST_ID             |
-#&gt;                                |       REFLECTANCE_ADD_BAND_2       |        PANCHROMATIC_SAMPLES        |
-#&gt;                                |       REFLECTANCE_ADD_BAND_7       |         REFLECTIVE_SAMPLES         |
-#&gt;                                |           NADIR_OFFNADIR           |   GROUND_CONTROL_POINTS_VERSION    |
-#&gt;                                |        RADIANCE_MULT_BAND_8        |    GROUND_CONTROL_POINTS_MODEL     |
-#&gt;                                |    GROUND_CONTROL_POINTS_VERIFY    |         SATURATION_BAND_1          |
-#&gt;                                |             DATA_TYPE              |        RADIANCE_MULT_BAND_4        |
-#&gt;                                |        RADIANCE_ADD_BAND_9         |    GRID_CELL_SIZE_PANCHROMATIC     |
-#&gt;                                |         LANDSAT_PRODUCT_ID         |          TARGET_WRS_PATH           |
-#&gt;                                |           RLUT_FILE_NAME           |           TRUNCATION_OLI           |
-#&gt;                                |             STATION_ID             |              WRS_PATH              |
-#&gt;                                |     google:registration_count      |         SATURATION_BAND_9          |
-#&gt;                                |           TARGET_WRS_ROW           |        RADIANCE_ADD_BAND_4         |
-#&gt;                                |        RADIANCE_MULT_BAND_1        |           SPACECRAFT_ID            |
-#&gt;                                |         RESAMPLING_OPTION          |             ELLIPSOID              |
-#&gt;                                |          system:footprint          |             ROLL_ANGLE             |
-#&gt;                                |       REFLECTANCE_ADD_BAND_4       |     google:registration_ratio      |
-#&gt;                                |            ORIENTATION             |        K2_CONSTANT_BAND_10         |
-#&gt;                                |         system:asset_size          |       RADIANCE_MULT_BAND_10        |
-#&gt;                                |    PROCESSING_SOFTWARE_VERSION     |      REFLECTANCE_MULT_BAND_6       |
-#&gt;                                |            CLOUD_COVER             |           TIRS_SSM_MODEL           |
-#&gt;                                | TIRS_STRAY_LIGHT_CORRECTION_SOURCE |        RADIANCE_MULT_BAND_5        |
-#&gt;                                |       RADIANCE_MULT_BAND_11        |            system:index            |
-#&gt;                                |         SATURATION_BAND_2          |         system:time_start          |
-#&gt;                                |         EARTH_SUN_DISTANCE         |            SUN_AZIMUTH             |
-#&gt;                                |        RADIANCE_ADD_BAND_10        |       GRID_CELL_SIZE_THERMAL       |
-#&gt;                                |    google:registration_offset_x    |        RADIANCE_MULT_BAND_2        |
-#&gt;                                |         SATURATION_BAND_3          |      REFLECTANCE_MULT_BAND_5       |
-#&gt;                                |         SATURATION_BAND_7          |         SATURATION_BAND_4          |
-#&gt;                                |       REFLECTANCE_ADD_BAND_3       |               DATUM                |
-#&gt;                                |       GEOMETRIC_RMSE_VERIFY        |          CLOUD_COVER_LAND          |
-#&gt;                                |        K1_CONSTANT_BAND_10         |      REFLECTANCE_MULT_BAND_2       |
-#&gt;                                |             FILE_DATE              |         SCENE_CENTER_TIME          |
-#&gt;                                |             SENSOR_ID              |         IMAGE_QUALITY_TIRS         |
+#&gt;                                |        RADIANCE_MULT_BAND_5        |        RADIANCE_MULT_BAND_6        |
+#&gt;                                |        RADIANCE_MULT_BAND_3        |        RADIANCE_MULT_BAND_4        |
+#&gt;                                |        RADIANCE_MULT_BAND_1        |        RADIANCE_MULT_BAND_2        |
+#&gt;                                |        K2_CONSTANT_BAND_11         |        K2_CONSTANT_BAND_10         |
+#&gt;                                |          system:footprint          |         REFLECTIVE_SAMPLES         |
+#&gt;                                |            SUN_AZIMUTH             |              CPF_NAME              |
+#&gt;                                |           DATE_ACQUIRED            |             ELLIPSOID              |
+#&gt;                                |    google:registration_offset_x    |    google:registration_offset_y    |
+#&gt;                                |             STATION_ID             |         RESAMPLING_OPTION          |
+#&gt;                                |            ORIENTATION             |              WRS_ROW               |
+#&gt;                                |        RADIANCE_MULT_BAND_9        |           TARGET_WRS_ROW           |
+#&gt;                                |        RADIANCE_MULT_BAND_7        |        RADIANCE_MULT_BAND_8        |
+#&gt;                                |         IMAGE_QUALITY_TIRS         |           TRUNCATION_OLI           |
+#&gt;                                |            CLOUD_COVER             |       GEOMETRIC_RMSE_VERIFY        |
+#&gt;                                |        COLLECTION_CATEGORY         |     GRID_CELL_SIZE_REFLECTIVE      |
+#&gt;                                |          CLOUD_COVER_LAND          |        GEOMETRIC_RMSE_MODEL        |
+#&gt;                                |         COLLECTION_NUMBER          |         IMAGE_QUALITY_OLI          |
+#&gt;                                |          LANDSAT_SCENE_ID          |              WRS_PATH              |
+#&gt;                                |     google:registration_count      |        PANCHROMATIC_SAMPLES        |
+#&gt;                                |         PANCHROMATIC_LINES         |       GEOMETRIC_RMSE_MODEL_Y       |
+#&gt;                                |          REFLECTIVE_LINES          | TIRS_STRAY_LIGHT_CORRECTION_SOURCE |
+#&gt;                                |       GEOMETRIC_RMSE_MODEL_X       |         system:asset_size          |
+#&gt;                                |            system:index            |       REFLECTANCE_ADD_BAND_1       |
+#&gt;                                |       REFLECTANCE_ADD_BAND_2       |               DATUM                |
+#&gt;                                |       REFLECTANCE_ADD_BAND_3       |       REFLECTANCE_ADD_BAND_4       |
+#&gt;                                |           RLUT_FILE_NAME           |       REFLECTANCE_ADD_BAND_5       |
+#&gt;                                |       REFLECTANCE_ADD_BAND_6       |       REFLECTANCE_ADD_BAND_7       |
+#&gt;                                |       REFLECTANCE_ADD_BAND_8       |           BPF_NAME_TIRS            |
+#&gt;                                |   GROUND_CONTROL_POINTS_VERSION    |             DATA_TYPE              |
+#&gt;                                |              UTM_ZONE              |         LANDSAT_PRODUCT_ID         |
+#&gt;                                |       REFLECTANCE_ADD_BAND_9       |     google:registration_ratio      |
+#&gt;                                |    GRID_CELL_SIZE_PANCHROMATIC     |        RADIANCE_ADD_BAND_4         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_7       |         system:time_start          |
+#&gt;                                |        RADIANCE_ADD_BAND_5         |      REFLECTANCE_MULT_BAND_6       |
+#&gt;                                |        RADIANCE_ADD_BAND_6         |      REFLECTANCE_MULT_BAND_9       |
+#&gt;                                |    PROCESSING_SOFTWARE_VERSION     |        RADIANCE_ADD_BAND_7         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_8       |        RADIANCE_ADD_BAND_1         |
+#&gt;                                |        RADIANCE_ADD_BAND_2         |        RADIANCE_ADD_BAND_3         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_1       |        RADIANCE_ADD_BAND_8         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_3       |        RADIANCE_ADD_BAND_9         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_2       |      REFLECTANCE_MULT_BAND_5       |
+#&gt;                                |      REFLECTANCE_MULT_BAND_4       |           THERMAL_LINES            |
+#&gt;                                |      TIRS_SSM_POSITION_STATUS      |       GRID_CELL_SIZE_THERMAL       |
+#&gt;                                |           NADIR_OFFNADIR           |        RADIANCE_ADD_BAND_11        |
+#&gt;                                |             REQUEST_ID             |         EARTH_SUN_DISTANCE         |
+#&gt;                                |           TIRS_SSM_MODEL           |             FILE_DATE              |
+#&gt;                                |         SCENE_CENTER_TIME          |           SUN_ELEVATION            |
+#&gt;                                |            BPF_NAME_OLI            |        RADIANCE_ADD_BAND_10        |
+#&gt;                                |             ROLL_ANGLE             |        K1_CONSTANT_BAND_10         |
+#&gt;                                |         SATURATION_BAND_1          |         SATURATION_BAND_2          |
+#&gt;                                |         SATURATION_BAND_3          |         SATURATION_BAND_4          |
+#&gt;                                |         SATURATION_BAND_5          |           MAP_PROJECTION           |
+#&gt;                                |         SATURATION_BAND_6          |             SENSOR_ID              |
+#&gt;                                |         SATURATION_BAND_7          |        K1_CONSTANT_BAND_11         |
+#&gt;                                |         SATURATION_BAND_8          |         SATURATION_BAND_9          |
+#&gt;                                |          TARGET_WRS_PATH           |       RADIANCE_MULT_BAND_11        |
+#&gt;                                |       RADIANCE_MULT_BAND_10        |    GROUND_CONTROL_POINTS_MODEL     |
+#&gt;                                |           SPACECRAFT_ID            |          ELEVATION_SOURCE          |
+#&gt;                                |          THERMAL_SAMPLES           |    GROUND_CONTROL_POINTS_VERIFY    |
 #&gt; ImageCollection Properties     : 26 
-#&gt;                                |           provider           |            thumb             |
-#&gt;                                |  system:visualization_1_max  | system:visualization_1_bands |
-#&gt;                                | system:visualization_1_name  | system:visualization_2_name  |
-#&gt;                                |  system:visualization_2_min  | system:visualization_0_gain  |
-#&gt;                                |            sample            |          date_range          |
-#&gt;                                |             tags             |         product_tags         |
-#&gt;                                |         description          | system:visualization_1_gain  |
-#&gt;                                |            period            |         source_tags          |
-#&gt;                                |         provider_url         | system:visualization_2_bands |
-#&gt;                                |  system:visualization_0_max  |            title             |
-#&gt;                                | system:visualization_2_gain  | system:visualization_0_bands |
-#&gt;                                |  system:visualization_0_min  | system:visualization_0_name  |
-#&gt;                                |  system:visualization_2_max  |  system:visualization_1_min  |</div></pre>
+#&gt;                                |  system:visualization_0_min  |            thumb             |
+#&gt;                                |         description          |         source_tags          |
+#&gt;                                |            title             |  system:visualization_2_max  |
+#&gt;                                | system:visualization_0_gain  |         product_tags         |
+#&gt;                                | system:visualization_2_gain  |           provider           |
+#&gt;                                | system:visualization_2_name  | system:visualization_1_bands |
+#&gt;                                |  system:visualization_1_max  |          date_range          |
+#&gt;                                |            period            |  system:visualization_2_min  |
+#&gt;                                | system:visualization_0_bands |         provider_url         |
+#&gt;                                |            sample            | system:visualization_1_name  |
+#&gt;                                |             tags             |  system:visualization_0_max  |
+#&gt;                                | system:visualization_2_bands |  system:visualization_1_min  |
+#&gt;                                | system:visualization_0_name  | system:visualization_1_gain  |</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -269,19 +300,23 @@ and ee$FeatureCollection will be used to generated Earth Engine object propertie
   </div>
 </div>
 
+
       <footer>
       <div class="copyright">
   <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

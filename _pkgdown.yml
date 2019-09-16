@@ -1,1 +1,29 @@
-destination: docs
+title: rgee
+url: http://csaybar.github.io/rgee
+template:
+  params:
+      bootswatch: cosmo
+
+navbar:
+  type: inverse
+  left:
+    - icon: fa-home
+      href: index.html
+  right:
+    - text: "Articles"
+      icon: fas fa-book
+      menu:
+      -  text: Installation
+         href: articles/installation.html
+    - text: "faq"
+      icon: fa-question-circle-o
+      href: articles/faq.html
+    - icon: fa-newspaper-o
+      text: "news"
+      href: news/index.html
+    - icon: fa-file-code-o
+      text: "functions"
+      href: reference/index.html
+    - icon: fa-github fa-lg
+      text: "github"
+      href: https://github.com/csaybar/rgee/

@@ -12,13 +12,12 @@ coverage](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](htt
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-[Google Earth Engine](https://earthengine.google.com/) (Gorelick et al.,
-2017) is a cloud-based platform that allows users getting access to a
-petabyte-scale archive of remote sensing data and run geospatial
-analysis on Google’s infrastructure. The `rgee` package provides full
-access to the [Google Earth Engine
-API](https://developers.google.com/earth-engine/) from within R and
-defines additional tools for automating processes.
+[Google Earth Engine](https://earthengine.google.com/) is a cloud-based
+platform that allows users getting access to a petabyte-scale archive of
+remote sensing data and run geospatial analysis on Google’s
+infrastructure. The `rgee` package provides full access to the [Google
+Earth Engine API](https://developers.google.com/earth-engine/) from
+within R and defines additional tools for automating processes.
 
 **Earth Engine Python API**:
 
@@ -39,6 +38,13 @@ image <- ee$Image('CGIAR/SRTM90_V4')
 image$bandNames()$getInfo()
 #> [1] "elevation"
 ```
+
+## TODO
+
+  - Improve documentation.
+  - Generate better examples.
+  - py\_help: Generate compressible documentation in an html format.
+  - Unit testing
 
 ## Features
 
@@ -125,10 +131,14 @@ Use [Homebrew](https://brew.sh/) to install system libraries:
     brew install curl
     brew install sqlite
 
-### Docker image
+### Docker image (Recommended way to use rgee)
 
-Cooming
-soon\!
+    docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
+
+After that, in your preferred browser,
+run:
+
+    127.0.0.1:8787
 
 ## How does it works?
 

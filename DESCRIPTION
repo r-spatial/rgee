@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.0.1
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -24,15 +24,15 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 Depends:
-    R (>= 3.3.0),
-    reticulate,
+    R (>= 3.4.0),
     methods
 Imports:
-    stars,
+    reticulate (>= 1.13),
+    stars (>= 0.3),
     rgdal,
     sf,
     magrittr,
-    leaflet,
+    leaflet (>= 2.0.2),
     mapview,
     geojsonio,
     getPass,
@@ -44,8 +44,8 @@ Suggests:
     covr,
     knitr,
     rmarkdown,
-    googledrive,
-    googleCloudStorageR,
+    googledrive (>= 1.0.0),
+    googleCloudStorageR (>= 0.5.1),
     geojsonlint,
     raster,
     lwgeom
