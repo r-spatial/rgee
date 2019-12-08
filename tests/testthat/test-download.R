@@ -5,26 +5,26 @@ library(sf)
 ee_Initialize()
 
 context("rgee: ee_download test")
-# # Communal Reserve Amarakaeri - Peru
-# xmin <- -71.132591318
-# xmax <- -70.953664315
-# ymin <- -12.892451233
-# ymax <- -12.731116372
-# x_mean <- (xmin + xmax) / 2
-# y_mean <- (ymin + ymax) / 2
-#
-# ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
-# ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
-#   list() %>%
-#   st_polygon() %>%
-#   st_sfc() %>%
-#   st_set_crs(4326)
-# ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
-#
-# # Elevation map
-# ic_srtm <- image <- ee$Image("CGIAR/SRTM90_V4")$reproject(crs = "EPSG:4326", scale = 500)
-# mean_srtm_Amarakaeri <- ic_srtm$clip(ee_geom)
-#
+# Communal Reserve Amarakaeri - Peru
+xmin <- -71.132591318
+xmax <- -70.953664315
+ymin <- -12.892451233
+ymax <- -12.731116372
+x_mean <- (xmin + xmax) / 2
+y_mean <- (ymin + ymax) / 2
+
+ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
+ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+  list() %>%
+  st_polygon() %>%
+  st_sfc() %>%
+  st_set_crs(4326)
+ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
+
+# Elevation map
+ic_srtm <- image <- ee$Image("CGIAR/SRTM90_V4")$reproject(crs = "EPSG:4326", scale = 500)
+mean_srtm_Amarakaeri <- ic_srtm$clip(ee_geom)
+
 # # Testing parameters ------------------------------------------------------
 # fc_test <- ee$FeatureCollection(ee$Feature(ee_geom,list('test'='feature')))
 # image_test <- mean_srtm_Amarakaeri

@@ -46,15 +46,4 @@ get_stage("before_install") %>%
     # desencryp_01 <- sprintf("openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in %s -out %s -d",
     #                         loca_file_01,
     #                         gsub("\\.enc$","",loca_file_01))
-    #GCS
-    # file_02 <- sprintf("%s%s", url_dir, "GCS_AUTH_FILE.json.enc")
-    # loca_file_02 <- paste0(output_dir,basename(file_02))
-    # download.file(file_02,loca_file_02)
-    # desencryp_02 <- sprintf("openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in %s -out %s -d",
-    #                         loca_file_02,
-    #                         gsub("\\.enc$","",loca_file_02))
-    # print(desencryp_01)
-    # print(desencryp_02)
-    # system(desencryp_01)
-    # system(desencryp_02)
   })
