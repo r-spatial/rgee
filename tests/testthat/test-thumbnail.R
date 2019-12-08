@@ -6,7 +6,6 @@ library(rgee)
 ee_reattach()
 ee_Initialize()
 
-
 nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
 sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$
   filterBounds(ee$Geometry$Rectangle(-127.18, 19.39, -62.75, 51.29))$

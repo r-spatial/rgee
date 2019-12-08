@@ -15,46 +15,47 @@
 #' @importFrom utils write.csv read.csv
 #'
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Change google account to be able to reproduce
-#' ee_manage_create('users/aybar1994/rgee')
+#' ee_manage_create('users/datacolecfbf/rgee')
 #'
 #' # 1. List all the elements inside a folder or a ImageCollection
-#' ee_manage_assetlist(path_asset = 'users/aybar1994/rgee')
+#' ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
 #'
 #' # 2. Create a Folder or a ImageCollection
-#' ee_manage_create('users/aybar1994/rgee/rgee_folder',asset_type = 'folder')
-#' ee_manage_create('users/aybar1994/rgee/rgee_ic',asset_type = 'imagecollection')
-#' ee_manage_assetlist('users/aybar1994/rgee')
+#' ee_manage_create('users/datacolecfbf/rgee/rgee_folder',asset_type = 'folder')
+#' ee_manage_create('users/datacolecfbf/rgee/rgee_ic',asset_type = 'imagecollection')
+#' ee_manage_assetlist('users/datacolecfbf/rgee')
 #'
 #' # 3. Shows your Earth Engine quota
 #v ee_manage_quota()
 #'
 #' # 4. Estimate the size of a Image, ImageCollection, Table or Folder.
-#' ee_manage_size('users/aybar1994/rgee')
+#' ee_manage_size('users/datacolecfbf/rgee')
 #'
 #' # 5. Move a EE object to another folder
-#' ee_manage_move(path_asset = 'users/aybar1994/rgee/rgee_ic',
-#'                final_path = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-#' ee_manage_assetlist('users/aybar1994/rgee/rgee_folder')
+#' ee_manage_move(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+#'                final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+#' ee_manage_assetlist('users/datacolecfbf/rgee/rgee_folder')
 #'
 #' # 6. Set properties to an EE object.
-#' ee_manage_set_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+#' ee_manage_set_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
 #'                          properties = list(message='hello-world',language = 'R'))
-#' test_ic <- ee$ImageCollection('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+#' test_ic <- ee$ImageCollection('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 #' test_ic$getInfo()
 #'
 #' # 7. Delete properties
-#' ee_manage_delete_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+#' ee_manage_delete_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
 #'                             property = c("message","language"))
 #' test_ic$getInfo()
 #'
 #' # 8. Share EE objects -- Create a public dataset
-#' ee_manage_assets_access('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-#' ee$data$getAssetAcl('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+#' ee_manage_assets_access('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+#' ee$data$getAssetAcl('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 #'
 #' # 9. Create a report based on all tasks that is running or has finished
 #' ee_manage_task()
@@ -63,9 +64,10 @@
 #' ee_manage_cancel_all_running_taks()
 #'
 #' # 11. Delete EE objects or folders
-#' ee_manage_delete('users/aybar1994/rgee/')
+#' ee_manage_delete('users/datacolecfbf/rgee/')
+#' }
 #' @export
-ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
+ee_manage_create <- function(path_asset, asset_type='folder',quiet=FALSE) {
   asset_type = tolower(asset_type)
   path_asset = ee_verify_filename(path_asset,strict = FALSE)
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
@@ -82,6 +84,7 @@ ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
   else {
     if (!quiet) cat("GEE asset:",path_asset,"already exists\n")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -97,6 +100,7 @@ ee_manage_delete = function(path_asset, quiet=FALSE) {
   }
   ee$data$deleteAsset(path_asset)
   if (!quiet) cat('EE object deleted:',path_asset,'\n')
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -160,6 +164,7 @@ ee_manage_size = function(path_asset) {
   msg_01 = sprintf("- Size: %s\n", asset_size)
   msg_02 = sprintf("- # elements: %s\n",nelements)
   cat(header,":\n", msg_01, msg_02)
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -182,6 +187,7 @@ ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
     }
     if (!quiet) cat('Done\n')
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -207,6 +213,7 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
     ee_manage_delete(path_asset,quiet = quiet)
     if (!quiet) cat('Done\n')
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -234,6 +241,7 @@ ee_manage_set_properties = function(path_asset, properties) {
   } else {
     stop("Impossible assign properties to a Folder")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -250,6 +258,7 @@ ee_manage_delete_properties = function(path_asset, property) {
   } else {
     stop("Impossible delete properties to a Folder")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -318,6 +327,7 @@ ee_manage_cancel_all_running_taks = function() {
   for (z in seq_along(running)) {
     ee$data$cancelTask(running[[z]][['id']])
   }
+  invisible(TRUE)
 }
 
 #' Verify is the EE path asset is correct
@@ -357,4 +367,5 @@ ee_humansize = function(x, suffixes = c('B', 'KB', 'MB', 'GB', 'TB', 'PB')) {
   } else {
     sprintf('%s %s',sprintf('%.2f',x),suffixes[count+1])
   }
+  invisible(TRUE)
 }

@@ -33,9 +33,9 @@ get_stage("before_install") %>%
     write(json_key, sprintf("%s/credentials",ee_dirname))
 
     #GOOGLE DRIVE & CLOUD STORAGE
-    url_dir <- "https://github.com/csaybar/rgee/raw/master/tests/credentials/"
-    output_dir <- sprintf("%s/aybar1994/",ee_dirname)
-    dir.create(output_dir, recursive = TRUE,showWarnings = FALSE)
+    #url_dir <- "https://github.com/csaybar/rgee/raw/master/tests/credentials/"
+    #output_dir <- sprintf("%s/aybar1994/",ee_dirname)
+    #dir.create(output_dir, recursive = TRUE,showWarnings = FALSE)
 
     #DRIVE
     # googledrive_dirname <- path.expand("~/.R/gargle/gargle-oauth/")

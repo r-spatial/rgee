@@ -62,45 +62,46 @@ ee_manage_cancel_all_running_taks()
 R functions for managing the Earth Engine Asset
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Change google account to be able to reproduce
-ee_manage_create('users/aybar1994/rgee')
+ee_manage_create('users/datacolecfbf/rgee')
 
 # 1. List all the elements inside a folder or a ImageCollection
-ee_manage_assetlist(path_asset = 'users/aybar1994/rgee')
+ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
 
 # 2. Create a Folder or a ImageCollection
-ee_manage_create('users/aybar1994/rgee/rgee_folder',asset_type = 'folder')
-ee_manage_create('users/aybar1994/rgee/rgee_ic',asset_type = 'imagecollection')
-ee_manage_assetlist('users/aybar1994/rgee')
+ee_manage_create('users/datacolecfbf/rgee/rgee_folder',asset_type = 'folder')
+ee_manage_create('users/datacolecfbf/rgee/rgee_ic',asset_type = 'imagecollection')
+ee_manage_assetlist('users/datacolecfbf/rgee')
 
 # 3. Shows your Earth Engine quota
 
 # 4. Estimate the size of a Image, ImageCollection, Table or Folder.
-ee_manage_size('users/aybar1994/rgee')
+ee_manage_size('users/datacolecfbf/rgee')
 
 # 5. Move a EE object to another folder
-ee_manage_move(path_asset = 'users/aybar1994/rgee/rgee_ic',
-               final_path = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-ee_manage_assetlist('users/aybar1994/rgee/rgee_folder')
+ee_manage_move(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+               final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+ee_manage_assetlist('users/datacolecfbf/rgee/rgee_folder')
 
 # 6. Set properties to an EE object.
-ee_manage_set_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+ee_manage_set_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
                          properties = list(message='hello-world',language = 'R'))
-test_ic <- ee$ImageCollection('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+test_ic <- ee$ImageCollection('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 test_ic$getInfo()
 
 # 7. Delete properties
-ee_manage_delete_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+ee_manage_delete_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
                             property = c("message","language"))
 test_ic$getInfo()
 
 # 8. Share EE objects -- Create a public dataset
-ee_manage_assets_access('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-ee$data$getAssetAcl('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+ee_manage_assets_access('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+ee$data$getAssetAcl('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 
 # 9. Create a report based on all tasks that is running or has finished
 ee_manage_task()
@@ -109,5 +110,6 @@ ee_manage_task()
 ee_manage_cancel_all_running_taks()
 
 # 11. Delete EE objects or folders
-ee_manage_delete('users/aybar1994/rgee/')
+ee_manage_delete('users/datacolecfbf/rgee/')
+}
 }
