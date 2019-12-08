@@ -38,7 +38,8 @@ Imports:
     getPass,
     crayon,
     cli,
-    png
+    png,
+    jpeg
 Suggests:
     testthat (>= 2.1.0),
     covr,

@@ -41,6 +41,7 @@
 #' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom sf st_crs<-
 #' @importFrom reticulate py_to_r
+#' @importFrom jpeg readJPEG
 #' @importFrom utils download.file zip str
 #' @importFrom png readPNG
 #' @examples
@@ -80,7 +81,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     `names<-`(c('x','y'))
 
   if (missing(dimensions)) {
-    dimensions <- 256
+    dimensions <- 256L
     if (!quiet) {
       cat(
         " dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). \n"
@@ -109,11 +110,44 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   thumbnail_url <- x$getThumbURL(viz_params)
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
-  raw_image <- readPNG(z)
-  bands <- (dim(raw_image)[3] - 1):1
 
-  if (length(bands) > 2) {
-    if (length(bands) == 3) band_name <- c("R", "G", "B")
+  # -----------------------------------------------
+  # Handling problems with respect to the format
+  # of the getTHumbURL (sometimes jpeg other png)
+  error_message_I <- paste0(
+    'Error arise after try to download',
+    'the getThumbURL (it needs to be ',
+    'either jpeg or png)')
+
+  raw_image <- tryCatch(
+    tryCatch(readPNG(z),
+      error = function(e) {
+        pre_raw <- readJPEG(z)
+        if (length(dim(pre_raw)) == 2) {
+          dim(pre_raw) <- c(dim(pre_raw), 1)
+        }
+        pre_raw
+      }
+    ),
+    error = function(e) stop(error_message_I)
+  )
+
+  if (dim(raw_image)[3] == 1) {
+    #jpeg
+    bands <- 1
+  } else if(dim(raw_image)[3] == 2) {
+    #png
+    bands <- 1
+  } else if(dim(raw_image)[3] == 3) {
+    # png(color) or others
+    bands <- 3
+  } else if(dim(raw_image)[3] == 4) {
+    bands <- 3
+  }
+
+  # -----------------------------------------------
+  if (bands > 2) {
+    if (bands == 3) band_name <- c("R", "G", "B")
     stars_png <- mapply(read_png_as_stars,
       bands,
       band_name,
@@ -165,6 +199,7 @@ read_png_as_stars <- function(x, band_name, mtx) {
   stars_object
 }
 
+
 #' From a R spatial object to a valid region for ee_as_thumbnail
 #' @noRd
 #' @return a list that look like:
@@ -195,3 +230,4 @@ create_region <- function(x) {
   }
   invisible(ee_py_to_r(region)[[1]])
 }
+
