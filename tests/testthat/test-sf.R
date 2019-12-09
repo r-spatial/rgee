@@ -1,12 +1,5 @@
 context("rgee: ee_as_sf test")
 
-library(sf)
-library(rgee)
-
-ee_reattach()
-ee_Initialize()
-
-
 test_that("sfg",{
   # Load and filter watersheds from a data table.
   sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$

@@ -1,8 +1,11 @@
-ops <- options("crayon.enabled" = FALSE, warn = 1)
-
 library(testthat)
 library(rgee)
-library("covr")
+library(reticulate)
+library(raster)
+library(stars)
+library(sf)
+
+ee_reattach()
+ee_Initialize()
 
 test_check("rgee")
-options(ops)

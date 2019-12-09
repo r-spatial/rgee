@@ -1,10 +1,8 @@
 context("rgee: ee_as_thumbnail test")
 
-library(sf)
-library(rgee)
-
-ee_reattach()
-ee_Initialize()
+# data --------------------------------------------------------------------
+dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
+                 "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
 
 nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
 sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$
@@ -14,9 +12,9 @@ sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$
     return(feature$set('areasqkm', num))
   })
 
-# just one band -----------------------------------------------------------
 image <- ee$Image("CGIAR/SRTM90_V4")
 
+# just one band -----------------------------------------------------------
 test_that("sfg",{
   # PNG images
   region <- nc$geometry[[1]]
@@ -40,9 +38,9 @@ test_that("sfg",{
 test_that("sfg",{
   # PNG images
   region <- nc$geometry[[1]]
-  dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
-                   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
-  arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(palette=dem_palette, min = 0, max = 5000))
+  arequipa_dem <- ee_as_thumbnail(x = image,
+                                  region = region,
+                                  vizparams = list(palette=dem_palette, min = 0, max = 5000))
   arequipa_dem <- arequipa_dem * 5000
   expect_equal(max(arequipa_dem$X), 5000,tolerance=1)
 })

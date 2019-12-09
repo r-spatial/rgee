@@ -1,10 +1,5 @@
-library(raster)
-library(stars)
-library(rgee)
-library(sf)
-ee_Initialize()
-
 context("rgee: ee_download test")
+
 # Communal Reserve Amarakaeri - Peru
 # xmin <- -71.132591318
 # xmax <- -70.953664315

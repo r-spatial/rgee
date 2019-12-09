@@ -1,12 +1,5 @@
 context("rgee: sf_as_ee test")
 
-library(rgee)
-library(reticulate)
-library(raster)
-library(sf)
-
-ee_reattach()
-ee_Initialize()
 filename <- system.file("external/lux.shp", package="raster")
 
 test_that("sf_as_ee.character",{
@@ -20,8 +13,6 @@ test_that("sf_as_ee.character",{
     mean()
   expect_equal(centroid,27.93429,tolerance=0.1)
 })
-
-
 
 test_that("sf_as_ee.sf",{
   p <- shapefile(filename) %>%

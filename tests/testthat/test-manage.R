@@ -1,7 +1,3 @@
-library(rgee)
-
-ee_reattach() # reattach ee as a reserved word
-ee_Initialize()
 context("rgee: ee_manage test")
 
 test_that("simple_test",{
