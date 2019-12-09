@@ -29,10 +29,11 @@ addons:
     - libnetcdf-dev
     - netcdf-bin
 before_install:
+- sudo add-apt-repository ppa:deadsnakes/ppa -y
 - sudo apt-get update
-- sudo apt-get remove python3-pip
-- sudo apt-get install python3-pip
-- sudo -H pip3 install --upgrade pip
+- sudo apt-get install python3.6
+- sudo apt-get -y install python3-pip
+- sudo pip3 install --upgrade pip
 #- sudo apt-get install libffi-dev libssl-dev
 #- wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 #- tar -zxf openssl-1.1.1d.tar.gz && cd openssl-1.1.1d
@@ -51,12 +52,13 @@ before_install:
   tic::prepare_all_stages()'
 - R -q -e 'tic::before_install()'
 install:
-- sudo -H pip3 install earthengine-api==0.1.175
-- sudo -H pip3 install coveralls
-- sudo -H pip3 install oauth2client
-- sudo -H pip3 install selenium
-- sudo -H pip3 install bs4
-- sudo -H pip3 install requests_toolbelt
+- sudo pip3 install setuptools
+- sudo pip3 install earthengine-api==0.1.175
+- sudo pip3 install coveralls
+- sudo pip3 install oauth2client
+- sudo pip3 install selenium
+- sudo pip3 install bs4
+- sudo pip3 install requests_toolbelt
 - R -q -e 'tic::install()'
 script:
 - R -q -e 'tic::script()'

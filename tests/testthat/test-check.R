@@ -12,5 +12,8 @@ ee_Initialize()
 filename <- system.file("external/lux.shp", package="raster")
 
 test_that("simple ee_check ",{
-  expect_null(ee_check())
+  expect_null(ee_check_rgee_python_packages())
+  expect_null(ee_check_drivers())
+  expect_null(ee_check_credentials())
+
 })
