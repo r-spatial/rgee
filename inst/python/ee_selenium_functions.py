@@ -39,7 +39,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from requests_toolbelt import MultipartEncoder
-
+#ee_get_google_auth_session_py(username, password, dirname)
+#username = r['username']
+#password = r['password']
+#dirname = r['dirname']
 def ee_get_google_auth_session_py(username, password, dirname):
     """ Get cookies from https://code.earthengine.google.com using Selenium
 

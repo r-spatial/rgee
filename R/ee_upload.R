@@ -78,10 +78,16 @@ ee_upload.character <- function(x, ... ,
                                 properties = getOption("rgee.upload.properties"),
                                 selenium_params = getOption("rgee.selenium.params"),
                                 quiet = FALSE) {
+  user_gmail <- getOption("rgee.selenium.params")$user_gmail
+  if (is.null(user_gmail)) {
+    stop('ee_upload needs that "user_gmail" ',
+         'argument be specified in ee$Initialize().',
+         "\nExample: ee_Initialize(user_gmail = 'XXXX@gmail.com')")
+  }
 
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
   gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params)
-  if (image_or_vector(x) == "sf") {
+    if (image_or_vector(x) == "sf") {
     ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
   } else if (image_or_vector(x) == "stars") {
     ee_gcs_to_asset(gs_uri, filename, type = 'image' ,properties=properties)

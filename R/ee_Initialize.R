@@ -60,6 +60,7 @@ ee_Initialize <- function(user_gmail = NULL,
   # Check assethome sanity
   if (!is.null(assethome) & !is.null(user_gmail)) {
     cat('Checking correspondence between user_gmail and assethome ...')
+    ee_reattach()
     home_error <- tryCatch(expr = ee$data$getAssetRoots()[[1]]$'id',
                 error = function(e){
                   cat("\n")
@@ -80,6 +81,11 @@ ee_Initialize <- function(user_gmail = NULL,
   drive_credentials <- list.files(ee_path_user,"@gmail.com",full.names = TRUE)[1]
   gcs_credentials <- list.files(ee_path_user,"GCS_AUTH_FILE.json",full.names = TRUE)[1]
   ee_sessioninfo(clean_user,drive_credentials, gcs_credentials)
+
+  options(rgee.selenium.params=list(user_gmail=user_gmail,
+                                    user_password=Sys.getenv("PASSWORD_GMAIL"),
+                                    showpassword=FALSE))
+
   invisible(TRUE)
 }
 

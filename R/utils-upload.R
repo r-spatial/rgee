@@ -134,7 +134,11 @@ ee_upload_file_to_gcs <- function(x,
       session <- ee_selenium_functions$load_py_object(session_temp)
     } else {
       if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$gmail_account))
-      password <- getPass("GMAIL PASSWORD:")
+      if (nchar(selenium_params$user_password) > 4) {
+        password <- selenium_params$user_password
+      } else {
+        password <- getPass("GMAIL PASSWORD:")
+      }
       if (!quiet) {
         if (!selenium_params$showpassword) {
           cat("GMAIL PASSWORD:",paste(rep("*",nchar(password)),collapse = ""),"\n")
@@ -143,9 +147,13 @@ ee_upload_file_to_gcs <- function(x,
         }
       }
       if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
-      session <- ee_selenium_functions$ee_get_google_auth_session_py(username = selenium_params$gmail_account,
+      ee_path <- path.expand("~/.config/earthengine")
+      cat(selenium_params$user_gmail)
+      cat(password)
+      cat(ee_path)
+      session <- ee_selenium_functions$ee_get_google_auth_session_py(username = selenium_params$user_gmail,
                                                                      password = password,
-                                                                     dirname =  ee_get_earthengine_path())
+                                                                     dirname =  ee_path)
       cookies_names = names(ee_py_to_r(session$cookies$get_dict()))
       if (!quiet) cat(sprintf("cookies catched: [%s]\n",paste0(cookies_names,collapse = ", ")))
       if (length(cookies_names)>7) {
