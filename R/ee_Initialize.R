@@ -60,12 +60,13 @@ ee_Initialize <- function(user_gmail = NULL,
   # Check assethome sanity
   if (!is.null(assethome) & !is.null(user_gmail)) {
     cat('Checking correspondence between user_gmail and assethome ...')
-    ee_reattach()
+    #ee_reattach()
     home_error <- tryCatch(expr = ee$data$getAssetRoots()[[1]]$'id',
                 error = function(e){
                   cat("\n")
-                  stop("Have you created the EE assets home folder?, run ",
-                       "ee$data$createAssetHome('...') to fixed.")
+                  stop("Earth Engine ID no found, try:",
+                       "\nee$data$createAssetHome('...'): Create the EE assets home folder",
+                       "\nee_reattach(): Reattach ee as a reserved word")
                 })
     if (!identical(assethome, home_error)) {
       stop("The Earth Engine credentials obtained from the user_gmail",

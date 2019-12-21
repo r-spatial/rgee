@@ -9,23 +9,28 @@
 \alias{ee_print.ee.imagecollection.ImageCollection}
 \title{Print and return metadata about Spatial Earth Engine Objects}
 \usage{
-ee_print(eeobject, max_display = 10)
+ee_print(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.geometry.Geometry}(eeobject, max_display = 10)
+\method{ee_print}{ee.geometry.Geometry}(eeobject, clean = FALSE,
+  max_display = 0)
 
-\method{ee_print}{ee.feature.Feature}(eeobject, max_display = 10)
+\method{ee_print}{ee.feature.Feature}(eeobject, clean = FALSE,
+  max_display = 0)
 
 \method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject,
-  max_display = 10)
+  clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.image.Image}(eeobject, max_display = 10)
+\method{ee_print}{ee.image.Image}(eeobject, clean = FALSE,
+  max_display = 0)
 
 \method{ee_print}{ee.imagecollection.ImageCollection}(eeobject,
-  max_display = 10)
+  clean = FALSE, max_display = 0)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
+
+\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
 
 \item{max_display}{Set the max number of properties to display.}
 }
@@ -37,6 +42,8 @@ For avoiding computing time extremely large and "EEException" related with memor
 (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
 just the first element of: ee$Image, ee$ImageCollection, ee$Feature
 and ee$FeatureCollection will be used to generated Earth Engine object properties.
+By default ee_print create a list with all the print parameters. It is due
+to avoid repeated queries to the Earth Engine Server.
 }
 \examples{
 library(rgee)

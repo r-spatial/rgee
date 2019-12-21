@@ -2,11 +2,14 @@
 #'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
+#' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
 #' @param max_display Set the max number of properties to display.
 #' @details For avoiding computing time extremely large and "EEException" related with memory consuming
 #' (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
 #' just the first element of: ee$Image, ee$ImageCollection, ee$Feature
 #' and ee$FeatureCollection will be used to generated Earth Engine object properties.
+#' By default ee_print create a list with all the print parameters. It is due
+#' to avoid repeated queries to the Earth Engine Server.
 #' @importFrom sf st_crs
 #' @examples
 #' library(rgee)
@@ -18,15 +21,15 @@
 #'   filterDate("2014-03-01", "2014-08-01")
 #' ee_print(eeobject, max_display = 118)
 #' @export
-ee_print <- function(eeobject, max_display = 10) {
+ee_print <- function(eeobject, clean = FALSE, max_display = 0) {
   UseMethod("ee_print")
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.geometry.Geometry <- function(eeobject, max_display = 10) {
+ee_print.ee.geometry.Geometry <- function(eeobject, clean = FALSE, max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata)) {
+  if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
   } else {
     geom <- eeobject$getInfo()
@@ -56,7 +59,6 @@ ee_print.ee.geometry.Geometry <- function(eeobject, max_display = 10) {
   cat(sprintf("nGeometries                    : %s \n", mtd$geom_ngeom))
   cat(sprintf("EPSG (SRID)                    : %s \n", mtd$geom_epsg))
   cat(sprintf("proj4string                    : %s \n", mtd$geom_proj4string))
-  cat(sprintf("Geotransform                   : [%s] \n", mtd$geom_geotransform))
   cat(sprintf("Geodesic                       : %s \n", mtd$geom_geodesic))
   invisible(mtd)
 }
@@ -64,9 +66,9 @@ ee_print.ee.geometry.Geometry <- function(eeobject, max_display = 10) {
 
 #' @name ee_print
 #' @export
-ee_print.ee.feature.Feature <- function(eeobject, max_display = 10) {
+ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE, max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata)) {
+  if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
   } else {
     feature <- eeobject$getInfo()
@@ -101,17 +103,17 @@ ee_print.ee.feature.Feature <- function(eeobject, max_display = 10) {
   cat(sprintf("nGeometries                    : %s \n", mtd$ft_ngeom))
   cat(sprintf("EPSG (SRID)                    : %s \n", mtd$ft_epsg))
   cat(sprintf("proj4string                    : %s \n", mtd$ft_proj4string))
-  cat(sprintf("Geotransform                   : [%s] \n", mtd$ft_geotransform))
   cat(sprintf("Geodesic                       : %s \n", mtd$ft_geodesic))
   cat(sprintf("nFeature properties            : %s \n", mtd$ft_properties_length))
   if (max_display != 0) cat(ee_create_table(mtd$ft_properties_names, max_display))
+  invisible(mtd)
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, max_display = 10) {
+ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, clean = FALSE, max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata)) {
+  if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
   } else {
     # FeatureCollection properties
@@ -151,7 +153,6 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, max_displa
   cat(sprintf("Geometry type                  : %s \n", mtd$fc_geometry_type))
   cat(sprintf("EPSG (SRID)                    : %s \n", mtd$fc_epsg))
   cat(sprintf("proj4string                    : %s \n", mtd$fc_proj4string))
-  cat(sprintf("Geotransform                   : [%s] \n", mtd$fc_geotransform))
   cat(sprintf("nFeatureCollection properties  : %s \n", mtd$fc_properties_length))
   if (max_display != 0) cat(ee_create_table(mtd$fc_properties_names, max_display))
   cat(sprintf("nFeature properties            : %s \n", mtd$f_properties_length))
@@ -161,9 +162,9 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, max_displa
 
 #' @name ee_print
 #' @export
-ee_print.ee.image.Image <- function(eeobject, max_display = 10) {
+ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata)) {
+  if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
   } else {
     img <- eeobject$getInfo()
@@ -220,14 +221,14 @@ ee_print.ee.image.Image <- function(eeobject, max_display = 10) {
   cat(sprintf("Data type                      : %s \n", mtd$img_datatype))
   cat(sprintf("Image Properties               : %s \n", mtd$img_properties_length))
   if (max_display != 0) cat(ee_create_table(mtd$img_properties_names, max_display))
-
+  invisible(mtd)
 }
 
 #' @name ee_print
 #' @export
-ee_print.ee.imagecollection.ImageCollection <- function(eeobject, max_display = 10) {
+ee_print.ee.imagecollection.ImageCollection <- function(eeobject, clean = FALSE, max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata)) {
+  if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
   } else {
     ic <- eeobject$getInfo()
@@ -286,6 +287,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject, max_display = 
   if (max_display != 0) cat(ee_create_table(mtd$ic_properties_i, max_display))
   cat(sprintf("ImageCollection Properties     : %s \n", length(mtd$ic_properties_ic)))
   if (max_display != 0) cat(ee_create_table(mtd$ic_properties_ic, max_display))
+  invisible(mtd)
 }
 
 #' Create a friendly viz of EE properties
