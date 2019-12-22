@@ -14,13 +14,12 @@
 #' @export
 ee_reattach <- function() {
   attached <- search()
-  is_rgee_attached <- length(attached[grepl("rgee", attached)])
+  is_rgee_attached <- attached[grepl("rgee", attached)] == 'package:rgee'
   if (is_rgee_attached) {
     detach("package:rgee", unload = TRUE)
     suppressMessages(require(rgee))
   }
 }
-
 
 #' Convert between Python and R objects
 #' @param x A python object

@@ -19,9 +19,11 @@
 #'  exportation and importation tasks. All the user credentials are save in the folder \code{~/.config/earthengine/USERS/},
 #'  if a user is not specified the parameters of the last session will be used.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
+#' }
 #' @export
 ee_Initialize <- function(user_gmail = NULL,
                           drive = FALSE,
@@ -29,6 +31,7 @@ ee_Initialize <- function(user_gmail = NULL,
                           assethome = NULL,
                           checkpy = FALSE,
                           quiet = FALSE) {
+  ee_reattach()
   if (checkpy) ee_check_python(quiet=quiet)
   list_ids <- ee_get_asset_gmail(user_gmail, assethome)
   user_gmail <- list_ids$user_gmail

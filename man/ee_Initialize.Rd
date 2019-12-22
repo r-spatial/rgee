@@ -33,6 +33,6 @@ if a user is not specified the parameters of the last session will be used.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
+#ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 }
