@@ -32,8 +32,14 @@
 #' plot(sf_randomPoints)
 #' @export
 ee_as_sf <- function(x) {
-  if (!"ee.computedobject.ComputedObject" %in% class(x)) {
-    stop("x is not a Earth Engine object")
+  sp_eeobjects <- c(
+    'ee.featurecollection.FeatureCollection',
+    'ee.feature.Feature',
+    'ee.geometry.Geometry'
+    )
+  if (!any(class(x) %in% sp_eeobjects)) {
+    stop("x is not a spatial vector Earth Engine object\n",
+         "Try: rgee::ee_as_sf(ee$Feature(x))")
   }
   x_local <- ee$FeatureCollection(x)$getInfo()
   class(x_local) <- "geo_list"

@@ -8,6 +8,7 @@ test_that("sfg",{
       num <- ee$Number$parse(feature$get('areasqkm'))
       return(feature$set('areasqkm', num))
     })
-  mysheds <- ee_as_sf(sheds$first())
+  mysheds <- ee_as_sf(ee$Feature(sheds$first()))
   expect_equal(mysheds$areaacres, "1064898.31")
+  expect_error(ee_as_sf(sheds$first()))
 })

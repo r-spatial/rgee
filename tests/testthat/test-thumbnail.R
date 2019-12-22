@@ -15,7 +15,7 @@ sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$
 image <- ee$Image("CGIAR/SRTM90_V4")
 
 # just one band -----------------------------------------------------------
-test_that("sfg",{
+test_that("ee_as_thumbnail full parameters",{
   # PNG images
   region <- nc$geometry[[1]]
   arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
@@ -23,19 +23,18 @@ test_that("sfg",{
   expect_equal(max(arequipa_dem$G), 5000,tolerance=1)
 })
 
-test_that("sfg",{
+test_that("ee_as_thumbnail min-max",{
   # JPEG images
-  mysheds <- ee_as_sf(sheds$first())
-  region <- mysheds$geometry[[1]]
+  mysheds <- ee$Feature(sheds$first())$geometry()
   shed_dem <- ee_as_thumbnail(x = image,
-                              region = region,
-                              vizparams = list(min = 0, max = 500))
+                              region = mysheds,
+                              vizparams = list(min = 0,
+                                               max = 500))
   expect_equal(max(shed_dem$G), 0.4470588,tolerance = .002)
 })
 
-
 # RGB band -----------------------------------------------------------
-test_that("sfg",{
+test_that("ee_as_thumbnail palette, min-max",{
   # PNG images
   region <- nc$geometry[[1]]
   arequipa_dem <- ee_as_thumbnail(x = image,
@@ -43,4 +42,29 @@ test_that("sfg",{
                                   vizparams = list(palette=dem_palette, min = 0, max = 5000))
   arequipa_dem <- arequipa_dem * 5000
   expect_equal(max(arequipa_dem$X), 5000,tolerance=1)
+})
+
+
+# RGB band -----------------------------------------------------------
+test_that("ee_as_thumbnail region",{
+  # PNG images
+  region <- nc$geometry[[1]]
+  image_clip <- image$clip(sf_as_ee(region))
+  arequipa_dem <- ee_as_thumbnail(x = image_clip,
+                                  vizparams = list(palette=dem_palette,
+                                                   min = 0,
+                                                   max = 5000))
+  arequipa_dem <- arequipa_dem * 5000
+  expect_equal(max(arequipa_dem$X), 0,tolerance=1)
+})
+
+test_that("ee_as_thumbnail vector-numeric",{
+  # JPEG images
+  mysheds <- c(-92.32221, 33.77819,
+               -91.05251, 35.02218)
+  shed_dem <- ee_as_thumbnail(x = image,
+                              region = mysheds,
+                              vizparams = list(min = 0,
+                                               max = 500))
+  expect_equal(max(shed_dem$G), 0.4470588,tolerance = .002)
 })

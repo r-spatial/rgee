@@ -216,9 +216,9 @@ read_png_as_stars <- function(x, band_name, mtx) {
 #'
 create_region <- function(x) {
   if (any(class(x) %in% "sfg")) {
-    region <- sf_as_ee(x)$getInfo()["coordinates"]
+    region <- sf_as_ee(x)$getInfo()[["coordinates"]]
   } else if (any(class(x) %in% "ee.geometry.Geometry")) {
-    region <- x$getInfo()["coordinates"]
+    region <- x$getInfo()[["coordinates"]]
   } else if (any(class(x) %in% "numeric")) {
     xmin <- x[1]
     xmax <- x[3]
@@ -230,4 +230,3 @@ create_region <- function(x) {
   }
   invisible(ee_py_to_r(region)[[1]])
 }
-

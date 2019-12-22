@@ -169,7 +169,7 @@ ee_manage_size = function(path_asset) {
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
+ee_manage_copy <- function(path_asset,final_path,quiet = FALSE) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   final_path = ee_verify_filename(final_path,strict = FALSE)
   header = ee$data$getInfo(path_asset)[['type']]
@@ -178,11 +178,17 @@ ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
     if (!quiet) cat('Done\n')
   } else if(header == 'Folder') {
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[',2) %>%
       unlist()
+
+    ee_manage_create(path_asset = final_path,
+                     asset_type = 'Folder')
+
     if (!quiet) cat('Copying a total of', length(to_copy_list), ' elements ..... please wait\n')
     folder_destination = sprintf("%s/%s",final_path,basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
+      cat(to_copy_list)
+      cat(folder_destination)
       ee$data$copyAsset(to_copy_list[z], folder_destination[z])
     }
     if (!quiet) cat('Done\n')
@@ -203,12 +209,15 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
     header_finalpath = ee$data$getInfo(final_path)[['type']]
     if (is.null(header_finalpath)) ee_manage_create(final_path,quiet = quiet)
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[',2) %>%
       unlist()
     if (!quiet) cat('Moving a total of', length(to_copy_list), ' elements ..... please wait\n')
     folder_destination = sprintf("%s/%s",final_path,basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
-      ee$data$renameAsset(to_copy_list[z], folder_destination[z])
+      cat(to_copy_list)
+      cat(folder_destination)
+      ee$data$renameAsset(sourceId = to_copy_list[z],
+                          destinationId =  folder_destination[z])
     }
     ee_manage_delete(path_asset,quiet = quiet)
     if (!quiet) cat('Done\n')
@@ -288,7 +297,7 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
     if (!quiet) cat('The ACL of',path_asset,'has been changed.\n')
   } else if (header=="Folder") {
     list_files = ee$data$getList(list(id=path_asset))
-    items = unlist(lapply(list_files, '[[',1))
+    items = unlist(lapply(list_files, '[[',2))
     mapply(ee_manage_assets_access, items,MoreArgs = list(acl = acl))
   }
   invisible(TRUE)
@@ -301,7 +310,7 @@ ee_manage_task = function(quiet, cache = TRUE) {
   ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp = tempdir()
   manage_task_file = sprintf("%s/ee_manage_task_file.csv", ee_temp)
-  if (!file.exists(manage_task_file) & cache) {
+  if (cache) {
     py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
     df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
     status = ee_py_to_r(ee_manage_py$genreport())
