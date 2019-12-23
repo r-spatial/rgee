@@ -23,7 +23,6 @@ documentation for details.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 roi <- ee$Geometry$Polygon(list(
   c(-122.27577209472656, 37.891247253777074),

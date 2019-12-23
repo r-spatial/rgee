@@ -16,7 +16,6 @@
 #' @return a data.frame.
 #' @examples
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # ee_search_provider_list()

@@ -62,7 +62,6 @@ R functions for searching in Earth Engine's public data archive.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # ee_search_provider_list()

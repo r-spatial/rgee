@@ -1,5 +1,4 @@
-do_package_checks()
-
+do_package_checks(args = c("--no-manual", "--as-cran", "--no-vignettes", "--no-build-vignettes", "--no-multiarch","--no-examples"))
 if (ci_on_travis()) {
   do_pkgdown()
 }

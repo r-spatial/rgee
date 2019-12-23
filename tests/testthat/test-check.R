@@ -5,7 +5,7 @@ library(reticulate)
 library(raster)
 library(stars)
 library(sf)
-
+ee <- reticulate::import("ee")
 ee_Initialize(user_gmail = 'aybar1994@gmail.com',
               drive = TRUE,
               gcs = TRUE,

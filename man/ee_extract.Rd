@@ -66,7 +66,6 @@ larger numbers of inputs the mode will be derived from a histogram.
 \examples{
 library(rgee)
 library(sf)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$

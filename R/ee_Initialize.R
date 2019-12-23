@@ -30,7 +30,7 @@ ee_Initialize <- function(user_gmail = NULL,
                           assethome = NULL,
                           checkpy = FALSE,
                           quiet = FALSE) {
-  ee_reattach()
+
   if (checkpy) ee_check_python(quiet=quiet)
   list_ids <- ee_get_asset_gmail(user_gmail, assethome)
   user_gmail <- list_ids$user_gmail

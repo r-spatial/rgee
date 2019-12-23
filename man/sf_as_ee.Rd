@@ -46,7 +46,6 @@ inner (hole) rings. By default this is FALSE because it is an expensive operatio
 library(rgee)
 library(sf)
 
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # sf

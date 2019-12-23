@@ -47,7 +47,6 @@ to avoid repeated queries to the Earth Engine Server.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee$Filter()$eq("WRS_PATH", 44))$

@@ -35,7 +35,6 @@
 #' library(stars)
 #' library(sf)
 #'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(user_gmail = "csaybar")
 #' ee_check_drivers()
 #'

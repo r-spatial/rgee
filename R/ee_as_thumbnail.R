@@ -47,7 +47,6 @@
 #' @examples
 #' library(rgee)
 #' library(stars)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
 #' dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
