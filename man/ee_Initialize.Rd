@@ -32,7 +32,9 @@ exportation and importation tasks. All the user credentials are save in the fold
 if a user is not specified the parameters of the last session will be used.
 }
 \examples{
+\dontrun{
 library(rgee)
-#ee_reattach() # reattach ee as a reserved word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
+}
 }

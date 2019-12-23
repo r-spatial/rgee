@@ -314,6 +314,12 @@ ee_manage_task = function(quiet, cache = TRUE) {
     py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
     df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
     status = ee_py_to_r(ee_manage_py$genreport())
+    if (length(status) == 0) {
+      message('No recent task to report')
+      df_order <- data.frame(message='No recent task to report')
+      write.csv(df_order,manage_task_file,row.names = FALSE)
+      return(invisible(df_order))
+    }
     order_name = names(status[[1]])
     df_status <- data.frame(matrix(unlist(status), nrow=length(status), byrow=TRUE),stringsAsFactors = FALSE)
     colnames(df_status) = order_name
