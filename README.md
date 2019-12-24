@@ -16,12 +16,17 @@ status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=m
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
 
+`rgee` is a bindings package for calling [Google
+Earth Engine API](https://developers.google.com/earth-engine/) from
+within R. Additionally, functions have been done for making painless 
+the connection with the R spatial ecosystem.
+
+## What is Google Earth Engine?
+
 [Google Earth Engine](https://earthengine.google.com/) is a cloud-based
 platform that allows users getting access to a petabyte-scale archive of
 remote sensing data and run geospatial analysis on Google’s
-infrastructure. The `rgee` package provides full access to the [Google
-Earth Engine API](https://developers.google.com/earth-engine/) from
-within R and defines additional tools for automating processes.
+infrastructure. Google currently just offers Python and JavaScript support.
 
 **Earth Engine Python API**:
 
