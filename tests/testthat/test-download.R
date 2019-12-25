@@ -1,11 +1,6 @@
-library(raster)
-library(stars)
-library(rgee)
-library(sf)
-ee_Initialize()
-
 context("rgee: ee_download test")
-# # Communal Reserve Amarakaeri - Peru
+
+# Communal Reserve Amarakaeri - Peru
 # xmin <- -71.132591318
 # xmax <- -70.953664315
 # ymin <- -12.892451233
@@ -35,10 +30,10 @@ context("rgee: ee_download test")
 #
 # googledrive::drive_rm("rgee_testing")
 # googledrive::drive_mkdir("rgee_testing")
-# googleCloudStorageR::gcs_global_bucket("bag_csaybar")
-# buckets <- googleCloudStorageR::gcs_list_objects()
-# gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
-# mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+# #googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+# #buckets <- googleCloudStorageR::gcs_list_objects()
+# #gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
+# #mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
 #
 # ### IMAGES
 # # 1. GEOTIFF - DRIVE

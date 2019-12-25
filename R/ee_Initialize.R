@@ -19,9 +19,10 @@
 #'  exportation and importation tasks. All the user credentials are save in the folder \code{~/.config/earthengine/USERS/},
 #'  if a user is not specified the parameters of the last session will be used.
 #' @examples
+#' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
+#' }
 #' @export
 ee_Initialize <- function(user_gmail = NULL,
                           drive = FALSE,
@@ -29,6 +30,7 @@ ee_Initialize <- function(user_gmail = NULL,
                           assethome = NULL,
                           checkpy = FALSE,
                           quiet = FALSE) {
+
   if (checkpy) ee_check_python(quiet=quiet)
   list_ids <- ee_get_asset_gmail(user_gmail, assethome)
   user_gmail <- list_ids$user_gmail
@@ -60,11 +62,13 @@ ee_Initialize <- function(user_gmail = NULL,
   # Check assethome sanity
   if (!is.null(assethome) & !is.null(user_gmail)) {
     cat('Checking correspondence between user_gmail and assethome ...')
+    #ee_reattach()
     home_error <- tryCatch(expr = ee$data$getAssetRoots()[[1]]$'id',
                 error = function(e){
                   cat("\n")
-                  stop("Have you created the EE assets home folder?, run ",
-                       "ee$data$createAssetHome('...') to fixed.")
+                  stop("Earth Engine ID no found, try:",
+                       "\nee$data$createAssetHome('...'): Create the EE assets home folder",
+                       "\nee_reattach(): Reattach ee as a reserved word")
                 })
     if (!identical(assethome, home_error)) {
       stop("The Earth Engine credentials obtained from the user_gmail",
@@ -80,6 +84,11 @@ ee_Initialize <- function(user_gmail = NULL,
   drive_credentials <- list.files(ee_path_user,"@gmail.com",full.names = TRUE)[1]
   gcs_credentials <- list.files(ee_path_user,"GCS_AUTH_FILE.json",full.names = TRUE)[1]
   ee_sessioninfo(clean_user,drive_credentials, gcs_credentials)
+
+  options(rgee.selenium.params=list(user_gmail=user_gmail,
+                                    user_password=Sys.getenv("PASSWORD_GMAIL"),
+                                    showpassword=FALSE))
+
   invisible(TRUE)
 }
 

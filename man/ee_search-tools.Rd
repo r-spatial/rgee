@@ -62,14 +62,11 @@ R functions for searching in Earth Engine's public data archive.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # ee_search_provider_list()
 # ee_search_title_list()
 myquery <- ee_dataset() \%>\%
-  ee_search_startdate("1981-01-01") \%>\%
-  ee_search_enddate("2010-01-01") \%>\%
   ee_search_type("Image") \%>\%
   ee_search_provider("WWF") \%>\%
   ee_search_tags("srtm", "flow", "direction", "dem") \%>\%

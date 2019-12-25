@@ -219,238 +219,55 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># Change google account to be able to reproduce</span>
-<span class='fu'>ee_manage_create</span>(<span class='st'>'users/aybar1994/rgee'</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee created</div><div class='input'>
+<span class='fu'>ee_manage_create</span>(<span class='st'>'users/datacolecfbf/rgee'</span>)
+
 <span class='co'># 1. List all the elements inside a folder or a ImageCollection</span>
-<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994/rgee'</span>)</div><div class='output co'>#&gt; data frame with 0 columns and 0 rows</div><div class='input'>
+<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/datacolecfbf/rgee'</span>)
+
 <span class='co'># 2. Create a Folder or a ImageCollection</span>
-<span class='fu'>ee_manage_create</span>(<span class='st'>'users/aybar1994/rgee/rgee_folder'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'folder'</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee/rgee_folder created</div><div class='input'><span class='fu'>ee_manage_create</span>(<span class='st'>'users/aybar1994/rgee/rgee_ic'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'imagecollection'</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee/rgee_ic created</div><div class='input'><span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/aybar1994/rgee'</span>)</div><div class='output co'>#&gt;                                 ID            TYPE
-#&gt; 2     users/aybar1994/rgee/rgee_ic ImageCollection
-#&gt; 1 users/aybar1994/rgee/rgee_folder          Folder</div><div class='input'>
+<span class='fu'>ee_manage_create</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_folder'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'folder'</span>)
+<span class='fu'>ee_manage_create</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_ic'</span>,<span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>'imagecollection'</span>)
+<span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/datacolecfbf/rgee'</span>)
+
 <span class='co'># 3. Shows your Earth Engine quota</span>
 
 <span class='co'># 4. Estimate the size of a Image, ImageCollection, Table or Folder.</span>
-<span class='fu'>ee_manage_size</span>(<span class='st'>'users/aybar1994/rgee'</span>)</div><div class='output co'>#&gt; Folder :
-#&gt;  - Size: 0 B
-#&gt;  - # elements: 2</div><div class='input'>
+<span class='fu'>ee_manage_size</span>(<span class='st'>'users/datacolecfbf/rgee'</span>)
+
 <span class='co'># 5. Move a EE object to another folder</span>
-<span class='fu'>ee_manage_move</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994/rgee/rgee_ic'</span>,
-               <span class='kw'>final_path</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; Done</div><div class='input'><span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/aybar1994/rgee/rgee_folder'</span>)</div><div class='output co'>#&gt;                                               ID            TYPE
-#&gt; 1 users/aybar1994/rgee/rgee_folder/rgee_ic_moved ImageCollection</div><div class='input'>
+<span class='fu'>ee_manage_move</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/datacolecfbf/rgee/rgee_ic'</span>,
+               <span class='kw'>final_path</span> <span class='kw'>=</span> <span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>)
+<span class='fu'>ee_manage_assetlist</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_folder'</span>)
+
 <span class='co'># 6. Set properties to an EE object.</span>
-<span class='fu'>ee_manage_set_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>,
+<span class='fu'>ee_manage_set_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>,
                          <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))
-<span class='no'>test_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>)
-<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()</div><div class='output co'>#&gt; $type
-#&gt; [1] "ImageCollection"
-#&gt; 
-#&gt; $bands
-#&gt; list()
-#&gt; 
-#&gt; $version
-#&gt; [1] -1803002065
-#&gt; 
-#&gt; $id
-#&gt; [1] "users/aybar1994/rgee/rgee_folder/rgee_ic_moved"
-#&gt; 
-#&gt; $properties
-#&gt; $properties$language
-#&gt; [1] "R"
-#&gt; 
-#&gt; $properties$message
-#&gt; [1] "hello-world"
-#&gt; 
-#&gt; 
-#&gt; $features
-#&gt; list()
-#&gt; </div><div class='input'>
+<span class='no'>test_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>)
+<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()
+
 <span class='co'># 7. Delete properties</span>
-<span class='fu'>ee_manage_delete_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>,
+<span class='fu'>ee_manage_delete_properties</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>,
                             <span class='kw'>property</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"message"</span>,<span class='st'>"language"</span>))
-<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()</div><div class='output co'>#&gt; $type
-#&gt; [1] "ImageCollection"
-#&gt; 
-#&gt; $bands
-#&gt; list()
-#&gt; 
-#&gt; $version
-#&gt; [1] -1801046273
-#&gt; 
-#&gt; $id
-#&gt; [1] "users/aybar1994/rgee/rgee_folder/rgee_ic_moved"
-#&gt; 
-#&gt; $features
-#&gt; list()
-#&gt; </div><div class='input'>
+<span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()
+
 <span class='co'># 8. Share EE objects -- Create a public dataset</span>
-<span class='fu'>ee_manage_assets_access</span>(<span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; The ACL of users/aybar1994/rgee/rgee_folder/rgee_ic_moved has been changed.</div><div class='input'><span class='no'>ee</span>$<span class='no'>data</span>$<span class='fu'>getAssetAcl</span>(<span class='st'>'users/aybar1994/rgee/rgee_folder/rgee_ic_moved'</span>)</div><div class='output co'>#&gt; $all_users_can_read
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $readers
-#&gt; list()
-#&gt; 
-#&gt; $writers
-#&gt; list()
-#&gt; 
-#&gt; $owners
-#&gt; [1] "aybar1994@gmail.com"
-#&gt; </div><div class='input'>
+<span class='fu'>ee_manage_assets_access</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>)
+<span class='no'>ee</span>$<span class='no'>data</span>$<span class='fu'>getAssetAcl</span>(<span class='st'>'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'</span>)
+
 <span class='co'># 9. Create a report based on all tasks that is running or has finished</span>
-<span class='fu'>ee_manage_task</span>()</div><div class='output co'>#&gt;                          ID     State                       DestinationPath
-#&gt; 1  EAUYFIKXLJ5N7ZXRBYU2ST33 COMPLETED         users/aybar1994/testing_01/L7
-#&gt; 2  KCVITAPL7DOR4V57SV64VLOP COMPLETED                     myExportImageTask
-#&gt; 3  4B5O3XY3B7TASZBPH7CJRMP7 COMPLETED users/aybar1994/testing_01/geomatrix2
-#&gt; 4  DPT72IZYKSUOQG6IPGSWSK3D COMPLETED  users/aybar1994/testing_01/geomatrix
-#&gt; 5  SBOZRDWVUFKJEHQ2NUKEVS73 COMPLETED  users/aybar1994/testing_01/geomatrix
-#&gt; 6  6OWDXE3QG6DIWLQHTSAZRH4Q COMPLETED                     myExportTableTask
-#&gt; 7  4T6LDZGKBRBDACRVBENIF4D4 COMPLETED                     myExportImageTask
-#&gt; 8  GLJ3O55LOL5QAIBHOCB7MAIT COMPLETED                     myExportImageTask
-#&gt; 9  HPUVTUJCL3DW5LQRPUEZWUYM COMPLETED                     myExportImageTask
-#&gt; 10 TUI6WRPF7Y2MU3CWXGOQKOWX COMPLETED                     myExportImageTask
-#&gt; 11 AUK4AZ6IBHL67BMHNWAA635O COMPLETED                     myExportImageTask
-#&gt; 12 P4JCHA6ZNLNXPS3D7LVU6YTS COMPLETED                     myExportImageTask
-#&gt; 13 CST635T7CJ27EZCGDM5GT53Z COMPLETED                     myExportImageTask
-#&gt; 14 FB5E2WKET33P3SSPKYG3E6SJ    FAILED                     myExportImageTask
-#&gt; 15 EN3WEADPR7YRJXCYBSGHBHRG COMPLETED                     myExportImageTask
-#&gt; 16 PAAQIJ3D5JDGH6X7CGKL6P6I COMPLETED                     myExportImageTask
-#&gt; 17 HDPOLRXBOB4CBT76ESZUU3RR COMPLETED                     myExportImageTask
-#&gt; 18 C7O3NWHJSB7JRD5F4747BVQH COMPLETED                     myExportImageTask
-#&gt; 19 OWVWJ23MGHOJLSH4TPUPWXTZ COMPLETED                     myExportImageTask
-#&gt; 20 MDRDCIRKS5Y7IPFY5XBFYNRV COMPLETED                     myExportImageTask
-#&gt; 21 7GBJ4KM4X5KRQESHE7PTM2UU    FAILED                     myExportImageTask
-#&gt; 22 A222KL3X5NMVFTQ7QCMW2ZFF COMPLETED                     myExportImageTask
-#&gt; 23 HNFU3UH5XXWCWSB4EPYELL6C COMPLETED                     myExportImageTask
-#&gt; 24 LDACDU53C2IJKGGCCOV7NFS4 COMPLETED                     myExportImageTask
-#&gt; 25 737SW57LSJVRTY5T5EEUTA3N COMPLETED                     myExportImageTask
-#&gt; 26 E6Z4725NOEUI2INLYCN6LOCU COMPLETED                     myExportImageTask
-#&gt; 27 SDN64B7AW4BRZ3KTCDQTSZKB COMPLETED                     myExportTableTask
-#&gt; 28 VMYVXVYFDF5GYRUUMQF6CYNR COMPLETED                     myExportTableTask
-#&gt; 29 NQO76YKTBNB3KWJIGZAQVIJ7 COMPLETED                     myExportTableTask
-#&gt; 30 P24JICIGELCPIJJUKFULXJCG COMPLETED                     myExportTableTask
-#&gt; 31 JV7JQGOVIQNDETBRBIPMPNJZ COMPLETED                     myExportTableTask
-#&gt; 32 CUANJ2WSL63G2NJJJ5GJY75G COMPLETED                     myExportTableTask
-#&gt; 33 N26IHF4SXSPYQOYS6SBHOI3R COMPLETED                     myExportTableTask
-#&gt; 34 QOHMZCVCKOEI3BO46TDGKCFM COMPLETED                     myExportTableTask
-#&gt; 35 STSZWIOS32UU2YYPSWLOIMI6 COMPLETED                     myExportTableTask
-#&gt; 36 HHZPJ2R5OF6RHF7HQOW3IIXP COMPLETED                     myExportTableTask
-#&gt; 37 NPUUN4OUFD5QEXN5I225VXUT COMPLETED                     myExportTableTask
-#&gt; 38 XXISPYHPTW62RDSYRPJFNDIH COMPLETED                     myExportTableTask
-#&gt; 39 JO54BLLOEALFKYFOP53HVHFO COMPLETED                     myExportTableTask
-#&gt; 40 O2KK243TOOKHWIBC2AIEC3H2 COMPLETED                     myExportTableTask
-#&gt; 41 N5EOLZI56CHHQPDQ42XFIULH COMPLETED                     myExportImageTask
-#&gt; 42 3PE7CFLOWZHNYZBAFA2YZWQL COMPLETED                     myExportImageTask
-#&gt; 43 PHE6IXXL2VWXCI3QZJFNV4TM COMPLETED                     myExportImageTask
-#&gt; 44 A2LRVKYFBY6LWNIPG7EGY443 COMPLETED                     myExportImageTask
-#&gt; 45 UAV4OYEOP342MPP5RQULMHYL COMPLETED                     myExportImageTask
-#&gt; 46 QM7ZNIZLWWH5US4QQMU2KOZS COMPLETED                     myExportImageTask
-#&gt; 47 PVIK3OSKFYRW6LWR4PWAGMU6 COMPLETED                     myExportImageTask
-#&gt;               Type               Start DeltaToCreate(s) DeltaToCompletedTask(s)
-#&gt; 1           INGEST 2019-09-12 23:10:54 11.7979998588562        26.5090000629425
-#&gt; 2     EXPORT_IMAGE 2019-09-12 18:46:45 10.3159999847412        37.4019999504089
-#&gt; 3           INGEST 2019-09-12 18:03:40 12.9820001125336        26.8489999771118
-#&gt; 4           INGEST 2019-09-12 17:58:33 9.91500020027161        23.0909998416901
-#&gt; 5           INGEST 2019-09-12 17:53:50 6.79500007629395        21.1340000629425
-#&gt; 6  EXPORT_FEATURES 2019-09-09 18:12:05 4.92899990081787        2.20499992370605
-#&gt; 7     EXPORT_IMAGE 2019-09-09 18:09:08  4.5550000667572        9.78799986839294
-#&gt; 8     EXPORT_IMAGE 2019-09-09 17:55:14 11.9470000267029        9.83999991416931
-#&gt; 9     EXPORT_IMAGE 2019-09-08 03:31:46 11.3650000095367        16.2409999370575
-#&gt; 10    EXPORT_IMAGE 2019-09-08 03:30:23  3.5310001373291        17.7999999523163
-#&gt; 11    EXPORT_IMAGE 2019-09-08 03:18:50 3.54299998283386        15.4100000858307
-#&gt; 12    EXPORT_IMAGE 2019-09-08 03:11:03 5.36600017547607        16.7009999752045
-#&gt; 13    EXPORT_IMAGE 2019-09-08 03:10:27 5.14199995994568        17.6380000114441
-#&gt; 14    EXPORT_IMAGE 2019-09-08 03:08:27 7.04299998283386        1.41100001335144
-#&gt; 15    EXPORT_IMAGE 2019-09-08 03:05:32 5.39999985694885        14.4219999313354
-#&gt; 16    EXPORT_IMAGE 2019-09-08 03:05:03 4.68700003623962        14.8159999847412
-#&gt; 17    EXPORT_IMAGE 2019-09-08 03:04:27 6.07500004768372        20.2909998893738
-#&gt; 18    EXPORT_IMAGE 2019-09-08 03:00:37 5.46000003814697        16.9300000667572
-#&gt; 19    EXPORT_IMAGE 2019-09-08 02:59:29 9.80199980735779        51.6560001373291
-#&gt; 20    EXPORT_IMAGE 2019-09-08 02:58:53 3.35199999809265        14.0789999961853
-#&gt; 21    EXPORT_IMAGE 2019-09-08 02:57:17  13.268000125885       0.601999998092651
-#&gt; 22    EXPORT_IMAGE 2019-09-08 02:51:43 3.43099999427795        14.4810001850128
-#&gt; 23    EXPORT_IMAGE 2019-09-08 02:51:13 4.04900002479553         15.194000005722
-#&gt; 24    EXPORT_IMAGE 2019-09-08 02:50:38 7.54500007629395        15.3529999256134
-#&gt; 25    EXPORT_IMAGE 2019-09-08 02:49:22 7.19599986076355        14.3140001296997
-#&gt; 26    EXPORT_IMAGE 2019-09-08 02:35:50 15.3309998512268        376.728000164032
-#&gt; 27 EXPORT_FEATURES 2019-09-07 06:12:40 5.85099983215332        1.69800019264221
-#&gt; 28 EXPORT_FEATURES 2019-09-07 06:12:26  7.8970000743866        2.32999992370605
-#&gt; 29 EXPORT_FEATURES 2019-09-07 06:12:13 9.83699989318848        1.64900016784668
-#&gt; 30 EXPORT_FEATURES 2019-09-07 06:11:53 10.1949999332428        1.66700005531311
-#&gt; 31 EXPORT_FEATURES 2019-09-07 06:11:34 12.7540001869202         1.6399998664856
-#&gt; 32 EXPORT_FEATURES 2019-09-07 06:11:14 5.73200011253357        6.05299997329712
-#&gt; 33 EXPORT_FEATURES 2019-09-07 06:11:01 7.29299998283386        1.51300001144409
-#&gt; 34 EXPORT_FEATURES 2019-09-07 06:10:51 3.46000003814697         2.0699999332428
-#&gt; 35 EXPORT_FEATURES 2019-09-07 06:10:31 10.1449999809265        1.99900007247925
-#&gt; 36 EXPORT_FEATURES 2019-09-07 06:10:17 9.15100002288818        2.16499996185303
-#&gt; 37 EXPORT_FEATURES 2019-09-07 06:10:07 3.53800010681152        2.17799997329712
-#&gt; 38 EXPORT_FEATURES 2019-09-07 06:09:53 8.69400000572205        2.35899996757507
-#&gt; 39 EXPORT_FEATURES 2019-09-07 06:09:27 6.53999996185303         11.779000043869
-#&gt; 40 EXPORT_FEATURES 2019-09-07 06:09:12 7.64399981498718        2.40200018882751
-#&gt; 41    EXPORT_IMAGE 2019-09-07 06:08:36 5.07200002670288        28.0920000076294
-#&gt; 42    EXPORT_IMAGE 2019-09-07 06:07:55 10.3000001907349        28.4229998588562
-#&gt; 43    EXPORT_IMAGE 2019-09-07 06:07:30 9.82100009918213        9.22399997711182
-#&gt; 44    EXPORT_IMAGE 2019-09-07 06:06:48 7.98099994659424        27.6900000572205
-#&gt; 45    EXPORT_IMAGE 2019-09-07 06:06:17 5.75399994850159        21.8450000286102
-#&gt; 46    EXPORT_IMAGE 2019-09-07 06:05:51  5.9539999961853        9.65599989891052
-#&gt; 47    EXPORT_IMAGE 2019-09-07 05:00:06 8.23399996757507        11.5150001049042
-#&gt;                                                                                                          ErrorMessage
-#&gt; 1                                                                                                                NULL
-#&gt; 2                                                                                                                NULL
-#&gt; 3                                                                                                                NULL
-#&gt; 4                                                                                                                NULL
-#&gt; 5                                                                                                                NULL
-#&gt; 6                                                                                                                NULL
-#&gt; 7                                                                                                                NULL
-#&gt; 8                                                                                                                NULL
-#&gt; 9                                                                                                                NULL
-#&gt; 10                                                                                                               NULL
-#&gt; 11                                                                                                               NULL
-#&gt; 12                                                                                                               NULL
-#&gt; 13                                                                                                               NULL
-#&gt; 14                                                                    Image.reproject: Parameter 'image' is required.
-#&gt; 15                                                                                                               NULL
-#&gt; 16                                                                                                               NULL
-#&gt; 17                                                                                                               NULL
-#&gt; 18                                                                                                               NULL
-#&gt; 19                                                                                                               NULL
-#&gt; 20                                                                                                               NULL
-#&gt; 21 Collection.first: Error in map(ID=LC08_003069_20160730):\nImage.bitwiseAnd: Bitwise operands must be integer only.
-#&gt; 22                                                                                                               NULL
-#&gt; 23                                                                                                               NULL
-#&gt; 24                                                                                                               NULL
-#&gt; 25                                                                                                               NULL
-#&gt; 26                                                                                                               NULL
-#&gt; 27                                                                                                               NULL
-#&gt; 28                                                                                                               NULL
-#&gt; 29                                                                                                               NULL
-#&gt; 30                                                                                                               NULL
-#&gt; 31                                                                                                               NULL
-#&gt; 32                                                                                                               NULL
-#&gt; 33                                                                                                               NULL
-#&gt; 34                                                                                                               NULL
-#&gt; 35                                                                                                               NULL
-#&gt; 36                                                                                                               NULL
-#&gt; 37                                                                                                               NULL
-#&gt; 38                                                                                                               NULL
-#&gt; 39                                                                                                               NULL
-#&gt; 40                                                                                                               NULL
-#&gt; 41                                                                                                               NULL
-#&gt; 42                                                                                                               NULL
-#&gt; 43                                                                                                               NULL
-#&gt; 44                                                                                                               NULL
-#&gt; 45                                                                                                               NULL
-#&gt; 46                                                                                                               NULL
-#&gt; 47                                                                                                               NULL</div><div class='input'>
+<span class='fu'>ee_manage_task</span>()
+
 <span class='co'># 10. Cancel all the running task</span>
 <span class='fu'>ee_manage_cancel_all_running_taks</span>()
 
 <span class='co'># 11. Delete EE objects or folders</span>
-<span class='fu'>ee_manage_delete</span>(<span class='st'>'users/aybar1994/rgee/'</span>)</div><div class='output co'>#&gt; EE object deleted: users/aybar1994/rgee/rgee_folder/rgee_ic_moved 
-#&gt; EE object deleted: users/aybar1994/rgee/rgee_folder 
-#&gt; EE object deleted: users/aybar1994/rgee </div></pre>
+<span class='fu'>ee_manage_delete</span>(<span class='st'>'users/datacolecfbf/rgee/'</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -469,7 +286,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

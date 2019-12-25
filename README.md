@@ -4,20 +4,29 @@
 # Google Earth Engine for R
 
 [![Build
-Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
+Status](https://travis-ci.org/csaybar/rgee.svg?branch=dev)](https://travis-ci.org/csaybar/rgee)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/csaybar/rgee)
-[![Codecov test
-coverage](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee?branch=master)
+[![codecov](https://codecov.io/gh/csaybar/rgee/branch/dev/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![CII Best
+Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
+
+`rgee` is a bindings package for calling [Google
+Earth Engine API](https://developers.google.com/earth-engine/) from
+within R. Additionally, functions have been done for making painless 
+the connection with the R spatial ecosystem.
+
+## What is Google Earth Engine?
 
 [Google Earth Engine](https://earthengine.google.com/) is a cloud-based
 platform that allows users getting access to a petabyte-scale archive of
 remote sensing data and run geospatial analysis on Google’s
-infrastructure. The `rgee` package provides full access to the [Google
-Earth Engine API](https://developers.google.com/earth-engine/) from
-within R and defines additional tools for automating processes.
+infrastructure. Google currently just offers Python and JavaScript support.
 
 **Earth Engine Python API**:
 
@@ -26,7 +35,7 @@ import ee
 ee.Initialize()
 image = ee.Image('CGIAR/SRTM90_V4')
 image.bandNames().getInfo()
-#> ['elevation']
+#> [u'elevation']
 ```
 
 **rgee:**

@@ -155,24 +155,27 @@
     <p>Print and return metadata about Spatial Earth Engine Objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+    <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for ee.geometry.Geometry</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for ee.feature.Feature</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for ee.featurecollection.FeatureCollection</span>
 <span class='fu'>ee_print</span>(<span class='no'>eeobject</span>,
-  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+  <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for ee.image.Image</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
 <span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
 <span class='fu'>ee_print</span>(<span class='no'>eeobject</span>,
-  <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+  <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>max_display</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -181,6 +184,10 @@
       <th>eeobject</th>
       <td><p>Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.</p></td>
+    </tr>
+    <tr>
+      <th>clean</th>
+      <td><p>Logical; Whether is TRUE cache will cleaned, see Description.</p></td>
     </tr>
     <tr>
       <th>max_display</th>
@@ -193,11 +200,12 @@ FeatureCollection, Image or ImageCollection.</p></td>
     <p>For avoiding computing time extremely large and "EEException" related with memory consuming
 (<a href='https://developers.google.com/earth-engine/ic_info'>See this Earth Engine Guide</a>)
 just the first element of: ee$Image, ee$ImageCollection, ee$Feature
-and ee$FeatureCollection will be used to generated Earth Engine object properties.</p>
+and ee$FeatureCollection will be used to generated Earth Engine object properties.
+By default ee_print create a list with all the print parameters. It is due
+to avoid repeated queries to the Earth Engine Server.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 <span class='no'>eeobject</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
   <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/funprog.html'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$
@@ -215,79 +223,86 @@ and ee$FeatureCollection will be used to generated Earth Engine object propertie
 #&gt; nPixels by image               : 59'763'461 
 #&gt; Data type                      : FLOAT 
 #&gt; Image Properties               : 118 
-#&gt;                                |        RADIANCE_MULT_BAND_5        |        RADIANCE_MULT_BAND_6        |
-#&gt;                                |        RADIANCE_MULT_BAND_3        |        RADIANCE_MULT_BAND_4        |
-#&gt;                                |        RADIANCE_MULT_BAND_1        |        RADIANCE_MULT_BAND_2        |
-#&gt;                                |        K2_CONSTANT_BAND_11         |        K2_CONSTANT_BAND_10         |
-#&gt;                                |          system:footprint          |         REFLECTIVE_SAMPLES         |
-#&gt;                                |            SUN_AZIMUTH             |              CPF_NAME              |
-#&gt;                                |           DATE_ACQUIRED            |             ELLIPSOID              |
-#&gt;                                |    google:registration_offset_x    |    google:registration_offset_y    |
-#&gt;                                |             STATION_ID             |         RESAMPLING_OPTION          |
-#&gt;                                |            ORIENTATION             |              WRS_ROW               |
-#&gt;                                |        RADIANCE_MULT_BAND_9        |           TARGET_WRS_ROW           |
-#&gt;                                |        RADIANCE_MULT_BAND_7        |        RADIANCE_MULT_BAND_8        |
-#&gt;                                |         IMAGE_QUALITY_TIRS         |           TRUNCATION_OLI           |
-#&gt;                                |            CLOUD_COVER             |       GEOMETRIC_RMSE_VERIFY        |
-#&gt;                                |        COLLECTION_CATEGORY         |     GRID_CELL_SIZE_REFLECTIVE      |
-#&gt;                                |          CLOUD_COVER_LAND          |        GEOMETRIC_RMSE_MODEL        |
-#&gt;                                |         COLLECTION_NUMBER          |         IMAGE_QUALITY_OLI          |
-#&gt;                                |          LANDSAT_SCENE_ID          |              WRS_PATH              |
-#&gt;                                |     google:registration_count      |        PANCHROMATIC_SAMPLES        |
-#&gt;                                |         PANCHROMATIC_LINES         |       GEOMETRIC_RMSE_MODEL_Y       |
-#&gt;                                |          REFLECTIVE_LINES          | TIRS_STRAY_LIGHT_CORRECTION_SOURCE |
-#&gt;                                |       GEOMETRIC_RMSE_MODEL_X       |         system:asset_size          |
-#&gt;                                |            system:index            |       REFLECTANCE_ADD_BAND_1       |
-#&gt;                                |       REFLECTANCE_ADD_BAND_2       |               DATUM                |
-#&gt;                                |       REFLECTANCE_ADD_BAND_3       |       REFLECTANCE_ADD_BAND_4       |
-#&gt;                                |           RLUT_FILE_NAME           |       REFLECTANCE_ADD_BAND_5       |
-#&gt;                                |       REFLECTANCE_ADD_BAND_6       |       REFLECTANCE_ADD_BAND_7       |
-#&gt;                                |       REFLECTANCE_ADD_BAND_8       |           BPF_NAME_TIRS            |
-#&gt;                                |   GROUND_CONTROL_POINTS_VERSION    |             DATA_TYPE              |
-#&gt;                                |              UTM_ZONE              |         LANDSAT_PRODUCT_ID         |
+#&gt;                                |           THERMAL_LINES            |         EARTH_SUN_DISTANCE         |
+#&gt;                                |          LANDSAT_SCENE_ID          |         SCENE_CENTER_TIME          |
+#&gt;                                |            SUN_AZIMUTH             |       REFLECTANCE_ADD_BAND_6       |
+#&gt;                                |         PANCHROMATIC_LINES         |         system:time_start          |
+#&gt;                                |             REQUEST_ID             |           BPF_NAME_TIRS            |
+#&gt;                                |          ELEVATION_SOURCE          |       GEOMETRIC_RMSE_VERIFY        |
+#&gt;                                |        RADIANCE_MULT_BAND_7        |        RADIANCE_MULT_BAND_6        |
+#&gt;                                |        RADIANCE_MULT_BAND_5        |        RADIANCE_MULT_BAND_4        |
+#&gt;                                |        RADIANCE_MULT_BAND_3        |        RADIANCE_MULT_BAND_2        |
+#&gt;                                |        RADIANCE_MULT_BAND_1        |        GEOMETRIC_RMSE_MODEL        |
+#&gt;                                |               DATUM                |        RADIANCE_MULT_BAND_9        |
+#&gt;                                |        RADIANCE_MULT_BAND_8        |           RLUT_FILE_NAME           |
+#&gt;                                |       RADIANCE_MULT_BAND_11        |       RADIANCE_MULT_BAND_10        |
+#&gt;                                |        PANCHROMATIC_SAMPLES        |   GROUND_CONTROL_POINTS_VERSION    |
+#&gt;                                |           TRUNCATION_OLI           |             ELLIPSOID              |
+#&gt;                                |    PROCESSING_SOFTWARE_VERSION     |          TARGET_WRS_PATH           |
+#&gt;                                |       REFLECTANCE_ADD_BAND_8       |       REFLECTANCE_ADD_BAND_7       |
+#&gt;                                |           SUN_ELEVATION            |        COLLECTION_CATEGORY         |
+#&gt;                                | TIRS_STRAY_LIGHT_CORRECTION_SOURCE |        RADIANCE_ADD_BAND_11        |
+#&gt;                                |       REFLECTANCE_ADD_BAND_5       |         IMAGE_QUALITY_OLI          |
+#&gt;                                |    GROUND_CONTROL_POINTS_VERIFY    |       REFLECTANCE_ADD_BAND_4       |
+#&gt;                                |       REFLECTANCE_ADD_BAND_3       |         system:asset_size          |
+#&gt;                                |             FILE_DATE              |        RADIANCE_ADD_BAND_4         |
+#&gt;                                |         RESAMPLING_OPTION          |       REFLECTANCE_ADD_BAND_1       |
+#&gt;                                |              WRS_PATH              |           DATE_ACQUIRED            |
+#&gt;                                |            system:index            |         SATURATION_BAND_1          |
+#&gt;                                |           NADIR_OFFNADIR           |             DATA_TYPE              |
+#&gt;                                |         REFLECTIVE_SAMPLES         |     GRID_CELL_SIZE_REFLECTIVE      |
+#&gt;                                |    GRID_CELL_SIZE_PANCHROMATIC     |         SATURATION_BAND_7          |
+#&gt;                                |           TARGET_WRS_ROW           |      TIRS_SSM_POSITION_STATUS      |
+#&gt;                                |          system:footprint          |    GROUND_CONTROL_POINTS_MODEL     |
+#&gt;                                |          REFLECTIVE_LINES          |           TIRS_SSM_MODEL           |
+#&gt;                                |            CLOUD_COVER             |         IMAGE_QUALITY_TIRS         |
+#&gt;                                |           SPACECRAFT_ID            |             STATION_ID             |
+#&gt;                                |        RADIANCE_ADD_BAND_9         |              CPF_NAME              |
 #&gt;                                |       REFLECTANCE_ADD_BAND_9       |     google:registration_ratio      |
-#&gt;                                |    GRID_CELL_SIZE_PANCHROMATIC     |        RADIANCE_ADD_BAND_4         |
-#&gt;                                |      REFLECTANCE_MULT_BAND_7       |         system:time_start          |
-#&gt;                                |        RADIANCE_ADD_BAND_5         |      REFLECTANCE_MULT_BAND_6       |
-#&gt;                                |        RADIANCE_ADD_BAND_6         |      REFLECTANCE_MULT_BAND_9       |
-#&gt;                                |    PROCESSING_SOFTWARE_VERSION     |        RADIANCE_ADD_BAND_7         |
-#&gt;                                |      REFLECTANCE_MULT_BAND_8       |        RADIANCE_ADD_BAND_1         |
-#&gt;                                |        RADIANCE_ADD_BAND_2         |        RADIANCE_ADD_BAND_3         |
-#&gt;                                |      REFLECTANCE_MULT_BAND_1       |        RADIANCE_ADD_BAND_8         |
-#&gt;                                |      REFLECTANCE_MULT_BAND_3       |        RADIANCE_ADD_BAND_9         |
+#&gt;                                |        RADIANCE_ADD_BAND_1         |            BPF_NAME_OLI            |
+#&gt;                                |        RADIANCE_ADD_BAND_3         |        RADIANCE_ADD_BAND_2         |
+#&gt;                                |        RADIANCE_ADD_BAND_5         |       REFLECTANCE_ADD_BAND_2       |
+#&gt;                                |        RADIANCE_ADD_BAND_7         |        RADIANCE_ADD_BAND_6         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_9       |      REFLECTANCE_MULT_BAND_8       |
+#&gt;                                |             SENSOR_ID              |         LANDSAT_PRODUCT_ID         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_1       |      REFLECTANCE_MULT_BAND_3       |
 #&gt;                                |      REFLECTANCE_MULT_BAND_2       |      REFLECTANCE_MULT_BAND_5       |
-#&gt;                                |      REFLECTANCE_MULT_BAND_4       |           THERMAL_LINES            |
-#&gt;                                |      TIRS_SSM_POSITION_STATUS      |       GRID_CELL_SIZE_THERMAL       |
-#&gt;                                |           NADIR_OFFNADIR           |        RADIANCE_ADD_BAND_11        |
-#&gt;                                |             REQUEST_ID             |         EARTH_SUN_DISTANCE         |
-#&gt;                                |           TIRS_SSM_MODEL           |             FILE_DATE              |
-#&gt;                                |         SCENE_CENTER_TIME          |           SUN_ELEVATION            |
-#&gt;                                |            BPF_NAME_OLI            |        RADIANCE_ADD_BAND_10        |
-#&gt;                                |             ROLL_ANGLE             |        K1_CONSTANT_BAND_10         |
-#&gt;                                |         SATURATION_BAND_1          |         SATURATION_BAND_2          |
-#&gt;                                |         SATURATION_BAND_3          |         SATURATION_BAND_4          |
-#&gt;                                |         SATURATION_BAND_5          |           MAP_PROJECTION           |
-#&gt;                                |         SATURATION_BAND_6          |             SENSOR_ID              |
-#&gt;                                |         SATURATION_BAND_7          |        K1_CONSTANT_BAND_11         |
+#&gt;                                |      REFLECTANCE_MULT_BAND_4       |      REFLECTANCE_MULT_BAND_7       |
+#&gt;                                |      REFLECTANCE_MULT_BAND_6       |              WRS_ROW               |
+#&gt;                                |        RADIANCE_ADD_BAND_8         |        K1_CONSTANT_BAND_10         |
+#&gt;                                |        K1_CONSTANT_BAND_11         |          CLOUD_COVER_LAND          |
+#&gt;                                |     google:registration_count      |       GEOMETRIC_RMSE_MODEL_X       |
+#&gt;                                |       GEOMETRIC_RMSE_MODEL_Y       |          THERMAL_SAMPLES           |
+#&gt;                                |            ORIENTATION             |              UTM_ZONE              |
 #&gt;                                |         SATURATION_BAND_8          |         SATURATION_BAND_9          |
-#&gt;                                |          TARGET_WRS_PATH           |       RADIANCE_MULT_BAND_11        |
-#&gt;                                |       RADIANCE_MULT_BAND_10        |    GROUND_CONTROL_POINTS_MODEL     |
-#&gt;                                |           SPACECRAFT_ID            |          ELEVATION_SOURCE          |
-#&gt;                                |          THERMAL_SAMPLES           |    GROUND_CONTROL_POINTS_VERIFY    |
-#&gt; ImageCollection Properties     : 26 
-#&gt;                                |  system:visualization_0_min  |            thumb             |
+#&gt;                                |           MAP_PROJECTION           |        RADIANCE_ADD_BAND_10        |
+#&gt;                                |         SATURATION_BAND_2          |         SATURATION_BAND_3          |
+#&gt;                                |       GRID_CELL_SIZE_THERMAL       |         SATURATION_BAND_6          |
+#&gt;                                |         COLLECTION_NUMBER          |         SATURATION_BAND_4          |
+#&gt;                                |         SATURATION_BAND_5          |    google:registration_offset_y    |
+#&gt;                                |    google:registration_offset_x    |             ROLL_ANGLE             |
+#&gt;                                |        K2_CONSTANT_BAND_11         |        K2_CONSTANT_BAND_10         |
+#&gt; ImageCollection Properties     : 39 
+#&gt;                                |         provider_url         | system:visualization_0_bands |
+#&gt;                                | system:visualization_2_bands |            period            |
+#&gt;                                |     visualization_2_max      |  system:visualization_1_max  |
+#&gt;                                | system:visualization_1_bands |     visualization_0_max      |
+#&gt;                                |     visualization_2_name     |     visualization_1_max      |
+#&gt;                                |     visualization_0_gain     |     visualization_0_min      |
+#&gt;                                |     visualization_1_name     |  system:visualization_0_max  |
+#&gt;                                |            thumb             |            title             |
+#&gt;                                |          type_name           |  system:visualization_2_max  |
+#&gt;                                |     visualization_2_min      |    visualization_0_bands     |
+#&gt;                                |           provider           | system:visualization_1_name  |
+#&gt;                                |  system:visualization_0_min  |  system:visualization_2_min  |
 #&gt;                                |         description          |         source_tags          |
-#&gt;                                |            title             |  system:visualization_2_max  |
-#&gt;                                | system:visualization_0_gain  |         product_tags         |
-#&gt;                                | system:visualization_2_gain  |           provider           |
-#&gt;                                | system:visualization_2_name  | system:visualization_1_bands |
-#&gt;                                |  system:visualization_1_max  |          date_range          |
-#&gt;                                |            period            |  system:visualization_2_min  |
-#&gt;                                | system:visualization_0_bands |         provider_url         |
-#&gt;                                |            sample            | system:visualization_1_name  |
-#&gt;                                |             tags             |  system:visualization_0_max  |
-#&gt;                                | system:visualization_2_bands |  system:visualization_1_min  |
-#&gt;                                | system:visualization_0_name  | system:visualization_1_gain  |</div></pre>
+#&gt;                                | system:visualization_2_name  | system:visualization_0_name  |
+#&gt;                                |          date_range          |     visualization_0_name     |
+#&gt;                                |     visualization_2_gain     |     visualization_1_gain     |
+#&gt;                                |    visualization_1_bands     |             tags             |
+#&gt;                                |         product_tags         |            sample            |
+#&gt;                                |    visualization_2_bands     |     visualization_1_min      |
+#&gt;                                |  system:visualization_1_min  |</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -307,7 +322,7 @@ and ee$FeatureCollection will be used to generated Earth Engine object propertie
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

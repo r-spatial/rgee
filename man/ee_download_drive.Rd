@@ -34,8 +34,8 @@ the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$star
 library(rgee)
 library(stars)
 library(sf)
+
 ee_Initialize()
-ee_reattach() # reattach ee as a reserved word
 
 # Example 1 -- Download a Image
 # Communal Reserve Amarakaeri - Peru

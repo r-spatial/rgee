@@ -244,7 +244,7 @@ the file into google cloud storage are obtained from ee$batch$Export$*$toCloudSt
 <span class='no'>task_img</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
 <span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_gcs</span>(<span class='no'>task_img</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
 
 <span class='co'># Download a EE FeatureCollection</span>
 <span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>))))
@@ -257,7 +257,7 @@ the file into google cloud storage are obtained from ee$batch$Export$*$toCloudSt
 <span class='no'>task_vector</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_vector</span>) <span class='co'># optional</span>
 <span class='no'>amk_geom</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_gcs</span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_vector</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -278,7 +278,7 @@ the file into google cloud storage are obtained from ee$batch$Export$*$toCloudSt
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

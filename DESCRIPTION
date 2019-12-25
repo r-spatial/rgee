@@ -25,10 +25,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 Depends:
     R (>= 3.4.0),
-    methods
+    methods    
 Imports:
     reticulate (>= 1.13),
     stars (>= 0.3),
+    rstudioapi (>= 0.7),    
     rgdal,
     sf,
     magrittr,
@@ -38,7 +39,8 @@ Imports:
     getPass,
     crayon,
     cli,
-    png
+    png,
+    jpeg
 Suggests:
     testthat (>= 2.1.0),
     covr,

@@ -15,46 +15,46 @@
 #' @importFrom utils write.csv read.csv
 #'
 #' @examples
+#' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Change google account to be able to reproduce
-#' ee_manage_create('users/aybar1994/rgee')
+#' ee_manage_create('users/datacolecfbf/rgee')
 #'
 #' # 1. List all the elements inside a folder or a ImageCollection
-#' ee_manage_assetlist(path_asset = 'users/aybar1994/rgee')
+#' ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
 #'
 #' # 2. Create a Folder or a ImageCollection
-#' ee_manage_create('users/aybar1994/rgee/rgee_folder',asset_type = 'folder')
-#' ee_manage_create('users/aybar1994/rgee/rgee_ic',asset_type = 'imagecollection')
-#' ee_manage_assetlist('users/aybar1994/rgee')
+#' ee_manage_create('users/datacolecfbf/rgee/rgee_folder',asset_type = 'folder')
+#' ee_manage_create('users/datacolecfbf/rgee/rgee_ic',asset_type = 'imagecollection')
+#' ee_manage_assetlist('users/datacolecfbf/rgee')
 #'
 #' # 3. Shows your Earth Engine quota
 #v ee_manage_quota()
 #'
 #' # 4. Estimate the size of a Image, ImageCollection, Table or Folder.
-#' ee_manage_size('users/aybar1994/rgee')
+#' ee_manage_size('users/datacolecfbf/rgee')
 #'
 #' # 5. Move a EE object to another folder
-#' ee_manage_move(path_asset = 'users/aybar1994/rgee/rgee_ic',
-#'                final_path = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-#' ee_manage_assetlist('users/aybar1994/rgee/rgee_folder')
+#' ee_manage_move(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+#'                final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+#' ee_manage_assetlist('users/datacolecfbf/rgee/rgee_folder')
 #'
 #' # 6. Set properties to an EE object.
-#' ee_manage_set_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+#' ee_manage_set_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
 #'                          properties = list(message='hello-world',language = 'R'))
-#' test_ic <- ee$ImageCollection('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+#' test_ic <- ee$ImageCollection('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 #' test_ic$getInfo()
 #'
 #' # 7. Delete properties
-#' ee_manage_delete_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
+#' ee_manage_delete_properties(path_asset = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved',
 #'                             property = c("message","language"))
 #' test_ic$getInfo()
 #'
 #' # 8. Share EE objects -- Create a public dataset
-#' ee_manage_assets_access('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
-#' ee$data$getAssetAcl('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+#' ee_manage_assets_access('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+#' ee$data$getAssetAcl('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
 #'
 #' # 9. Create a report based on all tasks that is running or has finished
 #' ee_manage_task()
@@ -63,9 +63,10 @@
 #' ee_manage_cancel_all_running_taks()
 #'
 #' # 11. Delete EE objects or folders
-#' ee_manage_delete('users/aybar1994/rgee/')
+#' ee_manage_delete('users/datacolecfbf/rgee/')
+#' }
 #' @export
-ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
+ee_manage_create <- function(path_asset, asset_type='folder',quiet=FALSE) {
   asset_type = tolower(asset_type)
   path_asset = ee_verify_filename(path_asset,strict = FALSE)
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
@@ -82,6 +83,7 @@ ee_manage_create = function(path_asset, asset_type='folder',quiet=FALSE) {
   else {
     if (!quiet) cat("GEE asset:",path_asset,"already exists\n")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -97,6 +99,7 @@ ee_manage_delete = function(path_asset, quiet=FALSE) {
   }
   ee$data$deleteAsset(path_asset)
   if (!quiet) cat('EE object deleted:',path_asset,'\n')
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -160,11 +163,12 @@ ee_manage_size = function(path_asset) {
   msg_01 = sprintf("- Size: %s\n", asset_size)
   msg_02 = sprintf("- # elements: %s\n",nelements)
   cat(header,":\n", msg_01, msg_02)
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
+ee_manage_copy <- function(path_asset,final_path,quiet = FALSE) {
   path_asset = ee_verify_filename(path_asset,strict = TRUE)
   final_path = ee_verify_filename(final_path,strict = FALSE)
   header = ee$data$getInfo(path_asset)[['type']]
@@ -173,15 +177,22 @@ ee_manage_copy = function(path_asset,final_path,quiet = FALSE) {
     if (!quiet) cat('Done\n')
   } else if(header == 'Folder') {
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[',2) %>%
       unlist()
+
+    ee_manage_create(path_asset = final_path,
+                     asset_type = 'Folder')
+
     if (!quiet) cat('Copying a total of', length(to_copy_list), ' elements ..... please wait\n')
     folder_destination = sprintf("%s/%s",final_path,basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
+      cat(to_copy_list)
+      cat(folder_destination)
       ee$data$copyAsset(to_copy_list[z], folder_destination[z])
     }
     if (!quiet) cat('Done\n')
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -197,16 +208,20 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
     header_finalpath = ee$data$getInfo(final_path)[['type']]
     if (is.null(header_finalpath)) ee_manage_create(final_path,quiet = quiet)
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[',2) %>%
       unlist()
     if (!quiet) cat('Moving a total of', length(to_copy_list), ' elements ..... please wait\n')
     folder_destination = sprintf("%s/%s",final_path,basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
-      ee$data$renameAsset(to_copy_list[z], folder_destination[z])
+      cat(to_copy_list)
+      cat(folder_destination)
+      ee$data$renameAsset(sourceId = to_copy_list[z],
+                          destinationId =  folder_destination[z])
     }
     ee_manage_delete(path_asset,quiet = quiet)
     if (!quiet) cat('Done\n')
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -234,6 +249,7 @@ ee_manage_set_properties = function(path_asset, properties) {
   } else {
     stop("Impossible assign properties to a Folder")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -250,6 +266,7 @@ ee_manage_delete_properties = function(path_asset, property) {
   } else {
     stop("Impossible delete properties to a Folder")
   }
+  invisible(TRUE)
 }
 
 #' @name ee_manage-tools
@@ -279,7 +296,7 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
     if (!quiet) cat('The ACL of',path_asset,'has been changed.\n')
   } else if (header=="Folder") {
     list_files = ee$data$getList(list(id=path_asset))
-    items = unlist(lapply(list_files, '[[',1))
+    items = unlist(lapply(list_files, '[[',2))
     mapply(ee_manage_assets_access, items,MoreArgs = list(acl = acl))
   }
   invisible(TRUE)
@@ -292,10 +309,16 @@ ee_manage_task = function(quiet, cache = TRUE) {
   ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp = tempdir()
   manage_task_file = sprintf("%s/ee_manage_task_file.csv", ee_temp)
-  if (!file.exists(manage_task_file) & cache) {
+  if (cache) {
     py_names = c('tid', 'tstate', 'tdesc', 'ttype', 'tcreate', 'tdiffstart', 'tdiffend', 'error_message')
     df_names = c("ID","State","DestinationPath", "Type","Start","DeltaToCreate(s)","DeltaToCompletedTask(s)","ErrorMessage")
     status = ee_py_to_r(ee_manage_py$genreport())
+    if (length(status) == 0) {
+      message('No recent task to report')
+      df_order <- data.frame(message='No recent task to report')
+      write.csv(df_order,manage_task_file,row.names = FALSE)
+      return(invisible(df_order))
+    }
     order_name = names(status[[1]])
     df_status <- data.frame(matrix(unlist(status), nrow=length(status), byrow=TRUE),stringsAsFactors = FALSE)
     colnames(df_status) = order_name
@@ -318,6 +341,7 @@ ee_manage_cancel_all_running_taks = function() {
   for (z in seq_along(running)) {
     ee$data$cancelTask(running[[z]][['id']])
   }
+  invisible(TRUE)
 }
 
 #' Verify is the EE path asset is correct
@@ -357,4 +381,5 @@ ee_humansize = function(x, suffixes = c('B', 'KB', 'MB', 'GB', 'TB', 'PB')) {
   } else {
     sprintf('%s %s',sprintf('%.2f',x),suffixes[count+1])
   }
+  invisible(TRUE)
 }
