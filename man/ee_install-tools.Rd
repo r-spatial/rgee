@@ -23,12 +23,12 @@ ee_remove_credentials(user, quiet = TRUE)
 \arguments{
 \item{GoogleChromeVersion}{Google Chrome version of this system.}
 
-\item{method}{Installation method. By default, "auto" automatically finds a
-method that will work in the local environment. Change the default to force
-a specific installation method. Note that the "virtualenv" method is not
-available on Windows (as this isn't supported by rgee). Note also that
-since this command runs without privilege the "system" method is
-available only on Windows.}
+\item{method}{Installation method. By default, "auto" automatically
+finds a method that will work in the local environment. Change the
+default to force a specific installation method. Note that the
+"virtualenv" method is not available on Windows (as this isn't
+supported by rgee). Note also that since this command runs
+without privilege the "system" method is available only on Windows.}
 
 \item{conda}{Path to conda executable (or "auto" to find conda
 using the PATH and other conventional install locations).}
@@ -36,15 +36,14 @@ using the PATH and other conventional install locations).}
 \item{ee_version}{earthengine-api version to install. Up to and including
 earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.}
 
-\item{envname}{Name of Python environment to install within}
+\item{envname}{Name of Python environment to install.}
 
-\item{extra_packages}{Additional Python packages to install along with
-rgee.}
+\item{extra_packages}{Additional Python packages to install along with rgee.}
 
 \item{restart_session}{Restart R session after installing (note this will
 only occur within RStudio).}
 
-\item{conda_python_version}{the python version installed in the created conda
+\item{conda_python_version}{the Python version installed in the created conda
 environment. Python 3.6 is installed by default.}
 
 \item{quiet}{logical. Suppress info message}
@@ -52,15 +51,16 @@ environment. Python 3.6 is installed by default.}
 \item{...}{other arguments passed to \code{\link[reticulate:conda_install]{reticulate::conda_install()}} or
 \code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
 
-\item{user}{character. User to remove credentials}
+\item{user}{character. User to whom credentials would remove}
 }
 \description{
-R functions to install the necessary third-party python packages
-for rgee and removing Python Selenium Chromedriver and credentials
+R functions to install the necessary third-party
+python packages for rgee and removing Python
+Selenium Chromedriver and credentials
 }
 \details{
 It is neccessary restart R to observe change when installing a
-Python packages. rgee only is compatible with Python version 3.5 >.
+Python packages. rgee only is compatible with Python version 3.5 >=.
 }
 \examples{
 \dontrun{
@@ -68,7 +68,7 @@ library(rgee)
 
 # Recommended way to use rgee
 ## 1. Create a virtualenv
-virtualenv_remove("rgee")
+#virtualenv_remove("rgee")
 virtualenv_create("rgee", python = "python3.7")
 use_virtualenv("rgee")
 # rstudioapi::restartSession() # Restart R

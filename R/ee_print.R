@@ -4,8 +4,8 @@
 #' FeatureCollection, Image or ImageCollection.
 #' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
 #' @param max_display Set the max number of properties to display.
-#' @details For avoiding computing time extremely large and "EEException" related with memory consuming
-#' (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
+#' @details For avoiding computing time extremely large and "EEException" related
+#' with memory consuming (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
 #' just the first element of: ee$Image, ee$ImageCollection, ee$Feature
 #' and ee$FeatureCollection will be used to generated Earth Engine object properties.
 #' By default ee_print create a list with all the print parameters. It is due
@@ -13,7 +13,10 @@
 #' @importFrom sf st_crs
 #' @examples
 #' library(rgee)
+#'
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
+#'
 #' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 #'   filter(ee$Filter()$eq("WRS_PATH", 44))$
 #'   filter(ee$Filter()$eq("WRS_ROW", 34))$

@@ -1,14 +1,13 @@
-#' Interface to check non-R rgee dependencies
+#' Interface to check Python and non-R rgee dependencies
 #'
 #' R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials
 #' @name ee_check-tools
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate py_available py_module_available py_discover_config source_python
 #' @examples
-#' \dontrun{
 #' library(rgee)
+#' #use_virtualenv("rgee")
 #' ee_check()
-#' }
 #' @export
 ee_check <- function() {
   ee_check_python()

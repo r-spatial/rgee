@@ -1,5 +1,7 @@
 context("rgee: ee_manage test")
 
+message <- try(ee_manage_delete('users/aybar1994/rgee/'))
+
 test_that("simple_test",{
   ee_manage_create('users/aybar1994/rgee')
   ee_manage_assetlist(path_asset = 'users/aybar1994/rgee')
@@ -15,7 +17,7 @@ test_that("simple_test",{
   test_ic <- ee$ImageCollection('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
   ee_manage_delete_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
                               property = c("message","language"))
-  ee_manage_assets_access('users/aybar1994/rgee/rgee_folder/')
+  ee_manage_assets_access(path_asset = 'users/aybar1994/rgee/rgee_folder/')
   ee$data$getAssetAcl('users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
   ee_manage_task(cache = TRUE)
   ee_manage_task(cache = FALSE)
@@ -46,20 +48,18 @@ test_that("ee_manage_copy",{
   expect_equal(copy_mn,TRUE)
 })
 
-
 test_that("ee_manage_move folder",{
   folder_init <- 'users/aybar1994/ee_manage'
   folder_last <- 'users/aybar1994/ee_manage2'
   copy_mn <- ee_manage_move(path_asset = folder_init,
                             final_path =  folder_last,
                             quiet = FALSE)
-  Sys.sleep(3)
+  Sys.sleep(2)
   copy_mn <- ee_manage_move(path_asset = folder_last,
                             final_path =  folder_init,
                             quiet = FALSE)
   expect_equal(copy_mn,TRUE)
 })
-
 
 test_that("ee_manage_copy folder",{
   folder_init <- 'users/aybar1994/ee_manage'
@@ -71,7 +71,6 @@ test_that("ee_manage_copy folder",{
   ee_manage_delete(folder_last)
   expect_equal(copy_mn,TRUE)
 })
-
 
 test_that("ee_verify_filename - error message",{
   expect_error(

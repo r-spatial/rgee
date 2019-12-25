@@ -1,12 +1,13 @@
 #' Adds a given Earth Engine (EE) spatial object to mapview as a layer.
 #'
-#' Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
-#' FeatureCollection or ImageCollection) base on \href{mapview}{mapview}.
+#' Create interactive visualizations of spatial EE objects
+#' (Geometry, Image, Feature, FeatureCollection or ImageCollection)
+#' through \href{mapview}{mapview}.
 #'
 #' @param eeobject An EE spatial object.
 #' @param vizparams A list that contains the visualization parameters. See details.
 #' @param center The longitude and latitude of the map center. If it is not defined,
-#' the centroid of the spatial EE object is taked.
+#' ee_map will try to estimate the centroid of the spatial EE object.
 #' @param  zoom_start zoom level.
 #' @param objname character vector. Name of the map, or maps in case that the EE object
 #' be an ImageCollection.
@@ -15,7 +16,7 @@
 #' @details
 #' `ee_map` takes advantage of the ee$Image()$getMapId python function for fetch and return
 #' a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
-#' visualization effects, it is depend on the type of spatial EE object . For neither Image or
+#' visualization effects, it will depend on the type of spatial EE object . For neither Image or
 #' ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
 #' The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
 #'
@@ -42,9 +43,11 @@
 #'  \item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
 #' }
 #' @examples
-#' \dontrun{
+#'
 #' library(rgee)
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
+#'
 #' # Case: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 #' m1 <- ee_map(
@@ -92,11 +95,12 @@
 #'   zoom_start = 10
 #' )
 #' m5
-#' }
+#'
 #' @importFrom mapview mapview
 #' @importFrom leaflet addWMSTiles setView
 #' @importFrom sf st_polygon st_centroid st_coordinates
 #' @export
+#'
 ee_map <- function(eeobject, ...) {
   UseMethod("ee_map")
 }

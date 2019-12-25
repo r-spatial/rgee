@@ -1,20 +1,21 @@
 #' Create a stars object based on an EE thumbnail image
 #'
-#' Download EE thumbnail images and read them as stars objects. This function is
-#' a wrapper around \code{ee$Image()$getThumbURL()}.
+#' Download EE thumbnail images and read them as stars objects.
+#' This function is a wrapper around \code{ee$Image()$getThumbURL()}.
 #'
 #' @param x EE Image object
-#' @param region Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
-#' or sfg). By default, the whole image is used.
+#' @param region Geospatial region of the image (c(E,S,W,N) numeric
+#' vector, EE Geometry, or sfg). By default, the whole image is used.
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
 #' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
-#' The argument dimensions will define the "from" & "to" parameters of the stars object to be generated. It must be
-#' a single numeric value or a two-element vector. If not defined, 256 is taken by default as the dimension of
-#' x (from 1 to 256), and y will be computed by proportional scaling. Huge images might cause plodding connections.  See
-#' \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
+#' The argument dimensions will define the "from" & "to" parameters of the stars object.
+#' It must be a single numeric value or a two-element vector. If not defined,
+#' 256 is taken by default as the dimension of x (from 1 to 256), and y will
+#' be computed by proportional scaling. Huge images might cause plodding connections.
+#' See \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
 #' for details.
 #'
 #' The vizparams set up the number of bands. In `ee_as_thumbnail` just is possible export one (G) or
@@ -47,6 +48,8 @@
 #' @examples
 #' library(rgee)
 #' library(stars)
+#'
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
 #' nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
 #' dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",

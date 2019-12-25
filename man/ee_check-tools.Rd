@@ -7,7 +7,7 @@
 \alias{ee_check_rgee_python_packages}
 \alias{ee_check_drivers}
 \alias{ee_check_credentials}
-\title{Interface to check non-R rgee dependencies}
+\title{Interface to check Python and non-R rgee dependencies}
 \usage{
 ee_check()
 
@@ -26,8 +26,7 @@ ee_check_credentials()
 R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials
 }
 \examples{
-\dontrun{
 library(rgee)
+#use_virtualenv("rgee")
 ee_check()
-}
 }

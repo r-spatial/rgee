@@ -1,26 +1,26 @@
 #' Interface to install non-R rgee dependencies
 #'
-#' R functions to install the necessary third-party python packages
-#' for rgee and removing Python Selenium Chromedriver and credentials
+#' R functions to install the necessary third-party
+#' python packages for rgee and removing Python
+#' Selenium Chromedriver and credentials
 #'
 #' @param GoogleChromeVersion Google Chrome version of this system.
-#' @param user character. User to remove credentials
-#' @param method Installation method. By default, "auto" automatically finds a
-#' method that will work in the local environment. Change the default to force
-#' a specific installation method. Note that the "virtualenv" method is not
-#' available on Windows (as this isn't supported by rgee). Note also that
-#' since this command runs without privilege the "system" method is
-#' available only on Windows.
+#' @param user character. User to whom credentials would remove
+#' @param method Installation method. By default, "auto" automatically
+#' finds a method that will work in the local environment. Change the
+#' default to force a specific installation method. Note that the
+#' "virtualenv" method is not available on Windows (as this isn't
+#' supported by rgee). Note also that since this command runs
+#' without privilege the "system" method is available only on Windows.
 #' @param conda Path to conda executable (or "auto" to find conda
 #' using the PATH and other conventional install locations).
 #' @param ee_version earthengine-api version to install. Up to and including
 #' earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.
-#' @param envname Name of Python environment to install within
-#' @param extra_packages Additional Python packages to install along with
-#' rgee.
+#' @param envname Name of Python environment to install.
+#' @param extra_packages Additional Python packages to install along with rgee.
 #' @param restart_session Restart R session after installing (note this will
 #' only occur within RStudio).
-#' @param conda_python_version the python version installed in the created conda
+#' @param conda_python_version the Python version installed in the created conda
 #' environment. Python 3.6 is installed by default.
 #' @param ... other arguments passed to [reticulate::conda_install()] or
 #' [reticulate::virtualenv_install()].
@@ -28,7 +28,7 @@
 #' @importFrom reticulate source_python py_install
 #' @importFrom rstudioapi restartSession hasFun
 #' @details It is neccessary restart R to observe change when installing a
-#' Python packages. rgee only is compatible with Python version 3.5 >.
+#' Python packages. rgee only is compatible with Python version 3.5 >=.
 #' @name ee_install-tools
 #' @examples
 #' \dontrun{
@@ -36,7 +36,7 @@
 #'
 #' # Recommended way to use rgee
 #' ## 1. Create a virtualenv
-#' virtualenv_remove("rgee")
+#' #virtualenv_remove("rgee")
 #' virtualenv_create("rgee", python = "python3.7")
 #' use_virtualenv("rgee")
 #' # rstudioapi::restartSession() # Restart R

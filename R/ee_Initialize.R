@@ -5,24 +5,36 @@
 #' `rgee::ee$Initialize()`.
 #'
 #' @param user_gmail 	optional. Allows user to target a specific Google identity.
-#' @param drive logical. If TRUE drive credential are cached in the system.
-#' @param gcs logical. If TRUE drive credential are cached in the system.
-#' @param assethome character. Home folder's names of you EE Assets.
+#' @param drive logical. Whether TRUE the drive credential will cache
+#' in the system.
+#' @param gcs logical. Whether TRUE the Google Cloud Storage
+#' credential will cache in the system.
+#' @param assethome character. Home folder's name of you EE Assets.
 #' @param quiet logical. Suppress info messages.
-#' @param checkpy logical. Check if the current Python version of this system is admitted by rgee.
+#' @param checkpy logical. Check if the current Python version
+#' of this system is admitted by rgee.
 #' @importFrom utils read.table browseURL write.table
 #' @importFrom reticulate import_from_path import
 #' @import getPass getPass
 #' @details
-#' \code{ee_Initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
-#'  Storage (googlecloudStorageR). By default, rgee do not need to them, these are just neccesary for
-#'  exportation and importation tasks. All the user credentials are save in the folder \code{~/.config/earthengine/USERS/},
-#'  if a user is not specified the parameters of the last session will be used.
+#' \code{ee_Initialize()} give the possibility of authorize Google drive (googledrive)
+#' and Google Cloud Storage (googlecloudStorageR). By default, rgee do not need to them,
+#' these are just necessary for exportation and importation tasks. All the user credentials
+#' are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not specified
+#' the parameters of the last session would be used.
 #' @examples
-#' \dontrun{
+#' ee_reattach() # reattach ee as a reserve word
+#'
+#' # Simple init
 #' library(rgee)
 #' ee_Initialize()
-#' }
+#'
+#' # Advanced init
+#' expr <- ee_Initialize(user_gmail = 'aybar1994@gmail.com',
+#'                       drive = TRUE,
+#'                       gcs = TRUE,
+#'                       checkpy = TRUE,
+#'                       assethome = 'users/aybar1994')
 #' @export
 ee_Initialize <- function(user_gmail = NULL,
                           drive = FALSE,

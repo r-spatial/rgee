@@ -39,7 +39,7 @@ ee_map(eeobject, ...)
 \item{vizparams}{A list that contains the visualization parameters. See details.}
 
 \item{center}{The longitude and latitude of the map center. If it is not defined,
-the centroid of the spatial EE object is taked.}
+ee_map will try to estimate the centroid of the spatial EE object.}
 
 \item{zoom_start}{zoom level.}
 
@@ -51,13 +51,14 @@ be an ImageCollection.}
 \item{max_nimage}{Max number of Image to display.}
 }
 \description{
-Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
-FeatureCollection or ImageCollection) base on \href{mapview}{mapview}.
+Create interactive visualizations of spatial EE objects
+(Geometry, Image, Feature, FeatureCollection or ImageCollection)
+through \href{mapview}{mapview}.
 }
 \details{
 \code{ee_map} takes advantage of the ee$Image()$getMapId python function for fetch and return
 a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
-visualization effects, it is depend on the type of spatial EE object . For neither Image or
+visualization effects, it will depend on the type of spatial EE object . For neither Image or
 ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
 The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
 
@@ -85,9 +86,11 @@ By default 000000.
 }
 }
 \examples{
-\dontrun{
+
 library(rgee)
+ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
+
 # Case: Geometry*
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 m1 <- ee_map(
@@ -135,5 +138,5 @@ m5 <- ee_map(
   zoom_start = 10
 )
 m5
-}
+
 }

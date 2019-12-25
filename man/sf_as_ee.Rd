@@ -46,16 +46,19 @@ inner (hole) rings. By default this is FALSE because it is an expensive operatio
 library(rgee)
 library(sf)
 
+ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 # sf
 x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\% st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
+
 # sfc
 x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry \%>\% st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
+
 # sfg
 x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)

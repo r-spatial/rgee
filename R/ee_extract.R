@@ -1,14 +1,16 @@
 #' Extract values for EE ImageCollections objects
 #'
-#' Extract values for a Image or ImageCollection spatial object at the locations
-#' of geometry object. You can use ee.Geometries, ee.Features,
-#' ee.FeatureCollection and sf objects.
+#' Extract values for a Image or ImageCollection spatial object
+#' at the locations of geometry object. You can use ee.Geometries,
+#' ee.Features, ee.FeatureCollection and sf objects.
+#'
 #' @param x ee$Image or ee$ImageCollection.
 #' @param y ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.
 #' @param fun ee$Reducer object. Function to summarize the values. See details.
 #' @param scale A nominal scale in meters of the projection to work in.
 #' @param id Character. Name of the column to be used as a geometry index.
-#' @param ... reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.
+#' @param ... reduceRegions aditional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
+#' for details.
 #' @importFrom sf st_geometry st_geometry<-
 #' @details
 #' The fun arguments just admit Reducer objects that return one value. These are:
@@ -50,6 +52,8 @@
 #' @examples
 #' library(rgee)
 #' library(sf)
+#'
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
 #'
 #' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$

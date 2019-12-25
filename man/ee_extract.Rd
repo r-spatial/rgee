@@ -18,12 +18,13 @@ ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
 
 \item{id}{Character. Name of the column to be used as a geometry index.}
 
-\item{...}{reduceRegions aditional parameters. See ee_help(ee$Image()$reduceRegions) for details.}
+\item{...}{reduceRegions aditional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
+for details.}
 }
 \description{
-Extract values for a Image or ImageCollection spatial object at the locations
-of geometry object. You can use ee.Geometries, ee.Features,
-ee.FeatureCollection and sf objects.
+Extract values for a Image or ImageCollection spatial object
+at the locations of geometry object. You can use ee.Geometries,
+ee.Features, ee.FeatureCollection and sf objects.
 }
 \details{
 The fun arguments just admit Reducer objects that return one value. These are:
@@ -66,6 +67,8 @@ larger numbers of inputs the mode will be derived from a histogram.
 \examples{
 library(rgee)
 library(sf)
+
+ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$

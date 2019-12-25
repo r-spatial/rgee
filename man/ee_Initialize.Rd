@@ -10,13 +10,16 @@ ee_Initialize(user_gmail = NULL, drive = FALSE, gcs = FALSE,
 \arguments{
 \item{user_gmail}{optional. Allows user to target a specific Google identity.}
 
-\item{drive}{logical. If TRUE drive credential are cached in the system.}
+\item{drive}{logical. Whether TRUE the drive credential will cache
+in the system.}
 
-\item{gcs}{logical. If TRUE drive credential are cached in the system.}
+\item{gcs}{logical. Whether TRUE the Google Cloud Storage
+credential will cache in the system.}
 
-\item{assethome}{character. Home folder's names of you EE Assets.}
+\item{assethome}{character. Home folder's name of you EE Assets.}
 
-\item{checkpy}{logical. Check if the current Python version of this system is admitted by rgee.}
+\item{checkpy}{logical. Check if the current Python version
+of this system is admitted by rgee.}
 
 \item{quiet}{logical. Suppress info messages.}
 }
@@ -26,14 +29,23 @@ to your Google account and grant permission for managing google earth engine. Th
 \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize()} give the possibility of authorize Google drive (googledrive) and Google Cloud
-Storage (googlecloudStorageR). By default, rgee do not need to them, these are just neccesary for
-exportation and importation tasks. All the user credentials are save in the folder \code{~/.config/earthengine/USERS/},
-if a user is not specified the parameters of the last session will be used.
+\code{ee_Initialize()} give the possibility of authorize Google drive (googledrive)
+and Google Cloud Storage (googlecloudStorageR). By default, rgee do not need to them,
+these are just necessary for exportation and importation tasks. All the user credentials
+are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not specified
+the parameters of the last session would be used.
 }
 \examples{
-\dontrun{
+ee_reattach() # reattach ee as a reserve word
+
+# Simple init
 library(rgee)
 ee_Initialize()
-}
+
+# Advanced init
+expr <- ee_Initialize(user_gmail = 'aybar1994@gmail.com',
+                      drive = TRUE,
+                      gcs = TRUE,
+                      checkpy = TRUE,
+                      assethome = 'users/aybar1994')
 }
