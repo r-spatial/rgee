@@ -4,7 +4,7 @@
 \alias{ee_install-tools}
 \alias{ee_install_drivers}
 \alias{ee_install_rgee_python_packages}
-\alias{ee_remove_drivers}
+\alias{ee_remove_driver}
 \alias{ee_remove_credentials}
 \title{Interface to install non-R rgee dependencies}
 \usage{
@@ -14,11 +14,11 @@ ee_install_rgee_python_packages(method = c("auto", "virtualenv",
   "conda"), conda = "auto", ee_version = "0.1.175", envname = NULL,
   extra_packages = c("selenium", "bs4", "pysmartDL",
   "requests_toolbelt"), restart_session = TRUE,
-  conda_python_version = "3.6", quiet = quiet, ...)
+  conda_python_version = "3.6", quiet = FALSE, ...)
 
-ee_remove_drivers(quiet = TRUE)
+ee_remove_driver(quiet = FALSE)
 
-ee_remove_credentials(user, quiet = TRUE)
+ee_remove_credentials(user, quiet = FALSE)
 }
 \arguments{
 \item{GoogleChromeVersion}{Google Chrome version of this system.}

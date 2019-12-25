@@ -92,7 +92,7 @@ ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "co
                                             extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt"),
                                             restart_session = TRUE,
                                             conda_python_version = "3.6",
-                                            quiet = quiet,
+                                            quiet = FALSE,
                                             ...) {
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
@@ -132,18 +132,19 @@ ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "co
 
 #' @rdname ee_install-tools
 #' @export
-ee_remove_drivers <- function(quiet = TRUE) {
+ee_remove_driver <- function(quiet = FALSE) {
   ee_path <- path.expand("~/.config/earthengine/")
   gecko_driver_linux <- sprintf("%s/chromedriver", ee_path)
   gecko_driver_win <- sprintf("%s/chromedriver.exe", ee_path)
   if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
   if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
-  if (!quiet) cat(sprintf("Credentials in %s has been removed.", ee_path))
+  if (!quiet) cat(sprintf("GoogleDrive driver in %s has been removed.", ee_path))
+  invisible(TRUE)
 }
 
 #' @rdname ee_install-tools
 #' @export
-ee_remove_credentials <- function(user, quiet = TRUE) {
+ee_remove_credentials <- function(user, quiet = FALSE) {
   ee_path <- path.expand("~/.config/earthengine/")
   ee_credentials <- sprintf("%scredentials", ee_path)
   drive_credentials <- list.files(ee_path, "@gmail.com", full.names = TRUE)[1]
@@ -151,5 +152,7 @@ ee_remove_credentials <- function(user, quiet = TRUE) {
   unlink(paste0(ee_path, user), recursive = TRUE)
   credentials_total <- c(gcs_credentials, drive_credentials, ee_credentials)
   unlink(credentials_total)
+  if (!quiet) cat(sprintf("Credentials in %s has been removed.", paste0(ee_path, user)))
   invisible(TRUE)
 }
+

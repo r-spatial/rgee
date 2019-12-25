@@ -15,6 +15,7 @@ addons:
     sources:
     - sourceline: ppa:ubuntugis/ubuntugis-unstable
     packages:
+    - dpkg
     - libprotobuf-dev
     - protobuf-compiler
     - libv8-3.14-dev
@@ -29,6 +30,7 @@ addons:
     - netcdf-bin
     - python3
     - python3-pip
+    chrome: stable
 
 before_install:
 - sudo apt-get update
@@ -51,6 +53,7 @@ install:
 - sudo -H pip3 install requests_toolbelt
 - python3 -V
 - pip3 freeze
+- google-chrome --version
 - R -q -e 'tic::install()'
 script:
 - R -q -e 'tic::script()'

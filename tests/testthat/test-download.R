@@ -1,54 +1,55 @@
 context("rgee: ee_download test")
 
 # Communal Reserve Amarakaeri - Peru
-# xmin <- -71.132591318
-# xmax <- -70.953664315
-# ymin <- -12.892451233
-# ymax <- -12.731116372
-# x_mean <- (xmin + xmax) / 2
-# y_mean <- (ymin + ymax) / 2
-#
-# ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
-# ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
-#   list() %>%
-#   st_polygon() %>%
-#   st_sfc() %>%
-#   st_set_crs(4326)
-# ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
-#
-# # Elevation map
-# ic_srtm <- image <- ee$Image("CGIAR/SRTM90_V4")$reproject(crs = "EPSG:4326", scale = 500)
-# mean_srtm_Amarakaeri <- ic_srtm$clip(ee_geom)
-#
-# # Testing parameters ------------------------------------------------------
-# fc_test <- ee$FeatureCollection(ee$Feature(ee_geom,list('test'='feature')))
-# image_test <- mean_srtm_Amarakaeri
-# imageExportFormatOptions_1 <- list(patchDimensions= c(10L, 10L),compressed =  TRUE)
-# imageExportFormatOptions_2 <- list(patchDimensions= c(10L, 10L),compressed =  FALSE)
-# vectorExportFormatOptions_1 <- list(compressed =  TRUE)
-# vectorExportFormatOptions_2 <- list(compressed =  FALSE)
-#
-# googledrive::drive_rm("rgee_testing")
-# googledrive::drive_mkdir("rgee_testing")
-# #googleCloudStorageR::gcs_global_bucket("bag_csaybar")
-# #buckets <- googleCloudStorageR::gcs_list_objects()
-# #gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
-# #mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
-#
+xmin <- -71.132591318
+xmax <- -70.953664315
+ymin <- -12.892451233
+ymax <- -12.731116372
+x_mean <- (xmin + xmax) / 2
+y_mean <- (ymin + ymax) / 2
+
+ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
+ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+  list() %>%
+  st_polygon() %>%
+  st_sfc() %>%
+  st_set_crs(4326)
+ee_geom <- sf_as_ee(ROI_polygon,check_ring_dir = TRUE)
+
+# Elevation map
+ic_srtm <- ee$Image("CGIAR/SRTM90_V4")$reproject(crs = "EPSG:4326", scale = 500)
+mean_srtm_Amarakaeri <- ic_srtm$clip(ee_geom)
+
+# Testing parameters ------------------------------------------------------
+fc_test <- ee$FeatureCollection(ee$Feature(ee_geom,list('test'='feature')))
+image_test <- mean_srtm_Amarakaeri
+imageExportFormatOptions_1 <- list(patchDimensions= c(10L, 10L),compressed =  TRUE)
+imageExportFormatOptions_2 <- list(patchDimensions= c(10L, 10L),compressed =  FALSE)
+vectorExportFormatOptions_1 <- list(compressed =  TRUE)
+vectorExportFormatOptions_2 <- list(compressed =  FALSE)
+
+googledrive::drive_rm("rgee_testing")
+googledrive::drive_mkdir("rgee_testing")
+
+googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+buckets <- googleCloudStorageR::gcs_list_objects()
+gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
+mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+
 # ### IMAGES
 # # 1. GEOTIFF - DRIVE
-# test_that("GEOTIFF_DRIVE",{
-#   task_img <- ee$batch$Export$image$toDrive(
-#     image = image_test,
-#     folder = "rgee_testing",
-#     fileFormat = "GEOTIFF",
-#     fileNamePrefix = "test_image_GEOTIFF"
-#   )
-#   task_img$start()
-#   ee_monitoring(task_img)
-#   img <- ee_download_drive(task = task_img)
-#   expect_is(img, "stars")
-# })
+test_that("GEOTIFF_DRIVE",{
+  task_img <- ee$batch$Export$image$toDrive(
+    image = image_test,
+    folder = "rgee_testing",
+    fileFormat = "GEOTIFF",
+    fileNamePrefix = "test_image_GEOTIFF"
+  )
+  task_img$start()
+  ee_monitoring(task_img)
+  img <- ee_download_drive(task = task_img)
+  expect_is(img, "stars")
+})
 #
 #
 # # 2. CTFRECORD_IMAGE - DRIVE
@@ -323,9 +324,10 @@ context("rgee: ee_download test")
 #   expect_equal(vector, TRUE)
 # })
 #
-# googledrive::drive_rm("rgee_testing")
-# googledrive::drive_mkdir("rgee_testing")
-# googleCloudStorageR::gcs_global_bucket("bag_csaybar")
-# buckets <- googleCloudStorageR::gcs_list_objects()
-# gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
-# mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+
+# Clean environment
+googledrive::drive_rm("rgee_testing")
+googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+buckets <- googleCloudStorageR::gcs_list_objects()
+gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
+mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
