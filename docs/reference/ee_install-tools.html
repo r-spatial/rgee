@@ -43,7 +43,8 @@
 
 
 <meta property="og:title" content="Interface to install non-R rgee dependencies — ee_install-tools" />
-<meta property="og:description" content="R functions for installing and removing Python Selenium Chromedriver and Third-Party Python packages." />
+<meta property="og:description" content="R functions to install the necessary third-party python packages
+for rgee and removing Python Selenium Chromedriver and credentials" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -152,16 +153,17 @@
     </div>
 
     <div class="ref-description">
-    <p>R functions for installing and removing Python Selenium Chromedriver and Third-Party Python packages.</p>
+    <p>R functions to install the necessary third-party python packages
+for rgee and removing Python Selenium Chromedriver and credentials</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_drivers</span>(<span class='no'>GoogleChromeVersion</span>)
 
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='no'>quiet</span>)
-
-<span class='fu'>ee_install_python_package</span>(<span class='no'>pypackage</span>, <span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_install_python_ee</span>(<span class='kw'>conda</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>,
+  <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"0.1.175"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>extra_packages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"selenium"</span>, <span class='st'>"bs4"</span>, <span class='st'>"pysmartDL"</span>,
+  <span class='st'>"requests_toolbelt"</span>), <span class='kw'>restart_session</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='no'>quiet</span>, <span class='no'>...</span>)
 
 <span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -175,16 +177,51 @@
       <td><p>Google Chrome version of this system.</p></td>
     </tr>
     <tr>
+      <th>method</th>
+      <td><p>Installation method. By default, "auto" automatically finds a
+method that will work in the local environment. Change the default to force
+a specific installation method. Note that the "virtualenv" method is not
+available on Windows (as this isn't supported by rgee). Note also that
+since this command runs without privilege the "system" method is
+available only on Windows.</p></td>
+    </tr>
+    <tr>
       <th>conda</th>
-      <td><p>If TRUE conda is used instead of pip. conda executable needs setting in PATH.</p></td>
+      <td><p>Path to conda executable (or "auto" to find conda
+using the PATH and other conventional install locations).</p></td>
+    </tr>
+    <tr>
+      <th>ee_version</th>
+      <td><p>earthengine-api version to install. Up to and including
+earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.</p></td>
+    </tr>
+    <tr>
+      <th>envname</th>
+      <td><p>Name of Python environment to install within</p></td>
+    </tr>
+    <tr>
+      <th>extra_packages</th>
+      <td><p>Additional Python packages to install along with
+rgee.</p></td>
+    </tr>
+    <tr>
+      <th>restart_session</th>
+      <td><p>Restart R session after installing (note this will
+only occur within RStudio).</p></td>
+    </tr>
+    <tr>
+      <th>conda_python_version</th>
+      <td><p>the python version installed in the created conda
+environment. Python 3.6 is installed by default.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
       <td><p>logical. Suppress info message</p></td>
     </tr>
     <tr>
-      <th>pypackage</th>
-      <td><p>character. Package names to install.</p></td>
+      <th>...</th>
+      <td><p>other arguments passed to <code><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>reticulate::conda_install()</a></code> or
+<code><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>reticulate::virtualenv_install()</a></code>.</p></td>
     </tr>
     <tr>
       <th>user</th>
@@ -194,25 +231,26 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is neccessary restart R to observe change when installing a Python packages. rgee only is
-compatible with Python version 3.5 &gt;.</p>
+    <p>It is neccessary restart R to observe change when installing a
+Python packages. rgee only is compatible with Python version 3.5 &gt;.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 
-<span class='co'># Recommended way to use rgee for Linux users</span>
+<span class='co'># Recommended way to use rgee</span>
+<span class='co'>## 1. Create a virtualenv</span>
 <span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
 <span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.7"</span>)
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>) <span class='co'># Restart R</span>
+<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
+<span class='co'># rstudioapi::restartSession() # Restart R</span>
 
+<span class='co'>## 2. Check dependencies</span>
 <span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
 <span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenim drivers</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span><span class='kw'>=</span><span class='fl'>TRUE</span>,<span class='kw'>gcs</span><span class='kw'>=</span><span class='fl'>TRUE</span>) <span class='co'># Install credentials</span>
+<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenium drivers (see ee_upload)</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># Install GCS and DRIVE credentials (optional)</span>
 <span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
-
-<span class='co'># Recommended way to install external dependencies of rgee for Windows users</span>
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -233,7 +271,7 @@ compatible with Python version 3.5 &gt;.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>

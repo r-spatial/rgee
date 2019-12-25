@@ -236,7 +236,6 @@ ee$data$getAssetRoots().<br /></p></li>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>"csaybar"</span>)
 <span class='fu'><a href='ee_check-tools.html'>ee_check_drivers</a></span>()
 
@@ -246,7 +245,7 @@ ee$data$getAssetRoots().<br /></p></li>
 <span class='no'>tif</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/geomatrix.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
 <span class='no'>geomatrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/st_warp.html'>st_warp</a></span>(<span class='kw'>crs</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_crs</a></span>(<span class='fl'>4326</span>))
 <span class='no'>delta_geomatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>x</span>$<span class='no'>delta</span>,<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>y</span>$<span class='no'>delta</span>*-<span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>geomatrix</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>geomatrix</span>)
 
 <span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>geomatrix</span>,<span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))
 <span class='no'>ee_geomatrix</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))
@@ -255,7 +254,7 @@ ee$data$getAssetRoots().<br /></p></li>
                                    <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>255</span>))
 <span class='no'>geomatrix_stars</span>[<span class='no'>geomatrix_stars</span><span class='kw'>&lt;=</span><span class='fl'>0</span>]<span class='kw'>=</span><span class='fl'>NA</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>geomatrix_stars</span>) <span class='kw'>&lt;-</span> <span class='st'>'geomatrix.tif'</span>
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>geomatrix_stars</span>)
+<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>geomatrix_stars</span>)
 
 <span class='co'>#ee_manage_delete(filename) # Remove the folder created at the beginning</span>
 
@@ -285,7 +284,7 @@ ee$data$getAssetRoots().<br /></p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
 
       </footer>
