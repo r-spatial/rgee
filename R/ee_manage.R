@@ -297,6 +297,8 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
   } else if (header=="Folder") {
     list_files = ee$data$getList(list(id=path_asset))
     items = unlist(lapply(list_files, '[[',2))
+    print(ee_manage_assets_access)
+    print(items)
     mapply(ee_manage_assets_access, items,MoreArgs = list(acl = acl))
   }
   invisible(TRUE)
