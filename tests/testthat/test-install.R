@@ -5,7 +5,7 @@ test_that("ee_install_drivers() error",{
 })
 
 test_that("ee_install_drivers()",{
-  expect_true(ee_install_drivers(77))
+  expect_true(ee_install_drivers(73))
 })
 
 test_that("ee_install_rgee_python_packages()",{

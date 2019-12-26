@@ -124,7 +124,9 @@ ee_upload.stars <- function(x, ...,
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
   tif_dir <- sprintf("%s/%s.tif", ee_temp, basename(filename))
   write_stars(x, tif_dir)
-  gs_uri <- ee_upload_file_to_gcs(tif_dir, bucket = bucket, selenium_params = selenium_params)
+  gs_uri <- ee_upload_file_to_gcs(x = tif_dir,
+                                  bucket = bucket,
+                                  selenium_params = selenium_params)
   ee_gcs_to_asset(gs_uri, filename, type = 'image', properties=properties)
   return(TRUE)
 }

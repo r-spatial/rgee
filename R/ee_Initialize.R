@@ -64,6 +64,9 @@ ee_Initialize <- function(user_gmail = NULL,
   }
   if (gcs) {
     ee_create_credentials_gcs(assethome, quiet)
+    ee_path <- path.expand("~/.config/earthengine")
+    gcs_cre <- sprintf('%s/%s', ee_path, 'GCS_AUTH_FILE.json')
+    options(rgee.gcs.auth=gcs_cre)
   }
 
   tryCatch(expr = ee$Initialize(),

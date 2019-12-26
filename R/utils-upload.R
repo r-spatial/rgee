@@ -200,8 +200,9 @@ ee_upload_file_to_gcs <- function(x,
     } else {
       ee_path <- path.expand("~/.config/earthengine")
       user <- read.table(sprintf("%s/rgee_sessioninfo.txt",ee_path),header = TRUE)[['user']]
-      ee_Initialize(user_gmail = paste0(user,"@gmail.com"),gcs = TRUE)
+      ee_Initialize(user_gmail = paste0(user,"@gmail.com"), gcs = TRUE)
       googleCloudStorageR::gcs_global_bucket(bucket = bucket)
+      dasda <- '/home/aybarpc01/.config/earthengine/GCS_AUTH_FILE.json'
       googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth")) #init?
       setwd(dirname(x))
       googleCloudStorageR::gcs_upload(x, name = basename(x))
