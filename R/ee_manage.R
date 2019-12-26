@@ -110,8 +110,8 @@ ee_manage_assetlist = function(path_asset, quiet=FALSE) {
   response = ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
   list_files = ee$data$getList(list(id=path_asset))
-  ids = unlist(lapply(list_files, '[[',1))
-  type = unlist(lapply(list_files, '[[',2))
+  ids = unlist(lapply(list_files, '[[','id'))
+  type = unlist(lapply(list_files, '[[','type'))
   df_path = data.frame(ID = ids, TYPE = type,stringsAsFactors = FALSE)
   df_path = rbind(df_path[df_path$TYPE == 'ImageCollection',],
                   df_path[df_path$TYPE == 'Folder',],
@@ -177,7 +177,7 @@ ee_manage_copy <- function(path_asset,final_path,quiet = FALSE) {
     if (!quiet) cat('Done\n')
   } else if(header == 'Folder') {
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[','id') %>%
       unlist()
     ee_manage_create(path_asset = final_path,
                      asset_type = 'Folder')
@@ -197,8 +197,8 @@ ee_manage_copy <- function(path_asset,final_path,quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
-  path_asset = ee_verify_filename(path_asset,strict = TRUE)
-  final_path = ee_verify_filename(final_path,strict = FALSE)
+  path_asset <- ee_verify_filename(path_asset,strict = TRUE)
+  final_path <- ee_verify_filename(final_path,strict = FALSE)
   header = ee$data$getInfo(path_asset)[['type']]
   if (header %in% c("Image","ImageCollection","FeatureCollection")) {
     ee$data$renameAsset(path_asset, final_path)
@@ -207,7 +207,7 @@ ee_manage_move = function(path_asset, final_path, quiet = FALSE) {
     header_finalpath = ee$data$getInfo(final_path)[['type']]
     if (is.null(header_finalpath)) ee_manage_create(final_path,quiet = quiet)
     to_copy_list = ee$data$getList(params=list(id = path_asset))  %>%
-      lapply('[[',1) %>%
+      lapply('[[','id') %>%
       unlist()
     if (!quiet) cat('Moving a total of', length(to_copy_list), ' elements ..... please wait\n')
     folder_destination = sprintf("%s/%s",final_path,basename(to_copy_list))
@@ -295,7 +295,7 @@ ee_manage_assets_access = function(path_asset, acl = getOption("rgee.manage.getA
     if (!quiet) cat('The ACL of',path_asset,'has been changed.\n')
   } else if (header=="Folder") {
     list_files = ee$data$getList(list(id=path_asset))
-    items = unlist(lapply(list_files, '[[',1))
+    items = unlist(lapply(list_files, '[[','id'))
     mapply(ee_manage_assets_access, items,MoreArgs = list(acl = acl))
   }
   invisible(TRUE)

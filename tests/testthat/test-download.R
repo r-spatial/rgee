@@ -28,7 +28,19 @@ imageExportFormatOptions_2 <- list(patchDimensions= c(10L, 10L),compressed =  FA
 vectorExportFormatOptions_1 <- list(compressed =  TRUE)
 vectorExportFormatOptions_2 <- list(compressed =  FALSE)
 
-googledrive::drive_rm("rgee_testing")
+ee_Initialize(user_gmail = 'aybar1994@gmail.com',
+              drive = TRUE,
+              gcs = TRUE,
+              checkpy = FALSE,
+              assethome = 'users/aybar1994')
+
+count <- 1
+try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
+while (class(try_gd_rm) == "try-error" & count < 5) {
+  try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
+  count <- count + 1
+}
+
 googledrive::drive_mkdir("rgee_testing")
 
 googleCloudStorageR::gcs_global_bucket("bag_csaybar")
@@ -326,7 +338,13 @@ test_that("GEOTIFF_DRIVE",{
 #
 
 # Clean environment
-googledrive::drive_rm("rgee_testing")
+count <- 1
+try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
+while (class(try_gd_rm) == "try-error" & count < 5) {
+  try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
+  count <- count + 1
+}
+
 googleCloudStorageR::gcs_global_bucket("bag_csaybar")
 buckets <- googleCloudStorageR::gcs_list_objects()
 gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]

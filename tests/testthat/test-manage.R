@@ -11,6 +11,7 @@ test_that("simple_test",{
   ee_manage_size('users/aybar1994/rgee')
   ee_manage_move(path_asset = 'users/aybar1994/rgee/rgee_ic',
                  final_path = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved')
+  Sys.sleep(1)
   ee_manage_assetlist('users/aybar1994/rgee/rgee_folder')
   ee_manage_set_properties(path_asset = 'users/aybar1994/rgee/rgee_folder/rgee_ic_moved',
                            properties = list(message='hello-world',language = 'R'))
