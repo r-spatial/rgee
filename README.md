@@ -4,7 +4,7 @@
 # Google Earth Engine for R
 
 [![Build
-Status](https://travis-ci.org/csaybar/rgee.svg?branch=dev)](https://travis-ci.org/csaybar/rgee)
+Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -16,6 +16,8 @@ status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=m
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
 [![DOI](https://zenodo.org/badge/205997187.svg)](https://zenodo.org/badge/latestdoi/205997187)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
 `rgee` is a bindings package for calling [Google
 Earth Engine API](https://developers.google.com/earth-engine/) from
