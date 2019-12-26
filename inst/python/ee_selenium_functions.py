@@ -40,9 +40,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from requests_toolbelt import MultipartEncoder
 #ee_get_google_auth_session_py(username, password, dirname)
-#username = r['username']
-#password = r['password']
-#dirname = r['dirname']
+# username = r['username']
+# password = r['password']
+# dirname = r['dirname']
+# ee_get_google_auth_session_py(username, password, dirname)
 def ee_get_google_auth_session_py(username, password, dirname):
     """ Get cookies from https://code.earthengine.google.com using Selenium
 
@@ -69,10 +70,11 @@ def ee_get_google_auth_session_py(username, password, dirname):
     if os.name == 'nt':
         path_driver = os.path.join(dirname, 'geckodriver.exe')
         driver = Chrome(executable_path=path_driver,
-                         firefox_options=options)
+                        chrome_options=options)
     elif os.name == 'posix':
         path_driver = os.path.join(dirname, 'chromedriver')
-        driver = Chrome(executable_path=path_driver)
+        driver = Chrome(executable_path=path_driver,
+                        chrome_options=options)
     driver.get(authorization_url)
     username = driver.find_element_by_xpath('//*[@id="identifierId"]')
     username.send_keys(uname)
@@ -83,10 +85,11 @@ def ee_get_google_auth_session_py(username, password, dirname):
     time.sleep(1)
     task_pass.click()
     try:
-        element_g = "/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div[2]/div/div/div/form/span/section/div/div/div/div/ul/li[1]"
-        re_confirm =  WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH,element_g)))
+        element_g = '//*[@id="view_container"]/div/div/div[2]/div/div[1]/div/form/span/section/div/div/div/div/ul/li[1]/div/div[1]/div/div[2]/div[1]'
+        re_confirm =  WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,element_g)))
         re_confirm.click()
-        #WebDriverWait(driver,20).until(EC.presence_of_element_located((By.XPATH, '//*[@id=":1c"]')))
+        ee_button = '//*[@id="main"]/div[1]/div[1]/div/div[1]/div/div[1]/div/div[2]/div[1]/div[1]/div/div[1]/button'
+        WebDriverWait(driver,20).until(EC.presence_of_element_located((By.XPATH, ee_button)))
     except Exception as e:
         pass
     cookies = driver.get_cookies()

@@ -12,14 +12,17 @@ ee_upload(x, ...)
 
 \method{ee_upload}{character}(x, ..., filename, bucket = NULL,
   properties = getOption("rgee.upload.properties"),
-  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
+  selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
+  quiet = FALSE)
 
 \method{ee_upload}{sf}(x, ..., filename, bucket = NULL,
-  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
+  selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
+  quiet = FALSE)
 
 \method{ee_upload}{stars}(x, ..., filename, bucket = NULL,
   properties = getOption("rgee.upload.properties"),
-  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
+  selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
+  quiet = FALSE)
 
 \method{ee_upload}{stars_proxy}(x, ..., filename, bucket = NULL,
   properties = getOption("rgee.upload.properties"),
@@ -37,6 +40,8 @@ ee_upload(x, ...)
 \item{properties}{List. Set of parameters to established as a property of an EE object. See details.}
 
 \item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
+
+\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
 
 \item{quiet}{Logical. Suppress info message.}
 }

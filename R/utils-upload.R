@@ -75,6 +75,7 @@ create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")){
 #' @param x filename (character), sf or stars object.
 #' @param bucket bucketname you are uploading to
 #' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
+#' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
 #' @param quiet Logical. Suppress info message.
 #' @importFrom getPass getPass
 #' @details
@@ -95,6 +96,7 @@ create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")){
 ee_upload_file_to_gcs <- function(x,
                                   bucket = NULL,
                                   selenium_params = getOption("rgee.selenium.params"),
+                                  clean = FALSE,
                                   quiet = FALSE) {
 
   check_warning <- tryCatch(expr = ee_check_drivers(),
@@ -130,10 +132,10 @@ ee_upload_file_to_gcs <- function(x,
     session_temp <- sprintf("%s/rgee_session_by_selenium.Rdata", tempdir_gee)
 
     # Geeting cookies from https://code.earthengine.google.com/
-    if (file.exists(session_temp)) {
+    if (file.exists(session_temp) && clean) {
       session <- ee_selenium_functions$load_py_object(session_temp)
     } else {
-      if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$gmail_account))
+      if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$user_gmail))
       if (nchar(selenium_params$user_password) > 4) {
         password <- selenium_params$user_password
       } else {
@@ -148,9 +150,6 @@ ee_upload_file_to_gcs <- function(x,
       }
       if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
       ee_path <- path.expand("~/.config/earthengine")
-      cat(selenium_params$user_gmail)
-      cat(password)
-      cat(ee_path)
       session <- ee_selenium_functions$ee_get_google_auth_session_py(username = selenium_params$user_gmail,
                                                                      password = password,
                                                                      dirname =  ee_path)

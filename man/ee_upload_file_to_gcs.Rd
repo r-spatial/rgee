@@ -5,7 +5,8 @@
 \title{Upload local files to google cloud storage}
 \usage{
 ee_upload_file_to_gcs(x, bucket = NULL,
-  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
+  selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
+  quiet = FALSE)
 }
 \arguments{
 \item{x}{filename (character), sf or stars object.}
@@ -13,6 +14,8 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 \item{bucket}{bucketname you are uploading to}
 
 \item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
+
+\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
 
 \item{quiet}{Logical. Suppress info message.}
 }

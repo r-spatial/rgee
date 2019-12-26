@@ -7,6 +7,7 @@
 #' @param bucket bucketname you are uploading to. See details.
 #' @param properties List. Set of parameters to established as a property of an EE object. See details.
 #' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
+#' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
 #' @param quiet Logical. Suppress info message.
 #' @param ... ignored
 #' @importFrom methods is as
@@ -76,6 +77,7 @@ ee_upload.character <- function(x, ... ,
                                 bucket = NULL,
                                 properties = getOption("rgee.upload.properties"),
                                 selenium_params = getOption("rgee.selenium.params"),
+                                clean = FALSE,
                                 quiet = FALSE) {
   user_gmail <- getOption("rgee.selenium.params")$user_gmail
   if (is.null(user_gmail)) {
@@ -85,7 +87,7 @@ ee_upload.character <- function(x, ... ,
   }
 
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
-  gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params)
+  gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params, clean = clean)
     if (image_or_vector(x) == "sf") {
     ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
   } else if (image_or_vector(x) == "stars") {
@@ -102,12 +104,13 @@ ee_upload.sf <- function(x, ...,
                          filename,
                          bucket = NULL,
                          selenium_params = getOption("rgee.selenium.params"),
+                         clean = FALSE,
                          quiet = FALSE) {
   ee_temp <- tempdir()
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
   shp_dir <- sprintf("%s/%s.shp", ee_temp, basename(filename))
   write_sf(x,shp_dir)
-  gs_uri <- ee_upload_file_to_gcs(shp_dir, bucket = bucket, selenium_params = selenium_params)
+  gs_uri <- ee_upload_file_to_gcs(shp_dir, bucket = bucket, selenium_params = selenium_params, clean = clean)
   ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
   return(TRUE)
 }
@@ -119,6 +122,7 @@ ee_upload.stars <- function(x, ...,
                             bucket = NULL,
                             properties = getOption("rgee.upload.properties"),
                             selenium_params = getOption("rgee.selenium.params"),
+                            clean = FALSE,
                             quiet = FALSE) {
   ee_temp <- tempdir()
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
@@ -126,7 +130,8 @@ ee_upload.stars <- function(x, ...,
   write_stars(x, tif_dir)
   gs_uri <- ee_upload_file_to_gcs(x = tif_dir,
                                   bucket = bucket,
-                                  selenium_params = selenium_params)
+                                  selenium_params = selenium_params,
+                                  clean = clean)
   ee_gcs_to_asset(gs_uri, filename, type = 'image', properties=properties)
   return(TRUE)
 }
