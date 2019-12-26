@@ -10,11 +10,12 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/csaybar/rgee)
-[![codecov](https://codecov.io/gh/csaybar/rgee/branch/dev/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
+[![codecov](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
+[![DOI](https://zenodo.org/badge/205997187.svg)](https://zenodo.org/badge/latestdoi/205997187)
 
 `rgee` is a bindings package for calling [Google
 Earth Engine API](https://developers.google.com/earth-engine/) from
@@ -47,19 +48,54 @@ image <- ee$Image('CGIAR/SRTM90_V4')
 image$bandNames()$getInfo()
 #> [1] "elevation"
 ```
+## Installation
 
-## TODO
+To get started, install the gee R package from GitHub as follows:
 
-  - Improve documentation.
-  - Generate better examples.
-  - py\_help: Generate compressible documentation in an html format.
-  - Unit testing
+``` r
+remotes::install_git("csaybar/rgee")
+```
+
+### Windows
+
+Before install `rgee` be sure that
+[Rtools](https://cran.r-project.org/bin/windows/Rtools/) is installed in
+the system. The static libraries will automatically downloaded from
+[rwinlib](https://github.com/rwinlib/).
+
+### Linux
+
+Please install the follow system libraries.
+
+    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
+    sudo apt-get update
+    sudo apt-get install libprotobuf-dev protobuf-compiler libv8-3.14-dev libjq-dev libudunits2-dev libproj-dev libgeos-dev libspatialite-dev libgdal-dev libjson-c-dev libnetcdf-dev netcdf-bin
+
+### MacOS
+
+Use [Homebrew](https://brew.sh/) to install system libraries:
+
+    brew install pkg-config
+    brew install gdal
+    brew install netcdf
+    brew install libgit2
+    brew install udunits
+    brew install curl
+    brew install sqlite
+
+### Docker image (Recommended way to use rgee)
+
+    docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
+
+After that, in your preferred browser, run:
+
+    127.0.0.1:8787
 
 ## Features
 
-  - [**ee$…:**](https://developers.google.com/earth-engine/) Complete
-    access to the Earth Engine API from within
-    R.
+The main user relevant functions are:
+
+  - [**ee$…:**](https://developers.google.com/earth-engine/) Complete access to the Earth Engine API from within R.
   - [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html)
     Multi-user support for Initialize Earth Engine, a wrapper around
     `ee$Initialize`.
@@ -103,82 +139,42 @@ image$bandNames()$getInfo()
 **NOTE: Access to Google Earth Engine is currently only available to
 [registered users](https://earthengine.google.com/)**.
 
-## Installation
-
-Install development versions from github with
-
-``` r
-remotes::install_git("csaybar/rgee")
-```
-
-### Windows
-
-Before install `rgee` be sure that
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/) is installed in
-the system. The static libraries will automatically downloaded from
-[rwinlib](https://github.com/rwinlib/).
-
-### Linux
-
-Please install the follow system libraries.
-
-#### Ubuntu
-
-    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-    sudo apt-get update
-    sudo apt-get install libprotobuf-dev protobuf-compiler libv8-3.14-dev libjq-dev libudunits2-dev libproj-dev libgeos-dev libspatialite-dev libgdal-dev libjson-c-dev libnetcdf-dev netcdf-bin
-
-### MacOS
-
-Use [Homebrew](https://brew.sh/) to install system libraries:
-
-    brew install pkg-config
-    brew install gdal
-    brew install netcdf
-    brew install libgit2
-    brew install udunits
-    brew install curl
-    brew install sqlite
-
-### Docker image (Recommended way to use rgee)
-
-    docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
-
-After that, in your preferred browser,
-run:
-
-    127.0.0.1:8787
-
 ## How does it works?
 
 ![workflow](https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/rgee.png)
 
-## Credits
+## Code of Conduct
 
-The rgee has been inspired by the following third-party R/Python
-packages:
+Please note that the `rgee` project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
-  - **[gdalcubes - Marius
-    Appel](https://github.com/appelmar/gdalcubes)**
-  - **[gee\_asset\_manager - Lukasz
-    Tracewski](https://github.com/tracek/gee_asset_manager)**  
-  - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
-  - **[geeadd - Samapriya
-    Roy](https://github.com/samapriya/gee_asset_manager_addon)**
-  - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee)**
-  - **[geetools - Rodrigo E.
-    Principe](https://github.com/gee-community/gee_tools)**
-  - **[landsat-extract-gee - Loïc
-    Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
-  - **[earthEngineGrabR -
-    JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
+## Contributing Guide
 
-## Contributing
+👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
 
-  - `rgee` welcomes any kind of contributions. Please check the [rgee
-    Community Code of Conduct]() for details.
-  - Are you interested in creating a pull request?. Make sure the code
-    follows the [tidyverse style guide](https://style.tidyverse.org/)
-    and to submit them to the develop branch of this repository.
-  - Please file bug reports and feature requests at
-    <https://github.com/csaybar/rgee/issues>.
+
+## Share the love ❤️
+
+Think **rgee** is useful? Let others discover it, by telling them in
+person, via Twitter or a blog post.
+
+Using **rgee** for a paper you are writing? Consider citing it
+
+``` r
+citation("rgee")
+#> 
+#> To cite dbparser in publications use:
+#> 
+#>   Aybar Cesar, Yali Roy, Barja Antony, and Maria Aduato (2019). rgee: Google Earth Engine for R.
+#>   R package version 0.2.0.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {Google Earth Engine for R},
+#>     author = {Aybar Cesar, Yali Roy, Barja Antony, and Maria Aduato},
+#>     organization = {},
+#>     year = {2019},
+#>     note = {R package version 0.2.0},
+#>     url = {https://CRAN.R-project.org/package=rgee},
+#>   }
+```
