@@ -41,7 +41,9 @@ before_install:
 - tar -xvf /home/travis/secret.tar -C /home/travis/
 - R -q -e 'tic::before_install()'
 install:
+- sudo apt-get install python3-venv
 - sudo -H pip3 install --upgrade pip
+- sudo -H pip3 install virtualenv
 - sudo -H pip3 install setuptools
 - sudo -H pip3 install earthengine-api==0.1.175
 - sudo -H pip3 install coveralls
