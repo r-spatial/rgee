@@ -1,0 +1,16 @@
+---
+title: "rgee_Install"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rgee_install}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
