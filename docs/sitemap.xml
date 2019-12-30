@@ -46,6 +46,9 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_py_to_r.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_pyfunc.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_reattach.html</loc>
   </url>
   <url>
@@ -71,5 +74,8 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/articles/rgee_animation.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/articles/rgee_install.html</loc>
   </url>
 </urlset>

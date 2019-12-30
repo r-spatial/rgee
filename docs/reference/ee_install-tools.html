@@ -43,8 +43,9 @@
 
 
 <meta property="og:title" content="Interface to install non-R rgee dependencies — ee_install-tools" />
-<meta property="og:description" content="R functions to install the necessary third-party python packages
-for rgee and removing Python Selenium Chromedriver and credentials" />
+<meta property="og:description" content="R functions to install the necessary third-party
+python packages for rgee and removing Python
+Selenium Chromedriver and credentials" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ for rgee and removing Python Selenium Chromedriver and credentials" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -153,8 +154,9 @@ for rgee and removing Python Selenium Chromedriver and credentials" />
     </div>
 
     <div class="ref-description">
-    <p>R functions to install the necessary third-party python packages
-for rgee and removing Python Selenium Chromedriver and credentials</p>
+    <p>R functions to install the necessary third-party
+python packages for rgee and removing Python
+Selenium Chromedriver and credentials</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_drivers</span>(<span class='no'>GoogleChromeVersion</span>)
@@ -163,11 +165,11 @@ for rgee and removing Python Selenium Chromedriver and credentials</p>
   <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"0.1.175"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>extra_packages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"selenium"</span>, <span class='st'>"bs4"</span>, <span class='st'>"pysmartDL"</span>,
   <span class='st'>"requests_toolbelt"</span>), <span class='kw'>restart_session</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='no'>quiet</span>, <span class='no'>...</span>)
+  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
 
-<span class='fu'>ee_remove_drivers</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>ee_remove_driver</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_remove_credentials</span>(<span class='no'>user</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+<span class='fu'>ee_remove_credentials</span>(<span class='no'>user</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,12 +180,12 @@ for rgee and removing Python Selenium Chromedriver and credentials</p>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Installation method. By default, "auto" automatically finds a
-method that will work in the local environment. Change the default to force
-a specific installation method. Note that the "virtualenv" method is not
-available on Windows (as this isn't supported by rgee). Note also that
-since this command runs without privilege the "system" method is
-available only on Windows.</p></td>
+      <td><p>Installation method. By default, "auto" automatically
+finds a method that will work in the local environment. Change the
+default to force a specific installation method. Note that the
+"virtualenv" method is not available on Windows (as this isn't
+supported by rgee). Note also that since this command runs
+without privilege the "system" method is available only on Windows.</p></td>
     </tr>
     <tr>
       <th>conda</th>
@@ -197,12 +199,11 @@ earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.</p></td
     </tr>
     <tr>
       <th>envname</th>
-      <td><p>Name of Python environment to install within</p></td>
+      <td><p>Name of Python environment to install.</p></td>
     </tr>
     <tr>
       <th>extra_packages</th>
-      <td><p>Additional Python packages to install along with
-rgee.</p></td>
+      <td><p>Additional Python packages to install along with rgee.</p></td>
     </tr>
     <tr>
       <th>restart_session</th>
@@ -211,7 +212,7 @@ only occur within RStudio).</p></td>
     </tr>
     <tr>
       <th>conda_python_version</th>
-      <td><p>the python version installed in the created conda
+      <td><p>the Python version installed in the created conda
 environment. Python 3.6 is installed by default.</p></td>
     </tr>
     <tr>
@@ -225,14 +226,14 @@ environment. Python 3.6 is installed by default.</p></td>
     </tr>
     <tr>
       <th>user</th>
-      <td><p>character. User to remove credentials</p></td>
+      <td><p>character. User to whom credentials would remove</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>It is neccessary restart R to observe change when installing a
-Python packages. rgee only is compatible with Python version 3.5 &gt;.</p>
+Python packages. rgee only is compatible with Python version 3.5 &gt;=.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -240,7 +241,7 @@ Python packages. rgee only is compatible with Python version 3.5 &gt;.</p>
 
 <span class='co'># Recommended way to use rgee</span>
 <span class='co'>## 1. Create a virtualenv</span>
-<span class='fu'>virtualenv_remove</span>(<span class='st'>"rgee"</span>)
+<span class='co'>#virtualenv_remove("rgee")</span>
 <span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.7"</span>)
 <span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
 <span class='co'># rstudioapi::restartSession() # Restart R</span>

@@ -3,6 +3,7 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   rgee_animation: rgee_animation.html
+  rgee_install: rgee_install.html
 urls:
   reference: http://csaybar.github.io/rgee/reference
   article: http://csaybar.github.io/rgee/articles

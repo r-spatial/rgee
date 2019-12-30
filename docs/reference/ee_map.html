@@ -43,8 +43,9 @@
 
 
 <meta property="og:title" content="Adds a given Earth Engine (EE) spatial object to mapview as a layer. — ee_map" />
-<meta property="og:description" content="Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
-FeatureCollection or ImageCollection) base on mapview." />
+<meta property="og:description" content="Create interactive visualizations of spatial EE objects
+(Geometry, Image, Feature, FeatureCollection or ImageCollection)
+through mapview." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ FeatureCollection or ImageCollection) base on mapview." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -153,8 +154,9 @@ FeatureCollection or ImageCollection) base on mapview." />
     </div>
 
     <div class="ref-description">
-    <p>Create interactive visualisations of spatial EE objects (Geometry, Image, Feature,
-FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
+    <p>Create interactive visualizations of spatial EE objects
+(Geometry, Image, Feature, FeatureCollection or ImageCollection)
+through <a href='mapview'>mapview</a>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_map</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
@@ -202,7 +204,7 @@ FeatureCollection or ImageCollection) base on <a href='mapview'>mapview</a>.</p>
     <tr>
       <th>center</th>
       <td><p>The longitude and latitude of the map center. If it is not defined,
-the centroid of the spatial EE object is taked.</p></td>
+ee_map will try to estimate the centroid of the spatial EE object.</p></td>
     </tr>
     <tr>
       <th>zoom_start</th>
@@ -227,7 +229,7 @@ be an ImageCollection.</p></td>
 
     <p><code>ee_map</code> takes advantage of the ee$Image()$getMapId python function for fetch and return
 a mapid and token that is suitable for use in a <a href='mapview'>mapview</a>. To achieve desirable
-visualization effects, it is depend on the type of spatial EE object . For neither Image or
+visualization effects, it will depend on the type of spatial EE object . For neither Image or
 ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
 The <a href='https://developers.google.com/earth-engine/image_visualization'>parameters</a> available are:</p>
 <table class='table'>
@@ -255,27 +257,33 @@ By default 000000.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
 <span class='co'># Case: Geometry*</span>
 <span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53522</span>, -<span class='fl'>15.75453</span>))
 <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(
   <span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>),
   <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
-)
-<span class='no'>m1</span>
+)</div><div class='output co'>#&gt;  center is missing, the centroid of this EE Geometry is used: 
+#&gt;  center:  -73.53522 -15.75453 </div><div class='input'><span class='no'>m1</span>
 
 <span class='co'># Case: Feature</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
-<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)
-<span class='no'>m2</span> + <span class='no'>m1</span>
+<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
+#&gt;  center is missing, the centroid of this EE Feature is used: 
+#&gt;  center:  -73.5352168496441 -15.7545342687562 </div><div class='input'><span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case: FeatureCollection</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)
-<span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
+<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
+#&gt;  center is missing, the centroid of this EE FeatureCollection is used: 
+#&gt;  center:  -72.2259305323255 -16.3333305052177 </div><div class='input'><span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case: Image</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
@@ -287,8 +295,8 @@ By default 000000.</p></li>
   ),
   <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"SF"</span>,
   <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='st'>"8"</span>
-)
-<span class='no'>m4</span>
+)</div><div class='output co'>#&gt;  center is missing, the centroid of this EE Image object is used: 
+#&gt;  center:  -122.144091821352 37.4717652231187 </div><div class='input'><span class='no'>m4</span>
 
 <span class='co'># Case: ImageCollection</span>
 <span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
@@ -303,9 +311,8 @@ By default 000000.</p></li>
   <span class='kw'>objname</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Scene_2019"</span>, <span class='st'>"Scene_2016"</span>, <span class='st'>"Scene_2011"</span>),
   <span class='kw'>max_nimage</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>10</span>
-)
-<span class='no'>m5</span>
-}</div></pre>
+)</div><div class='output co'>#&gt;  center is missing, the centroid of this EE ImageCollection is used: 
+#&gt;  center:  -122.113211951871 37.4724490232565 </div><div class='input'><span class='no'>m5</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -79,7 +79,7 @@ rgee::ee$Initialize()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -171,19 +171,22 @@ to your Google account and grant permission for managing google earth engine. Th
     </tr>
     <tr>
       <th>drive</th>
-      <td><p>logical. If TRUE drive credential are cached in the system.</p></td>
+      <td><p>logical. Whether TRUE the drive credential will cache
+in the system.</p></td>
     </tr>
     <tr>
       <th>gcs</th>
-      <td><p>logical. If TRUE drive credential are cached in the system.</p></td>
+      <td><p>logical. Whether TRUE the Google Cloud Storage
+credential will cache in the system.</p></td>
     </tr>
     <tr>
       <th>assethome</th>
-      <td><p>character. Home folder's names of you EE Assets.</p></td>
+      <td><p>character. Home folder's name of you EE Assets.</p></td>
     </tr>
     <tr>
       <th>checkpy</th>
-      <td><p>logical. Check if the current Python version of this system is admitted by rgee.</p></td>
+      <td><p>logical. Check if the current Python version
+of this system is admitted by rgee.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -193,16 +196,31 @@ to your Google account and grant permission for managing google earth engine. Th
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>ee_Initialize()</code> give the possibility of authorize Google drive (googledrive) and Google Cloud
-Storage (googlecloudStorageR). By default, rgee do not need to them, these are just neccesary for
-exportation and importation tasks. All the user credentials are save in the folder <code>~/.config/earthengine/USERS/</code>,
-if a user is not specified the parameters of the last session will be used.</p>
+    <p><code>ee_Initialize()</code> give the possibility of authorize Google drive (googledrive)
+and Google Cloud Storage (googlecloudStorageR). By default, rgee do not need to them,
+these are just necessary for exportation and importation tasks. All the user credentials
+are save in the folder <code>~/.config/earthengine/USERS/</code>, if a user is not specified
+the parameters of the last session would be used.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><div class='input'><span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
+
+<span class='co'># Simple init</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'>ee_Initialize</span>()
-}</div></pre>
+
+<span class='co'># Advanced init</span>
+<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_Initialize</span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>'aybar1994@gmail.com'</span>,
+                      <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                      <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                      <span class='kw'>checkpy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+                      <span class='kw'>assethome</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994'</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>◉  Python version found: </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/r-reticulate/bin/python v3.7</span><span>
+#&gt; user_gmail: aybar1994@gmail.com 
+#&gt; assethome: users/aybar1994 </div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'dplyr':</span>
+#&gt; <span class='message'>  method         from     </span>
+#&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt; Getting Google Drive credentials ...  DONE
+#&gt; Checking Google Cloud storage credentials ...  DONE
+#&gt; Checking correspondence between user_gmail and assethome ... DONE </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

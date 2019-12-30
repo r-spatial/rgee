@@ -43,8 +43,8 @@
 
 
 <meta property="og:title" content="Create a stars object based on an EE thumbnail image — ee_as_thumbnail" />
-<meta property="og:description" content="Download EE thumbnail images and read them as stars objects. This function is
-a wrapper around ee$Image()$getThumbURL()." />
+<meta property="og:description" content="Download EE thumbnail images and read them as stars objects.
+This function is a wrapper around ee$Image()$getThumbURL()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +78,7 @@ a wrapper around ee$Image()$getThumbURL()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -153,8 +153,8 @@ a wrapper around ee$Image()$getThumbURL()." />
     </div>
 
     <div class="ref-description">
-    <p>Download EE thumbnail images and read them as stars objects. This function is
-a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
+    <p>Download EE thumbnail images and read them as stars objects.
+This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>dimensions</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>,
@@ -169,8 +169,8 @@ a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </tr>
     <tr>
       <th>region</th>
-      <td><p>Geospatial region of the image (c(E,S,W,N) numeric vector, EE Geometry,
-or sfg). By default, the whole image is used.</p></td>
+      <td><p>Geospatial region of the image (c(E,S,W,N) numeric
+vector, EE Geometry, or sfg). By default, the whole image is used.</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
@@ -195,10 +195,11 @@ or sfg). By default, the whole image is used.</p></td>
     <p>An <a href='https://rdrr.io/pkg/sf/man/sf.html'>sf</a> object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The argument dimensions will define the "from" &amp; "to" parameters of the stars object to be generated. It must be
-a single numeric value or a two-element vector. If not defined, 256 is taken by default as the dimension of
-x (from 1 to 256), and y will be computed by proportional scaling. Huge images might cause plodding connections.  See
-<a href='https://developers.google.com/earth-engine/client_server#client-and-server-functions'>Client vs Server</a>
+    <p>The argument dimensions will define the "from" &amp; "to" parameters of the stars object.
+It must be a single numeric value or a two-element vector. If not defined,
+256 is taken by default as the dimension of x (from 1 to 256), and y will
+be computed by proportional scaling. Huge images might cause plodding connections.
+See <a href='https://developers.google.com/earth-engine/client_server#client-and-server-functions'>Client vs Server</a>
 for details.</p>
 <p>The vizparams set up the number of bands. In <code>ee_as_thumbnail</code> just is possible export one (G) or
 three band (RGB) images, additional  parameters can be passed on to control color, intensity,
@@ -221,8 +222,10 @@ the max(min) value, etc. See below for a more compressible list of all the param
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpQd4Uh9/temp_libpath739d4b3f58dc/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'>
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpgxwfjV/temp_libpath712155f04095/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
 #&gt; Simple feature collection with 1 feature and 2 fields
 #&gt; geometry type:  POLYGON
 #&gt; dimension:      XY
@@ -238,8 +241,8 @@ the max(min) value, etc. See below for a more compressible list of all the param
 <span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: stringi</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
 #&gt; <span class='message'>  method                 from</span>
 #&gt; <span class='message'>  as.character.form_file httr</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'geojsonlint':</span>
-#&gt; <span class='message'>  method         from     </span>
-#&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). 
+#&gt; <span class='message'>  method         from </span>
+#&gt; <span class='message'>  print.location dplyr</span></div><div class='output co'>#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). 
 #&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='input'><span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
 <span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>)</div><div class='output co'>#&gt; <span class='message'>although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))</div><div class='img'><img src='ee_as_thumbnail-1.png' alt='' width='700' height='433' /></div></pre>
   </div>

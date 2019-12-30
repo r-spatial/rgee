@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -160,16 +160,19 @@
 <span class='co'># S3 method for character</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
-  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for sf</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for stars</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
-  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for stars_proxy</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -202,6 +205,10 @@
     <tr>
       <th>selenium_params</th>
       <td><p>List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.</p></td>
+    </tr>
+    <tr>
+      <th>clean</th>
+      <td><p>Logical; Whether is TRUE cache will cleaned, see Description.</p></td>
     </tr>
     <tr>
       <th>quiet</th>

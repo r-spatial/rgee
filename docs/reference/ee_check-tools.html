@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to check non-R rgee dependencies — ee_check-tools • rgee</title>
+<title>Interface to check Python and non-R rgee dependencies — ee_check-tools • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Interface to check non-R rgee dependencies — ee_check-tools" />
+<meta property="og:title" content="Interface to check Python and non-R rgee dependencies — ee_check-tools" />
 <meta property="og:description" content="R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to check non-R rgee dependencies</h1>
+    <h1>Interface to check Python and non-R rgee dependencies</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
     <div class="hidden name"><code>ee_check-tools.Rd</code></div>
     </div>
@@ -176,10 +176,39 @@
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_check</span>()
-}</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='co'>#use_virtualenv("rgee")</span>
+<span class='fu'>ee_check</span>()</div><div class='output co'>#&gt; <span style='color: #0000BB;'>◉  Python version found: </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/r-reticulate/bin/python v3.7</span><span>
+#&gt; 
+#&gt; </span><span style='color: #0000BB;'>◉  Python Standard Libraries used in rgee: 
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>webbrowser</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>requests v 2.22.0</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>zipfile</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>tarfile</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>subprocess</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>ast</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>sys</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>os</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>platform v 1.0.8</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>json v 2.0.9</span><span>
+#&gt; 
+#&gt; </span><span style='color: #0000BB;'>◉  Python Third-Party Libraries used in rgee: 
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Python Earth Engine API version </span><span style='color: #00BB00;'>0.1.175</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>selenium v 3.141.0</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>bs4 v 4.8.2</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok] </span><span style='color: #0000BB;'>requests_toolbelt v 0.9.1</span><span>
+#&gt; 
+#&gt; </span><span style='color: #0000BB;'>◉  Selenium drivers: 
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Chromedriver 
+#&gt; </span><span>
+#&gt; </span><span style='color: #0000BB;'>◉  Credentials neccesaries for rgee: 
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Earth Engine Credentials found.</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Google Drive credentials found.</span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Google Cloud Storage credentials found.</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
