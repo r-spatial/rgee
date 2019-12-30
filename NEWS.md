@@ -15,7 +15,7 @@
 - [**ee_manage:**](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) Manage EE assets and tasks recursively.
 - [**ee_map:**](https://csaybar.github.io/rgee/reference/ee_map.html) Display EE spatial objects using [mapview](https://r-spatial.github.io/mapview/).
 - [**ee_print:**](https://csaybar.github.io/rgee/reference/ee_print.html) Print EE metadata.
-- [**ee_upload:**](https://csaybar.github.io/rgee/reference/ee_upload.html) Upload ESRI shapefiles or GeoTIFF's to Earth Engine.
+- [**ee_upload:**](https://csaybar.github.io/rgee/reference/ee_upload.html) Upload ESRI shapefiles or GeoTIFF files to Earth Engine.
 - [**ee_download:**](https://csaybar.github.io/rgee/reference/ee_download.html) Download EE spatial objects.
 - [**ee_as_sf**](https://csaybar.github.io/rgee/reference/ee_upload.html) & [**sf_as_ee:**](https://csaybar.github.io/rgee/reference/ee_download.html) Convert EE tables (Feature Collection) to sf and vice-versa.
 - [**ee_as_thumbnail:**](https://csaybar.github.io/rgee/reference/ee_download.html) Create a stars object based on an EE thumbnail image.

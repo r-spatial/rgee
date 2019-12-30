@@ -1,11 +1,11 @@
 #' Convenience functions for working with spatial objects and leaflet maps
-#' @author \href{https://github.com/tim-salabim}{tim-salabim}
+#' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
 ee_getCallMethods = function(map) {
   sapply(map$x$calls, "[[", "method")
 }
 
-#' @author \href{https://github.com/tim-salabim}{tim-salabim}
+#' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
 ee_getLayerControlEntriesFromMap <- function(map) {
   grep("addLayersControl", ee_getCallMethods(map), fixed = TRUE, useBytes = TRUE)
@@ -18,7 +18,7 @@ ee_getCallEntryFromMap <- function(map, call) {
 }
 
 # Add leaflet control button to map ---------------------------------------
-#' @author \href{https://github.com/tim-salabim}{tim-salabim}
+#' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @importFrom leaflet addLayersControl
 #' @importFrom mapview mapviewGetOption
 #' @noRd
@@ -45,7 +45,7 @@ ee_mapViewLayersControl <- function (map, map.types, names, native.crs = FALSE)
 
 
 #' Get layer names of leaflet map ------------------------------------------
-#' @author \href{https://github.com/tim-salabim}{tim-salabim}
+#' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @importFrom leaflet addLayersControl
 #' @noRd
 ee_getLayerNamesFromMap <- function(map) {

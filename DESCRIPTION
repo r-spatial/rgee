@@ -42,6 +42,7 @@ Imports:
     png,
     jpeg
 Suggests:
+    spelling,
     testthat (>= 2.1.0),
     covr,
     knitr,
@@ -54,3 +55,4 @@ Suggests:
 URL: https://github.com/csaybar/rgee
 BugReports: https://github.com/csaybar/rgee/issues
 VignetteBuilder: knitr
+Language: en-US

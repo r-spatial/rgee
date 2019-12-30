@@ -18,7 +18,7 @@ ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
 
 \item{id}{Character. Name of the column to be used as a geometry index.}
 
-\item{...}{reduceRegions aditional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
+\item{...}{reduceRegions additional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
 for details.}
 }
 \description{

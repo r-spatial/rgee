@@ -9,7 +9,7 @@
 #' @param fun ee$Reducer object. Function to summarize the values. See details.
 #' @param scale A nominal scale in meters of the projection to work in.
 #' @param id Character. Name of the column to be used as a geometry index.
-#' @param ... reduceRegions aditional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
+#' @param ... reduceRegions additional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
 #' for details.
 #' @importFrom sf st_geometry st_geometry<-
 #' @details

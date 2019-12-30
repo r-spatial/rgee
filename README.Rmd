@@ -371,7 +371,7 @@ review our [Contributing Guide](CONTRIBUTING.md).
 
 ## Share the love ❤️
 
-Think **rgee** is useful? Let others discover it, by telling them in
+Tink **rgee** is useful? Let others discover it, by telling them in
 person, via Twitter or a blog post.
 
 Using **rgee** for a paper you are writing? Consider citing it
