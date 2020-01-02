@@ -234,7 +234,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject, clean = FALSE,
     load(fc_metadata)
   } else {
     ic <- eeobject$getInfo()
-    bands <- unlist(lapply(ic$bands, "[[", "id"))
+    bands <- unlist(lapply(ic$features[[1]]$bands, "[[", "id"))
     base_ic <- ic$features[[1]]
     scale <- ee$Image(eeobject$first())$
       select(bands[1])$
