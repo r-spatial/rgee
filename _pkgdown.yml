@@ -15,7 +15,7 @@ navbar:
       menu:
       -  text: Setup
          href: articles/setup.html
-      -  text: 3D Interactive Choropleth Map
+      -  text: Animation - 3D Choropleth Map
          href: articles/rgee_animation.html
     - text: "faq"
       icon: fa-question-circle-o
