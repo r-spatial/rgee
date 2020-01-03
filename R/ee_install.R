@@ -77,7 +77,7 @@ ee_install_drivers <- function(GoogleChromeVersion) {
   chromedriver_version <- ee_check_utils$download_chromedriver(
     directory = directory,
     operating_system = os_type,
-    version = as.character(GoogleChromeVersion)
+    version = substr(as.character(GoogleChromeVersion),1,2)
   )
   cat("Selenium ChromeDriver v", ee_py_to_r(chromedriver_version), "saved in", directory)
   return(invisible(TRUE))

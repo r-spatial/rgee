@@ -1,0 +1,59 @@
+---
+title: "Setup"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rgee_install}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`rgee` has two types of dependencies. The <span style="color:#b52b09">**first group**</span> that must be satisfied before the `rgee` installation, and the <span style="color:#f0df26">**other one**</span> that is just necessary to unlock the `rgee` import & export functions. For instance, you will need firstly activate your Cloud Storage JSON API to use [ee_download_gcs](https://csaybar.github.io/rgee/reference/ee_download_gcs.html). All the external dependencies of `rgee` are shown bellow:
+
+### External Required 
+
+- <span style="color:#b52b09">Google acount with Earth Engine activated</span>
+- <span style="color:#b52b09">Python > v3.5</span>
+- <span style="color:#f0df26">Google Cloud Storage (GCS)</span>
+- <span style="color:#f0df26">Google Chrome version > v76 </span>
+
+### Third-Party Python Package Required
+
+- <span style="color:#b52b09"> EarthEngine Python API (recommend version 0.1.175)</span>
+- <span style="color:#f0df26"> selenium </span>
+- <span style="color:#f0df26">beautifulsoup4</span>
+- <span style="color:#f0df26">requests_toolbelt</span>
+
+The `ee_install_rgee_python_packages()` function is provided as a convenient way to install all the necessary Python packages, but is not required. If you have an existing installation of the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) or just prefer your own custom installation that’s fine too.
+
+### Import and Export Spatial Data in GEE
+
+The batch import/export involves a struggle for most GEE users. In `rgee` we have created functions to help users to download and upload spatial data. If you are trying to **download** data from GEE, we highly recommend to use either [ee_download_drive](https://csaybar.github.io/rgee/reference/ee_download_drive.html) or [ee_download_gcs](https://csaybar.github.io/rgee/reference/ee_download_gcs.html). These functions depends on the [googledrive](https://googledrive.tidyverse.org/) and  [googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/) R package respectively, so you will need installed it before.
+
+```{r eval=FALSE}
+# please try as follow
+install.packages('googledrive')
+install.packages('googleCloudStorageR')
+```
+
+It is recommendable to use Google Cloud Storage (`ee_download_gcs`) to move large amounts of data, however,  you will need to have your own Google Project with a credit card added to used it, charges will apply. See the [GCS_AUTH_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the [Mark Edmondson
+](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial.
+
+Batch **upload** is a harder process, in `rgee` we try to make simple through the [ee_upload](https://csaybar.github.io/rgee/reference/ee_upload.html) function. Always that you want to upload files in a batch way, will be necessary get authorization to read & write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a **provisional** for free space into GCS through gs://earthengine-uploads/ to all users. Inspired in the [geeup](https://pypi.org/project/geeup/0.3.3/) Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the `ee_upload` function. This process require ChromeDriver. To install ChromeDriver in your system run as follow:
+
+```{r eval=FALSE}
+# Find the Google Chrome version of this system
+# in chrome://settings/help
+# In my case my Google Chrome version is 77.0.3865.75 (Official Build) (64-bit)
+rgee::ee_install_drivers(GoogleChromeVersion = 77)
+```
+
+### Checking
+
+### Credentials

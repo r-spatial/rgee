@@ -109,7 +109,7 @@ Please install the follow system libraries.
 
 ### MacOS
 
-Use [Homebrew](https://brew.sh/) to install system libraries:
+Use [Homebrew](https://brew.sh/) to install the next system libraries:
 
     brew install pkg-config
     brew install gdal
@@ -834,25 +834,10 @@ plot(ee_nc_rain["Jan"], main = "2001 Jan Precipitation - Terraclimate", reset = 
 
 ## How does it works?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or
-Python client, to do this would be extremely hard, especially
-considering that the API is in [active
-development](https://github.com/google/earthengine-api). So, how it is
-possible to run Earth Engine in R? the answer is
-[reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an
-R package designed to allow seamless interoperability between R and
-Python. When we create an Earth Engine process in R, firstly,
-`reticulate` transforms this piece of code to Python. Once converted to
-Python code, the `Earth Engine Python API` transform the request to a
-`dict` object. Finally, the query is received by the Google Earth Engine
-Platform thanks to a Web REST API. The response of the server follows
-the same pathway. If you are searching a way to interact with the Earth
-Engine Asset (EEA), `rgee` offers functions to batch
-[upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html))
-Earth Engine spatial objects. Additionally, you could easily manage the
-EEA through the
-[ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html)
-interface.
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how it is possible to run Earth Engine in R? the answer is
+[reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When we create an Earth Engine process in R, firstly, `reticulate` transforms this piece of code to Python. Once converted to Python code, the `Earth Engine Python API` transform the request to a
+`JSON`. Finally, the query is received by the Google Earth Engine Platform thanks to a Web REST API. The response of the server follows the same pathway. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage the EEA through the
+[ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
@@ -877,14 +862,29 @@ Using **rgee** for a paper you are writing? Consider citing it
 ``` r
 citation("rgee")
 #> 
-#> To cite rgee in publications use:
+#> To cite Google Earth Engine in publications use:
 #> 
 #>   Gorelick, N., Hancher, M., Dixon, M., Ilyushchenko, S., Thau, D., & Moore, R. (2017). 
 #>   Google Earth Engine: Planetary scale geospatial analysis for everyone. Remote Sensing
 #>   of Environment, 202, 18-27.
-#>
-#>   Aybar Cesar, Yali Roy, and Maria Aduato (2019). rgee: Google Earth Engine for R. 
-#>   R package version 0.2.0.
 ```
+## Credits :bow:
+
+Most of the functionalities of `rgee` were based in the following third-party R/Python packages:
+
+  - **[gee\_asset\_manager - Lukasz
+    Tracewski](https://github.com/tracek/gee_asset_manager)**  
+  - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
+  - **[geeadd - Samapriya
+    Roy](https://github.com/samapriya/gee_asset_manager_addon)**
+  - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee)**
+  - **[geetools - Rodrigo E.
+    Principe](https://github.com/gee-community/gee_tools)**
+  - **[landsat-extract-gee - Loïc
+    Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
+  - **[earthEngineGrabR -
+    JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
+  - **[gdalcubes - Marius
+    Appel](https://github.com/appelmar/gdalcubes)**
 
 #### Readme template obtained from [dbparser](https://github.com/Dainanahan/dbparser)
