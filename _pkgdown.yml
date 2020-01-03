@@ -13,8 +13,10 @@ navbar:
     - text: "Articles"
       icon: fas fa-book
       menu:
-      -  text: Installation
-         href: articles/installation.html
+      -  text: Setup
+         href: articles/setup.html
+      -  text: 3D Interactive Choropleth Map
+         href: articles/rgee_animation.html
     - text: "faq"
       icon: fa-question-circle-o
       href: articles/faq.html

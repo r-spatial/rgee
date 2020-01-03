@@ -102,7 +102,10 @@ This function is a wrapper around ee$Image()$getThumbURL()." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/installation.html">Installation</a>
+      <a href="../articles/setup.html">Setup</a>
+    </li>
+    <li>
+      <a href="../articles/rgee_animation.html">3D Interactive Choropleth Map</a>
     </li>
   </ul>
 </li>
@@ -211,7 +214,7 @@ the max(min) value, etc. See below for a more compressible list of all the param
 <tr><td><strong>min</strong></td><td>Value(s) to map to 0</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td><strong>max</strong></td><td>Value(s) to map to 1</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td><strong>gain</strong></td><td>Value(s) by which to multiply each pixel value</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>bias</strong></td><td>Value(s) to add to each DN</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td><strong>bias</strong></td><td>Value(s) to add to each Digital Number (DN) value</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td><strong>gamma</strong></td><td>Gamma correction factor(s)</td><td>number or list of three numbers, one for each band</td></tr>
 <tr><td><strong>palette</strong></td><td>List of CSS-style color strings (single-band images only)</td><td>comma-separated list of hex strings</td></tr>
 <tr><td><strong>opacity</strong></td><td>The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque)</td><td>number</td></tr>
@@ -225,7 +228,7 @@ the max(min) value, etc. See below for a more compressible list of all the param
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'>
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpgxwfjV/temp_libpath712155f04095/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
+<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpdqRBqI/temp_libpath239a23d82288/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
 #&gt; Simple feature collection with 1 feature and 2 fields
 #&gt; geometry type:  POLYGON
 #&gt; dimension:      XY
