@@ -7,6 +7,7 @@ get_stage("before_install") %>%
 
     # Upload/Download packages
     install.packages("rjson")
+    install.packages("dplyr")
     install.packages("googledrive")
     install.packages("googleCloudStorageR")
     library(rjson)
