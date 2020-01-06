@@ -31,7 +31,12 @@ addons:
     - python3
     - python3-pip
     chrome: stable
-r_build_args: --no-build-vignettes
+
+env:
+  global:
+  - R_BUILD_ARGS=" --no-build-vignettes --no-manual "
+  - R_CHECK_ARGS=" --no-manual --as-cran --no-vignettes --no-build-vignettes --no-multiarch --no-examples"
+
 before_install:
 - sudo apt-get update
 - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
@@ -58,7 +63,8 @@ install:
 - google-chrome --version
 - R -q -e 'tic::install()'
 script:
-- R -q -e 'tic::script()'
+  - R CMD build . $R_BUILD_ARGS
+  - R CMD check *tar.gz $R_CHECK_ARGS
 after_success:
 - R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
