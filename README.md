@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 
 <img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width = 15%/>
 
@@ -872,19 +877,15 @@ citation("rgee")
 
 Most of the functionalities of `rgee` were based in the following third-party R/Python packages:
 
-  - **[gee\_asset\_manager - Lukasz
-    Tracewski](https://github.com/tracek/gee_asset_manager)**  
+  - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
-  - **[geeadd - Samapriya
-    Roy](https://github.com/samapriya/gee_asset_manager_addon)**
+  - **[geeadd - Samapriya Roy](https://github.com/samapriya/gee_asset_manager_addon)**
   - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee)**
-  - **[geetools - Rodrigo E.
-    Principe](https://github.com/gee-community/gee_tools)**
-  - **[landsat-extract-gee - Loïc
-    Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
-  - **[earthEngineGrabR -
-    JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
-  - **[gdalcubes - Marius
-    Appel](https://github.com/appelmar/gdalcubes)**
+  - **[geetools - Rodrigo E. Principe](https://github.com/gee-community/gee_tools)**
+  - **[landsat-extract-gee - Loïc Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
+  - **[earthEngineGrabR - JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
+  - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf)**
+  - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars)**
+  - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes)**
 
 #### Readme template obtained from [dbparser](https://github.com/Dainanahan/dbparser)

@@ -15,6 +15,8 @@ navbar:
       menu:
       -  text: Setup
          href: articles/setup.html
+      -  text: Consideration
+         href: articles/considerations.html
       -  text: Animation - 3D Choropleth Map
          href: articles/rgee_animation.html
     - text: "faq"

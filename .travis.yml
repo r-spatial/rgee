@@ -31,7 +31,7 @@ addons:
     - python3
     - python3-pip
     chrome: stable
-
+r_build_args: --no-build-vignettes
 before_install:
 - sudo apt-get update
 - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'

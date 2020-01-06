@@ -65,6 +65,9 @@
       <a href="../articles/setup.html">Setup</a>
     </li>
     <li>
+      <a href="../articles/considerations.html">Consideration</a>
+    </li>
+    <li>
       <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
     </li>
   </ul>
@@ -144,24 +147,22 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># Recommended way to install Python packages</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">## 1. Create a virtualenv</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">virtualenv_remove</span>(<span class="st">"rgee"</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">virtualenv_create</span>(<span class="st">"rgee"</span>, <span class="dt">python =</span> <span class="st">"python3.7"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw">use_virtualenv</span>(<span class="st">"rgee"</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages</a></span>()</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">rstudioapi<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rstudioapi/man/restartSession.html">restartSession</a></span>() <span class="co"># Restart R</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">virtualenv_create</span>(<span class="st">"rgee"</span>, <span class="dt">python =</span> <span class="st">"python3.7"</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">use_virtualenv</span>(<span class="st">"rgee"</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages</a></span>()</a></code></pre></div>
 </div>
 <div id="import-and-export-spatial-data-in-gee" class="section level3">
 <h3 class="hasAnchor">
 <a href="#import-and-export-spatial-data-in-gee" class="anchor"></a>Import and Export Spatial Data in GEE</h3>
-<p>The batch import/export involves a struggle for most GEE users. In <code>rgee</code> we have created functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> data from GEE, we highly recommend to use either <a href="https://csaybar.github.io/rgee/reference/ee_download_drive.html">ee_download_drive</a> or <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. These functions depends on the <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> R package respectively, so you will need installed it before.</p>
+<p>The batch import/export involves a struggle for most GEE users. In <code>rgee</code> we are aware of that and created functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> data from GEE, we highly recommend to use either <a href="https://csaybar.github.io/rgee/reference/ee_download_drive.html">ee_download_drive</a> or <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. These functions depends on the <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> R package respectively, so you will need installed it before.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># please try as follow</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</a></code></pre></div>
-<p>It is recommendable to use Google Cloud Storage (<code>ee_download_gcs</code>) to move large amounts of data, however, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
-<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make simple through the <a href="https://csaybar.github.io/rgee/reference/ee_upload.html">ee_upload</a> function. Always that you want to upload files in a batch way, will be necessary get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a <strong>provisional</strong> for free space into GCS through gs://earthengine-uploads/ to all users. Inspired in the <a href="https://pypi.org/project/geeup/0.3.3/">geeup</a> Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the <code>ee_upload</code> function. This process require ChromeDriver. To install ChromeDriver in your system run as follow:</p>
+<p>Google Drive (<code>ee_download_gcs</code>) is more friendly with novice Earth Engine users because it just would need an authentication process (that is 100% automatic!). If you are trying to move large amounts of data, use Google Cloud Storage (<code>ee_download_gcs</code>) instead. However, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
+<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make simple through the <a href="https://csaybar.github.io/rgee/reference/ee_upload.html">ee_upload</a> function. Always that you want to upload files in a batch way, will be necessary get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a <strong>provisional</strong> for free space into GCS through the URI gs://earthengine-uploads/ to all users. Inspired in the <a href="https://pypi.org/project/geeup/0.3.3/">geeup</a> Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the <code>ee_upload</code> function. This process will use <strong>Selenium</strong> and require <strong>ChromeDriver</strong>. To install ChromeDriver in your system run as follow:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Find the Google Chrome version of this system</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># in chrome://settings/help</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># In my case my Google Chrome version is 77.0.3865.75 (Official Build) (64-bit)</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># In my case my Google Chrome version is 77.0.3865.75, so:</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4">rgee<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rgee/man/ee_install-tools.html">ee_install_drivers</a></span>(<span class="dt">GoogleChromeVersion =</span> <span class="dv">77</span>)</a></code></pre></div>
 </div>
 <div id="credentials" class="section level3">
@@ -184,7 +185,7 @@
 <div id="checking" class="section level3">
 <h3 class="hasAnchor">
 <a href="#checking" class="anchor"></a>Checking</h3>
-<p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking sanity of your <code>rgee</code> instalation. Additionally you can separately check the rgee dependencies with the following functions:</p>
+<p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking the sanity of your <code>rgee</code> installation. Additionally, you can separately check the rgee dependencies with the following functions:</p>
 <ul>
 <li>
 <code><a href="../reference/ee_check-tools.html">ee_check_drivers()</a></code> - Chromedriver</li>
@@ -196,8 +197,40 @@
 <code><a href="../reference/ee_check-tools.html">ee_check_rgee_python_packages()</a></code> - R/Python packages</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#use_virtualenv("rgee")</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="kw"><a href="../reference/ee_check-tools.html">ee_check</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.1-CAPI-1.11.1</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; and GEOS at installation 3.5.1-CAPI-1.9.1differ</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="../reference/ee_check-tools.html">ee_check</a></span>()</a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; ◉  Python version found: /home/aybarpc01/.virtualenvs/r-reticulate/bin/python v3.7</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; ◉  Python Standard Libraries used in rgee: </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; ✔ [Ok] webbrowser</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; ✔ [Ok] requests v 2.22.0</span></a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; ✔ [Ok] zipfile</span></a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; ✔ [Ok] tarfile</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; ✔ [Ok] subprocess</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; ✔ [Ok] ast</span></a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; ✔ [Ok] sys</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; ✔ [Ok] os</span></a>
+<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; ✔ [Ok] platform v 1.0.8</span></a>
+<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; ✔ [Ok] json v 2.0.9</span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; ◉  Python Third-Party Libraries used in rgee: </span></a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; ✔ [Ok] Python Earth Engine API version 0.1.175</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; ✔ [Ok] selenium v 3.141.0</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; ✔ [Ok] bs4 v 4.8.2</span></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; ✔ [Ok] requests_toolbelt v 0.9.1</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; ◉  Selenium drivers: </span></a>
+<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; ✔ [Ok] Chromedriver </span></a>
+<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; ◉  Credentials neccesaries for rgee: </span></a>
+<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; ✔ [Ok] Earth Engine Credentials found.</span></a>
+<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; ✔ [Ok] Google Drive credentials found.</span></a>
+<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; ✔ [Ok] Google Cloud Storage credentials found.</span></a></code></pre></div>
 </div>
   </div>
 

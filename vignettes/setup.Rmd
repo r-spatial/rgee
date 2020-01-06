@@ -36,16 +36,14 @@ The `ee_install_rgee_python_packages()` function is provided as a convenient way
 library(rgee)
 # Recommended way to install Python packages
 ## 1. Create a virtualenv
-virtualenv_remove("rgee")
 virtualenv_create("rgee", python = "python3.7")
 use_virtualenv("rgee")
 ee_install_rgee_python_packages()
-rstudioapi::restartSession() # Restart R
 ```
 
 ### Import and Export Spatial Data in GEE
 
-The batch import/export involves a struggle for most GEE users. In `rgee` we have created functions to help users to download and upload spatial data. If you are trying to **download** data from GEE, we highly recommend to use either [ee_download_drive](https://csaybar.github.io/rgee/reference/ee_download_drive.html) or [ee_download_gcs](https://csaybar.github.io/rgee/reference/ee_download_gcs.html). These functions depends on the [googledrive](https://googledrive.tidyverse.org/) and  [googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/) R package respectively, so you will need installed it before.
+The batch import/export involves a struggle for most GEE users. In `rgee` we are aware of that and created functions to help users to download and upload spatial data. If you are trying to **download** data from GEE, we highly recommend to use either [ee_download_drive](https://csaybar.github.io/rgee/reference/ee_download_drive.html) or [ee_download_gcs](https://csaybar.github.io/rgee/reference/ee_download_gcs.html). These functions depends on the [googledrive](https://googledrive.tidyverse.org/) and  [googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/) R package respectively, so you will need installed it before.
 
 ```{r eval=FALSE}
 # please try as follow
@@ -53,15 +51,15 @@ install.packages('googledrive')
 install.packages('googleCloudStorageR')
 ```
 
-It is recommendable to use Google Cloud Storage (`ee_download_gcs`) to move large amounts of data, however,  you will need to have your own Google Project with a credit card added to used it, charges will apply. See the [GCS_AUTH_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the [Mark Edmondson
+Google Drive (`ee_download_gcs`) is more friendly with novice Earth Engine users because it just would need an authentication process (that is 100% automatic!). If you are trying to move large amounts of data, use Google Cloud Storage (`ee_download_gcs`) instead. However, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the [GCS_AUTH_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the [Mark Edmondson
 ](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial.
 
-Batch **upload** is a harder process, in `rgee` we try to make simple through the [ee_upload](https://csaybar.github.io/rgee/reference/ee_upload.html) function. Always that you want to upload files in a batch way, will be necessary get authorization to read & write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a **provisional** for free space into GCS through gs://earthengine-uploads/ to all users. Inspired in the [geeup](https://pypi.org/project/geeup/0.3.3/) Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the `ee_upload` function. This process require ChromeDriver. To install ChromeDriver in your system run as follow:
+Batch **upload** is a harder process, in `rgee` we try to make simple through the [ee_upload](https://csaybar.github.io/rgee/reference/ee_upload.html) function. Always that you want to upload files in a batch way, will be necessary get authorization to read & write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a **provisional** for free space into GCS through the URI gs://earthengine-uploads/ to all users. Inspired in the [geeup](https://pypi.org/project/geeup/0.3.3/) Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the `ee_upload` function. This process will use **Selenium** and require **ChromeDriver**. To install ChromeDriver in your system run as follow:
 
 ```{r eval=FALSE}
 # Find the Google Chrome version of this system
 # in chrome://settings/help
-# In my case my Google Chrome version is 77.0.3865.75 (Official Build) (64-bit)
+# In my case my Google Chrome version is 77.0.3865.75, so:
 rgee::ee_install_drivers(GoogleChromeVersion = 77)
 ```
 
@@ -91,15 +89,14 @@ For the next sessions, there will be no need for any further authentification.
 
 ### Checking
 
-The `ee_check()` function will help you for checking sanity of your `rgee` instalation. Additionally you can separately check the rgee dependencies with the following functions:
+The `ee_check()` function will help you for checking the sanity of your `rgee` installation. Additionally, you can separately check the rgee dependencies with the following functions:
 
 - `ee_check_drivers()` - Chromedriver
 - `ee_check_python()` - Python version
 - `ee_check_credentials()` - Google Drive and GCS credentials
 - `ee_check_rgee_python_packages()` - R/Python packages
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 library(rgee)
-#use_virtualenv("rgee")
 ee_check()
 ```
