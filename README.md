@@ -1,9 +1,3 @@
----
-output:
-  html_document: default
-  pdf_document: default
----
-
 <img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width = 15%/>
 
 # Google Earth Engine for R
@@ -74,14 +68,14 @@ image$bandNames()$getInfo()
 
 **Quite similar, isn’t it?**. However there are a few additional small
 changes that you always need to keep in mind when use Google Earth
-Engine with R. Please check the [consideration section]() before start
+Engine with R. Please check the [consideration section](https://csaybar.github.io/rgee/articles/considerations.html) before start
 coding\!
 
 ## Requirements
 
 Prior to using `rgee` you need to install a **Python version higher than
 3.5** in your system. Below we describe how to install `rgee` but not
-Python dependencies. Consider check the [setup section]() for
+Python dependencies. Consider check the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for
 customizing Python installation.
 
 ## Installation
