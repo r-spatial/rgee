@@ -51,3 +51,8 @@ get_stage("before_install") %>%
                            c(ee_dirname,ee_dirname_aybar),
                            drive))
   })
+
+get_stage("deploy") %>%
+  add_code_step({
+    install.packages(c('cptcity', 'rnaturalearth', 'gganimate'))
+  })
