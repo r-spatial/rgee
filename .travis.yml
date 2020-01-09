@@ -2,7 +2,8 @@ language: r
 sudo: required
 r:
 - release
-#deploy.skip_cleanup: true
+deploy.skip_cleanup: true
+
 cache:
 - packages
 - ccache

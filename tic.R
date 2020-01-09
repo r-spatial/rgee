@@ -6,6 +6,9 @@ get_stage("before_install") %>%
   add_code_step({
 
     # Upload/Download packages
+    install.packages("cptcity")
+    install.packages("gganimate")
+    install.packages("rnaturalearth")
     install.packages("rjson")
     install.packages("dplyr")
     install.packages("googledrive")
@@ -50,9 +53,4 @@ get_stage("before_install") %>%
               to = sprintf("%s/%s",
                            c(ee_dirname,ee_dirname_aybar),
                            drive))
-  })
-
-get_stage("deploy") %>%
-  add_code_step({
-    install.packages(c('cptcity', 'rnaturalearth', 'gganimate'))
   })
