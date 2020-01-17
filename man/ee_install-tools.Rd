@@ -11,7 +11,7 @@
 ee_install_drivers(GoogleChromeVersion)
 
 ee_install_rgee_python_packages(method = c("auto", "virtualenv",
-  "conda"), conda = "auto", ee_version = "0.1.175", envname = NULL,
+  "conda"), conda = "auto", ee_version = "latest", envname = NULL,
   extra_packages = c("selenium", "bs4", "pysmartDL",
   "requests_toolbelt"), restart_session = TRUE,
   conda_python_version = "3.6", quiet = FALSE, ...)
@@ -33,8 +33,8 @@ without privilege the "system" method is available only on Windows.}
 \item{conda}{Path to conda executable (or "auto" to find conda
 using the PATH and other conventional install locations).}
 
-\item{ee_version}{earthengine-api version to install. Up to and including
-earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.}
+\item{ee_version}{earthengine-api version to install. Specify "default" to
+install the latest version.}
 
 \item{envname}{Name of Python environment to install.}
 
@@ -69,7 +69,7 @@ library(rgee)
 # Recommended way to use rgee
 ## 1. Create a virtualenv
 #virtualenv_remove("rgee")
-virtualenv_create("rgee", python = "python3.7")
+#virtualenv_create("rgee", python = "python3.7")
 use_virtualenv("rgee")
 # rstudioapi::restartSession() # Restart R
 

@@ -62,7 +62,7 @@ ee_check_rgee_python_packages <- function() {
   version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
-    if (version_ee == "0.1.175") {
+    if (version_ee >= "0.1.170") {
       cli::cat_line(
         crayon::green(cli::symbol$tick, "[Ok]"),
         crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
@@ -70,7 +70,7 @@ ee_check_rgee_python_packages <- function() {
     } else {
       ee_message <- sprintf("Earth Engine Python API (ee) %s is installed correctly in their system,%s. %s",
                             version_ee,
-                            " but rgee depends on 0.1.175. Please run ee_install_python_ee() for upgrading",
+                            " but rgee needs an upper version to 0.1.170. Please run ee_install_python_ee() for upgrading",
                             "If the installation is successful, restart to see changes.")
       stop(ee_message)
     }

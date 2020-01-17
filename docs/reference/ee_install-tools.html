@@ -168,7 +168,7 @@ Selenium Chromedriver and credentials</p>
     <pre class="usage"><span class='fu'>ee_install_drivers</span>(<span class='no'>GoogleChromeVersion</span>)
 
 <span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>,
-  <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"0.1.175"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"latest"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>extra_packages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"selenium"</span>, <span class='st'>"bs4"</span>, <span class='st'>"pysmartDL"</span>,
   <span class='st'>"requests_toolbelt"</span>), <span class='kw'>restart_session</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
@@ -200,8 +200,8 @@ using the PATH and other conventional install locations).</p></td>
     </tr>
     <tr>
       <th>ee_version</th>
-      <td><p>earthengine-api version to install. Up to and including
-earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.</p></td>
+      <td><p>earthengine-api version to install. Specify "default" to
+install the latest version.</p></td>
     </tr>
     <tr>
       <th>envname</th>
@@ -248,7 +248,7 @@ Python packages. rgee only is compatible with Python version 3.5 &gt;=.</p>
 <span class='co'># Recommended way to use rgee</span>
 <span class='co'>## 1. Create a virtualenv</span>
 <span class='co'>#virtualenv_remove("rgee")</span>
-<span class='fu'>virtualenv_create</span>(<span class='st'>"rgee"</span>, <span class='kw'>python</span> <span class='kw'>=</span> <span class='st'>"python3.7"</span>)
+<span class='co'>#virtualenv_create("rgee", python = "python3.7")</span>
 <span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
 <span class='co'># rstudioapi::restartSession() # Restart R</span>
 

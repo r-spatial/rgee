@@ -153,7 +153,7 @@ ee_manage_size = function(path_asset) {
     nelements = 1
     asset_size = img$get('system:asset_size')$getInfo()
   }else if (header=="Folder") {
-    #After 0.1.175 needs add --no-use_cloud_api
+    #After 0.1.17x needs add --no-use_cloud_api
     nelements = length(system(sprintf("earthengine ls %s", path_asset), intern = TRUE))
     asset_size = system(sprintf("earthengine du %s -s", path_asset), intern = TRUE)
     asset_size <- gsub("([0-9]+).*$", "\\1", asset_size) %>%

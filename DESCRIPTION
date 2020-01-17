@@ -17,7 +17,7 @@ Authors@R:
              role = c("ctb"),
              email = "2a.mariaelena@gmail.com",
              comment = c(ORCID = "0000-0002-2154-2429")))
-Description: Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automating processes.
+Description: Provides bindings to the Google Earth Engine Python API and set tools for automating processes.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true

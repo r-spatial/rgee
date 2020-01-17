@@ -14,8 +14,8 @@
 #' without privilege the "system" method is available only on Windows.
 #' @param conda Path to conda executable (or "auto" to find conda
 #' using the PATH and other conventional install locations).
-#' @param ee_version earthengine-api version to install. Up to and including
-#' earthengine-api 0.1.X, specify "default" to install the 0.1.175 version.
+#' @param ee_version earthengine-api version to install. Specify "default" to
+#' install the latest version.
 #' @param envname Name of Python environment to install.
 #' @param extra_packages Additional Python packages to install along with rgee.
 #' @param restart_session Restart R session after installing (note this will
@@ -37,7 +37,7 @@
 #' # Recommended way to use rgee
 #' ## 1. Create a virtualenv
 #' #virtualenv_remove("rgee")
-#' virtualenv_create("rgee", python = "python3.7")
+#' #virtualenv_create("rgee", python = "python3.7")
 #' use_virtualenv("rgee")
 #' # rstudioapi::restartSession() # Restart R
 #'
@@ -87,7 +87,7 @@ ee_install_drivers <- function(GoogleChromeVersion) {
 #' @export
 ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "conda"),
                                             conda = "auto",
-                                            ee_version = "0.1.175",
+                                            ee_version = "latest",
                                             envname = NULL,
                                             extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt"),
                                             restart_session = TRUE,
@@ -107,7 +107,11 @@ ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "co
 
   method <- match.arg(method)
   extra_packages <- unique(extra_packages)
-  ee_version <- paste0("earthengine-api==", ee_version)
+  if (ee_version == 'latest') {
+    ee_version <- "earthengine-api"
+  } else {
+    ee_version <- paste0("earthengine-api==", ee_version)
+  }
 
   py_install(
     packages = c(ee_version, extra_packages),

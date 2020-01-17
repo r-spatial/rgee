@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ### Third-Party Python Package Required
 
-- <span style="color:#b52b09"> EarthEngine Python API (recommend version 0.1.175)</span>
+- <span style="color:#b52b09"> EarthEngine Python API</span>
 - <span style="color:#f0df26"> selenium </span>
 - <span style="color:#f0df26">beautifulsoup4</span>
 - <span style="color:#f0df26">requests_toolbelt</span>

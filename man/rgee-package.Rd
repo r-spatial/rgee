@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Provides bindings to the Google Earth Engine Python API (0.1.175) and set tools for automating processes.
+Provides bindings to the Google Earth Engine Python API and set tools for automating processes.
 }
 \seealso{
 Useful links:

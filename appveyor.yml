@@ -29,7 +29,7 @@ cache:
 
 # Adapt as necessary starting from here
 build_script:
-  - "%PYTHON%\\python.exe -m pip install setuptools numpy earthengine-api==0.1.175 coveralls"
+  - "%PYTHON%\\python.exe -m pip install setuptools numpy earthengine-api coveralls"
   - "%PYTHON%\\python.exe -m pip install oauth2client selenium bs4 requests_toolbelt"
   - travis-tool.sh install_deps
 
