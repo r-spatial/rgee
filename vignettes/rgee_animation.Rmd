@@ -1,5 +1,5 @@
 ---
-title: "rgee_animation"
+title: "World Seasonal NDVI - Animation"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rgee_animation}
@@ -14,8 +14,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r libraries}
-#  WORLD SEASONAL NDVI - Animation
+This vignette describes a simple pipeline to generate a world choropleth NDVI seasonal map. It tries to demostrate how easy is integrate `rgee` with the R spatial ecosystem.
+
+### 1. Load R packages
+
+```{r libraries , message=FALSE, warning=FALSE}
 library(sf)
 library(rgee)
 library(stars)
@@ -28,27 +31,41 @@ library(rnaturalearth)
 library(gganimate)
 ```
 
-1. Initialize and Datasets
+### 2. Initialize Earth Engine
+
+```{r init}
+ee_Initialize()
+```
+
+### 3. Datasets
 
 ```{r datasets}
-ee_Initialize() # Initialize earth engine
 ndvi_palette <- cpt(pal = "cb_div_RdYlGn_03") # palette
-
 modis <- ee$ImageCollection("MODIS/006/MCD43A4")
 world_map <- ne_countries(returnclass = "sf")
 land <- ee$FeatureCollection("USDOS/LSIB_SIMPLE/2017")
 ```
 
+### 4. Functions
 
-2. Functions
+`calc_ndvi`: Calculate the NDVI from a MODIS image.
 
-```{r f1}
+```{r calc_ndvi}
 calc_ndvi <- function(img) {
-  ndvi <- img$normalizedDifference(c("Nadir_Reflectance_Band2", "Nadir_Reflectance_Band1"))
-  return(img$addBands(ndvi$rename("ndvi"))$select("ndvi"))
+  ndvi <- img$normalizedDifference(
+    c("Nadir_Reflectance_Band2", 
+      "Nadir_Reflectance_Band1")
+  )
+  select_NDVIband <- img$
+    addBands(ndvi$rename("ndvi"))$
+    select("ndvi")
+  return(select_NDVIband)
 }
-
 ```
+
+
+`create_orto_basemap`: Create a world orthographic view in R. This function
+is a simple adaptation of the original code of [Florian Zenoni](https://gist.github.com/fzenoni/ef23faf6d1ada5e4a91c9ef23b0ba2c1) (thanks a lot!).
 
 ```{r f2}
 create_orto_basemap <- function(world_map, ortho_proj,lat) {
@@ -141,23 +158,26 @@ create_orto_basemap <- function(world_map, ortho_proj,lat) {
 }
 ```
 
-3. Global parameters
+### 5. Global parameters
 
-```{r Global parameters}
-LAT <- 10
+In this section, we will create the basemap (create_orto_basemap). You might change the global parameters LAT and LON according to personal preferences.
+
+```{r Global parameters, message=FALSE, warning=FALSE}
+LAT <- 10 
 LON <- -80
 ORTHO <- "+proj=ortho +lat_0=%s +lon_0=%s +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs"
 ORTHO_PROJ <- sprintf(ORTHO, LAT, LON)
 WORLD_MAP <- create_orto_basemap(world_map, ORTHO_PROJ, LAT)
 ```
 
-
-4. Export thumbnail images
+### 6. Filtering and grouping the MODIS images to download
 
 ```{r modisdb}
-modis_ndvi <- modis$
-  filterDate("2010-01-01", "2016-01-01")$
-  map(calc_ndvi)
+modis_ndvi <- modis$filterDate("2010-01-01", "2016-01-01")$map(calc_ndvi)
+djf <- modis_ndvi$filter(ee$Filter$calendarRange(12, 3, "month"))$mean()
+mam <- modis_ndvi$filter(ee$Filter$calendarRange(3, 6, "month"))$mean()
+jja <- modis_ndvi$filter(ee$Filter$calendarRange(6, 9, "month"))$mean()
+son <- modis_ndvi$filter(ee$Filter$calendarRange(9, 12, "month"))$mean()
 
 # Export as a stars object
 visParams <- list(min = 0, max = 1, bands = "ndvi")
@@ -165,44 +185,68 @@ region <- c(-180, -90, 180, 90)
 ```
 
 
-```{r exporing thumbnail}
-# get seasonal averages and clip to land features
-djf <- modis_ndvi$filter(ee$Filter$calendarRange(12, 3, "month"))$max()
-modis_djf_stars <- ee_as_thumbnail(x = djf, vizparams = visParams, region = region)
-modis_djf_stars <- st_as_sf(modis_djf_stars[world_map])
-modis_djf_stars <- st_make_valid(st_transform(modis_djf_stars, ORTHO_PROJ))
-colnames(modis_djf_stars) <- c("NDVI", "geometry")
+### 7. Exporting thumbnail images
 
-mam <- modis_ndvi$filter(ee$Filter$calendarRange(3, 6, "month"))$mean()
-modis_mam_stars <- ee_as_thumbnail(x = mam, vizparams = visParams, region = region)
-modis_mam_stars <- st_as_sf(modis_mam_stars[world_map])
-modis_mam_stars <- st_make_valid(st_transform(modis_mam_stars, ORTHO_PROJ))
-colnames(modis_mam_stars) <- c("NDVI", "geometry")
+The Earth Engine API offers the possibility to create thumbnail images. Inspired in the [cartoee Python Package](https://github.com/KMarkert/cartoee) (Developed by [Kel Markert](https://github.com/KMarkert/)), `rgee` implements [ee_as_thumbnail](https://csaybar.github.io/rgee/reference/ee_as_thumbnail.html). It is wrapper function around `ee$Image()$getThumbURL()`.
 
+```{r message=FALSE,warning=FALSE}
+modis_djf_stars <- ee_as_thumbnail(
+  x = djf, 
+  vizparams = visParams, 
+  region = region) %>%
+  '['(world_map) %>% 
+  st_as_sf() %>% 
+  st_transform(ORTHO_PROJ) %>% 
+  st_make_valid() %>% 
+  'colnames<-'(c("NDVI", "geometry"))
 
-jja <- modis_ndvi$filter(ee$Filter$calendarRange(6, 9, "month"))$mean()
-modis_jja_stars <- ee_as_thumbnail(x = jja, vizparams = visParams, region = region)
-modis_jja_stars <- st_as_sf(modis_jja_stars[world_map])
-modis_jja_stars <- st_make_valid(st_transform(modis_jja_stars, ORTHO_PROJ))
-colnames(modis_jja_stars) <- c("NDVI", "geometry")
+modis_mam_stars <- ee_as_thumbnail(
+  x = mam, 
+  vizparams = visParams, 
+  region = region) %>%
+  '['(world_map) %>% 
+  st_as_sf() %>% 
+  st_transform(ORTHO_PROJ) %>% 
+  st_make_valid() %>% 
+  'colnames<-'(c("NDVI", "geometry"))
 
-son <- modis_ndvi$filter(ee$Filter$calendarRange(9, 12, "month"))$mean()
-modis_son_stars <- ee_as_thumbnail(x = son, vizparams = visParams, region = region)
-modis_son_stars <- st_as_sf(modis_son_stars[world_map])
-modis_son_stars <- st_make_valid(st_transform(modis_son_stars, ORTHO_PROJ))
-colnames(modis_son_stars) <- c("NDVI", "geometry")
+modis_jja_stars <- ee_as_thumbnail(
+  x = jja, 
+  vizparams = visParams, 
+  region = region) %>%
+  '['(world_map) %>% 
+  st_as_sf() %>% 
+  st_transform(ORTHO_PROJ) %>% 
+  st_make_valid() %>% 
+  'colnames<-'(c("NDVI", "geometry"))
 
+modis_son_stars <- ee_as_thumbnail(
+  x = son, 
+  vizparams = visParams, 
+  region = region) %>%
+  '['(world_map) %>% 
+  st_as_sf() %>% 
+  st_transform(ORTHO_PROJ) %>% 
+  st_make_valid() %>% 
+  'colnames<-'(c("NDVI", "geometry"))
 
 modis_djf_stars$season <- "DJF"
 modis_mam_stars$season <- "MAM"
 modis_jja_stars$season <- "JJA"
 modis_son_stars$season <- "SON"
 
-modis_season <- rbind(modis_djf_stars, modis_mam_stars, modis_jja_stars, modis_son_stars)
+modis_season <- rbind(
+  modis_djf_stars, 
+  modis_mam_stars,
+  modis_jja_stars,
+  modis_son_stars
+)
+
 ```
 
-5. GGanimate
+### 7. Final step - gganimate
 
+For create the world choropleth NDVI seasonal map, we put everything together. We will use `ggplot2` and `gganimate`:
 
 ```{r gganimate}
 ggplot(modis_season) +
@@ -227,9 +271,10 @@ ggplot(modis_season) +
     panel.background = element_rect(fill = NA)
   ) +
   # Here comes the gganimate code
-  transition_manual(season) +
+  transition_manual(frames = season) +
   enter_fade() +
   exit_shrink() +
-  ease_aes("sine-in-out")
+  ease_aes("linear")
 ```
+
 

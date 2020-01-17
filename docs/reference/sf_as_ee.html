@@ -195,7 +195,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The conversion from sf to EE is a two-step process. Firstly, <code>sf_as_ee</code> transform
-sf objects into a GeoJSON format using <a href='https://docs.ropensci.org/geojsonio/reference/geojson_json.html'>geojson_json</a>. Secondly, the GeoJSON
+sf objects into a GeoJSON format using <a href='https://rdrr.io/pkg/geojsonio/man/geojson_json.html'>geojson_json</a>. Secondly, the GeoJSON
 generated will be encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
 If the sf object is large spatial objects (&gt;1Mb) it is expected that cause bottlenecks and
 plodding connections. See

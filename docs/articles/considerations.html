@@ -123,11 +123,11 @@
 
     
     
-<p><code>rgee</code> works like the <a href="https://pypi.org/project/earthengine-api/">Earth Engine API v.0.1.209</a> in all the aspects, with the exception of <strong>three</strong> particular cases. In this article, we detail each of them.</p>
+<p><code>rgee</code> works like the lastest version of <a href="https://pypi.org/project/earthengine-api/">Earth Engine API</a> in all the aspects, with the exception of <strong>three</strong> particular cases. In this article, we detail each of them.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
-<p><code>rgee</code> may show an error message when perfectly valid requests have been made. This mishap just happening when it is used the <strong>map</strong> method and under two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
+<p><code>rgee</code> may show an error message when perfectly valid requests have been made. This mishap just happening when it is used the <strong>map</strong> method in Earth Engine objects and under two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.1-CAPI-1.11.1</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; and GEOS at installation 3.5.1-CAPI-1.9.1differ</span></a>
@@ -137,23 +137,23 @@
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span></a>
 <a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; Detailed traceback: </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/apifunction.py", line 203, in &lt;lambda&gt;</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/apifunction.py", line 203, in &lt;lambda&gt;</span></a>
 <a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 67, in call</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 67, in call</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span></a>
 <a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span></a>
 <a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/__init__.py", line 222, in _Promote</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/__init__.py", line 222, in _Promote</span></a>
 <a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 112, in create</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 112, in create</span></a>
 <a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt;     return CustomFunction(signature, func)</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span></a>
 <a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt;     self._body = body(*variables)</span></a>
 <a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></a>
 <a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></a></code></pre></div>
-<p>Did you saw it? wild message error appeared!. This strange error could easily solved adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
+<p>The code before is perfectly valid!. This odd error could easily solved adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">mylist =<span class="st"> </span>ee<span class="op">$</span>List<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="dv">0</span>,<span class="dv">10</span>)</a>
@@ -176,9 +176,9 @@
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt; [1] "numeric"</span></a></code></pre></div>
-<p>So, why this is a big deal?. Let’s me show you why with an example:</p>
+<p>So, why this is a big deal?. Let’s me show you with an example:</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1">and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>) <span class="co">#caution: silent</span></a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1">and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">and_bitwise.getInfo()</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 32</span></a></code></pre></div>
 <p><strong>R</strong></p>
@@ -187,14 +187,14 @@
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Number.bitwiseAnd: Bitwise operands must be integer only.</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; Detailed traceback: </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/computedobject.py", line 95, in getInfo</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py", line 95, in getInfo</span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;     return data.computeValue(self)</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/data.py", line 490, in computeValue</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 490, in computeValue</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;     return send_('/value', ({'json': obj.serialize(), 'json_format': 'v2'}))</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/data.py", line 1186, in send_</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 1186, in send_</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;     raise ee_exception.EEException(json_content['error']['message'])</span></a></code></pre></div>
 <p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integer numbers in R is quite simple, you would need to add the letter <strong>L</strong> at the end of the specific number or employ the function <code>as.integer</code>. Please always pay attention to these minutiae to develop clean <code>rgee</code> scripts. The <strong>correct code</strong> in R would be:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">and_bitwise =<span class="st"> </span>ee<span class="op">$</span><span class="kw">Number</span>(32L)<span class="op">$</span><span class="kw">bitwiseAnd</span>(100L) <span class="co">#caution: silent error</span></a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">and_bitwise =<span class="st"> </span>ee<span class="op">$</span><span class="kw">Number</span>(32L)<span class="op">$</span><span class="kw">bitwiseAnd</span>(100L)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">and_bitwise<span class="op">$</span><span class="kw">getInfo</span>()</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; [1] 32</span></a></code></pre></div>
 </div>
@@ -202,7 +202,7 @@
 <h3 class="hasAnchor">
 <a href="#be-careful-with-eedate" class="anchor"></a>3) Be careful with <strong>ee$Date</strong>
 </h3>
-<p>This problem also appears because of the differences in the design of the R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is in fact ridiculously small and it will bring <code>rgee</code> users problems when dealing with the <a href="https://developers.google.com/earth-engine/glossary">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX epoch</a>.</p>
+<p>This problem also appears because of the differences in the design of the R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremadely insuffient to deal with <a href="https://developers.google.com/earth-engine/glossary">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX epoch</a>.</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">my_date.getInfo()</a>
@@ -215,7 +215,7 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; $value</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; [1] -208192512</span></a></code></pre></div>
-<p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results generated. For example:</p>
+<p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R, <code>reticulate</code>), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results returned. For example:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Era5 dataset</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">era_img &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">ImageCollection</span>(<span class="st">"ECMWF/ERA5/DAILY"</span>)<span class="op">$</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span>)<span class="op">$</span></a>

@@ -3,6 +3,7 @@ pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   considerations: considerations.html
+  faq: faq.html
   rgee_animation: rgee_animation.html
   setup: setup.html
 urls:
