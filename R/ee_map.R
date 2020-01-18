@@ -343,6 +343,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
       )
     }
   }
+
   ee_match_img_geoviz(names(vizparams))
 
   ee_size <- eeobject$size()$getInfo()
@@ -457,7 +458,7 @@ setMethod(
     e2_name <- e2@object$names
     for (x in 1:length(e2_name)) {
       e1@map <- e1@map %>%
-        addWMSTiles(group = e2_name[x], baseUrl = e2_token[x], layers = "0") %>%
+        addTiles(group = e2_name[x], urlTemplate = e2_token[x]) %>%
         ee_mapViewLayersControl(names = e2_name[x])
     }
     return(e1)
@@ -470,7 +471,7 @@ setMethod(
 create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m <- mapview()
   m@map <- m@map %>%
-    addTiles(urlTemplate = tile, group = objname) %>%
+    addTiles(urlTemplate = tile, group = objname,layerId = '0') %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
     ee_mapViewLayersControl(names = c(objname))
 
