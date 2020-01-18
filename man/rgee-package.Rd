@@ -24,7 +24,7 @@ Useful links:
 Other contributors:
 \itemize{
   \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
-  \item MariaElena Aduato \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
+  \item MariaElena Adauto \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
 }
 
 }

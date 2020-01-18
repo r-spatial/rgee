@@ -10,8 +10,7 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
 \arguments{
 \item{x}{EE Image object}
 
-\item{region}{Geospatial region of the image (c(E,S,W,N) numeric
-vector, EE Geometry, or sfg). By default, the whole image is used.}
+\item{region}{EE Geometry}
 
 \item{dimensions}{A number or pair of numbers in format XY.}
 
@@ -68,7 +67,11 @@ ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
                   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
 # Example 01  - SRTM AREQUIPA-PERU
 image <- ee$Image("CGIAR/SRTM90_V4")
-region <- nc$geometry[[1]]
+region <- nc$geometry[[1]] \%>\%
+  st_bbox() \%>\%
+  st_as_sfc() \%>\%
+  st_set_crs(4326) \%>\%
+  sf_as_ee()
 arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 arequipa_dem <- arequipa_dem * 5000
 plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")

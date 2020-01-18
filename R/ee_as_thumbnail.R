@@ -4,13 +4,13 @@
 #' This function is a wrapper around \code{ee$Image()$getThumbURL()}.
 #'
 #' @param x EE Image object
-#' @param region Geospatial region of the image (c(E,S,W,N) numeric
-#' vector, EE Geometry, or sfg). By default, the whole image is used.
+#' @param region EE Geometry
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
 #' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
+#'
 #' The argument dimensions will define the "from" & "to" parameters of the stars object.
 #' It must be a single numeric value or a two-element vector. If not defined,
 #' 256 is taken by default as the dimension of x (from 1 to 256), and y will
@@ -51,14 +51,22 @@
 #'
 #' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
-#' nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
-#' dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
-#'                  "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
-#' ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
-#'                   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
+#' nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
+#' dem_palette <- c(
+#'   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
+#'   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
+#' )
+#' ndvi_palette <- c(
+#'   "#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
+#'   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60"
+#' )
 #' # Example 01  - SRTM AREQUIPA-PERU
 #' image <- ee$Image("CGIAR/SRTM90_V4")
-#' region <- nc$geometry[[1]]
+#' region <- nc$geometry[[1]] %>%
+#'   st_bbox() %>%
+#'   st_as_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
 #' arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
 #' arequipa_dem <- arequipa_dem * 5000
 #' plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
@@ -67,26 +75,18 @@
 ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326, quiet = FALSE) {
   if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
   ee_crs <- sprintf("EPSG:%s", crs)
+
   if (missing(region)) {
-    region <- x$geometry()$bounds()$getInfo()["coordinates"][[1]][[1]]
-    if (!quiet) {
-      cat(
-        " region is missing, the centroid of this EE Image is used: \n",
-        "region: ", paste(region, collapse = " "), "\n"
-      )
-    }
+    stop("It is necessary define a region as ee$Geometry ")
   } else {
-    region <- create_region(region)
+    region_bound <- region$bounds()
   }
 
-  region_df <- data.frame(do.call(rbind, region)) %>%
-    `names<-`(c('x','y'))
-
   if (missing(dimensions)) {
-    dimensions <- 256L
+    dimensions <- c(256L, 256L)
     if (!quiet) {
       cat(
-        " dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). \n"
+        " dimensions is missing, 256x256 is taken by default as dimension of x. \n"
       )
     }
   }
@@ -95,7 +95,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     if (!quiet) {
       cat(sprintf(
         " For large image (%sx%s) is preferible use rgee::ee_download_*()\n",
-        dimensions[1],dimensions[2]
+        dimensions[1], dimensions[2]
       ))
     }
   }
@@ -103,13 +103,13 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   new_params <- list(
     crs = ee_crs,
     dimensions = as.integer(dimensions),
-    region = region
+    region = region_bound
   )
 
-  viz_params <- c(new_params, vizparams)
+  viz_params_total <- c(new_params, vizparams)
 
   if (!quiet) cat("Getting the thumbnail image from Earth Engine ... please wait\n")
-  thumbnail_url <- x$getThumbURL(viz_params)
+  thumbnail_url <- x$getThumbURL(viz_params_total)
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
 
@@ -117,9 +117,10 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   # Handling problems with respect to the format
   # of the getTHumbURL (sometimes jpeg other png)
   error_message_I <- paste0(
-    'Error arise after try to download',
-    'the getThumbURL (it needs to be ',
-    'either jpeg or png)')
+    "Error arise after try to download",
+    "the getThumbURL (it needs to be ",
+    "either jpeg or png)"
+  )
 
   raw_image <- tryCatch(
     tryCatch(readPNG(z),
@@ -135,17 +136,26 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   )
 
   if (dim(raw_image)[3] == 1) {
-    #jpeg
+    # jpeg
     bands <- 1
-  } else if(dim(raw_image)[3] == 2) {
-    #png
+  } else if (dim(raw_image)[3] == 2) {
+    # png
     bands <- 1
-  } else if(dim(raw_image)[3] == 3) {
+  } else if (dim(raw_image)[3] == 3) {
     # png(color) or others
     bands <- 3
-  } else if(dim(raw_image)[3] == 4) {
+  } else if (dim(raw_image)[3] == 4) {
     bands <- 3
   }
+
+  # rastergeometry ----------------------------------------------------------
+  bound_coord <- region$
+    coordinates()$
+    getInfo() %>%
+    ee_py_to_r() %>%
+    "[["(1)
+  long <- sapply(bound_coord, function(x) x[1])
+  lat <- sapply(bound_coord, function(x) x[2])
 
   # -----------------------------------------------
   if (bands > 2) {
@@ -162,12 +172,12 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
       merge() %>%
       st_set_dimensions(names = c("x", "y", "bands")) ->
     stars_png
-
+    plot(stars_png)
     attr_dim <- attr(stars_png, "dimensions")
-    attr_dim$x$offset <- min(region_df['x'])
-    attr_dim$y$offset <- max(region_df['y'])
-    attr_dim$x$delta <- (max(region_df['x']) - min(region_df['x']))/attr_dim$x$to
-    attr_dim$y$delta <- (min(region_df['y']) - max(region_df['y']))/attr_dim$y$to
+    attr_dim$x$offset <- min(long)
+    attr_dim$y$offset <- max(lat)
+    attr_dim$x$delta <- (max(long) - min(long)) / attr_dim$x$to
+    attr_dim$y$delta <- (min(lat) - max(lat)) / attr_dim$y$to
 
     attr(stars_png, "dimensions") <- attr_dim
     st_crs(stars_png) <- crs
@@ -181,12 +191,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
       MoreArgs = list(mtx = raw_image)
     )[[1]]
     stars_png %>% st_set_dimensions(names = c("x", "y")) -> stars_png
-    sss <- as(stars_png,'Raster')
     attr_dim <- attr(stars_png, "dimensions")
-    attr_dim$x$offset <- min(region_df['x'])
-    attr_dim$y$offset <- max(region_df['y'])
-    attr_dim$x$delta <- (max(region_df['x']) - min(region_df['x']))/attr_dim$x$to
-    attr_dim$y$delta <- (min(region_df['y']) - max(region_df['y']))/attr_dim$y$to
+    attr_dim$x$offset <- min(long)
+    attr_dim$y$offset <- max(lat)
+    attr_dim$x$delta <- (max(long) - min(long)) / dimensions[1]
+    attr_dim$y$delta <- (min(lat) - max(lat)) / dimensions[2]
     attr(stars_png, "dimensions") <- attr_dim
     st_crs(stars_png) <- crs
     return(stars_png)
