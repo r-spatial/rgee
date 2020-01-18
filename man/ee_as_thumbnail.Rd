@@ -60,11 +60,15 @@ library(stars)
 
 ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
-nc = st_read(system.file("shp/arequipa.shp", package="rgee"))
-dem_palette <- c("#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
-                 "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF")
-ndvi_palette <- c("#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
-                  "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60")
+nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
+dem_palette <- c(
+  "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
+  "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
+)
+ndvi_palette <- c(
+  "#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
+  "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60"
+)
 # Example 01  - SRTM AREQUIPA-PERU
 image <- ee$Image("CGIAR/SRTM90_V4")
 region <- nc$geometry[[1]] \%>\%

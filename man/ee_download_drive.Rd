@@ -73,7 +73,7 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 task_img <- ee$batch$Export$image$toDrive(
   image = mean_l5_Amarakaeri,
   folder = "Amarakaeri",
-  fileFormat = "GEOTIFF",
+  fileFormat = "GEO_TIFF",
   fileNamePrefix = "my_image"
 )
 
@@ -87,7 +87,7 @@ amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
   folder = "Amarakaeri",
-  fileFormat = "GEOJSON",
+  fileFormat = "GEO_JSON",
   fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()

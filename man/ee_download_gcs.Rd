@@ -76,7 +76,7 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 task_img <- ee$batch$Export$image$toCloudStorage(
   image = mean_l5_Amarakaeri,
   bucket = "bag_csaybar",
-  fileFormat = "GEOTIFF",
+  fileFormat = "GEO_TIFF",
   fileNamePrefix = "my_image"
 )
 task_img$start()

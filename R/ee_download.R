@@ -15,6 +15,7 @@
 #' @return
 #' An sf, stars or character depending on the retunclass argument.
 #' @importFrom stars read_stars
+#' @importFrom utils menu
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -59,7 +60,7 @@
 #' task_img <- ee$batch$Export$image$toDrive(
 #'   image = mean_l5_Amarakaeri,
 #'   folder = "Amarakaeri",
-#'   fileFormat = "GEOTIFF",
+#'   fileFormat = "GEO_TIFF",
 #'   fileNamePrefix = "my_image"
 #' )
 #'
@@ -73,7 +74,7 @@
 #' task_vector <- ee$batch$Export$table$toDrive(
 #'   collection = amk_fc,
 #'   folder = "Amarakaeri",
-#'   fileFormat = "GEOJSON",
+#'   fileFormat = "GEO_JSON",
 #'   fileNamePrefix = "geom_Amarakaeri"
 #' )
 #' task_vector$start()
@@ -82,13 +83,14 @@
 #' plot(amk_geom$geometry, border = "red", lwd = 10)
 #' }
 #' @export
-ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet = TRUE) {
-  if (!requireNamespace('googledrive', quietly = TRUE)) {
-    stop('The googledrive package is required to use rgee::ee_download_drive',
-         call. = FALSE)
+ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE, quiet = TRUE) {
+  if (!requireNamespace("googledrive", quietly = TRUE)) {
+    stop("The googledrive package is required to use rgee::ee_download_drive",
+      call. = FALSE
+    )
   } else {
-    gd_folder <- basename(task$status()$output_url)
-    gd_filename <- task$config$driveFileNamePrefix
+    gd_folder <- basename(task$status()$destination_uris)
+    gd_filename <- task$config$fileExportOptions$driveDestination$filenamePrefix
 
     # Selecting a file considering the name
     files_gd <- try(googledrive::drive_find(
@@ -104,30 +106,50 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet
       count <- count + 1
     }
 
-    # Choose the right file using the driver_resource["originalFilename"]
-    orgl_filename <- sapply(files_gd$drive_resource, function(x) x$originalFilename)
-    row_id <- grepl(task$id, orgl_filename) %>% which()
-    to_download <- files_gd[row_id, ]
-
-    fileformat <- toupper(task$config$fileFormat)
-    if (missing(filename)) filename <- tempfile()
 
     fileformat <- get_fileformat(task)
-    file_suffix <- get_format_suffix(fileformat)
-    filenames_hd <- create_filenames(filename,file_suffix,fileformat)
 
-    to_download <- sort_drive_files(to_download, fileformat)
+    if (nrow(files_gd) > 1 & fileformat != 'SHP') {
+      show_files <- files_gd
+      getTime <- function(x) files_gd$drive_resource[[x]]$createdTime
+      createdTime <- sapply(1:nrow(files_gd), getTime)
+      show_files$drive_resource <- NULL
+      show_files$createdTime <- createdTime
+      print(show_files, width = Inf)
+      file_selected <- menu(choices = files_gd$id, title = "Multiple files with the same name:")
+      files_gd_todownload <- files_gd[file_selected, ]
+    } else {
+      files_gd_todownload <- files_gd
+    }
+
+    # Choose the right file using the driver_resource["originalFilename"]
+    fileformat <- toupper(task$config$fileExportOptions$fileFormat)
+    if (missing(filename)) filename <- tempfile()
+
+    file_suffix <- get_format_suffix(fileformat)
+    filenames_hd <- create_filenames(filename, file_suffix, fileformat)
+
+    # it is necessary for ESRI shapefiles
+    to_download <- sort_drive_files(files_gd_todownload, fileformat)
     filenames_hd <- sort_harddisk_files(filenames_hd, fileformat)
 
-    for (z in 1:nrow(to_download)) {
-      googledrive::drive_download(file = to_download[z,],
-                                  path = filenames_hd[z],
-                                  overwrite = overwrite,
-                                  verbose = !quiet)
+    if (nrow(to_download)>4) {
+      stop('Impossible to download multiple geometries as SHP.',
+           ' Try to define the fileFormat argument as GEO_JSON')
     }
-    read_filenames(filenames_hd, fileformat,quiet = quiet)
+
+    for (z in 1:nrow(to_download)) {
+      googledrive::drive_download(
+        file = to_download[z, ],
+        path = filenames_hd[z],
+        overwrite = overwrite,
+        verbose = !quiet
+      )
+    }
+    read_filenames(filenames_hd, fileformat, quiet = quiet)
   }
 }
+
 
 #' Move EE results from Google Cloud Storage to Hard disk
 #'
@@ -192,7 +214,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet
 #' task_img <- ee$batch$Export$image$toCloudStorage(
 #'   image = mean_l5_Amarakaeri,
 #'   bucket = "bag_csaybar",
-#'   fileFormat = "GEOTIFF",
+#'   fileFormat = "GEO_TIFF",
 #'   fileNamePrefix = "my_image"
 #' )
 #' task_img$start()
@@ -216,32 +238,38 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,quiet
 #' @export
 ee_download_gcs <- function(task, filename, overwrite = FALSE,
                             GCS_AUTH_FILE = getOption("rgee.gcs.auth"), quiet = TRUE) {
-  if (!requireNamespace('googleCloudStorageR', quietly = TRUE)) {
-    stop('The googleCloudStorageR package is required to use rgee::ee_download_gcs',
-         call. = FALSE)
+  if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+    stop("The googleCloudStorageR package is required to use rgee::ee_download_gcs",
+      call. = FALSE
+    )
   } else {
-    gcs_bucket <- task$config$outputBucket
-    gd_filename <- task$config$outputPrefix
+    gcs_bucket <- task$config$fileExportOptions$gcsDestination$bucket
+    gd_filename <- task$config$fileExportOptions$gcsDestination$filenamePrefix
     if (missing(filename)) filename <- tempfile()
 
     fileformat <- get_fileformat(task)
     file_suffix <- get_format_suffix(fileformat)
-    filenames_gcs <- create_filenames(gd_filename,file_suffix,fileformat)
-    filenames_hd <- create_filenames(filename,file_suffix,fileformat)
+    filenames_gcs <- create_filenames(gd_filename, file_suffix, fileformat)
+    filenames_hd <- create_filenames(filename, file_suffix, fileformat)
 
+    # it is necessary for ESRI shapefiles
     filenames_gcs <- sort_harddisk_files(filenames_gcs, fileformat)
     filenames_hd <- sort_harddisk_files(filenames_hd, fileformat)
 
-    for(z in seq_along(filenames_hd)) {
-      intent = try(googleCloudStorageR::gcs_get_object(object_name = filenames_gcs[z],
-                                                       bucket = gcs_bucket,
-                                                       saveToDisk = filenames_hd[z],
-                                                       overwrite = TRUE),silent = TRUE)
-      if (class(intent)=='try-error') {
-        googleCloudStorageR::gcs_get_object(object_name = gsub("ee_export","",filenames_gcs[z]),
-                                            bucket = gcs_bucket,
-                                            saveToDisk = filenames_hd[z],
-                                            overwrite = TRUE)
+    for (z in seq_along(filenames_hd)) {
+      intent <- try(googleCloudStorageR::gcs_get_object(
+        object_name = filenames_gcs[z],
+        bucket = gcs_bucket,
+        saveToDisk = filenames_hd[z],
+        overwrite = TRUE
+      ), silent = TRUE)
+      if (class(intent) == "try-error") {
+        googleCloudStorageR::gcs_get_object(
+          object_name = gsub("ee_export", "", filenames_gcs[z]),
+          bucket = gcs_bucket,
+          saveToDisk = filenames_hd[z],
+          overwrite = TRUE
+        )
       }
     }
     read_filenames(filenames_hd, fileformat, quiet = quiet)
@@ -259,26 +287,26 @@ ee_download_gcs <- function(task, filename, overwrite = FALSE,
 #' \dontrun{
 #' library(rgee)
 #' ee_initialize()
-#' ee_download_monitoring(eelist=TRUE)
+#' ee_download_monitoring(eelist = TRUE)
 #' }
 #' @export
 ee_monitoring <- function(task, eeTaskList = FALSE) {
   if (missing(task)) {
-    task <-ee$batch$Task$list()[[1]]
+    task <- ee$batch$Task$list()[[1]]
   }
   if (eeTaskList) {
     cat("EETaskList:\n")
-    task_list <- mapply( function(x) {
-        sprintf("<Task %s: %s (%s)>", x$task_type, x$config, x$state)
-      }, ee$batch$Task$list())
+    task_list <- mapply(function(x) {
+      sprintf("<Task %s: %s (%s)>", x$task_type, x$config, x$state)
+    }, ee$batch$Task$list())
     cat("", paste0(task_list, "\n"))
   }
   cat("\n")
-  while (task$active()){
-    print(sprintf('Polling for task (id: %s).',task$id))
+  while (task$active()) {
+    print(sprintf("Polling for task (id: %s).", task$id))
     Sys.sleep(5)
   }
-  print(sprintf('State: %s',task$status()$state))
+  print(sprintf("State: %s", task$status()$state))
   if (!is.null(task$status()$error_message)) {
     print(task$status()$error_message)
   }
@@ -287,50 +315,54 @@ ee_monitoring <- function(task, eeTaskList = FALSE) {
 
 #' get format file suffix - GCS
 #' @noRd
-get_format_suffix <-function(x) {
-  shp_sx <- list("ee_export.dbf","ee_export.shx","ee_export.prj","ee_export.shp")
-  #ctf_sx <-  list(".json", sprintf("-%05d.tfrecord.gz",0:(length(gd_folder)-2)))
-  image_ctf_sx <-  list(".json", ".tfrecord.gz")
-  #tf_sx <-  list(".json", sprintf("-%05d.tfrecord",0:(length(gd_folder)-2)))
-  image_tf_sx <-  list(".json", ".tfrecord")
-  suffix <- list(".tif","ee_export.csv","ee_export.geojson","ee_export.kml",
-                 "ee_export.kmz",shp_sx, image_tf_sx, image_ctf_sx,
-                 "ee_export.gz", "ee_export.gz")
-  names(suffix) <- c("GEOTIFF" , "CSV", "GEOJSON", "KML",
-                     "KMZ","SHP","TFRECORD_IMAGE","CTFRECORD_IMAGE",
-                     "TFRECORD_VECTOR","CTFRECORD_VECTOR")
+get_format_suffix <- function(x) {
+  shp_sx <- list("ee_export.dbf", "ee_export.shx", "ee_export.prj", "ee_export.shp")
+  # ctf_sx <-  list(".json", sprintf("-%05d.tfrecord.gz",0:(length(gd_folder)-2)))
+  image_ctf_sx <- list(".json", ".tfrecord.gz")
+  # tf_sx <-  list(".json", sprintf("-%05d.tfrecord",0:(length(gd_folder)-2)))
+  image_tf_sx <- list(".json", ".tfrecord")
+  suffix <- list(
+    ".tif", "ee_export.csv", "ee_export.GEO_JSON", "ee_export.kml",
+    "ee_export.kmz", shp_sx, image_tf_sx, image_ctf_sx,
+    "ee_export.gz", "ee_export.gz"
+  )
+  names(suffix) <- c(
+    "GEO_TIFF", "CSV", "GEO_JSON", "KML",
+    "KMZ", "SHP", "TFRECORD_IMAGE", "CTFRECORD_IMAGE",
+    "TFRECORD_VECTOR", "CTFRECORD_VECTOR"
+  )
   return(as.character(unlist(suffix[x])))
 }
 
 #'  Get the file format
-#'  Format available: "GEOTIFF", "CSV", "GEOJSON", "KML", "KMZ",
+#'  Format available: "GEO_TIFF", "CSV", "GEO_JSON", "KML", "KMZ",
 #'                    "SHP", "TFRECORD_IMAGE", "CTFRECORD_IMAGE",
 #'                    "TFRECORD_VECTOR", "CTFRECORD_VECTOR"
 #' @noRd
 get_fileformat <- function(x) {
-  if (x$config$fileFormat == "TFRECORD") {
+  if (x$config$fileExportOptions$fileFormat == "TFRECORD") {
     if (x$task_type == "EXPORT_FEATURES") {
-      if (x$config$formatOptions$compressed == TRUE) {
+      if (x$config$fileExportOptions$formatOptions$compressed == TRUE) {
         return("CTFRECORD_VECTOR")
       } else {
         return("TFRECORD_VECTOR")
       }
     } else {
-      if (x$config$tfrecordCompressed == TRUE) {
+      if (x$config$fileExportOptions$tfrecordCompressed == TRUE) {
         return("CTFRECORD_IMAGE")
       } else {
         return("TFRECORD_IMAGE")
       }
     }
   } else {
-    return(x$config$fileForma)
+    return(x$config$fileExportOptions$fileFormat)
   }
 }
 
 #' Create file (or files) to save - GCS
 #' @noRd
 create_filenames <- function(basename, suffix, fileformat) {
-  if (fileformat %in% c("GEOTIFF", "TFRECORD_IMAGE", "CTFRECORD_IMAGE")) {
+  if (fileformat %in% c("GEO_TIFF", "TFRECORD_IMAGE", "CTFRECORD_IMAGE")) {
     filename <- sprintf("%s%s", basename, suffix)
   } else {
     filename <- sprintf("%s%s", basename, suffix)
@@ -340,44 +372,46 @@ create_filenames <- function(basename, suffix, fileformat) {
 
 #' Create the download file according to its format
 #' @noRd
-read_filenames <- function(filename, fileformat, quiet){
-if (fileformat == "GEOTIFF") {
-  fread <- read_stars(filename, quiet = quiet)
-  return(fread)
-} else if (fileformat %in% "SHP") {
-  fread <- st_read(filename[grep("\\.shp$",filename)], quiet = quiet)
-  return(fread)
-} else if (fileformat %in% c("GEOJSON", "KML", "KMZ")) {
-  fread <- st_read(filename, quiet = quiet)
-  return(fread)
-} else {
-  if (!quiet) print(sprintf(
-    "Download completed:%s (%s)",
-    filename,
-    fileformat
-  ))
-  return(TRUE)
-}
+read_filenames <- function(filename, fileformat, quiet) {
+  if (fileformat == "GEO_TIFF") {
+    fread <- read_stars(filename, quiet = quiet)
+    return(fread)
+  } else if (fileformat %in% "SHP") {
+    fread <- st_read(filename[grep("\\.shp$", filename)], quiet = quiet)
+    return(fread)
+  } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
+    fread <- st_read(filename, quiet = quiet)
+    return(fread)
+  } else {
+    if (!quiet) {
+      print(sprintf(
+        "Download completed:%s (%s)",
+        filename,
+        fileformat
+      ))
+    }
+    return(TRUE)
+  }
 }
 
 #' Sort google drives files
 #' @noRd
-sort_drive_files <- function(drive_files,fileformat) {
-  if (fileformat=='SHP') {
-    shp_file <- grep("(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)",drive_files[['name']])
-    selected_drive_files <- drive_files[shp_file,]
-    drive_files_sort <- selected_drive_files[order(selected_drive_files$name),]
+sort_drive_files <- function(drive_files, fileformat) {
+  if (fileformat == "SHP") {
+    shp_file <- grep("(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)", drive_files[["name"]])
+    selected_drive_files <- drive_files[shp_file, ]
+    drive_files_sort <- selected_drive_files[order(selected_drive_files$name), ]
   } else {
-    drive_files_sort <- drive_files[order(drive_files[['name']]),]
+    drive_files_sort <- drive_files[order(drive_files[["name"]]), ]
   }
   drive_files_sort
 }
 
 #' Sort hard disk files
 #' @noRd
-sort_harddisk_files <- function(harddisk_files,fileformat) {
-  if (fileformat=='SHP') {
-    shp_file <- grep("(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)",harddisk_files)
+sort_harddisk_files <- function(harddisk_files, fileformat) {
+  if (fileformat == "SHP") {
+    shp_file <- grep("(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)", harddisk_files)
     shp_file <- harddisk_files[shp_file]
     harddisk_files_sort <- shp_file[order(shp_file)]
   } else {

@@ -18,6 +18,6 @@ Monitoring Earth Engine task progress
 \dontrun{
 library(rgee)
 ee_initialize()
-ee_download_monitoring(eelist=TRUE)
+ee_download_monitoring(eelist = TRUE)
 }
 }
