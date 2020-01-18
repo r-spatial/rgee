@@ -470,7 +470,7 @@ setMethod(
 create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m <- mapview()
   m@map <- m@map %>%
-    addTiles(urlTemplate = tile, group = objname) %>%
+    addTiles(urlTemplate = tile, group = objname, layers = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
     ee_mapViewLayersControl(names = c(objname))
 
