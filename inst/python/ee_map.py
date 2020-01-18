@@ -15,14 +15,11 @@ EE_TILES = 'https://earthengine.googleapis.com/map/{mapid}/{{z}}/{{x}}/{{y}}?tok
 # vizparams = r['vizparams']
 def ee_map_py(eeobject, vizparams):
     """Fetch and return a map id and token
-
     Args:
         eeobject (ee): Earth Engine object of class: Geometry, Feature, FeatureCollection or Image.
         vizparams (dict): The visualization parameters.  See ee.data.getMapId.
-
     Returns:
           An object containing a mapid and access token, or an error message.
-
     Examples:
         >>> eeobject = ee.Image()
         >>> vizparams = {}
@@ -30,28 +27,28 @@ def ee_map_py(eeobject, vizparams):
     """
     if eeobject.name() is 'Geometry':
         try:
-            token = ee.FeatureCollection(ee.Feature(eeobject))\
+            EE_TILES = ee.FeatureCollection(ee.Feature(eeobject))\
                       .draw(**vizparams)\
-                      .getMapId()
+                      .getMapId()["tile_fetcher"].url_format
         except:
             print('Error: The Earth Engine Geometry object malformed')
     elif eeobject.name() is 'Feature':
         try:
-            token = ee.FeatureCollection(ee.Feature(eeobject))\
+            EE_TILES = ee.FeatureCollection(ee.Feature(eeobject))\
                       .draw(**vizparams)\
-                      .getMapId()
+                      .getMapId()["tile_fetcher"].url_format
         except:
             print('Error: The Earth Engine Feature object malformed')
     elif eeobject.name() is 'FeatureCollection':
         try:
-            token = eeobject.draw(**vizparams).getMapId()
+            EE_TILES = eeobject.draw(**vizparams).getMapId()["tile_fetcher"].url_format
         except:
             print('Error: The Earth Engine FeatureCollection object malformed')
     elif eeobject.name() is 'Image':
         try:
-            token = eeobject.visualize(**vizparams).getMapId()
+            EE_TILES = eeobject.visualize(**vizparams).getMapId()["tile_fetcher"].url_format
         except:
             print('Error: The Earth Engine Image object malformed')
     else:
         sys.exit('ee_map only support Geometry, Image, Feature and FeatureCollection')
-    return EE_TILES.format(**token)
+    return EE_TILES
