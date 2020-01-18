@@ -4,7 +4,7 @@
 #' This function is a wrapper around \code{ee$Image()$getThumbURL()}.
 #'
 #' @param x EE Image object
-#' @param region EE Geometry
+#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle)
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
 #' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
@@ -78,8 +78,6 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
 
   if (missing(region)) {
     stop("It is necessary define a region as ee$Geometry ")
-  } else {
-    region_bound <- region$bounds()
   }
 
   if (missing(dimensions)) {
@@ -100,11 +98,32 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     }
   }
 
-  new_params <- list(
-    crs = ee_crs,
-    dimensions = as.integer(dimensions),
-    region = region_bound
-  )
+  # rastergeometry ----------------------------------------------------------
+  bound_coord <- region$
+    coordinates()$
+    getInfo() %>%
+    ee_py_to_r() %>%
+    "[["(1)
+
+  long <- sapply(bound_coord, function(x) x[1]) %>% as.numeric()
+  lat <- sapply(bound_coord, function(x) x[2]) %>% as.numeric()
+
+  world_lat <- c(-90, -90,  90,  90, -90)
+  world_long <- c(-180,  180,  180, -180, -180)
+
+  if (!all(long %in% world_long & lat %in% world_lat)) {
+    new_params <- list(
+      crs = ee_crs,
+      dimensions = as.integer(dimensions),
+      region = region
+    )
+  } else {
+    new_params <- list(
+      crs = ee_crs,
+      dimensions = as.integer(dimensions)
+    )
+
+  }
 
   viz_params_total <- c(new_params, vizparams)
 
@@ -147,15 +166,6 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   } else if (dim(raw_image)[3] == 4) {
     bands <- 3
   }
-
-  # rastergeometry ----------------------------------------------------------
-  bound_coord <- region$
-    coordinates()$
-    getInfo() %>%
-    ee_py_to_r() %>%
-    "[["(1)
-  long <- sapply(bound_coord, function(x) x[1])
-  lat <- sapply(bound_coord, function(x) x[2])
 
   # -----------------------------------------------
   if (bands > 2) {
@@ -241,3 +251,4 @@ create_region <- function(x) {
   }
   invisible(ee_py_to_r(region)[[1]])
 }
+

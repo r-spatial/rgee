@@ -10,7 +10,7 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
 \arguments{
 \item{x}{EE Image object}
 
-\item{region}{EE Geometry}
+\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle)}
 
 \item{dimensions}{A number or pair of numbers in format XY.}
 

@@ -181,7 +181,8 @@ son <- modis_ndvi$filter(ee$Filter$calendarRange(9, 12, "month"))$mean()
 
 # Export as a stars object
 visParams <- list(min = 0, max = 1, bands = "ndvi")
-region <- c(-180, -90, 180, 90)
+region <- c(-180L, -90L, 180L, 90L) %>% 
+  ee$Geometry$Rectangle()
 ```
 
 
@@ -241,7 +242,6 @@ modis_season <- rbind(
   modis_jja_stars,
   modis_son_stars
 )
-
 ```
 
 ### 7. Final step - gganimate

@@ -242,7 +242,7 @@ the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$star
 <span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>image</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
-  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEOTIFF"</span>,
+  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_TIFF"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
 )
 
@@ -256,7 +256,7 @@ the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$star
 <span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
-  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEOJSON"</span>,
+  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_JSON"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"geom_Amarakaeri"</span>
 )
 <span class='no'>task_vector</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()

@@ -276,7 +276,8 @@
 <a class="sourceLine" id="cb7-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># Export as a stars object</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8">visParams &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">min =</span> <span class="dv">0</span>, <span class="dt">max =</span> <span class="dv">1</span>, <span class="dt">bands =</span> <span class="st">"ndvi"</span>)</a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">region &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">180</span>, <span class="dv">-90</span>, <span class="dv">180</span>, <span class="dv">90</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb7-9" data-line-number="9">region &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span>180L, <span class="op">-</span>90L, 180L, 90L) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st">  </span>ee<span class="op">$</span>Geometry<span class="op">$</span><span class="kw">Rectangle</span>()</a></code></pre></div>
 </div>
 <div id="exporting-thumbnail-images" class="section level3">
 <h3 class="hasAnchor">
@@ -291,7 +292,7 @@
 <a class="sourceLine" id="cb8-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(ORTHO_PROJ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lwgeom/man/valid.html">st_make_valid</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="st">  'colnames&lt;-'</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>))</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;  dimensions is missing, 256x256 is taken by default as dimension of x. </span></a>
 <a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb8-12" data-line-number="12"></a>
 <a class="sourceLine" id="cb8-13" data-line-number="13">modis_mam_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(</a>
@@ -303,7 +304,7 @@
 <a class="sourceLine" id="cb8-19" data-line-number="19"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(ORTHO_PROJ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lwgeom/man/valid.html">st_make_valid</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-21" data-line-number="21"><span class="st">  'colnames&lt;-'</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>))</a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;  dimensions is missing, 256x256 is taken by default as dimension of x. </span></a>
 <a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb8-24" data-line-number="24"></a>
 <a class="sourceLine" id="cb8-25" data-line-number="25">modis_jja_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(</a>
@@ -315,7 +316,7 @@
 <a class="sourceLine" id="cb8-31" data-line-number="31"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(ORTHO_PROJ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-32" data-line-number="32"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lwgeom/man/valid.html">st_make_valid</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-33" data-line-number="33"><span class="st">  'colnames&lt;-'</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>))</a>
-<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb8-34" data-line-number="34"><span class="co">#&gt;  dimensions is missing, 256x256 is taken by default as dimension of x. </span></a>
 <a class="sourceLine" id="cb8-35" data-line-number="35"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb8-36" data-line-number="36"></a>
 <a class="sourceLine" id="cb8-37" data-line-number="37">modis_son_stars &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ee_as_thumbnail.html">ee_as_thumbnail</a></span>(</a>
@@ -327,7 +328,7 @@
 <a class="sourceLine" id="cb8-43" data-line-number="43"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_transform.html">st_transform</a></span>(ORTHO_PROJ) <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-44" data-line-number="44"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/lwgeom/man/valid.html">st_make_valid</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb8-45" data-line-number="45"><span class="st">  'colnames&lt;-'</span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"NDVI"</span>, <span class="st">"geometry"</span>))</a>
-<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). </span></a>
+<a class="sourceLine" id="cb8-46" data-line-number="46"><span class="co">#&gt;  dimensions is missing, 256x256 is taken by default as dimension of x. </span></a>
 <a class="sourceLine" id="cb8-47" data-line-number="47"><span class="co">#&gt; Getting the thumbnail image from Earth Engine ... please wait</span></a>
 <a class="sourceLine" id="cb8-48" data-line-number="48"></a>
 <a class="sourceLine" id="cb8-49" data-line-number="49">modis_djf_stars<span class="op">$</span>season &lt;-<span class="st"> "DJF"</span></a>

@@ -275,22 +275,19 @@ By default 000000.</p></li>
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>),
   <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
 )</div><div class='output co'>#&gt;  center is missing, the centroid of this EE Geometry is used: 
-#&gt;  center:  -73.53522 -15.75453 </div><div class='input'><span class='no'>m1</span>
-
+#&gt;  center:  -73.53522 -15.75453 </div><div class='output co'>#&gt; <span class='error'>Error in addTiles(., urlTemplate = tile, group = objname): could not find function "addTiles"</span></div><div class='input'><span class='no'>m1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm1' not found</span></div><div class='input'>
 <span class='co'># Case: Feature</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$<span class='fu'>first</span>()
 <span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>), <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
 #&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
 #&gt;  center is missing, the centroid of this EE Feature is used: 
-#&gt;  center:  -73.5352168496441 -15.7545342687562 </div><div class='input'><span class='no'>m2</span> + <span class='no'>m1</span>
-
+#&gt;  center:  -73.5352168496441 -15.7545342687562 </div><div class='output co'>#&gt; <span class='error'>Error in addTiles(., urlTemplate = tile, group = objname): could not find function "addTiles"</span></div><div class='input'><span class='no'>m2</span> + <span class='no'>m1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm2' not found</span></div><div class='input'>
 <span class='co'># Case: FeatureCollection</span>
 <span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
 <span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(<span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
 #&gt;  vizparams: {color:'000000', strokeWidth:3, pointRadius:3}
 #&gt;  center is missing, the centroid of this EE FeatureCollection is used: 
-#&gt;  center:  -72.2259305323255 -16.3333305052177 </div><div class='input'><span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
-
+#&gt;  center:  -72.2259305323255 -16.3333305052177 </div><div class='output co'>#&gt; <span class='error'>Error in addTiles(., urlTemplate = tile, group = objname): could not find function "addTiles"</span></div><div class='input'><span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm3' not found</span></div><div class='input'>
 <span class='co'># Case: Image</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
 <span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_map</span>(
@@ -302,8 +299,7 @@ By default 000000.</p></li>
   <span class='kw'>objname</span> <span class='kw'>=</span> <span class='st'>"SF"</span>,
   <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='st'>"8"</span>
 )</div><div class='output co'>#&gt;  center is missing, the centroid of this EE Image object is used: 
-#&gt;  center:  -122.144091821352 37.4717652231187 </div><div class='input'><span class='no'>m4</span>
-
+#&gt;  center:  -122.144091821352 37.4717652231187 </div><div class='output co'>#&gt; <span class='error'>Error in addTiles(., urlTemplate = tile, group = objname): could not find function "addTiles"</span></div><div class='input'><span class='no'>m4</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm4' not found</span></div><div class='input'>
 <span class='co'># Case: ImageCollection</span>
 <span class='no'>collection</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LC08/C01/T1_TOA"</span>)$
   <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/funprog.html'>Filter</a></span>()$<span class='fu'>eq</span>(<span class='st'>"WRS_PATH"</span>, <span class='fl'>44</span>))$

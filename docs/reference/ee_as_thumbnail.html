@@ -175,8 +175,7 @@ This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </tr>
     <tr>
       <th>region</th>
-      <td><p>Geospatial region of the image (c(E,S,W,N) numeric
-vector, EE Geometry, or sfg). By default, the whole image is used.</p></td>
+      <td><p>EE Geometry Rectangle (ee$Geometry$Rectangle)</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
@@ -231,35 +230,33 @@ the max(min) value, etc. See below for a more compressible list of all the param
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'>
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='no'>nc</span> <span class='kw'>=</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpKBgklc/temp_libpath1e4d3d2326e7/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/Rtmpbs4ilJ/temp_libpath1f896e75a20/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
 #&gt; Simple feature collection with 1 feature and 2 fields
 #&gt; geometry type:  POLYGON
 #&gt; dimension:      XY
 #&gt; bbox:           xmin: -75.07333 ymin: -17.28501 xmax: -70.80408 ymax: -14.63274
 #&gt; epsg (SRID):    4326
-#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</div><div class='input'><span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
-                 <span class='st'>"#F4C84E"</span>, <span class='st'>"#D59F3C"</span>, <span class='st'>"#A36D2D"</span>, <span class='st'>"#C6A889"</span>, <span class='st'>"#FFFFFF"</span>)
-<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#FC8D59"</span>, <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC9964"</span>, <span class='st'>"#FED89C"</span>, <span class='st'>"#FFFFBF"</span>,
-                  <span class='st'>"#FFFFBF"</span>, <span class='st'>"#DAEF9F"</span>, <span class='st'>"#9DD46A"</span>, <span class='st'>"#91CF60"</span>, <span class='st'>"#91CF60"</span>)
+#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</div><div class='input'><span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+  <span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
+  <span class='st'>"#F4C84E"</span>, <span class='st'>"#D59F3C"</span>, <span class='st'>"#A36D2D"</span>, <span class='st'>"#C6A889"</span>, <span class='st'>"#FFFFFF"</span>
+)
+<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+  <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC9964"</span>, <span class='st'>"#FED89C"</span>, <span class='st'>"#FFFFBF"</span>,
+  <span class='st'>"#FFFFBF"</span>, <span class='st'>"#DAEF9F"</span>, <span class='st'>"#9DD46A"</span>, <span class='st'>"#91CF60"</span>, <span class='st'>"#91CF60"</span>
+)
 <span class='co'># Example 01  - SRTM AREQUIPA-PERU</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]]
-<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: stringi</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
+<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_bbox</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_as_sfc</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: stringi</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
 #&gt; <span class='message'>  method                 from</span>
 #&gt; <span class='message'>  as.character.form_file httr</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'geojsonlint':</span>
 #&gt; <span class='message'>  method         from </span>
-#&gt; <span class='message'>  print.location dplyr</span></div><div class='output co'>#&gt;  dimensions is missing, 256 is taken by default as dimension of x (from 1 to 256). 
-#&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Projection: Argument 'crs': Invalid type. Expected: String. Actual: Type&lt;Boolean&gt;.</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/image.py", line 429, in getThumbURL</span>
-#&gt; <span class='error'>    return data.makeThumbUrl(self.getThumbId(params))</span>
-#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/image.py", line 401, in getThumbId</span>
-#&gt; <span class='error'>    return data.getThumbId(params)</span>
-#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 832, in getThumbId</span>
-#&gt; <span class='error'>    body=request))</span>
-#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 340, in _execute_cloud_call</span>
-#&gt; <span class='error'>    raise _translate_cloud_exception(e)</span></div><div class='input'><span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'arequipa_dem' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE,     main = "SRTM - Arequipa"): object 'arequipa_dem' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))</div><div class='output co'>#&gt; <span class='error'>Error in polypath(p_bind(x[[i]]), border = border[i], lty = lty[i], lwd = lwd[i],     col = col[i], rule = rule): plot.new has not been called yet</span></div></pre>
+#&gt; <span class='message'>  print.location dplyr</span></div><div class='input'><span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))</div><div class='output co'>#&gt;  dimensions is missing, 256x256 is taken by default as dimension of x. 
+#&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='input'><span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
+<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>)</div><div class='output co'>#&gt; <span class='message'>although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))</div><div class='img'><img src='ee_as_thumbnail-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
