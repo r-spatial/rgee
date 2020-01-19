@@ -181,8 +181,8 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
       add() %>%
       merge() %>%
       st_set_dimensions(names = c("x", "y", "bands")) ->
-    stars_png
-    plot(stars_png)
+      stars_png
+
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- min(long)
     attr_dim$y$offset <- max(lat)

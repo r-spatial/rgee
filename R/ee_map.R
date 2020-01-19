@@ -97,7 +97,7 @@
 #' m5
 #'
 #' @importFrom mapview mapview
-#' @importFrom leaflet addWMSTiles setView
+#' @importFrom leaflet addTiles setView
 #' @importFrom sf st_polygon st_centroid st_coordinates
 #' @export
 #'
@@ -360,7 +360,7 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
     tile <- py_to_r(map_py$ee_map_py(eeobj, vizparams))
     tokens[x] <- tile
     m@map <- m@map %>%
-      addWMSTiles(group = objname[x], baseUrl = tile, layers = "0") %>%
+      addTiles(group = objname[x], urlTemplate = tile) %>%
       setView(center[1], center[2], zoom = zoom_start) %>%
       ee_mapViewLayersControl(names = c(objname[x]))
   }

@@ -42,6 +42,7 @@ while (class(try_gd_rm) == "try-error" & count < 5) {
 }
 
 googledrive::drive_mkdir("rgee_testing")
+
 googleCloudStorageR::gcs_global_bucket("bag_csaybar")
 buckets <- googleCloudStorageR::gcs_list_objects()
 gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
@@ -62,36 +63,35 @@ test_that("GEOTIFF_DRIVE",{
   expect_is(img, "stars")
 })
 
-#
 # # 2. CTFRECORD_IMAGE - DRIVE
-# test_that("CTFRECORD_DRIVE",{
-#   task_img <- ee$batch$Export$image$toDrive(
-#     image = image_test,
-#     folder = "rgee_testing",
-#     fileFormat = "TFRECORD",
-#     fileNamePrefix = "test_image_CTFRECORD",
-#     formatOptions = imageExportFormatOptions_1
-#   )
-#   task_img$start()
-#   ee_monitoring(task_img)
-#   img <- ee_download_drive(task = task_img)
-#   expect_equal(img, TRUE)
-# })
-#
+test_that("CTFRECORD_DRIVE",{
+  task_img <- ee$batch$Export$image$toDrive(
+    image = image_test,
+    folder = "rgee_testing",
+    fileFormat = "TFRECORD",
+    fileNamePrefix = "test_image_CTFRECORD",
+    formatOptions = imageExportFormatOptions_1
+  )
+  task_img$start()
+  ee_monitoring(task_img)
+  img <- ee_download_drive(task = task_img)
+  expect_equal(img, TRUE)
+})
+
 # # 3. TFRECORD_IMAGE - DRIVE
-# test_that("TFRECORD_DRIVE",{
-#   task_img <- ee$batch$Export$image$toDrive(
-#     image = image_test,
-#     folder = "rgee_testing",
-#     fileFormat = "TFRECORD",
-#     fileNamePrefix = "test_image_TFRECORD",
-#     formatOptions = imageExportFormatOptions_2
-#   )
-#   task_img$start()
-#   ee_monitoring(task_img)
-#   img <- ee_download_drive(task = task_img)
-#   expect_equal(img, TRUE)
-# })
+test_that("TFRECORD_DRIVE",{
+  task_img <- ee$batch$Export$image$toDrive(
+    image = image_test,
+    folder = "rgee_testing",
+    fileFormat = "TFRECORD",
+    fileNamePrefix = "test_image_TFRECORD",
+    formatOptions = imageExportFormatOptions_2
+  )
+  task_img$start()
+  ee_monitoring(task_img)
+  img <- ee_download_drive(task = task_img)
+  expect_equal(img, TRUE)
+})
 #
 # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS",{
@@ -106,6 +106,7 @@ test_that("GEOTIFF_GCS",{
   img <- ee_download_gcs(task = task_img)
   expect_is(img, 'stars')
 })
+
 #
 # # 5. CTFRECORD_IMAGE - GCS
 # test_that("CTFRECORD_GCS",{
@@ -335,16 +336,3 @@ test_that("GEOTIFF_GCS",{
 #   expect_equal(vector, TRUE)
 # })
 #
-
-# Clean environment
-count <- 1
-try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
-while (class(try_gd_rm) == "try-error" & count < 5) {
-  try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
-  count <- count + 1
-}
-
-googleCloudStorageR::gcs_global_bucket("bag_csaybar")
-buckets <- googleCloudStorageR::gcs_list_objects()
-gcs_todelete <- buckets$name[grepl("^testing/.*$",buckets$name)]
-mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)

@@ -165,25 +165,29 @@
 
 <span class='co'># S3 method for character</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
   <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>reinit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for sf</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>reinit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for stars</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
   <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+  <span class='kw'>reinit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for stars_proxy</span>
 <span class='fu'>ee_upload</span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='no'>filename</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.upload.properties"</span>),
-  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>start_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>reinit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -209,12 +213,27 @@
       <td><p>List. Set of parameters to established as a property of an EE object. See details.</p></td>
     </tr>
     <tr>
+      <th>start_time</th>
+      <td><p>Character. The timestamp associated with the asset. The initial time stamp is set to
+the nominal image acquisition time for single scenes.</p></td>
+    </tr>
+    <tr>
+      <th>end_time</th>
+      <td><p>Character. Useful for assets that correspond to an
+interval of time. The ending time stamp is set to the nominal image
+acquisition time for single scenes.</p></td>
+    </tr>
+    <tr>
       <th>selenium_params</th>
       <td><p>List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.</p></td>
     </tr>
     <tr>
       <th>clean</th>
-      <td><p>Logical; Whether is TRUE cache will cleaned, see Description.</p></td>
+      <td><p>Logical; whether is TRUE cache will cleaned, see Description.</p></td>
+    </tr>
+    <tr>
+      <th>reinit</th>
+      <td><p>Logical; run ee_Initialize(gcs=TRUE) before start to upload</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -242,42 +261,75 @@ ee$data$getAssetRoots().<br /></p></li>
 <li><p>cache: Logical. TRUE will use the cookies saved on the /temp directory.</p></li>
 </ul>
 
+<p>With respect to the variables time_start and time_end, both needs
+to be specified as seconds since the epoch (1970-01-01). Assumed to
+be in the UTC time zone.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>"csaybar"</span>)
-<span class='fu'><a href='ee_check-tools.html'>ee_check_drivers</a></span>()
-
-<span class='no'>filename</span> <span class='kw'>&lt;-</span> <span class='st'>"users/csaybar/rgee_upload/"</span>
-<span class='fu'><a href='ee_manage-tools.html'>ee_manage_create</a></span>(<span class='no'>filename</span>)
-
+<span class='no'>username</span> <span class='kw'>&lt;-</span> <span class='st'>'aybar1994'</span> <span class='co'>#change according to username.</span>
+<span class='no'>gcs_bucket</span> <span class='kw'>&lt;-</span> <span class='st'>'bag_csaybar'</span>
+<span class='fu'><a href='ee_check-tools.html'>ee_check_drivers</a></span>()</div><div class='output co'>#&gt; 
+#&gt; <span style='color: #0000BB;'>◉  Selenium drivers: 
+#&gt; </span><span>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Chromedriver 
+#&gt; </span><span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='no'>username</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; user_gmail: aybar1994 
+#&gt; assethome: users/aybar1994 
+#&gt; Checking Google Cloud storage credentials ...  DONE
+#&gt; Checking correspondence between user_gmail and assethome ... DONE </div><div class='input'>
+<span class='co'># Create a folder in Earth Engine Asset</span>
+<span class='no'>filename</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"users/%s/rgee_upload/"</span>, <span class='no'>username</span>)
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_create</a></span>(<span class='no'>filename</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee_upload already exists</div><div class='input'>
+<span class='co'># Select image to upload</span>
 <span class='no'>tif</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/geomatrix.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
 <span class='no'>geomatrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/st_warp.html'>st_warp</a></span>(<span class='kw'>crs</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_crs</a></span>(<span class='fl'>4326</span>))
-<span class='no'>delta_geomatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>x</span>$<span class='no'>delta</span>,<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>geomatrix</span>,<span class='st'>'dimensions'</span>)$<span class='no'>y</span>$<span class='no'>delta</span>*-<span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>geomatrix</span>)
 
-<span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>geomatrix</span>,<span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))
-<span class='no'>ee_geomatrix</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>))
-<span class='no'>geomatrix_stars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_as_thumbnail.html'>ee_as_thumbnail</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>ee_geomatrix</span>,
-                                   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='no'>delta_geomatrix</span>,
-                                   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>255</span>))
-<span class='no'>geomatrix_stars</span>[<span class='no'>geomatrix_stars</span><span class='kw'>&lt;=</span><span class='fl'>0</span>]<span class='kw'>=</span><span class='fl'>NA</span>
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>geomatrix_stars</span>) <span class='kw'>&lt;-</span> <span class='st'>'geomatrix.tif'</span>
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>geomatrix_stars</span>)
-
-<span class='co'>#ee_manage_delete(filename) # Remove the folder created at the beginning</span>
-
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
-<span class='no'>nc_s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/sf/man/geos_unary.html'>st_simplify</a></span>(<span class='no'>nc</span>, <span class='kw'>preserveTopology</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dTolerance</span> <span class='kw'>=</span> <span class='fl'>0.05</span>))
-<span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc_s</span>,<span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"arequipa"</span>))
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
-<span class='fu'><a href='ee_manage-tools.html'>ee_manage_set_properties</a></span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"arequipa"</span>),
-                         <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))
-}</div></pre>
+<span class='co'># Upload to earth egnine</span>
+<span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>geomatrix</span>,
+          <span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>),
+          <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='output co'>#&gt; <span class='message'>2020-01-19 17:43:33 -- File size detected as 2.9 Kb</span></div><div class='input'>
+<span class='co'># Read uploaded image</span>
+<span class='no'>asset_geomatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>)
+<span class='no'>ee_geomatrix</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>asset_geomatrix</span>)
+<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_geomatrix</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>18</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
+#&gt;  vizparams: {bands:'b1', min:0, max:1}
+#&gt;  center is missing, the centroid of this EE Image object is used: 
+#&gt;  center:  -104.846823442416 10.1198633437888 </div><div class='input'><span class='co'>## OPTIONAL: add properties</span>
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_set_properties</a></span>(
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='no'>asset_geomatrix</span>,
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))</div><div class='output co'>#&gt; <span class='error'>Error in ee_manage_set_properties(path_asset = asset_geomatrix, properties = list(message = "hello-world",     language = "R")): unused argument (properties = list(message = "hello-world", language = "R"))</span></div><div class='input'>
+<span class='co'># Clean EE asset and GCS</span>
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_delete</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>asset_geomatrix</span>))</div><div class='output co'>#&gt; EE object deleted: users/aybar1994/rgee_upload/arequipa 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix10 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix11 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix16 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix17 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix20 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix22 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix23 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix25 
+#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrixgeomatrix 
+#&gt; EE object deleted: users/aybar1994/rgee_upload </div><div class='input'><span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_global_bucket.html'>gcs_global_bucket</a></span>(<span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='input'><span class='no'>buckets</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_list_objects.html'>gcs_list_objects</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/base/mapply.html'>mapply</a></span>(<span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='no'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_delete_object.html'>gcs_delete_object</a></span>, <span class='no'>buckets</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt;           file27897a7e29f9.tif           file2c132b1550cb.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;           file2c133590cccd.tif           file2c136f7c29a5.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;           file2c137549e8b8.tif           file326528469467.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;           file32652b8630b1.tif           file326548becaf2.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;           file3265531686ae.tif           file3265745e0b28.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;            file32658eaa149.tif            file3265c35f821.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;           file36d91d9ce5b2.tif           file36d94e969d6b.tif 
+#&gt;                           TRUE                           TRUE 
+#&gt;                  geomatrix.tif testing/test_image_GEOTIFF.tif 
+#&gt;                           TRUE                           TRUE </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

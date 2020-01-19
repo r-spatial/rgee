@@ -5,7 +5,7 @@
 \title{Move Earth Engine (EE) results from Google Drive to Hard disk}
 \usage{
 ee_download_drive(task, filename, overwrite = FALSE, st = TRUE,
-  quiet = TRUE)
+  quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}

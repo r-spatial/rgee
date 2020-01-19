@@ -83,7 +83,7 @@
 #' plot(amk_geom$geometry, border = "red", lwd = 10)
 #' }
 #' @export
-ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE, quiet = TRUE) {
+ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE, quiet = FALSE) {
   if (!requireNamespace("googledrive", quietly = TRUE)) {
     stop("The googledrive package is required to use rgee::ee_download_drive",
       call. = FALSE
@@ -109,7 +109,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE, quie
 
     fileformat <- get_fileformat(task)
 
-    if (nrow(files_gd) > 1 & fileformat != 'SHP') {
+    if (nrow(files_gd) > 1 & !(fileformat %in%  c('SHP','TF_RECORD_IMAGE'))) {
       show_files <- files_gd
       getTime <- function(x) files_gd$drive_resource[[x]]$createdTime
       createdTime <- sapply(1:nrow(files_gd), getTime)
@@ -328,28 +328,28 @@ get_format_suffix <- function(x) {
   )
   names(suffix) <- c(
     "GEO_TIFF", "CSV", "GEO_JSON", "KML",
-    "KMZ", "SHP", "TFRECORD_IMAGE", "CTFRECORD_IMAGE",
-    "TFRECORD_VECTOR", "CTFRECORD_VECTOR"
+    "KMZ", "SHP", "TF_RECORD_IMAGE", "CTF_RECORD_IMAGE",
+    "TF_RECORD_VECTOR", "CTF_RECORD_VECTOR"
   )
   return(as.character(unlist(suffix[x])))
 }
 
 #'  Get the file format
 #'  Format available: "GEO_TIFF", "CSV", "GEO_JSON", "KML", "KMZ",
-#'                    "SHP", "TFRECORD_IMAGE", "CTFRECORD_IMAGE",
-#'                    "TFRECORD_VECTOR", "CTFRECORD_VECTOR"
+#'                    "SHP", "TF_RECORD_IMAGE", "CTF_RECORD_IMAGE",
+#'                    "TF_RECORD_VECTOR", "CTF_RECORD_VECTOR"
 #' @noRd
 get_fileformat <- function(x) {
   if (x$config$fileExportOptions$fileFormat == "TFRECORD") {
     if (x$task_type == "EXPORT_FEATURES") {
       if (x$config$fileExportOptions$formatOptions$compressed == TRUE) {
-        return("CTFRECORD_VECTOR")
+        return("CTF_RECORD_VECTOR")
       } else {
-        return("TFRECORD_VECTOR")
+        return("TF_RECORD_VECTOR")
       }
     } else {
       if (x$config$fileExportOptions$tfrecordCompressed == TRUE) {
-        return("CTFRECORD_IMAGE")
+        return("CTF_RECORD_IMAGE")
       } else {
         return("TFRECORD_IMAGE")
       }
@@ -362,7 +362,7 @@ get_fileformat <- function(x) {
 #' Create file (or files) to save - GCS
 #' @noRd
 create_filenames <- function(basename, suffix, fileformat) {
-  if (fileformat %in% c("GEO_TIFF", "TFRECORD_IMAGE", "CTFRECORD_IMAGE")) {
+  if (fileformat %in% c("GEO_TIFF", "TF_RECORD_IMAGE", "CTF_RECORD_IMAGE")) {
     filename <- sprintf("%s%s", basename, suffix)
   } else {
     filename <- sprintf("%s%s", basename, suffix)
@@ -419,3 +419,4 @@ sort_harddisk_files <- function(harddisk_files, fileformat) {
   }
   return(harddisk_files_sort)
 }
+

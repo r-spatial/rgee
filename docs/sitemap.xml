@@ -4,6 +4,9 @@
     <loc>http://csaybar.github.io/rgee/index.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/eeDate_to_r.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_Initialize.html</loc>
   </url>
   <url>
@@ -65,6 +68,9 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/plus-mapview-mapview-method.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/r_to_eeDate.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/rgee-package.html</loc>

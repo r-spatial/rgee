@@ -6,7 +6,7 @@
 \usage{
 ee_upload_file_to_gcs(x, bucket = NULL,
   selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
-  quiet = FALSE)
+  reinit = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{x}{filename (character), sf or stars object.}
@@ -15,7 +15,9 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 
 \item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
 
-\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
+\item{clean}{Logical; Whether is TRUE cache will cleaned, see Details.}
+
+\item{reinit}{Logical; run ee_Initialize(gcs=TRUE) before start to upload}
 
 \item{quiet}{Logical. Suppress info message.}
 }

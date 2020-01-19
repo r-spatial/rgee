@@ -196,5 +196,8 @@ def load_py_object(filename):
     return py_pickle_file
 
 #It is necessary due 2^31-1 (.Machine$integer.max)
-def ee_Date_value(characterdate):
-  return str(ee.Date(characterdate).getInfo()['value'])
+def r_to_eeDate(Rdate):
+  return float(ee.Date(Rdate).getInfo()['value'])
+
+def eeDate_to_r(eedate):
+  return float(eedate.getInfo()['value'])

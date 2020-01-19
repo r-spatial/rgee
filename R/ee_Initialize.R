@@ -84,7 +84,7 @@ ee_Initialize <- function(user_gmail = NULL,
                   stop("Earth Engine ID no found, try:",
                        "\nee$data$createAssetHome('...'): Create the EE assets home folder",
                        "\nee_reattach(): Reattach ee as a reserved word")
-                }) %>% gsub('projects/earthengine-legacy/assets/', '', .)    
+                }) %>% gsub('projects/earthengine-legacy/assets/', '', .)
     if (!identical(assethome, home_error)) {
       stop("The Earth Engine credentials obtained from the user_gmail",
            " does not correspond with the assethome,",
@@ -100,9 +100,16 @@ ee_Initialize <- function(user_gmail = NULL,
   gcs_credentials <- list.files(ee_path_user,"GCS_AUTH_FILE.json",full.names = TRUE)[1]
   ee_sessioninfo(clean_user,drive_credentials, gcs_credentials)
 
+  user_path_GCScredential <- sprintf("%s/GCS_AUTH_FILE.json", ee_path_user)
+
+  options(rgee.gcs.auth = user_path_GCScredential)
   options(rgee.selenium.params=list(user_gmail=user_gmail,
                                     user_password=Sys.getenv("PASSWORD_GMAIL"),
-                                    showpassword=FALSE))
+                                    showpassword=FALSE,
+                                    check_driver=FALSE))
+  options(rgee.manage.getAssetAcl = list(writers=user_gmail,
+                                         readers=user_gmail,
+                                         all_users_can_read = TRUE))
 
   invisible(TRUE)
 }

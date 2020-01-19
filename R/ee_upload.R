@@ -6,8 +6,14 @@
 #' @param filename Character. Asset destination path, e.g. users/pinkiepie/myponycollection.
 #' @param bucket bucketname you are uploading to. See details.
 #' @param properties List. Set of parameters to established as a property of an EE object. See details.
+#' @param start_time Character. The timestamp associated with the asset. The initial time stamp is set to
+#' the nominal image acquisition time for single scenes.
+#' @param end_time Character. Useful for assets that correspond to an
+#' interval of time. The ending time stamp is set to the nominal image
+#' acquisition time for single scenes.
 #' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
-#' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
+#' @param clean Logical; whether is TRUE cache will cleaned, see Description.
+#' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
 #' @param quiet Logical. Suppress info message.
 #' @param ... ignored
 #' @importFrom methods is as
@@ -29,42 +35,48 @@
 #'  ee$data$getAssetRoots().\cr
 #'  - showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
 #'  - cache: Logical. TRUE will use the cookies saved on the /temp directory.
+#'
+#' With respect to the variables time_start and time_end, both needs
+#' to be specified as seconds since the epoch (1970-01-01). Assumed to
+#' be in the UTC time zone.
 #' @name ee_upload
 #' @examples
-#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
 #'
-#' ee_Initialize(user_gmail = "csaybar")
+#' username <- 'aybar1994' #change according to username.
+#' gcs_bucket <- 'bag_csaybar'
 #' ee_check_drivers()
+#' ee_Initialize(user_gmail = username, gcs = TRUE)
 #'
-#' filename <- "users/csaybar/rgee_upload/"
+#' # Create a folder in Earth Engine Asset
+#' filename <- sprintf("users/%s/rgee_upload/", username)
 #' ee_manage_create(filename)
 #'
+#' # Select image to upload
 #' tif = system.file("tif/geomatrix.tif", package = "stars")
 #' geomatrix = read_stars(tif) %>% st_warp(crs=st_crs(4326))
-#' delta_geomatrix <- c(attr(geomatrix,'dimensions')$x$delta,attr(geomatrix,'dimensions')$y$delta*-1)
-#' plot(geomatrix)
 #'
-#' ee_upload(x = geomatrix,filename = paste0(filename,"geomatrix"))
-#' ee_geomatrix <- ee$Image(paste0(filename,"geomatrix"))
-#' geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
-#'                                    scale = delta_geomatrix,
-#'                                    vizparams = list(min = 0, max = 255))
-#' geomatrix_stars[geomatrix_stars<=0]=NA
-#' names(geomatrix_stars) <- 'geomatrix.tif'
-#' plot(geomatrix_stars)
+#' # Upload to earth egnine
+#' ee_upload(x = geomatrix,
+#'           filename = paste0(filename,"geomatrix"),
+#'           bucket = gcs_bucket)
 #'
-#' #ee_manage_delete(filename) # Remove the folder created at the beginning
+#' # Read uploaded image
+#' asset_geomatrix <- paste0(filename,"geomatrix")
+#' ee_geomatrix <- ee$Image(asset_geomatrix)
+#' ee_map(ee_geomatrix, zoom_start = 18)
+#' ## OPTIONAL: add properties
+#' ee_manage_set_properties(
+#'   path_asset = asset_geomatrix,
+#'   properties = list(message='hello-world',language = 'R'))
 #'
-#' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-#' nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
-#' ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))
-#' ee_monitoring()
-#' ee_manage_set_properties(path_asset = paste0(filename,"arequipa"),
-#'                          properties = list(message='hello-world',language = 'R'))
-#' }
+#' # Clean EE asset and GCS
+#' ee_manage_delete(dirname(asset_geomatrix))
+#' googleCloudStorageR::gcs_global_bucket(gcs_bucket)
+#' buckets <- googleCloudStorageR::gcs_list_objects()
+#' mapply(googleCloudStorageR::gcs_delete_object, buckets$name)
 #' @export
 ee_upload <- function(x, ...) {
   UseMethod("ee_upload")
@@ -75,9 +87,12 @@ ee_upload <- function(x, ...) {
 ee_upload.character <- function(x, ... ,
                                 filename,
                                 bucket = NULL,
-                                properties = getOption("rgee.upload.properties"),
+                                properties = NULL,
+                                start_time = '1970-01-01',
+                                end_time = '1970-01-01',
                                 selenium_params = getOption("rgee.selenium.params"),
                                 clean = FALSE,
+                                reinit = FALSE,
                                 quiet = FALSE) {
   user_gmail <- getOption("rgee.selenium.params")$user_gmail
   if (is.null(user_gmail)) {
@@ -86,16 +101,32 @@ ee_upload.character <- function(x, ... ,
          "\nExample: ee_Initialize(user_gmail = 'XXXX@gmail.com')")
   }
 
-  filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
-  gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params, clean = clean)
-    if (image_or_vector(x) == "sf") {
-    ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
+  filename <- rgee:::ee_verify_filename(path_asset = filename,
+                                        strict = FALSE)
+  gs_uri <- ee_upload_file_to_gcs(x = x,
+                                  bucket = bucket,
+                                  selenium_params = selenium_params,
+                                  clean = clean,
+                                  reinit = reinit)
+
+  if (image_or_vector(x) == "sf") {
+    ee_gcs_to_asset(x = x,
+                    gs_uri = gs_uri,
+                    filename = filename,
+                    type = 'table' ,
+                    properties=NULL)
   } else if (image_or_vector(x) == "stars") {
-    ee_gcs_to_asset(gs_uri, filename, type = 'image' ,properties=properties)
+    ee_gcs_to_asset(x = read_stars(x),
+                    gs_uri = gs_uri,
+                    filename = filename,
+                    type = 'image',
+                    properties=properties,
+                    start_time = '1970-01-01',
+                    end_time = '1970-01-01')
   } else {
     stop(sprintf("%s needs to be either a GeoTIFF or ESRI SHAPEFILE file", x))
   }
-  return(TRUE)
+  invisible(TRUE)
 }
 
 #' @name ee_upload
@@ -105,14 +136,23 @@ ee_upload.sf <- function(x, ...,
                          bucket = NULL,
                          selenium_params = getOption("rgee.selenium.params"),
                          clean = FALSE,
+                         reinit = FALSE,
                          quiet = FALSE) {
   ee_temp <- tempdir()
-  filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
+  filename <- rgee:::ee_verify_filename(path_asset = filename,strict = FALSE)
   shp_dir <- sprintf("%s/%s.shp", ee_temp, basename(filename))
   write_sf(x,shp_dir)
-  gs_uri <- ee_upload_file_to_gcs(shp_dir, bucket = bucket, selenium_params = selenium_params, clean = clean)
-  ee_gcs_to_asset(gs_uri, filename, type = 'table' ,properties=NULL)
-  return(TRUE)
+  gs_uri <- ee_upload_file_to_gcs(x = shp_dir,
+                                  bucket = bucket,
+                                  selenium_params = selenium_params,
+                                  clean = clean,
+                                  reinit = reinit)
+  ee_gcs_to_asset(x = x,
+                  gs_uri = gs_uri,
+                  filename = filename,
+                  type = 'table',
+                  properties=NULL)
+  invisible(TRUE)
 }
 
 #' @name ee_upload
@@ -120,9 +160,12 @@ ee_upload.sf <- function(x, ...,
 ee_upload.stars <- function(x, ...,
                             filename,
                             bucket = NULL,
-                            properties = getOption("rgee.upload.properties"),
+                            properties = NULL,
+                            start_time = '1970-01-01',
+                            end_time = '1970-01-01',
                             selenium_params = getOption("rgee.selenium.params"),
                             clean = FALSE,
+                            reinit = FALSE,
                             quiet = FALSE) {
   ee_temp <- tempdir()
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
@@ -131,9 +174,14 @@ ee_upload.stars <- function(x, ...,
   gs_uri <- ee_upload_file_to_gcs(x = tif_dir,
                                   bucket = bucket,
                                   selenium_params = selenium_params,
-                                  clean = clean)
-  ee_gcs_to_asset(gs_uri, filename, type = 'image', properties=properties)
-  return(TRUE)
+                                  clean = clean,
+                                  reinit = reinit)
+  ee_gcs_to_asset(x = x,
+                  gs_uri = gs_uri,
+                  filename = filename,
+                  type = 'image',
+                  properties = properties)
+  invisible(TRUE)
 }
 
 #' @name ee_upload
@@ -141,14 +189,23 @@ ee_upload.stars <- function(x, ...,
 ee_upload.stars_proxy <- function(x, ...,
                                   filename,
                                   bucket = NULL,
-                                  properties = getOption("rgee.upload.properties"),
+                                  properties = NULL,
+                                  start_time = '1970-01-01',
+                                  end_time = '1970-01-01',
                                   selenium_params = getOption("rgee.selenium.params"),
+                                  clean = FALSE,
+                                  reinit = FALSE,
                                   quiet = FALSE) {
-  ee_temp <- tempdir()
   filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
-  tif_dir <- sprintf("%s/%s.tif", ee_temp, basename(filename))
-  x <- x[[1]]
-  gs_uri <- ee_upload_file_to_gcs(x, bucket = bucket, selenium_params = selenium_params)
-  ee_gcs_to_asset(gs_uri, filename, type = 'image' , properties=properties)
-  return(TRUE)
+  #x <- x[[1]]
+  gs_uri <- ee_upload_file_to_gcs(x = x[[1]],
+                                  bucket = bucket,
+                                  selenium_params = selenium_params,
+                                  reinit = reinit)
+  ee_gcs_to_asset(x = x,
+                  gs_uri = gs_uri,
+                  filename = filename,
+                  type = 'image',
+                  properties=properties)
+  invisible(TRUE)
 }

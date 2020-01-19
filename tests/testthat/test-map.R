@@ -1,6 +1,7 @@
 context("rgee: sf_as_ee test")
 
 # data --------------------------------------------------------------------
+ee$Initialize()
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")

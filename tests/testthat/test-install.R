@@ -9,8 +9,9 @@ test_that("ee_install_drivers()",{
 })
 
 test_that("ee_install_rgee_python_packages()",{
-  ee_install_rgee_python_packages(restart_session = FALSE,
-                                  envname='rgee_test')
+  fmsg <- ee_install_rgee_python_packages(restart_session = FALSE,
+                                          envname = 'rgee_test')
+  expect_null(fmsg)
 })
 
 

@@ -347,26 +347,26 @@
 <h3 class="hasAnchor">
 <a href="#final-step---gganimate" class="anchor"></a>7. Final step - gganimate</h3>
 <p>For create the world choropleth NDVI seasonal map, we put everything together. We will use <code>ggplot2</code> and <code>gganimate</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(modis_season) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggplot.html">ggplot</a></span>(modis_season) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggsf.html">geom_sf</a></span>(</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">    <span class="dt">data =</span> WORLD_MAP<span class="op">$</span>world_limits,</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4">    <span class="dt">fill =</span> <span class="st">"aliceblue"</span></a>
 <a class="sourceLine" id="cb9-5" data-line-number="5">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="dt">lwd =</span> <span class="dv">0</span>, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">fill =</span> NDVI)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradientn</a></span>(<span class="dt">colours =</span> ndvi_palette) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(</a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggsf.html">geom_sf</a></span>(<span class="dt">lwd =</span> <span class="dv">0</span>, <span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/aes.html">aes</a></span>(<span class="dt">fill =</span> NDVI)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/scale_gradient.html">scale_fill_gradientn</a></span>(<span class="dt">colours =</span> ndvi_palette) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/labs.html">labs</a></span>(</a>
 <a class="sourceLine" id="cb9-9" data-line-number="9">    <span class="dt">title =</span> <span class="st">"NDVI - MCD43A4"</span>,</a>
 <a class="sourceLine" id="cb9-10" data-line-number="10">    <span class="dt">subtitle =</span> <span class="st">"Season:{current_frame}"</span>,</a>
 <a class="sourceLine" id="cb9-11" data-line-number="11">    <span class="dt">caption =</span> <span class="st">"Earth Engine Snippet: ee.ImageCollection('MODIS/006/MCD43A4')"</span></a>
 <a class="sourceLine" id="cb9-12" data-line-number="12">  ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">geom_sf</a></span>(<span class="dt">data =</span> WORLD_MAP<span class="op">$</span>layer, <span class="dt">fill =</span> <span class="ot">NA</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html">coord_sf</a></span>(<span class="dt">crs =</span> ORTHO_PROJ) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">    <span class="dt">panel.grid.major =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_line</a></span>(</a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggsf.html">geom_sf</a></span>(<span class="dt">data =</span> WORLD_MAP<span class="op">$</span>layer, <span class="dt">fill =</span> <span class="ot">NA</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/ggsf.html">coord_sf</a></span>(<span class="dt">crs =</span> ORTHO_PROJ) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/theme.html">theme</a></span>(</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">    <span class="dt">panel.grid.major =</span> <span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/element.html">element_line</a></span>(</a>
 <a class="sourceLine" id="cb9-17" data-line-number="17">      <span class="dt">color =</span> <span class="kw"><a href="https://rdrr.io/r/grDevices/gray.html">gray</a></span>(.<span class="dv">7</span>), <span class="dt">linetype =</span> <span class="st">"dashed"</span>, <span class="dt">size =</span> <span class="fl">0.5</span></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18">    ),</a>
 <a class="sourceLine" id="cb9-19" data-line-number="19">    <span class="dt">panel.ontop =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20">    <span class="dt">panel.background =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="dt">fill =</span> <span class="ot">NA</span>)</a>
+<a class="sourceLine" id="cb9-20" data-line-number="20">    <span class="dt">panel.background =</span> <span class="kw"><a href="https://rdrr.io/pkg/ggplot2/man/element.html">element_rect</a></span>(<span class="dt">fill =</span> <span class="ot">NA</span>)</a>
 <a class="sourceLine" id="cb9-21" data-line-number="21">  ) <span class="op">+</span></a>
 <a class="sourceLine" id="cb9-22" data-line-number="22"><span class="st">  </span><span class="co"># Here comes the gganimate code</span></a>
 <a class="sourceLine" id="cb9-23" data-line-number="23"><span class="st">  </span><span class="kw"><a href="https://gganimate.com/reference/transition_manual.html">transition_manual</a></span>(<span class="dt">frames =</span> season) <span class="op">+</span></a>

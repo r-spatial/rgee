@@ -6,8 +6,7 @@
 .onAttach <- function(libname, pkgname) {
   #packageStartupMessage("ee is a reserved word for the rgee package, try ee_restart() to reattach")
   options(rgee.print.option = "json")
-  options(rgee.upload.properties = list(time_start="1970-01-01",time_end="1970-01-01"))
-
+  #options(rgee.upload.properties = list(time_start="1970-01-01",time_end="1970-01-01"))
 }
 
 #' Reattach ee as a reserved word

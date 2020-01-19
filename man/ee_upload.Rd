@@ -11,22 +11,26 @@
 ee_upload(x, ...)
 
 \method{ee_upload}{character}(x, ..., filename, bucket = NULL,
-  properties = getOption("rgee.upload.properties"),
+  properties = NULL, start_time = "1970-01-01",
+  end_time = "1970-01-01",
   selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
-  quiet = FALSE)
+  reinit = FALSE, quiet = FALSE)
 
 \method{ee_upload}{sf}(x, ..., filename, bucket = NULL,
   selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
-  quiet = FALSE)
+  reinit = FALSE, quiet = FALSE)
 
 \method{ee_upload}{stars}(x, ..., filename, bucket = NULL,
-  properties = getOption("rgee.upload.properties"),
+  properties = NULL, start_time = "1970-01-01",
+  end_time = "1970-01-01",
   selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
-  quiet = FALSE)
+  reinit = FALSE, quiet = FALSE)
 
 \method{ee_upload}{stars_proxy}(x, ..., filename, bucket = NULL,
-  properties = getOption("rgee.upload.properties"),
-  selenium_params = getOption("rgee.selenium.params"), quiet = FALSE)
+  properties = NULL, start_time = "1970-01-01",
+  end_time = "1970-01-01",
+  selenium_params = getOption("rgee.selenium.params"), clean = FALSE,
+  reinit = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{x}{Character, sf or stars object to upload into a GEE asset.}
@@ -39,9 +43,18 @@ ee_upload(x, ...)
 
 \item{properties}{List. Set of parameters to established as a property of an EE object. See details.}
 
+\item{start_time}{Character. The timestamp associated with the asset. The initial time stamp is set to
+the nominal image acquisition time for single scenes.}
+
+\item{end_time}{Character. Useful for assets that correspond to an
+interval of time. The ending time stamp is set to the nominal image
+acquisition time for single scenes.}
+
 \item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
 
-\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
+\item{clean}{Logical; whether is TRUE cache will cleaned, see Description.}
+
+\item{reinit}{Logical; run ee_Initialize(gcs=TRUE) before start to upload}
 
 \item{quiet}{Logical. Suppress info message.}
 }
@@ -69,40 +82,46 @@ ee$data$getAssetRoots().\cr
 \item showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
 \item cache: Logical. TRUE will use the cookies saved on the /temp directory.
 }
+
+With respect to the variables time_start and time_end, both needs
+to be specified as seconds since the epoch (1970-01-01). Assumed to
+be in the UTC time zone.
 }
 \examples{
-\dontrun{
 library(rgee)
 library(stars)
 library(sf)
 
-ee_Initialize(user_gmail = "csaybar")
+username <- 'aybar1994' #change according to username.
+gcs_bucket <- 'bag_csaybar'
 ee_check_drivers()
+ee_Initialize(user_gmail = username, gcs = TRUE)
 
-filename <- "users/csaybar/rgee_upload/"
+# Create a folder in Earth Engine Asset
+filename <- sprintf("users/\%s/rgee_upload/", username)
 ee_manage_create(filename)
 
+# Select image to upload
 tif = system.file("tif/geomatrix.tif", package = "stars")
 geomatrix = read_stars(tif) \%>\% st_warp(crs=st_crs(4326))
-delta_geomatrix <- c(attr(geomatrix,'dimensions')$x$delta,attr(geomatrix,'dimensions')$y$delta*-1)
-plot(geomatrix)
 
-ee_upload(x = geomatrix,filename = paste0(filename,"geomatrix"))
-ee_geomatrix <- ee$Image(paste0(filename,"geomatrix"))
-geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
-                                   scale = delta_geomatrix,
-                                   vizparams = list(min = 0, max = 255))
-geomatrix_stars[geomatrix_stars<=0]=NA
-names(geomatrix_stars) <- 'geomatrix.tif'
-plot(geomatrix_stars)
+# Upload to earth egnine
+ee_upload(x = geomatrix,
+          filename = paste0(filename,"geomatrix"),
+          bucket = gcs_bucket)
 
-#ee_manage_delete(filename) # Remove the folder created at the beginning
+# Read uploaded image
+asset_geomatrix <- paste0(filename,"geomatrix")
+ee_geomatrix <- ee$Image(asset_geomatrix)
+ee_map(ee_geomatrix, zoom_start = 18)
+## OPTIONAL: add properties
+ee_manage_set_properties(
+  path_asset = asset_geomatrix,
+  properties = list(message='hello-world',language = 'R'))
 
-nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-nc_s <- suppressWarnings(st_simplify(nc, preserveTopology = TRUE, dTolerance = 0.05))
-ee_upload(x = nc_s,filename = paste0(filename,"arequipa"))
-ee_monitoring()
-ee_manage_set_properties(path_asset = paste0(filename,"arequipa"),
-                         properties = list(message='hello-world',language = 'R'))
-}
+# Clean EE asset and GCS
+ee_manage_delete(dirname(asset_geomatrix))
+googleCloudStorageR::gcs_global_bucket(gcs_bucket)
+buckets <- googleCloudStorageR::gcs_list_objects()
+mapply(googleCloudStorageR::gcs_delete_object, buckets$name)
 }
