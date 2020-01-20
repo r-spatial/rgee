@@ -53,7 +53,7 @@ image.bandNames().getInfo()
 
 ``` r
 library(rgee)
-ee$Initialize()
+ee_Initialize()
 image <- ee$Image('CGIAR/SRTM90_V4')
 image$bandNames()$getInfo()
 #> [1] "elevation"
@@ -839,8 +839,10 @@ Using **rgee** for a paper you are writing? Consider citing it
 ``` r
 citation("rgee")
 #> 
-#> WORKING ON THIS :)T## Credits :bow:
+#> WORKING ON THIS :)
 ``` 
+
+## Credits :bow:
 
 Most of the `rgee` functionalities were based in the following third-party R/Python packages:
 
