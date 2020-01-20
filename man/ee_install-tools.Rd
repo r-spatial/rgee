@@ -11,9 +11,9 @@
 ee_install_drivers(GoogleChromeVersion)
 
 ee_install_rgee_python_packages(method = c("auto", "virtualenv",
-  "conda"), conda = "auto", ee_version = "latest", envname = NULL,
-  extra_packages = c("selenium", "bs4", "pysmartDL",
-  "requests_toolbelt"), restart_session = TRUE,
+  "conda"), conda = "auto", ee_version = "0.1.210", envname = NULL,
+  extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt",
+  "oauth2client"), restart_session = TRUE,
   conda_python_version = "3.6", quiet = FALSE, ...)
 
 ee_remove_driver(quiet = FALSE)

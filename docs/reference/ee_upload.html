@@ -107,6 +107,12 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
+      <a href="../articles/rgee_hello_world.html">Hello world</a>
+    </li>
+    <li>
+      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
+    </li>
+    <li>
       <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
     </li>
   </ul>
@@ -282,7 +288,7 @@ be in the UTC time zone.</p>
 #&gt; Checking correspondence between user_gmail and assethome ... DONE </div><div class='input'>
 <span class='co'># Create a folder in Earth Engine Asset</span>
 <span class='no'>filename</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"users/%s/rgee_upload/"</span>, <span class='no'>username</span>)
-<span class='fu'><a href='ee_manage-tools.html'>ee_manage_create</a></span>(<span class='no'>filename</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee_upload already exists</div><div class='input'>
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_create</a></span>(<span class='no'>filename</span>)</div><div class='output co'>#&gt; GEE asset: users/aybar1994/rgee_upload created</div><div class='input'>
 <span class='co'># Select image to upload</span>
 <span class='no'>tif</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/geomatrix.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
 <span class='no'>geomatrix</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/st_warp.html'>st_warp</a></span>(<span class='kw'>crs</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_crs</a></span>(<span class='fl'>4326</span>))
@@ -290,46 +296,28 @@ be in the UTC time zone.</p>
 <span class='co'># Upload to earth egnine</span>
 <span class='fu'>ee_upload</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>geomatrix</span>,
           <span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>),
-          <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='output co'>#&gt; <span class='message'>2020-01-19 17:43:33 -- File size detected as 2.9 Kb</span></div><div class='input'>
+          <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='output co'>#&gt; <span class='message'>2020-01-19 22:29:57 -- File size detected as 2.9 Kb</span></div><div class='input'>
 <span class='co'># Read uploaded image</span>
 <span class='no'>asset_geomatrix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>filename</span>,<span class='st'>"geomatrix"</span>)
 <span class='no'>ee_geomatrix</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>asset_geomatrix</span>)
-<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_geomatrix</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>18</span>)</div><div class='output co'>#&gt;  vizparams is missing, the following params are assigned. 
-#&gt;  vizparams: {bands:'b1', min:0, max:1}
-#&gt;  center is missing, the centroid of this EE Image object is used: 
-#&gt;  center:  -104.846823442416 10.1198633437888 </div><div class='input'><span class='co'>## OPTIONAL: add properties</span>
+<span class='fu'><a href='ee_map.html'>ee_map</a></span>(<span class='no'>ee_geomatrix</span>, <span class='kw'>zoom_start</span> <span class='kw'>=</span> <span class='fl'>18</span>)</div><div class='output co'>#&gt; <span class='error'>Error in py_call_impl(callable, dots$args, dots$keywords): EEException: Image.load: Image asset 'users/aybar1994/rgee_upload/geomatrix' not found.</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Detailed traceback: </span>
+#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/image.py", line 118, in getInfo</span>
+#&gt; <span class='error'>    return super(Image, self).getInfo()</span>
+#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py", line 95, in getInfo</span>
+#&gt; <span class='error'>    return data.computeValue(self)</span>
+#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 717, in computeValue</span>
+#&gt; <span class='error'>    prettyPrint=False))['result']</span>
+#&gt; <span class='error'>  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 340, in _execute_cloud_call</span>
+#&gt; <span class='error'>    raise _translate_cloud_exception(e)</span></div><div class='input'><span class='co'>## OPTIONAL: add properties</span>
 <span class='fu'><a href='ee_manage-tools.html'>ee_manage_set_properties</a></span>(
   <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='no'>asset_geomatrix</span>,
   <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span><span class='kw'>=</span><span class='st'>'hello-world'</span>,<span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>'R'</span>))</div><div class='output co'>#&gt; <span class='error'>Error in ee_manage_set_properties(path_asset = asset_geomatrix, properties = list(message = "hello-world",     language = "R")): unused argument (properties = list(message = "hello-world", language = "R"))</span></div><div class='input'>
 <span class='co'># Clean EE asset and GCS</span>
-<span class='fu'><a href='ee_manage-tools.html'>ee_manage_delete</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>asset_geomatrix</span>))</div><div class='output co'>#&gt; EE object deleted: users/aybar1994/rgee_upload/arequipa 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix10 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix11 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix16 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix17 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix20 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix22 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix23 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrix25 
-#&gt; EE object deleted: users/aybar1994/rgee_upload/geomatrixgeomatrix 
-#&gt; EE object deleted: users/aybar1994/rgee_upload </div><div class='input'><span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_global_bucket.html'>gcs_global_bucket</a></span>(<span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='input'><span class='no'>buckets</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_list_objects.html'>gcs_list_objects</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/mapply.html'>mapply</a></span>(<span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='no'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_delete_object.html'>gcs_delete_object</a></span>, <span class='no'>buckets</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt;           file27897a7e29f9.tif           file2c132b1550cb.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;           file2c133590cccd.tif           file2c136f7c29a5.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;           file2c137549e8b8.tif           file326528469467.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;           file32652b8630b1.tif           file326548becaf2.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;           file3265531686ae.tif           file3265745e0b28.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;            file32658eaa149.tif            file3265c35f821.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;           file36d91d9ce5b2.tif           file36d94e969d6b.tif 
-#&gt;                           TRUE                           TRUE 
-#&gt;                  geomatrix.tif testing/test_image_GEOTIFF.tif 
-#&gt;                           TRUE                           TRUE </div></span></pre>
+<span class='fu'><a href='ee_manage-tools.html'>ee_manage_delete</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>asset_geomatrix</span>))</div><div class='output co'>#&gt; EE object deleted: users/aybar1994/rgee_upload </div><div class='input'><span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_global_bucket.html'>gcs_global_bucket</a></span>(<span class='no'>gcs_bucket</span>)</div><div class='output co'>#&gt; <span class='message'>Set default bucket name to 'bag_csaybar'</span></div><div class='input'><span class='no'>buckets</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='fu'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_list_objects.html'>gcs_list_objects</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/base/mapply.html'>mapply</a></span>(<span class='kw pkg'>googleCloudStorageR</span><span class='kw ns'>::</span><span class='no'><a href='https://cloudyr.github.io/googleCloudStorageR//reference/gcs_delete_object.html'>gcs_delete_object</a></span>, <span class='no'>buckets</span>$<span class='no'>name</span>)</div><div class='output co'>#&gt; geomatrix.tif 
+#&gt;          TRUE </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

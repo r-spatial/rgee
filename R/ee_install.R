@@ -87,9 +87,9 @@ ee_install_drivers <- function(GoogleChromeVersion) {
 #' @export
 ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "conda"),
                                             conda = "auto",
-                                            ee_version = "latest",
+                                            ee_version = "0.1.210",
                                             envname = NULL,
-                                            extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt"),
+                                            extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt", "oauth2client"),
                                             restart_session = TRUE,
                                             conda_python_version = "3.6",
                                             quiet = FALSE,

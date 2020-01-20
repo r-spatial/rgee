@@ -183,3 +183,11 @@ def ee_check_py_requests_toolbelt():
         return requests_toolbelt.__version__
     except:
         return False
+
+
+def ee_check_py_oauth2client():
+    try:
+        import oauth2client
+        return oauth2client.__version__
+    except:
+        return False

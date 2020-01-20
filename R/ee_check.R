@@ -42,50 +42,44 @@ ee_check_rgee_python_packages <- function() {
 
   cli::cat_line("\n",
                 crayon::blue(cli::symbol$circle_filled,
-                             " Python Standard Libraries used in rgee: \n"))
-  # webbrowser
-  ee_check_py_package("webbrowser")
-  ee_check_py_package("requests")
-  ee_check_py_package("zipfile")
-  ee_check_py_package("tarfile")
-  ee_check_py_package("subprocess")
-  ee_check_py_package("ast")
-  ee_check_py_package("sys")
-  ee_check_py_package("os")
-  ee_check_py_package("platform")
-  ee_check_py_package("json")
-
-  cli::cat_line("\n",
-                crayon::blue(cli::symbol$circle_filled,
                              " Python Third-Party Libraries used in rgee: \n"))
   # ee
   version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
-    if (version_ee >= "0.1.170") {
+    if (version_ee == "0.1.210") {
       cli::cat_line(
         crayon::green(cli::symbol$tick, "[Ok]"),
         crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
         crayon::green(version_ee))
     } else {
-      ee_message <- sprintf("Earth Engine Python API (ee) %s is installed correctly in their system,%s. %s",
+      ee_message <- sprintf("Earth Engine Python API (version %s) is installed correctly in their system,%s. %s",
                             version_ee,
-                            " but rgee needs an upper version to 0.1.170. Please run ee_install_python_ee() for upgrading",
+                            " consider that rgee was constructed in the version 0.1.210. Please run ee_install_python_ee()",
+                            "to install the version 0.1.210",
                             "If the installation is successful, restart to see changes.")
-      stop(ee_message)
+      warning(ee_message)
     }
   } else {
-    cli::cat_line(crayon::bgRed(cli::symbol$circle_cross, "ee"))
+    cli::cat_line(
+      crayon::red(cli::symbol$tick, "[X]"),
+      crayon::red(' Not installed'),
+      crayon::red(cli::symbol$check,
+                  "Python Earth Engine API",
+                  "(earthengine-api)"))
   }
+  ee_check_py_package("oauth2client")
+  ee_check_py_package("requests")
   ee_check_py_package("selenium")
   ee_check_py_package("bs4")
   ee_check_py_package("requests_toolbelt")
+  ee_check_py_package("requests")
 }
 
 #' @rdname ee_check-tools
 #' @export
 ee_check_drivers <- function() {
-  display_in_browser = FALSE
+  display_in_browser <- FALSE
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
   ee_check_utils <- ee_source_python(oauth_func_path)
   driverdir <- path.expand("~/.config/earthengine")
@@ -111,7 +105,6 @@ ee_check_credentials <- function() {
   driverdir <- path.expand("~/.config/earthengine")
   ee_credentials <- sprintf("%s/credentials",driverdir)
   drive_credentials <- list.files(driverdir,"@gmail.com",full.names = TRUE)[1]
-  gcs_credentials <- sprintf("%s/GCS_AUTH_FILE.json",driverdir)
 
   ex_ee_cred <- file.exists(ee_credentials)
   ex_drive_cred <- file.exists(drive_credentials)

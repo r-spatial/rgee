@@ -842,7 +842,7 @@ citation("rgee")
 #> WORKING ON THIS :)T## Credits :bow:
 ``` 
 
-Most of the func`rgee` tionalities of ` based in the following third-party R/Python packages:
+Most of the `rgee` functionalities were based in the following third-party R/Python packages:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**

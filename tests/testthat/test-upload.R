@@ -29,11 +29,11 @@ test_that("ee_upload - character with bucket", {
   geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
                                      region = geom,
                                      vizparams = list(min = 0, max = 255))
-
   geomatrix_stars[geomatrix_stars <= 0] = NA
   expect_s3_class(geomatrix_stars,'stars')
 })
 
+system.time(2)
 
 test_that("ee_upload - stars with bucket",{
   filename <- "users/aybar1994/rgee_upload/"
@@ -52,11 +52,11 @@ test_that("ee_upload - stars with bucket",{
   geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
                                      region = geom,
                                      vizparams = list(min = 0, max = 255))
-
   geomatrix_stars[geomatrix_stars <= 0] = NA
   expect_s3_class(geomatrix_stars,'stars')
 })
 
+system.time(2)
 
 test_that("ee_upload - stars-proxy with bucket",{
   filename <- "users/aybar1994/rgee_upload/"

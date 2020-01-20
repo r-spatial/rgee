@@ -1,5 +1,5 @@
 if (ci_on_travis()) {
-  do_pkgdown()
+  #do_pkgdown()
 }
 
 get_stage("before_install") %>%

@@ -100,7 +100,7 @@ ee_manage_delete <- function(path_asset, quiet = FALSE) {
   if (response$type %in% ee_manage_handle_names()) {
     list_files <- ee$data$getList(list(id = path_asset))
     items <- unlist(lapply(list_files, "[[", "id")) %>%
-      ee_remove_project_chr()
+      ee_remove_project_chr
     mapply(ee_manage_delete, items)
   }
   ee$data$deleteAsset(path_asset)
@@ -113,7 +113,7 @@ ee_manage_delete <- function(path_asset, quiet = FALSE) {
 ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
   if (missing(path_asset)) {
     path_asset <- ee$data$getAssetRoots()[[1]]$id %>%
-      ee_remove_project_chr()
+      ee_remove_project_chr
   }
 
   # Getting EE asset info: path + type
@@ -122,7 +122,7 @@ ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
   if (is.null(response)) stop("path_asset does not exist!")
   list_files <- ee$data$getList(list(id = path_asset))
   ids <- unlist(lapply(list_files, "[[", "id")) %>%
-    ee_remove_project_chr()
+    ee_remove_project_chr
   type <- unlist(lapply(list_files, "[[", "type"))
 
   # Creating data.frame
@@ -206,7 +206,7 @@ ee_manage_copy <- function(path_asset, final_path, quiet = FALSE) {
     to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
       lapply("[[", "id") %>%
       unlist() %>%
-      ee_remove_project_chr()
+      ee_remove_project_chr
     ee_manage_create(
       path_asset = final_path,
       asset_type = "Folder"
@@ -241,7 +241,7 @@ ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
     to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
       lapply("[[", "id") %>%
       unlist() %>%
-      ee_remove_project_chr()
+      ee_remove_project_chr
     if (!quiet) cat("Moving a total of", length(to_copy_list), " elements ..... please wait ...\n")
     folder_destination <- sprintf("%s/%s", final_path, basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
@@ -326,7 +326,7 @@ ee_manage_delete_properties <- function(path_asset, del_properties = 'ALL') {
 #   } else if (header %in% ee_manage_handle_names("Folder")) {
 #     list_files <- ee$data$getList(list(id = path_asset))
 #     items <- unlist(lapply(list_files, "[[", "id")) %>%
-#       ee_remove_project_chr()
+#       ee_remove_project_chr
 #     mapply(ee_manage_assets_access, items, MoreArgs = list(acl = acl))
 #   }
 #   invisible(TRUE)
@@ -383,7 +383,7 @@ ee_verify_filename <- function(path_asset, strict = TRUE) {
     regmatches(m) %>%
     "[["(1) %>%
     paste(collapse = "/") %>%
-    gsub("projects/earthengine/legacy/assets/", "", .)
+    ee_remove_project_chr
   response <- ee$data$getInfo(folder)
   if (is.null(response) & strict) {
     message <- c(
@@ -422,9 +422,8 @@ ee_humansize <- function(x, suffixes = c("B", "KB", "MB", "GB", "TB", "PB")) {
 #' @param x Character (path_asset)
 #' @noRd
 ee_remove_project_chr <- function(x) {
-  x %>%
-    gsub("projects/earthengine/legacy/assets/", "", .) %>%
-    gsub("projects/earthengine-legacy/assets/", "", .)
+    new_x <- gsub("projects/earthengine/legacy/assets/", "", x)
+    gsub("projects/earthengine-legacy/assets/", "", new_x)
 }
 
 #' EE asset object type

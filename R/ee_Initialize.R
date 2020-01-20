@@ -84,7 +84,7 @@ ee_Initialize <- function(user_gmail = NULL,
                   stop("Earth Engine ID no found, try:",
                        "\nee$data$createAssetHome('...'): Create the EE assets home folder",
                        "\nee_reattach(): Reattach ee as a reserved word")
-                }) %>% gsub('projects/earthengine-legacy/assets/', '', .)
+                }) %>% ee_remove_project_chr
     if (!identical(assethome, home_error)) {
       stop("The Earth Engine credentials obtained from the user_gmail",
            " does not correspond with the assethome,",
