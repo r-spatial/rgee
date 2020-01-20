@@ -101,7 +101,7 @@ ee_upload.character <- function(x, ... ,
          "\nExample: ee_Initialize(user_gmail = 'XXXX@gmail.com')")
   }
 
-  filename <- rgee:::ee_verify_filename(path_asset = filename,
+  filename <- ee_verify_filename(path_asset = filename,
                                         strict = FALSE)
   gs_uri <- ee_upload_file_to_gcs(x = x,
                                   bucket = bucket,
@@ -139,7 +139,7 @@ ee_upload.sf <- function(x, ...,
                          reinit = FALSE,
                          quiet = FALSE) {
   ee_temp <- tempdir()
-  filename <- rgee:::ee_verify_filename(path_asset = filename,strict = FALSE)
+  filename <- ee_verify_filename(path_asset = filename,strict = FALSE)
   shp_dir <- sprintf("%s/%s.shp", ee_temp, basename(filename))
   write_sf(x,shp_dir)
   gs_uri <- ee_upload_file_to_gcs(x = shp_dir,

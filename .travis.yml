@@ -53,7 +53,7 @@ install:
 - sudo -H pip3 install --upgrade pip
 - sudo -H pip3 install virtualenv
 - sudo -H pip3 install setuptools
-- sudo -H pip3 install earthengine-api==0.1.175
+- sudo -H pip3 install earthengine-api
 - sudo -H pip3 install coveralls
 - sudo -H pip3 install pyasn1==0.4.8
 - sudo -H pip3 install oauth2client

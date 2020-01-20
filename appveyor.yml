@@ -7,8 +7,8 @@ environment:
   PATH: "%PATH%;C:\\MinGW\\bin;C:\\MinGW\\msys\\1.0;C:\\MinGW\\msys\\1.0\\bin"
   R_CHECK_ARGS: "--no-manual --as-cran --no-examples --no-tests"
   matrix:
-    - PYTHON: "C:\\Python35"
-      RETICULATE_PYTHON: "C:\\Python35"
+    - PYTHON: "C:\\Python37"
+      RETICULATE_PYTHON: "C:\\Python37"
 
 matrix:
   fast_finish: true

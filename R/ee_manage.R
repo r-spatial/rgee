@@ -72,7 +72,7 @@
 #' }
 #' @export
 ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = FALSE)
+  path_asset <- ee_verify_filename(path_asset, strict = FALSE)
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
   if (asset_path_exist) {
     if (asset_type == "Folder") {
@@ -94,7 +94,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_delete <- function(path_asset, quiet = FALSE) {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   response <- ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
   if (response$type %in% ee_manage_handle_names()) {
@@ -117,7 +117,7 @@ ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
   }
 
   # Getting EE asset info: path + type
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   response <- ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
   list_files <- ee$data$getList(list(id = path_asset))
@@ -194,8 +194,8 @@ ee_manage_quota <- function() {
 #' @name ee_manage-tools
 #' @export
 ee_manage_copy <- function(path_asset, final_path, quiet = FALSE) {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
-  final_path <- rgee:::ee_verify_filename(final_path, strict = FALSE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+  final_path <- ee_verify_filename(final_path, strict = FALSE)
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection")
 
@@ -228,8 +228,8 @@ ee_manage_copy <- function(path_asset, final_path, quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
-  final_path <- rgee:::ee_verify_filename(final_path, strict = FALSE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+  final_path <- ee_verify_filename(final_path, strict = FALSE)
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "Table", "FeatureCollection")
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
@@ -263,7 +263,7 @@ ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_set_properties <- function(path_asset, add_properties) {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
@@ -277,7 +277,7 @@ ee_manage_set_properties <- function(path_asset, add_properties) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_delete_properties <- function(path_asset, del_properties = 'ALL') {
-  path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
+  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
@@ -300,7 +300,7 @@ ee_manage_delete_properties <- function(path_asset, del_properties = 'ALL') {
 #' @export
 # ee_manage_assets_access <- function(path_asset, acl = getOption("rgee.manage.getAssetAcl"), quiet = FALSE) {
 #   acl_m <- acl
-#   path_asset <- rgee:::ee_verify_filename(path_asset, strict = TRUE)
+#   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
 #   header <- ee$data$getInfo(path_asset)[["type"]]
 #   if (is.null(acl_m[["all_users_can_read"]])) acl_m[["all_users_can_read"]] <- TRUE
 #   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
@@ -336,7 +336,7 @@ ee_manage_delete_properties <- function(path_asset, del_properties = 'ALL') {
 #' @export
 ee_manage_task <- function(cache = TRUE) {
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
-  ee_manage_py <- rgee:::ee_source_python(oauth_func_path)
+  ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp <- tempdir()
   manage_task_file <- sprintf("%s/ee_manage_task_file.csv", ee_temp)
   if (cache) {

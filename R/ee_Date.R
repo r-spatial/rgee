@@ -9,7 +9,7 @@
 #' @export
 r_to_eeDate <- function(date) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   ee_py_to_r(ee_selenium_functions$r_to_eeDate(date))
 }
 
@@ -25,6 +25,6 @@ r_to_eeDate <- function(date) {
 #' @export
 eeDate_to_r <- function(eedate) {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   ee_py_to_r(ee_selenium_functions$eeDate_to_r(eedate))
 }

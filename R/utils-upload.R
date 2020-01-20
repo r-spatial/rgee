@@ -246,7 +246,7 @@ ee_gcs_to_asset <- function(x,
                             end_time = '1970-01-01',
                             pyramiding_policy = "MEAN") {
   oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
-  ee_selenium_functions <- rgee:::ee_source_python(oauth_func_path)
+  ee_selenium_functions <- ee_source_python(oauth_func_path)
   tempdir_gee <- tempdir()
 
   if (type == "image") {

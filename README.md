@@ -2,8 +2,7 @@
 
 # Google Earth Engine for R
 
-**NOTE: Access to Google Earth Engine is currently only available to
-[registered users](https://earthengine.google.com/)**.
+**NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
@@ -21,22 +20,15 @@ Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](ht
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
-`rgee` is a bindings package for calling [Google Earth Engine
+`rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make the
-connection with the R spatial ecosystem effortless. The `rgee` package
-structure has been inspired in [tensorflow R
-package](https://github.com/rstudio/tensorflow/).
+Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The `rgee` is a package inspired by the [tensorflow R
+package structure](https://github.com/rstudio/tensorflow/).
 
 ## What is Google Earth Engine?
 
 [Google Earth Engine](https://earthengine.google.com/) is a cloud-based
-platform that allows users getting access to a petabyte-scale archive of
-remote sensing data and run geospatial analysis on Google’s
-infrastructure. Currently, Google offers support Python and JavaScript.
-`rgee` will fill the gap and start offering support to R\!. Below we
-compare the syntax between `rgee` and the two Google-supported client
-libraries.
+platform that allows users to have a easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap starting to provide support to R\!. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
 
 **Earth Engine Javascript API**:
 
@@ -66,30 +58,25 @@ image$bandNames()$getInfo()
 #> [1] "elevation"
 ```
 
-**Quite similar, isn’t it?**. However there are a few additional small
-changes that you always need to keep in mind when use Google Earth
-Engine with R. Please check the [consideration section](https://csaybar.github.io/rgee/articles/considerations.html) before start
-coding\!
+**Quite similar, isn’t it?**. However there are additional smaller changes that you must consider when you use Google Earth Engine with R. Please check the [consideration section](https://csaybar.github.io/rgee/articles/considerations.html) before start coding\!
 
 ## Requirements
 
-Prior to using `rgee` you need to install a **Python version higher than
-3.5** in your system. Below we describe how to install `rgee` but not
-Python dependencies. Consider check the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for
+Prior using `rgee` you need to install a **Python version higher than
+3.5** in your system. Here below you will find the full information to install `rgee` but not Python dependencies. Consider check the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for
 customizing Python installation.
 
 ## Installation
 
-Install the `rgee` package from GitHub is extremely simple, just run in
-your R console as follow:
+Install the `rgee` package from GitHub is quite simple, you just have to run in your R console as follows:
 
 ``` r
-remotes::install_git("csaybar/rgee")
+remotes::install_github("csaybar/rgee")
 ```
 
 `rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it
 is necessary to install their external libraries, run as follows
-according your operating system:
+according to your operating system:
 
 ### Windows
 
@@ -99,8 +86,7 @@ the system. The static libraries will automatically downloaded from
 [rwinlib](https://github.com/rwinlib/).
 
 ### Linux
-
-Please install the follow system libraries.
+To install rgee, you need to have the following system libraries that rgee depends on:
 
     sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
     sudo apt-get update
@@ -108,7 +94,7 @@ Please install the follow system libraries.
 
 ### MacOS
 
-Use [Homebrew](https://brew.sh/) to install the next system libraries:
+Use [Homebrew](https://brew.sh/) to install the following system libraries:
 
     brew install pkg-config
     brew install gdal
@@ -128,15 +114,14 @@ After that, in your preferred browser, run:
 
 ## Package Conventions
 
-  - All `rgee` functions begin with the prefix ee\_. Auto-completion is
+  - All `rgee` functions have the prefix ee\_. Auto-completion is
     your friend :).
-  - Complete access to the Earth Engine API with the prefix
+  - Full access to the Earth Engine API with the prefix
     [**ee$…:**](https://developers.google.com/earth-engine/).
   - Authenticate and Initialize Earth Engine with
-    [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html)
-    it is a wrapper around `ee$Initialize` that offers multi-user
+    [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html) it is a wrapper around `ee$Initialize` that offers multi-user
     support.
-  - `rgee` is “pipe-friendly” and, in fact, re-exports %\>%, but does
+  - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does
     not require its use.
   - Wrap your R function using `ee_pyfunc` before passing them to the
     Earth Engine Web REST API. This is not compulsory, but it will help
@@ -154,8 +139,7 @@ ee_Initialize()
 ee_reattach() # reattach ee as a reserve word
 ```
 
-Adds a band containing image date as years since 1991.
-
+Create a date image (year) since 1991.
 ``` r
 createTimeBand <-function(img) {
   year <- ee$Date(img$get('system:time_start'))$get('year')$subtract(1991L)
@@ -163,7 +147,7 @@ createTimeBand <-function(img) {
 }
 ```
 
-Map the time band creation helper over the [night-time lights
+Map the time band created from the [night-time lights
 collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS).
 
 ``` r
@@ -173,9 +157,8 @@ collection = ee$
   map(createTimeBand)
 ```
 
-Compute a linear fit over the series of values at each pixel,
-visualizing the y-intercept in green, and positive/negative slopes as
-red/blue.
+Compute a best-fit line over the series of values at each pixel,
+visualizing the y-intercept in green, and positive/negative slopes in red/blue respectively.
 
 ``` r
 col_reduce <- collection$reduce(ee$Reducer$linearFit())
@@ -206,16 +189,14 @@ ee_Initialize()
 # ee_reattach() # reattach ee as a reserve word
 ```
 
-Read the `nc` shapefile as a simple
-feature.
+Read the `nc` shapefile as a simple feature.
 
 ``` r
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
   st_transform(4326) # Transform coordinates
 ```
 
-Map each image from 2001 and extract the Monthly precipitation
-accumulation (Pr) of the [Terraclimate
+Map each image from 2001 and extract the accumulated monthly precipitation (Pr) from the [Terraclimate
 dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE)
 
 ``` r
@@ -227,8 +208,7 @@ terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
 Extract values from the Terraclimate ImageCollection. `ee_extract` works
 similar to `raster::extract` you just need to define: the
 ImageCollection object (x), the geometry (y), and a function to
-summarize the values
-(fun).
+summarize the values (fun).
 
 ``` r
 ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), id = "FIPS")
@@ -831,11 +811,13 @@ plot(ee_nc_rain["Jan"], main = "2001 Jan Precipitation - Terraclimate", reset = 
 
 ![ee\_JAN](https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png)
 
-## How does it works?
+## How does it work?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how it is possible to run Earth Engine in R? the answer is
-[reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When we create an Earth Engine process in R, firstly, `reticulate` transforms this piece of code to Python. Once converted to Python code, the `Earth Engine Python API` transform the request to a
-`JSON`. Finally, the query is received by the Google Earth Engine Platform thanks to a Web REST API. The response of the server follows the same pathway. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage the EEA through the
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is
+[reticulate](https://rstudio.github.io/reticulate/). 
+
+`reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine process is created in R, firstly, `reticulate` transforms this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a
+`JSON`. Finally, the query is received by the Google Earth Engine Platform thanks to a Web REST API. The response will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage EEA through the
 [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
@@ -861,15 +843,9 @@ Using **rgee** for a paper you are writing? Consider citing it
 ``` r
 citation("rgee")
 #> 
-#> To cite Google Earth Engine in publications use:
-#> 
-#>   Gorelick, N., Hancher, M., Dixon, M., Ilyushchenko, S., Thau, D., & Moore, R. (2017). 
-#>   Google Earth Engine: Planetary scale geospatial analysis for everyone. Remote Sensing
-#>   of Environment, 202, 18-27.
-```
-## Credits :bow:
+#> WORKING ON THIS :)T## Credits :bow:
 
-Most of the functionalities of `rgee` were based in the following third-party R/Python packages:
+Most of the func`rgee` tionalities of ` based in the following third-party R/Python packages:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**

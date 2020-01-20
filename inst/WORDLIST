@@ -21,6 +21,7 @@ EPSG
 FeatureCollection
 firstNonNull
 GCS
+gcs
 geojson
 GeoJSON
 geospatial

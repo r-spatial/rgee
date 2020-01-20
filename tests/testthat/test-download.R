@@ -1,5 +1,11 @@
 context("rgee: ee_download test")
 
+ee_Initialize(user_gmail = 'aybar1994@gmail.com',
+              drive = TRUE,
+              gcs = TRUE,
+              checkpy = FALSE,
+              assethome = 'users/aybar1994')
+
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318
 xmax <- -70.953664315
@@ -27,12 +33,6 @@ imageExportFormatOptions_1 <- list(patchDimensions= c(10L, 10L),compressed =  TR
 imageExportFormatOptions_2 <- list(patchDimensions= c(10L, 10L),compressed =  FALSE)
 vectorExportFormatOptions_1 <- list(compressed =  TRUE)
 vectorExportFormatOptions_2 <- list(compressed =  FALSE)
-
-ee_Initialize(user_gmail = 'aybar1994@gmail.com',
-              drive = TRUE,
-              gcs = TRUE,
-              checkpy = FALSE,
-              assethome = 'users/aybar1994')
 
 count <- 1
 try_gd_rm <- try(googledrive::drive_rm("rgee_testing"))
