@@ -844,6 +844,7 @@ Using **rgee** for a paper you are writing? Consider citing it
 citation("rgee")
 #> 
 #> WORKING ON THIS :)T## Credits :bow:
+``` 
 
 Most of the func`rgee` tionalities of ` based in the following third-party R/Python packages:
 
