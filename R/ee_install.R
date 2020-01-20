@@ -33,6 +33,7 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#' library(reticulate)
 #'
 #' # Recommended way to use rgee
 #' ## 1. Create a virtualenv
