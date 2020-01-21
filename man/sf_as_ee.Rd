@@ -29,18 +29,22 @@ sf_as_ee(x, check_ring_dir)
 Convert an sf object to EE object
 }
 \details{
-The conversion from sf to EE is a two-step process. Firstly, \code{sf_as_ee} transform
-sf objects into a GeoJSON format using \link[geojsonio]{geojson_json}. Secondly, the GeoJSON
-generated will be encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
-If the sf object is large spatial objects (>1Mb) it is expected that cause bottlenecks and
-plodding connections. See
-\href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-documentation for details. For leading with very large spatial objects, is recommended firstly
-importing it to the GEE assets. See \link[rgee]{ee_upload} for creating uploading pipelines.
+The conversion from sf to EE is a two-step process. Firstly,
+\code{sf_as_ee} transform sf objects into a GeoJSON format using
+\link[geojsonio]{geojson_json}. Secondly, the GeoJSON generated will be
+encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
+If the sf object is large spatial objects (>1Mb) it is expected that cause
+bottlenecks and plodding connections. See
+\href{https://developers.google.com/earth-engine/client_server}{Client
+vs Server} documentation for details. For leading with very large spatial
+objects, is recommended firstly importing it to the GEE assets. See
+\link[rgee]{ee_upload} for creating uploading pipelines.
 
-Earth Engine is strict with polygon ring directions (exterior ring counter-clockwise, holes clockwise). When
-\code{check_ring_dir} is TRUE, it check every ring and revert them to counter clockwise for outer, and clockwise for
-inner (hole) rings. By default this is FALSE because it is an expensive operation.
+Earth Engine is strict with polygon ring directions (exterior ring
+counter-clockwise, holes clockwise). When \code{check_ring_dir} is TRUE,
+it check every ring and revert them to counter clockwise for outer,
+and clockwise for inner (hole) rings. By default this is FALSE because
+it is an expensive operation.
 }
 \examples{
 library(rgee)
@@ -50,12 +54,14 @@ ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 # sf
-x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\% st_transform(4326)
+x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
+  st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
 
 # sfc
-x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry \%>\% st_transform(4326)
+x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry \%>\%
+  st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 ee_map(ee_x)
 

@@ -10,7 +10,10 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
   st_transform(4326)
 
 test_that("simple test ee_extract",{
-  ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), id = "FIPS")
+  ee_nc_rain <- ee_extract(x = terraclimate,
+                           y = nc,
+                           fun = ee$Reducer$max(),
+                           id = "FIPS")
   ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
   expect_equal(mean(ee_nc_rain$X200012),53.29)
 })

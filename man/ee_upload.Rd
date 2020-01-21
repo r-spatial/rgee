@@ -37,20 +37,24 @@ ee_upload(x, ...)
 
 \item{...}{ignored}
 
-\item{filename}{Character. Asset destination path, e.g. users/pinkiepie/myponycollection.}
+\item{filename}{Character. Asset destination path,
+e.g. users/pinkiepie/myponycollection.}
 
 \item{bucket}{bucketname you are uploading to. See details.}
 
-\item{properties}{List. Set of parameters to established as a property of an EE object. See details.}
+\item{properties}{List. Set of parameters to established as a property of
+an EE object. See details.}
 
-\item{start_time}{Character. The timestamp associated with the asset. The initial time stamp is set to
-the nominal image acquisition time for single scenes.}
+\item{start_time}{Character. The timestamp associated with the asset. The
+initial time stamp is set to the nominal image acquisition time for single
+scenes.}
 
 \item{end_time}{Character. Useful for assets that correspond to an
 interval of time. The ending time stamp is set to the nominal image
 acquisition time for single scenes.}
 
-\item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
+\item{selenium_params}{List. Optional parameters when bucket is NULL.
+Parameters for setting selenium. See details.}
 
 \item{clean}{Logical; whether is TRUE cache will cleaned, see Description.}
 
@@ -62,24 +66,28 @@ acquisition time for single scenes.}
 Upload either images or vectors to Google Earth Engine asset
 }
 \details{
-It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
-(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
-gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
-for getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs} for details.
-Install and check the Selenium drivers for Google Chrome is possible as follow:\cr
+It is necessary, for uploading process, get authorization to read & write
+into a Google Cloud Storage (GCS) bucket. Earth Engine provides a
+provisional for free space into GCS through gs://earthengine-uploads/. If
+the bucket argument is absent, this function will use Selenium driver for
+getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs}
+for details. Install and check the Selenium drivers for Google Chrome is
+possible as follow:\cr
 \itemize{
 \item rgee::ee_install_drivers()\cr
 \item rgee::ee_check_drivers()\cr
 }
 
-The properties argument is just available for image uploads, is you are interesting in setting
-properties in FeatureCollection. Please use \link{ee_manage_set_properties} after \link{ee_upload}.
+The properties argument is just available for image uploads, is you are
+interesting in setting properties in FeatureCollection. Please use
+\link{ee_manage_set_properties} after \link{ee_upload}.
 
 The selenium_params argument is a three-element list consisting of:\cr
 \itemize{
-\item gmail_account: The google account. If it is not specified, it will obtained from
-ee$data$getAssetRoots().\cr
-\item showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
+\item gmail_account: The google account. If it is not specified, it will
+obtained from ee$data$getAssetRoots().\cr
+\item showpassword: Logical. After put the google account into
+\link[getPass]{getPass}, should be shown?.
 \item cache: Logical. TRUE will use the cookies saved on the /temp directory.
 }
 

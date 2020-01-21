@@ -1,9 +1,4 @@
 library(testthat)
 library(rgee)
-library(reticulate)
-library(raster)
-library(stars)
-library(sf)
-ee <- reticulate::import("ee")
-ee_Initialize()
+
 test_check("rgee")

@@ -13,7 +13,8 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 
 \item{bucket}{bucketname you are uploading to}
 
-\item{selenium_params}{List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.}
+\item{selenium_params}{List. Optional parameters when bucket is NULL.
+Parameters for setting selenium. See details.}
 
 \item{clean}{Logical; Whether is TRUE cache will cleaned, see Details.}
 
@@ -22,19 +23,23 @@ ee_upload_file_to_gcs(x, bucket = NULL,
 \item{quiet}{Logical. Suppress info message.}
 }
 \value{
-Character indicating the full name of the x argument inside gs://earthengine-uploads/
+Character indicating the full name of the x argument inside
+gs://earthengine-uploads/
 }
 \description{
-Upload images or tables into google cloud storage for EE asset ingestion tasks.
+Upload images or tables into google cloud storage for EE asset ingestion
+tasks.
 }
 \details{
-It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
-(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
-gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
-for getting access to the URI mentioned bellow. The process for getting access to gs://earthengine-uploads/
-was written entirely in Python and is as follow:
+It is necessary, for uploading process, get authorization to read & write
+into a Google Cloud Storage (GCS) bucket. Earth Engine provides a provisional
+for free space into GCS through gs://earthengine-uploads/. If the bucket
+argument is absent, this function will use Selenium driver for getting access
+to the URI mentioned bellow. The process for getting access to
+gs://earthengine-uploads/ was written entirely in Python and is as follow:
 \itemize{
-\item{1. }{Connecting to https://code.earthengine.google.com/ through selenium.}
+\item{1. }{Connecting to https://code.earthengine.google.com/
+through selenium.}
 \item{2. }{Download all the cookies and saved in a request object.}
 \item{3. }{Get the URL for ingest the data  temporarily.}
 \item{4. }{Create the request headers.}

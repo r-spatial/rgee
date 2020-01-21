@@ -120,7 +120,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
     if (nrow(files_gd) > 1 & !(fileformat %in% c("SHP", "TF_RECORD_IMAGE"))) {
       show_files <- files_gd
       getTime <- function(x) files_gd$drive_resource[[x]]$createdTime
-      createdTime <- sapply(seq_len(nrow(files_gd)), getTime)
+      createdTime <- vapply(seq_len(nrow(files_gd)), getTime, "")
       show_files$drive_resource <- NULL
       show_files$createdTime <- createdTime
       print(show_files, width = Inf)

@@ -24,7 +24,8 @@ test_that("ee_as_thumbnail full parameters", {
     st_as_sfc() %>%
     st_set_crs(4326) %>%
     sf_as_ee()
-  arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
+  arequipa_dem <- ee_as_thumbnail(x = image, region = region,
+                                  vizparams = list(min = 0, max = 5000))
   arequipa_dem <- arequipa_dem * 5000
   expect_equal(max(arequipa_dem$G), 5000, tolerance = 1)
 })

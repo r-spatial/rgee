@@ -2,7 +2,7 @@
 #' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
 ee_getCallMethods <- function(map) {
-  sapply(map$x$calls, "[[", "method")
+  vapply(map$x$calls, "[[", "method", FUN.VALUE = "")
 }
 
 #' @author \href{https://github.com/tim-salabim}{Tim Salabim}

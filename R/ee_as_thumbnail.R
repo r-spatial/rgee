@@ -125,8 +125,9 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     ee_py_to_r() %>%
     "[["(1)
 
-  long <- sapply(bound_coord, function(x) x[1]) %>% as.numeric()
-  lat <- sapply(bound_coord, function(x) x[2]) %>% as.numeric()
+
+  long <- vapply(bound_coord, function(x) x[1], FUN.VALUE = 0)
+  lat <- vapply(bound_coord, function(x) x[2], FUN.VALUE = 0)
 
   world_lat <- c(-90, -90,  90,  90, -90)
   world_long <- c(-180,  180,  180, -180, -180)

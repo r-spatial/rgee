@@ -60,8 +60,7 @@ create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
   shp_basename <- gsub("\\.shp$", "", x)
   shp_filenames <- sprintf("%s.%s", shp_basename, SHP_EXTENSIONS)
   zipname <- sprintf("%s.zip", shp_basename)
-  setwd(dirname(zipname))
-  zip(zipfile = zipname, files = basename(shp_filenames))
+  zip(zipfile = zipname, files = shp_filenames, flags = "-j")
   temp_zip <- sprintf("%s/%s", temp_dir, basename(zipname))
   if (getwd() != dirname(zipname)) {
     file.copy(from = zipname, to = temp_zip, overwrite = TRUE)
@@ -72,38 +71,44 @@ create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
 
 #' Upload local files to google cloud storage
 #'
-#' Upload images or tables into google cloud storage for EE asset ingestion tasks.
+#' Upload images or tables into google cloud storage for EE asset ingestion
+#' tasks.
 #'
 #' @param x filename (character), sf or stars object.
 #' @param bucket bucketname you are uploading to
-#' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
+#' @param selenium_params List. Optional parameters when bucket is NULL.
+#' Parameters for setting selenium. See details.
 #' @param clean Logical; Whether is TRUE cache will cleaned, see Details.
 #' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
 #' @param quiet Logical. Suppress info message.
 #' @importFrom getPass getPass
 #' @details
-#' It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
-#' (GCS) bucket. Earth Engine provides a provisional for free space into GCS through
-#' gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
-#' for getting access to the URI mentioned bellow. The process for getting access to gs://earthengine-uploads/
-#' was written entirely in Python and is as follow:
+#' It is necessary, for uploading process, get authorization to read & write
+#' into a Google Cloud Storage (GCS) bucket. Earth Engine provides a provisional
+#' for free space into GCS through gs://earthengine-uploads/. If the bucket
+#' argument is absent, this function will use Selenium driver for getting access
+#' to the URI mentioned bellow. The process for getting access to
+#' gs://earthengine-uploads/ was written entirely in Python and is as follow:
 #' \itemize{
-#'  \item{1. }{Connecting to https://code.earthengine.google.com/ through selenium.}
+#'  \item{1. }{Connecting to https://code.earthengine.google.com/
+#'  through selenium.}
 #'  \item{2. }{Download all the cookies and saved in a request object.}
 #'  \item{3. }{Get the URL for ingest the data  temporarily.}
 #'  \item{4. }{Create the request headers.}
 #'  \item{5. }{Upload the x argument to GCS via POST request.}
 #' }
 #' @importFrom rgdal showWKT
-#' @return Character indicating the full name of the x argument inside gs://earthengine-uploads/
+#' @return Character indicating the full name of the x argument inside
+#' gs://earthengine-uploads/
 #' @export
 ee_upload_file_to_gcs <- function(x,
                                   bucket = NULL,
-                                  selenium_params = getOption("rgee.selenium.params"),
+                                  selenium_params = getOption(
+                                    "rgee.selenium.params"
+                                  ),
                                   clean = FALSE,
                                   reinit = FALSE,
                                   quiet = FALSE) {
-
   if (selenium_params$check_driver) {
     check_warning <- tryCatch(
       expr = ee_check_drivers(),
@@ -114,15 +119,17 @@ ee_upload_file_to_gcs <- function(x,
       stop(
         "'chromedriver' executable needs to be in the path: ",
         rgee::ee_get_earthengine_path(),
-        ".The appropriate version of chromedriver depends on your GoogleChrome version. ",
-        "\n\n>>> Figure out GoogleChrome version of their system on: chrome://settings/help\n",
-        ">>> After that choose a stable version of chromedriver on: https://sites.google.com/a/chromium.org/chromedriver/downloads\n\n",
-        "Once you are sure of the version of Google Chrome and chromedriver of their system,\n",
-        "try rgee::ee_install_drivers(version=...). For instance, if you are using Google Chrome v76.x",
-        " might use rgee::ee_install_drivers(version='76.0.3809.126') to fix the error"
+        ".The appropriate version of chromedriver depends on your GoogleChrome",
+        "version. \n\n>>> Figure out GoogleChrome version of their system  on:",
+        "chrome://settings/help\n >>> After that choose a stable version of",
+        "chromedriver on:",
+        "https://sites.google.com/a/chromium.org/chromedriver/downloads \n\n",
+        "Once you are sure of the version of Google Chrome and chromedriver ",
+        "of their system,\ntry rgee::ee_install_drivers(version=...). ",
+        "For instance, if you are using Google Chrome v76.x might use ",
+        "rgee::ee_install_drivers(version='76.0.3809.126') to fix the error"
       )
     }
-
   }
 
   if (image_or_vector(x) == "sf") {
@@ -136,7 +143,9 @@ ee_upload_file_to_gcs <- function(x,
   }
 
   if (is.null(bucket)) {
-    oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
+    oauth_func_path <- system.file("python/ee_selenium_functions.py",
+      package = "rgee"
+    )
     ee_selenium_functions <- ee_source_python(oauth_func_path)
 
     tempdir_gee <- tempdir()
@@ -146,7 +155,9 @@ ee_upload_file_to_gcs <- function(x,
     if (file.exists(session_temp) && clean) {
       session <- ee_selenium_functions$load_py_object(session_temp)
     } else {
-      if (!quiet) cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$user_gmail))
+      if (!quiet) {
+        cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$user_gmail))
+      }
       if (nchar(selenium_params$user_password) > 4) {
         password <- selenium_params$user_password
       } else {
@@ -154,7 +165,11 @@ ee_upload_file_to_gcs <- function(x,
       }
       if (!quiet) {
         if (!selenium_params$showpassword) {
-          cat("GMAIL PASSWORD:", paste(rep("*", nchar(password)), collapse = ""), "\n")
+          cat(
+            "GMAIL PASSWORD:",
+            paste(rep("*", nchar(password)), collapse = ""),
+            "\n"
+          )
         } else {
           cat("GMAIL PASSWORD:", password, "\n")
         }
@@ -167,7 +182,14 @@ ee_upload_file_to_gcs <- function(x,
         dirname = ee_path
       )
       cookies_names <- names(ee_py_to_r(session$cookies$get_dict()))
-      if (!quiet) cat(sprintf("cookies catched: [%s]\n", paste0(cookies_names, collapse = ", ")))
+      if (!quiet) {
+        cat(
+          sprintf(
+            "cookies catched: [%s]\n",
+            paste0(cookies_names, collapse = ", ")
+          )
+        )
+      }
       if (length(cookies_names) > 7) {
         ee_selenium_functions$save_py_object(session, session_temp)
       } else {
@@ -180,23 +202,27 @@ ee_upload_file_to_gcs <- function(x,
     )
     # Geting URL ingestion
     upload_url <- tryCatch(expr = {
-      upload_url <- ee_py_to_r(ee_selenium_functions$ee_get_upload_url_py(session))
+      upload_url <- ee_py_to_r(
+        ee_selenium_functions$ee_get_upload_url_py(session)
+      )
       count <- 1
       while (is.null(upload_url) & count < 5) {
-        upload_url <- ee_py_to_r(ee_selenium_functions$ee_get_upload_url_py(session))
+        upload_url <- ee_py_to_r(
+          ee_selenium_functions$ee_get_upload_url_py(session)
+        )
         count <- count + 1
       }
       if (is.null(upload_url)) {
         stop(
-          "Maybe due slow internet connection or a wrong google account password",
-          "Expected cookies names need similar to this: \n [",
+          "Maybe due slow internet connection or a wrong google account ",
+          "password. Expected cookies names need similar to this: \n [",
           paste0(expected_cookies_name, collapse = ", "), "]"
         )
       } else {
         if (nchar(upload_url) > 500) {
           stop(
-            "Maybe due slow internet connection or a wrong google account password",
-            "Expected cookies names need similar to this: \n [",
+            "Maybe due slow internet connection or a wrong google account ",
+            "password. Expected cookies names need similar to this: \n [",
             paste0(expected_cookies_name, collapse = ", "), "]"
           )
         }
@@ -204,25 +230,32 @@ ee_upload_file_to_gcs <- function(x,
       upload_url
     }, error = function(e) {
       message(
-        "Error: Cleaning cache ... , was not possible get the URL to upload the data",
-        ", run rgee::ee_upload_file_to_gcs again."
+        "Error: Cleaning cache ... , was not possible get the URL to upload",
+        " the data, run rgee::ee_upload_file_to_gcs again."
       )
       file.remove(session_temp)
     })
 
     if (!quiet) cat(sprintf("Uploading %s to gs://earthengine-uploads/ \n", x))
-    gcs_uri <- ee_selenium_functions$ee_file_to_gcs_py(session, x, x_type, upload_url)
+    gcs_uri <- ee_selenium_functions$ee_file_to_gcs_py(
+      session, x, x_type,
+      upload_url
+    )
     return(gcs_uri)
   } else {
     if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-      stop("The googleCloudStorageR package is required to use rgee::ee_download_gcs",
+      stop(
+        "The googleCloudStorageR package is required to use ",
+        "rgee::ee_download_gcs",
         call. = FALSE
       )
     } else {
-
       if (reinit) {
         ee_path <- path.expand("~/.config/earthengine")
-        user <- read.table(sprintf("%s/rgee_sessioninfo.txt", ee_path), header = TRUE)[["user"]]
+        user <- read.table(
+          file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+          header = TRUE
+        )[["user"]]
         ee_Initialize(user_gmail = paste0(user, "@gmail.com"), gcs = TRUE)
       }
 
@@ -242,10 +275,12 @@ ee_gcs_to_asset <- function(x,
                             filename,
                             type = "table",
                             properties = NULL,
-                            start_time = '1970-01-01',
-                            end_time = '1970-01-01',
+                            start_time = "1970-01-01",
+                            end_time = "1970-01-01",
                             pyramiding_policy = "MEAN") {
-  oauth_func_path <- system.file("python/ee_selenium_functions.py", package = "rgee")
+  oauth_func_path <- system.file("python/ee_selenium_functions.py",
+    package = "rgee"
+  )
   ee_selenium_functions <- ee_source_python(oauth_func_path)
   tempdir_gee <- tempdir()
 
@@ -279,7 +314,7 @@ ee_gcs_to_asset <- function(x,
       )
     )
 
-    # from R date to JS timestamp: time_start + time_end --------------------------------
+    # from R date to JS timestamp: time_start + time_end
     if (!is.null(start_time)) {
       time_start <- r_to_eeDate(start_time)
     }
@@ -290,8 +325,11 @@ ee_gcs_to_asset <- function(x,
 
     # Adding bands
     bands <- list()
-    for (b in 1:length(band_names)) {
-      bands[[b]] <- list(id = band_names[b], tileset_band_index = as.integer((b - 1)))
+    for (b in seq_len(length(band_names))) {
+      bands[[b]] <- list(
+        id = band_names[b],
+        tileset_band_index = as.integer((b - 1))
+      )
     }
 
     # Putting all together
@@ -301,15 +339,21 @@ ee_gcs_to_asset <- function(x,
       bands = bands,
       pyramiding_policy = pyramiding_policy,
       properties = properties,
-      start_time = list(seconds = time_start/1000),
-      end_time = list(seconds = time_end/1000)
+      start_time = list(seconds = time_start / 1000),
+      end_time = list(seconds = time_end / 1000)
     )
 
     if (length(properties) == 0) manifest[["properties"]] <- NULL
     json_path <- sprintf("%s/manifest.json", tempdir_gee)
-    ee_selenium_functions$ee_create_json_py(towrite = json_path, manifest = manifest)
+    ee_selenium_functions$ee_create_json_py(
+      towrite = json_path,
+      manifest = manifest
+    )
     system(sprintf("earthengine upload image --manifest '%s'", json_path))
   } else if (type == "table") {
-    system(sprintf("earthengine upload table --asset_id %s '%s'", filename, gs_uri))
+    system(sprintf(
+      "earthengine upload table --asset_id %s '%s'",
+      filename, gs_uri
+    ))
   }
 }

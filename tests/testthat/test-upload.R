@@ -47,7 +47,8 @@ test_that("ee_upload - stars with bucket", {
 
   tif <- system.file("tif/geomatrix.tif", package = "stars")
   geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
-  delta_geomatrix <- c(attr(geomatrix, "dimensions")$x$delta, attr(geomatrix, "dimensions")$y$delta * -1)
+  delta_geomatrix <- c(attr(geomatrix, "dimensions")$x$delta,
+                       attr(geomatrix, "dimensions")$y$delta * -1)
 
   ee_upload(
     x = geomatrix,

@@ -3,15 +3,19 @@
 #' Upload either images or vectors to Google Earth Engine asset
 #'
 #' @param x Character, sf or stars object to upload into a GEE asset.
-#' @param filename Character. Asset destination path, e.g. users/pinkiepie/myponycollection.
+#' @param filename Character. Asset destination path,
+#' e.g. users/pinkiepie/myponycollection.
 #' @param bucket bucketname you are uploading to. See details.
-#' @param properties List. Set of parameters to established as a property of an EE object. See details.
-#' @param start_time Character. The timestamp associated with the asset. The initial time stamp is set to
-#' the nominal image acquisition time for single scenes.
+#' @param properties List. Set of parameters to established as a property of
+#' an EE object. See details.
+#' @param start_time Character. The timestamp associated with the asset. The
+#' initial time stamp is set to the nominal image acquisition time for single
+#' scenes.
 #' @param end_time Character. Useful for assets that correspond to an
 #' interval of time. The ending time stamp is set to the nominal image
 #' acquisition time for single scenes.
-#' @param selenium_params List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.
+#' @param selenium_params List. Optional parameters when bucket is NULL.
+#' Parameters for setting selenium. See details.
 #' @param clean Logical; whether is TRUE cache will cleaned, see Description.
 #' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
 #' @param quiet Logical. Suppress info message.
@@ -19,21 +23,25 @@
 #' @importFrom methods is as
 #' @importFrom sf write_sf
 #' @details
-#' It is necessary, for uploading process, get authorization to read & write into a Google Cloud Storage
-#' (GCS) bucket. Earth Engine provides a provisional for free space into GCS through
-#' gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
-#' for getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs} for details.
-#' Install and check the Selenium drivers for Google Chrome is possible as follow:\cr
+#' It is necessary, for uploading process, get authorization to read & write
+#' into a Google Cloud Storage (GCS) bucket. Earth Engine provides a
+#' provisional for free space into GCS through gs://earthengine-uploads/. If
+#' the bucket argument is absent, this function will use Selenium driver for
+#' getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs}
+#' for details. Install and check the Selenium drivers for Google Chrome is
+#' possible as follow:\cr
 #' - rgee::ee_install_drivers()\cr
 #' - rgee::ee_check_drivers()\cr
 #'
-#' The properties argument is just available for image uploads, is you are interesting in setting
-#' properties in FeatureCollection. Please use \link{ee_manage_set_properties} after \link{ee_upload}.
+#' The properties argument is just available for image uploads, is you are
+#' interesting in setting properties in FeatureCollection. Please use
+#' \link{ee_manage_set_properties} after \link{ee_upload}.
 #'
 #' The selenium_params argument is a three-element list consisting of:\cr
-#'  - gmail_account: The google account. If it is not specified, it will obtained from
-#'  ee$data$getAssetRoots().\cr
-#'  - showpassword: Logical. After put the google account into \link[getPass]{getPass}, should be shown?.
+#'  - gmail_account: The google account. If it is not specified, it will
+#'  obtained from ee$data$getAssetRoots().\cr
+#'  - showpassword: Logical. After put the google account into
+#'  \link[getPass]{getPass}, should be shown?.
 #'  - cache: Logical. TRUE will use the cookies saved on the /temp directory.
 #'
 #' With respect to the variables time_start and time_end, both needs
@@ -90,7 +98,9 @@ ee_upload.character <- function(x, ... ,
                                 properties = NULL,
                                 start_time = '1970-01-01',
                                 end_time = '1970-01-01',
-                                selenium_params = getOption("rgee.selenium.params"),
+                                selenium_params = getOption(
+                                  "rgee.selenium.params"
+                                ),
                                 clean = FALSE,
                                 reinit = FALSE,
                                 quiet = FALSE) {
@@ -192,7 +202,9 @@ ee_upload.stars_proxy <- function(x, ...,
                                   properties = NULL,
                                   start_time = '1970-01-01',
                                   end_time = '1970-01-01',
-                                  selenium_params = getOption("rgee.selenium.params"),
+                                  selenium_params = getOption(
+                                    "rgee.selenium.params"
+                                  ),
                                   clean = FALSE,
                                   reinit = FALSE,
                                   quiet = FALSE) {

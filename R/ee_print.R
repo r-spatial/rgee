@@ -357,7 +357,7 @@ ee_create_table <- function(x, max_display) {
   sa <- (space - nchar(x)) / 2
 
   count <- 1
-  for (z in 1:length(x)) {
+  for (z in seq_len(length(x))) {
     if (sa[z] %% 2 == 0) final_space <- rep(sa[z], 2)
     if (sa[z] %% 2 != 0) final_space <- c(floor(sa[z]), ceiling(sa[z]))
     x_spaced[count] <- sprintf(
