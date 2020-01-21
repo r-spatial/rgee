@@ -20,11 +20,11 @@ knitr::opts_chunk$set(
 import ee
 ```
 
-`rgee` works like the lastest version of [Earth Engine API](https://pypi.org/project/earthengine-api/) in all the aspects, with the exception of **three** particular cases. In this article, we detail each of them.
+`rgee` is extremedly similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) in all the aspects, with the exception of **three** particular cases. Each of these are explained in-depth below.
 
 ### 1) The **map** message error:
 
-`rgee` may show an error message when perfectly valid requests have been made. This mishap just happening when it is used the **map** method in Earth Engine objects and under two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
+`rgee` may show an error message when valid requests are made. This mishap just will happen when the **map** method will use in these two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
 
 ```{r}
 library(rgee)
@@ -33,7 +33,7 @@ mylist = ee$List$sequence(10)
 mylist$map(function(x) ee$Number(x)$add(1))
 ```
 
-The code before is perfectly valid!. This odd error could easily solved adding the function **ee_pyfunc** to the code. Let's see:
+The code before is perfectly valid!. This error will be solved by adding the function **ee_pyfunc** to the code. Let's see:
 
 ```{r}
 library(rgee)
@@ -49,7 +49,7 @@ mynewlist$getInfo()
 
 ### 2) Do not forget the **L**
 
-By default, when you define a number in R it will produce a **double precision** value. This do not happen in Python that by default will create a **int** value.
+By default, when you define a number in R it will produce a **double precision** value. This does not happen in Python because, by default it will create a **int** value.
 
 **Python**
 ```{python}
@@ -61,7 +61,7 @@ type(1)
 class(1)
 ```
 
-So, why this is a big deal?. Let's me show you with an example:
+But, why is this a big deal?. Let’s explain with an example:
 
 **Python**
 ```{python}
@@ -75,7 +75,7 @@ and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
 and_bitwise$getInfo()
 ```
 
-Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integer numbers in R is quite simple, you would need to add the letter **L** at the end of the specific number or employ the function `as.integer`. Please always pay attention to these minutiae to develop clean `rgee` scripts. The **correct code** in R would be:
+Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integers in R is quite simple, you just need to add the letter **L** to the end of the specific number or just employ the function `as.integer`. Please always pay attention to these minutiae to develop clean `rgee` scripts. The **correct code** in R would be:
 
 ```{r}
 and_bitwise = ee$Number(32L)$bitwiseAnd(100L)
@@ -84,7 +84,7 @@ and_bitwise$getInfo()
 
 ### 3) Be careful with **ee$Date**
 
-This problem also appears because of the differences in the design of the R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremadely insuffient to deal with [Google Earth Engine timestamp](https://developers.google.com/earth-engine/glossary) which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+This problem also appears due to differences between the design of R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremely insufficient to deal with [Google Earth Engine timestamp](https://developers.google.com/earth-engine/glossary) which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **Python**
 ```{python}
@@ -98,7 +98,7 @@ my_date <- ee$Date('1990-01-01')
 my_date$getInfo()
 ```
 
-The problems with `ee$Date` just appear in the last mile (Python to R, `reticulate`), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results returned. For example:
+The problems with `ee$Date` just appear in the last mile (Python to R or vice-versa, `reticulate`), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results returned. For example:
 
 ```{r}
 # Era5 dataset
@@ -112,3 +112,5 @@ jstimestamp <- era_img$get('system:time_start')$getInfo()
 # Passing timestamp to ISO string
 as.POSIXct(jstimestamp/1000, origin="1970-01-01", tz="GMT")
 ```
+
+

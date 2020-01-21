@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width = 15%/>
+  <img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width = 15%/>
 
 # Google Earth Engine for R
 
@@ -23,13 +23,12 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The `rgee` is a package inspired by the [TensorFlow R
-package structure](https://github.com/rstudio/tensorflow/).
+Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The `rgee` package structure has been inspired by the [TensorFlow R
+package](https://github.com/rstudio/tensorflow/).
 
 ## What is Google Earth Engine?
 
-[Google Earth Engine](https://earthengine.google.com/) is a cloud-based
-platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap starting to provide support to R\!. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
+[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R\!**. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
 
 **Earth Engine Javascript API**:
 
@@ -87,7 +86,7 @@ the system. The static libraries will automatically downloaded from
 [rwinlib](https://github.com/rwinlib/).
 
 ### Linux
-To install rgee, you need to have the following system libraries that rgee depends on:
+To install rgee, you need to have the following system libraries:
 
     sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
     sudo apt-get update
@@ -105,8 +104,9 @@ Use [Homebrew](https://brew.sh/) to install the following system libraries:
     brew install curl
     brew install sqlite
 
-### Docker image (Recommended way to use rgee)
-
+### Docker image (Recommended way to use rgee for the moment)
+    
+    docker pull csaybar/rgee
     docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
 
 After that, in your preferred browser, run:
@@ -119,28 +119,28 @@ After that, in your preferred browser, run:
     your friend :).
   - Full access to the Earth Engine API with the prefix
     [**ee$…:**](https://developers.google.com/earth-engine/).
-  - Authenticate and Initialize Earth Engine with
-    [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html) it is a wrapper around `ee$Initialize` that offers multi-user
-    support.
+  - Authenticate and Initialize the Earth Engine R API with
+    [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html), you just will need to do it once by session!.
   - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does
     not require its use.
   - Wrap your R function using `ee_pyfunc` before passing them to the
     Earth Engine Web REST API. This is not compulsory, but it will help
-    reduce possible :bug:.
+    reduce possible [bugs](https://csaybar.github.io/rgee/articles/considerations.html#the-map-message-error) :bug:.
 
 ## Quick Demo
 
-### Compute the trend of night-time lights
+### Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
 
-Authenticate and Initialize Earth Engine.
+Authenticate and Initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
 ee_Initialize()
-ee_reattach() # reattach ee as a reserve word
+#ee_reattach() # reattach ee as a reserve word
 ```
 
-Create a date image (year) since 1991.
+Adds a band containing image date as years since 1991.
+
 ``` r
 createTimeBand <-function(img) {
   year <- ee$Date(img$get('system:time_start'))$get('year')$subtract(1991L)
@@ -148,8 +148,7 @@ createTimeBand <-function(img) {
 }
 ```
 
-Map the time band created from the [night-time lights
-collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS).
+Map the time band creation helper over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS).
 
 ``` r
 collection = ee$
@@ -158,8 +157,7 @@ collection = ee$
   map(createTimeBand)
 ```
 
-Compute a best-fit line over the series of values at each pixel,
-visualizing the y-intercept in green, and positive/negative slopes in red/blue respectively.
+Compute a linear fit over the series of values at each pixel, visualizing the y-intercept in green, and positive/negative slopes as red/blue.
 
 ``` r
 col_reduce <- collection$reduce(ee$Reducer$linearFit())
@@ -168,7 +166,7 @@ col_reduce <- col_reduce$addBands(
 ee_print(col_reduce)
 ```
 
-Create interactive visualizations\!
+Create a interactive visualization\! 
 
 ``` r
 ee_map(eeobject = col_reduce,
@@ -181,7 +179,7 @@ ee_map(eeobject = col_reduce,
 
 ### Extract precipitation values
 
-Load `sf` and authenticate and initialize Earth Engine.
+Load `sf` and authenticate and initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
@@ -190,14 +188,14 @@ ee_Initialize()
 # ee_reattach() # reattach ee as a reserve word
 ```
 
-Read the `nc` shapefile as a simple feature.
+Read the `nc` shapefile.
 
 ``` r
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
   st_transform(4326) # Transform coordinates
 ```
 
-Map each image from 2001 and extract the accumulated monthly precipitation (Pr) from the [Terraclimate
+Map each image from 2001 to extract the monthly precipitation (Pr) from the [Terraclimate
 dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE)
 
 ``` r
@@ -206,7 +204,7 @@ terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   map(ee_pyfunc(function(x) x$select("pr")))
 ```
 
-Extract values from the Terraclimate ImageCollection. `ee_extract` works
+Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
 similar to `raster::extract` you just need to define: the
 ImageCollection object (x), the geometry (y), and a function to
 summarize the values (fun).
@@ -810,29 +808,28 @@ ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
 plot(ee_nc_rain["Jan"], main = "2001 Jan Precipitation - Terraclimate", reset = FALSE)
 ```
 
-![ee\_JAN](https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png)
+![](https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png)
 
-## How does it work?
+## How does rgee work?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine process is created in R, firstly, `reticulate` transforms this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON`. Finally, the query is received by the Google Earth Engine Platform thanks to a Web REST API. The response will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine process is created in R, firstly, `reticulate` transforms this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the query (in JSON) is received by the Google Earth Engine Platform thanks to a Web REST API. The response will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
 ## Code of Conduct
 
 Please note that the `rgee` project is released with a [Contributor Code
-of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you
-agree to abide by its terms.
+of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 ## Contributing Guide
 
 👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please
-review our [Contributing Guide](CONTRIBUTING.md).
+rev ew our [Contributing Guide](CONTRIBUTING.md).
 
 ## Share the love ❤️
 
 Think **rgee** is useful? Let others discover it, by telling them in
-person, via Twitter or a blog post.
+per on, via Twitter or a blog post.
 
 Using **rgee** for a paper you are writing? Consider citing it
 
