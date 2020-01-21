@@ -11,7 +11,7 @@
 \alias{ee_manage_set_properties}
 \alias{ee_manage_delete_properties}
 \alias{ee_manage_task}
-\alias{ee_manage_cancel_all_running_taks}
+\alias{ee_manage_cancel_all_running_task}
 \title{Interface for manage the Earth Engine Asset}
 \usage{
 ee_manage_create(path_asset, asset_type = "Folder", quiet = FALSE)
@@ -32,10 +32,11 @@ ee_manage_delete_properties(path_asset, del_properties = "ALL")
 
 ee_manage_task(cache = TRUE)
 
-ee_manage_cancel_all_running_taks()
+ee_manage_cancel_all_running_task()
 }
 \arguments{
-\item{path_asset}{Character. Name of the EE asset e.g. users/user/nameofcollection.}
+\item{path_asset}{Character. Name of the EE asset e.g.
+users/user/nameofcollection.}
 
 \item{asset_type}{Character. The asset type ('Folder' or 'ImageCollection').}
 
@@ -43,7 +44,8 @@ ee_manage_cancel_all_running_taks()
 
 \item{final_path}{Character. Name of the final EE asset to copy or move.}
 
-\item{add_properties}{List. Set of parameters to established as a property of an EE object. See details.}
+\item{add_properties}{List. Set of parameters to established as a property
+of an EE object. See details.}
 
 \item{del_properties}{Character. Name of a specific property to be deleted.}
 
@@ -58,55 +60,54 @@ library(rgee)
 ee_Initialize()
 
 # Change google account to be able to reproduce
-ee_manage_create("users/datacolecfbf/rgee")
+ee_manage_create("users/EE_USER/rgee")
 
 # 1. List all the elements inside a folder or a ImageCollection
-ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee")
+ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
 
 # 2. Create a Folder or a ImageCollection
-ee_manage_create("users/datacolecfbf/rgee/rgee_folder", asset_type = "FOLDER")
-ee_manage_create("users/datacolecfbf/rgee/rgee_ic", asset_type = "ImageCollection")
-ee_manage_assetlist("users/datacolecfbf/rgee")
+ee_manage_create(
+  path_asset = "users/EE_USER/rgee/rgee_folder",
+  asset_type = "FOLDER"
+)
+ee_manage_create(
+  path_asset = "users/EE_USER/rgee/rgee_ic",
+  asset_type = "ImageCollection"
+)
+ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
 
 # 3. Shows your Earth Engine quota
-# v ee_manage_quota()
+ee_manage_quota()
 
-# 4. Estimate the size of a IMAGE, ImageCollection, Table or folder.
-ee_manage_size("users/datacolecfbf/rgee")
-
-# 5. Move a EE object to another folder
+# 4. Move a EE object to another folder
 ee_manage_move(
-  path_asset = "users/datacolecfbf/rgee/rgee_ic",
-  final_path = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+  path_asset = "users/EE_USER/rgee/rgee_ic",
+  final_path = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved"
 )
-ee_manage_assetlist("users/datacolecfbf/rgee/rgee_folder")
+ee_manage_assetlist(path_asset = "users/EE_USER/rgee/rgee_folder")
 
-# 6. Set properties to an EE object.
+# 5. Set properties to an EE object.
 ee_manage_set_properties(
-  path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
+  path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
   properties = list(message = "hello-world", language = "R")
 )
-test_ic <- ee$ImageCollection("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
+test_ic <- ee$ImageCollection("users/EE_USER/rgee/rgee_folder/rgee_ic_moved")
 test_ic$getInfo()
 
-# 7. Delete properties
+# 6. Delete properties
 ee_manage_delete_properties(
-  path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
+  path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
   property = c("message", "language")
 )
 test_ic$getInfo()
 
-# 8. Share EE objects -- Create a public dataset
-ee_manage_assets_access("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
-ee$data$getAssetAcl("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
-
-# 9. Create a report based on all tasks that is running or has finished
+# 7. Create a report based on all tasks that is running or has finished
 ee_manage_task()
 
-# 10. Cancel all the running task
+# 8. Cancel all the running task
 ee_manage_cancel_all_running_taks()
 
-# 11. Delete EE objects or folders
-ee_manage_delete("users/datacolecfbf/rgee/")
+# 9. Delete EE objects or folders
+ee_manage_delete("users/EE_USER/rgee/")
 }
 }

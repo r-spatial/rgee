@@ -24,16 +24,18 @@ of this system is admitted by rgee.}
 \item{quiet}{logical. Suppress info messages.}
 }
 \description{
-Authorize rgee to manage Earth Engine resource The \code{ee_initialize()} via web-browser asked to sign in
-to your Google account and grant permission for managing google earth engine. This function is a wrapper around
+Authorize rgee to manage Earth Engine resource The \code{ee_initialize()}
+via web-browser asked to sign in to your Google account and grant permission
+for managing google earth engine. This function is a wrapper around
 \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize()} give the possibility of authorize Google drive (googledrive)
-and Google Cloud Storage (googlecloudStorageR). By default, rgee do not need to them,
-these are just necessary for exportation and importation tasks. All the user credentials
-are save in the folder \code{~/.config/earthengine/USERS/}, if a user is not specified
-the parameters of the last session would be used.
+\code{ee_Initialize()} give the possibility of authorize Google drive
+(googledrive) and Google Cloud Storage (googlecloudStorageR). By default,
+rgee do not need to them, these are just necessary for exportation and
+importation tasks. All the user credentials are save in the folder
+\code{~/.config/earthengine/USERS/}, if a user is not specified the
+parameters of the last session would be used.
 }
 \examples{
 ee_reattach() # reattach ee as a reserve word
@@ -43,9 +45,11 @@ library(rgee)
 ee_Initialize()
 
 # Advanced init
-expr <- ee_Initialize(user_gmail = 'aybar1994@gmail.com',
-                      drive = TRUE,
-                      gcs = TRUE,
-                      checkpy = TRUE,
-                      assethome = 'users/aybar1994')
+expr <- ee_Initialize(
+  user_gmail = "aybar1994@gmail.com",
+  drive = TRUE,
+  gcs = TRUE,
+  checkpy = TRUE,
+  assethome = "users/aybar1994"
+)
 }

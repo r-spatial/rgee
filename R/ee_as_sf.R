@@ -5,8 +5,9 @@
 #' @details
 #' For exporting large spatial objects is better creates export pipelines
 #' through `ee$batch$Export$table$*` and `rgee::ee_download_*` instead of
-#' using `ee_as_sf`. See \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-#' documentation for details.
+#' using `ee_as_sf`. See
+#' \href{https://developers.google.com/earth-engine/client_server}{Client
+#' vs Server} documentation for details.
 #' @return An sf class object, see Details.
 #' @examples
 #' library(rgee)

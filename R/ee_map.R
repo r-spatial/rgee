@@ -2,45 +2,59 @@
 #'
 #' Create interactive visualizations of spatial EE objects
 #' (Geometry, Image, Feature, FeatureCollection or ImageCollection)
-#' through \href{mapview}{mapview}.
+#' through \code{\link[mapview]{mapview}}.
 #'
 #' @param eeobject An EE spatial object.
-#' @param vizparams A list that contains the visualization parameters. See details.
-#' @param center The longitude and latitude of the map center. If it is not defined,
-#' ee_map will try to estimate the centroid of the spatial EE object.
+#' @param vizparams A list that contains the visualization parameters. See
+#' details.
+#' @param center The longitude and latitude of the map center. If it is not
+#' defined, ee_map will try to estimate the centroid of the spatial EE object.
 #' @param  zoom_start zoom level.
-#' @param objname character vector. Name of the map, or maps in case that the EE object
-#' be an ImageCollection.
+#' @param objname character vector. Name of the map, or maps in case that the
+#' EE object be an ImageCollection.
 #' @param quiet logical; suppress info messages.
 #' @param ... Ignored.
 #' @details
-#' `ee_map` takes advantage of the ee$Image()$getMapId python function for fetch and return
-#' a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
-#' visualization effects, it will depend on the type of spatial EE object . For neither Image or
-#' ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
-#' The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
+#' `ee_map` takes advantage of the ee$Image()$getMapId python function for
+#' fetch and return a mapid and token that is suitable for use in a
+#' \code{\link[mapview]{mapview}}. To achieve desirable visualization
+#' effects, it will depend on the type of spatial EE object . For neither
+#' Image or ImageCollection, you can provide visualization parameters to
+#' ee_map by the parameter vizparams. The
+#' \href{https://developers.google.com/earth-engine/image_visualization}{
+#' parameters} available are:
 #'
 #' \tabular{lll}{
-#' \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
-#' \strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
-#' \strong{min}       \tab  Value(s) to map to 0                                                        \tab  number or list of three numbers, one for each band \cr
-#' \strong{max}       \tab  Value(s) to map to 1                                                      \tab  number or list of three numbers, one for each band \cr
-#' \strong{gain}      \tab  Value(s) by which to multiply each pixel value                              \tab  number or list of three numbers, one for each band \cr
-#' \strong{bias}      \tab  Value(s) to add to each Digital Number (DN) value                           \tab  number or list of three numbers, one for each band \cr
-#' \strong{gamma}     \tab  Gamma correction factor(s)                                                  \tab  number or list of three numbers, one for each band \cr
-#' \strong{palette}  \tab  List of CSS-style color strings (single-band images only)                   \tab  comma-separated list of hex strings                \cr
-#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number                                             \cr
+#' \strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
+#' \strong{bands}    \tab  Comma-delimited list of three band names to be
+#' mapped to RGB     \tab  list \cr
+#' \strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{bias}     \tab  Value(s) to add to each Digital Number (DN)
+#' value \tab number or list of three numbers, one for each band \cr
+#' \strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
+#' three numbers, one for each band \cr
+#' \strong{palette}  \tab  List of CSS-style color strings
+#' (single-band images only) \tab  comma-separated list of hex strings \cr
+#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent
+#' and 1.0 is fully opaque) \tab  number \cr
 #' }
 #'
-#' If you add an Image or ImageCollection to the map without any additional parameters,
-#' by default `ee_map` assigns the first three bands to red, green and blue, respectively.
-#' The default stretch is based on the min-max range.  For Geometry, Feature or
-#' FeatureCollection. The available vizparams are:
+#' If you add an Image or ImageCollection to the map without any additional
+#' parameters, by default `ee_map` assigns the first three bands to red,
+#' green and blue, respectively. The default stretch is based on the min-max
+#' range.  For Geometry, Feature or FeatureCollection. The available
+#' vizparams are:
 #' \itemize{
-#'  \item \strong{color}: A hex string in the format RRGGBB specifying the color to use for drawing the features.
-#'  By default 000000.
+#'  \item \strong{color}: A hex string in the format RRGGBB specifying the
+#'  color to use for drawing the features. By default 000000.
 #'  \item \strong{pointRadius}: The radius of the point markers. By default 3.
-#'  \item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
+#'  \item \strong{strokeWidth}: The width of lines and polygon borders. By
+#'  default 3.
 #' }
 #' @examples
 #'
@@ -58,8 +72,10 @@
 #' m1
 #'
 #' # Case: Feature
-#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-#' m2 <- ee_map(eeobject = ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
+#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
+#'   first()
+#' m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
+#'              objname = "Feature-Arequipa")
 #' m2 + m1
 #'
 #' # Case: FeatureCollection
@@ -95,7 +111,6 @@
 #'   zoom_start = 10
 #' )
 #' m5
-#'
 #' @importFrom mapview mapview
 #' @importFrom leaflet addTiles setView
 #' @importFrom sf st_polygon st_centroid st_coordinates
@@ -148,7 +163,6 @@ ee_map.ee.geometry.Geometry <- function(eeobject,
       )
     }
   }
-
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
@@ -231,12 +245,12 @@ ee_map.ee.featurecollection.FeatureCollection <- function(eeobject,
     center <- ee_py_to_r(eeobject$geometry()$centroid()$getInfo()$coordinates)
     if (!quiet) {
       cat(
-        " center is missing, the centroid of this EE FeatureCollection is used: \n",
+        "center is missing, the centroid of this",
+        "EE FeatureCollection is used: \n",
         "center: ", paste(center, collapse = " "), "\n"
       )
     }
   }
-
   ee_match_geom_geoviz(names(vizparams))
   vizparams <- ee_geom_exist_color(vizparams)
 
@@ -281,7 +295,7 @@ ee_map.ee.image.Image <- function(eeobject,
       st_polygon() %>%
       st_centroid() %>%
       st_coordinates() %>%
-      ee_py_to_r
+      ee_py_to_r()
     if (!quiet) {
       cat(
         " center is missing, the centroid of this EE Image object is used: \n",
@@ -289,7 +303,6 @@ ee_map.ee.image.Image <- function(eeobject,
       )
     }
   }
-
   ee_match_img_geoviz(names(vizparams))
 
   tile <- ee_py_to_r(map_py$ee_map_py(eeobject, vizparams))
@@ -335,10 +348,11 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
       st_polygon() %>%
       st_centroid() %>%
       st_coordinates() %>%
-      ee_py_to_r
+      ee_py_to_r()
     if (!quiet) {
       cat(
-        " center is missing, the centroid of this EE ImageCollection is used: \n",
+        " center is missing, the centroid of this",
+        "EE ImageCollection is used: \n",
         "center: ", paste(center, collapse = " "), "\n"
       )
     }
@@ -349,14 +363,16 @@ ee_map.ee.imagecollection.ImageCollection <- function(eeobject,
   ee_size <- eeobject$size()$getInfo()
   if (ee_size > max_nimage) ee_size <- max_nimage
   if (length(objname) == 1L) objname <- sprintf("%s_%02d", objname, 1:ee_size)
-  if (length(objname) != ee_size) stop("The length of ee$ImageCollection and 'objname' are different")
+  if (length(objname) != ee_size) {
+    stop("The length of ee$ImageCollection and 'objname' are different")
+  }
 
   eeobject_list <- eeobject$toList(ee_size) # collection to list
 
   m <- mapview()
   tokens <- rep(NA, ee_size)
   for (x in 1:ee_size) {
-    eeobj <- ee$Image(eeobject_list$get(x - 1)) # index init - R(0) vs Python(1)
+    eeobj <- ee$Image(eeobject_list$get(x - 1)) # index init-R(0) vs Python(1)
     tile <- py_to_r(map_py$ee_map_py(eeobj, vizparams))
     tokens[x] <- tile
     m@map <- m@map %>%
@@ -381,7 +397,10 @@ ee_geom_vizparams <- function() {
 #' @param x numeric vector; list names.
 #' @noRd
 ee_match_img_geoviz <- function(x) {
-  band_names <- c("bands", "min", "max", "gain", "bias", "gamma", "palette", "opacity", "format")
+  band_names <- c(
+    "bands", "min", "max", "gain", "bias",
+    "gamma", "palette", "opacity", "format"
+  )
   if (!all(x %in% band_names)) {
     stop("vizparams has not been setting correctly")
   }
@@ -425,7 +444,9 @@ if (!isGeneric("+")) {
 }
 #' mapview + mapview; adds data from the second map to the first
 #'
-#' @author Adapted from \href{https://github.com/r-spatial/mapview/blob/95050618a4eab75c73fea6e50a6aa31dcd152f14/R/plus.R}{tim-salabim code}.
+#' @author Adapted from
+#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
+#' tim-salabim code}.
 #' @param e1 a mapview map to which e2 should be added.
 #' @param e2 a mapview map from which the objects should be added to e1.
 #' @examples
@@ -456,7 +477,7 @@ setMethod(
   function(e1, e2) {
     e2_token <- e2@object$tokens
     e2_name <- e2@object$names
-    for (x in 1:length(e2_name)) {
+    for (x in seq_len(length(e2_name))) {
       e1@map <- e1@map %>%
         addTiles(group = e2_name[x], urlTemplate = e2_token[x]) %>%
         ee_mapViewLayersControl(names = e2_name[x])
@@ -471,7 +492,7 @@ setMethod(
 create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m <- mapview()
   m@map <- m@map %>%
-    addTiles(urlTemplate = tile, group = objname,layerId = '0') %>%
+    addTiles(urlTemplate = tile, group = objname, layerId = "0") %>%
     setView(center[1], center[2], zoom = zoom_start) %>%
     ee_mapViewLayersControl(names = c(objname))
 

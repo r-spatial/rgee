@@ -18,8 +18,9 @@ Convert an EE table in a sf object
 \details{
 For exporting large spatial objects is better creates export pipelines
 through \code{ee$batch$Export$table$*} and \code{rgee::ee_download_*} instead of
-using \code{ee_as_sf}. See \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-documentation for details.
+using \code{ee_as_sf}. See
+\href{https://developers.google.com/earth-engine/client_server}{Client
+vs Server} documentation for details.
 }
 \examples{
 library(rgee)

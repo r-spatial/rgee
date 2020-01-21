@@ -56,10 +56,10 @@ ee_search_startdate <- function(ee_dataset, stardate) {
   ee_start_date <- ee_dataset$start_date %>%
     regmatches(m) %>%
     lapply(fix_date)
-  m <-  do.call(c, m)
+  m <- do.call(c, m)
   stardate <- as.Date(stardate)
-  ee_dataset_q = ee_dataset[which(ee_start_date > stardate), ]
-  rownames(ee_dataset_q) = NULL
+  ee_dataset_q <- ee_dataset[which(ee_start_date > stardate), ]
+  rownames(ee_dataset_q) <- NULL
   return(ee_dataset_q)
 }
 
@@ -72,19 +72,19 @@ ee_search_enddate <- function(ee_dataset, enddate = Sys.Date()) {
     lapply(fix_date)
   m <- do.call(c, m)
   enddate <- as.Date(enddate)
-  ee_dataset_q = ee_dataset[which(ee_end_date < enddate), ]
-  rownames(ee_dataset_q) = NULL
+  ee_dataset_q <- ee_dataset[which(ee_end_date < enddate), ]
+  rownames(ee_dataset_q) <- NULL
   return(ee_dataset_q)
 }
 
 #' @name ee_search-tools
 #' @export
 ee_search_type <- function(ee_dataset, type) {
-  ee_dataset_type = tolower(ee_dataset$type)
-  type = tolower(type)
+  ee_dataset_type <- tolower(ee_dataset$type)
+  type <- tolower(type)
   if (type %in% unique(ee_dataset_type)) {
-    ee_dataset_q = ee_dataset[ee_dataset_type %in% type, ]
-    rownames(ee_dataset_q) = NULL
+    ee_dataset_q <- ee_dataset[ee_dataset_type %in% type, ]
+    rownames(ee_dataset_q) <- NULL
     return(ee_dataset_q)
   } else {
     stop("type argument is not valid")
@@ -95,8 +95,8 @@ ee_search_type <- function(ee_dataset, type) {
 #' @export
 ee_search_provider <- function(ee_dataset, provider) {
   if (provider %in% unique(ee_dataset$provider)) {
-    ee_dataset_q = ee_dataset[ee_dataset$provider %in% provider, ]
-    rownames(ee_dataset_q) = NULL
+    ee_dataset_q <- ee_dataset[ee_dataset$provider %in% provider, ]
+    rownames(ee_dataset_q) <- NULL
     return(ee_dataset_q)
   } else {
     stop("provider argument is not valid")
@@ -121,8 +121,8 @@ ee_search_tags <- function(ee_dataset, ..., logical_operator = "OR") {
   } else {
     stop("logical_operator argument is not valid")
   }
-  ee_dataset_q = ee_dataset[cond, ]
-  rownames(ee_dataset_q) = NULL
+  ee_dataset_q <- ee_dataset[cond, ]
+  rownames(ee_dataset_q) <- NULL
   return(ee_dataset_q)
 }
 
@@ -138,8 +138,8 @@ ee_search_title <- function(ee_dataset, ..., logical_operator = "OR") {
   } else {
     stop("logical_operator argument is not valid")
   }
-  ee_dataset_q = ee_dataset[cond, ]
-  rownames(ee_dataset_q) = NULL
+  ee_dataset_q <- ee_dataset[cond, ]
+  rownames(ee_dataset_q) <- NULL
   return(ee_dataset_q)
 }
 
@@ -153,16 +153,16 @@ ee_search_tagstitle <- function(ee_dataset, ..., logical_operator = "OR") {
   if (logical_operator == "OR") {
     cond_1 <- mapply(function(x) grepl(x, ee_title), tags) %>% apply(1, any)
     cond_2 <- mapply(function(x) grepl(x, ee_tags), tags) %>% apply(1, any)
-    cond_3 <- mapply(any, cond_1,cond_2)
+    cond_3 <- mapply(any, cond_1, cond_2)
   } else if (logical_operator == "AND") {
     cond_1 <- mapply(function(x) grepl(x, ee_title), tags) %>% apply(1, all)
     cond_2 <- mapply(function(x) grepl(x, ee_tags), tags) %>% apply(1, all)
-    cond_3 <- mapply(any, cond_1,cond_2)
+    cond_3 <- mapply(any, cond_1, cond_2)
   } else {
     stop("logical_operator argument is not valid")
   }
-  ee_dataset_q = ee_dataset[cond_3, ]
-  rownames(ee_dataset_q) = NULL
+  ee_dataset_q <- ee_dataset[cond_3, ]
+  rownames(ee_dataset_q) <- NULL
   return(ee_dataset_q)
 }
 

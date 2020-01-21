@@ -23,10 +23,11 @@ ee_check_credentials()
 \item{quiet}{logical. Suppress info message}
 }
 \description{
-R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials
+R functions for checking sanity of Python Selenium Chromedriver, Third-Party
+Python packages and credentials
 }
 \examples{
 library(rgee)
-#use_virtualenv("rgee")
+# use_virtualenv("rgee")
 ee_check()
 }

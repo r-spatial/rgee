@@ -65,19 +65,27 @@ Python packages. rgee only is compatible with Python version 3.5 >=.
 \examples{
 \dontrun{
 library(rgee)
+library(reticulate)
 
 # Recommended way to use rgee
 ## 1. Create a virtualenv
-#virtualenv_remove("rgee")
-#virtualenv_create("rgee", python = "python3.7")
+# virtualenv_remove("rgee")
+# virtualenv_create("rgee", python = "python3.7")
 use_virtualenv("rgee")
 # rstudioapi::restartSession() # Restart R
 
 ## 2. Check dependencies
+# Full checking dependencies
 ee_check()
-ee_install_rgee_python_packages() # Install rgee python packages
-ee_install_drivers() # Install selenium drivers (see ee_upload)
-ee_Initialize(drive = TRUE, gcs = TRUE) # Install GCS and DRIVE credentials (optional)
+
+# Install rgee Python packages
+ee_install_rgee_python_packages()
+
+# Install selenium drivers (see ee_upload)
+ee_install_drivers()
+
+# Install GCS and DRIVE credentials (optional)
+ee_Initialize(drive = TRUE, gcs = TRUE)
 ee_check()
 }
 }

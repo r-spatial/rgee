@@ -37,16 +37,23 @@
 #'
 #' # Recommended way to use rgee
 #' ## 1. Create a virtualenv
-#' #virtualenv_remove("rgee")
-#' #virtualenv_create("rgee", python = "python3.7")
+#' # virtualenv_remove("rgee")
+#' # virtualenv_create("rgee", python = "python3.7")
 #' use_virtualenv("rgee")
 #' # rstudioapi::restartSession() # Restart R
 #'
 #' ## 2. Check dependencies
+#' # Full checking dependencies
 #' ee_check()
-#' ee_install_rgee_python_packages() # Install rgee python packages
-#' ee_install_drivers() # Install selenium drivers (see ee_upload)
-#' ee_Initialize(drive = TRUE, gcs = TRUE) # Install GCS and DRIVE credentials (optional)
+#'
+#' # Install rgee Python packages
+#' ee_install_rgee_python_packages()
+#'
+#' # Install selenium drivers (see ee_upload)
+#' ee_install_drivers()
+#'
+#' # Install GCS and DRIVE credentials (optional)
+#' ee_Initialize(drive = TRUE, gcs = TRUE)
 #' ee_check()
 #' }
 #' @export
@@ -78,19 +85,34 @@ ee_install_drivers <- function(GoogleChromeVersion) {
   chromedriver_version <- ee_check_utils$download_chromedriver(
     directory = directory,
     operating_system = os_type,
-    version = substr(as.character(GoogleChromeVersion),1,2)
+    version = substr(as.character(GoogleChromeVersion), 1, 2)
   )
-  cat("Selenium ChromeDriver v", ee_py_to_r(chromedriver_version), "saved in", directory)
+  cat(
+    "Selenium ChromeDriver v",
+    ee_py_to_r(chromedriver_version),
+    "saved in",
+    directory
+  )
   return(invisible(TRUE))
 }
 
 #' @rdname ee_install-tools
 #' @export
-ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "conda"),
+ee_install_rgee_python_packages <- function(method = c(
+                                              "auto",
+                                              "virtualenv",
+                                              "conda"
+                                            ),
                                             conda = "auto",
                                             ee_version = "0.1.210",
                                             envname = NULL,
-                                            extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt", "oauth2client"),
+                                            extra_packages = c(
+                                              "selenium",
+                                              "bs4",
+                                              "pysmartDL",
+                                              "requests_toolbelt",
+                                              "oauth2client"
+                                            ),
                                             restart_session = TRUE,
                                             conda_python_version = "3.6",
                                             quiet = FALSE,
@@ -108,7 +130,7 @@ ee_install_rgee_python_packages <- function(method = c("auto", "virtualenv", "co
 
   method <- match.arg(method)
   extra_packages <- unique(extra_packages)
-  if (ee_version == 'latest') {
+  if (ee_version == "latest") {
     ee_version <- "earthengine-api"
   } else {
     ee_version <- paste0("earthengine-api==", ee_version)
@@ -143,7 +165,9 @@ ee_remove_driver <- function(quiet = FALSE) {
   gecko_driver_win <- sprintf("%s/chromedriver.exe", ee_path)
   if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
   if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
-  if (!quiet) cat(sprintf("GoogleDrive driver in %s has been removed.", ee_path))
+  if (!quiet) {
+    cat(sprintf("GoogleDrive driver in %s has been removed.", ee_path))
+  }
   invisible(TRUE)
 }
 
@@ -152,12 +176,21 @@ ee_remove_driver <- function(quiet = FALSE) {
 ee_remove_credentials <- function(user, quiet = FALSE) {
   ee_path <- path.expand("~/.config/earthengine/")
   ee_credentials <- sprintf("%scredentials", ee_path)
-  drive_credentials <- list.files(ee_path, "@gmail.com", full.names = TRUE)[1]
-  gcs_credentials <- list.files(ee_path, "GCS_AUTH_FILE.json", full.names = TRUE)[1]
+  drive_credentials <- list.files(
+    path = ee_path,
+    pattern = "@gmail.com",
+    full.names = TRUE
+  )[1]
+  gcs_credentials <- list.files(
+    path = ee_path,
+    pattern = "GCS_AUTH_FILE.json",
+    full.names = TRUE
+  )[1]
   unlink(paste0(ee_path, user), recursive = TRUE)
   credentials_total <- c(gcs_credentials, drive_credentials, ee_credentials)
   unlink(credentials_total)
-  if (!quiet) cat(sprintf("Credentials in %s has been removed.", paste0(ee_path, user)))
+  if (!quiet) {
+    cat(sprintf("Credentials in %s has been removed.", paste0(ee_path, user)))
+  }
   invisible(TRUE)
 }
-

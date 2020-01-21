@@ -7,9 +7,11 @@
 ee_monitoring(task, eeTaskList = FALSE)
 }
 \arguments{
-\item{task}{List generated after finished correctly a EE task, if it is missing the last one will be taken.}
+\item{task}{List generated after finished correctly a EE task, if it is
+missing the last one will be taken.}
 
-\item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will listing initially.}
+\item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will
+listing initially.}
 }
 \description{
 Monitoring Earth Engine task progress

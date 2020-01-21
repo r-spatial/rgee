@@ -12,9 +12,11 @@ ee_download_gcs(task, filename, overwrite = FALSE,
 
 \item{filename}{Output filename.}
 
-\item{overwrite}{A boolean indicating whether "filename" should be overwritten.}
+\item{overwrite}{A boolean indicating whether "filename" should
+be overwritten.}
 
-\item{GCS_AUTH_FILE}{Authentication json file you have downloaded from your Google Cloud Project}
+\item{GCS_AUTH_FILE}{Authentication json file you have downloaded from
+your Google Cloud Project}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -22,12 +24,14 @@ ee_download_gcs(task, filename, overwrite = FALSE,
 Move results of an EE task saved in Google Cloud Storage to Hard disk.
 }
 \details{
-The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud Project JSON file into
-\code{ee_get_earthengine_path()} with the name GCS_AUTH_FILE.json. It is necessary in order to
-attain that rgee can read the credentials automatically.
+The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud
+Project JSON file into \code{ee_get_earthengine_path()} with the name
+GCS_AUTH_FILE.json. It is necessary in order to attain that rgee can
+read the credentials automatically.
 
-The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
-the file into google cloud storage are obtained from ee$batch$Export$*$toCloudStorage(...)$start()$status().
+The task argument needs "COMPLETED" task state to work, since the parameters
+necessaries to locate the file into google cloud storage are obtained from
+ee$batch$Export$*$toCloudStorage(...)$start()$status().
 }
 \examples{
 \dontrun{
@@ -85,7 +89,10 @@ img <- ee_download_gcs(task_img)
 plot(img)
 
 # Download a EE FeatureCollection
-amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
+amk_fc <- ee$FeatureCollection(
+  list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
+)
+
 task_vector <- ee$batch$Export$table$toCloudStorage(
   collection = amk_fc,
   bucket = "bag_csaybar",

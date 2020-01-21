@@ -1,14 +1,15 @@
 #' Convenience functions for working with spatial objects and leaflet maps
 #' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
-ee_getCallMethods = function(map) {
+ee_getCallMethods <- function(map) {
   sapply(map$x$calls, "[[", "method")
 }
 
 #' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
 ee_getLayerControlEntriesFromMap <- function(map) {
-  grep("addLayersControl", ee_getCallMethods(map), fixed = TRUE, useBytes = TRUE)
+  grep(pattern = "addLayersControl", x = ee_getCallMethods(map), fixed = TRUE,
+       useBytes = TRUE)
 }
 
 #' @author \href{https://github.com/tim-salabim}{tim-salabim}
@@ -22,9 +23,8 @@ ee_getCallEntryFromMap <- function(map, call) {
 #' @importFrom leaflet addLayersControl
 #' @importFrom mapview mapviewGetOption
 #' @noRd
-ee_mapViewLayersControl <- function (map, map.types, names, native.crs = FALSE)
-{
-  ind = ee_getCallEntryFromMap(map, call = "addLayersControl")
+ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
+  ind <- ee_getCallEntryFromMap(map, call = "addLayersControl")
   if (!length(ind)) {
     bgm <- map.types
   }
@@ -32,13 +32,19 @@ ee_mapViewLayersControl <- function (map, map.types, names, native.crs = FALSE)
     bgm <- map$x$calls[[ind[1]]]$args[[1]]
   }
   if (!native.crs) {
-    m <- addLayersControl(map = map, position = mapviewGetOption("layers.control.pos"),
-                          baseGroups = bgm, overlayGroups = c(ee_getLayerNamesFromMap(map),
-                                                                       names))
+    m <- addLayersControl(
+      map = map, position = mapviewGetOption("layers.control.pos"),
+      baseGroups = bgm, overlayGroups = c(
+        ee_getLayerNamesFromMap(map),
+        names
+      )
+    )
   }
   else {
-    m <- addLayersControl(map = map, position = mapviewGetOption("layers.control.pos"),
-                          overlayGroups = c(ee_getLayerNamesFromMap(map), names))
+    m <- addLayersControl(
+      map = map, position = mapviewGetOption("layers.control.pos"),
+      overlayGroups = c(ee_getLayerNamesFromMap(map), names)
+    )
   }
   return(m)
 }
@@ -49,9 +55,7 @@ ee_mapViewLayersControl <- function (map, map.types, names, native.crs = FALSE)
 #' @importFrom leaflet addLayersControl
 #' @noRd
 ee_getLayerNamesFromMap <- function(map) {
-
   len <- ee_getLayerControlEntriesFromMap(map)
   len <- len[length(len)]
   if (length(len) != 0) map$x$calls[[len]]$args[[2]] else NULL
-
 }

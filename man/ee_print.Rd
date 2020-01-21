@@ -38,12 +38,13 @@ FeatureCollection, Image or ImageCollection.}
 Print and return metadata about Spatial Earth Engine Objects
 }
 \details{
-For avoiding computing time extremely large and "EEException" related
-with memory consuming (\href{https://developers.google.com/earth-engine/ic_info}{See this Earth Engine Guide})
-just the first element of: ee$Image, ee$ImageCollection, ee$Feature
-and ee$FeatureCollection will be used to generated Earth Engine object properties.
-By default ee_print create a list with all the print parameters. It is due
-to avoid repeated queries to the Earth Engine Server.
+For avoiding computing time extremely large and "EEException"
+related with memory consuming (
+\href{https://developers.google.com/earth-engine/ic_info}{See this
+Earth Engine Guide}) just the first element of: ee$Image, ee$ImageCollection,
+ee$Feature and ee$FeatureCollection will be used to generated Earth Engine
+object properties. By default ee_print create a list with all the print
+parameters. It is due to avoid repeated queries to the Earth Engine Server.
 }
 \examples{
 library(rgee)

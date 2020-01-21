@@ -1,22 +1,22 @@
 context("rgee: sf_as_ee test")
 
-filename <- system.file("external/lux.shp", package="raster")
-nc = system.file("shape/nc.shp", package="sf")
+filename <- system.file("external/lux.shp", package = "raster")
+nc <- system.file("shape/nc.shp", package = "sf")
 
-test_that("sf_as_ee.character",{
+test_that("sf_as_ee.character", {
   p <- sf_as_ee(filename, check_ring_dir = TRUE)
   centroid <- p$
     geometry()$
     centroid()$
     getInfo() %>%
-    '['('coordinates') %>%
+    "["("coordinates") %>%
     py_to_r() %>%
     mean()
-  expect_equal(centroid,27.93429,tolerance=0.1)
+  expect_equal(centroid, 27.93429, tolerance = 0.1)
   expect_error(sf_as_ee(nc))
 })
 
-test_that("sf_as_ee.sf",{
+test_that("sf_as_ee.sf", {
   p <- shapefile(filename) %>%
     st_as_sf() %>%
     sf_as_ee(check_ring_dir = TRUE)
@@ -24,23 +24,21 @@ test_that("sf_as_ee.sf",{
   expect_error(sf_as_ee(st_read(nc)))
 })
 
-test_that("sf_as_ee.sfc",{
+test_that("sf_as_ee.sfc", {
   p <- shapefile(filename) %>%
     st_as_sf() %>%
     st_geometry() %>%
     sf_as_ee(check_ring_dir = TRUE)
   expect_is(p, "ee.geometry.Geometry")
-  expect_error(sf_as_ee(st_read(nc)[['geometry']]))
+  expect_error(sf_as_ee(st_read(nc)[["geometry"]]))
 })
 
-test_that("sf_as_ee.sfg",{
+test_that("sf_as_ee.sfg", {
   p <- shapefile(filename) %>%
     st_as_sf() %>%
     st_geometry() %>%
-    '[['(1) %>%
+    "[["(1) %>%
     sf_as_ee(check_ring_dir = TRUE)
 
   expect_is(p, "ee.geometry.Geometry")
 })
-
-

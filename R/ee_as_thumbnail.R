@@ -7,35 +7,48 @@
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle)
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
-#' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84 ('EPSG:4326').
+#' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84
+#' ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
 #'
-#' The argument dimensions will define the "from" & "to" parameters of the stars object.
-#' It must be a single numeric value or a two-element vector. If not defined,
-#' 256 is taken by default as the dimension of x (from 1 to 256), and y will
-#' be computed by proportional scaling. Huge images might cause plodding connections.
-#' See \href{https://developers.google.com/earth-engine/client_server#client-and-server-functions}{Client vs Server}
-#' for details.
+#' The argument dimensions will define the "from" & "to" parameters of the
+#' stars object. It must be a single numeric value or a two-element vector.
+#' If not defined, 256 is taken by default as the dimension of x
+#' (from 1 to 256), and y will be computed by proportional scaling. Huge images
+#' might cause plodding connections. See
+#' \href{https://developers.google.com/earth-engine/client_server}{Client vs
+#' Server} for details.
 #'
-#' The vizparams set up the number of bands. In `ee_as_thumbnail` just is possible export one (G) or
-#' three band (RGB) images, additional  parameters can be passed on to control color, intensity,
-#' the max(min) value, etc. See below for a more compressible list of all the parameters that admit
+#' The vizparams set up the number of bands. In `ee_as_thumbnail` just is
+#' possible export one (G) or three band (RGB) images, additional  parameters
+#' can be passed on to control color, intensity, the max(min) value, etc. See
+#' below for a more compressible list of all the parameters that admit
 #' `ee_as_thumbnail`.
 #'
 #' \tabular{lll}{
-#' \strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
-#' \strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
-#' \strong{min}       \tab  Value(s) to map to 0                                                        \tab  number or list of three numbers, one for each band \cr
-#' \strong{max}       \tab  Value(s) to map to 1                                                      \tab  number or list of three numbers, one for each band \cr
-#' \strong{gain}      \tab  Value(s) by which to multiply each pixel value                              \tab  number or list of three numbers, one for each band \cr
-#' \strong{bias}      \tab  Value(s) to add to each Digital Number (DN) value                           \tab  number or list of three numbers, one for each band \cr
-#' \strong{gamma}     \tab  Gamma correction factor(s)                                                  \tab  number or list of three numbers, one for each band \cr
-#' \strong{palette}  \tab  List of CSS-style color strings (single-band images only)                   \tab  comma-separated list of hex strings                \cr
-#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number \cr
+#' \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
+#' \strong{bands}     \tab Comma-delimited list of
+#' three band names to be mapped to RGB \tab  list \cr
+#' \strong{min}       \tab  Value(s) to map to 0 \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{max}       \tab  Value(s) to map to 1 \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{gain}      \tab  Value(s) by which to multiply each pixel value \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{bias}      \tab  Value(s) to add to each Digital Number (DN)
+#' value \tab number or list of three numbers, one for each band \cr
+#' \strong{gamma}     \tab  Gamma correction factor(s) \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{palette}  \tab  List of CSS-style color strings
+#' (single-band images only) \tab  comma-separated list of hex strings \cr
+#' \strong{opacity}   \tab  The opacity of the layer
+#' (0.0 is fully transparent and 1.0 is fully opaque) \tab
+#' number \cr
 #' }
 #'
-#' Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for getting the CRS of an Earth Engine Image.
+#' Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for
+#' getting the CRS of an Earth Engine Image.
 #' @return
 #' An \link[sf]{sf} object
 #'
@@ -67,12 +80,18 @@
 #'   st_as_sfc() %>%
 #'   st_set_crs(4326) %>%
 #'   sf_as_ee()
-#' arequipa_dem <- ee_as_thumbnail(x = image, region = region, vizparams = list(min = 0, max = 5000))
+#'
+#' arequipa_dem <- ee_as_thumbnail(x = image, region = region,
+#'                                 vizparams = list(min = 0, max = 5000))
 #' arequipa_dem <- arequipa_dem * 5000
-#' plot(arequipa_dem[nc], col = dem_palette, breaks = "equal", reset = FALSE, main = "SRTM - Arequipa")
-#' suppressWarnings(plot(nc, col = NA, border = "black", add = TRUE, lwd = 1.5))
+#'
+#' plot(x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
+#'      reset = FALSE, main = "SRTM - Arequipa")
+#' suppressWarnings(plot(x = nc, col = NA, border = "black", add = TRUE,
+#'                       lwd = 1.5))
 #' @export
-ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326, quiet = FALSE) {
+ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
+                            quiet = FALSE) {
   if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
   ee_crs <- sprintf("EPSG:%s", crs)
 
@@ -84,7 +103,8 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     dimensions <- c(256L, 256L)
     if (!quiet) {
       cat(
-        " dimensions is missing, 256x256 is taken by default as dimension of x. \n"
+        "dimensions is missing, 256x256 is taken by default as",
+        "dimension of x. \n"
       )
     }
   }
@@ -92,7 +112,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   if (max(dimensions) > 5000) {
     if (!quiet) {
       cat(sprintf(
-        " For large image (%sx%s) is preferible use rgee::ee_download_*()\n",
+        "For large image (%sx%s) is preferible use rgee::ee_download_*()\n",
         dimensions[1], dimensions[2]
       ))
     }
@@ -127,7 +147,12 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
 
   viz_params_total <- c(new_params, vizparams)
 
-  if (!quiet) cat("Getting the thumbnail image from Earth Engine ... please wait\n")
+if (!quiet) {
+  cat(
+    "Getting the thumbnail image from Earth Engine ...",
+    "please wait\n"
+  )
+}
   thumbnail_url <- x$getThumbURL(viz_params_total)
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)

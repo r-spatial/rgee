@@ -10,12 +10,14 @@ ee_download_drive(task, filename, overwrite = FALSE, st = TRUE,
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Character. Output filename. If absent, a temporary file is created.}
+\item{filename}{Character. Output filename. If absent, a temporary
+file is created.}
 
-\item{overwrite}{A boolean indicating whether "filename" should be overwritten if it exists.}
+\item{overwrite}{A boolean indicating whether "filename" should be
+overwritten if it exists.}
 
-\item{st}{logical. By default this is TRUE, returning a sf (stars) object for
-EE tables (images). If FALSE, the output filename is returned.}
+\item{st}{logical. By default this is TRUE, returning a sf (stars)
+object for EE tables (images). If FALSE, the output filename is returned.}
 
 \item{quiet}{logical. Suppress info message}
 }
@@ -26,8 +28,9 @@ An sf, stars or character depending on the retunclass argument.
 Move results of an EE task saved in Google Drive to Hard disk.
 }
 \details{
-The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
-the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().
+The task argument needs "COMPLETED" task state to work, since the
+parameters necessaries to locate the file into google drive are obtained
+from ee$batch$Export$*$toDrive(...)$start()$status().
 }
 \examples{
 \dontrun{
@@ -83,7 +86,9 @@ img <- ee_download_drive(task_img)
 plot(img)
 
 # Example 2 -- Download a Table
-amk_fc <- ee$FeatureCollection(list(ee$Feature(ee_geom, list(name = "Amarakaeri"))))
+amk_fc <- ee$FeatureCollection(
+  list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
+)
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
   folder = "Amarakaeri",

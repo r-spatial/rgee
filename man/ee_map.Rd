@@ -36,15 +36,16 @@ ee_map(eeobject, ...)
 
 \item{...}{Ignored.}
 
-\item{vizparams}{A list that contains the visualization parameters. See details.}
+\item{vizparams}{A list that contains the visualization parameters. See
+details.}
 
-\item{center}{The longitude and latitude of the map center. If it is not defined,
-ee_map will try to estimate the centroid of the spatial EE object.}
+\item{center}{The longitude and latitude of the map center. If it is not
+defined, ee_map will try to estimate the centroid of the spatial EE object.}
 
 \item{zoom_start}{zoom level.}
 
-\item{objname}{character vector. Name of the map, or maps in case that the EE object
-be an ImageCollection.}
+\item{objname}{character vector. Name of the map, or maps in case that the
+EE object be an ImageCollection.}
 
 \item{quiet}{logical; suppress info messages.}
 
@@ -53,36 +54,49 @@ be an ImageCollection.}
 \description{
 Create interactive visualizations of spatial EE objects
 (Geometry, Image, Feature, FeatureCollection or ImageCollection)
-through \href{mapview}{mapview}.
+through \code{\link[mapview]{mapview}}.
 }
 \details{
-\code{ee_map} takes advantage of the ee$Image()$getMapId python function for fetch and return
-a mapid and token that is suitable for use in a \href{mapview}{mapview}. To achieve desirable
-visualization effects, it will depend on the type of spatial EE object . For neither Image or
-ImageCollection, you can provide visualization parameters to ee_map by the parameter vizparams.
-The \href{https://developers.google.com/earth-engine/image_visualization}{parameters} available are:
+\code{ee_map} takes advantage of the ee$Image()$getMapId python function for
+fetch and return a mapid and token that is suitable for use in a
+\code{\link[mapview]{mapview}}. To achieve desirable visualization
+effects, it will depend on the type of spatial EE object . For neither
+Image or ImageCollection, you can provide visualization parameters to
+ee_map by the parameter vizparams. The
+\href{https://developers.google.com/earth-engine/image_visualization}{
+parameters} available are:
 
 \tabular{lll}{
-\strong{Parameter}\tab \strong{Description}\tab\strong{Type}\cr
-\strong{bands}     \tab  Comma-delimited list of three band names to be mapped to RGB                \tab  list                                               \cr
-\strong{min}       \tab  Value(s) to map to 0                                                        \tab  number or list of three numbers, one for each band \cr
-\strong{max}       \tab  Value(s) to map to 1                                                      \tab  number or list of three numbers, one for each band \cr
-\strong{gain}      \tab  Value(s) by which to multiply each pixel value                              \tab  number or list of three numbers, one for each band \cr
-\strong{bias}      \tab  Value(s) to add to each Digital Number (DN) value                           \tab  number or list of three numbers, one for each band \cr
-\strong{gamma}     \tab  Gamma correction factor(s)                                                  \tab  number or list of three numbers, one for each band \cr
-\strong{palette}  \tab  List of CSS-style color strings (single-band images only)                   \tab  comma-separated list of hex strings                \cr
-\strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent and 1.0 is fully opaque) \tab  number                                             \cr
+\strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
+\strong{bands}    \tab  Comma-delimited list of three band names to be
+mapped to RGB     \tab  list \cr
+\strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
+numbers, one for each band \cr
+\strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
+numbers, one for each band \cr
+\strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
+number or list of three numbers, one for each band \cr
+\strong{bias}     \tab  Value(s) to add to each Digital Number (DN)
+value \tab number or list of three numbers, one for each band \cr
+\strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
+three numbers, one for each band \cr
+\strong{palette}  \tab  List of CSS-style color strings
+(single-band images only) \tab  comma-separated list of hex strings \cr
+\strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent
+and 1.0 is fully opaque) \tab  number \cr
 }
 
-If you add an Image or ImageCollection to the map without any additional parameters,
-by default \code{ee_map} assigns the first three bands to red, green and blue, respectively.
-The default stretch is based on the min-max range.  For Geometry, Feature or
-FeatureCollection. The available vizparams are:
+If you add an Image or ImageCollection to the map without any additional
+parameters, by default \code{ee_map} assigns the first three bands to red,
+green and blue, respectively. The default stretch is based on the min-max
+range.  For Geometry, Feature or FeatureCollection. The available
+vizparams are:
 \itemize{
-\item \strong{color}: A hex string in the format RRGGBB specifying the color to use for drawing the features.
-By default 000000.
+\item \strong{color}: A hex string in the format RRGGBB specifying the
+color to use for drawing the features. By default 000000.
 \item \strong{pointRadius}: The radius of the point markers. By default 3.
-\item \strong{strokeWidth}: The width of lines and polygon borders. By default 3.
+\item \strong{strokeWidth}: The width of lines and polygon borders. By
+default 3.
 }
 }
 \examples{
@@ -101,8 +115,10 @@ m1 <- ee_map(
 m1
 
 # Case: Feature
-eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$first()
-m2 <- ee_map(eeobject = ee$Feature(eeobject_fc), objname = "Feature-Arequipa")
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
+  first()
+m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
+             objname = "Feature-Arequipa")
 m2 + m1
 
 # Case: FeatureCollection
@@ -138,5 +154,4 @@ m5 <- ee_map(
   zoom_start = 10
 )
 m5
-
 }

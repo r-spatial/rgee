@@ -36,5 +36,7 @@ m1 + m2
 
 }
 \author{
-Adapted from \href{https://github.com/r-spatial/mapview/blob/95050618a4eab75c73fea6e50a6aa31dcd152f14/R/plus.R}{tim-salabim code}.
+Adapted from
+\href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
+tim-salabim code}.
 }
