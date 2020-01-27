@@ -4,8 +4,6 @@
 \alias{ee_install-tools}
 \alias{ee_install_drivers}
 \alias{ee_install_rgee_python_packages}
-\alias{ee_remove_driver}
-\alias{ee_remove_credentials}
 \title{Interface to install non-R rgee dependencies}
 \usage{
 ee_install_drivers(GoogleChromeVersion)
@@ -15,10 +13,6 @@ ee_install_rgee_python_packages(method = c("auto", "virtualenv",
   extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt",
   "oauth2client"), restart_session = TRUE,
   conda_python_version = "3.6", quiet = FALSE, ...)
-
-ee_remove_driver(quiet = FALSE)
-
-ee_remove_credentials(user, quiet = FALSE)
 }
 \arguments{
 \item{GoogleChromeVersion}{Google Chrome version of this system.}
@@ -50,8 +44,6 @@ environment. Python 3.6 is installed by default.}
 
 \item{...}{other arguments passed to \code{\link[reticulate:conda_install]{reticulate::conda_install()}} or
 \code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
-
-\item{user}{character. User to whom credentials would remove}
 }
 \description{
 R functions to install the necessary third-party

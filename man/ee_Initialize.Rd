@@ -4,52 +4,54 @@
 \alias{ee_Initialize}
 \title{Authenticate and Initialize Earth Engine}
 \usage{
-ee_Initialize(user_gmail = NULL, drive = FALSE, gcs = FALSE,
-  assethome = NULL, checkpy = FALSE, quiet = FALSE)
+ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE,
+  quiet = FALSE)
 }
 \arguments{
-\item{user_gmail}{optional. Allows user to target a specific Google identity.}
+\item{email}{Character (optional, e.g. \code{pinkiepie@gmail.com}). The email
+name is used as a folder inside the path \code{rgee::ee_get_earthengine_path()}.
+This enable the multi-user support allowing to target a specific
+Google identity.}
 
-\item{drive}{logical. Whether TRUE the drive credential will cache
-in the system.}
+\item{drive}{Logical (optional). Whether TRUE the drive credential
+will cache in the path \code{rgee::ee_get_earthengine_path()}.}
 
 \item{gcs}{logical. Whether TRUE the Google Cloud Storage
-credential will cache in the system.}
-
-\item{assethome}{character. Home folder's name of you EE Assets.}
-
-\item{checkpy}{logical. Check if the current Python version
-of this system is admitted by rgee.}
+credential will cache in the path \code{rgee::ee_get_earthengine_path()}.}
 
 \item{quiet}{logical. Suppress info messages.}
 }
 \description{
-Authorize rgee to manage Earth Engine resource The \code{ee_initialize()}
-via web-browser asked to sign in to your Google account and grant permission
-for managing google earth engine. This function is a wrapper around
-\code{rgee::ee$Initialize()}.
+Authorize rgee to manage Earth Engine resource, Google
+Drive and Google Cloud Storage. The \code{ee_initialize()} via
+web-browser asked to sign in to your Google account and
+grant permission for managing resources. This function is
+a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize()} give the possibility of authorize Google drive
-(googledrive) and Google Cloud Storage (googlecloudStorageR). By default,
-rgee do not need to them, these are just necessary for exportation and
-importation tasks. All the user credentials are save in the folder
-\code{~/.config/earthengine/USERS/}, if a user is not specified the
-parameters of the last session would be used.
+\code{ee_Initialize(...)} can also manage Google drive and Google
+Cloud Storage resources using the R packages googledrive and
+googlecloudStorageR respectively. By default, rgee do not need to them,
+these are just necessary for exportation and importation tasks.
+All the user credentials are save inside the directory
+\code{~/.config/earthengine/}, if a user does not specified the
+the email argument all user credentials will be saved in a subdirectory
+called ndef.
 }
 \examples{
-ee_reattach() # reattach ee as a reserve word
-
 # Simple init
 library(rgee)
+# ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 # Advanced init
 expr <- ee_Initialize(
-  user_gmail = "aybar1994@gmail.com",
+  email = "aybar1994@gmail.com",
   drive = TRUE,
   gcs = TRUE,
-  checkpy = TRUE,
-  assethome = "users/aybar1994"
 )
+}
+\seealso{
+remove credential funtion: \cr
+\link[rgee]{ee_clean_credentials}
 }

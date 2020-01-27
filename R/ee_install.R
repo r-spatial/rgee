@@ -5,7 +5,6 @@
 #' Selenium Chromedriver and credentials
 #'
 #' @param GoogleChromeVersion Google Chrome version of this system.
-#' @param user character. User to whom credentials would remove
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
 #' default to force a specific installation method. Note that the
@@ -153,44 +152,4 @@ ee_install_rgee_python_packages <- function(method = c(
   }
 
   invisible(NULL)
-}
-
-
-
-#' @rdname ee_install-tools
-#' @export
-ee_remove_driver <- function(quiet = FALSE) {
-  ee_path <- path.expand("~/.config/earthengine/")
-  gecko_driver_linux <- sprintf("%s/chromedriver", ee_path)
-  gecko_driver_win <- sprintf("%s/chromedriver.exe", ee_path)
-  if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
-  if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
-  if (!quiet) {
-    cat(sprintf("GoogleDrive driver in %s has been removed.", ee_path))
-  }
-  invisible(TRUE)
-}
-
-#' @rdname ee_install-tools
-#' @export
-ee_remove_credentials <- function(user, quiet = FALSE) {
-  ee_path <- path.expand("~/.config/earthengine/")
-  ee_credentials <- sprintf("%scredentials", ee_path)
-  drive_credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com",
-    full.names = TRUE
-  )[1]
-  gcs_credentials <- list.files(
-    path = ee_path,
-    pattern = "GCS_AUTH_FILE.json",
-    full.names = TRUE
-  )[1]
-  unlink(paste0(ee_path, user), recursive = TRUE)
-  credentials_total <- c(gcs_credentials, drive_credentials, ee_credentials)
-  unlink(credentials_total)
-  if (!quiet) {
-    cat(sprintf("Credentials in %s has been removed.", paste0(ee_path, user)))
-  }
-  invisible(TRUE)
 }

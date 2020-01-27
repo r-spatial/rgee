@@ -17,8 +17,6 @@ ee_reattach <- function() {
   ee <<- reticulate::import("ee", delay_load = TRUE)
 }
 
-
-
 #' Convert between Python and R objects
 #' @param x A python object
 #' @export
