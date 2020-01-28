@@ -6,12 +6,10 @@ library(raster)
 library(stars)
 library(sf)
 ee <- reticulate::import("ee")
-ee_Initialize(user_gmail = 'aybar1994@gmail.com',
+ee_Initialize(email = 'aybar1994@gmail.com',
               drive = TRUE,
-              gcs = TRUE,
-              checkpy = FALSE,
-              assethome = 'users/aybar1994')
-filename <- system.file("external/lux.shp", package="raster")
+              gcs = TRUE)
+filename <- system.file("external/lux.shp", package = "raster")
 
 test_that("simple ee_check ",{
   expect_true(ee_check_python())

@@ -56,7 +56,7 @@
 #' username <- 'aybar1994' #change according to username.
 #' gcs_bucket <- 'bag_csaybar'
 #' ee_check_drivers()
-#' ee_Initialize(user_gmail = username, gcs = TRUE)
+#' ee_Initialize(email = 'aybar1994', gcs = TRUE)
 #'
 #' # Create a folder in Earth Engine Asset
 #' filename <- sprintf("users/%s/rgee_upload/", username)
@@ -78,7 +78,7 @@
 #' ## OPTIONAL: add properties
 #' ee_manage_set_properties(
 #'   path_asset = asset_geomatrix,
-#'   properties = list(message='hello-world',language = 'R'))
+#'   add_properties = list(message='hello-world',language = 'R'))
 #'
 #' # Clean EE asset and GCS
 #' ee_manage_delete(dirname(asset_geomatrix))
@@ -104,11 +104,11 @@ ee_upload.character <- function(x, ... ,
                                 clean = FALSE,
                                 reinit = FALSE,
                                 quiet = FALSE) {
-  user_gmail <- getOption("rgee.selenium.params")$user_gmail
-  if (is.null(user_gmail)) {
-    stop('ee_upload needs that "user_gmail" ',
+  email <- getOption("rgee.selenium.params")$email
+  if (is.null(email)) {
+    stop('ee_upload needs that "email" ',
          'argument be specified in ee$Initialize().',
-         "\nExample: ee_Initialize(user_gmail = 'XXXX@gmail.com')")
+         "\nExample: ee_Initialize(email = 'XXXX@gmail.com')")
   }
 
   filename <- ee_verify_filename(path_asset = filename,

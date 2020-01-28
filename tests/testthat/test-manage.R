@@ -1,8 +1,7 @@
 context("rgee: ee_manage test")
-
 message <- try(ee_manage_delete(path_asset = 'users/aybar1994/rgee/'))
 
-test_that("ee_manage_create",{
+test_that("ee_manage_create", {
   ee_manage_create(path_asset = 'users/aybar1994/rgee')
   ee_manage_create(path_asset = 'users/aybar1994/rgee/rgee_folder',
                    asset_type = 'Folder')
@@ -72,7 +71,7 @@ test_that("ee_manage_delete_properties", {
 test_that("ee_manage_task", {
   ee_manage_task(cache = TRUE)
   ee_manage_task(cache = FALSE)
-  ret <- ee_manage_cancel_all_running_taks()
+  ret <- ee_manage_cancel_all_running_task()
   expect_true(ret)
 })
 

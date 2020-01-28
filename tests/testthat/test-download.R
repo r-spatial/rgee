@@ -1,11 +1,9 @@
 context("rgee: ee_download test")
 
 ee_Initialize(
-  user_gmail = "aybar1994@gmail.com",
+  email = "aybar1994@gmail.com",
   drive = TRUE,
-  gcs = TRUE,
-  checkpy = FALSE,
-  assethome = "users/aybar1994"
+  gcs = TRUE
 )
 
 # Communal Reserve Amarakaeri - Peru
@@ -50,7 +48,6 @@ while (class(try_gd_rm) == "try-error" & count < 5) {
 }
 
 googledrive::drive_mkdir("rgee_testing")
-
 googleCloudStorageR::gcs_global_bucket("bag_csaybar")
 buckets <- googleCloudStorageR::gcs_list_objects()
 gcs_todelete <- buckets$name[grepl("^testing/.*$", buckets$name)]

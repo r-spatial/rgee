@@ -1,12 +1,13 @@
 context("rgee: ee_as_thumbnail test")
-ee_Initialize()
+
+ee_Initialize(email = 'aybar1994@gmail.com')
 # data --------------------------------------------------------------------
 dem_palette <- c(
   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
 )
 
-nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
+nc <- sf::st_read(system.file("shp/arequipa.shp", package = "rgee"))
 sheds <- ee$FeatureCollection("USGS/WBD/2017/HUC06")$
   filterBounds(ee$Geometry$Rectangle(-127.18, 19.39, -62.75, 51.29))$
   map(function(feature) {
@@ -20,9 +21,9 @@ image <- ee$Image("CGIAR/SRTM90_V4")
 test_that("ee_as_thumbnail full parameters", {
   # PNG images
   region <- nc$geometry[[1]] %>%
-    st_bbox() %>%
-    st_as_sfc() %>%
-    st_set_crs(4326) %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc() %>%
+    sf::st_set_crs(4326) %>%
     sf_as_ee()
   arequipa_dem <- ee_as_thumbnail(x = image, region = region,
                                   vizparams = list(min = 0, max = 5000))
@@ -48,9 +49,9 @@ test_that("ee_as_thumbnail min-max", {
 test_that("ee_as_thumbnail palette, min-max", {
   # PNG images
   region <- nc$geometry[[1]] %>%
-    st_bbox() %>%
-    st_as_sfc() %>%
-    st_set_crs(4326) %>%
+    sf::st_bbox() %>%
+    sf::st_as_sfc() %>%
+    sf::st_set_crs(4326) %>%
     sf_as_ee()
   arequipa_dem <- ee_as_thumbnail(
     x = image,

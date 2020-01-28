@@ -27,8 +27,8 @@
 #' \code{~/.config/earthengine/}, if a user does not specified the
 #' the email argument all user credentials will be saved in a subdirectory
 #' called ndef.
-#' @seealso remove credential funtion: \cr
-#' \link[rgee]{ee_clean_credentials}
+#' @seealso remove credential function: \cr
+#' \link[rgee]{ee_remove_credentials}
 #' @examples
 #' # Simple init
 #' library(rgee)
@@ -39,7 +39,7 @@
 #' expr <- ee_Initialize(
 #'   email = "aybar1994@gmail.com",
 #'   drive = TRUE,
-#'   gcs = TRUE,
+#'   gcs = TRUE
 #' )
 #' @export
 ee_Initialize <- function(email = NULL,
@@ -98,7 +98,7 @@ ee_Initialize <- function(email = NULL,
         "\r",
         crayon::green(cli::symbol$tick),
         crayon::blue("Google Drive credentials:"),
-        #drive_credentials,
+        # drive_credentials,
         crayon::green(" FOUND\n")
       )
     }
@@ -117,7 +117,7 @@ ee_Initialize <- function(email = NULL,
         "\r",
         crayon::green(cli::symbol$tick),
         crayon::blue("GCS credentials:"),
-        #gcs_credentials,
+        # gcs_credentials,
         crayon::green(" FOUND\n")
       )
     }
@@ -125,7 +125,7 @@ ee_Initialize <- function(email = NULL,
 
   ## rgee session file
   ee_sessioninfo(
-    user = email,
+    user = email_clean,
     drive_cre = drive_credentials,
     gcs_cre = gcs_credentials
   )
@@ -133,29 +133,34 @@ ee_Initialize <- function(email = NULL,
   options(rgee.gcs.auth = gcs_credentials)
   options(rgee.selenium.params = list(
     email = email,
-    user_password = Sys.getenv("PASSWORD_GMAIL"),
+    email_password = Sys.getenv("PASSWORD_GMAIL"),
     showpassword = FALSE,
     check_driver = FALSE
   ))
-  options(rgee.manage.setIamPolicy = list(
-    writers = email,
-    readers = email,
-    all_users_can_read = TRUE
-  ))
-
+  options(rgee.manage.setIamPolicy = list(bindings = list(
+    list(
+      role = "roles/owner",
+      members = paste0("user:", email)
+    ),
+    list(
+      role = "roles/editor",
+      members = NULL
+    ),
+    list(
+      role = "roles/viewer",
+      members = NULL
+    )
+  )))
   if (!quiet) {
     cat(
       "", crayon::green(cli::symbol$tick),
       crayon::blue("Initializing Google Earth Engine:")
     )
   }
-  tryCatch(
-    expr = ee$Initialize(),
-    error = function(e) {
-      ee_create_credentials_earthengine(email_clean)
-      ee$Initialize()
-    }
-  )
+
+  ee_create_credentials_earthengine(email_clean)
+  ee$Initialize()
+
   if (!quiet) {
     cat(
       "\r",
@@ -167,13 +172,12 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     message(text_col(
       cli::rule(
-        #center = crayon::bold("Welcome to Earth Engine <3")
+        # center = crayon::bold("Welcome to Earth Engine <3")
       )
     ))
   }
   invisible(TRUE)
 }
-
 
 #' Authorize rgee to view and manage your Earth Engine account.
 #' This is a three-step function:

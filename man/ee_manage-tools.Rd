@@ -10,6 +10,7 @@
 \alias{ee_manage_move}
 \alias{ee_manage_set_properties}
 \alias{ee_manage_delete_properties}
+\alias{ee_manage_asset_access}
 \alias{ee_manage_task}
 \alias{ee_manage_cancel_all_running_task}
 \title{Interface for manage the Earth Engine Asset}
@@ -28,31 +29,49 @@ ee_manage_move(path_asset, final_path, quiet = FALSE)
 
 ee_manage_set_properties(path_asset, add_properties)
 
-ee_manage_delete_properties(path_asset, del_properties = "ALL")
+ee_manage_delete_properties(path_asset,
+  del_properties = "ee_rmv_all_prp")
+
+ee_manage_asset_access(path_asset, editor = NULL, viewer = NULL,
+  all_users_can_read = TRUE, quiet = FALSE)
 
 ee_manage_task(cache = TRUE)
 
 ee_manage_cancel_all_running_task()
 }
 \arguments{
-\item{path_asset}{Character. Name of the EE asset e.g.
-users/user/nameofcollection.}
+\item{path_asset}{Character. Name of the EE asset (Table, Image, Folder or
+ImageCollection).}
 
-\item{asset_type}{Character. The asset type ('Folder' or 'ImageCollection').}
+\item{asset_type}{Character. The asset type to create ('Folder' or
+'ImageCollection').}
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{final_path}{Character. Name of the final EE asset to copy or move.}
+\item{final_path}{Character. Output filename (e.g users/pinkiepie_us/ic_moved)}
 
 \item{add_properties}{List. Set of parameters to established as a property
 of an EE object. See details.}
 
-\item{del_properties}{Character. Name of a specific property to be deleted.}
+\item{del_properties}{Character. Names of properties to be deleted. See
+details.}
 
-\item{cache}{Logical. TRUE save the report in the /temp directory.}
+\item{editor}{Character vector. Define editor users in the IAM Policy.}
+
+\item{viewer}{Character vector. Define viewer users in the IAM Policy.}
+
+\item{all_users_can_read}{Logical. All users can see the asset element.}
+
+\item{cache}{Logical. Whether is TRUE, the task report will be saved
+in the /temp directory and used when the function .}
 }
 \description{
 R functions for managing the Earth Engine Asset
+}
+\details{
+If the argument \code{del_properties} is 'ee_rmv_all_prp',
+\link[rgee]{ee_manage_delete_properties} will delete all
+the properties.
 }
 \examples{
 \dontrun{
@@ -76,10 +95,10 @@ ee_manage_create(
 )
 ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
 
-# 3. Shows your Earth Engine quota
+# 3. Shows Earth Engine quota
 ee_manage_quota()
 
-# 4. Move a EE object to another folder
+# 4. Move an EE object to another folder
 ee_manage_move(
   path_asset = "users/EE_USER/rgee/rgee_ic",
   final_path = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved"
@@ -89,7 +108,7 @@ ee_manage_assetlist(path_asset = "users/EE_USER/rgee/rgee_folder")
 # 5. Set properties to an EE object.
 ee_manage_set_properties(
   path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
-  properties = list(message = "hello-world", language = "R")
+  add_properties = list(message = "hello-world", language = "R")
 )
 test_ic <- ee$ImageCollection("users/EE_USER/rgee/rgee_folder/rgee_ic_moved")
 test_ic$getInfo()
@@ -105,7 +124,7 @@ test_ic$getInfo()
 ee_manage_task()
 
 # 8. Cancel all the running task
-ee_manage_cancel_all_running_taks()
+ee_manage_cancel_all_running_task()
 
 # 9. Delete EE objects or folders
 ee_manage_delete("users/EE_USER/rgee/")

@@ -48,10 +48,10 @@ ee_Initialize()
 expr <- ee_Initialize(
   email = "aybar1994@gmail.com",
   drive = TRUE,
-  gcs = TRUE,
+  gcs = TRUE
 )
 }
 \seealso{
-remove credential funtion: \cr
-\link[rgee]{ee_clean_credentials}
+remove credential function: \cr
+\link[rgee]{ee_remove_credentials}
 }

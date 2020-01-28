@@ -21,8 +21,10 @@ will be overwritten.
 }
 \examples{
 {
+\dontrun{
 ee_remove_credentials()
-ee_remove_credentials('pinkiepie')
-ee_remove_credentials('`pinkiepie@gmail.com`')
+ee_remove_credentials('pinkiepie.us')
+ee_remove_credentials('`pinkiepie.us@gmail.com`')
+}
 }
 }

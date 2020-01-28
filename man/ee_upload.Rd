@@ -103,7 +103,7 @@ library(sf)
 username <- 'aybar1994' #change according to username.
 gcs_bucket <- 'bag_csaybar'
 ee_check_drivers()
-ee_Initialize(user_gmail = username, gcs = TRUE)
+ee_Initialize(email = 'aybar1994', gcs = TRUE)
 
 # Create a folder in Earth Engine Asset
 filename <- sprintf("users/\%s/rgee_upload/", username)
@@ -125,7 +125,7 @@ ee_map(ee_geomatrix, zoom_start = 18)
 ## OPTIONAL: add properties
 ee_manage_set_properties(
   path_asset = asset_geomatrix,
-  properties = list(message='hello-world',language = 'R'))
+  add_properties = list(message='hello-world',language = 'R'))
 
 # Clean EE asset and GCS
 ee_manage_delete(dirname(asset_geomatrix))

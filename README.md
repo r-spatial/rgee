@@ -823,8 +823,7 @@ of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to a
 
 ## Contributing Guide
 
-👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please
-rev ew our [Contributing Guide](CONTRIBUTING.md).
+👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
 
 ## Share the love ❤️
 

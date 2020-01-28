@@ -39,8 +39,8 @@ ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
   if (file.exists(ee_dataset_file) & !upgrade) {
     ee_dataset <- read.csv(ee_dataset_file, stringsAsFactors = FALSE)
   } else {
-    user_samapriya <- 'https://raw.githubusercontent.com/samapriya/'
-    ee_template <- "%s/Earth-Engine-Datasets-List/master/eed-%s.csv"
+    user_samapriya <- 'https://raw.githubusercontent.com/csaybar/'
+    ee_template <- "%sEarth-Engine-Datasets-List/master/eed-%s.csv"
     ee_dataset <- suppressWarnings(
       try(
         expr = read.csv(

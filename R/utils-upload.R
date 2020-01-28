@@ -156,10 +156,10 @@ ee_upload_file_to_gcs <- function(x,
       session <- ee_selenium_functions$load_py_object(session_temp)
     } else {
       if (!quiet) {
-        cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$user_gmail))
+        cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$email))
       }
-      if (nchar(selenium_params$user_password) > 4) {
-        password <- selenium_params$user_password
+      if (nchar(selenium_params$email_password) > 4) {
+        password <- selenium_params$email_password
       } else {
         password <- getPass("GMAIL PASSWORD:")
       }
@@ -177,7 +177,7 @@ ee_upload_file_to_gcs <- function(x,
       if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
       ee_path <- path.expand("~/.config/earthengine")
       session <- ee_selenium_functions$ee_get_google_auth_session_py(
-        username = selenium_params$user_gmail,
+        username = selenium_params$email,
         password = password,
         dirname = ee_path
       )
@@ -256,7 +256,7 @@ ee_upload_file_to_gcs <- function(x,
           file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
           header = TRUE
         )[["user"]]
-        ee_Initialize(user_gmail = paste0(user, "@gmail.com"), gcs = TRUE)
+        ee_Initialize(email = user, gcs = TRUE)
       }
 
       googleCloudStorageR::gcs_global_bucket(bucket = bucket)

@@ -3,18 +3,27 @@
 #' R functions for managing the Earth Engine Asset
 #'
 #' @name ee_manage-tools
-#' @param path_asset Character. Name of the EE asset e.g.
-#' users/user/nameofcollection.
-#' @param asset_type Character. The asset type ('Folder' or 'ImageCollection').
-#' @param quiet Logical. Suppress info message.
-#' @param final_path Character. Name of the final EE asset to copy or move.
+#' @param path_asset Character. Name of the EE asset (Table, Image, Folder or
+#' ImageCollection).
+#' @param asset_type Character. The asset type to create ('Folder' or
+#' 'ImageCollection').
+#' @param final_path Character. Output filename (e.g users/pinkiepie_us/ic_moved)
 #' @param add_properties List. Set of parameters to established as a property
 #' of an EE object. See details.
-#' @param del_properties Character. Name of a specific property to be deleted.
-#' @param cache Logical. TRUE save the report in the /temp directory.
+#' @param del_properties Character. Names of properties to be deleted. See
+#' details.
+#' @param editor Character vector. Define editor users in the IAM Policy.
+#' @param viewer Character vector. Define viewer users in the IAM Policy.
+#' @param all_users_can_read Logical. All users can see the asset element.
+#' @param cache Logical. Whether is TRUE, the task report will be saved
+#' in the /temp directory and used when the function .
+#' @param quiet Logical. Suppress info message.
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv
-#'
+#' @details
+#' If the argument `del_properties` is 'ee_rmv_all_prp',
+#' \link[rgee]{ee_manage_delete_properties} will delete all
+#' the properties.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -37,10 +46,10 @@
 #' )
 #' ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
 #'
-#' # 3. Shows your Earth Engine quota
+#' # 3. Shows Earth Engine quota
 #' ee_manage_quota()
 #'
-#' # 4. Move a EE object to another folder
+#' # 4. Move an EE object to another folder
 #' ee_manage_move(
 #'   path_asset = "users/EE_USER/rgee/rgee_ic",
 #'   final_path = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved"
@@ -50,7 +59,7 @@
 #' # 5. Set properties to an EE object.
 #' ee_manage_set_properties(
 #'   path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
-#'   properties = list(message = "hello-world", language = "R")
+#'   add_properties = list(message = "hello-world", language = "R")
 #' )
 #' test_ic <- ee$ImageCollection("users/EE_USER/rgee/rgee_folder/rgee_ic_moved")
 #' test_ic$getInfo()
@@ -66,7 +75,7 @@
 #' ee_manage_task()
 #'
 #' # 8. Cancel all the running task
-#' ee_manage_cancel_all_running_taks()
+#' ee_manage_cancel_all_running_task()
 #'
 #' # 9. Delete EE objects or folders
 #' ee_manage_delete("users/EE_USER/rgee/")
@@ -77,7 +86,22 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
   if (asset_path_exist) {
     if (asset_type == "Folder") {
-      ee$data$createAsset(list(type = ee$data$ASSET_TYPE_FOLDER), path_asset)
+      new_path <- path_asset
+      repeat {
+        nested_folder <- try(
+          ee$data$createAsset(
+            list(type = ee$data$ASSET_TYPE_FOLDER),
+            new_path),silent = TRUE
+        )
+        if (class(nested_folder) == 'try-error') {
+          new_path <- dirname(new_path)
+        } else {
+          if (identical(new_path,path_asset)) {
+            break
+          }
+          new_path <- path_asset
+        }
+      }
     } else if (asset_type == "ImageCollection") {
       ee$data$createAsset(
         value = list(type = ee$data$ASSET_TYPE_IMAGE_COLL),
@@ -86,7 +110,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
     } else {
       stop("Invalid asset_type parameter")
     }
-    if (!quiet) cat("GEE asset:", path_asset, "created")
+    if (!quiet) cat("GEE asset:", path_asset, "created\n")
   }
   else {
     if (!quiet) cat("GEE asset:", path_asset, "already exists\n")
@@ -152,7 +176,8 @@ ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
 ee_manage_quota <- function() {
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_quota <- ee_source_python(oauth_func_path)
-  ID <- ee$data$getAssetRoots()[[1]]$id
+  ID <- ee$data$getAssetRoots()[[1]]$id %>%
+    ee_remove_project_chr()
   quota <- ee_py_to_r(ee_quota$quota(ID))
   total_msg <- ee_humansize(as.numeric(quota[1]))
   used_msg <- ee_humansize(as.numeric(quota[2]))
@@ -160,42 +185,6 @@ ee_manage_quota <- function() {
  Used Quota: %s", total_msg, used_msg))
   invisible(quota)
 }
-
-## DEPRECATED
-## @name ee_manage-tools
-# @export
-# ee_manage_size = function(path_asset) {
-#   if (missing(path_asset)) path_asset = ee$data$getAssetRoots()[[1]]$id %>%
-#       gsub("projects/earthengine-legacy/assets/","",.)
-#   path_asset = ee_verify_filename(path_asset,strict = TRUE)
-#   header=ee$data$getInfo(path_asset)[['type']]
-#   if (header=="ImageCollection") {
-#     ic = ee$IMAGECollection(path_asset)
-#     nelements = ic$size()$getInfo()
-#     asset_size = sum(ic$aggregate_array('system:asset_size')$getInfo())
-#   } else if (header=="FeatureCollection") {
-#     fc = ee$FeatureCollection(path_asset)
-#     nelements = fc$size()$getInfo()
-#     asset_size = fc$get('system:asset_size')$getInfo()
-#   } else if (header=="IMAGE") {
-#     img = ee$Image(path_asset)
-#     nelements = 1
-#     asset_size = img$get('system:asset_size')$getInfo()
-#   } else if (header=="Folder") {
-#     #After 0.1.17x needs add --no-use_cloud_api
-#     nelements = length(system(sprintf("earthengine ls %s", path_asset),
-#                        intern = TRUE))
-#     asset_size = system(sprintf("earthengine du %s -s", path_asset),
-#                         intern = TRUE)
-#     asset_size <- gsub("([0-9]+).*$", "\\1", asset_size) %>%
-#       as.numeric() %>%
-#       ee_humansize()
-#   }
-#   msg_01 = sprintf("- Size: %s\n", asset_size)
-#   msg_02 = sprintf("- # elements: %s\n",nelements)
-#   cat(header,":\n", msg_01, msg_02)
-#   invisible(TRUE)
-# }
 
 #' @name ee_manage-tools
 #' @export
@@ -248,7 +237,14 @@ ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
     if (!quiet) cat("Done\n")
   } else if (header %in% ee_manage_handle_names()) {
     header_finalpath <- ee$data$getInfo(final_path)[["type"]]
-    if (is.null(header_finalpath)) ee_manage_create(final_path, quiet = quiet)
+    if (is.null(header_finalpath)) {
+      if (header  %in%  ee_manage_handle_names('ImageCollection')) {
+        ee_manage_create(dirname(final_path), quiet = quiet)
+        ee_manage_create(final_path,'ImageCollection', quiet = quiet)
+      } else {
+        ee_manage_create(final_path, quiet = quiet)
+      }
+    }
     to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
       lapply("[[", "id") %>%
       unlist() %>%
@@ -291,12 +287,13 @@ ee_manage_set_properties <- function(path_asset, add_properties) {
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_delete_properties <- function(path_asset, del_properties = "ALL") {
+ee_manage_delete_properties <- function(path_asset,
+                                        del_properties = "ee_rmv_all_prp") {
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
-    if (del_properties == "ALL") {
+    if ("ee_rmv_all_prp" %in%  del_properties) {
       properties_todelete <- names(ee$data$getAsset(path_asset)$properties)
     } else {
       properties_todelete <- del_properties
@@ -310,47 +307,23 @@ ee_manage_delete_properties <- function(path_asset, del_properties = "ALL") {
   invisible(TRUE)
 }
 
-## DEPRECATED
-## @name ee_manage-tools
-## @export
-# ee_manage_assets_access <-function(path_asset,
-#                                    acl = getOption("rgee.manage.getAssetAcl"),
-#                                    quiet = FALSE) {
-#   acl_m <- acl
-#   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
-#   header <- ee$data$getInfo(path_asset)[["type"]]
-#   if (is.null(acl_m[["all_users_can_read"]])) {
-#     acl_m[["all_users_can_read"]] <- TRUE
-#   }
-#   eeasset_objects<-c("Image", "ImageCollection", "FeatureCollection", "Table")
-#   if (header %in% ee_manage_handle_names(eeasset_objects)) {
-#     acl_m <- lapply(acl_m, function(x) paste(x, collapse = '\" , \"'))
-#     df_acl <- data.frame(key = names(acl_m), value = unlist(acl_m))
-#     df_acl_p <- na.omit(df_acl[c("writers", "readers"), ])
-#     create_jsondump <- function(...) {
-#       sprintf(
-#         "{%s",
-#         paste0(
-#           sprintf('"%s": ["%s"]', ...),
-#           collapse = ", "
-#         )
-#       )
-#     }
-#     acl_m <- do.call(create_jsondump, df_acl_p) %>%
-#       paste0(
-#         sprintf(', "all_users_can_read": %s}',
-#                 tolower(acl_m[["all_users_can_read"]]))
-#       )
-#     ee$data$setAssetAcl(path_asset, acl_m)
-#     if (!quiet) cat("The ACL of", path_asset, "has been changed.\n")
-#   } else if (header %in% ee_manage_handle_names("Folder")) {
-#     list_files <- ee$data$getList(list(id = path_asset))
-#     items <- unlist(lapply(list_files, "[[", "id")) %>%
-#       ee_remove_project_chr
-#     mapply(ee_manage_assets_access, items, MoreArgs = list(acl = acl))
-#   }
-#   invisible(TRUE)
-# }
+#' @name ee_manage-tools
+#' @export
+ee_manage_asset_access <- function(path_asset,
+                                    editor = NULL,
+                                    viewer = NULL,
+                                    all_users_can_read = TRUE,
+                                    quiet = FALSE) {
+  bindings_template <- getOption('rgee.manage.setIamPolicy')
+  bindings_template$bindings[[2]]$members <- paste0('user:', editor)
+  if (isTRUE(all_users_can_read)) {
+    bindings_template$bindings[[3]]$members <- c(viewer,'allUsers')
+  } else {
+    bindings_template$bindings[[3]]$members <- paste0('user:', viewer)
+  }
+  ee$data$setIamPolicy(path_asset, bindings_template)
+  invisible(TRUE)
+}
 
 #' @name ee_manage-tools
 #' @export
@@ -359,7 +332,7 @@ ee_manage_task <- function(cache = TRUE) {
   ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp <- tempdir()
   manage_task_file <- sprintf("%s/ee_manage_task_file.csv", ee_temp)
-  if (cache) {
+  if (!isTRUE(cache)) {
     py_names <- c(
       "tid", "tstate", "tdesc", "ttype", "tcreate",
       "tdiffstart", "tdiffend", "error_message"
@@ -427,8 +400,6 @@ ee_verify_filename <- function(path_asset, strict = TRUE) {
   return(folder)
 }
 
-
-
 #' Change the unit of measurement of bytes
 #' @param x Integer. Number of bytes.
 #' @return Number of bytes in a more human-comprehensible way
@@ -444,7 +415,6 @@ ee_humansize <- function(x, suffixes = c("B", "KB", "MB", "GB", "TB", "PB")) {
   } else {
     sprintf("%s %s", sprintf("%.2f", x), suffixes[count + 1])
   }
-  invisible(TRUE)
 }
 
 

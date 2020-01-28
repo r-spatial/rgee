@@ -43,7 +43,7 @@ ee_NewList$getInfo()
 constant1 <- ee$Image(1)
 constant2 <- ee$Image(2)
 ee_ic <- ee$ImageCollection(c(constant2, constant1))
-ee_newic <- ic$map(
+ee_newic <- ee_ic$map(
   ee_pyfunc(
     function(x) ee$Image(x)$add(x)
   )

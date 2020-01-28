@@ -38,4 +38,3 @@ test_that("ee_search_tagstitle - AND",{
     ee_search_tagstitle("srtm",logical_operator = 'AND')
   expect_type(my_db$id,'character')
 })
-

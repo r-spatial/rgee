@@ -5,11 +5,9 @@ library(stars)
 library(sf)
 
 ee_Initialize(
-  user_gmail = "aybar1994@gmail.com",
+  email = "aybar1994@gmail.com",
   drive = TRUE,
-  gcs = TRUE,
-  checkpy = FALSE,
-  assethome = "users/aybar1994"
+  gcs = TRUE
 )
 
 # ee_upload with bucket -----------------------------------------------------
@@ -24,10 +22,9 @@ test_that("ee_upload - character with bucket", {
 
   ee_upload(
     x = geotiff_file,
-    filename = paste0(filename, "geomatrix17"),
+    filename = paste0(filename, "geomatrix"),
     bucket = "bag_csaybar"
   )
-
   ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
   geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
   geomatrix_stars <- ee_as_thumbnail(
