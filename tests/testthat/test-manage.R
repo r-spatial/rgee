@@ -69,8 +69,8 @@ test_that("ee_manage_delete_properties", {
 })
 
 test_that("ee_manage_task", {
-  ee_manage_task(cache = TRUE)
   ee_manage_task(cache = FALSE)
+  ee_manage_task(cache = TRUE)
   ret <- ee_manage_cancel_all_running_task()
   expect_true(ret)
 })
