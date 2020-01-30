@@ -48,7 +48,8 @@ ImageCollection).}
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{final_path}{Character. Output filename (e.g users/pinkiepie_us/ic_moved)}
+\item{final_path}{Character. Output filename
+(e.g users/pinkiepie_us/ic_moved)}
 
 \item{add_properties}{List. Set of parameters to established as a property
 of an EE object. See details.}

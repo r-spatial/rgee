@@ -39,6 +39,7 @@ library(rgee)
 library(stars)
 library(sf)
 
+ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 # Communal Reserve Amarakaeri - Peru

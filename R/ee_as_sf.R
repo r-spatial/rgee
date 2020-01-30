@@ -21,14 +21,14 @@
 #' ))
 #'
 #' blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
-#' subset <- blocks$filterBounds(roi)
+#' subset <- blocks$filterBounds(roi)$limit(10)
 #' sf_subset <- ee_as_sf(subset)
 #' cat('Object size in Mb:', as.numeric(object.size(sf_subset)/10^6))
 #' plot(sf_subset)
 #' # Define an arbitrary region in which to compute random points.
 #' region <- ee$Geometry$Rectangle(-119.224, 34.669, -99.536, 50.064)
-#' # Create 1000 random points in the region.
-#' ee_randomPoints <- ee$FeatureCollection$randomPoints(region)
+#' # Create 100 random points in the region.
+#' ee_randomPoints <- ee$FeatureCollection$randomPoints(region,100)
 #' sf_randomPoints <- ee_as_sf(ee_randomPoints)
 #' plot(sf_randomPoints)
 #' @export

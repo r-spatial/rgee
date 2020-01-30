@@ -4,6 +4,7 @@
 #'
 #' @param date R date object
 #' @examples
+#' ee_reattach()
 #' ee_Initialize()
 #' r_to_eeDate('2000-01-01')
 #' @export
@@ -20,6 +21,7 @@ r_to_eeDate <- function(date) {
 #'
 #' @param eedate EE date object (ee$Date)
 #' @examples
+#' ee_reattach()
 #' ee_Initialize()
 #' eeDate <- ee$Date('1980-01-01')
 #' eeDate_to_r(eeDate)

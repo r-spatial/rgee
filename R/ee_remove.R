@@ -20,7 +20,7 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
   ee_path <- path.expand("~/.config/earthengine")
   email_clean <- gsub("@gmail.com", "", email)
   if (email == 'not_defined') {
-    email_clean = 'ndef'
+    email_clean <- 'ndef'
   }
   path_to_delete <- sprintf("%s/%s", ee_path, email_clean)
 
@@ -34,7 +34,9 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
   unlink(list.files(ee_path, "credentials", full.names = TRUE))
   unlink(list.files(ee_path, "rgee_sessioninfo.txt", full.names = TRUE))
   if (!quiet && dir.exists(path_to_delete)) {
-    cat(sprintf("Credentials in %s has been deleted.\n", sprintf("%s/%s", ee_path, email_clean)))
+    cat(
+      sprintf("Credentials in %s has been deleted.\n",
+              sprintf("%s/%s", ee_path, email_clean)))
   }
 
   invisible(TRUE)

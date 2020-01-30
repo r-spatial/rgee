@@ -13,6 +13,7 @@ r_to_eeDate(date)
 Pass R date object and return a timestamp as a float value
 }
 \examples{
+ee_reattach()
 ee_Initialize()
 r_to_eeDate('2000-01-01')
 }

@@ -17,7 +17,7 @@
 #' @param quiet logical. Suppress info messages.
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import
-#' @import getPass getPass
+#' @importFrom getPass getPass
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
@@ -32,7 +32,7 @@
 #' @examples
 #' # Simple init
 #' library(rgee)
-#' # ee_reattach() # reattach ee as a reserve word
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
 #'
 #' # Advanced init

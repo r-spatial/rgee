@@ -7,7 +7,8 @@
 #' ImageCollection).
 #' @param asset_type Character. The asset type to create ('Folder' or
 #' 'ImageCollection').
-#' @param final_path Character. Output filename (e.g users/pinkiepie_us/ic_moved)
+#' @param final_path Character. Output filename
+#' (e.g users/pinkiepie_us/ic_moved)
 #' @param add_properties List. Set of parameters to established as a property
 #' of an EE object. See details.
 #' @param del_properties Character. Names of properties to be deleted. See

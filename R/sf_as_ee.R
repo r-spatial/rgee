@@ -36,17 +36,6 @@
 #'   st_transform(4326)
 #' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 #' ee_map(ee_x)
-#'
-#' # sfc
-#' x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry %>%
-#'   st_transform(4326)
-#' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
-#' ee_map(ee_x)
-#'
-#' # sfg
-#' x <- st_read(system.file("shape/nc.shp", package = "sf"))$geometry[[1]]
-#' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
-#' ee_map(ee_x)
 #' @export
 sf_as_ee <- function(x, check_ring_dir) UseMethod("sf_as_ee")
 

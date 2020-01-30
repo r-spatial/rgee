@@ -41,7 +41,7 @@ called ndef.
 \examples{
 # Simple init
 library(rgee)
-# ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 
 # Advanced init

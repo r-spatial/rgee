@@ -13,6 +13,7 @@ eeDate_to_r(eedate)
 Pass Earth Engine and return a R date object
 }
 \examples{
+ee_reattach()
 ee_Initialize()
 eeDate <- ee$Date('1980-01-01')
 eeDate_to_r(eeDate)

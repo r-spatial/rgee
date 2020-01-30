@@ -100,7 +100,7 @@ default 3.
 }
 }
 \examples{
-
+\donttest{
 library(rgee)
 ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
@@ -154,4 +154,5 @@ m5 <- ee_map(
   zoom_start = 10
 )
 m5
+}
 }

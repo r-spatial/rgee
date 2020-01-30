@@ -49,6 +49,7 @@
 #' be in the UTC time zone.
 #' @name ee_upload
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -56,6 +57,8 @@
 #' username <- 'aybar1994' #change according to username.
 #' gcs_bucket <- 'bag_csaybar'
 #' ee_check_drivers()
+#'
+#' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize(email = 'aybar1994', gcs = TRUE)
 #'
 #' # Create a folder in Earth Engine Asset
@@ -85,6 +88,7 @@
 #' googleCloudStorageR::gcs_global_bucket(gcs_bucket)
 #' buckets <- googleCloudStorageR::gcs_list_objects()
 #' mapply(googleCloudStorageR::gcs_delete_object, buckets$name)
+#' }
 #' @export
 ee_upload <- function(x, ...) {
   UseMethod("ee_upload")

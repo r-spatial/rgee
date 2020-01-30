@@ -57,7 +57,7 @@
 #'  default 3.
 #' }
 #' @examples
-#'
+#' \donttest{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
@@ -111,6 +111,7 @@
 #'   zoom_start = 10
 #' )
 #' m5
+#' }
 #' @importFrom mapview mapview
 #' @importFrom leaflet addTiles setView
 #' @importFrom sf st_polygon st_centroid st_coordinates
