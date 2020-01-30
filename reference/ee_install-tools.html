@@ -109,13 +109,7 @@ Selenium Chromedriver and credentials" />
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -177,11 +171,7 @@ Selenium Chromedriver and credentials</p>
   <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"0.1.210"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>extra_packages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"selenium"</span>, <span class='st'>"bs4"</span>, <span class='st'>"pysmartDL"</span>, <span class='st'>"requests_toolbelt"</span>,
   <span class='st'>"oauth2client"</span>), <span class='kw'>restart_session</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)
-
-<span class='fu'>ee_remove_driver</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>ee_remove_credentials</span>(<span class='no'>user</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,10 +226,6 @@ environment. Python 3.6 is installed by default.</p></td>
       <td><p>other arguments passed to <code><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>reticulate::conda_install()</a></code> or
 <code><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>reticulate::virtualenv_install()</a></code>.</p></td>
     </tr>
-    <tr>
-      <th>user</th>
-      <td><p>character. User to whom credentials would remove</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -250,19 +236,27 @@ Python packages. rgee only is compatible with Python version 3.5 &gt;=.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>reticulate</span>)
 
 <span class='co'># Recommended way to use rgee</span>
 <span class='co'>## 1. Create a virtualenv</span>
-<span class='co'>#virtualenv_remove("rgee")</span>
-<span class='co'>#virtualenv_create("rgee", python = "python3.7")</span>
-<span class='fu'>use_virtualenv</span>(<span class='st'>"rgee"</span>)
+<span class='co'># virtualenv_remove("rgee")</span>
+<span class='co'># virtualenv_create("rgee", python = "python3.7")</span>
+<span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/use_python.html'>use_virtualenv</a></span>(<span class='st'>"rgee"</span>)
 <span class='co'># rstudioapi::restartSession() # Restart R</span>
 
 <span class='co'>## 2. Check dependencies</span>
+<span class='co'># Full checking dependencies</span>
 <span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
-<span class='fu'>ee_install_rgee_python_packages</span>() <span class='co'># Install rgee python packages</span>
-<span class='fu'>ee_install_drivers</span>() <span class='co'># Install selenium drivers (see ee_upload)</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='co'># Install GCS and DRIVE credentials (optional)</span>
+
+<span class='co'># Install rgee Python packages</span>
+<span class='fu'>ee_install_rgee_python_packages</span>()
+
+<span class='co'># Install selenium drivers (see ee_upload)</span>
+<span class='fu'>ee_install_drivers</span>()
+
+<span class='co'># Install GCS and DRIVE credentials (optional)</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
 }</div></pre>
   </div>

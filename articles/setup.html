@@ -68,13 +68,7 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -129,7 +123,7 @@
 
     
     
-<p><code>rgee</code> has two types of dependencies. The <span style="color:#b52b09"><strong>first group</strong></span> that must be satisfied before the <code>rgee</code> installation, and the <span style="color:#f0df26"><strong>other one</strong></span> that is just necessary to unlock the <code>rgee</code> import &amp; export functions. For instance, you will need firstly activate your Cloud Storage JSON API to use <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. All the external dependencies of <code>rgee</code> are shown bellow:</p>
+<p><code>rgee</code> has two types of dependencies. The <span style="color:#b52b09"><strong>first one</strong></span> must be satisfied before the <code>rgee</code> installation, and the <span style="color:#f0df26"><strong>other one</strong></span> unlock <code>rgee</code> import &amp; export functions. For instance, you will need firstly activate your Cloud Storage JSON API to use <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. All the external dependencies of <code>rgee</code> are shown below:</p>
 <div id="external-required" class="section level3">
 <h3 class="hasAnchor">
 <a href="#external-required" class="anchor"></a>External Required</h3>
@@ -149,7 +143,7 @@
 <li><span style="color:#f0df26">beautifulsoup4</span></li>
 <li><span style="color:#f0df26">requests_toolbelt</span></li>
 </ul>
-<p>The <code><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages()</a></code> function is provided as a convenient way to install all the necessary Python packages, but is not required. If you have an existing installation of the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> or just prefer your own custom installation that’s fine too.</p>
+<p>The <code><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages()</a></code> function is provided as a convenient way to install all Python packages needed, even though it is not required.You can count on an existing installation of <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> or you can count on your own custom installation, all would be allowed.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># Recommended way to install Python packages</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">## 1. Create a virtualenv</span></a>
@@ -160,12 +154,12 @@
 <div id="import-and-export-spatial-data-in-gee" class="section level3">
 <h3 class="hasAnchor">
 <a href="#import-and-export-spatial-data-in-gee" class="anchor"></a>Import and Export Spatial Data in GEE</h3>
-<p>The batch import/export involves a struggle for most GEE users. In <code>rgee</code> we are aware of that and created functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> data from GEE, we highly recommend to use either <a href="https://csaybar.github.io/rgee/reference/ee_download_drive.html">ee_download_drive</a> or <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. These functions depends on the <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> R package respectively, so you will need installed it before.</p>
+<p>The batch import/export involves difficulties for most GEE users. In <code>rgee</code>, we are aware of it and we created functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> data from GEE, we highly recommend to use either <a href="https://csaybar.github.io/rgee/reference/ee_download_drive.html">ee_download_drive</a> or <a href="https://csaybar.github.io/rgee/reference/ee_download_gcs.html">ee_download_gcs</a>. These functions depends on <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> R package respectively, so you will need to do the installation before.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># please try as follow</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</a></code></pre></div>
-<p>Google Drive (<code>ee_download_gcs</code>) is more friendly with novice Earth Engine users because it just would need an authentication process (that is 100% automatic!). If you are trying to move large amounts of data, use Google Cloud Storage (<code>ee_download_gcs</code>) instead. However, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please take a look to the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
-<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make simple through the <a href="https://csaybar.github.io/rgee/reference/ee_upload.html">ee_upload</a> function. Always that you want to upload files in a batch way, will be necessary get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a <strong>provisional</strong> for free space into GCS through the URI gs://earthengine-uploads/ to all users. Inspired in the <a href="https://pypi.org/project/geeup/0.3.3/">geeup</a> Python package we provide a connection to gs://earthengine-uploads/ when users do not defined the bucket argument in the <code>ee_upload</code> function. This process will use <strong>Selenium</strong> and require <strong>ChromeDriver</strong>. To install ChromeDriver in your system run as follow:</p>
+<p>Google Drive (<code>ee_download_drive</code>) is more friendly to novice Earth Engine users because the authentification process could be done without leaving R. However, if you are trying to move large amounts of data, it is preferable use Google Cloud Storage (<code>ee_download_gcs</code>) instead. It is important mentioning that, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
+<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make it simple by using the <a href="https://csaybar.github.io/rgee/reference/ee_upload.html">ee_upload</a> function. Whether you want to upload files in a batch way, you must get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a <strong>provisional</strong> for free space to all users into GCS (gs://earthengine-uploads/). Inspired in the <a href="https://pypi.org/project/geeup/0.3.3/">geeup</a> Python package we provide a connection to gs://earthengine-uploads/ when the bucket argument in the <code>ee_upload</code> function is not defined by the user. This process will use <strong>Selenium</strong> and will require <strong>ChromeDriver</strong>. To install ChromeDriver in your system run as follow:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Find the Google Chrome version of this system</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># in chrome://settings/help</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># In my case my Google Chrome version is 77.0.3865.75, so:</span></a>
@@ -174,24 +168,24 @@
 <div id="credentials" class="section level3">
 <h3 class="hasAnchor">
 <a href="#credentials" class="anchor"></a>Credentials</h3>
-<p>The <code>rgee</code> manage three different Google API’s:</p>
+<p><code>rgee</code> deal with three different Google API’s:</p>
 <ul>
 <li>Google Earth Engine</li>
 <li>Google Drive</li>
 <li>Google Cloud Storage</li>
 </ul>
-<p>To authenticate the three APIs, you just need to run as follow:</p>
+<p>To authenticate these three APIs, you just need to run as follow:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#ee_reattach() # reattach ee as a reserve word</span></a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="dt">drive =</span> <span class="ot">TRUE</span>,<span class="dt">gcs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<p>If the Google account is verified and the permission is granted, you will be directed to an authentification token. Copy this token and paste it in the emerging GUI. This process will be repeated for each API, except for <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Google Cloud Storage</a>. If the function runs successfully, all credentials are stored in:</p>
+<p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. This process will be repeated for each API, except for <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Google Cloud Storage</a>. If there is a successful outcome, all credentials are stored in:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span>(<span class="st">"~/.config/earthengine/"</span>)</a></code></pre></div>
-<p>For the next sessions, there will be no need for any further authentification.</p>
+<p>For the next sessions, there will not be need for any further authentication.</p>
 </div>
 <div id="checking" class="section level3">
 <h3 class="hasAnchor">
 <a href="#checking" class="anchor"></a>Checking</h3>
-<p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking the sanity of your <code>rgee</code> installation. Additionally, you can separately check the rgee dependencies with the following functions:</p>
+<p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking the sanity of <code>rgee</code> installation. Additionally, you can separately check the <code>rgee</code> dependencies with the following functions:</p>
 <ul>
 <li>
 <code><a href="../reference/ee_check-tools.html">ee_check_drivers()</a></code> - Chromedriver</li>
@@ -220,13 +214,13 @@
 <a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; ◉  Selenium drivers: </span></a>
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; ✔ [Ok] Chromedriver </span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; ⓧ chromedriver not available in their system. rgee::ee_upload(bucket=NULL) will not work.</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; Try rgee::ee_install_drivers() to fixed.</span></a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; ◉  Credentials neccesaries for rgee: </span></a>
 <a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; ✔ [Ok] Earth Engine Credentials found.</span></a>
 <a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; ✔ [Ok] Google Drive credentials found.</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; ✔ [Ok] Google Cloud Storage credentials found.</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; ✔ [Ok] Google Cloud Storage  credentials found.</span></a></code></pre></div>
 </div>
   </div>
 

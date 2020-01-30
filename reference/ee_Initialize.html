@@ -43,9 +43,11 @@
 
 
 <meta property="og:title" content="Authenticate and Initialize Earth Engine — ee_Initialize" />
-<meta property="og:description" content="Authorize rgee to manage Earth Engine resource The ee_initialize() via web-browser asked to sign in
-to your Google account and grant permission for managing google earth engine. This function is a wrapper around
-rgee::ee$Initialize()." />
+<meta property="og:description" content="Authorize rgee to manage Earth Engine resource, Google
+Drive and Google Cloud Storage. The ee_initialize() via
+web-browser asked to sign in to your Google account and
+grant permission for managing resources. This function is
+a wrapper around rgee::ee$Initialize()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -109,13 +111,7 @@ rgee::ee$Initialize()." />
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -166,39 +162,35 @@ rgee::ee$Initialize()." />
     </div>
 
     <div class="ref-description">
-    <p>Authorize rgee to manage Earth Engine resource The <code>ee_initialize()</code> via web-browser asked to sign in
-to your Google account and grant permission for managing google earth engine. This function is a wrapper around
-<code>rgee::ee$Initialize()</code>.</p>
+    <p>Authorize rgee to manage Earth Engine resource, Google
+Drive and Google Cloud Storage. The <code>ee_initialize()</code> via
+web-browser asked to sign in to your Google account and
+grant permission for managing resources. This function is
+a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Initialize</span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>assethome</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>checkpy</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_Initialize</span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>user_gmail</th>
-      <td><p>optional. Allows user to target a specific Google identity.</p></td>
+      <th>email</th>
+      <td><p>Character (optional, e.g. <code>pinkiepie@gmail.com</code>). The email
+name is used as a folder inside the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.
+This enable the multi-user support allowing to target a specific
+Google identity.</p></td>
     </tr>
     <tr>
       <th>drive</th>
-      <td><p>logical. Whether TRUE the drive credential will cache
-in the system.</p></td>
+      <td><p>Logical (optional). Whether TRUE the drive credential
+will cache in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
     </tr>
     <tr>
       <th>gcs</th>
       <td><p>logical. Whether TRUE the Google Cloud Storage
-credential will cache in the system.</p></td>
-    </tr>
-    <tr>
-      <th>assethome</th>
-      <td><p>character. Home folder's name of you EE Assets.</p></td>
-    </tr>
-    <tr>
-      <th>checkpy</th>
-      <td><p>logical. Check if the current Python version
-of this system is admitted by rgee.</p></td>
+credential will cache in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -208,37 +200,45 @@ of this system is admitted by rgee.</p></td>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>ee_Initialize()</code> give the possibility of authorize Google drive (googledrive)
-and Google Cloud Storage (googlecloudStorageR). By default, rgee do not need to them,
-these are just necessary for exportation and importation tasks. All the user credentials
-are save in the folder <code>~/.config/earthengine/USERS/</code>, if a user is not specified
-the parameters of the last session would be used.</p>
+    <p><code>ee_Initialize(...)</code> can also manage Google drive and Google
+Cloud Storage resources using the R packages googledrive and
+googlecloudStorageR respectively. By default, rgee do not need to them,
+these are just necessary for exportation and importation tasks.
+All the user credentials are save inside the directory
+<code>~/.config/earthengine/</code>, if a user does not specified the
+the email argument all user credentials will be saved in a subdirectory
+called ndef.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>remove credential function: <br />
+<a href='ee_remove_credentials.html'>ee_remove_credentials</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
-
-<span class='co'># Simple init</span>
+    <pre class="examples"><div class='input'><span class='co'># Simple init</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_Initialize</span>()
-
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
+<span class='fu'>ee_Initialize</span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'>
 <span class='co'># Advanced init</span>
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_Initialize</span>(<span class='kw'>user_gmail</span> <span class='kw'>=</span> <span class='st'>'aybar1994@gmail.com'</span>,
-                      <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                      <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                      <span class='kw'>checkpy</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                      <span class='kw'>assethome</span> <span class='kw'>=</span> <span class='st'>'users/aybar1994'</span>)</div><div class='output co'>#&gt; <span style='color: #0000BB;'>◉  Python version found: </span><span style='color: #00BB00;'>/usr/bin/python3 v3.7</span><span>
-#&gt; user_gmail: aybar1994@gmail.com 
-#&gt; assethome: users/aybar1994 </div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'dplyr':</span>
+<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_Initialize</span>(
+  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"aybar1994@gmail.com"</span>,
+  <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>aybar1994@gmail.com</span><span> 
+#&gt; </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'dplyr':</span>
 #&gt; <span class='message'>  method         from     </span>
-#&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt; Getting Google Drive credentials ...  DONE
-#&gt; Checking Google Cloud storage credentials ...  DONE
-#&gt; Checking correspondence between user_gmail and assethome ... DONE </div></span></pre>
+#&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
+#&gt; ✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

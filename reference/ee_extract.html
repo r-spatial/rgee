@@ -109,13 +109,7 @@ ee.Features, ee.FeatureCollection and sf objects." />
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -199,47 +193,61 @@ ee.Features, ee.FeatureCollection and sf objects.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>reduceRegions additional parameters. See reticulate::ee_help(ee$Image()$reduceRegions)
-for details.</p></td>
+      <td><p>reduceRegions additional parameters. See
+reticulate::ee_help(ee$Image()$reduceRegions) for details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The fun arguments just admit Reducer objects that return one value. These are:</p><ul>
-<li><p><strong>allNonZero</strong>: Returns a Reducer that returns 1 if all of its inputs
-are non-zero, 0 otherwise. <br /></p></li>
-<li><p><strong>anyNonZero</strong>: Returns a Reducer that returns 1 if any of its inputs are
-non-zero, 0 otherwise. <br /></p></li>
-<li><p><strong>bitwiseAnd</strong>: Returns a Reducer that computes the bitwise-and summation
-of its inputs.</p></li>
-<li><p><strong>bitwiseOr</strong>: Returns a Reducer that computes the bitwise-or summation of
-its inputs.</p></li>
-<li><p><strong>count</strong>: Returns a Reducer that computes the number of non-null inputs.</p></li>
+    <p>The fun arguments just admit Reducer objects that return one value.
+These are:</p><ul>
+<li><p><strong>allNonZero</strong>: Returns a Reducer that returns 1 if all of its
+inputs are non-zero, 0 otherwise. <br /></p></li>
+<li><p><strong>anyNonZero</strong>: Returns a Reducer that returns 1 if any of its
+inputs are non-zero, 0 otherwise. <br /></p></li>
+<li><p><strong>bitwiseAnd</strong>: Returns a Reducer that computes the bitwise-and
+summation of its inputs.</p></li>
+<li><p><strong>bitwiseOr</strong>: Returns a Reducer that computes the bitwise-or
+summation of its inputs.</p></li>
+<li><p><strong>count</strong>: Returns a Reducer that computes the number of
+non-null inputs.</p></li>
 <li><p><strong>first</strong>: Returns a Reducer that returns the first of its inputs.</p></li>
-<li><p><strong>firstNonNull</strong>: Returns a Reducer that returns the first of its non-null inputs.</p></li>
-<li><p><strong>kurtosis</strong>: Returns a Reducer that Computes the kurtosis of its inputs.</p></li>
+<li><p><strong>firstNonNull</strong>: Returns a Reducer that returns the first of
+its non-null inputs.</p></li>
+<li><p><strong>kurtosis</strong>: Returns a Reducer that Computes the kurtosis of
+its inputs.</p></li>
 <li><p><strong>last</strong>: Returns a Reducer that returns the last of its inputs.</p></li>
-<li><p><strong>lastNonNull</strong>: Returns a Reducer that returns the last of its non-null inputs.</p></li>
-<li><p><strong>max</strong>: Creates a reducer that outputs the maximum value of its (first) input.
-If numInputs is greater than one, also outputs the corresponding values of the additional
-inputs.</p></li>
-<li><p><strong>mean</strong>: Returns a Reducer that computes the (weighted) arithmetic mean of its inputs.</p></li>
-<li><p><strong>median</strong>: Create a reducer that will compute the median of the inputs.
-For small numbers of inputs (up to maxRaw) the median will be computed directly; for
-larger numbers of inputs the median will be derived from a histogram.</p></li>
-<li><p><strong>min</strong>: Creates a reducer that outputs the minimum value of its (first) input.  If
-numInputs is greater than one, also outputs the corresponding values of the
+<li><p><strong>lastNonNull</strong>: Returns a Reducer that returns the last of its
+non-null inputs.</p></li>
+<li><p><strong>max</strong>: Creates a reducer that outputs the maximum value of
+its (first) input. If numInputs is greater than one, also outputs the
+corresponding values of the additional inputs.</p></li>
+<li><p><strong>mean</strong>: Returns a Reducer that computes the (weighted)
+arithmetic mean of its inputs.</p></li>
+<li><p><strong>median</strong>: Create a reducer that will compute the median of
+the inputs. For small numbers of inputs (up to maxRaw) the median will be
+computed directly; for larger numbers of inputs the median will be derived
+from a histogram.</p></li>
+<li><p><strong>min</strong>: Creates a reducer that outputs the minimum value
+of its (first) input.  If numInputs is greater than one, also outputs
 additional inputs.</p></li>
-<li><p><strong>mode</strong>: Create a reducer that will compute the mode of the inputs.  For small
-numbers of inputs (up to maxRaw) the mode will be computed directly; for
-larger numbers of inputs the mode will be derived from a histogram.</p></li>
-<li><p><strong>product</strong>: Returns a Reducer that computes the product of its inputs.</p></li>
-<li><p><strong>sampleStdDev</strong>: Returns a Reducer that computes the sample standard deviation of its inputs.</p></li>
-<li><p><strong>sampleVariance</strong>: Returns a Reducer that computes the sample variance of its inputs.</p></li>
-<li><p><strong>stdDev</strong>: Returns a Reducer that computes the standard deviation of its inputs.</p></li>
-<li><p><strong>sum</strong>: Returns a Reducer that computes the (weighted) sum of its inputs.</p></li>
-<li><p><strong>variance</strong>: Returns a Reducer that computes the variance of its inputs.</p></li>
+<li><p><strong>mode</strong>: Create a reducer that will compute the mode of the
+inputs.  For small numbers of inputs (up to maxRaw) the mode will be
+computed directly; for larger numbers of inputs the mode will be derived
+from a histogram.</p></li>
+<li><p><strong>product</strong>: Returns a Reducer that computes the product of
+its inputs.</p></li>
+<li><p><strong>sampleStdDev</strong>: Returns a Reducer that computes the sample
+standard deviation of its inputs.</p></li>
+<li><p><strong>sampleVariance</strong>: Returns a Reducer that computes the sample
+variance of its inputs.</p></li>
+<li><p><strong>stdDev</strong>: Returns a Reducer that computes the standard
+deviation of its inputs.</p></li>
+<li><p><strong>sum</strong>: Returns a Reducer that computes the (weighted) sum
+of its inputs.</p></li>
+<li><p><strong>variance</strong>: Returns a Reducer that computes the variance
+of its inputs.</p></li>
 </ul>
 
 
@@ -247,25 +255,35 @@ larger numbers of inputs the mode will be derived from a histogram.</p></li>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
+<span class='co'># authenticate and initialize Earth Engine</span>
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
+#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'>
+<span class='co'># get monthly precipitation from terraclimate</span>
 <span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2000-01-01"</span>, <span class='st'>"2001-01-01"</span>)$
   <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>))
+
+<span class='co'># extract values with polygons</span>
 <span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>)
-<span class='co'># all(!nc$FIPS %in% nc$FIPS[duplicated(nc$FIPS)]) -- Unique ID?</span>
-<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_extract</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(), <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"FIPS"</span>)
+<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_extract</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(),
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"FIPS"</span>
+)
 <span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>nc</span>, <span class='no'>ee_nc_rain</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"FIPS"</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>ee_nc_rain</span>[<span class='st'>"X200006"</span>], <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>, <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='ee_extract-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'>## time series</span>
-<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
-#&gt;           1 </div><div class='input'><span class='no'>ee_nc</span> <span class='kw'>&lt;-</span> <span class='no'>ee_nc_rain</span>
+<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>ee_nc_rain</span>[<span class='st'>"X200006"</span>],
+  <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
+  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</div><div class='img'><img src='ee_extract-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## plot time series</span>
+<span class='no'>ee_nc</span> <span class='kw'>&lt;-</span> <span class='no'>ee_nc_rain</span>
 <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='no'>ee_nc</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
 <span class='no'>time_serie</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>ee_nc</span>[<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"X%s"</span>, <span class='fl'>200001</span>:<span class='fl'>200012</span>)])
 <span class='no'>main</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"2001 Precipitation - %s"</span>, <span class='no'>ee_nc</span>$<span class='no'>NAME</span>[<span class='fl'>1</span>])
 <span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>time_serie</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"pp (mm/month)"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='no'>main</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='ee_extract-2.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

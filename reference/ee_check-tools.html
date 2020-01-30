@@ -43,7 +43,8 @@
 
 
 <meta property="og:title" content="Interface to check Python and non-R rgee dependencies — ee_check-tools" />
-<meta property="og:description" content="R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials" />
+<meta property="og:description" content="R functions for checking sanity of Python Selenium Chromedriver, Third-Party
+Python packages and credentials" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -107,13 +108,7 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -164,7 +159,8 @@
     </div>
 
     <div class="ref-description">
-    <p>R functions for checking sanity of Python Selenium Chromedriver, Third-Party Python packages and credentials</p>
+    <p>R functions for checking sanity of Python Selenium Chromedriver, Third-Party
+Python packages and credentials</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_check</span>()
@@ -189,7 +185,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='co'>#use_virtualenv("rgee")</span>
+<span class='co'># use_virtualenv("rgee")</span>
 <span class='fu'>ee_check</span>()</div><div class='output co'>#&gt; <span style='color: #0000BB;'>◉  Python version found: </span><span style='color: #00BB00;'>/usr/bin/python3 v3.7</span><span>
 #&gt; 
 #&gt; </span><span style='color: #0000BB;'>◉  Python Third-Party Libraries used in rgee: 
@@ -204,13 +200,11 @@
 #&gt; 
 #&gt; </span><span style='color: #0000BB;'>◉  Selenium drivers: 
 #&gt; </span><span>
-#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Chromedriver 
-#&gt; </span><span>
-#&gt; </span><span style='color: #0000BB;'>◉  Credentials neccesaries for rgee: 
+#&gt; </span><span style='color: #BBBB00;'>ⓧ chromedriver not available in their system. rgee::ee_upload(bucket=NULL) will not work.</span><span></div><div class='output co'>#&gt; <span class='message'>Try rgee::ee_install_drivers() to fixed.</span></div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>◉  Credentials neccesaries for rgee: 
 #&gt; </span><span>
 #&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Earth Engine Credentials found.</span><span>
 #&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Google Drive credentials found.</span><span>
-#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Google Cloud Storage credentials found.</span><span></div></span></pre>
+#&gt; </span><span style='color: #00BB00;'>✔ [Ok]</span><span style='color: #0000BB;'> Google Cloud Storage  credentials found.</span><span></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

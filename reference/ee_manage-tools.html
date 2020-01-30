@@ -107,13 +107,7 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -181,22 +175,28 @@
 
 <span class='fu'>ee_manage_set_properties</span>(<span class='no'>path_asset</span>, <span class='no'>add_properties</span>)
 
-<span class='fu'>ee_manage_delete_properties</span>(<span class='no'>path_asset</span>, <span class='kw'>del_properties</span> <span class='kw'>=</span> <span class='st'>"ALL"</span>)
+<span class='fu'>ee_manage_delete_properties</span>(<span class='no'>path_asset</span>,
+  <span class='kw'>del_properties</span> <span class='kw'>=</span> <span class='st'>"ee_rmv_all_prp"</span>)
+
+<span class='fu'>ee_manage_asset_access</span>(<span class='no'>path_asset</span>, <span class='kw'>editor</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>viewer</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>all_users_can_read</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ee_manage_task</span>(<span class='kw'>cache</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>ee_manage_cancel_all_running_taks</span>()</pre>
+<span class='fu'>ee_manage_cancel_all_running_task</span>()</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>path_asset</th>
-      <td><p>Character. Name of the EE asset e.g. users/user/nameofcollection.</p></td>
+      <td><p>Character. Name of the EE asset (Table, Image, Folder or
+ImageCollection).</p></td>
     </tr>
     <tr>
       <th>asset_type</th>
-      <td><p>Character. The asset type ('Folder' or 'ImageCollection').</p></td>
+      <td><p>Character. The asset type to create ('Folder' or
+'ImageCollection').</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -204,22 +204,43 @@
     </tr>
     <tr>
       <th>final_path</th>
-      <td><p>Character. Name of the final EE asset to copy or move.</p></td>
+      <td><p>Character. Output filename
+(e.g users/pinkiepie_us/ic_moved)</p></td>
     </tr>
     <tr>
       <th>add_properties</th>
-      <td><p>List. Set of parameters to established as a property of an EE object. See details.</p></td>
+      <td><p>List. Set of parameters to established as a property
+of an EE object. See details.</p></td>
     </tr>
     <tr>
       <th>del_properties</th>
-      <td><p>Character. Name of a specific property to be deleted.</p></td>
+      <td><p>Character. Names of properties to be deleted. See
+details.</p></td>
+    </tr>
+    <tr>
+      <th>editor</th>
+      <td><p>Character vector. Define editor users in the IAM Policy.</p></td>
+    </tr>
+    <tr>
+      <th>viewer</th>
+      <td><p>Character vector. Define viewer users in the IAM Policy.</p></td>
+    </tr>
+    <tr>
+      <th>all_users_can_read</th>
+      <td><p>Logical. All users can see the asset element.</p></td>
     </tr>
     <tr>
       <th>cache</th>
-      <td><p>Logical. TRUE save the report in the /temp directory.</p></td>
+      <td><p>Logical. Whether is TRUE, the task report will be saved
+in the /temp directory and used when the function .</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>If the argument <code>del_properties</code> is 'ee_rmv_all_prp',
+ee_manage_delete_properties will delete all
+the properties.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -227,62 +248,62 @@
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># Change google account to be able to reproduce</span>
-<span class='fu'>ee_manage_create</span>(<span class='st'>"users/datacolecfbf/rgee"</span>)
+<span class='fu'>ee_manage_create</span>(<span class='st'>"users/EE_USER/rgee"</span>)
 
 <span class='co'># 1. List all the elements inside a folder or a ImageCollection</span>
-<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/rgee"</span>)
+<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee"</span>)
 
 <span class='co'># 2. Create a Folder or a ImageCollection</span>
-<span class='fu'>ee_manage_create</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_folder"</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"FOLDER"</span>)
-<span class='fu'>ee_manage_create</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_ic"</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"ImageCollection"</span>)
-<span class='fu'>ee_manage_assetlist</span>(<span class='st'>"users/datacolecfbf/rgee"</span>)
+<span class='fu'>ee_manage_create</span>(
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_folder"</span>,
+  <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"FOLDER"</span>
+)
+<span class='fu'>ee_manage_create</span>(
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_ic"</span>,
+  <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"ImageCollection"</span>
+)
+<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee"</span>)
 
-<span class='co'># 3. Shows your Earth Engine quota</span>
-<span class='co'># v ee_manage_quota()</span>
+<span class='co'># 3. Shows Earth Engine quota</span>
+<span class='fu'>ee_manage_quota</span>()
 
-<span class='co'># 4. Estimate the size of a IMAGE, ImageCollection, Table or folder.</span>
-<span class='fu'>ee_manage_size</span>(<span class='st'>"users/datacolecfbf/rgee"</span>)
-
-<span class='co'># 5. Move a EE object to another folder</span>
+<span class='co'># 4. Move an EE object to another folder</span>
 <span class='fu'>ee_manage_move</span>(
-  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/rgee/rgee_ic"</span>,
-  <span class='kw'>final_path</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_ic"</span>,
+  <span class='kw'>final_path</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_folder/rgee_ic_moved"</span>
 )
-<span class='fu'>ee_manage_assetlist</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_folder"</span>)
+<span class='fu'>ee_manage_assetlist</span>(<span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_folder"</span>)
 
-<span class='co'># 6. Set properties to an EE object.</span>
+<span class='co'># 5. Set properties to an EE object.</span>
 <span class='fu'>ee_manage_set_properties</span>(
-  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>,
-  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"hello-world"</span>, <span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>"R"</span>)
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_folder/rgee_ic_moved"</span>,
+  <span class='kw'>add_properties</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"hello-world"</span>, <span class='kw'>language</span> <span class='kw'>=</span> <span class='st'>"R"</span>)
 )
-<span class='no'>test_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>)
+<span class='no'>test_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"users/EE_USER/rgee/rgee_folder/rgee_ic_moved"</span>)
 <span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()
 
-<span class='co'># 7. Delete properties</span>
+<span class='co'># 6. Delete properties</span>
 <span class='fu'>ee_manage_delete_properties</span>(
-  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>,
+  <span class='kw'>path_asset</span> <span class='kw'>=</span> <span class='st'>"users/EE_USER/rgee/rgee_folder/rgee_ic_moved"</span>,
   <span class='kw'>property</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"message"</span>, <span class='st'>"language"</span>)
 )
 <span class='no'>test_ic</span>$<span class='fu'>getInfo</span>()
 
-<span class='co'># 8. Share EE objects -- Create a public dataset</span>
-<span class='fu'>ee_manage_assets_access</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>)
-<span class='no'>ee</span>$<span class='no'>data</span>$<span class='fu'>getAssetAcl</span>(<span class='st'>"users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"</span>)
-
-<span class='co'># 9. Create a report based on all tasks that is running or has finished</span>
+<span class='co'># 7. Create a report based on all tasks that is running or has finished</span>
 <span class='fu'>ee_manage_task</span>()
 
-<span class='co'># 10. Cancel all the running task</span>
-<span class='fu'>ee_manage_cancel_all_running_taks</span>()
+<span class='co'># 8. Cancel all the running task</span>
+<span class='fu'>ee_manage_cancel_all_running_task</span>()
 
-<span class='co'># 11. Delete EE objects or folders</span>
-<span class='fu'>ee_manage_delete</span>(<span class='st'>"users/datacolecfbf/rgee/"</span>)
+<span class='co'># 9. Delete EE objects or folders</span>
+<span class='fu'>ee_manage_delete</span>(<span class='st'>"users/EE_USER/rgee/"</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

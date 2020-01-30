@@ -107,13 +107,7 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -179,16 +173,18 @@
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>Character. Output filename. If absent, a temporary file is created.</p></td>
+      <td><p>Character. Output filename. If absent, a temporary
+file is created.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean indicating whether "filename" should be overwritten if it exists.</p></td>
+      <td><p>A boolean indicating whether "filename" should be
+overwritten if it exists.</p></td>
     </tr>
     <tr>
       <th>st</th>
-      <td><p>logical. By default this is TRUE, returning a sf (stars) object for
-EE tables (images). If FALSE, the output filename is returned.</p></td>
+      <td><p>logical. By default this is TRUE, returning a sf (stars)
+object for EE tables (images). If FALSE, the output filename is returned.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -201,8 +197,9 @@ EE tables (images). If FALSE, the output filename is returned.</p></td>
     <p>An sf, stars or character depending on the retunclass argument.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The task argument needs "COMPLETED" task state to work, since the parameters necessaries to locate
-the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$start()$status().</p>
+    <p>The task argument needs "COMPLETED" task state to work, since the
+parameters necessaries to locate the file into google drive are obtained
+from ee$batch$Export$*$toDrive(...)$start()$status().</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -258,7 +255,9 @@ the file into google drive are obtained from ee$batch$Export$*$toDrive(...)$star
 <span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
 
 <span class='co'># Example 2 -- Download a Table</span>
-<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>))))
+<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
+)
 <span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,

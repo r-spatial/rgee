@@ -55,6 +55,12 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_reattach.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_remove_credentials.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_remove_driver.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_search-tools.html</loc>
   </url>
   <url>
@@ -83,15 +89,6 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/articles/faq.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/articles/rgee_animation.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/articles/rgee_demo.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/articles/rgee_hello_world.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/articles/setup.html</loc>

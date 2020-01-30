@@ -43,7 +43,8 @@
 
 
 <meta property="og:title" content="Upload local files to google cloud storage — ee_upload_file_to_gcs" />
-<meta property="og:description" content="Upload images or tables into google cloud storage for EE asset ingestion tasks." />
+<meta property="og:description" content="Upload images or tables into google cloud storage for EE asset ingestion
+tasks." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -107,13 +108,7 @@
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/rgee_hello_world.html">Hello world</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_demo.html">Ecuador - Quality mosaic</a>
-    </li>
-    <li>
-      <a href="../articles/rgee_animation.html">Animation - 3D Choropleth Map</a>
+      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -164,7 +159,8 @@
     </div>
 
     <div class="ref-description">
-    <p>Upload images or tables into google cloud storage for EE asset ingestion tasks.</p>
+    <p>Upload images or tables into google cloud storage for EE asset ingestion
+tasks.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_upload_file_to_gcs</span>(<span class='no'>x</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -184,7 +180,8 @@
     </tr>
     <tr>
       <th>selenium_params</th>
-      <td><p>List. Optional parameters when bucket is NULL. Parameters for setting selenium. See details.</p></td>
+      <td><p>List. Optional parameters when bucket is NULL.
+Parameters for setting selenium. See details.</p></td>
     </tr>
     <tr>
       <th>clean</th>
@@ -202,15 +199,18 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Character indicating the full name of the x argument inside gs://earthengine-uploads/</p>
+    <p>Character indicating the full name of the x argument inside
+gs://earthengine-uploads/</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is necessary, for uploading process, get authorization to read &amp; write into a Google Cloud Storage
-(GCS) bucket. Earth Engine provides a provisional for free space into GCS through
-gs://earthengine-uploads/. If the bucket argument is absent, this function will use Selenium driver
-for getting access to the URI mentioned bellow. The process for getting access to gs://earthengine-uploads/
-was written entirely in Python and is as follow:</p><ul>
-<li><p>1. Connecting to https://code.earthengine.google.com/ through selenium.</p></li>
+    <p>It is necessary, for uploading process, get authorization to read &amp; write
+into a Google Cloud Storage (GCS) bucket. Earth Engine provides a provisional
+for free space into GCS through gs://earthengine-uploads/. If the bucket
+argument is absent, this function will use Selenium driver for getting access
+to the URI mentioned bellow. The process for getting access to
+gs://earthengine-uploads/ was written entirely in Python and is as follow:</p><ul>
+<li><p>1. Connecting to https://code.earthengine.google.com/
+through selenium.</p></li>
 <li><p>2. Download all the cookies and saved in a request object.</p></li>
 <li><p>3. Get the URL for ingest the data  temporarily.</p></li>
 <li><p>4. Create the request headers.</p></li>
