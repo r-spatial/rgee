@@ -47,7 +47,7 @@ while (class(try_gd_rm) == "try-error" & count < 5) {
   count <- count + 1
 }
 
-googledrive::drive_mkdir("rgee_testing")
+try(googledrive::drive_mkdir("rgee_testing"))
 googleCloudStorageR::gcs_global_bucket("bag_csaybar")
 buckets <- googleCloudStorageR::gcs_list_objects()
 gcs_todelete <- buckets$name[grepl("^testing/.*$", buckets$name)]

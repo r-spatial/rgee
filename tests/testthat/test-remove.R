@@ -5,7 +5,7 @@ test_that("ee_remove_credentials",{
 
 
 test_that("ee_remove_driver",{
-  result_True <- ee_remove_driver('test')
+  result_True <- ee_remove_driver()
   expect_true(result_True)
 })
 

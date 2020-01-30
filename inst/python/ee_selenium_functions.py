@@ -195,9 +195,5 @@ def load_py_object(filename):
         py_pickle_file = pickle.load(pickle_file)
     return py_pickle_file
 
-#It is necessary due 2^31-1 (.Machine$integer.max)
-def r_to_eeDate(Rdate):
-  return float(ee.Date(Rdate).getInfo()['value'])
-
-def eeDate_to_r(eedate):
+def eedate_to_rdate(eedate):
   return float(eedate.getInfo()['value'])

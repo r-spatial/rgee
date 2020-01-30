@@ -316,11 +316,11 @@ ee_gcs_to_asset <- function(x,
 
     # from R date to JS timestamp: time_start + time_end
     if (!is.null(start_time)) {
-      time_start <- r_to_eeDate(start_time)
+      time_start <- rdate_to_eedate(start_time, eeobject = FALSE)
     }
 
     if (!is.null(end_time)) {
-      time_end <- r_to_eeDate(end_time)
+      time_end <- rdate_to_eedate(end_time, eeobject = FALSE)
     }
 
     # Adding bands

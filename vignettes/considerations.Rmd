@@ -1,10 +1,6 @@
 ---
 title: "Considerations"
 output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{considerations}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -98,7 +94,7 @@ my_date <- ee$Date('1990-01-01')
 my_date$getInfo()
 ```
 
-The problems with `ee$Date` just appear in the last mile (Python to R or vice-versa, `reticulate`), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results returned. For example:
+The problems with `ee$Date` just appear in the last mile (Python to R or vice-versa, `reticulate`), and it should not be a trouble if treated with care. `rgee` implement two functions to deal with Earth Engine dates: `eedate_to_rdate` and `rdate_to_eedate`.
 
 ```{r}
 # Era5 dataset
@@ -107,10 +103,6 @@ era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
   first()
 
 # Extracting init date
-jstimestamp <- era_img$get('system:time_start')$getInfo()
-
-# Passing timestamp to ISO string
-as.POSIXct(jstimestamp/1000, origin="1970-01-01", tz="GMT")
+ee_date <- era_img$get('system:time_start')
+eedate_to_rdate(ee_date = ee_date)
 ```
-
-

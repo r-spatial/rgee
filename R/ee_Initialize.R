@@ -46,6 +46,16 @@ ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           quiet = FALSE) {
+  if (exists('ee')) {
+    if (is.null(ee$computedobject)) {
+      stop('rgee does not found Python modules.',
+           ' Run rgee::ee_reattach() before continuing.')
+    }
+  } else {
+    stop('rgee does not found Python modules.',
+         ' Run rgee::ee_reattach() before continuing.')
+  }
+
   if (!quiet) {
     message(text_col(
       cli::rule(
