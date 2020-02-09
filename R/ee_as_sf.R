@@ -11,6 +11,7 @@
 #' @return An sf class object, see Details.
 #' @examples
 #' library(rgee)
+#'
 #' ee_reattach() # reattach ee as a reserve word
 #' ee_Initialize()
 #' roi <- ee$Geometry$Polygon(list(

@@ -1,7 +1,7 @@
 context("rgee: ee_download test")
 
 ee_Initialize(
-  email = "aybar1994@gmail.com",
+  email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )

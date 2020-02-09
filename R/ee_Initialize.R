@@ -37,7 +37,7 @@
 #'
 #' # Advanced init
 #' expr <- ee_Initialize(
-#'   email = "aybar1994@gmail.com",
+#'   email = "data.colec.fbf@gmail.com",
 #'   drive = TRUE,
 #'   gcs = TRUE
 #' )
@@ -98,6 +98,7 @@ ee_Initialize <- function(email = NULL,
   if (drive) {
     if (!quiet) {
       cat(
+        "",
         crayon::green(cli::symbol$tick),
         crayon::blue("Google Drive credentials:")
       )
@@ -117,6 +118,7 @@ ee_Initialize <- function(email = NULL,
   if (gcs) {
     if (!quiet) {
       cat(
+        "",
         crayon::green(cli::symbol$tick),
         crayon::blue("GCS credentials:")
       )
@@ -331,6 +333,37 @@ ee_create_credentials_gcs <- function(email) {
   invisible(gcs_credentials)
 }
 
+#' Display credentials of all users as a table
+#' @export
+ee_users <- function() {
+  #space among columns
+  wsc <- "     "
+  title  <- c('user', ' EE', ' GD', ' GCS')
+
+  # get all dirfiles
+  ee_path <- path.expand("~/.config/earthengine") %>%
+    list.dirs(full.names = FALSE) %>%
+    '['(-1)
+
+  #define space in the first column
+  max_char <- max(nchar(ee_path))
+  add_space <- max_char - nchar(ee_path)
+  title[1] <- add_extra_space(name = title[1],
+                              space = max_char - nchar(title[1]))
+
+  cat("",crayon::bold(paste0(title, collapse = wsc)),"\n")
+  users <- add_extra_space(ee_path, add_space)
+  for (user in users) {
+    create_table(user,wsc)
+  }
+}
+
+##TODO
+ee_user_info <- function() {
+
+}
+
+
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
 #' @noRd
@@ -403,4 +436,61 @@ text_col <- function(x) {
 #' @noRd
 ee_version <- function() {
   "0.1.210"
+}
+
+
+#' Function used in ee_user
+#'
+#' Add extra space to usernames to form a nice table
+#' @noRd
+add_extra_space <- function(name, space) {
+  iter <- length(space)
+  result <- rep(NA,iter)
+  for (z in seq_len(iter)) {
+    add_space <- paste0(rep(" ",space[z]), collapse = "")
+    result[z] <- paste0(name[z], add_space)
+  }
+  result
+}
+
+
+#' Function used in ee_user
+#'
+#' Search if credentials exist and display it as tick and crosses.
+#' @noRd
+create_table <- function(user, wsc){
+  ee_path <- path.expand("~/.config/earthengine")
+  user_clean <- gsub(" ", "", user, fixed = TRUE)
+  credentials <- list.files(sprintf("%s/%s",ee_path,user_clean))
+
+  #google drive
+  if (any(grepl("@gmail.com",credentials))) {
+    gmail_symbol <- crayon::green(cli::symbol$tick)
+  } else {
+    gmail_symbol <- crayon::red(cli::symbol$cross)
+  }
+
+  #GCS
+  if (any(grepl(".json",credentials))) {
+    gcs_symbol <- crayon::green(cli::symbol$tick)
+  } else {
+    gcs_symbol <- crayon::red(cli::symbol$cross)
+  }
+
+  #Earth Engine
+  if (any(grepl("credentials",credentials))) {
+    ee_symbol <- crayon::green(cli::symbol$tick)
+  } else {
+    ee_symbol <- crayon::red(cli::symbol$cross)
+  }
+
+  cat("\n",
+      user,
+      wsc,
+      gmail_symbol,
+      wsc,
+      gcs_symbol,
+      wsc,
+      ee_symbol
+    )
 }

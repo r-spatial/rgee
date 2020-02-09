@@ -5,14 +5,14 @@ library(stars)
 library(sf)
 
 ee_Initialize(
-  email = "aybar1994@gmail.com",
+  email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )
 
 # ee_upload with bucket -----------------------------------------------------
 test_that("ee_upload - character with bucket", {
-  filename <- "users/aybar1994/rgee_upload/"
+  filename <- "users/data.colec.fbf/rgee_upload/"
   ee_manage_create(filename)
 
   tif <- system.file("tif/geomatrix.tif", package = "stars")
@@ -39,7 +39,7 @@ test_that("ee_upload - character with bucket", {
 system.time(2)
 
 test_that("ee_upload - stars with bucket", {
-  filename <- "users/aybar1994/rgee_upload/"
+  filename <- "users/data.colec.fbf/rgee_upload/"
   ee_manage_create(filename)
 
   tif <- system.file("tif/geomatrix.tif", package = "stars")
@@ -67,7 +67,7 @@ test_that("ee_upload - stars with bucket", {
 system.time(2)
 
 test_that("ee_upload - stars-proxy with bucket", {
-  filename <- "users/aybar1994/rgee_upload/"
+  filename <- "users/data.colec.fbf/rgee_upload/"
   ee_manage_create(filename)
   tif <- system.file("tif/geomatrix.tif", package = "stars")
   geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
@@ -94,7 +94,7 @@ test_that("ee_upload - stars-proxy with bucket", {
 
 # ee_upload without bucket -----------------------------------------------------
 # test_that("ee_upload - stars without bucket",{
-#   filename <- "users/aybar1994/rgee_upload/"
+#   filename <- "users/data.colec.fbf/rgee_upload/"
 #   ee_manage_create(filename)
 #
 #   tif = system.file("tif/geomatrix.tif", package = "stars")

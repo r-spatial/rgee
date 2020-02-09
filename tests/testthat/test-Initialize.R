@@ -2,7 +2,7 @@ context("rgee: ee_Initialize() test")
 
 test_that("complex init",{
   out <- tryCatch(
-    expr = ee_Initialize(email = 'aybar1994@gmail.com',
+    expr = ee_Initialize(email = 'data.colec.fbf@gmail.com',
                          drive = TRUE,
                          gcs = TRUE),
     error = function(e) e)

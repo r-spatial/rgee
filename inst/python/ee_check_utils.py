@@ -33,7 +33,7 @@ def ee_check_drivers_py(driverdir, display_in_browser=False):
         Bool : If it is True means that no existing execution errors
 
     Examples:
-        >>> driverdir = '/home/aybarpc01/.config/earthengine/aybar1994/'
+        >>> driverdir = '/home/aybarpc01/.config/earthengine/data.colec.fbf/'
         >>> ee_check_drivers_py(driverdir, display_in_browser=True)
     """
     options = Options()
@@ -82,7 +82,7 @@ def download_chromedriver(directory, operating_system, version):
         None
     Examples:
         >>> operating_system = 'macos'
-        >>> driverdir = '/home/aybarpc01/.config/earthengine/aybar1994/'
+        >>> driverdir = '/home/aybarpc01/.config/earthengine/data.colec.fbf/'
         >>> download_chromedriver(driverdir, operating_system, version='76.0.3809.126')
     """
     if operating_system == 'windows':

@@ -101,12 +101,12 @@ library(rgee)
 library(stars)
 library(sf)
 
-username <- 'aybar1994' #change according to username.
+username <- 'data.colec.fbf' #change according to username.
 gcs_bucket <- 'bag_csaybar'
 ee_check_drivers()
 
 ee_reattach() # reattach ee as a reserve word
-ee_Initialize(email = 'aybar1994', gcs = TRUE)
+ee_Initialize(email = 'data.colec.fbf', gcs = TRUE)
 
 # Create a folder in Earth Engine Asset
 filename <- sprintf("users/\%s/rgee_upload/", username)

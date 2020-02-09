@@ -1,6 +1,6 @@
 context("rgee: ee_as_thumbnail test")
 
-ee_Initialize(email = 'aybar1994@gmail.com')
+ee_Initialize(email = 'data.colec.fbf@gmail.com')
 # data --------------------------------------------------------------------
 dem_palette <- c(
   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",

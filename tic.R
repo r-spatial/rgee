@@ -26,7 +26,7 @@ get_stage("before_install") %>%
 
     #Folders to save credentials
     ee_dirname <- path.expand("~/.config/earthengine")
-    ee_dirname_aybar <- sprintf("%s/aybar1994/",ee_dirname)
+    ee_dirname_aybar <- sprintf("%s/data.colec.fbf/",ee_dirname)
     dir.create(path = ee_dirname,
                recursive = TRUE,
                showWarnings = FALSE)
@@ -48,7 +48,7 @@ get_stage("before_install") %>%
                            c(ee_dirname,ee_dirname_aybar),
                            gcs))
     # Google Drive
-    drive <- 'cd26ed5dc626f11802a652e81d02762e_aybar1994@gmail.com'
+    drive <- 'cd26ed5dc626f11802a652e81d02762e_data.colec.fbf@gmail.com'
     file.copy(from = path.expand(sprintf('~/%s',drive)),
               to = sprintf("%s/%s",
                            c(ee_dirname,ee_dirname_aybar),

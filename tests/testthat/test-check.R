@@ -6,7 +6,7 @@ library(raster)
 library(stars)
 library(sf)
 ee <- reticulate::import("ee")
-ee_Initialize(email = 'aybar1994@gmail.com',
+ee_Initialize(email = 'data.colec.fbf@gmail.com',
               drive = TRUE,
               gcs = TRUE)
 filename <- system.file("external/lux.shp", package = "raster")

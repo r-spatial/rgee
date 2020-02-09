@@ -46,7 +46,7 @@ ee_Initialize()
 
 # Advanced init
 expr <- ee_Initialize(
-  email = "aybar1994@gmail.com",
+  email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )
