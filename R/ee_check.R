@@ -8,7 +8,6 @@
 #' py_discover_config source_python
 #' @examples
 #' library(rgee)
-#' # use_virtualenv("rgee")
 #' ee_check()
 #' @export
 ee_check <- function() {

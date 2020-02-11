@@ -7,5 +7,10 @@
 ee_users()
 }
 \description{
-Display credentials of all users as a table
+Display Earth Engine, Google Drive and Google Cloud Storage Credentials as
+a table.
+}
+\examples{
+library(rgee)
+ee_users()
 }

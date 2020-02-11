@@ -22,10 +22,17 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
   if (email == 'not_defined') {
     email_clean <- 'ndef'
   }
+
   path_to_delete <- sprintf("%s/%s", ee_path, email_clean)
 
   if (!dir.exists(path_to_delete)) {
     cat('The path:', path_to_delete, ' does not exist!\n')
+  }
+
+  if (!quiet && dir.exists(path_to_delete)) {
+    cat(
+      sprintf("Credentials in %s has been deleted.\n",
+              sprintf("%s/%s", ee_path, email_clean)))
   }
 
   unlink(x = path_to_delete, recursive = TRUE, force = TRUE)
@@ -33,11 +40,6 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
   unlink(list.files(ee_path, ".json", full.names = TRUE))
   unlink(list.files(ee_path, "credentials", full.names = TRUE))
   unlink(list.files(ee_path, "rgee_sessioninfo.txt", full.names = TRUE))
-  if (!quiet && dir.exists(path_to_delete)) {
-    cat(
-      sprintf("Credentials in %s has been deleted.\n",
-              sprintf("%s/%s", ee_path, email_clean)))
-  }
 
   invisible(TRUE)
 }

@@ -29,46 +29,54 @@
 #' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
+#' ee_user_info()
 #'
 #' # Change google account to be able to reproduce
-#' ee_manage_create("users/EE_USER/rgee")
+#'
+#' # 1. Create a folder or Image Collection
+#' # Change path asset according to your specific user (ee_user_info())
+#' ee_manage_create("users/datacolecfbf/rgee")
 #'
 #' # 1. List all the elements inside a folder or a ImageCollection
-#' ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
+#' ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee")
 #'
 #' # 2. Create a Folder or a ImageCollection
 #' ee_manage_create(
-#'   path_asset = "users/EE_USER/rgee/rgee_folder",
-#'   asset_type = "FOLDER"
+#'   path_asset = "users/datacolecfbf/rgee/rgee_folder",
+#'   asset_type = "Folder"
 #' )
+#'
 #' ee_manage_create(
-#'   path_asset = "users/EE_USER/rgee/rgee_ic",
+#'   path_asset = "users/datacolecfbf/rgee/rgee_ic",
 #'   asset_type = "ImageCollection"
 #' )
-#' ee_manage_assetlist(path_asset = "users/EE_USER/rgee")
+#'
+#' ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee")
 #'
 #' # 3. Shows Earth Engine quota
 #' ee_manage_quota()
 #'
 #' # 4. Move an EE object to another folder
 #' ee_manage_move(
-#'   path_asset = "users/EE_USER/rgee/rgee_ic",
-#'   final_path = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved"
+#'   path_asset = "users/datacolecfbf/rgee/rgee_ic",
+#'   final_path = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
 #' )
-#' ee_manage_assetlist(path_asset = "users/EE_USER/rgee/rgee_folder")
+#'
+#' ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee/rgee_folder")
 #'
 #' # 5. Set properties to an EE object.
 #' ee_manage_set_properties(
-#'   path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
+#'   path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
 #'   add_properties = list(message = "hello-world", language = "R")
 #' )
-#' test_ic <- ee$ImageCollection("users/EE_USER/rgee/rgee_folder/rgee_ic_moved")
+#'
+#' test_ic <- ee$ImageCollection("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
 #' test_ic$getInfo()
 #'
 #' # 6. Delete properties
 #' ee_manage_delete_properties(
-#'   path_asset = "users/EE_USER/rgee/rgee_folder/rgee_ic_moved",
-#'   property = c("message", "language")
+#'   path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
+#'   del_properties = c("message", "language")
 #' )
 #' test_ic$getInfo()
 #'
@@ -79,7 +87,7 @@
 #' ee_manage_cancel_all_running_task()
 #'
 #' # 9. Delete EE objects or folders
-#' ee_manage_delete("users/EE_USER/rgee/")
+#' ee_manage_delete("users/datacolecfbf/rgee/")
 #' }
 #' @export
 ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
@@ -328,7 +336,7 @@ ee_manage_asset_access <- function(path_asset,
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_task <- function(cache = TRUE) {
+ee_manage_task <- function(cache = FALSE) {
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_manage_py <- ee_source_python(oauth_func_path)
   ee_temp <- tempdir()

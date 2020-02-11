@@ -8,6 +8,7 @@
 #' @param eeobject Logical. Whether TRUE, it will return
 #' a ee$object otherwise return the date in milliseconds.
 #' @examples
+#' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
 #' rdate_to_eedate('2000-01-01')
@@ -37,9 +38,10 @@ rdate_to_eedate <- function(date, eeobject = TRUE) {
 #' @param js Logical. Whether TRUE, it will return a numeric
 #' date otherwise return the date as a POSIXct object.
 #' @examples
+#' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
-#' eeDate <- ee$Date('1980-01-01')
+#' eeDate <- ee$Date$fromYMD(1980,1,1)
 #' eedate_to_rdate(eeDate)
 #' @export
 eedate_to_rdate <- function(ee_date, js = FALSE) {

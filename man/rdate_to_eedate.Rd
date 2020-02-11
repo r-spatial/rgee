@@ -18,6 +18,7 @@ Function to pass objects of classes "Date",
 ee$Date or unix time stamp.
 }
 \examples{
+library(rgee)
 ee_reattach()
 ee_Initialize()
 rdate_to_eedate('2000-01-01')

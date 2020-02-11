@@ -28,6 +28,5 @@ Python packages and credentials
 }
 \examples{
 library(rgee)
-# use_virtualenv("rgee")
 ee_check()
 }

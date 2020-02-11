@@ -334,6 +334,12 @@ ee_create_credentials_gcs <- function(email) {
 }
 
 #' Display credentials of all users as a table
+#'
+#' Display Earth Engine, Google Drive and Google Cloud Storage Credentials as
+#' a table.
+#' @examples
+#' library(rgee)
+#' ee_users()
 #' @export
 ee_users <- function() {
   #space among columns
@@ -344,6 +350,11 @@ ee_users <- function() {
   ee_path <- path.expand("~/.config/earthengine") %>%
     list.dirs(full.names = FALSE) %>%
     '['(-1)
+
+  if (length(ee_path) == 0) {
+    stop('does not exist active users',
+         ', run rgee:::ee_Initialize() to fixed.')
+  }
 
   #define space in the first column
   max_char <- max(nchar(ee_path))
@@ -358,11 +369,38 @@ ee_users <- function() {
   }
 }
 
-##TODO
+#' Display credentials info of initialized user
+#'
+#' Display credentials info of initialized user
+#' a table.
+#' @examples
+#' library(rgee)
+#' ee_Initialize()
+#' ee_user_info()
+#' @export
 ee_user_info <- function() {
+  user_session <- ee_get_earthengine_path()
+  user_session_list <- list.files(user_session,full.names = TRUE)
+  user <- ee$data$getAssetRoots()[[1]]$id
+  # asset home
+  asset_home <- rgee:::ee_remove_project_chr(user)
+  cat(crayon::blue('Earth Engine Asset Home:'),
+      crayon::green(asset_home), '\n')
 
+  # credentials directory path
+  cat(crayon::blue('Credentials Directory Path:'),
+      crayon::green(user_session), '\n')
+
+  # google drive
+  gd <- user_session_list[grepl("@gmail.com", user_session_list)]
+  cat(crayon::blue('Google Drive Credentials:'),
+      crayon::green(basename(gd)), '\n')
+
+  # google cloud storage
+  gcs <- user_session_list[grepl(".json", user_session_list)]
+  cat(crayon::blue('Google Cloud Storage Credentials:'),
+      crayon::green(basename(gcs)), '\n')
 }
-
 
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
@@ -399,7 +437,7 @@ ee_get_earthengine_path <- function() {
   } else {
     stop(
       "rgee_sessioninfo.txt does not exist, ",
-      "run rgee::ee_Initialize) to fixed."
+      "run rgee::ee_Initialize() to fixed."
     )
   }
   return(sprintf("%s/%s/", ee_path, user))
@@ -456,9 +494,11 @@ add_extra_space <- function(name, space) {
 
 #' Function used in ee_user
 #'
-#' Search if credentials exist and display it as tick and crosses.
+#' Search if credentials exist and display
+#' it as tick and crosses.
+#'
 #' @noRd
-create_table <- function(user, wsc){
+create_table <- function(user, wsc) {
   ee_path <- path.expand("~/.config/earthengine")
   user_clean <- gsub(" ", "", user, fixed = TRUE)
   credentials <- list.files(sprintf("%s/%s",ee_path,user_clean))

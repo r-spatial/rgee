@@ -2,20 +2,26 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install-tools}
 \alias{ee_install-tools}
-\alias{ee_install_drivers}
+\alias{ee_set_python_version}
 \alias{ee_install_rgee_python_packages}
+\alias{ee_install_drivers}
 \title{Interface to install non-R rgee dependencies}
 \usage{
-ee_install_drivers(GoogleChromeVersion)
+ee_set_python_version(pypath, restart_session = TRUE)
 
 ee_install_rgee_python_packages(method = c("auto", "virtualenv",
-  "conda"), conda = "auto", ee_version = "0.1.210", envname = NULL,
-  extra_packages = c("selenium", "bs4", "pysmartDL", "requests_toolbelt",
-  "oauth2client"), restart_session = TRUE,
+  "conda"), conda = "auto", ee_version = ee_version(),
+  envname = NULL, extra_packages = c("selenium", "bs4", "pysmartDL",
+  "requests_toolbelt", "oauth2client"), restart_session = TRUE,
   conda_python_version = "3.6", quiet = FALSE, ...)
+
+ee_install_drivers(GoogleChromeVersion)
 }
 \arguments{
-\item{GoogleChromeVersion}{Google Chrome version of this system.}
+\item{pypath}{The path to a Python interpreter, to be used with rgee.}
+
+\item{restart_session}{Restart R session after installing (note this will
+only occur within RStudio).}
 
 \item{method}{Installation method. By default, "auto" automatically
 finds a method that will work in the local environment. Change the
@@ -34,9 +40,6 @@ install the latest version.}
 
 \item{extra_packages}{Additional Python packages to install along with rgee.}
 
-\item{restart_session}{Restart R session after installing (note this will
-only occur within RStudio).}
-
 \item{conda_python_version}{the Python version installed in the created conda
 environment. Python 3.6 is installed by default.}
 
@@ -44,6 +47,8 @@ environment. Python 3.6 is installed by default.}
 
 \item{...}{other arguments passed to \code{\link[reticulate:conda_install]{reticulate::conda_install()}} or
 \code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
+
+\item{GoogleChromeVersion}{Google Chrome version of this system.}
 }
 \description{
 R functions to install the necessary third-party
@@ -56,28 +61,19 @@ Python packages. rgee only is compatible with Python version 3.5 >=.
 }
 \examples{
 \dontrun{
-library(rgee)
-library(reticulate)
+# It is just necessary once.
 
-# Recommended way to use rgee
-## 1. Create a virtualenv
-# virtualenv_remove("rgee")
-# virtualenv_create("rgee", python = "python3.7")
-use_virtualenv("rgee")
-# rstudioapi::restartSession() # Restart R
-
-## 2. Check dependencies
-# Full checking dependencies
+# 1. Define Python path
+ee_set_python_version()
+# 2. Check dependencies
 ee_check()
-
-# Install rgee Python packages
+# 3. Install rgee Python packages
 ee_install_rgee_python_packages()
-
-# Install selenium drivers (see ee_upload)
+# 3. Install selenium drivers  (optional)
 ee_install_drivers()
-
-# Install GCS and DRIVE credentials (optional)
+# 4. Install GCS and DRIVE credentials (optional)
 ee_Initialize(drive = TRUE, gcs = TRUE)
+# 5. Check again.
 ee_check()
 }
 }

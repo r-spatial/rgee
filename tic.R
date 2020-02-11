@@ -26,11 +26,11 @@ get_stage("before_install") %>%
 
     #Folders to save credentials
     ee_dirname <- path.expand("~/.config/earthengine")
-    ee_dirname_aybar <- sprintf("%s/data.colec.fbf/",ee_dirname)
+    ee_dirname_demo <- sprintf("%s/data.colec.fbf/",ee_dirname)
     dir.create(path = ee_dirname,
                recursive = TRUE,
                showWarnings = FALSE)
-    dir.create(path = ee_dirname_aybar,
+    dir.create(path = ee_dirname_demo,
                recursive = TRUE,
                showWarnings = FALSE)
 
@@ -39,18 +39,29 @@ get_stage("before_install") %>%
     json_key <- toJSON(list(refresh_token = key))
     ee_dirname <- path.expand("~/.config/earthengine")
     write(json_key, sprintf("%s/credentials",ee_dirname))
-    write(json_key, sprintf("%s/credentials",ee_dirname_aybar))
+    write(json_key, sprintf("%s/credentials",ee_dirname_demo))
 
     # Google Cloud Storage
     gcs <- 'GCS_AUTH_FILE.json'
     file.copy(from = path.expand(sprintf('~/%s',gcs)),
               to = sprintf("%s/%s",
-                           c(ee_dirname,ee_dirname_aybar),
+                           c(ee_dirname,ee_dirname_demo),
                            gcs))
     # Google Drive
     drive <- 'cd26ed5dc626f11802a652e81d02762e_data.colec.fbf@gmail.com'
     file.copy(from = path.expand(sprintf('~/%s',drive)),
               to = sprintf("%s/%s",
-                           c(ee_dirname,ee_dirname_aybar),
+                           c(ee_dirname,ee_dirname_demo),
                            drive))
+    ee_dirname_ndef <- sprintf("%s/ndef/",ee_dirname)
+
+    #not defined directory
+    dir.create(ee_dirname_ndef)
+    demo_cre <- sprintf("%s/%s", ee_dirname_demo, list.files(ee_dirname_demo))
+    ndef_cre <- sprintf("%s/%s", ee_dirname_ndef, list.files(ee_dirname_demo))
+    file.copy(demo_cre,
+              ndef_cre,
+              overwrite = TRUE,
+              recursive = FALSE,
+              copy.mode = TRUE)
   })

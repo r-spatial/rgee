@@ -39,6 +39,7 @@ library(stars)
 library(sf)
 
 ee_Initialize()
+ee_user_info()
 
 # Example 1 -- Download a Image
 # Communal Reserve Amarakaeri - Peru
@@ -69,6 +70,7 @@ ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
   filterBounds(ee_geom)$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
+
 mean_l5 <- ic_l5$mean()$rename("NDVI")
 mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
@@ -82,13 +84,14 @@ task_img <- ee$batch$Export$image$toDrive(
 
 task_img$start()
 ee_monitoring(task_img)
-img <- ee_download_drive(task_img)
-plot(img)
+
+img <- ee_download_drive(task = task_img)
 
 # Example 2 -- Download a Table
 amk_fc <- ee$FeatureCollection(
   list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
 )
+
 task_vector <- ee$batch$Export$table$toDrive(
   collection = amk_fc,
   folder = "Amarakaeri",

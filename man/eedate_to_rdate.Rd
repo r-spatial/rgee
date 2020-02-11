@@ -17,8 +17,9 @@ Function to pass objects of class ee$Date
 to as.POSIXct or numeric (unix time stamp)
 }
 \examples{
+library(rgee)
 ee_reattach()
 ee_Initialize()
-eeDate <- ee$Date('1980-01-01')
+eeDate <- ee$Date$fromYMD(1980,1,1)
 eedate_to_rdate(eeDate)
 }
