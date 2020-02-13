@@ -353,7 +353,7 @@ ee_users <- function() {
 
   if (length(ee_path) == 0) {
     stop('does not exist active users',
-         ', run rgee:::ee_Initialize() to fixed.')
+         ', run rgee::ee_Initialize() to fixed.')
   }
 
   #define space in the first column
@@ -383,7 +383,7 @@ ee_user_info <- function() {
   user_session_list <- list.files(user_session,full.names = TRUE)
   user <- ee$data$getAssetRoots()[[1]]$id
   # asset home
-  asset_home <- rgee:::ee_remove_project_chr(user)
+  asset_home <- ee_remove_project_chr(user)
   cat(crayon::blue('Earth Engine Asset Home:'),
       crayon::green(asset_home), '\n')
 
@@ -469,9 +469,9 @@ text_col <- function(x) {
 
 #' Earth Engine API version
 #'
-#' This function return the Earth Engine Python API
-#' version with which rgee was built
-#' @noRd
+#' This function returns the Earth Engine Python API
+#' version with which rgee was built.
+#' @export
 ee_version <- function() {
   "0.1.210"
 }

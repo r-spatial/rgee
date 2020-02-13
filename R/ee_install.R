@@ -1,102 +1,115 @@
-#' Interface to install non-R rgee dependencies
+#' Discover the Python versions available in the system
 #'
-#' R functions to install the necessary third-party
-#' python packages for rgee and removing Python
-#' Selenium Chromedriver and credentials
+#' This function enables callers to check which versions
+#' of Python will be discovered on a system. This function
+#' was adapted from \code{\link[reticulate]{py_discover_config}}.
 #'
-#' @param GoogleChromeVersion Google Chrome version of this system.
+#' @importFrom reticulate py_discover_config
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_discover_python_versions()
+#' }
+#' @export
+ee_discover_python_versions <- function() {
+  ret_info <- py_discover_config()
+  if (!is.null(ret_info$forced)) {
+    cat(
+      "NOTE: Python version was forced by",
+      ret_info$forced,
+      "consider remove this environment variable",
+      "to display more options.",
+      "
+"
+    )
+  }
+  print(ret_info$python_versions)
+}
+
+#' Set the python version to be used on rgee
+#'
+#' Set the python version to be used on rgee
+#'
+#' @param python_path The path to a Python interpreter, to be used with rgee.
+#' @importFrom utils menu
+#' @details It is necessary to restart R to observe change when setting a
+#' different Python version. ee_set_python_version will ask you to restart R.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_discover_python_versions()
+#' ee_set_python_version(python_path = "/usr/bin/my_python_version")
+#' }
+#' @export
+ee_set_python_version <- function(python_path) {
+  reticulate_dir <- path.expand("~/.Renviron")
+
+  # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
+  ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
+  ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="rgee"')
+  sink(reticulate_dir)
+  cat(ret_python)
+  cat("\n")
+  cat(ret_python_env)
+  sink()
+  # restartSession does not work properly
+  # if (restart_session && hasFun("restartSession")) {
+  #   restartSession()
+  # }
+  title <- paste0(
+    "rgee needs to restart R session to see changes.\n",
+    "Do you want to continues?"
+  )
+  response <- menu(c("Yes", "No"), title = title)
+  switch(response + 1,
+    cat("Restart R session to see changes.\n"),
+    quit("no"),
+    cat("Restart R session to see changes.\n")
+  )
+  invisible(TRUE)
+}
+
+#' Install the rgee's Python packages
+#'
+#' Install the necessary Python packages to use rgee
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
 #' default to force a specific installation method. Note that the
 #' "virtualenv" method is not available on Windows (as this isn't
 #' supported by rgee). Note also that since this command runs
 #' without privilege the "system" method is available only on Windows.
-#' @param pypath 	The path to a Python interpreter, to be used with rgee.
 #' @param conda Path to conda executable (or "auto" to find conda
 #' using the PATH and other conventional install locations).
-#' @param ee_version earthengine-api version to install. Specify "default" to
-#' install the latest version.
-#' @param envname Name of Python environment to install.
-#' @param extra_packages Additional Python packages to install along with rgee.
-#' @param restart_session Restart R session after installing (note this will
-#' only occur within RStudio).
-#' @param conda_python_version the Python version installed in the created conda
-#' environment. Python 3.6 is installed by default.
+#' @param ee_version earthengine-api version to install. When
+#' NULL (the default), the earthengine-api version with which
+#' rgee was built will be installed.
+#' @param envname Name of Python environment, or full path, which Python
+#' packages are to be installed.
+#' @param conda_python_version the Python version installed in the
+#' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to [reticulate::conda_install()] or
 #' [reticulate::virtualenv_install()].
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate source_python py_install
-#' @importFrom rstudioapi restartSession hasFun
-#' @details It is neccessary restart R to observe change when installing a
-#' Python packages. rgee only is compatible with Python version 3.5 >=.
-#' @name ee_install-tools
-#' @examples
-#' \dontrun{
-#' # It is just necessary once.
-#'
-#' # 1. Define Python path
-#' ee_set_python_version()
-#' # 2. Check dependencies
-#' ee_check()
-#' # 3. Install rgee Python packages
-#' ee_install_rgee_python_packages()
-#' # 3. Install selenium drivers  (optional)
-#' ee_install_drivers()
-#' # 4. Install GCS and DRIVE credentials (optional)
-#' ee_Initialize(drive = TRUE, gcs = TRUE)
-#' # 5. Check again.
-#' ee_check()
-#' }
+#' @details It is neccessary restart R to observe change when
+#' installing Python packages. rgee only is compatible with Python
+#' version 3.5 >=.
 #' @export
-ee_set_python_version <- function(pypath, restart_session = TRUE) {
-  reticulate_dir  <- path.expand("~/.Renviron")
-  fileConn <- file(reticulate_dir)
-  ret_python <- sprintf('RETICULATE_PYTHON="%s"', pypath)
-  if (Sys.info()[['sysname']] == 'Linux') {
-    writeLines(ret_python, fileConn)
-  } else if (Sys.info()[['sysname']] == 'Windows') {
-    writeLines(ret_python, fileConn)
-  } else if (Sys.info()[['sysname']] == 'Darwin') {
-    writeLines(ret_python, fileConn)
-  }
-  close(fileConn)
-
-  # restartSession does not work properly
-  # if (restart_session && hasFun("restartSession")) {
-  #   restartSession()
-  # }
-  title <- paste0("rgee needs to stop R session to see changes.\n",
-                  "Do you want to continues?")
-  response <- menu(c("Yes", "No"), title = title)
-  switch(response + 1,
-         cat("Restart R session to see changes.\n"),
-         quit("no"),
-         cat("Restart R session to see changes.\n"))
-
-  invisible(NULL)
-}
-
-#' @rdname ee_install-tools
-#' @export
-ee_install_rgee_python_packages <- function(method = c(
-                                              "auto",
-                                              "virtualenv",
-                                              "conda"
-                                            ),
-                                            conda = "auto",
-                                            ee_version = ee_version(),
-                                            envname = NULL,
-                                            extra_packages = c(
-                                              "selenium",
-                                              "bs4",
-                                              "pysmartDL",
-                                              "requests_toolbelt",
-                                              "oauth2client"
-                                            ),
-                                            restart_session = TRUE,
-                                            conda_python_version = "3.6",
-                                            quiet = FALSE,
-                                            ...) {
+ee_install_python_packages <- function(method = c(
+                                         "auto",
+                                         "virtualenv",
+                                         "conda"
+                                       ),
+                                       conda = "auto",
+                                       ee_version = NULL,
+                                       envname = "rgee",
+                                       conda_python_version = "3.7",
+                                       quiet = FALSE,
+                                       ...) {
+  rgee_packages <- c(
+    "selenium", "bs4", "pysmartDL",
+    "requests_toolbelt", "oauth2client"
+  )
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
     stop(
@@ -105,11 +118,15 @@ ee_install_rgee_python_packages <- function(method = c(
     )
   }
 
+  if (is.null(ee_version)) {
+    ee_version <- ee_version()
+  }
+
   # verify Python version
-  ee_check_python(quiet = TRUE)
+  ee_check_python(quiet = quiet)
 
   method <- match.arg(method)
-  extra_packages <- unique(extra_packages)
+  rgee_packages <- unique(rgee_packages)
   if (ee_version == "latest") {
     ee_version <- "earthengine-api"
   } else {
@@ -117,7 +134,7 @@ ee_install_rgee_python_packages <- function(method = c(
   }
 
   py_install(
-    packages = c(ee_version, extra_packages),
+    packages = c(ee_version, rgee_packages),
     envname = envname,
     method = method,
     conda = conda,
@@ -132,26 +149,39 @@ ee_install_rgee_python_packages <- function(method = c(
   # if (restart_session && hasFun("restartSession")) {
   #   restartSession()
   # }
-  title <- paste0("rgee needs to stop R session to see changes.\n",
-                  "Do you want to continues?")
+  title <- paste0(
+    "rgee needs to stop R session to see changes.\n",
+    "Do you want to continues?"
+  )
   response <- menu(c("Yes", "No"), title = title)
   switch(response + 1,
-         cat("Restart R session to see changes.\n"),
-         quit("no"),
-         cat("Restart R session to see changes.\n"))
+    cat("Restart R session to see changes.\n"),
+    quit("no"),
+    cat("Restart R session to see changes.\n")
+  )
 
-  invisible(NULL)
+  invisible(TRUE)
 }
 
-#' @rdname ee_install-tools
+
+#' Install ChromeDriver in the system
+#'
+#' Install ChromeDriver in the system
+#' @param ChromeDriverVersion Google Chrome version of the system.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_install_ChromeDriver()
+#' }
+#' @seealso \code{\link[rgee]{ee_upload}}
 #' @export
-ee_install_drivers <- function(GoogleChromeVersion) {
-  if (missing(GoogleChromeVersion)) {
+ee_install_ChromeDriver <- function(ChromeDriverVersion) {
+  if (missing(ChromeDriverVersion)) {
     stop(
-      "The GoogleChromeVersion argument was not defined.",
+      "The ChromeDriverVersion argument was not defined.",
       " Find the appropriate version of Google Chrome visiting:\n",
       "- chrome://settings/help \n",
-      "- After that run: rgee::ee_install_drivers(77)"
+      "- After that run,for e.g, rgee::ee_install_drivers(77)"
     )
   }
 
@@ -160,20 +190,20 @@ ee_install_drivers <- function(GoogleChromeVersion) {
   directory <- path.expand("~/.config/earthengine/")
 
   os_type <- switch(Sys.info()[["sysname"]],
-                    Windows = {
-                      "windows"
-                    },
-                    Linux = {
-                      "linux"
-                    },
-                    Darwin = {
-                      "macos"
-                    }
+    Windows = {
+      "windows"
+    },
+    Linux = {
+      "linux"
+    },
+    Darwin = {
+      "macos"
+    }
   )
   chromedriver_version <- ee_check_utils$download_chromedriver(
     directory = directory,
     operating_system = os_type,
-    version = substr(as.character(GoogleChromeVersion), 1, 2)
+    version = substr(as.character(ChromeDriverVersion), 1, 2)
   )
   cat(
     "Selenium ChromeDriver v",
