@@ -70,7 +70,7 @@ remotes::install_github("csaybar/rgee")
 
 `rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing)
 
-### Docker image (Recommended way to use rgee for the moment)
+#### Docker image (Recommended way to use rgee for the moment)
     
     docker pull csaybar/rgee
     docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
@@ -79,14 +79,14 @@ After that, in your preferred browser, run:
 
     127.0.0.1:8787
 
-## Non-R dependencies
+## Requirements
 
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a non-R 
-installation module, use it to quickly set up the external dependencies of `rgee`.
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`. Please run as follow:
 
-<center>
-<img src='https://user-images.githubusercontent.com/16768318/74588269-d99f5800-4ff2-11ea-8b99-6035f393bb0b.png' width=50%>
-</center>
+<p align="center">
+<img src='https://user-images.githubusercontent.com/16768318/74588269-d99f5800-4ff2-11ea-8b99-6035f393bb0b.png' width=60%>
+</p>
+
 
 Also, consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
 
