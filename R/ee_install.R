@@ -7,6 +7,7 @@
 #' library(rgee)
 #' ee_create_pyenv('ee')
 #' }
+#' @export
 ee_create_pyenv <- function(python_env) {
   os_type <- switch(Sys.info()[["sysname"]],
                     Windows = {
@@ -138,7 +139,7 @@ ee_install_python_packages <- function(method = c(
                                        ),
                                        conda = "auto",
                                        ee_version = NULL,
-                                       envname = "rgee",
+                                       envname = NULL,
                                        conda_python_version = "3.7",
                                        quiet = FALSE,
                                        ...) {

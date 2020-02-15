@@ -84,7 +84,7 @@ After that, in your preferred browser, run:
 Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`. Please run as follow:
 
 <p align="center">
-<img src='https://user-images.githubusercontent.com/16768318/74588269-d99f5800-4ff2-11ea-8b99-6035f393bb0b.png' width=60%>
+<img src='https://user-images.githubusercontent.com/16768318/74589205-2dae3a80-4ffb-11ea-811b-ce4525b9071f.png' width=60%>
 </p>
 
 
