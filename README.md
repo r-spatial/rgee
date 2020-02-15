@@ -60,12 +60,6 @@ image$bandNames()$getInfo()
 
 **Quite similar, isn’t it?**. However, there are additional smaller changes that you must consider when you use Google Earth Engine with R. Please check the [consideration section](https://csaybar.github.io/rgee/articles/considerations.html) before start coding\!
 
-## Requirements
-
-Prior to using `rgee` you need to install a **Python version higher than
-3.5** in your system. Here below you will find the full information to install `rgee` but not Python dependencies. Consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for
-customizing Python installation.
-
 ## Installation
 
 Install the `rgee` package from GitHub is quite simple, you just have to run in your R console as follows:
@@ -74,35 +68,7 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("csaybar/rgee")
 ```
 
-`rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it
-is necessary to install their external libraries, run as follows
-according to your operating system:
-
-### Windows
-
-Before install `rgee` be sure that
-[Rtools](https://cran.r-project.org/bin/windows/Rtools/) is installed in
-the system. The static libraries will automatically downloaded from
-[rwinlib](https://github.com/rwinlib/).
-
-### Linux
-To install rgee, you need to have the following system libraries:
-
-    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
-    sudo apt-get update
-    sudo apt-get install libprotobuf-dev protobuf-compiler libv8-3.14-dev libjq-dev libudunits2-dev libproj-dev libgeos-dev libspatialite-dev libgdal-dev libjson-c-dev libnetcdf-dev netcdf-bin
-
-### MacOS
-
-Use [Homebrew](https://brew.sh/) to install the following system libraries:
-
-    brew install pkg-config
-    brew install gdal
-    brew install netcdf
-    brew install libgit2
-    brew install udunits
-    brew install curl
-    brew install sqlite
+`rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing)
 
 ### Docker image (Recommended way to use rgee for the moment)
     
@@ -112,6 +78,18 @@ Use [Homebrew](https://brew.sh/) to install the following system libraries:
 After that, in your preferred browser, run:
 
     127.0.0.1:8787
+
+## Non-R dependencies
+
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a non-R 
+installation module, use it to quickly set up the external dependencies of `rgee`.
+
+<center>
+<img src='https://user-images.githubusercontent.com/16768318/74588269-d99f5800-4ff2-11ea-8b99-6035f393bb0b.png' width=50%>
+</center>
+
+Also, consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
+
 
 ## Package Conventions
 
