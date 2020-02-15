@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_extract.R
 \name{ee_extract}
 \alias{ee_extract}
-\title{Extract values for EE ImageCollections objects}
+\title{Extract values from Earth Engine Images or ImageCollections objects}
 \usage{
 ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
   ...)
@@ -19,11 +19,11 @@ ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
 \item{id}{Character. Name of the column to be used as a geometry index.}
 
 \item{...}{reduceRegions additional parameters. See
-reticulate::ee_help(ee$Image()$reduceRegions) for details.}
+reticulate::ee_help(ee$Image()$reduceRegions) for more details.}
 }
 \description{
-Extract values for a Image or ImageCollection spatial object
-at the locations of geometry object. You can use ee.Geometries,
+Extract values from a Image or ImageCollection spatial object
+at the locations of a geometry object. You can use ee.Geometries,
 ee.Features, ee.FeatureCollection and sf objects.
 }
 \details{
@@ -82,8 +82,7 @@ of its inputs.
 library(rgee)
 library(sf)
 
-# authenticate and initialize Earth Engine
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # get monthly precipitation from terraclimate

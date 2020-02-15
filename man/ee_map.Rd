@@ -36,11 +36,11 @@ ee_map(eeobject, ...)
 
 \item{...}{Ignored.}
 
-\item{vizparams}{A list that contains the visualization parameters. See
+\item{vizparams}{List of parameters for visualization. See
 details.}
 
 \item{center}{The longitude and latitude of the map center. If it is not
-defined, ee_map will try to estimate the centroid of the spatial EE object.}
+defined, ee_map will try to determine the centroid of the spatial EE object.}
 
 \item{zoom_start}{zoom level.}
 
@@ -60,9 +60,9 @@ through \code{\link[mapview]{mapview}}.
 \code{ee_map} takes advantage of the ee$Image()$getMapId python function for
 fetch and return a mapid and token that is suitable for use in a
 \code{\link[mapview]{mapview}}. To achieve desirable visualization
-effects, it will depend on the type of spatial EE object . For neither
+effects, it will depend on the type of spatial EE object . For either
 Image or ImageCollection, you can provide visualization parameters to
-ee_map by the parameter vizparams. The
+ee_map by using vizparams. The
 \href{https://developers.google.com/earth-engine/image_visualization}{
 parameters} available are:
 
@@ -88,8 +88,8 @@ and 1.0 is fully opaque) \tab  number \cr
 
 If you add an Image or ImageCollection to the map without any additional
 parameters, by default \code{ee_map} assigns the first three bands to red,
-green and blue, respectively. The default stretch is based on the min-max
-range.  For Geometry, Feature or FeatureCollection. The available
+green and blue bands, respectively. The default stretch is based on the
+min-max range.  For Geometry, Feature or FeatureCollection. The available
 vizparams are:
 \itemize{
 \item \strong{color}: A hex string in the format RRGGBB specifying the
@@ -100,9 +100,9 @@ default 3.
 }
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Case: Geometry*

@@ -11,7 +11,10 @@ Display credentials info of initialized user
 a table.
 }
 \examples{
+\dontrun{
 library(rgee)
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 ee_user_info()
+}
 }

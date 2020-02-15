@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_download.R
 \name{ee_download_gcs}
 \alias{ee_download_gcs}
-\title{Move EE results from Google Cloud Storage to Hard disk}
+\title{Move EE results from Google Cloud Storage to a local directory}
 \usage{
 ee_download_gcs(task, filename, overwrite = FALSE,
   GCS_AUTH_FILE = getOption("rgee.gcs.auth"), quiet = TRUE)
@@ -21,7 +21,8 @@ your Google Cloud Project}
 \item{quiet}{Logical. Suppress info message}
 }
 \description{
-Move results of an EE task saved in Google Cloud Storage to Hard disk.
+Move results of an EE task saved in Google Cloud Storage to a local
+directory.
 }
 \details{
 The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud
@@ -39,8 +40,9 @@ library(rgee)
 library(stars)
 library(sf)
 
-ee_reattach() # reattach ee as a reserve word
+ee_reattach()  # reattach ee as a reserved word
 ee_Initialize()
+ee_user_info()
 
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318

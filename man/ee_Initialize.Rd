@@ -8,16 +8,16 @@ ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE,
   quiet = FALSE)
 }
 \arguments{
-\item{email}{Character (optional, e.g. \code{pinkiepie@gmail.com}). The email
+\item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email
 name is used as a folder inside the path \code{rgee::ee_get_earthengine_path()}.
-This enable the multi-user support allowing to target a specific
+This enable a multi-user support allowing to target a specific
 Google identity.}
 
-\item{drive}{Logical (optional). Whether TRUE the drive credential
-will cache in the path \code{rgee::ee_get_earthengine_path()}.}
+\item{drive}{Logical (optional). If TRUE the drive credential
+will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
-\item{gcs}{logical. Whether TRUE the Google Cloud Storage
-credential will cache in the path \code{rgee::ee_get_earthengine_path()}.}
+\item{gcs}{logical. If TRUE the Google Cloud Storage
+credential will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
 \item{quiet}{logical. Suppress info messages.}
 }
@@ -25,23 +25,25 @@ credential will cache in the path \code{rgee::ee_get_earthengine_path()}.}
 Authorize rgee to manage Earth Engine resource, Google
 Drive and Google Cloud Storage. The \code{ee_initialize()} via
 web-browser asked to sign in to your Google account and
-grant permission for managing resources. This function is
+allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
 \code{ee_Initialize(...)} can also manage Google drive and Google
 Cloud Storage resources using the R packages googledrive and
-googlecloudStorageR respectively. By default, rgee do not need to them,
-these are just necessary for exportation and importation tasks.
-All the user credentials are save inside the directory
+googlecloudStorageR respectively. By default, rgee does not need to them,
+these are just necessary for export and import tasks.
+All the user credentials are saved in directory
 \code{~/.config/earthengine/}, if a user does not specified the
 the email argument all user credentials will be saved in a subdirectory
 called ndef.
 }
 \examples{
-# Simple init
 library(rgee)
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
+#ee_user_info()
+
+# Simple init
 ee_Initialize()
 
 # Advanced init
@@ -50,6 +52,8 @@ expr <- ee_Initialize(
   drive = TRUE,
   gcs = TRUE
 )
+ee_user_info()
+
 }
 \seealso{
 remove credential function: \cr

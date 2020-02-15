@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_python_packages}
 \alias{ee_install_python_packages}
-\title{Install the rgee's Python packages}
+\title{Install Python packages dependecies}
 \usage{
 ee_install_python_packages(method = c("auto", "virtualenv", "conda"),
   conda = "auto", ee_version = NULL, envname = "rgee",
@@ -20,7 +20,7 @@ without privilege the "system" method is available only on Windows.}
 using the PATH and other conventional install locations).}
 
 \item{ee_version}{earthengine-api version to install. When
-NULL (the default), the earthengine-api version with which
+this argument is NULL (the default), the version with which
 rgee was built will be installed.}
 
 \item{envname}{Name of Python environment, or full path, which Python
@@ -35,7 +35,7 @@ created conda environment. Python 3.7 is installed by default.}
 \code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
 }
 \description{
-Install the necessary Python packages to use rgee
+Install the necessary Python packages to be used in rgee.
 }
 \details{
 It is neccessary restart R to observe change when

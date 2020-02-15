@@ -8,7 +8,7 @@
 #' @param asset_type Character. The asset type to create ('Folder' or
 #' 'ImageCollection').
 #' @param final_path Character. Output filename
-#' (e.g users/pinkiepie_us/ic_moved)
+#' (e.g users/datacolecfbf/ic_moved)
 #' @param add_properties List. Set of parameters to established as a property
 #' of an EE object. See details.
 #' @param del_properties Character. Names of properties to be deleted. See
@@ -80,7 +80,8 @@
 #' )
 #' test_ic$getInfo()
 #'
-#' # 7. Create a report based on all tasks that is running or has finished
+#' # 7. Create a report based on all the tasks
+#' # that are running or have already been completed.
 #' ee_manage_task()
 #'
 #' # 8. Cancel all the running task

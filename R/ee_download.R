@@ -1,19 +1,19 @@
-#' Move Earth Engine (EE) results from Google Drive to Hard disk
+#' Move Earth Engine (EE) results from Google Drive to a local directory
 #'
-#' Move results of an EE task saved in Google Drive to Hard disk.
+#' Move results of an EE saved in Google Drive to a local directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
-#' @param filename Character. Output filename. If absent, a temporary
+#' @param filename Character. Output filename. If missing, a temporary
 #' file is created.
-#' @param overwrite A boolean indicating whether "filename" should be
-#' overwritten if it exists.
-#' @param st logical. By default this is TRUE, returning a sf (stars)
+#' @param overwrite A boolean argument which indicates indicating
+#' whether "filename" should be overwritten.
+#' @param st logical. By default it is TRUE, returning a sf (stars)
 #' object for EE tables (images). If FALSE, the output filename is returned.
 #' @param quiet logical. Suppress info message
 #'
 #' @details
-#' The task argument needs "COMPLETED" task state to work, since the
-#' parameters necessaries to locate the file into google drive are obtained
+#' The task argument needs a status as task "COMPLETED" to work, since the
+#' parameters necessary to locate the file into google drive are obtained
 #' from ee$batch$Export$*$toDrive(...)$start()$status().
 #' @return
 #' An sf, stars or character depending on the retunclass argument.
@@ -25,10 +25,11 @@
 #' library(stars)
 #' library(sf)
 #'
+#' ee_reattach()  # reattach ee as a reserved word
 #' ee_Initialize()
 #' ee_user_info()
 #'
-#' # Example 1 -- Download a Image
+#' # Example 1 -- Download an Image
 #' # Communal Reserve Amarakaeri - Peru
 #' xmin <- -71.132591318
 #' xmax <- -70.953664315
@@ -167,9 +168,10 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 }
 
 
-#' Move EE results from Google Cloud Storage to Hard disk
+#' Move EE results from Google Cloud Storage to a local directory
 #'
-#' Move results of an EE task saved in Google Cloud Storage to Hard disk.
+#' Move results of an EE task saved in Google Cloud Storage to a local
+#' directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param filename Output filename.
@@ -193,8 +195,9 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 #' library(stars)
 #' library(sf)
 #'
-#' ee_reattach() # reattach ee as a reserve word
+#' ee_reattach()  # reattach ee as a reserved word
 #' ee_Initialize()
+#' ee_user_info()
 #'
 #' # Communal Reserve Amarakaeri - Peru
 #' xmin <- -71.132591318
@@ -305,10 +308,9 @@ ee_download_gcs <- function(task, filename, overwrite = FALSE,
 
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after finished correctly a EE task, if it is
-#' missing the last one will be taken.
+#' @param task List generated after an EE task has been successfully completed.
 #' @param eeTaskList Logical, if \code{TRUE}, all Earth Engine tasks will
-#' listing initially.
+#' be listed.
 #'
 #' @export
 #' @examples
@@ -401,7 +403,7 @@ create_filenames <- function(basename, suffix, fileformat) {
   return(filename)
 }
 
-#' Create the download file according to its format
+#' Create a download file according to its format
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
   if (fileformat == "GEO_TIFF") {

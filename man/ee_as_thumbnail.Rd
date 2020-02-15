@@ -16,7 +16,7 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
 
 \item{vizparams}{A list that contains the visualization parameters.}
 
-\item{crs}{The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84
+\item{crs}{The EE Image projection e.g. 'EPSG:3857'. WGS84 by default
 ('EPSG:4326').}
 
 \item{quiet}{logical; suppress info messages.}
@@ -29,19 +29,19 @@ Download EE thumbnail images and read them as stars objects.
 This function is a wrapper around \code{ee$Image()$getThumbURL()}.
 }
 \details{
-The argument dimensions will define the "from" & "to" parameters of the
-stars object. It must be a single numeric value or a two-element vector.
+The argument dimensions will define the stars object parameters
+"from" & "to". It must be a single numeric value or a two-element vector.
 If not defined, 256 is taken by default as the dimension of x
-(from 1 to 256), and y will be computed by proportional scaling. Huge images
+(from 1 to 256), and y scales down proportionally. Huge images
 might cause plodding connections. See
 \href{https://developers.google.com/earth-engine/client_server}{Client vs
-Server} for details.
+Server} for more details.
 
-The vizparams set up the number of bands. In \code{ee_as_thumbnail} just is
-possible export one (G) or three band (RGB) images, additional  parameters
-can be passed on to control color, intensity, the max(min) value, etc. See
-below for a more compressible list of all the parameters that admit
-\code{ee_as_thumbnail}.
+The vizparams set up the number of bands up. In \code{ee_as_thumbnail} just is
+possible export only one (G) or three-band (RGB) images. Additional
+parameters can be passed on to control color, intensity, the maximum and
+minimum values, etc. The below table provides all the parameters that
+admit \code{ee_as_thumbnail}.
 
 \tabular{lll}{
 \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
@@ -71,7 +71,7 @@ getting the CRS of an Earth Engine Image.
 library(rgee)
 library(stars)
 
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
 dem_palette <- c(

@@ -5,14 +5,13 @@
 #' successfully at least once  `ee_Initialize(...)`. However, if you run
 #' `ee_Initialize(...)` with the same email argument the new credentials
 #' will be overwritten.
-#' @param email Character (optional, e.g. `pinkiepie@gmail.com`).
+#' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`).
 #' The directory (all user credentials) to delete.
 #' @param quiet Logical (optional). Suppress info messages.
 #' @examples {
 #' \dontrun{
 #' ee_remove_credentials()
-#' ee_remove_credentials('pinkiepie.us')
-#' ee_remove_credentials('`pinkiepie.us@gmail.com`')
+#' ee_remove_credentials('data.colec.fbf@gmail.com')
 #' }
 #' }
 #' @export
@@ -67,3 +66,38 @@ ee_remove_driver <- function(quiet = FALSE) {
   }
   invisible(TRUE)
 }
+
+#' Remove reticulate system variables from .Renviron
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_remove_driver()
+#' }
+#' @export
+ee_clean_pyenv <- function() {
+  # Read line by line .Renviron
+  renviron_file <- path.expand("~/.Renviron")
+  con  <- file(renviron_file, open = "r")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii = ii + 1
+  }
+
+  # Remove system variables
+  # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
+  system_vars <- lines[!grepl("RETICULATE_PYTHON", lines)]
+  fileConn <- file(renviron_file)
+  writeLines(system_vars, fileConn)
+  close(fileConn)
+
+  invisible(TRUE)
+}
+

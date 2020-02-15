@@ -1,7 +1,7 @@
-#' Extract values for EE ImageCollections objects
+#' Extract values from Earth Engine Images or ImageCollections objects
 #'
-#' Extract values for a Image or ImageCollection spatial object
-#' at the locations of geometry object. You can use ee.Geometries,
+#' Extract values from a Image or ImageCollection spatial object
+#' at the locations of a geometry object. You can use ee.Geometries,
 #' ee.Features, ee.FeatureCollection and sf objects.
 #'
 #' @param x ee$Image or ee$ImageCollection.
@@ -10,7 +10,7 @@
 #' @param scale A nominal scale in meters of the projection to work in.
 #' @param id Character. Name of the column to be used as a geometry index.
 #' @param ... reduceRegions additional parameters. See
-#' reticulate::ee_help(ee$Image()$reduceRegions) for details.
+#' reticulate::ee_help(ee$Image()$reduceRegions) for more details.
 #' @importFrom sf st_geometry st_geometry<-
 #' @details
 #' The fun arguments just admit Reducer objects that return one value.
@@ -67,8 +67,7 @@
 #' library(rgee)
 #' library(sf)
 #'
-#' # authenticate and initialize Earth Engine
-#' ee_reattach() # reattach ee as a reserve word
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # get monthly precipitation from terraclimate

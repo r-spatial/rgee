@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_download.R
 \name{ee_download_drive}
 \alias{ee_download_drive}
-\title{Move Earth Engine (EE) results from Google Drive to Hard disk}
+\title{Move Earth Engine (EE) results from Google Drive to a local directory}
 \usage{
 ee_download_drive(task, filename, overwrite = FALSE, st = TRUE,
   quiet = FALSE)
@@ -10,13 +10,13 @@ ee_download_drive(task, filename, overwrite = FALSE, st = TRUE,
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Character. Output filename. If absent, a temporary
+\item{filename}{Character. Output filename. If missing, a temporary
 file is created.}
 
-\item{overwrite}{A boolean indicating whether "filename" should be
-overwritten if it exists.}
+\item{overwrite}{A boolean argument which indicates indicating
+whether "filename" should be overwritten.}
 
-\item{st}{logical. By default this is TRUE, returning a sf (stars)
+\item{st}{logical. By default it is TRUE, returning a sf (stars)
 object for EE tables (images). If FALSE, the output filename is returned.}
 
 \item{quiet}{logical. Suppress info message}
@@ -25,11 +25,11 @@ object for EE tables (images). If FALSE, the output filename is returned.}
 An sf, stars or character depending on the retunclass argument.
 }
 \description{
-Move results of an EE task saved in Google Drive to Hard disk.
+Move results of an EE saved in Google Drive to a local directory.
 }
 \details{
-The task argument needs "COMPLETED" task state to work, since the
-parameters necessaries to locate the file into google drive are obtained
+The task argument needs a status as task "COMPLETED" to work, since the
+parameters necessary to locate the file into google drive are obtained
 from ee$batch$Export$*$toDrive(...)$start()$status().
 }
 \examples{
@@ -38,10 +38,11 @@ library(rgee)
 library(stars)
 library(sf)
 
+ee_reattach()  # reattach ee as a reserved word
 ee_Initialize()
 ee_user_info()
 
-# Example 1 -- Download a Image
+# Example 1 -- Download an Image
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.132591318
 xmax <- -70.953664315

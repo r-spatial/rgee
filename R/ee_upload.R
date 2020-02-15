@@ -1,51 +1,51 @@
 #' Upload sf or stars objects into a GEE asset
 #'
-#' Upload either images or vectors to Google Earth Engine asset
+#' Upload images and vectors into Google Earth Engine asset
 #'
-#' @param x Character, sf or stars object to upload into a GEE asset.
+#' @param x Character, sf or stars object to be uploaded into a GEE asset.
 #' @param filename Character. Asset destination path,
-#' e.g. users/pinkiepie/myponycollection.
-#' @param bucket bucketname you are uploading to. See details.
-#' @param properties List. Set of parameters to established as a property of
+#' e.g. users/datacolecfbf/mydatacollection.
+#' @param bucket bucketname which you are uploading. See details.
+#' @param properties List. Set of parameters to be set up as a property of
 #' an EE object. See details.
-#' @param start_time Character. The timestamp associated with the asset. The
-#' initial time stamp is set to the nominal image acquisition time for single
+#' @param start_time Character. Timestamp associated with the asset. The
+#' initial time stamp is set up as a nominal image acquisition time for single
 #' scenes.
-#' @param end_time Character. Useful for assets that correspond to an
-#' interval of time. The ending time stamp is set to the nominal image
+#' @param end_time Character. Useful for assets that correspond to a certain
+#' interval of time. The ending time stamp is set up as a nominal image
 #' acquisition time for single scenes.
 #' @param selenium_params List. Optional parameters when bucket is NULL.
-#' Parameters for setting selenium. See details.
-#' @param clean Logical; whether is TRUE cache will cleaned, see Description.
-#' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
+#' For parameters to set selenium. See details.
+#' @param clean Logical; If is TRUE the cache is cleaned, see Description.
+#' @param reinit Logical; run ee_Initialize(gcs=TRUE) before uploading.
 #' @param quiet Logical. Suppress info message.
 #' @param ... ignored
 #' @importFrom methods is as
 #' @importFrom sf write_sf
 #' @details
-#' It is necessary, for uploading process, get authorization to read & write
+#' For uploading process, it is necessary an authorization to read & write
 #' into a Google Cloud Storage (GCS) bucket. Earth Engine provides a
-#' provisional for free space into GCS through gs://earthengine-uploads/. If
-#' the bucket argument is absent, this function will use Selenium driver for
-#' getting access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs}
+#' provisional for free space on GCS through gs://earthengine-uploads/. If
+#' the bucket argument is absent, this function will use Selenium driver to
+#' get access to the URI mentioned bellow, see \link{ee_upload_file_to_gcs}
 #' for details. Install and check the Selenium drivers for Google Chrome is
 #' possible as follow:\cr
 #' - rgee::ee_install_drivers()\cr
 #' - rgee::ee_check_drivers()\cr
 #'
-#' The properties argument is just available for image uploads, is you are
-#' interesting in setting properties in FeatureCollection. Please use
-#' \link{ee_manage_set_properties} after \link{ee_upload}.
+#' The properties argument is just available for image uploaded. If you are
+#' interesting to set properties in FeatureCollection. Please use
+#' \link{ee_manage_set_properties} and then \link{ee_upload}.
 #'
-#' The selenium_params argument is a three-element list consisting of:\cr
-#'  - gmail_account: The google account. If it is not specified, it will
-#'  obtained from ee$data$getAssetRoots().\cr
-#'  - showpassword: Logical. After put the google account into
+#' The selenium_params argument is a three-element list which consists of:\cr
+#'  - gmail_account: Google account. If it is not specified, it will
+#'  obtained from rgee::ee_user_info().\cr
+#'  - showpassword: Logical. Once google account is filled into
 #'  \link[getPass]{getPass}, should be shown?.
-#'  - cache: Logical. TRUE will use the cookies saved on the /temp directory.
+#'  - cache: Logical. TRUE will use the cookies stored on the /temp directory.
 #'
 #' With respect to the variables time_start and time_end, both needs
-#' to be specified as seconds since the epoch (1970-01-01). Assumed to
+#' to be specified as seconds (since the epoch 1970-01-01 00:00:00). Assumed to
 #' be in the UTC time zone.
 #' @name ee_upload
 #' @examples
@@ -58,18 +58,18 @@
 #' gcs_bucket <- 'bag_csaybar'
 #' ee_check_drivers()
 #'
-#' ee_reattach() # reattach ee as a reserve word
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(email = 'data.colec.fbf', gcs = TRUE)
 #'
 #' # Create a folder in Earth Engine Asset
 #' filename <- sprintf("users/%s/rgee_upload/", username)
 #' ee_manage_create(filename)
 #'
-#' # Select image to upload
+#' # Select an image to upload
 #' tif = system.file("tif/geomatrix.tif", package = "stars")
 #' geomatrix = read_stars(tif) %>% st_warp(crs=st_crs(4326))
 #'
-#' # Upload to earth egnine
+#' # Uploading to earth egnine
 #' ee_upload(x = geomatrix,
 #'           filename = paste0(filename,"geomatrix"),
 #'           bucket = gcs_bucket)

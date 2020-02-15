@@ -7,24 +7,24 @@
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle)
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
-#' @param crs The EE Image projection e.g. 'EPSG:3857'. Defaults to WGS84
+#' @param crs The EE Image projection e.g. 'EPSG:3857'. WGS84 by default
 #' ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
 #'
-#' The argument dimensions will define the "from" & "to" parameters of the
-#' stars object. It must be a single numeric value or a two-element vector.
+#' The argument dimensions will define the stars object parameters
+#' "from" & "to". It must be a single numeric value or a two-element vector.
 #' If not defined, 256 is taken by default as the dimension of x
-#' (from 1 to 256), and y will be computed by proportional scaling. Huge images
+#' (from 1 to 256), and y scales down proportionally. Huge images
 #' might cause plodding connections. See
 #' \href{https://developers.google.com/earth-engine/client_server}{Client vs
-#' Server} for details.
+#' Server} for more details.
 #'
-#' The vizparams set up the number of bands. In `ee_as_thumbnail` just is
-#' possible export one (G) or three band (RGB) images, additional  parameters
-#' can be passed on to control color, intensity, the max(min) value, etc. See
-#' below for a more compressible list of all the parameters that admit
-#' `ee_as_thumbnail`.
+#' The vizparams set up the number of bands up. In `ee_as_thumbnail` just is
+#' possible export only one (G) or three-band (RGB) images. Additional
+#' parameters can be passed on to control color, intensity, the maximum and
+#' minimum values, etc. The below table provides all the parameters that
+#' admit `ee_as_thumbnail`.
 #'
 #' \tabular{lll}{
 #' \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
@@ -62,7 +62,7 @@
 #' library(rgee)
 #' library(stars)
 #'
-#' ee_reattach() # reattach ee as a reserve word
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
 #' dem_palette <- c(
@@ -96,7 +96,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   ee_crs <- sprintf("EPSG:%s", crs)
 
   if (missing(region)) {
-    stop("It is necessary define a region as ee$Geometry ")
+    stop("It is necessary to define a region as ee$Geometry ")
   }
 
   if (missing(dimensions)) {
@@ -162,7 +162,7 @@ if (!quiet) {
   # Handling problems with respect to the format
   # of the getTHumbURL (sometimes jpeg other png)
   error_message_I <- paste0(
-    "Error arise after try to download",
+    "Error arise after trying to download",
     "the getThumbURL (it needs to be ",
     "either jpeg or png)"
   )

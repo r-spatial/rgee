@@ -30,31 +30,23 @@ ee_print(eeobject, clean = FALSE, max_display = 0)
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
 
-\item{clean}{Logical; Whether is TRUE cache will cleaned, see Description.}
+\item{clean}{Logical. If it is TRUE the cache will be cleaned.}
 
 \item{max_display}{Set the max number of properties to display.}
 }
 \description{
-Print and return metadata about Spatial Earth Engine Objects
-}
-\details{
-For avoiding computing time extremely large and "EEException"
-related with memory consuming (
-\href{https://developers.google.com/earth-engine/ic_info}{See this
-Earth Engine Guide}) just the first element of: ee$Image, ee$ImageCollection,
-ee$Feature and ee$FeatureCollection will be used to generated Earth Engine
-object properties. By default ee_print create a list with all the print
-parameters. It is due to avoid repeated queries to the Earth Engine Server.
+Print and return metadata about Spatial Earth Engine Objects. By default
+ee_print will create a table printing all the available metadata.
 }
 \examples{
 library(rgee)
 
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee$Filter()$eq("WRS_PATH", 44))$
   filter(ee$Filter()$eq("WRS_ROW", 34))$
   filterDate("2014-03-01", "2014-08-01")
-ee_print(eeobject, max_display = 118)
+ee_print(eeobject, max_display = 0)
 }

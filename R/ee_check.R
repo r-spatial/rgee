@@ -8,6 +8,7 @@
 #' py_discover_config source_python
 #' @examples
 #' library(rgee)
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_check()
 #' @export
 ee_check <- function() {
@@ -70,12 +71,15 @@ ee_check_rgee_python_packages <- function() {
       )
     } else {
       ee_message <- sprintf(
-        "Earth Engine Python API (version %s) is %s %s %s %s %s",
+        "The Earth Engine Python API (version %s) is %s%s%s%s%s(%s)%s%s",
         version_ee,
-        "installed correctly in their system. rgee was built",
-        "using its version 0.1.210. To avoid possible bugs, we",
-        "highly recommend installing that version, you could use",
-        "ee_install_python_ee() to achieve it.",
+        "installed correctly in the system but rgee was built ",
+        "using the version ",
+        ee_version(),
+        ". To avoid possible issues, we ",
+        "highly recommend install version used by rgee ",
+        ee_version(),
+        ", you could use ee_install_python_packages() to achieve it. ",
         "If the installation is successful, restart to see changes."
       )
       warning(ee_message)
@@ -124,7 +128,7 @@ ee_check_drivers <- function() {
       "chromedriver not available in their system.",
       "rgee::ee_upload(bucket=NULL) will not work."
     ))
-    message("Try rgee::ee_install_drivers() to fixed.\n")
+    message("Try rgee::ee_install_ChromeDriver() to fixed.\n")
   }
 }
 

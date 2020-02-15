@@ -1,4 +1,35 @@
-#' Discover the Python versions available in the system
+#' Create an isolated Python virtual environment to be used
+#' in rgee
+#' @param python_env The name of, or path to, a Python virtual environment.
+#' @importFrom reticulate conda_create virtualenv_create
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_create_pyenv('ee')
+#' }
+ee_create_pyenv <- function(python_env) {
+  os_type <- switch(Sys.info()[["sysname"]],
+                    Windows = {
+                      "windows"
+                    },
+                    Linux = {
+                      "linux"
+                    },
+                    Darwin = {
+                      "macos"
+                    }
+  )
+  if (os_type == "linux" | os_type == "macos") {
+    virtualenv_create(python_env)
+  } else {
+    conda_create(python_env)
+  }
+  invisible(TRUE)
+}
+
+
+#' Discover all the Python environments available
+#' in the system
 #'
 #' This function enables callers to check which versions
 #' of Python will be discovered on a system. This function
@@ -8,10 +39,11 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_discover_python_versions()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_discover_pyenvs()
 #' }
 #' @export
-ee_discover_python_versions <- function() {
+ee_discover_pyenvs <- function() {
   ret_info <- py_discover_config()
   if (!is.null(ret_info$forced)) {
     cat(
@@ -19,34 +51,37 @@ ee_discover_python_versions <- function() {
       ret_info$forced,
       "consider remove this environment variable",
       "to display more options.",
-      "
-"
+      ""
     )
   }
   print(ret_info$python_versions)
 }
 
-#' Set the python version to be used on rgee
+#' Set the Python environment to be used on rgee
 #'
-#' Set the python version to be used on rgee
 #'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
+#' @param python_env The name of, or path to, a Python virtual environment.
 #' @importFrom utils menu
 #' @details It is necessary to restart R to observe change when setting a
 #' different Python version. ee_set_python_version will ask you to restart R.
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_discover_python_versions()
-#' ee_set_python_version(python_path = "/usr/bin/my_python_version")
+#' ee_set_python_version(
+#'   python_path = "user/.virtualenvs/ee/bin/python",
+#'   python_env = 'ee'
+#' )
 #' }
 #' @export
-ee_set_python_version <- function(python_path) {
+ee_set_pyenv <- function(python_path, python_env) {
   reticulate_dir <- path.expand("~/.Renviron")
 
   # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
   ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
-  ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="rgee"')
+  ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
   sink(reticulate_dir)
   cat(ret_python)
   cat("\n")
@@ -69,9 +104,10 @@ ee_set_python_version <- function(python_path) {
   invisible(TRUE)
 }
 
-#' Install the rgee's Python packages
+#' Install Python packages dependecies
 #'
-#' Install the necessary Python packages to use rgee
+#' Install the necessary Python packages to be used in rgee.
+#'
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
 #' default to force a specific installation method. Note that the
@@ -81,7 +117,7 @@ ee_set_python_version <- function(python_path) {
 #' @param conda Path to conda executable (or "auto" to find conda
 #' using the PATH and other conventional install locations).
 #' @param ee_version earthengine-api version to install. When
-#' NULL (the default), the earthengine-api version with which
+#' this argument is NULL (the default), the version with which
 #' rgee was built will be installed.
 #' @param envname Name of Python environment, or full path, which Python
 #' packages are to be installed.

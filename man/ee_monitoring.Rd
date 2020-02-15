@@ -7,11 +7,10 @@
 ee_monitoring(task, eeTaskList = FALSE)
 }
 \arguments{
-\item{task}{List generated after finished correctly a EE task, if it is
-missing the last one will be taken.}
+\item{task}{List generated after an EE task has been successfully completed.}
 
 \item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will
-listing initially.}
+be listed.}
 }
 \description{
 Monitoring Earth Engine task progress

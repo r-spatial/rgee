@@ -16,15 +16,15 @@ An sf class object, see Details.
 Convert an EE table in a sf object
 }
 \details{
-For exporting large spatial objects is better creates export pipelines
-through \code{ee$batch$Export$table$*} and \code{rgee::ee_download_*} instead of
+Export large spatial objects it preferable to create export pipelines
+by using \code{ee$batch$Export$table$*} and \code{rgee::ee_download_*} instead of
 using \code{ee_as_sf}. See
 \href{https://developers.google.com/earth-engine/client_server}{Client
 vs Server} documentation for details.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 roi <- ee$Geometry$Polygon(list(
   c(-122.27577209472656, 37.891247253777074),

@@ -7,7 +7,7 @@
 ee_remove_credentials(email = "not_defined", quiet = FALSE)
 }
 \arguments{
-\item{email}{Character (optional, e.g. \code{pinkiepie@gmail.com}).
+\item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}).
 The directory (all user credentials) to delete.}
 
 \item{quiet}{Logical (optional). Suppress info messages.}
@@ -23,8 +23,7 @@ will be overwritten.
 {
 \dontrun{
 ee_remove_credentials()
-ee_remove_credentials('pinkiepie.us')
-ee_remove_credentials('`pinkiepie.us@gmail.com`')
+ee_remove_credentials('data.colec.fbf@gmail.com')
 }
 }
 }

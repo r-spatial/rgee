@@ -1,28 +1,24 @@
 #' Print and return metadata about Spatial Earth Engine Objects
 #'
+#' Print and return metadata about Spatial Earth Engine Objects. By default
+#' ee_print will create a table printing all the available metadata.
+#'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
-#' @param clean Logical; Whether is TRUE cache will cleaned, see Description.
+#' @param clean Logical. If it is TRUE the cache will be cleaned.
 #' @param max_display Set the max number of properties to display.
-#' @details For avoiding computing time extremely large and "EEException"
-#' related with memory consuming (
-#' \href{https://developers.google.com/earth-engine/ic_info}{See this
-#' Earth Engine Guide}) just the first element of: ee$Image, ee$ImageCollection,
-#' ee$Feature and ee$FeatureCollection will be used to generated Earth Engine
-#' object properties. By default ee_print create a list with all the print
-#' parameters. It is due to avoid repeated queries to the Earth Engine Server.
 #' @importFrom sf st_crs
 #' @examples
 #' library(rgee)
 #'
-#' ee_reattach() # reattach ee as a reserve word
+#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 #'   filter(ee$Filter()$eq("WRS_PATH", 44))$
 #'   filter(ee$Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-03-01", "2014-08-01")
-#' ee_print(eeobject, max_display = 118)
+#' ee_print(eeobject, max_display = 0)
 #' @export
 ee_print <- function(eeobject, clean = FALSE, max_display = 0) {
   UseMethod("ee_print")
@@ -58,12 +54,14 @@ ee_print.ee.geometry.Geometry <- function(eeobject, clean = FALSE,
     )
     save(mtd, file = fc_metadata)
   }
+  cat(cli::rule(),"\n")
   cat(sprintf("Class                          : %s \n", mtd$name))
   cat(sprintf("Geometry type                  : %s \n", mtd$geom_type))
   cat(sprintf("nGeometries                    : %s \n", mtd$geom_ngeom))
   cat(sprintf("EPSG (SRID)                    : %s \n", mtd$geom_epsg))
   cat(sprintf("proj4string                    : %s \n", mtd$geom_proj4string))
   cat(sprintf("Geodesic                       : %s \n", mtd$geom_geodesic))
+  cat(cli::rule(),"\n")
   invisible(mtd)
 }
 
@@ -102,7 +100,7 @@ ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE,
     )
     save(mtd, file = fc_metadata)
   }
-
+  cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
   cat(sprintf("Geometry type              : %s \n", mtd$ft_type))
   cat(sprintf("nGeometries                : %s \n", mtd$ft_ngeom))
@@ -113,6 +111,7 @@ ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE,
   if (max_display != 0) {
     cat(ee_create_table(mtd$ft_properties_names, max_display))
   }
+  cat(cli::rule(),"\n")
   invisible(mtd)
 }
 
@@ -157,11 +156,12 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
     )
     save(mtd, file = fc_metadata)
   }
+  cat(cli::rule(),"\n")
   cat(sprintf("Class                          : %s \n", mtd$name))
   cat(sprintf("nFeatures                      : %s \n", mtd$fc_nfeatures))
-  cat(sprintf("Geometry type                  : %s \n", mtd$fc_geometry_type))
-  cat(sprintf("EPSG (SRID)                    : %s \n", mtd$fc_epsg))
-  cat(sprintf("proj4string                    : %s \n", mtd$fc_proj4string))
+  cat(sprintf("Geometry type*                 : %s \n", mtd$fc_geometry_type))
+  cat(sprintf("EPSG (SRID)*                   : %s \n", mtd$fc_epsg))
+  cat(sprintf("proj4string*                   : %s \n", mtd$fc_proj4string))
   cat(sprintf(
     "nFeatureCollection properties  : %s \n",
     mtd$fc_properties_length
@@ -170,12 +170,14 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
     cat(ee_create_table(mtd$fc_properties_names, max_display))
   }
   cat(sprintf(
-    "nFeature properties            : %s \n",
+    "nFeature properties*           : %s \n",
     mtd$f_properties_length
   ))
   if (max_display != 0) {
     cat(ee_create_table(mtd$f_properties_names, max_display))
   }
+  cat(cli::rule(),"\n")
+  cat("* Note: Calculated from the first element (ee.Feature)")
   invisible(mtd)
 }
 
@@ -232,6 +234,7 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
     )
     save(mtd, file = fc_metadata)
   }
+  cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
   cat(sprintf("#Bands                     : %s \n", mtd$img_nbands))
   cat(sprintf("Bands names                : %s \n", paste0(mtd$img_bands_names,
@@ -248,6 +251,7 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
   if (max_display != 0) {
     cat(ee_create_table(mtd$img_properties_names, max_display))
   }
+  cat(cli::rule(),"\n")
   invisible(mtd)
 }
 
@@ -257,7 +261,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
                                                         clean = FALSE,
                                                         max_display = 0) {
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata) && !clean) {
+  if (file.exists(fc_metadata) & !clean) {
     load(fc_metadata)
   } else {
     ic <- eeobject$getInfo()
@@ -310,26 +314,27 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     )
     save(mtd, file = fc_metadata)
   }
+  cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
   cat(sprintf("nImages                    : %s \n", mtd$ic_nimages))
-  cat(sprintf("nBands                     : %s \n", mtd$ic_nbands))
-  cat(sprintf("Bands names                : %s \n", paste0(mtd$ic_bands_names,
+  cat(sprintf("nBands*                    : %s \n", mtd$ic_nbands))
+  cat(sprintf("Bands names*               : %s \n", paste0(mtd$ic_bands_names,
     collapse = " "
   )))
-  cat(sprintf("EPSG (SRID)                : %s \n", mtd$ic_epsg))
-  cat(sprintf("proj4string                : %s \n", mtd$ic_proj4string))
-  cat(sprintf("Geotransform               : [%s] \n", mtd$ic_geotransform))
-  cat(sprintf("Scale (m)                  : %s \n", mtd$ic_scale))
-  cat(sprintf("Dimensions                 : %s \n", mtd$ic_dimensions))
-  cat(sprintf("nPixels by image           : %s \n", mtd$ic_npixels))
-  cat(sprintf("Data type                  : %s \n", mtd$ic_datatype))
+  cat(sprintf("EPSG (SRID)*               : %s \n", mtd$ic_epsg))
+  cat(sprintf("proj4string*               : %s \n", mtd$ic_proj4string))
+  cat(sprintf("Geotransform*              : [%s] \n", mtd$ic_geotransform))
+  cat(sprintf("Scale (m)*                 : %s \n", mtd$ic_scale))
+  cat(sprintf("Dimensions*                : %s \n", mtd$ic_dimensions))
+  cat(sprintf("nPixels by image*          : %s \n", mtd$ic_npixels))
+  cat(sprintf("Data type*                 : %s \n", mtd$ic_datatype))
   cat(sprintf(
-    "Image Properties           : %s \n",
+    "Image Properties*          : %s \n",
     length(mtd$ic_properties_i)
   ))
-  if (max_display != 0) {
-    cat(ee_create_table(mtd$ic_properties_i, max_display))
-  }
+  # if (max_display != 0) {
+  #   cat(ee_create_table(mtd$ic_properties_i, max_display))
+  # }
   cat(sprintf(
     "ImageCollection Properties : %s \n",
     length(mtd$ic_properties_ic)
@@ -337,6 +342,8 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
   if (max_display != 0) {
     cat(ee_create_table(mtd$ic_properties_ic, max_display))
   }
+  cat(cli::rule(),"\n")
+  cat("* Note: Calculated from the first element (ee.Image)")
   invisible(mtd)
 }
 

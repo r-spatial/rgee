@@ -25,7 +25,7 @@ for this function must always be given to \pkg{reticulate}.
 }
 \examples{
 library(rgee)
-ee_reattach() # reattach ee as a reserve word
+ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Earth Engine List
