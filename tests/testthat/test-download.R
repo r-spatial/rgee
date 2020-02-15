@@ -48,7 +48,7 @@ while (class(try_gd_rm) == "try-error" & count < 5) {
 }
 
 try(googledrive::drive_mkdir("rgee_testing"))
-googleCloudStorageR::gcs_global_bucket("bag_csaybar")
+googleCloudStorageR::gcs_global_bucket("rgee_dev")
 buckets <- googleCloudStorageR::gcs_list_objects()
 gcs_todelete <- buckets$name[grepl("^testing/.*$", buckets$name)]
 mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
@@ -97,12 +97,12 @@ test_that("TFRECORD_DRIVE", {
   img <- ee_download_drive(task = task_img)
   expect_equal(img, TRUE)
 })
-#
+
 # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS", {
   task_img <- ee$batch$Export$image$toCloudStorage(
     image = image_test,
-    bucket = "bag_csaybar",
+    bucket = "rgee_dev",
     fileFormat = "GEOTIFF",
     fileNamePrefix = "testing/test_image_GEOTIFF"
   )
@@ -117,7 +117,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("CTFRECORD_GCS",{
 #   task_img <- ee$batch$Export$image$toCloudStorage(
 #     image = image_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "TFRECORD",
 #     fileNamePrefix = "testing/test_image_CTFRECORD",
 #     formatOptions = imageExportFormatOptions_1
@@ -132,7 +132,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("TFRECORD_GCS",{
 #   task_img <- ee$batch$Export$image$toCloudStorage(
 #     image = image_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "TFRECORD",
 #     fileNamePrefix = "testing/test_image_TFRECORD",
 #     formatOptions = imageExportFormatOptions_2
@@ -247,7 +247,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("CSV_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "CSV",
 #     fileNamePrefix = "testing/test_fc_CSV"
 #   )
@@ -260,7 +260,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("SHP_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "SHP",
 #     fileNamePrefix = "testing/test_fc_SHP"
 #   )
@@ -274,7 +274,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("KML_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "KML",
 #     fileNamePrefix = "testing/test_fc_KML"
 #   )
@@ -288,7 +288,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("KMZ_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "KMZ",
 #     fileNamePrefix = "testing/test_fc_KMZ"
 #   )
@@ -302,7 +302,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("GEOJSON_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "GEOJSON",
 #     fileNamePrefix = "testing/test_fc_GEOJSON"
 #   )
@@ -315,7 +315,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("CTFRECORD_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "TFRECORD",
 #     fileNamePrefix = "testing/test_fc_CTFRECORD",
 #     formatOptions = vectorExportFormatOptions_1
@@ -330,7 +330,7 @@ test_that("GEOTIFF_GCS", {
 # test_that("TFRECORD_VECTOR_GCS",{
 #   task_vector <- ee$batch$Export$table$toCloudStorage(
 #     collection = fc_test,
-#     bucket = "bag_csaybar",
+#     bucket = "rgee_dev",
 #     fileFormat = "TFRECORD",
 #     fileNamePrefix = "testing/test_fc_TFRECORD",
 #     formatOptions = vectorExportFormatOptions_2

@@ -92,6 +92,20 @@
 #' }
 #' @export
 ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
+
+  # Is the same EE user?
+  ee_path <- path.expand("~/.config/earthengine")
+  user <- read.table(file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+                     header = TRUE,
+                     stringsAsFactors = FALSE)
+  # Select first and second folder (lazzy)
+  folders <- strsplit(path_asset,"/")[[1]][1:2]
+  path_asset_root_folder <- sprintf("%s/%s",folders[1],folders[2])
+
+  if (identical(path_asset_root_folder, user$user)) {
+    stop('The root folder "',path_asset_root_folder,'" is invalid')
+  }
+
   path_asset <- ee_verify_filename(path_asset, strict = FALSE)
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
   if (asset_path_exist) {
@@ -470,3 +484,4 @@ ee_manage_handle_names <- function(type = c("Folder", "ImageCollection")) {
   }
   names
 }
+

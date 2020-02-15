@@ -82,7 +82,7 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
 # Download a EE Image
 task_img <- ee$batch$Export$image$toCloudStorage(
   image = mean_l5_Amarakaeri,
-  bucket = "bag_csaybar",
+  bucket = "rgee_dev",
   fileFormat = "GEO_TIFF",
   fileNamePrefix = "my_image"
 )
@@ -98,7 +98,7 @@ amk_fc <- ee$FeatureCollection(
 
 task_vector <- ee$batch$Export$table$toCloudStorage(
   collection = amk_fc,
-  bucket = "bag_csaybar",
+  bucket = "rgee_dev",
   fileFormat = "SHP",
   fileNamePrefix = "geom_Amarakaeri"
 )

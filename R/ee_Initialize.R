@@ -138,14 +138,7 @@ ee_Initialize <- function(email = NULL,
       )
     }
   }
-
   ## rgee session file
-  ee_sessioninfo(
-    user = email_clean,
-    drive_cre = drive_credentials,
-    gcs_cre = gcs_credentials
-  )
-
   options(rgee.gcs.auth = gcs_credentials)
   options(rgee.selenium.params = list(
     email = email,
@@ -185,10 +178,26 @@ ee_Initialize <- function(email = NULL,
       crayon::green(" DONE!\n")
     )
   }
+
+  ee_user <- ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id)
+  ee_sessioninfo(
+    email = email_clean,
+    user = ee_user,
+    drive_cre = drive_credentials,
+    gcs_cre = gcs_credentials
+  )
+
   if (!quiet) {
+    cat(
+      "\r",
+      crayon::green(cli::symbol$tick),
+      crayon::blue("Earth Engine user:"),
+      crayon::green(crayon::bold(ee_user)),
+      "\n"
+    )
     message(text_col(
       cli::rule(
-        # center = crayon::bold("Welcome to Earth Engine <3")
+        #right = paste0("Welcome back ",crayon::bold(ee_user))
       )
     ))
   }
@@ -414,13 +423,13 @@ ee_user_info <- function() {
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
 #' @noRd
-ee_sessioninfo <- function(user = NULL, drive_cre = NULL, gcs_cre = NULL) {
+ee_sessioninfo <- function(email = NULL, user = NULL, drive_cre = NULL, gcs_cre = NULL) {
   sessioninfo <- sprintf(
     "%s/rgee_sessioninfo.txt",
     path.expand("~/.config/earthengine")
   )
   df <- data.frame(
-    user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
+    email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
     stringsAsFactors = FALSE
   )
   write.table(df, sessioninfo, row.names = F)

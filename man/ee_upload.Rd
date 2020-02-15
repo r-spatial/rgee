@@ -102,7 +102,7 @@ library(stars)
 library(sf)
 
 username <- 'data.colec.fbf' #change according to username.
-gcs_bucket <- 'bag_csaybar'
+gcs_bucket <- 'rgee_dev'
 ee_check_drivers()
 
 ee_reattach() # reattach ee as a reserved word

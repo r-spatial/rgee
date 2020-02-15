@@ -22,3 +22,4 @@ test_that("eedate_to_rdate II", {
   eedate <- eedate_to_rdate(ee_date,js = T)
   expect_equal(eedate, 1.48608e+12)
 })
+

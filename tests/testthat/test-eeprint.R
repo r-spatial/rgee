@@ -15,7 +15,6 @@ test_that("simple ee_print test - ImageCollection", {
 })
 
 test_that("simple ee_print test -  2 - ImageCollection", {
-
   xmin <- -71.132591318
   xmax <- -70.953664315
   ymin <- -12.892451233

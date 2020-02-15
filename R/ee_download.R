@@ -237,7 +237,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 #' # Download a EE Image
 #' task_img <- ee$batch$Export$image$toCloudStorage(
 #'   image = mean_l5_Amarakaeri,
-#'   bucket = "bag_csaybar",
+#'   bucket = "rgee_dev",
 #'   fileFormat = "GEO_TIFF",
 #'   fileNamePrefix = "my_image"
 #' )
@@ -253,7 +253,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 #'
 #' task_vector <- ee$batch$Export$table$toCloudStorage(
 #'   collection = amk_fc,
-#'   bucket = "bag_csaybar",
+#'   bucket = "rgee_dev",
 #'   fileFormat = "SHP",
 #'   fileNamePrefix = "geom_Amarakaeri"
 #' )

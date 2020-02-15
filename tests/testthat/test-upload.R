@@ -23,7 +23,7 @@ test_that("ee_upload - character with bucket", {
   ee_upload(
     x = geotiff_file,
     filename = paste0(filename, "geomatrix"),
-    bucket = "bag_csaybar"
+    bucket = "rgee_dev"
   )
   ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
   geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
@@ -50,7 +50,7 @@ test_that("ee_upload - stars with bucket", {
   ee_upload(
     x = geomatrix,
     filename = paste0(filename, "geomatrix"),
-    bucket = "bag_csaybar"
+    bucket = "rgee_dev"
   )
 
   ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
@@ -78,7 +78,7 @@ test_that("ee_upload - stars-proxy with bucket", {
   ee_upload(
     x = geomatrix_proxy,
     filename = paste0(filename, "geomatrix"),
-    bucket = "bag_csaybar"
+    bucket = "rgee_dev"
   )
 
   ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))

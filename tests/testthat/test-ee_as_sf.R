@@ -12,3 +12,4 @@ test_that("sfg",{
   expect_equal(mysheds$areaacres, "1064898.31")
   expect_error(ee_as_sf(sheds$first()))
 })
+
