@@ -29,10 +29,10 @@ test_that("ee_set_pyenv",{
   expect_true(fmsg)
 })
 
-test_that("ee_install_rgee_python_packages()",{
-  fmsg <- ee_install_python_packages()
-  expect_true(fmsg)
-})
+# test_that("ee_install_rgee_python_packages",{
+#   fmsg <- ee_install_python_packages()
+#   expect_true(fmsg)
+# })
 
 os_type <- switch(Sys.info()[["sysname"]],
                   Windows = {

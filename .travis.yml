@@ -51,8 +51,8 @@ before_install:
 install:
 - sudo apt-get install python3-venv
 - sudo -H pip3 install --upgrade pip
-- sudo -H pip3 install virtualenv
 - sudo -H pip3 install setuptools
+- sudo -H pip3 install virtualenv
 - sudo -H pip3 install earthengine-api
 - sudo -H pip3 install coveralls
 - sudo -H pip3 install pyasn1==0.4.8

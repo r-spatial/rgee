@@ -23,10 +23,10 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 
 def ee_check_drivers_py(driverdir, display_in_browser=False):
-    """Check if selenium works in their system
+    """Check if selenium works in the system
 
     Args:
-        driverdir (str): geckodriver path
+        driverdir (str): Chrome driver path
         display_in_broswer (bool): If it is True, Chrome browser will display it.
 
     Returns:
@@ -72,8 +72,9 @@ def ee_check_drivers_py(driverdir, display_in_browser=False):
 # version = r['version']
 # directory = r['directory']
 # operating_system = r['operating_system']
+
 def download_chromedriver(directory, operating_system, version):
-    """Download Chrome driver for linux
+    """Download Chrome driver even your OS
     Args:
         directory (str): name where the downloaded file is saved.
         operating_system (str): OS
