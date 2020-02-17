@@ -17,9 +17,10 @@ y_mean <- (ymin + ymax) / 2
 ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
 ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
   list() %>%
-  st_polygon() %>%
-  st_sfc() %>%
-  st_set_crs(4326)
+  sf::st_polygon() %>%
+  sf::st_sfc() %>%
+  sf::st_set_crs(4326)
+
 ee_geom <- sf_as_ee(ROI_polygon, check_ring_dir = TRUE)
 
 # Elevation map

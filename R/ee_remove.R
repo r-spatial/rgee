@@ -47,11 +47,13 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
 #' Delete chromedriver
 #'
 #' @param quiet Logical (optional). Suppress info messages.
-#' @examples {
-#' ee_remove_driver()
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_remove_ChromeDriver()
 #' }
 #' @export
-ee_remove_driver <- function(quiet = FALSE) {
+ee_remove_ChromeDriver <- function(quiet = FALSE) {
   ee_path <- path.expand("~/.config/earthengine/")
   gecko_driver_linux <- sprintf("%s/chromedriver", ee_path)
   gecko_driver_win <- sprintf("%s/chromedriver.exe", ee_path)

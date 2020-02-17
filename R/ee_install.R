@@ -75,6 +75,9 @@ ee_discover_pyenvs <- function() {
 #' @param install if TRUE, rgee will save the Python interpreter path and
 #' the virtual environment name in the \code{.Renviron} file
 #' for use in future sessions. Defaults to FALSE.
+#' @param confirm Logical. Confirm if restart R when the 'install'
+#' argument is TRUE.
+#'
 #' @importFrom utils menu
 #' @details It is necessary to restart R to observe change when setting a
 #' different Python version. ee_set_pyenv will ask you to restart R.
@@ -89,7 +92,10 @@ ee_discover_pyenvs <- function() {
 #' ee_install_python_packages()
 #' }
 #' @export
-ee_set_pyenv <- function(python_path, python_env, install = FALSE) {
+ee_set_pyenv <- function(python_path,
+                         python_env,
+                         install = FALSE,
+                         confirm = interactive()) {
   if (isTRUE(install)) {
     home <- Sys.getenv("HOME")
     renv <- file.path(home, ".Renviron")
@@ -127,16 +133,18 @@ ee_set_pyenv <- function(python_path, python_env, install = FALSE) {
     # if (restart_session && hasFun("restartSession")) {
     #   restartSession()
     # }
-    title <- paste0(
-      "rgee needs to restart R session to see changes.\n",
-      "Do you want to continues?"
-    )
-    response <- menu(c("Yes", "No"), title = title)
+    if (confirm) {
+      title <- paste0(
+        "rgee needs to restart R session to see changes.\n",
+        "Do you want to continues?"
+      )
+      response <- menu(c("yes", "no"), title = title)
+    } else {
+      response <- confirm
+    }
     switch(response + 1,
-      cat("Restart R session to see changes.\n"),
-      quit("no"),
-      cat("Restart R session to see changes.\n")
-    )
+           cat("Restart R session to see changes.\n"),
+           quit("no"))
   } else {
     message("To install this Python environment for use ",
             "in future sessions, run this function",
@@ -147,7 +155,7 @@ ee_set_pyenv <- function(python_path, python_env, install = FALSE) {
   invisible(TRUE)
 }
 
-#' Install Python packages dependecies
+#' Install Python packages dependencies
 #'
 #' Install the necessary Python packages to be used in rgee.
 #'
@@ -238,17 +246,6 @@ ee_install_python_packages <- function(method = c(
   # if (restart_session && hasFun("restartSession")) {
   #   restartSession()
   # }
-  title <- paste0(
-    "rgee needs to stop R session to see changes.\n",
-    "Do you want to continues?"
-  )
-  response <- menu(c("Yes", "No"), title = title)
-  switch(response + 1,
-    cat("Restart R session to see changes.\n"),
-    quit("no"),
-    cat("Restart R session to see changes.\n")
-  )
-
   invisible(TRUE)
 }
 
@@ -302,3 +299,4 @@ ee_install_ChromeDriver <- function(ChromeDriverVersion) {
   )
   return(invisible(TRUE))
 }
+

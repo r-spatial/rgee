@@ -12,7 +12,7 @@ ee_Initialize(
 
 # ee_upload with bucket -----------------------------------------------------
 test_that("ee_upload - character with bucket", {
-  filename <- "users/data.colec.fbf/rgee_upload/"
+  filename <- "users/datacolecfbf/rgee_upload/"
   ee_manage_create(filename)
 
   tif <- system.file("tif/geomatrix.tif", package = "stars")
@@ -25,6 +25,7 @@ test_that("ee_upload - character with bucket", {
     filename = paste0(filename, "geomatrix"),
     bucket = "rgee_dev"
   )
+
   ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
   geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
   geomatrix_stars <- ee_as_thumbnail(
@@ -39,7 +40,7 @@ test_that("ee_upload - character with bucket", {
 system.time(2)
 
 test_that("ee_upload - stars with bucket", {
-  filename <- "users/data.colec.fbf/rgee_upload/"
+  filename <- "users/datacolecfbf/rgee_upload/"
   ee_manage_create(filename)
 
   tif <- system.file("tif/geomatrix.tif", package = "stars")
@@ -67,7 +68,7 @@ test_that("ee_upload - stars with bucket", {
 system.time(2)
 
 test_that("ee_upload - stars-proxy with bucket", {
-  filename <- "users/data.colec.fbf/rgee_upload/"
+  filename <- "users/datacolecfbf/rgee_upload/"
   ee_manage_create(filename)
   tif <- system.file("tif/geomatrix.tif", package = "stars")
   geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
@@ -94,7 +95,7 @@ test_that("ee_upload - stars-proxy with bucket", {
 
 # ee_upload without bucket -----------------------------------------------------
 # test_that("ee_upload - stars without bucket",{
-#   filename <- "users/data.colec.fbf/rgee_upload/"
+#   filename <- "users/datacolecfbf/rgee_upload/"
 #   ee_manage_create(filename)
 #
 #   tif = system.file("tif/geomatrix.tif", package = "stars")

@@ -34,7 +34,7 @@
 #' # Change google account to be able to reproduce
 #'
 #' # 1. Create a folder or Image Collection
-#' # Change path asset according to your specific user (ee_user_info())
+#' # Change path asset according to your specific user
 #' ee_manage_create("users/datacolecfbf/rgee")
 #'
 #' # 1. List all the elements inside a folder or a ImageCollection
@@ -102,7 +102,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
   folders <- strsplit(path_asset,"/")[[1]][1:2]
   path_asset_root_folder <- sprintf("%s/%s",folders[1],folders[2])
 
-  if (identical(path_asset_root_folder, user$user)) {
+  if (!identical(path_asset_root_folder, user$user)) {
     stop('The root folder "',path_asset_root_folder,'" is invalid')
   }
 
@@ -415,10 +415,8 @@ ee_verify_filename <- function(path_asset, strict = TRUE) {
   if (is.null(response) & strict) {
     message <- c(
       "%s is not a valid destination.",
-      "Make sure full path is provided e.g. users/user/nameofcollection",
-      "or projects/myproject/myfolder/newcollection and that you have",
-      "write access there."
-    )
+      " Make sure a correct full path is provided (e.g. either users/user/nameofcollection",
+      " or projects/myproject/myfolder/newcollection).")
     stop(sprintf(message, path_asset))
   }
   return(folder)

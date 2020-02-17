@@ -52,7 +52,7 @@ ee_Initialize <- function(email = NULL,
                           quiet = FALSE) {
   if (exists('ee')) {
     if (is.null(ee$computedobject)) {
-      stop('rgee does not found Python modules.',
+      stop('rgee does not found the Earth Engine Python API.',
            ' Run rgee::ee_reattach() before continuing.')
     }
   } else {

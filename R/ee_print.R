@@ -201,7 +201,7 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
     img_geotransform <- paste0(base_img$crs_transform, collapse = " ")
     img_scale <- scale
     img_dimensions <- try(do.call(sprintf, as.list(c(
-      "nrow:%s  ncol:%s",
+      "%s x %s (nrow x ncol):",
       base_img$dimensions
     ))))
     img_npixels <- format(base_img$dimensions[1] * base_img$dimensions[2],
@@ -282,7 +282,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     ic_scale <- scale
     ic_dimensions <- do.call(
       sprintf,
-      as.list(c("nrow:%s  ncol:%s", base_ic$bands[[1]]$dimensions))
+      as.list(c("%s x %s (nrow x ncol):", base_ic$bands[[1]]$dimensions))
     )
     xp <- base_ic$bands[[1]]$dimensions[1]
     yp <- base_ic$bands[[1]]$dimensions[2]

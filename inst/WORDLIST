@@ -125,3 +125,5 @@ dataset's
 POSIXt
 POSIXct
 datacolecfbf
+Renviron
+pyenv

@@ -3,7 +3,6 @@ context("rgee: ee_print test")
 
 # clean TRUE
 test_that("simple ee_print test - ImageCollection", {
-
   eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
     filter(ee$Filter()$eq("WRS_PATH", 44))$
     filter(ee$Filter()$eq("WRS_ROW", 34))$
@@ -66,6 +65,7 @@ test_that("simple ee_print test - Feature", {
                            max_display = 0)
   expect_equal(ee_print_obj$name,'Feature')
 })
+
 
 test_that("simple ee_print test - Geometry", {
   nc <- st_read(system.file("shape/nc.shp", package="sf")) %>%

@@ -83,7 +83,7 @@ ee_user_info()
 # Change google account to be able to reproduce
 
 # 1. Create a folder or Image Collection
-# Change path asset according to your specific user (ee_user_info())
+# Change path asset according to your specific user
 ee_manage_create("users/datacolecfbf/rgee")
 
 # 1. List all the elements inside a folder or a ImageCollection

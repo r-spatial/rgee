@@ -128,13 +128,13 @@ ee_upload.character <- function(x, ... ,
                     gs_uri = gs_uri,
                     filename = filename,
                     type = 'table' ,
-                    properties=NULL)
+                    properties = NULL)
   } else if (image_or_vector(x) == "stars") {
     ee_gcs_to_asset(x = read_stars(x),
                     gs_uri = gs_uri,
                     filename = filename,
                     type = 'image',
-                    properties=properties,
+                    properties = properties,
                     start_time = '1970-01-01',
                     end_time = '1970-01-01')
   } else {

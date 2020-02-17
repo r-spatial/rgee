@@ -37,8 +37,8 @@ addons:
 
 env:
   global:
-  - R_BUILD_ARGS=" --no-build-vignettes --no-manual "
-  - R_CHECK_ARGS=" --no-manual --as-cran --no-vignettes --no-build-vignettes --no-multiarch --no-examples"
+  - R_BUILD_ARGS=" --no-manual "
+  - R_CHECK_ARGS=" --no-manual --as-cran --no-multiarch --no-examples"
 
 before_install:
 - sudo apt-get update
