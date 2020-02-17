@@ -15,7 +15,11 @@ was adapted from \code{\link[reticulate]{py_discover_config}}.
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
+ee_create_pyenv('ee')
 ee_discover_pyenvs()
+ee_set_pyenv(
+  python_path = ".../ee/bin/python",
+  python_env = 'ee')
+ee_install_python_packages()
 }
 }

@@ -4,28 +4,32 @@
 \alias{ee_set_pyenv}
 \title{Set the Python environment to be used on rgee}
 \usage{
-ee_set_pyenv(python_path, python_env)
+ee_set_pyenv(python_path, python_env, install = FALSE)
 }
 \arguments{
 \item{python_path}{The path to a Python interpreter, to be used with rgee.}
 
 \item{python_env}{The name of, or path to, a Python virtual environment.}
+
+\item{install}{if TRUE, rgee will save the Python interpreter path and
+the virtual environment name in the \code{.Renviron} file
+for use in future sessions. Defaults to FALSE.}
 }
 \description{
 Set the Python environment to be used on rgee
 }
 \details{
 It is necessary to restart R to observe change when setting a
-different Python version. ee_set_python_version will ask you to restart R.
+different Python version. ee_set_pyenv will ask you to restart R.
 }
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
-ee_discover_python_versions()
-ee_set_python_version(
-  python_path = "user/.virtualenvs/ee/bin/python",
-  python_env = 'ee'
-)
+ee_create_pyenv('ee')
+ee_discover_pyenvs()
+ee_set_pyenv(
+  python_path = ".../ee/bin/python",
+  python_env = 'ee')
+ee_install_python_packages()
 }
 }

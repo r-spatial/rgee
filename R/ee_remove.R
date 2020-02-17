@@ -77,27 +77,31 @@ ee_remove_driver <- function(quiet = FALSE) {
 #' @export
 ee_clean_pyenv <- function() {
   # Read line by line .Renviron
-  renviron_file <- path.expand("~/.Renviron")
-  con  <- file(renviron_file, open = "r")
-  lines <- as.character()
-  ii <- 1
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  if (file.exists(renv)) {
+    # Backup original .Renviron before doing anything else here.
+    file.copy(renv, file.path(home, ".Renviron_backup"))
 
-  while (TRUE) {
-    line <- readLines(con, n = 1, warn = FALSE)
-    if (length(line) == 0) {
-      break()
+    con <- file(renv, open = "r")
+    lines <- as.character()
+    ii <- 1
+
+    while (TRUE) {
+      line <- readLines(con, n = 1, warn = FALSE)
+      if (length(line) == 0) {
+        break()
+      }
+      lines[ii] <- line
+      ii <- ii + 1
     }
-    lines[ii] <- line
-    ii = ii + 1
+
+    # Remove system variables
+    # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
+    system_vars <- lines[!grepl("RETICULATE_PYTHON", lines)]
+    fileConn <- file(renv)
+    writeLines(system_vars, fileConn)
+    close(fileConn)
   }
-
-  # Remove system variables
-  # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
-  system_vars <- lines[!grepl("RETICULATE_PYTHON", lines)]
-  fileConn <- file(renviron_file)
-  writeLines(system_vars, fileConn)
-  close(fileConn)
-
   invisible(TRUE)
 }
-

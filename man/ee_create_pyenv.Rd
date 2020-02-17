@@ -18,5 +18,10 @@ in rgee
 \dontrun{
 library(rgee)
 ee_create_pyenv('ee')
+ee_discover_pyenvs()
+ee_set_pyenv(
+  python_path = ".../ee/bin/python",
+  python_env = 'ee')
+ee_install_python_packages()
 }
 }

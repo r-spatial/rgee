@@ -6,6 +6,11 @@
 #' \dontrun{
 #' library(rgee)
 #' ee_create_pyenv('ee')
+#' ee_discover_pyenvs()
+#' ee_set_pyenv(
+#'   python_path = ".../ee/bin/python",
+#'   python_env = 'ee')
+#' ee_install_python_packages()
 #' }
 #' @export
 ee_create_pyenv <- function(python_env) {
@@ -40,8 +45,12 @@ ee_create_pyenv <- function(python_env) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
+#' ee_create_pyenv('ee')
 #' ee_discover_pyenvs()
+#' ee_set_pyenv(
+#'   python_path = ".../ee/bin/python",
+#'   python_env = 'ee')
+#' ee_install_python_packages()
 #' }
 #' @export
 ee_discover_pyenvs <- function() {
@@ -52,7 +61,7 @@ ee_discover_pyenvs <- function() {
       ret_info$forced,
       "consider remove this environment variable",
       "to display more options.",
-      ""
+      "\n"
     )
   }
   print(ret_info$python_versions)
@@ -63,45 +72,78 @@ ee_discover_pyenvs <- function() {
 #'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
 #' @param python_env The name of, or path to, a Python virtual environment.
+#' @param install if TRUE, rgee will save the Python interpreter path and
+#' the virtual environment name in the \code{.Renviron} file
+#' for use in future sessions. Defaults to FALSE.
 #' @importFrom utils menu
 #' @details It is necessary to restart R to observe change when setting a
-#' different Python version. ee_set_python_version will ask you to restart R.
+#' different Python version. ee_set_pyenv will ask you to restart R.
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
-#' ee_discover_python_versions()
-#' ee_set_python_version(
-#'   python_path = "user/.virtualenvs/ee/bin/python",
-#'   python_env = 'ee'
-#' )
+#' ee_create_pyenv('ee')
+#' ee_discover_pyenvs()
+#' ee_set_pyenv(
+#'   python_path = ".../ee/bin/python",
+#'   python_env = 'ee')
+#' ee_install_python_packages()
 #' }
 #' @export
-ee_set_pyenv <- function(python_path, python_env) {
-  reticulate_dir <- path.expand("~/.Renviron")
+ee_set_pyenv <- function(python_path, python_env, install = FALSE) {
+  if (isTRUE(install)) {
+    home <- Sys.getenv("HOME")
+    renv <- file.path(home, ".Renviron")
 
-  # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
-  ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
-  ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
-  sink(reticulate_dir)
-  cat(ret_python)
-  cat("\n")
-  cat(ret_python_env)
-  sink()
-  # restartSession does not work properly
-  # if (restart_session && hasFun("restartSession")) {
-  #   restartSession()
-  # }
-  title <- paste0(
-    "rgee needs to restart R session to see changes.\n",
-    "Do you want to continues?"
-  )
-  response <- menu(c("Yes", "No"), title = title)
-  switch(response + 1,
-    cat("Restart R session to see changes.\n"),
-    quit("no"),
-    cat("Restart R session to see changes.\n")
-  )
+    if(file.exists(renv)){
+      # Backup original .Renviron before doing anything else here.
+      file.copy(renv, file.path(home, ".Renviron_backup"))
+    }
+    if(!file.exists(renv)){
+      file.create(renv)
+    }
+
+    con  <- file(renv, open = "r+")
+    lines <- as.character()
+    ii <- 1
+
+    while (TRUE) {
+      line <- readLines(con, n = 1, warn = FALSE)
+      if (length(line) == 0) {
+        break()
+      }
+      lines[ii] <- line
+      ii = ii + 1
+    }
+
+    # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
+    ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
+    ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
+    system_vars <- c(lines, ret_python, ret_python_env)
+
+    writeLines(system_vars, con)
+    close(con)
+
+    # restartSession does not work properly
+    # if (restart_session && hasFun("restartSession")) {
+    #   restartSession()
+    # }
+    title <- paste0(
+      "rgee needs to restart R session to see changes.\n",
+      "Do you want to continues?"
+    )
+    response <- menu(c("Yes", "No"), title = title)
+    switch(response + 1,
+      cat("Restart R session to see changes.\n"),
+      quit("no"),
+      cat("Restart R session to see changes.\n")
+    )
+  } else {
+    message("To install this Python environment for use ",
+            "in future sessions, run this function",
+            " with `install = TRUE`.")
+    Sys.setenv(RETICULATE_PYTHON = python_path)
+    Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+  }
   invisible(TRUE)
 }
 
@@ -131,6 +173,16 @@ ee_set_pyenv <- function(python_path, python_env) {
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
 #' version 3.5 >=.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_create_pyenv('ee')
+#' ee_discover_pyenvs()
+#' ee_set_pyenv(
+#'   python_path = ".../ee/bin/python",
+#'   python_env = 'ee')
+#' ee_install_python_packages()
+#' }
 #' @export
 ee_install_python_packages <- function(method = c(
                                          "auto",
