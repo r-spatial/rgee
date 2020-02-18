@@ -15,23 +15,4 @@ Here you can find possible **solutions for common `rgee` problems**. We will add
 
 ### Python Configuration
 
-- **`reticulate` do not recognize virtual environemnts.**
-
-Some users could find works with virtual environments a struggle. The easiest solution to avoid this is to create a `.Renviron` file to store system variables. In this file we set the reticulate Python version we want to use and R first looks there when it is initiated. To create `.Renviron`, run as follows:
-
-```{r Renviron}
-reticulate_dir  <- path.expand("~/.Renviron")
-fileConn <- file(reticulate_dir)
-if (Sys.info()[['sysname']] == 'Linux') {
-  writeLines('RETICULATE_PYTHON="/usr/bin/python3"', fileConn)
-} else if (Sys.info()[['sysname']] == 'Windows') {
-  writeLines('RETICULATE_PYTHON="C:\\Python35"', fileConn)  
-} else if (Sys.info()[['sysname']] == 'Darwin') {
-  writeLines('RETICULATE_PYTHON="/usr/bin/python3"', fileConn)
-}
-close(fileConn)
-```
-
-After that, it is just necessary to restart R.
-
 ### Selenium Configuration

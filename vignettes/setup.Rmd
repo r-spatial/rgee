@@ -26,15 +26,32 @@ knitr::opts_chunk$set(
 - <span style="color:#f0df26">beautifulsoup4</span>
 - <span style="color:#f0df26">requests_toolbelt</span>
 
-The `ee_install_rgee_python_packages()` function is provided as a convenient way to install all Python packages needed, even though it is not required.You can count on an existing installation of [Earth Engine Python API](https://pypi.org/project/earthengine-api/) or you can count on your own custom installation, all would be allowed.
+The `ee_install_python_packages()` function is provided as a convenient way to install all Python packages needed, even though it is not required. You can count on an existing installation of [Earth Engine Python API](https://pypi.org/project/earthengine-api/) or you can count on your own custom installation, all would be allowed.
 
 ```{r eval=FALSE}
 library(rgee)
 # Recommended way to install Python packages
-## 1. Create a virtualenv
-virtualenv_create("rgee", python = "python3.7")
-use_virtualenv("rgee")
-ee_install_rgee_python_packages()
+
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+# will be installed by default.
+ee_Initialize()
+
+# 2. Create a Python environment, e.g. ee.
+ee_create_pyenv(env = "ee")
+
+# 3. Find all Python environments  in the system.
+ee_discover_pyenvs()
+
+# 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g
+ee_set_pyenv(python_path = '/home/user/.virtualenvs/ee/bin/python',
+             python_env = 'ee',
+             install = TRUE)
+
+# 5. Install Python package dependencies
+ee_install_python_packages()
+
+# 6. Install Python package dependencies
+ee_Initialize()
 ```
 
 ### Import and Export Spatial Data in GEE
@@ -55,7 +72,7 @@ Batch **upload** is a harder process, in `rgee` we try to make it simple by usin
 # Find the Google Chrome version of this system
 # in chrome://settings/help
 # In my case my Google Chrome version is 77.0.3865.75, so:
-rgee::ee_install_drivers(GoogleChromeVersion = 77)
+rgee::ee_install_ChromeDriver(GoogleChromeVersion = 77)
 ```
 
 ### Credentials
@@ -71,13 +88,13 @@ To authenticate these three APIs, you just need to run as follow:
 ```{r eval=FALSE}
 library(rgee)
 #ee_reattach() # reattach ee as a reserve word
-ee_Initialize(drive = TRUE,gcs = TRUE)
+ee_Initialize(email = 'csaybar@gmail.com', drive = TRUE, gcs = TRUE)
 ```
 
 If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. This process will be repeated for each API, except for [Google Cloud Storage](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html). If there is a successful outcome, all credentials are stored in:
 
 ```{r eval=FALSE}
-path.expand("~/.config/earthengine/")
+ee_get_earthengine_path()
 ```
 
 For the next sessions, there will not be need for any further authentication.

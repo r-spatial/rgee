@@ -20,7 +20,7 @@ import ee
 
 ### 1) The **map** message error:
 
-`rgee` may show an error message when valid requests are made. This mishap just will happen when the **map** method will use in these two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
+`rgee` may show an error message when valid requests to the Earth Engine server are made. This issue just will happen when the **map** method will use in these two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
 
 ```{r}
 library(rgee)
@@ -29,7 +29,7 @@ mylist = ee$List$sequence(10)
 mylist$map(function(x) ee$Number(x)$add(1))
 ```
 
-The code before is perfectly valid!. This error will be solved by adding the function **ee_pyfunc** to the code. Let's see:
+The code before is perfectly valid but `rgee` will produce an error. This could be solved by adding the function **ee_pyfunc** to the code. Let's see:
 
 ```{r}
 library(rgee)
