@@ -41,7 +41,7 @@ ee_create_pyenv <- function(python_env) {
 #' of Python will be discovered on a system. This function
 #' was adapted from \code{\link[reticulate]{py_discover_config}}.
 #'
-#' @importFrom reticulate py_discover_config
+#' @importFrom reticulate py_discover_config conda_list
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -54,17 +54,33 @@ ee_create_pyenv <- function(python_env) {
 #' }
 #' @export
 ee_discover_pyenvs <- function() {
-  ret_info <- py_discover_config()
-  if (!is.null(ret_info$forced)) {
-    cat(
-      "NOTE: Python version was forced by",
-      ret_info$forced,
-      "consider remove this environment variable",
-      "to display more options.",
-      "\n"
-    )
+  os_type <- switch(Sys.info()[["sysname"]],
+                    Windows = {
+                      "windows"
+                    },
+                    Linux = {
+                      "linux"
+                    },
+                    Darwin = {
+                      "macos"
+                    }
+  )
+
+  if (os_type == 'windows') {
+    return(conda_list()$python)
+  } else {
+    ret_info <- py_discover_config()
+    if (!is.null(ret_info$forced)) {
+      cat(
+        "NOTE: Python version was forced by",
+        ret_info$forced,
+        "consider remove this environment variable",
+        "to display more options.",
+        "\n"
+      )
+    }
+    return(ret_info$python_versions)
   }
-  print(ret_info$python_versions)
 }
 
 #' Set the Python environment to be used on rgee

@@ -1,6 +1,6 @@
 # rgee 0.2.0
 - Several bugs fixed.
-- A collection of 290+ examples for using Google Earth Engine in [R](https://github.com/csaybar/rgee-examples).
+- A collection of 300+ examples for using Google Earth Engine in [R](https://github.com/csaybar/rgee-examples).
 - Functions added:
   - [**non-R**](https://github.com/csaybar/rgee#requirements) installation module added
   - [**ee_pyfunc: **](https://csaybar.github.io/rgee/reference/ee_pyfunc.html):Wrap an R function in a Python function with the same signature.
