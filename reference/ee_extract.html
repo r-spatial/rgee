@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract values for EE ImageCollections objects — ee_extract • rgee</title>
+<title>Extract values from Earth Engine Images or ImageCollections objects — ee_extract • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,9 @@
 
 
 
-<meta property="og:title" content="Extract values for EE ImageCollections objects — ee_extract" />
-<meta property="og:description" content="Extract values for a Image or ImageCollection spatial object
-at the locations of geometry object. You can use ee.Geometries,
+<meta property="og:title" content="Extract values from Earth Engine Images or ImageCollections objects — ee_extract" />
+<meta property="og:description" content="Extract values from a Image or ImageCollection spatial object
+at the locations of a geometry object. You can use ee.Geometries,
 ee.Features, ee.FeatureCollection and sf objects." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -79,7 +79,7 @@ ee.Features, ee.FeatureCollection and sf objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -154,14 +154,14 @@ ee.Features, ee.FeatureCollection and sf objects." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract values for EE ImageCollections objects</h1>
+    <h1>Extract values from Earth Engine Images or ImageCollections objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_extract.R'><code>R/ee_extract.R</code></a></small>
     <div class="hidden name"><code>ee_extract.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract values for a Image or ImageCollection spatial object
-at the locations of geometry object. You can use ee.Geometries,
+    <p>Extract values from a Image or ImageCollection spatial object
+at the locations of a geometry object. You can use ee.Geometries,
 ee.Features, ee.FeatureCollection and sf objects.</p>
     </div>
 
@@ -194,7 +194,7 @@ ee.Features, ee.FeatureCollection and sf objects.</p>
     <tr>
       <th>...</th>
       <td><p>reduceRegions additional parameters. See
-reticulate::ee_help(ee$Image()$reduceRegions) for details.</p></td>
+reticulate::ee_help(ee$Image()$reduceRegions) for more details.</p></td>
     </tr>
     </table>
 
@@ -255,11 +255,10 @@ of its inputs.</p></li>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
-<span class='co'># authenticate and initialize Earth Engine</span>
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
 #&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'>
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'>
 <span class='co'># get monthly precipitation from terraclimate</span>
 <span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2000-01-01"</span>, <span class='st'>"2001-01-01"</span>)$

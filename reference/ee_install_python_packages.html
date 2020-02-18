@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reattach ee as a reserved word — ee_reattach • rgee</title>
+<title>Install Python packages dependencies — ee_install_python_packages • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Reattach ee as a reserved word — ee_reattach" />
-<meta property="og:description" content="Reattach ee as a reserved word" />
+<meta property="og:title" content="Install Python packages dependencies — ee_install_python_packages" />
+<meta property="og:description" content="Install the necessary Python packages to be used in rgee." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -152,23 +152,86 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reattach ee as a reserved word</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/zzz.R'><code>R/zzz.R</code></a></small>
-    <div class="hidden name"><code>ee_reattach.Rd</code></div>
+    <h1>Install Python packages dependencies</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
+    <div class="hidden name"><code>ee_install_python_packages.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Reattach ee as a reserved word</p>
+    <p>Install the necessary Python packages to be used in rgee.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_reattach</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_install_python_packages</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>, <span class='st'>"conda"</span>),
+  <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.7"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>method</th>
+      <td><p>Installation method. By default, "auto" automatically
+finds a method that will work in the local environment. Change the
+default to force a specific installation method. Note that the
+"virtualenv" method is not available on Windows (as this isn't
+supported by rgee). Note also that since this command runs
+without privilege the "system" method is available only on Windows.</p></td>
+    </tr>
+    <tr>
+      <th>conda</th>
+      <td><p>Path to conda executable (or "auto" to find conda
+using the PATH and other conventional install locations).</p></td>
+    </tr>
+    <tr>
+      <th>ee_version</th>
+      <td><p>earthengine-api version to install. When
+this argument is NULL (the default), the version with which
+rgee was built will be installed.</p></td>
+    </tr>
+    <tr>
+      <th>envname</th>
+      <td><p>Name of Python environment, or full path, which Python
+packages are to be installed.</p></td>
+    </tr>
+    <tr>
+      <th>conda_python_version</th>
+      <td><p>the Python version installed in the
+created conda environment. Python 3.7 is installed by default.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>logical. Suppress info message</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>other arguments passed to <code><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>reticulate::conda_install()</a></code> or
+<code><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>reticulate::virtualenv_install()</a></code>.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>It is neccessary restart R to observe change when
+installing Python packages. rgee only is compatible with Python
+version 3.5 &gt;=.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_create_pyenv.html'>ee_create_pyenv</a></span>(<span class='st'>'ee'</span>)
+<span class='fu'><a href='ee_discover_pyenvs.html'>ee_discover_pyenvs</a></span>()
+<span class='fu'><a href='ee_set_pyenv.html'>ee_set_pyenv</a></span>(
+  <span class='kw'>python_path</span> <span class='kw'>=</span> <span class='st'>".../ee/bin/python"</span>,
+  <span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>'ee'</span>)
+<span class='fu'>ee_install_python_packages</span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

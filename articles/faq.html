@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -131,21 +131,6 @@
 <div id="python-configuration" class="section level3">
 <h3 class="hasAnchor">
 <a href="#python-configuration" class="anchor"></a>Python Configuration</h3>
-<ul>
-<li><strong><code>reticulate</code> do not recognize virtual environemnts.</strong></li>
-</ul>
-<p>Some users could find works with virtual environments a struggle. The easiest solution to avoid this is to create a <code>.Renviron</code> file to store system variables. In this file we set the reticulate Python version we want to use and R first looks there when it is initiated. To create <code>.Renviron</code>, run as follows:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">reticulate_dir  &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span>(<span class="st">"~/.Renviron"</span>)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">fileConn &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/connections.html">file</a></span>(reticulate_dir)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[[<span class="st">'sysname'</span>]] <span class="op">==</span><span class="st"> 'Linux'</span>) {</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="kw"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span>(<span class="st">'RETICULATE_PYTHON="/usr/bin/python3"'</span>, fileConn)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">} <span class="cf">else</span> <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[[<span class="st">'sysname'</span>]] <span class="op">==</span><span class="st"> 'Windows'</span>) {</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">  <span class="kw"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span>(<span class="st">'RETICULATE_PYTHON="C:</span><span class="ch">\\</span><span class="st">Python35"'</span>, fileConn)  </a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">} <span class="cf">else</span> <span class="cf">if</span> (<span class="kw"><a href="https://rdrr.io/r/base/Sys.info.html">Sys.info</a></span>()[[<span class="st">'sysname'</span>]] <span class="op">==</span><span class="st"> 'Darwin'</span>) {</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="kw"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span>(<span class="st">'RETICULATE_PYTHON="/usr/bin/python3"'</span>, fileConn)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/connections.html">close</a></span>(fileConn)</a></code></pre></div>
-<p>After that, it is just necessary to restart R.</p>
 </div>
 <div id="selenium-configuration" class="section level3">
 <h3 class="hasAnchor">

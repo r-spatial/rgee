@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to install non-R rgee dependencies — ee_install-tools • rgee</title>
+<title>Remove EE projects info — ee_remove_project_chr • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,10 +42,8 @@
 
 
 
-<meta property="og:title" content="Interface to install non-R rgee dependencies — ee_install-tools" />
-<meta property="og:description" content="R functions to install the necessary third-party
-python packages for rgee and removing Python
-Selenium Chromedriver and credentials" />
+<meta property="og:title" content="Remove EE projects info — ee_remove_project_chr" />
+<meta property="og:description" content="Remove EE projects info" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -79,7 +77,7 @@ Selenium Chromedriver and credentials" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -154,118 +152,32 @@ Selenium Chromedriver and credentials" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to install non-R rgee dependencies</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
-    <div class="hidden name"><code>ee_install-tools.Rd</code></div>
+    <h1>Remove EE projects info</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_manage.R'><code>R/ee_manage.R</code></a></small>
+    <div class="hidden name"><code>ee_remove_project_chr.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>R functions to install the necessary third-party
-python packages for rgee and removing Python
-Selenium Chromedriver and credentials</p>
+    <p>Remove EE projects info</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_install_drivers</span>(<span class='no'>GoogleChromeVersion</span>)
-
-<span class='fu'>ee_install_rgee_python_packages</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>,
-  <span class='st'>"conda"</span>), <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='st'>"0.1.210"</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>extra_packages</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"selenium"</span>, <span class='st'>"bs4"</span>, <span class='st'>"pysmartDL"</span>, <span class='st'>"requests_toolbelt"</span>,
-  <span class='st'>"oauth2client"</span>), <span class='kw'>restart_session</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.6"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_remove_project_chr</span>(<span class='no'>x</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>GoogleChromeVersion</th>
-      <td><p>Google Chrome version of this system.</p></td>
-    </tr>
-    <tr>
-      <th>method</th>
-      <td><p>Installation method. By default, "auto" automatically
-finds a method that will work in the local environment. Change the
-default to force a specific installation method. Note that the
-"virtualenv" method is not available on Windows (as this isn't
-supported by rgee). Note also that since this command runs
-without privilege the "system" method is available only on Windows.</p></td>
-    </tr>
-    <tr>
-      <th>conda</th>
-      <td><p>Path to conda executable (or "auto" to find conda
-using the PATH and other conventional install locations).</p></td>
-    </tr>
-    <tr>
-      <th>ee_version</th>
-      <td><p>earthengine-api version to install. Specify "default" to
-install the latest version.</p></td>
-    </tr>
-    <tr>
-      <th>envname</th>
-      <td><p>Name of Python environment to install.</p></td>
-    </tr>
-    <tr>
-      <th>extra_packages</th>
-      <td><p>Additional Python packages to install along with rgee.</p></td>
-    </tr>
-    <tr>
-      <th>restart_session</th>
-      <td><p>Restart R session after installing (note this will
-only occur within RStudio).</p></td>
-    </tr>
-    <tr>
-      <th>conda_python_version</th>
-      <td><p>the Python version installed in the created conda
-environment. Python 3.6 is installed by default.</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>logical. Suppress info message</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>other arguments passed to <code><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>reticulate::conda_install()</a></code> or
-<code><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>reticulate::virtualenv_install()</a></code>.</p></td>
+      <th>x</th>
+      <td><p>Character (path_asset)</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>It is neccessary restart R to observe change when installing a
-Python packages. rgee only is compatible with Python version 3.5 &gt;=.</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>reticulate</span>)
-
-<span class='co'># Recommended way to use rgee</span>
-<span class='co'>## 1. Create a virtualenv</span>
-<span class='co'># virtualenv_remove("rgee")</span>
-<span class='co'># virtualenv_create("rgee", python = "python3.7")</span>
-<span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/use_python.html'>use_virtualenv</a></span>(<span class='st'>"rgee"</span>)
-<span class='co'># rstudioapi::restartSession() # Restart R</span>
-
-<span class='co'>## 2. Check dependencies</span>
-<span class='co'># Full checking dependencies</span>
-<span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
-
-<span class='co'># Install rgee Python packages</span>
-<span class='fu'>ee_install_rgee_python_packages</span>()
-
-<span class='co'># Install selenium drivers (see ee_upload)</span>
-<span class='fu'>ee_install_drivers</span>()
-
-<span class='co'># Install GCS and DRIVE credentials (optional)</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='ee_check-tools.html'>ee_check</a></span>()
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

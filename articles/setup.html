@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -143,13 +143,30 @@
 <li><span style="color:#f0df26">beautifulsoup4</span></li>
 <li><span style="color:#f0df26">requests_toolbelt</span></li>
 </ul>
-<p>The <code><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages()</a></code> function is provided as a convenient way to install all Python packages needed, even though it is not required.You can count on an existing installation of <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> or you can count on your own custom installation, all would be allowed.</p>
+<p>The <code><a href="../reference/ee_install_python_packages.html">ee_install_python_packages()</a></code> function is provided as a convenient way to install all Python packages needed, even though it is not required. You can count on an existing installation of <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> or you can count on your own custom installation, all would be allowed.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># Recommended way to install Python packages</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">## 1. Create a virtualenv</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">virtualenv_create</span>(<span class="st">"rgee"</span>, <span class="dt">python =</span> <span class="st">"python3.7"</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">use_virtualenv</span>(<span class="st">"rgee"</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="../reference/ee_install-tools.html">ee_install_rgee_python_packages</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># will be installed by default.</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># 2. Create a Python environment, e.g. ee.</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="kw"><a href="../reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="dt">env =</span> <span class="st">"ee"</span>)</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># 3. Find all Python environments  in the system.</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="kw"><a href="../reference/ee_discover_pyenvs.html">ee_discover_pyenvs</a></span>()</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co"># 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="dt">python_path =</span> <span class="st">'/home/user/.virtualenvs/ee/bin/python'</span>,</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">             <span class="dt">python_env =</span> <span class="st">'ee'</span>,</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">             <span class="dt">install =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># 5. Install Python package dependencies</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="kw"><a href="../reference/ee_install_python_packages.html">ee_install_python_packages</a></span>()</a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co"># 6. Install Python package dependencies</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()</a></code></pre></div>
 </div>
 <div id="import-and-export-spatial-data-in-gee" class="section level3">
 <h3 class="hasAnchor">
@@ -163,7 +180,7 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Find the Google Chrome version of this system</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># in chrome://settings/help</span></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># In my case my Google Chrome version is 77.0.3865.75, so:</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">rgee<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rgee/man/ee_install-tools.html">ee_install_drivers</a></span>(<span class="dt">GoogleChromeVersion =</span> <span class="dv">77</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4">rgee<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rgee/man/ee_install_ChromeDriver.html">ee_install_ChromeDriver</a></span>(<span class="dt">GoogleChromeVersion =</span> <span class="dv">77</span>)</a></code></pre></div>
 </div>
 <div id="credentials" class="section level3">
 <h3 class="hasAnchor">
@@ -177,9 +194,9 @@
 <p>To authenticate these three APIs, you just need to run as follow:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#ee_reattach() # reattach ee as a reserve word</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="dt">drive =</span> <span class="ot">TRUE</span>,<span class="dt">gcs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="dt">email =</span> <span class="st">'csaybar@gmail.com'</span>, <span class="dt">drive =</span> <span class="ot">TRUE</span>, <span class="dt">gcs =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. This process will be repeated for each API, except for <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Google Cloud Storage</a>. If there is a successful outcome, all credentials are stored in:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span>(<span class="st">"~/.config/earthengine/"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span>()</a></code></pre></div>
 <p>For the next sessions, there will not be need for any further authentication.</p>
 </div>
 <div id="checking" class="section level3">
@@ -204,7 +221,7 @@
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; ◉  Python Third-Party Libraries used in rgee: </span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; ✔ [Ok] Python Earth Engine API version 0.1.210</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; ✔ [Ok] Python Earth Engine API version 0.1.213</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; ✔ [Ok] oauth2client v 4.1.3</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; ✔ [Ok] requests v 2.21.0</span></a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; ✔ [Ok] selenium v 3.141.0</span></a>
@@ -215,7 +232,7 @@
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; ◉  Selenium drivers: </span></a>
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; ⓧ chromedriver not available in their system. rgee::ee_upload(bucket=NULL) will not work.</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; Try rgee::ee_install_drivers() to fixed.</span></a>
+<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; Try rgee::ee_install_ChromeDriver() to fixed.</span></a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; ◉  Credentials neccesaries for rgee: </span></a>
 <a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; ✔ [Ok] Earth Engine Credentials found.</span></a>

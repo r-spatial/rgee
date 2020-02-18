@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive • rgee</title>
+<title>Move Earth Engine (EE) results from Google Drive to a local directory — ee_download_drive • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Move Earth Engine (EE) results from Google Drive to Hard disk — ee_download_drive" />
-<meta property="og:description" content="Move results of an EE task saved in Google Drive to Hard disk." />
+<meta property="og:title" content="Move Earth Engine (EE) results from Google Drive to a local directory — ee_download_drive" />
+<meta property="og:description" content="Move results of an EE saved in Google Drive to a local directory." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -152,13 +152,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Move Earth Engine (EE) results from Google Drive to Hard disk</h1>
+    <h1>Move Earth Engine (EE) results from Google Drive to a local directory</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
     <div class="hidden name"><code>ee_download_drive.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Move results of an EE task saved in Google Drive to Hard disk.</p>
+    <p>Move results of an EE saved in Google Drive to a local directory.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_download_drive</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>st</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -173,17 +173,17 @@
     </tr>
     <tr>
       <th>filename</th>
-      <td><p>Character. Output filename. If absent, a temporary
+      <td><p>Character. Output filename. If missing, a temporary
 file is created.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean indicating whether "filename" should be
-overwritten if it exists.</p></td>
+      <td><p>A boolean argument which indicates indicating
+whether "filename" should be overwritten.</p></td>
     </tr>
     <tr>
       <th>st</th>
-      <td><p>logical. By default this is TRUE, returning a sf (stars)
+      <td><p>logical. By default it is TRUE, returning a sf (stars)
 object for EE tables (images). If FALSE, the output filename is returned.</p></td>
     </tr>
     <tr>
@@ -197,8 +197,8 @@ object for EE tables (images). If FALSE, the output filename is returned.</p></t
     <p>An sf, stars or character depending on the retunclass argument.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The task argument needs "COMPLETED" task state to work, since the
-parameters necessaries to locate the file into google drive are obtained
+    <p>The task argument needs a status as task "COMPLETED" to work, since the
+parameters necessary to locate the file into google drive are obtained
 from ee$batch$Export$*$toDrive(...)$start()$status().</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -207,9 +207,11 @@ from ee$batch$Export$*$toDrive(...)$start()$status().</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()  <span class='co'># reattach ee as a reserved word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+<span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()
 
-<span class='co'># Example 1 -- Download a Image</span>
+<span class='co'># Example 1 -- Download an Image</span>
 <span class='co'># Communal Reserve Amarakaeri - Peru</span>
 <span class='no'>xmin</span> <span class='kw'>&lt;-</span> -<span class='fl'>71.132591318</span>
 <span class='no'>xmax</span> <span class='kw'>&lt;-</span> -<span class='fl'>70.953664315</span>
@@ -238,6 +240,7 @@ from ee$batch$Export$*$toDrive(...)$start()$status().</p>
   <span class='fu'>filterBounds</span>(<span class='no'>ee_geom</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2011-01-01"</span>, <span class='st'>"2011-12-31"</span>)$
   <span class='fu'>map</span>(<span class='no'>cloudMaskL457</span>)
+
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ic_l5</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()$<span class='fu'>rename</span>(<span class='st'>"NDVI"</span>)
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'>reproject</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>500</span>)
 <span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://rdrr.io/r/graphics/clip.html'>clip</a></span>(<span class='no'>ee_geom</span>)
@@ -251,13 +254,14 @@ from ee$batch$Export$*$toDrive(...)$start()$status().</p>
 
 <span class='no'>task_img</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(<span class='no'>task_img</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
+
+<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_drive</span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>)
 
 <span class='co'># Example 2 -- Download a Table</span>
 <span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
 )
+
 <span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toDrive</span>(
   <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
   <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,

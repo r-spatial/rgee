@@ -46,7 +46,7 @@
 <meta property="og:description" content="Authorize rgee to manage Earth Engine resource, Google
 Drive and Google Cloud Storage. The ee_initialize() via
 web-browser asked to sign in to your Google account and
-grant permission for managing resources. This function is
+allows you to grant permission to manage resources. This function is
 a wrapper around rgee::ee$Initialize()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -81,7 +81,7 @@ a wrapper around rgee::ee$Initialize()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ a wrapper around rgee::ee$Initialize()." />
     <p>Authorize rgee to manage Earth Engine resource, Google
 Drive and Google Cloud Storage. The <code>ee_initialize()</code> via
 web-browser asked to sign in to your Google account and
-grant permission for managing resources. This function is
+allows you to grant permission to manage resources. This function is
 a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     </div>
 
@@ -177,20 +177,20 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>email</th>
-      <td><p>Character (optional, e.g. <code>pinkiepie@gmail.com</code>). The email
+      <td><p>Character (optional, e.g. <code>data.colec.fbf@gmail.com</code>). The email
 name is used as a folder inside the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.
-This enable the multi-user support allowing to target a specific
+This enable a multi-user support allowing to target a specific
 Google identity.</p></td>
     </tr>
     <tr>
       <th>drive</th>
-      <td><p>Logical (optional). Whether TRUE the drive credential
-will cache in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
+      <td><p>Logical (optional). If TRUE the drive credential
+will be cached in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
     </tr>
     <tr>
       <th>gcs</th>
-      <td><p>logical. Whether TRUE the Google Cloud Storage
-credential will cache in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
+      <td><p>logical. If TRUE the Google Cloud Storage
+credential will be cached in the path <code><a href='ee_get_earthengine_path.html'>rgee::ee_get_earthengine_path()</a></code>.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -202,9 +202,9 @@ credential will cache in the path <code><a href='ee_get_earthengine_path.html'>r
 
     <p><code>ee_Initialize(...)</code> can also manage Google drive and Google
 Cloud Storage resources using the R packages googledrive and
-googlecloudStorageR respectively. By default, rgee do not need to them,
-these are just necessary for exportation and importation tasks.
-All the user credentials are save inside the directory
+googlecloudStorageR respectively. By default, rgee does not need to them,
+these are just necessary for export and import tasks.
+All the user credentials are saved in directory
 <code>~/.config/earthengine/</code>, if a user does not specified the
 the email argument all user credentials will be saved in a subdirectory
 called ndef.</p>
@@ -214,24 +214,30 @@ called ndef.</p>
 <a href='ee_remove_credentials.html'>ee_remove_credentials</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simple init</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserve word</span>
-<span class='fu'>ee_Initialize</span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='co'>#ee_user_info()</span>
+
+<span class='co'># Simple init</span>
+<span class='fu'>ee_Initialize</span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
 #&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'>
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'>
 <span class='co'># Advanced init</span>
 <span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_Initialize</span>(
-  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"aybar1994@gmail.com"</span>,
+  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"data.colec.fbf@gmail.com"</span>,
   <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>aybar1994@gmail.com</span><span> 
-#&gt; </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'dplyr':</span>
+)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>data.colec.fbf@gmail.com</span><span> 
+#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'dplyr':</span>
 #&gt; <span class='message'>  method         from     </span>
 #&gt; <span class='message'>  print.location geojsonio</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
-#&gt; ✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
 #&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div></span></pre>
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>Earth Engine Asset Home:</span><span> </span><span style='color: #00BB00;'>users/datacolecfbf</span><span> 
+#&gt; </span><span style='color: #0000BB;'>Credentials Directory Path:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.config/earthengine/data.colec.fbf/</span><span> 
+#&gt; </span><span style='color: #0000BB;'>Google Drive Credentials:</span><span> </span><span style='color: #00BB00;'>cd26ed5dc626f11802a652e81d02762e_data.colec.fbf@gmail.com</span><span> 
+#&gt; </span><span style='color: #0000BB;'>Google Cloud Storage Credentials:</span><span> </span><span style='color: #00BB00;'>GCS_AUTH_FILE.json</span><span> </div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

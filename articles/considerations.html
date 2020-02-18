@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
-<p><code>rgee</code> may show an error message when valid requests are made. This mishap just will happen when the <strong>map</strong> method will use in these two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
+<p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue just will happen when the <strong>map</strong> method will use in these two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.1-CAPI-1.11.1</span></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; and GEOS at installation 3.5.1-CAPI-1.9.1differ</span></a>
@@ -153,7 +153,7 @@
 <a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt;     self._body = body(*variables)</span></a>
 <a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></a>
 <a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></a></code></pre></div>
-<p>The code before is perfectly valid!. This error will be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
+<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">mylist =<span class="st"> </span>ee<span class="op">$</span>List<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="dv">0</span>,<span class="dv">10</span>)</a>
@@ -207,18 +207,16 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; $value</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; [1] -208192512</span></a></code></pre></div>
-<p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and it should not be a trouble if treated with care. In addition, it will not affect your queries to Google Earth Engine and the results returned. For example:</p>
+<p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and it should not be a trouble if treated with care. <code>rgee</code> implement two functions to deal with Earth Engine dates: <code>eedate_to_rdate</code> and <code>rdate_to_eedate</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Era5 dataset</span></a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">era_img &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">ImageCollection</span>(<span class="st">"ECMWF/ERA5/DAILY"</span>)<span class="op">$</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="st">  </span><span class="kw">filterDate</span>(<span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span>)<span class="op">$</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="st">  </span><span class="kw">first</span>()</a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co"># Extracting init date</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">jstimestamp &lt;-<span class="st"> </span>era_img<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)<span class="op">$</span><span class="kw">getInfo</span>()</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co"># Passing timestamp to ISO string</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/as.POSIXlt.html">as.POSIXct</a></span>(jstimestamp<span class="op">/</span><span class="dv">1000</span>, <span class="dt">origin=</span><span class="st">"1970-01-01"</span>, <span class="dt">tz=</span><span class="st">"GMT"</span>)</a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt; [1] "1970-01-02 07:16:13 GMT"</span></a></code></pre></div>
+<a class="sourceLine" id="cb10-7" data-line-number="7">ee_date &lt;-<span class="st"> </span>era_img<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)</a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="kw"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(<span class="dt">ee_date =</span> ee_date)</a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt; [1] "2019-01-01 GMT"</span></a></code></pre></div>
 </div>
   </div>
 

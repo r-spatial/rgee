@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -172,12 +172,6 @@
       <tr>
         
         <td>
-          <p><code><a href="eeDate_to_r.html">eeDate_to_r()</a></code> </p>
-        </td>
-        <td><p>Pass Earth Engine date to R date object</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_Initialize.html">ee_Initialize()</a></code> </p>
         </td>
         <td><p>Authenticate and Initialize Earth Engine</p></td>
@@ -202,33 +196,59 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_clean_pyenv.html">ee_clean_pyenv()</a></code> </p>
+        </td>
+        <td><p>Remove reticulate system variables from .Renviron</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_create_pyenv.html">ee_create_pyenv()</a></code> </p>
+        </td>
+        <td><p>Create an isolated Python virtual environment to be used
+in rgee</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_discover_pyenvs.html">ee_discover_pyenvs()</a></code> </p>
+        </td>
+        <td><p>Discover all the Python environments available
+in the system</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_download_drive.html">ee_download_drive()</a></code> </p>
         </td>
-        <td><p>Move Earth Engine (EE) results from Google Drive to Hard disk</p></td>
+        <td><p>Move Earth Engine (EE) results from Google Drive to a local directory</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_download_gcs.html">ee_download_gcs()</a></code> </p>
         </td>
-        <td><p>Move EE results from Google Cloud Storage to Hard disk</p></td>
+        <td><p>Move EE results from Google Cloud Storage to a local directory</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_extract.html">ee_extract()</a></code> </p>
         </td>
-        <td><p>Extract values for EE ImageCollections objects</p></td>
+        <td><p>Extract values from Earth Engine Images or ImageCollections objects</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_get_earthengine_path.html">ee_get_earthengine_path()</a></code> </p>
         </td>
-        <td><p>Get the path where rgee save the credentials</p></td>
+        <td><p>Get the path where the credentials are stored by rgee</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_install-tools.html">ee_install_drivers()</a></code> <code><a href="ee_install-tools.html">ee_install_rgee_python_packages()</a></code> </p>
+          <p><code><a href="ee_install_ChromeDriver.html">ee_install_ChromeDriver()</a></code> </p>
         </td>
-        <td><p>Interface to install non-R rgee dependencies</p></td>
+        <td><p>Install ChromeDriver in the system</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_install_python_packages.html">ee_install_python_packages()</a></code> </p>
+        </td>
+        <td><p>Install Python packages dependencies</p></td>
       </tr><tr>
         
         <td>
@@ -274,21 +294,33 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_remove_ChromeDriver.html">ee_remove_ChromeDriver()</a></code> </p>
+        </td>
+        <td><p>Delete chromedriver</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_remove_credentials.html">ee_remove_credentials()</a></code> </p>
         </td>
         <td><p>Delete Credentials</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_remove_driver.html">ee_remove_driver()</a></code> </p>
+          <p><code><a href="ee_remove_project_chr.html">ee_remove_project_chr()</a></code> </p>
         </td>
-        <td><p>Delete chromedriver</p></td>
+        <td><p>Remove EE projects info</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_search-tools.html">ee_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> </p>
         </td>
         <td><p>Interface to search into the Earth Engine Data Catalog</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_set_pyenv.html">ee_set_pyenv()</a></code> </p>
+        </td>
+        <td><p>Set the Python environment to be used on rgee</p></td>
       </tr><tr>
         
         <td>
@@ -304,13 +336,37 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_user_info.html">ee_user_info()</a></code> </p>
+        </td>
+        <td><p>Display credentials info of initialized user</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_users.html">ee_users()</a></code> </p>
+        </td>
+        <td><p>Display credentials of all users as a table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_version.html">ee_version()</a></code> </p>
+        </td>
+        <td><p>Earth Engine API version</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="eedate_to_rdate.html">eedate_to_rdate()</a></code> </p>
+        </td>
+        <td><p>Pass Earth Engine date object to R</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="plus-mapview-mapview-method.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;mapview&gt;</i>)</a></code> </p>
         </td>
         <td><p>mapview + mapview; adds data from the second map to the first</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="r_to_eeDate.html">r_to_eeDate()</a></code> </p>
+          <p><code><a href="rdate_to_eedate.html">rdate_to_eedate()</a></code> </p>
         </td>
         <td><p>Pass R date object to Earth Engine</p></td>
       </tr><tr>

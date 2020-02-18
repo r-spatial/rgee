@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pass R date object to Earth Engine — r_to_eeDate • rgee</title>
+<title>Set the Python environment to be used on rgee — ee_set_pyenv • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Pass R date object to Earth Engine — r_to_eeDate" />
-<meta property="og:description" content="Pass R date object and return a timestamp as a float value" />
+<meta property="og:title" content="Set the Python environment to be used on rgee — ee_set_pyenv" />
+<meta property="og:description" content="Set the Python environment to be used on rgee" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -152,37 +152,63 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pass R date object to Earth Engine</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Date.R'><code>R/ee_Date.R</code></a></small>
-    <div class="hidden name"><code>r_to_eeDate.Rd</code></div>
+    <h1>Set the Python environment to be used on rgee</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
+    <div class="hidden name"><code>ee_set_pyenv.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pass R date object and return a timestamp as a float value</p>
+    <p>Set the Python environment to be used on rgee</p>
     </div>
 
-    <pre class="usage"><span class='fu'>r_to_eeDate</span>(<span class='no'>date</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_set_pyenv</span>(<span class='no'>python_path</span>, <span class='no'>python_env</span>, <span class='kw'>install</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>confirm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>())</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>date</th>
-      <td><p>R date object</p></td>
+      <th>python_path</th>
+      <td><p>The path to a Python interpreter, to be used with rgee.</p></td>
+    </tr>
+    <tr>
+      <th>python_env</th>
+      <td><p>The name of, or path to, a Python virtual environment.</p></td>
+    </tr>
+    <tr>
+      <th>install</th>
+      <td><p>if TRUE, rgee will save the Python interpreter path and
+the virtual environment name in the <code>.Renviron</code> file
+for use in future sessions. Defaults to FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>confirm</th>
+      <td><p>Logical. Confirm if restart R when the 'install'
+argument is TRUE.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>It is necessary to restart R to observe change when setting a
+different Python version. ee_set_pyenv will ask you to restart R.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'><span class='fu'>r_to_eeDate</span>(<span class='st'>'2000-01-01'</span>)</div><div class='output co'>#&gt; [1] 946684800000</div></span></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='ee_create_pyenv.html'>ee_create_pyenv</a></span>(<span class='st'>'ee'</span>)
+<span class='fu'><a href='ee_discover_pyenvs.html'>ee_discover_pyenvs</a></span>()
+<span class='fu'>ee_set_pyenv</span>(
+  <span class='kw'>python_path</span> <span class='kw'>=</span> <span class='st'>".../ee/bin/python"</span>,
+  <span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>'ee'</span>)
+<span class='fu'><a href='ee_install_python_packages.html'>ee_install_python_packages</a></span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

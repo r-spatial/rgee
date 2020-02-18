@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pass Earth Engine date to R date object — eeDate_to_r • rgee</title>
+<title>Delete chromedriver — ee_remove_ChromeDriver • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Pass Earth Engine date to R date object — eeDate_to_r" />
-<meta property="og:description" content="Pass Earth Engine and return a R date object" />
+<meta property="og:title" content="Delete chromedriver — ee_remove_ChromeDriver" />
+<meta property="og:description" content="Delete chromedriver" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -152,33 +152,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pass Earth Engine date to R date object</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Date.R'><code>R/ee_Date.R</code></a></small>
-    <div class="hidden name"><code>eeDate_to_r.Rd</code></div>
+    <h1>Delete chromedriver</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_remove.R'><code>R/ee_remove.R</code></a></small>
+    <div class="hidden name"><code>ee_remove_ChromeDriver.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Pass Earth Engine and return a R date object</p>
+    <p>Delete chromedriver</p>
     </div>
 
-    <pre class="usage"><span class='fu'>eeDate_to_r</span>(<span class='no'>eedate</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_remove_ChromeDriver</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>eedate</th>
-      <td><p>EE date object (ee$Date)</p></td>
+      <th>quiet</th>
+      <td><p>Logical (optional). Suppress info messages.</p></td>
     </tr>
     </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.1.9.9</span><span> ───────── earthengine-api 0.1.210 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span></div><div class='output co'>#&gt; <span class='message'>────────────────────────────────────────────────────</span></div><div class='input'><span class='no'>eeDate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='st'>'1980-01-01'</span>)
-<span class='fu'>eeDate_to_r</span>(<span class='no'>eeDate</span>)</div><div class='output co'>#&gt; [1] 315532800000</div></span></pre>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'>ee_remove_ChromeDriver</span>()
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
