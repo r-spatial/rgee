@@ -3,7 +3,7 @@
 # Google Earth Engine for R
 
 **NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-**The actual version of rgee has been built considering the [earthengine-api 0.1.213](https://pypi.org/project/earthengine-api/0.1.213/)**
+**The current version of rgee has been built considering the [earthengine-api 0.1.213](https://pypi.org/project/earthengine-api/0.1.213/)**
 
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
@@ -20,6 +20,8 @@ Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](ht
 [![DOI](https://zenodo.org/badge/205997187.svg)](https://zenodo.org/badge/latestdoi/205997187)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
+
+### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
 
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
@@ -81,7 +83,7 @@ After that, in your preferred browser, run:
 
 ## Requirements
 
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`. Please run as follow:
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`:
 
 ```r
 library(rgee)
@@ -107,18 +109,14 @@ ee_install_python_packages()
 ee_Initialize()
 ```
 
-Additionally, use these function, as many times as you want, for checking user info and sanity of credentials, drivers and  Python packages.
+Additionally, use these functions, as many times as you want, for checking user info and sanity of credentials, drivers and  Python packages.
 
 ```r
 ee_check()
 ee_user_info()
 ee_users()
 ```
-To upload files in a batch way without a GCS account  (See ee_upload).
 
-```r
-ee_install_ChromeDriver()
-```
 Use this function to clean the system variables set in ee_set_pyenv.
 
 ```r
