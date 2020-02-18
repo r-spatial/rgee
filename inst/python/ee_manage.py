@@ -5,17 +5,18 @@ import ee
 import os
 import datetime
 
-""" Generate a table with all the tasks that is running or has finished.
+""" Generate a table with all the tasks that are running (or has finished) in GEE.
 
 >>> genreport()
 >>> quota(ID)
 
-The functions in this module, which are using for checking earth engine quota,
-were obtained from geeup: a Python CLI for Earth Engine Uploads with Selenium
-Support <https://github.com/samapriya/geeup>, the acknowledgement for these
-functions should be always given to Samapriya Roy.
+This module, which is used for checking earth engine quota,
+were obtained from geeup: a Python CLI for Earth Engine Uploads
+with Selenium Support <https://github.com/samapriya/geeup>, the
+acknowledgement for this module should be always given to Samapriya
+Roy.
 
-These functions are using in R/ee_manage.R
+This module is used in R/ee_manage.R
 """
 def genreport():
     """ Generated report includes taskId, data time, task status and type
@@ -54,17 +55,17 @@ def genreport():
     return taks_list
 
 
-"""Module for return quota usage details for the asset root with the given ID.
+"""Function to return quota usage details for the asset root with the given ID.
 
 >>> humansize(nbytes)
 >>> quota(ID)
 
-The functions in this module, which are using for checking earth engine quota,
+This function, which is used for checking earth engine quota,
 were obtained from geeup: a Python CLI for Earth Engine Uploads with Selenium
 Support <https://github.com/samapriya/geeup>, the acknowledgement for these
 functions should be always given to Samapriya Roy.
 
-These functions are using in R/ee_quota.R
+This function is used in R/ee_quota.R
 """
 def quota(ID):
     """Print your earth engine quota quickly.

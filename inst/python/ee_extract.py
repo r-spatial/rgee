@@ -9,7 +9,7 @@ import ee
 table_format is a sightly modification of:
 https://code.earthengine.google.com/9c091e27ca86c3d1e6adbefea8769cc3, the
 acknowledgement for these functions should be always given to Nick Clinton.
-It is use in R/ee_extract.R
+It is used in R/ee_extract.R
 """
 
 def table_format(table, rowId, colId,val):

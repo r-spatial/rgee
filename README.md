@@ -3,7 +3,7 @@
 # Google Earth Engine for R
 
 **NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-**The actual version of rgee has been built considering the [earthengine-api 0.1.210](https://pypi.org/project/earthengine-api/0.1.210/)**
+**The actual version of rgee has been built considering the [earthengine-api 0.1.213](https://pypi.org/project/earthengine-api/0.1.213/)**
 
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
@@ -68,9 +68,9 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("csaybar/rgee")
 ```
 
-`rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing)
+`rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
 
-#### Docker image (Recommended way to use rgee for the moment)
+#### Docker image
     
     docker pull csaybar/rgee
     docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
@@ -83,10 +83,47 @@ After that, in your preferred browser, run:
 
 Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`. Please run as follow:
 
-<p align="center">
-<img src='https://user-images.githubusercontent.com/16768318/74589205-2dae3a80-4ffb-11ea-811b-ce4525b9071f.png' width=60%>
-</p>
+```r
+library(rgee)
 
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+# will be installed by default.
+ee_Initialize()
+
+# 2. Create a Python environment, e.g. ee.
+ee_create_pyenv(env = "ee")
+
+# 3. Find all Python environments  in the system.
+ee_discover_pyenvs()
+
+# 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g
+ee_set_pyenv(python_path = '/home/user/.virtualenvs/ee/bin/python',
+             python_env = 'ee')
+
+# 5. Install Python package dependencies
+ee_install_python_packages()
+
+# 6. Install Python package dependencies
+ee_Initialize()
+```
+
+Additionally, use these function, as many times as you want, for checking user info and sanity of credentials, drivers and  Python packages.
+
+```r
+ee_check()
+ee_user_info()
+ee_users()
+```
+To upload files in a batch way without a GCS account  (See ee_upload).
+
+```r
+ee_install_ChromeDriver()
+```
+Use this function to clean the system variables set in ee_set_pyenv.
+
+```r
+ee_clean_pyenv()
+```
 
 Also, consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
 
@@ -107,7 +144,7 @@ Also, consider checking the [setup section](https://csaybar.github.io/rgee/artic
 
 ## Quick Demo
 
-### Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
+### 1. Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
 
 Authenticate and Initialize the Earth Engine R API.
 
@@ -155,7 +192,7 @@ ee_map(eeobject = col_reduce,
 
 ![rgee\_01](https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png)
 
-### Extract precipitation values
+### 2. Extract precipitation values
 
 Load `sf` and authenticate and initialize the Earth Engine R API.
 

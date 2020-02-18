@@ -3,11 +3,11 @@
 import ee
 import sys
 
-"""Module for create map access tokens
+"""Function to get the EE map token
 
 >>> ee_map_py(eeobject, vizparams)
 
-These functions are using in R/ee_map.R
+This function is used in R/ee_map.R
 """
 
 #EE_TILES = 'https://earthengine.googleapis.com/map/{mapid}/{{z}}/{{x}}/{{y}}?token={token}'

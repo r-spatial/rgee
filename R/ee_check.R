@@ -63,7 +63,7 @@ ee_check_rgee_python_packages <- function() {
   version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
-    if (version_ee == "0.1.210") {
+    if (version_ee == ee_version()) {
       cli::cat_line(
         crayon::green(cli::symbol$tick, "[Ok]"),
         crayon::blue(cli::symbol$check, "Python Earth Engine API version "),

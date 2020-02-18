@@ -442,7 +442,6 @@ ee_humansize <- function(x, suffixes = c("B", "KB", "MB", "GB", "TB", "PB")) {
 
 #' Remove EE projects info
 #' @param x Character (path_asset)
-#' @noRd
 ee_remove_project_chr <- function(x) {
   new_x <- gsub("projects/earthengine/legacy/assets/", "", x)
   gsub("projects/earthengine-legacy/assets/", "", new_x)
