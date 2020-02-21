@@ -231,6 +231,24 @@ ee_get_boundary <- function(eeObject) {
     st_bbox()
 }
 
+#' Get the box for a specific Device Surface
+#' @noRd
+ee_getBox <- function(mapview_object, width , height){
+  view <- mapview_object@map$x$setView
+  lat <- view[[1]][1]
+  lng <- view[[1]][2]
+  zoom <- view[[2]]
+  zoom_eq <- 256*2^(zoom)
+  lng_width <- width/zoom_eq*360
+  lat_width <- height/zoom_eq*180
+  xmin <- lng - lng_width/2
+  ymin <- lat - lat_height/2
+  xmax <- lng + lng_width/2
+  ymax <- lat + lat_height/2
+  #list(c(xmin,ymin),c(xmax,ymin),c(xmax,ymax),c(xmin,ymax),c(xmin,ymin))
+  list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
+}
+
 
 ee_Map <- ee_Map()
 ee_set_methods()
