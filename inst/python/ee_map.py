@@ -13,6 +13,7 @@ This function is used in R/ee_map.R
 #EE_TILES = 'https://earthengine.googleapis.com/map/{mapid}/{{z}}/{{x}}/{{y}}?token={token}'
 # eeobject = r['eeobject']
 # vizparams = r['vizparams']
+
 def ee_map_py(eeobject, vizparams):
     """Fetch and return a map id and token
 

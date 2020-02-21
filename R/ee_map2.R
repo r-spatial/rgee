@@ -489,6 +489,7 @@ setMethod(
 
 
 #' Create a mapview based on an EE token
+#' @importFrom grDevices dev.size
 #' @noRd
 create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m <- mapview()
@@ -502,3 +503,4 @@ create_beauty_basemap <- function(eeobject, tile, center, objname, zoom_start) {
   m@object$eeobject <- eeobject$name()
   m
 }
+
