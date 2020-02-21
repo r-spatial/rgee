@@ -8,7 +8,7 @@ in the system}
 ee_discover_pyenvs(use_py_discover_config = FALSE)
 }
 \arguments{
-\item{use_py_discover_config}{Logical. If True this function
+\item{use_py_discover_config}{Logical. If True
 will use \code{\link[reticulate]{py_discover_config}} to find
 versions of Python in the system.  Otherwise, will use
 \code{\link[reticulate]{conda_list}} for Window OS and

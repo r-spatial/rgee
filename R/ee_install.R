@@ -285,7 +285,7 @@ ee_install_ChromeDriver <- function(ChromeDriverVersion) {
       "The ChromeDriverVersion argument was not defined.",
       " Find the appropriate version of Google Chrome visiting:\n",
       "- chrome://settings/help \n",
-      "- After according to your Chrome version run, for e.g, rgee::ee_install_drivers(77)"
+      "- After, according to your Chrome version, run, for e.g, rgee::ee_install_drivers(77)"
     )
   }
 

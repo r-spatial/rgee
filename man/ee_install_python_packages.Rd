@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_python_packages}
 \alias{ee_install_python_packages}
-\title{Install Python packages dependencies}
+\title{Install rgee Python packages dependencies}
 \usage{
 ee_install_python_packages(method = c("auto", "virtualenv", "conda"),
   conda = "auto", ee_version = NULL, envname = NULL, pip = FALSE,
