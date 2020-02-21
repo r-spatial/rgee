@@ -148,12 +148,12 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
 
   viz_params_total <- c(new_params, vizparams)
 
-if (!quiet) {
-  cat(
-    "Getting the thumbnail image from Earth Engine ...",
-    "please wait\n"
-  )
-}
+  if (!quiet) {
+    cat(
+      "Getting the thumbnail image from Earth Engine ...",
+      "please wait\n"
+    )
+  }
   thumbnail_url <- x$getThumbURL(viz_params_total)
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
@@ -162,7 +162,7 @@ if (!quiet) {
   # Handling problems with respect to the format
   # of the getTHumbURL (sometimes jpeg other png)
   error_message_I <- paste0(
-    "Error arise after trying to download",
+    "Error arise after trying to download ",
     "the getThumbURL (it needs to be ",
     "either jpeg or png)"
   )
@@ -277,4 +277,3 @@ create_region <- function(x) {
   }
   invisible(ee_py_to_r(region)[[1]])
 }
-

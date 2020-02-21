@@ -469,7 +469,6 @@ ee_source_python <- function(oauth_func_path) {
   import_from_path(module_name, path = module_path, convert = F)
 }
 
-
 #' function obtained from tidyverse
 #' https://github.com/tidyverse/tidyverse
 #' @noRd
@@ -508,7 +507,6 @@ add_extra_space <- function(name, space) {
   }
   result
 }
-
 
 #' Function used in ee_user
 #'
