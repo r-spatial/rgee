@@ -9,7 +9,7 @@ ee_set_methods <- function() {
   ee_Map$setCenter <- ee_setCenter
   ee_Map$centerObject <- ee_centerObject
   ee_Map$addLayer <- ee_addLayer
-  ee_Map$getBounds <- ee_getBounds
+  # ee_Map$getBounds <- ee_getBounds
   # ee_Map$getScale <- getScale
   # ee_Map$getCenter <- getCenter
   # ee_Map$setZoom <- setZoom
@@ -20,19 +20,18 @@ ee_set_methods <- function() {
   ee_Map
 }
 
-
-ee_getBounds <- function(eeObject) {
-  viewer_canvas <- dev.size("px")
-  width <- viewer_canvas[1]
-  height <- viewer_canvas[2]
-  area_box <- ee_getBox(mapview_object = ee_Map$mapdisplay,
-                        width = width,
-                        height = height)
-  rgee:::ee_map(ee$Geometry$Polygon(area_box))
-  m@map$width <- viewer_canvas[1]
-  m@map$height <- viewer_canvas[2]
-  ee_Map$mapdisplay
-}
+# ee_getBounds <- function(eeObject) {
+#   viewer_canvas <- dev.size("px")
+#   width <- viewer_canvas[1]
+#   height <- viewer_canvas[2]
+#   area_box <- ee_getBox(mapview_object = ee_Map$mapdisplay,
+#                         width = width,
+#                         height = height)
+#   rgee:::ee_map(ee$Geometry$Polygon(area_box))
+#   m@map$width <- viewer_canvas[1]
+#   m@map$height <- viewer_canvas[2]
+#   ee_Map$mapdisplay
+# }
 
 ee_setCenter <- function(lon = -58, lat = -10, zoom = NULL) {
   ee_Map$lon <- lon
@@ -62,7 +61,7 @@ ee_addLayer <- function(eeObject,
   image <- NULL
 
   #Earth Engine Spatial object
-  ee_spatial_object <- ee_get_spatial_objects('simple')
+  ee_spatial_object <- ee_get_spatial_objects('Simple')
 
   if (!any(class(eeObject) %in% ee_spatial_object)) {
     stop("The image argument in 'addLayer' function must be an instace of one",
@@ -107,10 +106,6 @@ ee_addLayer <- function(eeObject,
   ee_addTile(tile, name = name, shown = shown, opacity = opacity)
 }
 
-center <- c(ee_Map$lon,ee_Map$lat)
-if (is.null(ee_Map$zoom)) {
-  ee_Map$zoom <- ee_getZoom(eeObject)
-}
 
 #' Create a base mapview object
 #' @noRd
@@ -192,62 +187,64 @@ ee_get_spatial_objects <-  function(type='all') {
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
-ee_getZoom <- function(eeObject) {
-  bounds <- ee_get_boundary(eeObject)
-
-  WORLD_DIM <- list(height = 256, width = 256)
-  ZOOM_MAX = 21
-
-  latRad <- function(lat) {
-    sin <- sin(lat*pi/180)
-    radX2 <- log((1 + sin)/(1 - sin))/2
-    max(min(radX2, pi), -pi)/2
-  }
-
-  zoom <- function(mapPx, worldPx, fraction){
-    floor(log(mapPx/worldPx/fraction)/log(2))
-  }
-
-  latFraction <- (latRad(bounds['ymax']) - latRad(bounds['ymin']))/pi
-  lngDiff <- bounds['xmax'] - bounds['xmin']
-  lngFraction <- if (lngDiff < 0) lngDiff + 360 else lngDiff
-  lngFraction <- lngFraction/360
-
-  latZoom <- zoom(400, WORLD_DIM[['height']], latFraction)
-  lngZoom <- zoom(970, WORLD_DIM[['width']], lngFraction)
-
-  min(latZoom, lngZoom, ZOOM_MAX)
-}
+# ee_getZoom <- function(eeObject) {
+#   bounds <- ee_get_boundary(eeObject)
+#
+#   WORLD_DIM <- list(height = 256, width = 256)
+#   ZOOM_MAX = 21
+#
+#   latRad <- function(lat) {
+#     sin <- sin(lat*pi/180)
+#     radX2 <- log((1 + sin)/(1 - sin))/2
+#     max(min(radX2, pi), -pi)/2
+#   }
+#
+#   zoom <- function(mapPx, worldPx, fraction){
+#     floor(log(mapPx/worldPx/fraction)/log(2))
+#   }
+#
+#   latFraction <- (latRad(bounds['ymax']) - latRad(bounds['ymin']))/pi
+#   lngDiff <- bounds['xmax'] - bounds['xmin']
+#   lngFraction <- if (lngDiff < 0) lngDiff + 360 else lngDiff
+#   lngFraction <- lngFraction/360
+#
+#   latZoom <- zoom(400, WORLD_DIM[['height']], latFraction)
+#   lngZoom <- zoom(970, WORLD_DIM[['width']], lngFraction)
+#
+#   min(latZoom, lngZoom, ZOOM_MAX)
+# }
 
 #' Get boundary of a Earth Engine Object
 #' @importFrom sf st_polygon st_bbox
 #' @noRd
-ee_get_boundary <- function(eeObject) {
-  eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
-    unlist() %>%
-    matrix(ncol = 2,byrow = TRUE) %>%
-    list() %>%
-    st_polygon() %>%
-    st_bbox()
-}
+# ee_get_boundary <- function(eeObject) {
+#   eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
+#     unlist() %>%
+#     matrix(ncol = 2,byrow = TRUE) %>%
+#     list() %>%
+#     st_polygon() %>%
+#     st_bbox()
+# }
 
 #' Get the box for a specific Device Surface
 #' @noRd
-ee_getBox <- function(mapview_object, width , height){
-  view <- mapview_object@map$x$setView
-  lat <- view[[1]][1]
-  lng <- view[[1]][2]
-  zoom <- view[[2]]
-  zoom_eq <- 256*2^(zoom)
-  lng_width <- width/zoom_eq*360
-  lat_width <- height/zoom_eq*180
-  xmin <- lng - lng_width/2
-  ymin <- lat - lat_height/2
-  xmax <- lng + lng_width/2
-  ymax <- lat + lat_height/2
-  #list(c(xmin,ymin),c(xmax,ymin),c(xmax,ymax),c(xmin,ymax),c(xmin,ymin))
-  list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
-}
+# ee_getBox <- function(mapview_object, width , height){
+#   view <- mapview_object@map$x$setView
+#   sss <- leafem::addMouseCoordinates(map = mapview_object,native.crs = T)
+#   sss$x
+#   lat <- view[[1]][1]
+#   lng <- view[[1]][2]
+#   zoom <- view[[2]]
+#   zoom_eq <- 256*2^(zoom)
+#   lng_width <- width/zoom_eq*360
+#   lat_height <- height/zoom_eq*180
+#   xmin <- lng - lng_width/2
+#   ymin <- lat - lat_height/2
+#   xmax <- lng + lng_width/2
+#   ymax <- lat + lat_height/2
+#   #list(c(xmin,ymin),c(xmax,ymin),c(xmax,ymax),c(xmin,ymax),c(xmin,ymin))
+#   list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
+# }
 
 
 ee_Map <- ee_Map()
