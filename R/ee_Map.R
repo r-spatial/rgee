@@ -1,59 +1,220 @@
-#' Function to display map in earthengine
+#' Module to display Earth Engine (EE) spatial
+#' objects
+#'
+#' Create interactive visualizations of spatial EE objects
+#' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
+#' through \code{\link[mapview]{mapview}}.
 #' @importFrom jsonlite parse_json
+#' @format An object of class environment with the
+#' following functions:
+#' \itemize{
+#'   \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
+#'   opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+#'   \itemize{
+#'     \item \strong{eeObject:} The object to add to mapview.\cr
+#'     \item \strong{visParams:} List of parameters for visualization.
+#'     See details.\cr
+#'     \item \strong{name:} The name of the layer.\cr
+#'     \item \strong{shown:} A flag indicating whether the
+#'     layer should be on by default. \cr
+#'     \item \strong{opacity:} The layer's opacity represented as a number
+#'      between 0 and 1. Defaults to 1. \cr
+#'   }
+#'   \item \strong{setCenter(lon = 0, lat = 0, zoom = 1)}: Centers the map view
+#'   at the given coordinates with the given zoom level. If no zoom level is
+#'   provided, it uses 1 by default.
+#'   \itemize{
+#'     \item \strong{lon:} The longitude of the center, in degrees.\cr
+#'     \item \strong{lat:} The latitude of the center, in degrees.\cr
+#'     \item \strong{zoom:} The zoom level, from 1 to 24.
+#'   }
+#'   \item \strong{setZoom(lon = 0, lat = 0, zoom = 1)}: Centers the map view
+#'   at the given coordinates with the given zoom level. If no zoom level is
+#'   provided, it uses 1 by default.
+#'   \itemize{
+#'     \item \strong{lon:} The longitude of the center, in degrees.\cr
+#'     \item \strong{lat:} The latitude of the center, in degrees.\cr
+#'     \item \strong{zoom:} The zoom level, from 1 to 24.
+#'   }
+#'   \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+#'   map view on a given object. If no zoom level is provided, it will
+#'   predicted according the bounds of the Earth Engine object specified.
+#'   \itemize{
+#'     \item \strong{eeObject:} EE object.\cr
+#'     \item \strong{zoom:} The zoom level, from 1 to 24.
+#'   }
+#' }
+#'
+#' @details
+#'
+#' `ee_Map` takes advantage of
+#' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
+#' getMapId} for fetch and return both a mapid and a token suitable
+#' to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
+#' visualization effect, it will depend on the type of spatial EE object . For
+#' Image objects, you can provide visualization parameters to
+#' ee_Map$addLayer() by using the argument visParams. The
+#' \href{https://developers.google.com/earth-engine/image_visualization}{
+#' parameters} available are:
+#'
+#' \tabular{lll}{
+#' \strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
+#' \strong{bands}    \tab  Comma-delimited list of three band names to be
+#' mapped to RGB     \tab  list \cr
+#' \strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
+#' number or list of three numbers, one for each band \cr
+#' \strong{bias}     \tab  Value(s) to add to each Digital Number (DN)
+#' value \tab number or list of three numbers, one for each band \cr
+#' \strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
+#' three numbers, one for each band \cr
+#' \strong{palette}  \tab  List of CSS-style color strings
+#' (single-band images only) \tab  comma-separated list of hex strings \cr
+#' \strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent
+#' and 1.0 is fully opaque) \tab  number \cr
+#' }
+#'
+#' If you add an Image to the map without any additional
+#' parameters, by default `ee_Map$addLayer()` assigns the first three bands to red,
+#' green and blue bands, respectively. The default stretch is based on the
+#' min-max range.  For Geometry, Feature and/or FeatureCollection. The available
+#' visParams are:
+#' \itemize{
+#'  \item \strong{color}: A hex string in the format RRGGBB specifying the
+#'  color to use for drawing the features. By default 000000.
+#'  \item \strong{pointRadius}: The radius of the point markers. By default 3.
+#'  \item \strong{strokeWidth}: The width of lines and polygon borders. By
+#'  default 3.
+#' }
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize()
+#'
+#' # Case: Geometry*
+#' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
+#' m1 <- ee_map(
+#'   eeobject = geom,
+#'   vizparams = list(pointRadius = 10, color = "FF0000"),
+#'   objname = "Geometry-Arequipa"
+#' )
+#' m1
+#'
+#' # Case: Feature
+#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
+#'   first()
+#' m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
+#'              objname = "Feature-Arequipa")
+#' m2 + m1
+#'
+#' # Case: FeatureCollection
+#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+#' m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+#' m3 + m2 + m1
+#'
+#' # Case: Image
+#' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+#' m4 <- ee_map(
+#'   eeobject = image,
+#'   vizparams = list(
+#'     bands = c("B4", "B3", "B2"),
+#'     max = 10000
+#'   ),
+#'   objname = "SF",
+#'   zoom_start = "8"
+#' )
+#' m4
+#'
+#' # Case: ImageCollection
+#' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
+#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
+#'   filterDate("2014-01-01", "2015-01-01")$
+#'   sort("CLOUD_COVER")
+#'
+#' m5 <- ee_map(
+#'   eeobject = collection,
+#'   vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
+#'   objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
+#'   max_nimage = 3,
+#'   zoom_start = 10
+#' )
+#' m5
+#' }
 #' @export
 ee_Map <- function() {
   ee_Map <- new.env(parent = emptyenv())
 }
 
 ee_set_methods <- function() {
-  ee_Map$setCenter <- ee_setCenter
-  ee_Map$centerObject <- ee_centerObject
   ee_Map$addLayer <- ee_addLayer
+  ee_Map$setCenter <- ee_setCenter
+  ee_Map$setZoom <- ee_setZoom
+  ee_Map$centerObject <- ee_centerObject
   # ee_Map$getBounds <- ee_getBounds
   # ee_Map$getScale <- getScale
   # ee_Map$getCenter <- getCenter
-  # ee_Map$setZoom <- setZoom
   # ee_Map$getZoom <- getZoom
-  ee_Map$mapdisplay <- ee_mapview()
-  ee_Map$mapdisplay
+
+  #Init environment
   ee_Map$setCenter()
   ee_Map
 }
 
-# ee_getBounds <- function(eeObject) {
-#   viewer_canvas <- dev.size("px")
-#   width <- viewer_canvas[1]
-#   height <- viewer_canvas[2]
-#   area_box <- ee_getBox(mapview_object = ee_Map$mapdisplay,
-#                         width = width,
-#                         height = height)
-#   rgee:::ee_map(ee$Geometry$Polygon(area_box))
-#   m@map$width <- viewer_canvas[1]
-#   m@map$height <- viewer_canvas[2]
-#   ee_Map$mapdisplay
-# }
+#' Sets the zoom level of the map.
+#' @noRd
+ee_setZoom <- function(zoom) {
+  ee_Map$zoom <- zoom
+}
 
-ee_setCenter <- function(lon = -58, lat = -10, zoom = NULL) {
+#' Center a mapview
+#'
+#' Centers the map view at the given coordinates
+#' with the given zoom level. If no zoom level is
+#' provided, it uses 1.
+#'
+#' https://developers.google.com/earth-engine/api_docs#map.setcenter
+#' @noRd
+ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
   ee_Map$lon <- lon
   ee_Map$lat <- lat
   ee_Map$zoom <- zoom
-  invisible(ee_Map)
 }
 
+
+#' Center a mapview using an EE object
+#'
+#' Centers the map view on a given object. If no zoom
+#' level is provided, it will predicted according the
+#' bounds of the Earth Engine object specified.
+#'
+#' https://developers.google.com/earth-engine/api_docs#map.centerobject
+#' @noRd
 ee_centerObject <- function(eeObject, zoom = NULL) {
   if (any(class(eeObject) %in% ee_get_spatial_objects('Simple'))) {
     center <- eeObject$geometry()$centroid()$coordinates()$getInfo()
   } else {
     stop('Spatial Earth Engine Object not supported')
   }
+
+  if(is.null(zoom)) {
+    zoom <- ee_getZoom(eeObject)
+  }
   ee_Map$setCenter(lon = center[1], lat = center[2], zoom = zoom)
 }
 
+#' Adds a given EE object to the map as a layer.
+#' https://developers.google.com/earth-engine/api_docs#map.addlaye
+#' @noRd
 ee_addLayer <- function(eeObject,
                         visParams,
                         name = NULL,
                         shown = TRUE,
-                        opacity = 1.0) {
+                        opacity = 1) {
   if (missing(visParams)) {
     visParams = list()
   }
@@ -107,42 +268,90 @@ ee_addLayer <- function(eeObject,
 }
 
 
-#' Create a base mapview object
+#' Basic base mapview object
 #' @noRd
 ee_mapview <- function() {
   m <- mapview()
-  m@map$x$setView[[1]] <- c(0, 0)
-  m@map$x$setView[[2]] <- 1
+  m@map$x$setView[[1]] <- c(ee_Map$lat, ee_Map$lon)
+  m@map$x$setView[[2]] <- ee_Map$zoom
   m
 }
 
-#' Create a mapview object based on a tile_fetcher
+#' Add a mapview object based on a tile_fetcher
 #' @importFrom mapview mapview
-#' @importFrom leaflet addTiles tileOptions hideGroup
+#' @importFrom leaflet addTiles tileOptions hideGroup setView
 #' @noRd
 ee_addTile <- function(tile, name, shown, opacity) {
   m <- ee_mapview()
+  m@map$x$setView[[1]] <- c(ee_Map$lat, ee_Map$lon)
+  m@map$x$setView[[2]] <- ee_Map$zoom
   m@map <- m@map %>%
     addTiles(urlTemplate = tile,
              group = name,
              options = tileOptions(opacity = opacity)) %>%
-    rgee:::ee_mapViewLayersControl(names = name) %>%
+    ee_mapViewLayersControl(names = name) %>%
     hideGroup(if (!shown) name else NULL)
-  m
-}
-
-create_basemap <- function(tile, center, objname, zoom_start) {
-
-  m@map <- m@map %>%
-    addTiles(urlTemplate = tile, group = objname, layerId = "0") %>%
-    setView(center[1], center[2], zoom = zoom_start) %>%
-    rgee:::ee_mapViewLayersControl(names = c(objname))
-
   m@object$tokens <- tile
-  m@object$names <- objname
-  #m@object$eeobject <- eeobject$name()
+  m@object$names <- name
+  m@object$opacity <- opacity
+  m@object$shown <- shown
   m
 }
+
+if (!isGeneric("+")) {
+  setGeneric("+", function(x, y, ...)
+    standardGeneric("+"))
+}
+
+#' mapview + mapview; adds data from the second map to the first
+#'
+#' @author Adapted from
+#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
+#' tim-salabim code}.
+#' @param e1 a mapview map to which e2 should be added.
+#' @param e2 a mapview map from which the objects should be added to e1.
+#' @examples
+#' \dontrun{
+#' eeobject <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+#' center <- eeobject$geometry()$centroid()$getInfo()$coordinates
+#' vizparams <- list(color = "FF0000", strokeWidth = 5)
+#' m1 <- ee_map(eeobject, vizparams, center, objname = "Arequipa-landuse")
+#'
+#' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
+#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
+#'   filterDate("2014-01-01", "2015-01-01")$
+#'   sort("CLOUD_COVER")
+#' eeobject <- collection$median()
+#' vizparams <- list(bands = c("B4", "B3", "B2"), max = 0.3)
+#' center <- c(-122.3578, 37.7726)
+#' m2 <- ee_map(eeobject, vizparams, center, objname = "SF")
+#' m1 + m2
+#' }
+#'
+setMethod(
+  "+",
+  signature(
+    e1 = "mapview",
+    e2 = "mapview"
+  ),
+  function(e1, e2) {
+    e2_token <- e2@object$tokens
+    e2_name <- e2@object$names
+    e2_opacity <- e2@object$opacity
+    e2_shown <- e2@object$shown
+
+    for (x in seq_len(length(e2_name))) {
+      e1@map <- e1@map %>%
+        addTiles(urlTemplate = e2_token[x],
+                 group = e2_name[x],
+                 options = tileOptions(opacity = e2_opacity[x])) %>%
+        ee_mapViewLayersControl(names = e2_name[x]) %>%
+        hideGroup(if (!e2_shown[x]) e2_name[x] else NULL)
+    }
+    return(e1)
+  }
+)
 
 #' Get the tile_fetcher to display into ee_map
 #' @noRd
@@ -152,7 +361,8 @@ get_ee_image_url <- function(image) {
   url
 }
 
-#' Return R class for Earth Engine Spatial Objects
+
+#' Return R classes for Earth Engine Spatial Objects
 #' @noRd
 ee_get_spatial_objects <-  function(type='all') {
   if (type == 'Table') {
@@ -187,51 +397,49 @@ ee_get_spatial_objects <-  function(type='all') {
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
-# ee_getZoom <- function(eeObject) {
-#   bounds <- ee_get_boundary(eeObject)
-#
-#   WORLD_DIM <- list(height = 256, width = 256)
-#   ZOOM_MAX = 21
-#
-#   latRad <- function(lat) {
-#     sin <- sin(lat*pi/180)
-#     radX2 <- log((1 + sin)/(1 - sin))/2
-#     max(min(radX2, pi), -pi)/2
-#   }
-#
-#   zoom <- function(mapPx, worldPx, fraction){
-#     floor(log(mapPx/worldPx/fraction)/log(2))
-#   }
-#
-#   latFraction <- (latRad(bounds['ymax']) - latRad(bounds['ymin']))/pi
-#   lngDiff <- bounds['xmax'] - bounds['xmin']
-#   lngFraction <- if (lngDiff < 0) lngDiff + 360 else lngDiff
-#   lngFraction <- lngFraction/360
-#
-#   latZoom <- zoom(400, WORLD_DIM[['height']], latFraction)
-#   lngZoom <- zoom(970, WORLD_DIM[['width']], lngFraction)
-#
-#   min(latZoom, lngZoom, ZOOM_MAX)
-# }
+ee_getZoom <- function(eeObject) {
+  bounds <- ee_get_boundary(eeObject)
+
+  WORLD_DIM <- list(height = 256, width = 256)
+  ZOOM_MAX = 21
+
+  latRad <- function(lat) {
+    sin <- sin(lat*pi/180)
+    radX2 <- log((1 + sin)/(1 - sin))/2
+    max(min(radX2, pi), -pi)/2
+  }
+
+  zoom <- function(mapPx, worldPx, fraction){
+    floor(log(mapPx/worldPx/fraction)/log(2))
+  }
+
+  latFraction <- (latRad(bounds['ymax']) - latRad(bounds['ymin']))/pi
+  lngDiff <- bounds['xmax'] - bounds['xmin']
+  lngFraction <- if (lngDiff < 0) lngDiff + 360 else lngDiff
+  lngFraction <- lngFraction/360
+
+  latZoom <- zoom(400, WORLD_DIM[['height']], latFraction)
+  lngZoom <- zoom(970, WORLD_DIM[['width']], lngFraction)
+
+  min(latZoom, lngZoom, ZOOM_MAX)
+}
 
 #' Get boundary of a Earth Engine Object
 #' @importFrom sf st_polygon st_bbox
 #' @noRd
-# ee_get_boundary <- function(eeObject) {
-#   eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
-#     unlist() %>%
-#     matrix(ncol = 2,byrow = TRUE) %>%
-#     list() %>%
-#     st_polygon() %>%
-#     st_bbox()
-# }
+ee_get_boundary <- function(eeObject) {
+  eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
+    unlist() %>%
+    matrix(ncol = 2,byrow = TRUE) %>%
+    list() %>%
+    st_polygon() %>%
+    st_bbox()
+}
 
 #' Get the box for a specific Device Surface
 #' @noRd
 # ee_getBox <- function(mapview_object, width , height){
 #   view <- mapview_object@map$x$setView
-#   sss <- leafem::addMouseCoordinates(map = mapview_object,native.crs = T)
-#   sss$x
 #   lat <- view[[1]][1]
 #   lng <- view[[1]][2]
 #   zoom <- view[[2]]
@@ -242,10 +450,22 @@ ee_get_spatial_objects <-  function(type='all') {
 #   ymin <- lat - lat_height/2
 #   xmax <- lng + lng_width/2
 #   ymax <- lat + lat_height/2
-#   #list(c(xmin,ymin),c(xmax,ymin),c(xmax,ymax),c(xmin,ymax),c(xmin,ymin))
 #   list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
 # }
 
+
+# ee_getBounds <- function(eeObject) {
+#   viewer_canvas <- dev.size("px")
+#   width <- viewer_canvas[1]
+#   height <- viewer_canvas[2]
+#   area_box <- ee_getBox(mapview_object = ee_Map$mapdisplay,
+#                         width = width,
+#                         height = height)
+#   ee_map(ee$Geometry$Polygon(area_box))
+#   m@map$width <- viewer_canvas[1]
+#   m@map$height <- viewer_canvas[2]
+#   ee_Map$mapdisplay
+# }
 
 ee_Map <- ee_Map()
 ee_set_methods()

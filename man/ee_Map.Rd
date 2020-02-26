@@ -3,12 +3,154 @@
 \docType{data}
 \name{ee_Map}
 \alias{ee_Map}
-\title{Function to display map in earthengine}
-\format{An object of class \code{environment} of length 5.}
+\title{Module to display Earth Engine (EE) spatial
+objects}
+\format{An object of class environment with the
+following functions:
+\itemize{
+\item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
+opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+\itemize{
+\item \strong{eeObject:} The object to add to mapview.\cr
+\item \strong{visParams:} List of parameters for visualization.
+See details.\cr
+\item \strong{name:} The name of the layer.\cr
+\item \strong{shown:} A flag indicating whether the
+layer should be on by default. \cr
+\item \strong{opacity:} The layer's opacity represented as a number
+between 0 and 1. Defaults to 1. \cr
+}
+\item \strong{setCenter(lon = 0, lat = 0, zoom = 1)}: Centers the map view
+at the given coordinates with the given zoom level. If no zoom level is
+provided, it uses 1 by default.
+\itemize{
+\item \strong{lon:} The longitude of the center, in degrees.\cr
+\item \strong{lat:} The latitude of the center, in degrees.\cr
+\item \strong{zoom:} The zoom level, from 1 to 24.
+}
+\item \strong{setZoom(lon = 0, lat = 0, zoom = 1)}: Centers the map view
+at the given coordinates with the given zoom level. If no zoom level is
+provided, it uses 1 by default.
+\itemize{
+\item \strong{lon:} The longitude of the center, in degrees.\cr
+\item \strong{lat:} The latitude of the center, in degrees.\cr
+\item \strong{zoom:} The zoom level, from 1 to 24.
+}
+\item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+map view on a given object. If no zoom level is provided, it will
+predicted according the bounds of the Earth Engine object specified.
+\itemize{
+\item \strong{eeObject:} EE object.\cr
+\item \strong{zoom:} The zoom level, from 1 to 24.
+}
+}}
 \usage{
 ee_Map
 }
 \description{
-Function to display map in earthengine
+Create interactive visualizations of spatial EE objects
+(ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
+through \code{\link[mapview]{mapview}}.
+}
+\details{
+\code{ee_Map} takes advantage of
+\href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
+getMapId} for fetch and return both a mapid and a token suitable
+to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
+visualization effect, it will depend on the type of spatial EE object . For
+Image objects, you can provide visualization parameters to
+ee_Map$addLayer() by using the argument visParams. The
+\href{https://developers.google.com/earth-engine/image_visualization}{
+parameters} available are:
+
+\tabular{lll}{
+\strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
+\strong{bands}    \tab  Comma-delimited list of three band names to be
+mapped to RGB     \tab  list \cr
+\strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
+numbers, one for each band \cr
+\strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
+numbers, one for each band \cr
+\strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
+number or list of three numbers, one for each band \cr
+\strong{bias}     \tab  Value(s) to add to each Digital Number (DN)
+value \tab number or list of three numbers, one for each band \cr
+\strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
+three numbers, one for each band \cr
+\strong{palette}  \tab  List of CSS-style color strings
+(single-band images only) \tab  comma-separated list of hex strings \cr
+\strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent
+and 1.0 is fully opaque) \tab  number \cr
+}
+
+If you add an Image to the map without any additional
+parameters, by default \code{ee_Map$addLayer()} assigns the first three bands to red,
+green and blue bands, respectively. The default stretch is based on the
+min-max range.  For Geometry, Feature and/or FeatureCollection. The available
+visParams are:
+\itemize{
+\item \strong{color}: A hex string in the format RRGGBB specifying the
+color to use for drawing the features. By default 000000.
+\item \strong{pointRadius}: The radius of the point markers. By default 3.
+\item \strong{strokeWidth}: The width of lines and polygon borders. By
+default 3.
+}
+}
+\examples{
+\dontrun{
+library(rgee)
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize()
+
+# Case: Geometry*
+geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
+m1 <- ee_map(
+  eeobject = geom,
+  vizparams = list(pointRadius = 10, color = "FF0000"),
+  objname = "Geometry-Arequipa"
+)
+m1
+
+# Case: Feature
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
+  first()
+m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
+             objname = "Feature-Arequipa")
+m2 + m1
+
+# Case: FeatureCollection
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+m3 + m2 + m1
+
+# Case: Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+m4 <- ee_map(
+  eeobject = image,
+  vizparams = list(
+    bands = c("B4", "B3", "B2"),
+    max = 10000
+  ),
+  objname = "SF",
+  zoom_start = "8"
+)
+m4
+
+# Case: ImageCollection
+collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+  filter(ee$Filter()$eq("WRS_PATH", 44))$
+  filter(ee$Filter()$eq("WRS_ROW", 34))$
+  filterDate("2014-01-01", "2015-01-01")$
+  sort("CLOUD_COVER")
+
+m5 <- ee_map(
+  eeobject = collection,
+  vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
+  objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
+  max_nimage = 3,
+  zoom_start = 10
+)
+m5
+}
 }
 \keyword{datasets}
