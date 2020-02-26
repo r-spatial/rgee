@@ -11,67 +11,55 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filterDate("2014-01-01", "2015-01-01")$
   sort("CLOUD_COVER")
 
-
 # testing -----------------------------------------------------------------
 test_that("ee_map default", {
-  expect_s4_class(ee_map(),'mapview')
+  expect_s4_class(rgee:::ee_mapview(),'mapview')
 })
 
 test_that("ee_map geometry", {
-  m1 <- ee_map(
-    eeobject = geom,
-    vizparams = list(pointRadius = 10, color = "FF0000"),
-    objname = "Geometry-Arequipa")
-  m1_noviz <- ee_map(
-    eeobject = geom,
-    objname = "Geometry-Arequipa")
-  expect_equal(m1@object$eeobject,"Geometry")
-  expect_equal(m1_noviz@object$eeobject,"Geometry")
+  m1 <- ee_Map$addLayer(geom,
+                        list(pointRadius = 10, color = "FF0000"),
+                        "Geometry-Arequipa-test")
+  m1_noviz <- ee_Map$addLayer(geom,name =  "Geometry-Arequipa")
+  expect_equal(m1@object$names, "Geometry-Arequipa-test")
+  expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
 })
 
 test_that("ee_map feature", {
-  m2 <- ee_map(eeobject = ee$Feature(eeobject_fc$first()),
-               objname = "Feature-Arequipa")
-  expect_equal(m2@object$eeobject,"Feature")
+  m2 <- ee_Map$addLayer(ee$Feature(geom),
+                        name = "Feature-Arequipa-test")
+  expect_equal(m2@object$names,"Feature-Arequipa-test")
 })
 
 # Case: FeatureCollection
 test_that("ee_map FeatureCollection", {
-  m3 <- ee_map(eeobject = eeobject_fc,
-               objname = "FeatureCollection")
-  expect_equal(m3@object$eeobject,"FeatureCollection")
+  m3 <- ee_Map$addLayer(eeObject = eeobject_fc,
+                        name = "FeatureCollection")
+  expect_equal(m3@object$names,"FeatureCollection")
 })
 
 # Case: Image
 test_that("ee_map Image", {
-  m4 <- ee_map(
-    eeobject = image,
-    vizparams = list(
-      bands = c("B4", "B3", "B2"),
-      max = 10000),
-    objname = "SF",
-    zoom_start = "8")
-  m4noviz <- ee_map(
-    eeobject = image,
-    zoom_start = "8")
-  expect_equal(m4@object$eeobject,"Image")
-  expect_equal(m4noviz@object$eeobject,"Image")
+  m4 <- ee_Map$addLayer(eeObject = image,
+                        visParams = list(bands = c("B4", "B3", "B2"),
+                                         max = 10000),
+                        name = "SF")
+  expect_equal(m4@object$names,"SF")
 })
 
-# Case: ImageCollection
-test_that("ee_map ImageCollection", {
-  m5 <- ee_map(
-    eeobject = collection,
-    vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
-    objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
-    max_nimage = 3,
-    zoom_start = 10)
-  m5noviz <- ee_map(
-    eeobject = collection,
-    objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
-    max_nimage = 3,
-    zoom_start = 10)
-  expect_equal(m5@object$eeobject,"ImageCollection")
-  expect_equal(m5noviz@object$eeobject,"ImageCollection")
-  }
-)
+
+test_that("ee_Map$centerObject", {
+  ee_Map$centerObject(eeObject = image)
+  expect_equal(ee_Map$lat, 37.4716,tolerance = .001)
+})
+
+test_that("ee_Map$centerObject", {
+  ee_Map$setZoom(zoom = 10)
+  expect_equal(ee_Map$zoom, 10)
+})
+
+test_that("ee_Map$centerObject", {
+  ee_Map$setCenter(lon = 10,lat = 10)
+  expect_equal(ee_Map$lon, 10)
+  expect_equal(ee_Map$lat, 10)
+})

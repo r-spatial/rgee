@@ -158,6 +158,7 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
   ee_Map$lon <- lon
   ee_Map$lat <- lat
   ee_Map$zoom <- zoom
+  ee_Map
 }
 
 
