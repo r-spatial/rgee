@@ -20,25 +20,21 @@
 #'     \item \strong{opacity:} The layer's opacity represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
 #'   }
-#'   \item \strong{setCenter(lon = 0, lat = 0, zoom = 1)}: Centers the map view
-#'   at the given coordinates with the given zoom level. If no zoom level is
-#'   provided, it uses 1 by default.
+#'   \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
+#'   view at the given coordinates with the given zoom level. If no zoom level
+#'   is provided, it uses 1 by default.
 #'   \itemize{
 #'     \item \strong{lon:} The longitude of the center, in degrees.\cr
 #'     \item \strong{lat:} The latitude of the center, in degrees.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
 #'   }
-#'   \item \strong{setZoom(lon = 0, lat = 0, zoom = 1)}: Centers the map view
-#'   at the given coordinates with the given zoom level. If no zoom level is
-#'   provided, it uses 1 by default.
+#'   \item \strong{setZoom(zoom = NULL)}: Sets the zoom level of the map.
 #'   \itemize{
-#'     \item \strong{lon:} The longitude of the center, in degrees.\cr
-#'     \item \strong{lat:} The latitude of the center, in degrees.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
 #'   }
 #'   \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
 #'   map view on a given object. If no zoom level is provided, it will
-#'   predicted according the bounds of the Earth Engine object specified.
+#'   be predicted according the bounds of the Earth Engine object specified.
 #'   \itemize{
 #'     \item \strong{eeObject:} EE object.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
@@ -95,55 +91,34 @@
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
-#' # Case: Geometry*
-#' geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-#' m1 <- ee_map(
-#'   eeobject = geom,
-#'   vizparams = list(pointRadius = 10, color = "FF0000"),
-#'   objname = "Geometry-Arequipa"
-#' )
-#' m1
-#'
-#' # Case: Feature
+#' # Case 1: Geometry*
+#' geom <- ee$Geometry$Point(list(-73.53, -15.75))
+#' ee_Map$centerObject(geom,zoom = 13)
+#' m1 <- ee_Map$addLayer(eeObject = geom,
+#'                       visParams = list(pointRadius = 10,
+#'                                        color = "FF0000"),
+#'                       name = 'Geometry-Arequipa')
+#' # Case 2: Feature
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
 #'   first()
-#' m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
-#'              objname = "Feature-Arequipa")
+#' m2 <- ee_Map$addLayer(eeObject = ee$Feature(eeobject_fc),
+#'                       name = "Feature-Arequipa")
 #' m2 + m1
 #'
-#' # Case: FeatureCollection
+#' # Case 3: FeatureCollection
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+#' ee_Map$centerObject(eeobject_fc)
+#' m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
 #' m3 + m2 + m1
 #'
-#' # Case: Image
+#' # Case 4: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' m4 <- ee_map(
-#'   eeobject = image,
-#'   vizparams = list(
-#'     bands = c("B4", "B3", "B2"),
-#'     max = 10000
-#'   ),
-#'   objname = "SF",
-#'   zoom_start = "8"
-#' )
+#' ee_Map$centerObject(image)
+#' m4 <- ee_Map$addLayer(eeObject = image,
+#'                       visParams = list(bands = c("B4", "B3", "B2"),
+#'                                        max = 10000),
+#'                       name = "SF")
 #' m4
-#'
-#' # Case: ImageCollection
-#' collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-#'   filter(ee$Filter()$eq("WRS_PATH", 44))$
-#'   filter(ee$Filter()$eq("WRS_ROW", 34))$
-#'   filterDate("2014-01-01", "2015-01-01")$
-#'   sort("CLOUD_COVER")
-#'
-#' m5 <- ee_map(
-#'   eeobject = collection,
-#'   vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
-#'   objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
-#'   max_nimage = 3,
-#'   zoom_start = 10
-#' )
-#' m5
 #' }
 #' @export
 ee_Map <- function() {
@@ -195,8 +170,10 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
 ee_centerObject <- function(eeObject, zoom = NULL) {
-  if (any(class(eeObject) %in% ee_get_spatial_objects('Simple'))) {
+  if (any(class(eeObject) %in% ee_get_spatial_objects('Nongeom'))) {
     center <- eeObject$geometry()$centroid()$coordinates()$getInfo()
+  } else if(any(class(eeObject) %in% "ee.geometry.Geometry")) {
+    center <- eeObject$centroid()$coordinates()$getInfo()
   } else {
     stop('Spatial Earth Engine Object not supported')
   }
@@ -377,6 +354,11 @@ ee_get_spatial_objects <-  function(type='all') {
   if (type == 'ImageCollection') {
     ee_spatial_object <- 'ee.imagecollection.ImageCollection'
   }
+  if (type == 'Nongeom') {
+    ee_spatial_object <- c('ee.feature.Feature',
+                           'ee.featurecollection.FeatureCollection',
+                           'ee.image.Image')
+  }
   if (type == 'Simple') {
     ee_spatial_object <- c('ee.geometry.Geometry',
                            'ee.feature.Feature',
@@ -401,7 +383,7 @@ ee_getZoom <- function(eeObject) {
   bounds <- ee_get_boundary(eeObject)
 
   WORLD_DIM <- list(height = 256, width = 256)
-  ZOOM_MAX = 21
+  ZOOM_MAX = 18
 
   latRad <- function(lat) {
     sin <- sin(lat*pi/180)
@@ -428,6 +410,9 @@ ee_getZoom <- function(eeObject) {
 #' @importFrom sf st_polygon st_bbox
 #' @noRd
 ee_get_boundary <- function(eeObject) {
+  if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
+    eeObject <- ee$Feature(eeObject)
+  }
   eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
     unlist() %>%
     matrix(ncol = 2,byrow = TRUE) %>%

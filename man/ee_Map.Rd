@@ -20,20 +20,16 @@ layer should be on by default. \cr
 \item \strong{opacity:} The layer's opacity represented as a number
 between 0 and 1. Defaults to 1. \cr
 }
-\item \strong{setCenter(lon = 0, lat = 0, zoom = 1)}: Centers the map view
-at the given coordinates with the given zoom level. If no zoom level is
-provided, it uses 1 by default.
+\item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
+view at the given coordinates with the given zoom level. If no zoom level
+is provided, it uses 1 by default.
 \itemize{
 \item \strong{lon:} The longitude of the center, in degrees.\cr
 \item \strong{lat:} The latitude of the center, in degrees.\cr
 \item \strong{zoom:} The zoom level, from 1 to 24.
 }
-\item \strong{setZoom(lon = 0, lat = 0, zoom = 1)}: Centers the map view
-at the given coordinates with the given zoom level. If no zoom level is
-provided, it uses 1 by default.
+\item \strong{setZoom(zoom = NULL)}: Sets the zoom level of the map.
 \itemize{
-\item \strong{lon:} The longitude of the center, in degrees.\cr
-\item \strong{lat:} The latitude of the center, in degrees.\cr
 \item \strong{zoom:} The zoom level, from 1 to 24.
 }
 \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
@@ -102,55 +98,34 @@ library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
-# Case: Geometry*
-geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-m1 <- ee_map(
-  eeobject = geom,
-  vizparams = list(pointRadius = 10, color = "FF0000"),
-  objname = "Geometry-Arequipa"
-)
-m1
-
-# Case: Feature
+# Case 1: Geometry*
+geom <- ee$Geometry$Point(list(-73.53, -15.75))
+ee_Map$centerObject(geom,zoom = 13)
+m1 <- ee_Map$addLayer(eeObject = geom,
+                      visParams = list(pointRadius = 10,
+                                       color = "FF0000"),
+                      name = 'Geometry-Arequipa')
+# Case 2: Feature
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
   first()
-m2 <- ee_map(eeobject = ee$Feature(eeobject_fc),
-             objname = "Feature-Arequipa")
+m2 <- ee_Map$addLayer(eeObject = ee$Feature(eeobject_fc),
+                      name = "Feature-Arequipa")
 m2 + m1
 
-# Case: FeatureCollection
+# Case 3: FeatureCollection
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-m3 <- ee_map(eeobject = eeobject_fc, objname = "FeatureCollection")
+ee_Map$centerObject(eeobject_fc)
+m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
 m3 + m2 + m1
 
-# Case: Image
+# Case 4: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-m4 <- ee_map(
-  eeobject = image,
-  vizparams = list(
-    bands = c("B4", "B3", "B2"),
-    max = 10000
-  ),
-  objname = "SF",
-  zoom_start = "8"
-)
+ee_Map$centerObject(image)
+m4 <- ee_Map$addLayer(eeObject = image,
+                      visParams = list(bands = c("B4", "B3", "B2"),
+                                       max = 10000),
+                      name = "SF")
 m4
-
-# Case: ImageCollection
-collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-  filter(ee$Filter()$eq("WRS_PATH", 44))$
-  filter(ee$Filter()$eq("WRS_ROW", 34))$
-  filterDate("2014-01-01", "2015-01-01")$
-  sort("CLOUD_COVER")
-
-m5 <- ee_map(
-  eeobject = collection,
-  vizparams = list(bands = c("B4", "B3", "B2"), max = 1),
-  objname = c("Scene_2019", "Scene_2016", "Scene_2011"),
-  max_nimage = 3,
-  zoom_start = 10
-)
-m5
 }
 }
 \keyword{datasets}
