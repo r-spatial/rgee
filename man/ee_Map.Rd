@@ -34,7 +34,7 @@ is provided, it uses 1 by default.
 }
 \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
 map view on a given object. If no zoom level is provided, it will
-predicted according the bounds of the Earth Engine object specified.
+be predicted according the bounds of the Earth Engine object specified.
 \itemize{
 \item \strong{eeObject:} EE object.\cr
 \item \strong{zoom:} The zoom level, from 1 to 24.
