@@ -12,6 +12,7 @@
 #' ee_reattach()
 #' ee_Initialize()
 #' rdate_to_eedate('2000-01-01')
+#' rdate_to_eedate(315532800000) # float number
 #' @export
 rdate_to_eedate <- function(date, eeobject = TRUE) {
   condition <- any(class(date) %in% c('Date', 'character', 'POSIXt', 'POSIXct'))
@@ -55,4 +56,42 @@ eedate_to_rdate <- function(ee_date, js = FALSE) {
   } else {
     as.POSIXct(x = date_numeric/1000, origin = "1970-01-01", tz = "GMT")
   }
+}
+
+#' Get the date of a Earth Engine Image
+#'
+#' @param image The Earth Engine Image
+#' @param time_end Logical. If it is TRUE the
+#' system:time_end property will also be returned.
+#' See details.
+#' @details
+#' The properties system:time_start and system:time_end represent the
+#' images date based on a timestamp in milliseconds
+#' since the UNIX epoch. The system:time_start set the
+#' start period while system:time_end the end period. See
+#' this \href{https://developers.google.com/earth-engine/glossary}{link}
+#' for more information.
+#' @examples
+#' library(rgee)
+#' ee_Initialize()
+#' ee_reattach()
+#' l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
+#' ee_get_date(l8)
+#' srtm <- ee$Image('CGIAR/SRTM90_V4')
+#' ee_get_date(srtm, time_end = TRUE)
+#' @export
+ee_get_date <- function(image, time_end = FALSE) {
+  time_start <- tryCatch(
+    expr = eedate_to_rdate(image$get('system:time_start')),
+    error = function(e) NA
+  )
+  if (isTRUE(time_end)) {
+    time_end <- tryCatch(
+      expr = eedate_to_rdate(image$get('system:time_end')),
+      error = function(e) NA
+    )
+  } else {
+    time_end <- NULL
+  }
+  c('system:time_start' = time_start,'system:time_end'=time_end)
 }
