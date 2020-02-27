@@ -55,14 +55,15 @@
 #' library(sf)
 #'
 #' username <- 'data.colec.fbf' #change according to username.
-#' gcs_bucket <- 'rgee_dev'
+#' asset_home <- 'users/datacolecfbf' #change according to assset_home.
+#' gcs_bucket <- 'rgee_dev' #change according to bucket.
 #' ee_check_drivers()
 #'
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf', gcs = TRUE)
+#' ee_Initialize(email = username, gcs = TRUE)
 #'
 #' # Create a folder in Earth Engine Asset
-#' filename <- sprintf("users/%s/rgee_upload/", username)
+#' filename <- sprintf("%s/rgee_upload/", asset_home)
 #' ee_manage_create(filename)
 #'
 #' # Select an image to upload
@@ -77,7 +78,9 @@
 #' # Read uploaded image
 #' asset_geomatrix <- paste0(filename,"geomatrix")
 #' ee_geomatrix <- ee$Image(asset_geomatrix)
-#' ee_map(ee_geomatrix, zoom_start = 18)
+#' ee_Map$centerObject(ee_geomatrix)
+#' ee_Map$addLayer(ee_geomatrix)
+#'
 #' ## OPTIONAL: add properties
 #' ee_manage_set_properties(
 #'   path_asset = asset_geomatrix,

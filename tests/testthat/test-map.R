@@ -12,11 +12,11 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   sort("CLOUD_COVER")
 
 # testing -----------------------------------------------------------------
-test_that("ee_map default", {
+test_that("ee_Map default", {
   expect_s4_class(rgee:::ee_mapview(),'mapview')
 })
 
-test_that("ee_map geometry", {
+test_that("ee_Map geometry", {
   m1 <- ee_Map$addLayer(geom,
                         list(pointRadius = 10, color = "FF0000"),
                         "Geometry-Arequipa-test")
@@ -25,21 +25,21 @@ test_that("ee_map geometry", {
   expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
 })
 
-test_that("ee_map feature", {
+test_that("ee_Map feature", {
   m2 <- ee_Map$addLayer(ee$Feature(geom),
                         name = "Feature-Arequipa-test")
   expect_equal(m2@object$names,"Feature-Arequipa-test")
 })
 
 # Case: FeatureCollection
-test_that("ee_map FeatureCollection", {
+test_that("ee_Map FeatureCollection", {
   m3 <- ee_Map$addLayer(eeObject = eeobject_fc,
                         name = "FeatureCollection")
   expect_equal(m3@object$names,"FeatureCollection")
 })
 
 # Case: Image
-test_that("ee_map Image", {
+test_that("ee_Map Image", {
   m4 <- ee_Map$addLayer(eeObject = image,
                         visParams = list(bands = c("B4", "B3", "B2"),
                                          max = 10000),

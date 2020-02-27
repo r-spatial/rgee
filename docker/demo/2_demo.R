@@ -47,9 +47,9 @@ vizparams <- list(max = 0.3, bands = c("B4", "B3", "B2"))
 ic_l8_mean <- ic_l8$map(addNDVI)$mean()$clip(ee_Ecuador)
 ic_l8_mosaic <- ic_l8$map(addNDVI)$qualityMosaic("NDVI")$clip(ee_Ecuador)
 
-map_1 <- ee_map(ic_l8_mean, vizparams = vizparams, objname = "mean")
-map_2 <- ee_map(ic_l8_mosaic, vizparams = vizparams, objname = "quality")
-map_1 + map_2
+ee_Map$centerObject(ee_Ecuador)
+ee_Map$addLayer(ic_l8_mean,vizparams,"mean") +
+  ee_Map$addLayer(ic_l8_mosaic,vizparams,"quality")
 
 # 6. Fast Download (< 5mb) ----------------------------------------------
 #    Download EE thumbnail images and read them as stars objects

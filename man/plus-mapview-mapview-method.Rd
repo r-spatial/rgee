@@ -17,21 +17,48 @@ mapview + mapview; adds data from the second map to the first
 }
 \examples{
 \dontrun{
-eeobject <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-center <- eeobject$geometry()$centroid()$getInfo()$coordinates
-vizparams <- list(color = "FF0000", strokeWidth = 5)
-m1 <- ee_map(eeobject, vizparams, center, objname = "Arequipa-landuse")
+library(rgee)
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize()
 
-collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
-  filter(ee$Filter()$eq("WRS_PATH", 44))$
-  filter(ee$Filter()$eq("WRS_ROW", 34))$
-  filterDate("2014-01-01", "2015-01-01")$
-  sort("CLOUD_COVER")
-eeobject <- collection$median()
-vizparams <- list(bands = c("B4", "B3", "B2"), max = 0.3)
-center <- c(-122.3578, 37.7726)
-m2 <- ee_map(eeobject, vizparams, center, objname = "SF")
-m1 + m2
+# Case 1: Geometry*
+geom <- ee$Geometry$Point(list(-73.53, -15.75))
+ee_Map$centerObject(geom, zoom = 13)
+m1 <- ee_Map$addLayer(
+  eeObject = geom,
+  visParams = list(
+    pointRadius = 10,
+    color = "FF0000"
+  ),
+  name = "Geometry-Arequipa"
+)
+# Case 2: Feature
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
+  first()
+m2 <- ee_Map$addLayer(
+  eeObject = ee$Feature(eeobject_fc),
+  name = "Feature-Arequipa"
+)
+m2 + m1
+
+# Case 3: FeatureCollection
+eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+ee_Map$centerObject(eeobject_fc)
+m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
+m3 + m2 + m1
+
+# Case 4: Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+ee_Map$centerObject(image)
+m4 <- ee_Map$addLayer(
+  eeObject = image,
+  visParams = list(
+    bands = c("B4", "B3", "B2"),
+    max = 10000
+  ),
+  name = "SF"
+)
+m4
 }
 
 }
