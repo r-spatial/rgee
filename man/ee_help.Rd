@@ -4,10 +4,12 @@
 \alias{ee_help}
 \title{Documentation for Earth Engine Objects}
 \usage{
-ee_help(eeobject)
+ee_help(eeobject, browser = FALSE)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object to print documentation.}
+
+\item{browser}{Logical. Display documentation in the browser.}
 }
 \description{
 Documentation for Earth Engine Objects
@@ -16,9 +18,9 @@ Documentation for Earth Engine Objects
 \dontrun{
 ee_Initialize()
 ee_reattach()
-ee$Image()$geometry()$centroid \%>\% ee_help
-ee$Image()$geometry \%>\% ee_help
-ee$Image \%>\% ee_help
+ee$Image()$geometry()$centroid \%>\% ee_help()
+ee$Image()$geometry \%>\% ee_help()
+ee$Image \%>\% ee_help()
 ee_help(eeobject = ee$ImageCollection(list())$size)
 }
 }
