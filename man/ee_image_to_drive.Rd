@@ -47,7 +47,3 @@ An unstarted Task that exports the image to Drive.
 \description{
 Creates a task to export an EE Image to Drive.
 }
-\section{Warning}{
- hi
-}
-
