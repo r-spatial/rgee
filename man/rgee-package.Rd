@@ -6,6 +6,8 @@
 \alias{rgee-package}
 \title{rgee: R bindings for calling the Earth Engine API}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 Provides bindings to the Google Earth Engine Python API and set tools for automating processes.
 }
 \seealso{

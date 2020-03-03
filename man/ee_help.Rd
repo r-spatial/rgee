@@ -15,8 +15,10 @@ Documentation for Earth Engine Objects
 \examples{
 \dontrun{
 ee_Initialize()
-ee_help(eeobject = ee$Image()$geometry()$centroid)
-ee_help(eeobject = ee$Image()$geometry)
+ee_reattach()
+ee$Image()$geometry()$centroid \%>\% ee_help
+ee$Image()$geometry \%>\% ee_help
+ee$Image \%>\% ee_help
 ee_help(eeobject = ee$ImageCollection(list())$size)
 }
 }
