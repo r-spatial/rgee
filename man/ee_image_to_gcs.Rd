@@ -17,33 +17,121 @@ ee_image_to_gcs(image, description = "myExportImageTask",
 
 \item{bucket}{The name of a Cloud Storage bucket for the export.}
 
-\item{fileNamePrefix}{Cloud Storage object name prefix for the export. Defaults to the name of the task.}
+\item{fileNamePrefix}{Cloud Storage object name prefix for the export.
+Defaults to the name of the task.}
 
-\item{dimensions}{The dimensions of the exported image. Takes either a single positive integer as the maximum dimension or "WIDTHxHEIGHT" where WIDTH and HEIGHT are each positive integers.}
+\item{dimensions}{The dimensions of the exported image. Takes either a
+single positive integer as the maximum dimension or "WIDTHxHEIGHT"
+where WIDTH and HEIGHT are each positive integers.}
 
-\item{region}{The lon,lat coordinates for a LinearRing or Polygon specifying the region to export. Can be specified as a nested lists of numbers or a serialized string. Defaults to the image's region.}
+\item{region}{The lon,lat coordinates for a LinearRing or Polygon
+specifying the region to export. Can be specified as a nested lists
+of numbers or a serialized string. Defaults to the image's region.}
 
-\item{scale}{The resolution in meters per pixel. Defaults to the native resolution of the image assset unless a crsTransform is specified.}
+\item{scale}{The resolution in meters per pixel. Defaults to the native
+resolution of the image assset unless a crsTransform is specified.}
 
-\item{crs}{The coordinate reference system of the exported image's projection. Defaults to the image's default projection.}
+\item{crs}{The coordinate reference system of the exported image's
+projection. Defaults to the image's default projection.}
 
-\item{crsTransform}{A comma-separated string of 6 numbers describing the affine transform of the coordinate reference system of the exported image's projection, in the order: xScale, xShearing, xTranslation, yShearing, yScale and yTranslation. Defaults to the image's native CRS transform.}
+\item{crsTransform}{A comma-separated string of 6 numbers describing
+the affine transform of the coordinate reference system of the exported
+image's projection, in the order:
+xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+Defaults to the image's native CRS transform.}
 
-\item{maxPixels}{The maximum allowed number of pixels in the exported image. The task will fail if the exported region covers more pixels in the specified projection. Defaults to 100,000,000.}
+\item{maxPixels}{The maximum allowed number of pixels in the
+exported image. The task will fail if the exported region covers more
+pixels in the specified projection. Defaults to 100,000,000.}
 
-\item{shardSize}{Size in pixels of the shards in which this image will be computed. Defaults to 256.}
+\item{shardSize}{Size in pixels of the shards in which this image
+will be computed. Defaults to 256.}
 
-\item{fileDimensions}{The dimensions in pixels of each image file, if the image is too large to fit in a single file. May specify a single number to indicate a square shape, or a list of two dimensions to indicate (width,height). Note that the image will still be clipped to the overall image dimensions. Must be a multiple of shardSize.}
+\item{fileDimensions}{The dimensions in pixels of each image file, if
+the image is too large to fit in a single file. May specify a single
+number to indicate a square shape, or a list of two dimensions to
+indicate (width,height). Note that the image will still be clipped to
+the overall image dimensions. Must be a multiple of shardSize.}
 
-\item{skipEmptyTiles}{If true, skip writing empty (i.e. fully-masked) image tiles. Defaults to false.}
+\item{skipEmptyTiles}{If true, skip writing empty (i.e. fully-masked)
+image tiles. Defaults to false.}
 
-\item{fileFormat}{The string file format to which the image is exported. Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'.}
+\item{fileFormat}{The string file format to which the image is exported.
+Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
+to 'GeoTIFF'.}
 
-\item{formatOptions}{A dictionary of string keys to format specific options. **kwargs: Holds other keyword arguments that may have been deprecated such as 'crs_transform'.}
+\item{formatOptions}{A dictionary of string keys to format specific
+options. **kwargs: Holds other keyword arguments that may have been
+deprecated such as 'crs_transform'.}
 }
 \value{
 An unstarted Task that exports the image to Google Cloud Storage.
 }
 \description{
 Creates a task to export an EE Image to Google Cloud Storage.
+This function is a wrapper around
+\code{ee$batch$Export$image$toCloudStorage(...)}.
+}
+\examples{
+\dontrun{
+library(rgee)
+library(stars)
+library(sf)
+
+ee_users()
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+
+# Define study area (local -> earth engine)
+# Communal Reserve Amarakaeri - Peru
+rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+ROI <- c(rlist$xmin, rlist$ymin,
+         rlist$xmax, rlist$ymin,
+         rlist$xmax, rlist$ymax,
+         rlist$xmin, rlist$ymax,
+         rlist$xmin, rlist$ymin)
+ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
+  list() \%>\%
+  st_polygon() \%>\%
+  st_sfc() \%>\%
+  st_set_crs(4326) \%>\%
+  sf_as_ee()
+
+
+# Get the mean annual NDVI for 2011
+cloudMaskL457 <- function(image) {
+  qa <- image$select("pixel_qa")
+  cloud <- qa$bitwiseAnd(32L)$
+    And(qa$bitwiseAnd(128L))$
+    Or(qa$bitwiseAnd(8L))
+  mask2 <- image$mask()$reduce(ee$Reducer$min())
+  image <- image$updateMask(cloud$Not())$updateMask(mask2)
+  image$normalizedDifference(list("B4", "B3"))
+}
+
+ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
+  filterBounds(ee_ROI)$
+  filterDate("2011-01-01", "2011-12-31")$
+  map(cloudMaskL457)
+
+# Create simple composite
+mean_l5 <- ic_l5$mean()$rename("NDVI")
+mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
+mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
+
+# Move results from Earth Engine to Drive
+task_img <- ee_image_to_gcs(
+    image = mean_l5_Amarakaeri,
+    bucket = "rgee_dev",
+    fileFormat = "GEO_TIFF",
+    fileNamePrefix = "my_image"
+)
+
+task_img$start()
+ee_monitoring(task_img)
+
+# Move results from Drive to local
+img <- ee_gcs_to_local(task = task_img)
+plot(img)
+}
 }

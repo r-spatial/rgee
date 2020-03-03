@@ -180,6 +180,7 @@ ee_Initialize <- function(email = NULL,
   }
 
   ee_user <- ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id)
+  options(rgee.ee_user = ee_user)
   ee_sessioninfo(
     email = email_clean,
     user = ee_user,
@@ -549,4 +550,16 @@ create_table <- function(user, wsc) {
       wsc,
       ee_symbol
     )
+}
+
+#' Get the Asset home name
+#' @examples
+#' \dontrun{
+#' ee_reattach()
+#' ee_Initialize()
+#' ee_get_assethome()
+#' }
+#' @export
+ee_get_assethome <- function() {
+  options('rgee.ee_user')[[1]]
 }

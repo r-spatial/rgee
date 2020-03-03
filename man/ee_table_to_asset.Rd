@@ -12,11 +12,55 @@ ee_table_to_asset(collection, description = "myExportTableTask",
 
 \item{description}{Human-readable name of the task.}
 
-\item{assetId}{The destination asset ID. **kwargs: Holds other keyword arguments that may have been deprecated.}
+\item{assetId}{The destination asset ID. **kwargs: Holds other
+keyword arguments that may have been deprecated.}
 }
 \value{
-An unstarted Task that exports the table.
+An unstarted Task that exports the table to Earth Engine Asset.
 }
 \description{
 Creates a task to export a FeatureCollection to an EE table asset.
+This function is a wrapper around \code{ee$batch$Export$table$toAsset(...)}.
+}
+\examples{
+\dontrun{
+library(rgee)
+library(stars)
+library(sf)
+
+ee_users()
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize(email = 'data.colec.fbf')
+
+# Define study area (local -> earth engine)
+# Communal Reserve Amarakaeri - Peru
+rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+ROI <- c(rlist$xmin, rlist$ymin,
+         rlist$xmax, rlist$ymin,
+         rlist$xmax, rlist$ymax,
+         rlist$xmin, rlist$ymax,
+         rlist$xmin, rlist$ymin)
+ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
+  list() \%>\%
+  st_polygon() \%>\%
+  st_sfc() \%>\%
+  st_set_crs(4326) \%>\%
+  sf_as_ee()
+
+amk_fc <- ee$FeatureCollection(
+  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+)
+
+assetid <- paste0(ee_get_assethome(), '/geom_Amarakaeri')
+task_vector <- ee_table_to_asset(
+  collection = amk_fc,
+  assetId = assetid
+)
+task_vector$start()
+ee_monitoring(task_vector) # optional
+
+ee_fc <- ee$FeatureCollection(assetid)
+ee_Map$centerObject(ee_fc)
+ee_Map$addLayer(ee_fc)
+}
 }

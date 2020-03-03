@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_download.R
 \name{ee_table_to_drive}
 \alias{ee_table_to_drive}
-\title{Creates a task to export a FeatureCollection to Google Cloud Storage.}
+\title{Creates a task to export a FeatureCollection to Google Drive.}
 \usage{
 ee_table_to_drive(collection, description = "myExportTableTask",
   folder = NULL, fileNamePrefix = NULL, fileFormat = NULL,
@@ -13,17 +13,67 @@ ee_table_to_drive(collection, description = "myExportTableTask",
 
 \item{description}{Human-readable name of the task.}
 
-\item{folder}{The name of a unique folder in your Drive account to export into. Defaults to the root of the drive.}
+\item{folder}{The name of a unique folder in your Drive
+account to export into. Defaults to the root of the drive.}
 
-\item{fileNamePrefix}{The Google Drive filename for the export. Defaults to the name of the task.}
+\item{fileNamePrefix}{The Google Drive filename for the
+export. Defaults to the name of the task.}
 
-\item{fileFormat}{The output format: "CSV" (default), "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".}
+\item{fileFormat}{The output format: "CSV" (default), "GeoJSON",
+"KML", "KMZ", "SHP", or "TFRecord".}
 
-\item{selectors}{The list of properties to include in the output, as a list of strings or a comma-separated string. By default, all properties are included. **kwargs: Holds other keyword arguments that may have been deprecated such as 'driveFolder' and 'driveFileNamePrefix'.}
+\item{selectors}{The list of properties to include in the output,
+as a list of strings or a comma-separated string. By default, all
+properties are included. **kwargs: Holds other keyword arguments
+that may have been deprecated such as 'driveFolder' and
+'driveFileNamePrefix'.}
 }
 \value{
-An unstarted Task that exports the table.
+An unstarted Task that exports the table to Google Drive.
 }
 \description{
-Creates a task to export a FeatureCollection to Google Cloud Storage.
+Creates a task to export a FeatureCollection to Google Drive.
+This function is a wrapper around \code{ee$batch$Export$table$toDrive(...)}.
+}
+\examples{
+\dontrun{
+library(rgee)
+library(stars)
+library(sf)
+
+ee_users()
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+
+
+# Define study area (local -> earth engine)
+# Communal Reserve Amarakaeri - Peru
+rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+ROI <- c(rlist$xmin, rlist$ymin,
+         rlist$xmax, rlist$ymin,
+         rlist$xmax, rlist$ymax,
+         rlist$xmin, rlist$ymax,
+         rlist$xmin, rlist$ymin)
+ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
+  list() \%>\%
+  st_polygon() \%>\%
+  st_sfc() \%>\%
+  st_set_crs(4326) \%>\%
+  sf_as_ee()
+
+amk_fc <- ee$FeatureCollection(
+  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+)
+
+task_vector <- ee_table_to_drive(
+  collection = amk_fc,
+  folder = "Amarakaeri",
+  fileFormat = "GEO_JSON",
+  fileNamePrefix = "geom_Amarakaeri"
+)
+task_vector$start()
+ee_monitoring(task_vector) # optional
+amk_geom <- ee_drive_to_local(task = task_vector)
+plot(amk_geom$geometry, border = "red", lwd = 10)
+}
 }

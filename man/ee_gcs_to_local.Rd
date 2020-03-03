@@ -40,25 +40,25 @@ library(rgee)
 library(stars)
 library(sf)
 
-ee_reattach()  # reattach ee as a reserved word
-ee_Initialize()
-ee_user_info()
+ee_users()
+ee_reattach() # reattach ee as a reserved word
+ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
 
+# Define study area (local -> earth engine)
 # Communal Reserve Amarakaeri - Peru
-xmin <- -71.132591318
-xmax <- -70.953664315
-ymin <- -12.892451233
-ymax <- -12.731116372
-x_mean <- (xmin + xmax) / 2
-y_mean <- (ymin + ymax) / 2
-
-ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
-ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
+rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+ROI <- c(rlist$xmin, rlist$ymin,
+         rlist$xmax, rlist$ymin,
+         rlist$xmax, rlist$ymax,
+         rlist$xmin, rlist$ymax,
+         rlist$xmin, rlist$ymin)
+ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon() \%>\%
   st_sfc() \%>\%
-  st_set_crs(4326)
-ee_geom <- sf_as_ee(ROI_polygon)
+  st_set_crs(4326) \%>\%
+  sf_as_ee()
+
 
 # Get the mean annual NDVI for 2011
 cloudMaskL457 <- function(image) {
@@ -72,39 +72,28 @@ cloudMaskL457 <- function(image) {
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_geom)$
+  filterBounds(ee_ROI)$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
+
+# Create simple composite
 mean_l5 <- ic_l5$mean()$rename("NDVI")
 mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
-mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
+mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 
-# Download a EE Image
-task_img <- ee$batch$Export$image$toCloudStorage(
-  image = mean_l5_Amarakaeri,
-  bucket = "rgee_dev",
-  fileFormat = "GEO_TIFF",
-  fileNamePrefix = "my_image"
+# Move results from Earth Engine to Drive
+task_img <- ee_image_to_gcs(
+    image = mean_l5_Amarakaeri,
+    bucket = "rgee_dev",
+    fileFormat = "GEO_TIFF",
+    fileNamePrefix = "my_image"
 )
+
 task_img$start()
 ee_monitoring(task_img)
-img <- ee_download_gcs(task_img)
+
+# Move results from Drive to local
+img <- ee_gcs_to_local(task = task_img)
 plot(img)
-
-# Download a EE FeatureCollection
-amk_fc <- ee$FeatureCollection(
-  list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
-)
-
-task_vector <- ee$batch$Export$table$toCloudStorage(
-  collection = amk_fc,
-  bucket = "rgee_dev",
-  fileFormat = "SHP",
-  fileNamePrefix = "geom_Amarakaeri"
-)
-task_vector$start()
-ee_monitoring(task_vector) # optional
-amk_geom <- ee_download_gcs(task = task_vector)
-plot(amk_geom$geometry, border = "red", lwd = 10)
 }
 }

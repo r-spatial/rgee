@@ -21,6 +21,6 @@ ee_reattach()
 ee$Image()$geometry()$centroid \%>\% ee_help()
 ee$Image()$geometry \%>\% ee_help()
 ee$Image \%>\% ee_help()
-ee_help(eeobject = ee$ImageCollection(list())$size)
+ee$Image \%>\% ee_help(eeobject = TRUE)
 }
 }
