@@ -113,7 +113,7 @@ ee_html_title_rstudio <- function(title) {
 ee_html_description_simple <- function(descrp) {
   api_ref <- "https://developers.google.com/earth-engine/api_docs"
   gee_message <- sprintf(
-    ' Documentation obtained from this <a href="%s">link</a>.',
+    '. Documentation obtained from this <a href="%s">link</a>.',
     api_ref
   )
   sprintf(

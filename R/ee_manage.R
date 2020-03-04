@@ -395,9 +395,12 @@ ee_manage_cancel_all_running_task <- function() {
   all_task <- ee$data$getTaskList()
   running_task <- which(unlist(lapply(all_task, "[[", "state")) == "RUNNING")
   running <- all_task[running_task]
-  if (length(running) > 0) stop("There are not any tasks running")
-  for (z in seq_along(running)) {
-    ee$data$cancelTask(running[[z]][["id"]])
+  if (length(running) == 0){
+    message("There are not any tasks running")
+  } else {
+    for (z in seq_along(running)) {
+      ee$data$cancelTask(running[[z]][["id"]])
+      }
   }
   invisible(TRUE)
 }

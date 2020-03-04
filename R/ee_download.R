@@ -934,7 +934,7 @@ ee_monitoring <- function(task, eeTaskList = FALSE) {
     cat("", paste0(task_list, "\n"))
   }
   cat("\n")
-  while (task$active()) {
+  while (task$active() & task$state != "CANCEL_REQUESTED") {
     print(sprintf("Polling for task (id: %s).", task$id))
     Sys.sleep(5)
   }
