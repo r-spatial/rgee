@@ -125,8 +125,8 @@ ee_upload(x = geomatrix,
 # Read uploaded image
 asset_geomatrix <- paste0(filename,"geomatrix")
 ee_geomatrix <- ee$Image(asset_geomatrix)
-ee_Map$centerObject(ee_geomatrix)
-ee_Map$addLayer(ee_geomatrix)
+Map$centerObject(ee_geomatrix)
+Map$addLayer(ee_geomatrix)
 
 ## OPTIONAL: add properties
 ee_manage_set_properties(

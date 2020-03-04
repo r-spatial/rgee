@@ -60,7 +60,7 @@ task_vector$start()
 ee_monitoring(task_vector) # optional
 
 ee_fc <- ee$FeatureCollection(assetid)
-ee_Map$centerObject(ee_fc)
-ee_Map$addLayer(ee_fc)
+Map$centerObject(ee_fc)
+Map$addLayer(ee_fc)
 }
 }

@@ -377,8 +377,8 @@ ee_image_to_gcs <- function(image,
 #' ee_monitoring(task_img)
 #'
 #' ee_l5 <- ee$Image(assetid)
-#' ee_Map$centerObject(ee_l5)
-#' ee_Map$addLayer(ee_l5)
+#' Map$centerObject(ee_l5)
+#' Map$addLayer(ee_l5)
 #' }
 #' @export
 ee_image_to_asset <- function(image,
@@ -608,8 +608,8 @@ ee_table_to_gcs <- function(collection,
 #' ee_monitoring(task_vector) # optional
 #'
 #' ee_fc <- ee$FeatureCollection(assetid)
-#' ee_Map$centerObject(ee_fc)
-#' ee_Map$addLayer(ee_fc)
+#' Map$centerObject(ee_fc)
+#' Map$addLayer(ee_fc)
 #' }
 #' @export
 ee_table_to_asset <- function(collection,

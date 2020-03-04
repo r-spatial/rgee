@@ -23,8 +23,8 @@ ee_Initialize()
 
 # Case 1: Geometry*
 geom <- ee$Geometry$Point(list(-73.53, -15.75))
-ee_Map$centerObject(geom, zoom = 13)
-m1 <- ee_Map$addLayer(
+Map$centerObject(geom, zoom = 13)
+m1 <- Map$addLayer(
   eeObject = geom,
   visParams = list(
     pointRadius = 10,
@@ -35,7 +35,7 @@ m1 <- ee_Map$addLayer(
 # Case 2: Feature
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
   first()
-m2 <- ee_Map$addLayer(
+m2 <- Map$addLayer(
   eeObject = ee$Feature(eeobject_fc),
   name = "Feature-Arequipa"
 )
@@ -43,14 +43,14 @@ m2 + m1
 
 # Case 3: FeatureCollection
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-ee_Map$centerObject(eeobject_fc)
-m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
+Map$centerObject(eeobject_fc)
+m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
 m3 + m2 + m1
 
 # Case 4: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-ee_Map$centerObject(image)
-m4 <- ee_Map$addLayer(
+Map$centerObject(image)
+m4 <- Map$addLayer(
   eeObject = image,
   visParams = list(
     bands = c("B4", "B3", "B2"),

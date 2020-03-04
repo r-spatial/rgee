@@ -57,6 +57,6 @@ ee_Initialize()
 x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
   st_transform(4326)
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
-ee_Map$centerObject(eeObject = ee_x)
-ee_Map$addLayer(ee_x)
+Map$centerObject(eeObject = ee_x)
+Map$addLayer(ee_x)
 }

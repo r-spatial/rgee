@@ -43,13 +43,13 @@
 #'
 #' @details
 #'
-#' `ee_Map` takes advantage of
+#' `Map` takes advantage of
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 #' getMapId} for fetch and return both a mapid and a token suitable
 #' to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
 #' visualization effect, it will depend on the type of spatial EE object . For
 #' Image objects, you can provide visualization parameters to
-#' ee_Map$addLayer() by using the argument visParams. The
+#' Map$addLayer() by using the argument visParams. The
 #' \href{https://developers.google.com/earth-engine/image_visualization}{
 #' parameters} available are:
 #'
@@ -74,7 +74,7 @@
 #' }
 #'
 #' If you add an Image to the map without any additional
-#' parameters, by default `ee_Map$addLayer()` assigns the first three bands to red,
+#' parameters, by default `Map$addLayer()` assigns the first three bands to red,
 #' green and blue bands, respectively. The default stretch is based on the
 #' min-max range.  For Geometry, Feature and/or FeatureCollection. The available
 #' visParams are:
@@ -93,8 +93,8 @@
 #'
 #' # Case 1: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53, -15.75))
-#' ee_Map$centerObject(geom, zoom = 13)
-#' m1 <- ee_Map$addLayer(
+#' Map$centerObject(geom, zoom = 13)
+#' m1 <- Map$addLayer(
 #'   eeObject = geom,
 #'   visParams = list(
 #'     pointRadius = 10,
@@ -105,7 +105,7 @@
 #' # Case 2: Feature
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
 #'   first()
-#' m2 <- ee_Map$addLayer(
+#' m2 <- Map$addLayer(
 #'   eeObject = ee$Feature(eeobject_fc),
 #'   name = "Feature-Arequipa"
 #' )
@@ -113,14 +113,14 @@
 #'
 #' # Case 3: FeatureCollection
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' ee_Map$centerObject(eeobject_fc)
-#' m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
+#' Map$centerObject(eeobject_fc)
+#' m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
 #' m3 + m2 + m1
 #'
 #' # Case 4: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' ee_Map$centerObject(image)
-#' m4 <- ee_Map$addLayer(
+#' Map$centerObject(image)
+#' m4 <- Map$addLayer(
 #'   eeObject = image,
 #'   visParams = list(
 #'     bands = c("B4", "B3", "B2"),
@@ -131,29 +131,29 @@
 #' m4
 #' }
 #' @export
-ee_Map <- function() {
-  ee_Map <- new.env(parent = emptyenv())
+Map <- function() {
+  Map <- new.env(parent = emptyenv())
 }
 
 ee_set_methods <- function() {
-  ee_Map$addLayer <- ee_addLayer
-  ee_Map$setCenter <- ee_setCenter
-  ee_Map$setZoom <- ee_setZoom
-  ee_Map$centerObject <- ee_centerObject
-  # ee_Map$getBounds <- ee_getBounds
-  # ee_Map$getScale <- getScale
-  # ee_Map$getCenter <- getCenter
-  # ee_Map$getZoom <- getZoom
+  Map$addLayer <- ee_addLayer
+  Map$setCenter <- ee_setCenter
+  Map$setZoom <- ee_setZoom
+  Map$centerObject <- ee_centerObject
+  # Map$getBounds <- ee_getBounds
+  # Map$getScale <- getScale
+  # Map$getCenter <- getCenter
+  # Map$getZoom <- getZoom
 
   # Init environment
-  ee_Map$setCenter()
-  ee_Map
+  Map$setCenter()
+  Map
 }
 
 #' Sets the zoom level of the map.
 #' @noRd
 ee_setZoom <- function(zoom) {
-  ee_Map$zoom <- zoom
+  Map$zoom <- zoom
 }
 
 #' Center a mapview
@@ -165,10 +165,10 @@ ee_setZoom <- function(zoom) {
 #' https://developers.google.com/earth-engine/api_docs#map.setcenter
 #' @noRd
 ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
-  ee_Map$lon <- lon
-  ee_Map$lat <- lat
-  ee_Map$zoom <- zoom
-  ee_Map
+  Map$lon <- lon
+  Map$lat <- lat
+  Map$zoom <- zoom
+  invisible(Map)
 }
 
 
@@ -219,7 +219,7 @@ ee_centerObject <- function(eeObject, zoom = NULL) {
   if (is.null(zoom)) {
     zoom <- ee_getZoom(eeObject)
   }
-  ee_Map$setCenter(lon = center[1], lat = center[2], zoom = zoom)
+  Map$setCenter(lon = center[1], lat = center[2], zoom = zoom)
 }
 
 #' Adds a given EE object to the map as a layer.
@@ -290,8 +290,8 @@ ee_addLayer <- function(eeObject,
 #' @noRd
 ee_mapview <- function() {
   m <- mapview()
-  m@map$x$setView[[1]] <- c(ee_Map$lat, ee_Map$lon)
-  m@map$x$setView[[2]] <- if (is.null(ee_Map$zoom)) 1 else ee_Map$zoom
+  m@map$x$setView[[1]] <- c(Map$lat, Map$lon)
+  m@map$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
   m
 }
 
@@ -336,8 +336,8 @@ if (!isGeneric("+")) {
 #'
 #' # Case 1: Geometry*
 #' geom <- ee$Geometry$Point(list(-73.53, -15.75))
-#' ee_Map$centerObject(geom, zoom = 13)
-#' m1 <- ee_Map$addLayer(
+#' Map$centerObject(geom, zoom = 13)
+#' m1 <- Map$addLayer(
 #'   eeObject = geom,
 #'   visParams = list(
 #'     pointRadius = 10,
@@ -348,7 +348,7 @@ if (!isGeneric("+")) {
 #' # Case 2: Feature
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
 #'   first()
-#' m2 <- ee_Map$addLayer(
+#' m2 <- Map$addLayer(
 #'   eeObject = ee$Feature(eeobject_fc),
 #'   name = "Feature-Arequipa"
 #' )
@@ -356,14 +356,14 @@ if (!isGeneric("+")) {
 #'
 #' # Case 3: FeatureCollection
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' ee_Map$centerObject(eeobject_fc)
-#' m3 <- ee_Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
+#' Map$centerObject(eeobject_fc)
+#' m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
 #' m3 + m2 + m1
 #'
 #' # Case 4: Image
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' ee_Map$centerObject(image)
-#' m4 <- ee_Map$addLayer(
+#' Map$centerObject(image)
+#' m4 <- Map$addLayer(
 #'   eeObject = image,
 #'   visParams = list(
 #'     bands = c("B4", "B3", "B2"),
@@ -521,13 +521,13 @@ ee_get_boundary <- function(eeObject) {
 #   viewer_canvas <- dev.size("px")
 #   width <- viewer_canvas[1]
 #   height <- viewer_canvas[2]
-#   area_box <- ee_getBox(mapview_object = ee_Map$mapdisplay,
+#   area_box <- ee_getBox(mapview_object = Map$mapdisplay,
 #                         width = width,
 #                         height = height)
 #   m@map$width <- viewer_canvas[1]
 #   m@map$height <- viewer_canvas[2]
-#   ee_Map$mapdisplay
+#   Map$mapdisplay
 # }
 
-ee_Map <- ee_Map()
+Map <- Map()
 ee_set_methods()

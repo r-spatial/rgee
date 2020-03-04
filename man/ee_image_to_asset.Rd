@@ -113,7 +113,7 @@ task_img$start()
 ee_monitoring(task_img)
 
 ee_l5 <- ee$Image(assetid)
-ee_Map$centerObject(ee_l5)
-ee_Map$addLayer(ee_l5)
+Map$centerObject(ee_l5)
+Map$addLayer(ee_l5)
 }
 }
