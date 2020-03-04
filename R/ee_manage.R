@@ -25,6 +25,7 @@
 #' If the argument `del_properties` is 'ee_rmv_all_prp',
 #' \link[rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
+#' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -482,3 +483,12 @@ ee_manage_handle_names <- function(type = c("Folder", "ImageCollection")) {
   names
 }
 
+#' @name ee_manage-tools
+#' @export
+ee_manage_asset_size <- function(path_asset) {
+  info_data <- ee$data$getInfo(path_asset)
+  size_file <- as.numeric(info_data$sizeBytes)
+  cat('Type            :', info_data$type,'\n')
+  cat('Size (in Bytes) :', size_file)
+  invisible(size_file)
+}

@@ -56,7 +56,7 @@ sf_as_ee.character <- function(x, check_ring_dir = FALSE, ...) {
 #' @rdname sf_as_ee
 #' @export
 sf_as_ee.sf <- function(x, check_ring_dir = FALSE) {
-  x <- st_sf(x, check_ring_dir = TRUE)
+  x <- st_sf(x, check_ring_dir = check_ring_dir)
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)
   if (!st_crs(x)$epsg == 4326) {
