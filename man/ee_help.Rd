@@ -19,8 +19,8 @@ Documentation for Earth Engine Objects
 ee_Initialize()
 ee_reattach()
 ee$Image()$geometry()$centroid \%>\% ee_help()
-ee$Image()$geometry \%>\% ee_help()
+ee$Image()$geometry() \%>\% ee_help()
 ee$Image \%>\% ee_help()
-ee$Image \%>\% ee_help(eeobject = TRUE)
+ee$Image \%>\% ee_help(browser = TRUE)
 }
 }

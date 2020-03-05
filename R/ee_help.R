@@ -1,5 +1,5 @@
 #' Documentation for Earth Engine Objects
-#' @param eeobject 	Earth Engine Object to print documentation.
+#' @param eeobject Earth Engine Object to print documentation.
 #' @param browser Logical. Display documentation in the browser.
 #' @importFrom reticulate py_function_docs
 #' @examples
@@ -7,18 +7,27 @@
 #' ee_Initialize()
 #' ee_reattach()
 #' ee$Image()$geometry()$centroid %>% ee_help()
-#' ee$Image()$geometry %>% ee_help()
+#' ee$Image()$geometry() %>% ee_help()
 #' ee$Image %>% ee_help()
-#' ee$Image %>% ee_help(eeobject = TRUE)
+#' ee$Image %>% ee_help(browser = TRUE)
 #' }
 #' @export
 ee_help <- function(eeobject, browser = FALSE) {
-  wrap_lhs <- function(x) gsub(x, "", ee_get_lhs())
-  fun_name <- wrap_lhs(eeobject)
-  if (length(fun_name) == 0) {
-    fun_name <- deparse(substitute(eeobject))
+  eequery_scope <- try(unlist(parse_json(eeobject$serialize())$scope))
+  if (class(eequery_scope) != 'try-error') {
+    search_funnames <- grepl("functionName", names(eequery_scope))
+    ee_functions <- eequery_scope[search_funnames]
+    fun_name <- paste0("ee$",gsub("\\.","$",tail(ee_functions,1)))
+  } else {
+    wrap_lhs <- function(x) gsub(x, "", ee_get_lhs())
+    fun_name <- wrap_lhs(eeobject)
+    if (length(fun_name) == 0) {
+      fun_name <- deparse(substitute(eeobject))
+    }
   }
-  doc_to_display <- py_function_docs(fun_name)
+  doc_to_display <- fun_name %>%
+    paste(collapse = '') %>%
+    py_function_docs
 
   # Creating html to display
   temp_file <- sprintf("%s/ee_help.html", tempdir())
@@ -372,3 +381,4 @@ ee_get_lhs <- function() {
     deparse(get("lhs", sys.frames()[[max(which(is_magrittr_env))]]))
   }
 }
+
