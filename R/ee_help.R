@@ -8,23 +8,39 @@
 #' ee_reattach()
 #' ee$Image()$geometry()$centroid %>% ee_help()
 #' ee$Image()$geometry() %>% ee_help()
+#' ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7)) %>% ee_help()
 #' ee$Image %>% ee_help()
 #' ee$Image %>% ee_help(browser = TRUE)
 #' }
 #' @export
 ee_help <- function(eeobject, browser = FALSE) {
-  eequery_scope <- try(unlist(parse_json(eeobject$serialize())$scope))
-  if (class(eequery_scope) != 'try-error') {
+  eequery_scope <- try(expr = unlist(parse_json(eeobject$serialize())$scope),
+                       silent = TRUE)
+  if (class(eequery_scope) != 'try-error' & !is.null(eequery_scope)) {
     search_funnames <- grepl("functionName", names(eequery_scope))
     ee_functions <- eequery_scope[search_funnames]
     fun_name <- paste0("ee$",gsub("\\.","$",tail(ee_functions,1)))
   } else {
-    wrap_lhs <- function(x) gsub(x, "", ee_get_lhs())
+    wrap_lhs <- function(x) gsub("rgee", "", ee_get_lhs())
     fun_name <- wrap_lhs(eeobject)
     if (length(fun_name) == 0) {
       fun_name <- deparse(substitute(eeobject))
     }
+    if (is.null(eequery_scope)) {
+      components <- strsplit(fun_name, "\\$")[[1]]
+      topic <- components[[length(components)]]
+      source <- paste(components[1:(length(components) - 1)],
+                      collapse = "$")
+      extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
+                                           topic,
+                                           perl = TRUE)
+      parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
+      to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
+      to_display <- gsub("\\(|\\)", "", to_display)
+      fun_name <- paste(source,to_display,sep = "$")
+    }
   }
+
   doc_to_display <- fun_name %>%
     paste(collapse = '') %>%
     py_function_docs

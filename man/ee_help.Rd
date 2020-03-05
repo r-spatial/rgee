@@ -20,6 +20,7 @@ ee_Initialize()
 ee_reattach()
 ee$Image()$geometry()$centroid \%>\% ee_help()
 ee$Image()$geometry() \%>\% ee_help()
+ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7)) \%>\% ee_help()
 ee$Image \%>\% ee_help()
 ee$Image \%>\% ee_help(browser = TRUE)
 }
