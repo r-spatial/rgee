@@ -1009,7 +1009,7 @@ create_filenames <- function(basename, suffix, fileformat) {
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
   if (fileformat == "GEO_TIFF") {
-    fread <- read_stars(filename, quiet = quiet)
+    fread <- read_stars(filename, proxy = TRUE, quiet = quiet)
     return(fread)
   } else if (fileformat %in% "SHP") {
     fread <- st_read(filename[grep("\\.shp$", filename)], quiet = quiet)
