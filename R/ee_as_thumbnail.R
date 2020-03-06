@@ -92,58 +92,78 @@
 #' @export
 ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
                             quiet = FALSE) {
-  if (class(x)[1] != "ee.image.Image") stop("x is not a ee.image.Image class")
-  ee_crs <- sprintf("EPSG:%s", crs)
-
+  if (!any(class(x) %in%  "ee.image.Image")) {
+    stop("x argument is not an ee$Image")
+  }
   if (missing(region)) {
-    stop("It is necessary to define a region as ee$Geometry ")
+    region <- x$geometry()
   }
-
+  if (any(class(region) %in% "ee.geometry.Geometry")) {
+    sf_region <- ee_as_sf(region)
+    npoints <- sf_region$geometry %>% st_coordinates %>% nrow
+    if (npoints != 5) {
+      stop('region needs to be a ee$Geometry$Rectangle.')
+    }
+  } else  {
+    stop('region needs to be a ee$Geometry$Rectangle.')
+  }
   if (missing(dimensions)) {
-    dimensions <- c(256L, 256L)
+    dimensions <- 256L
     if (!quiet) {
-      cat(
-        "dimensions is missing, 256x256 is taken by default as",
-        "dimension of x. \n"
-      )
+      print("dimensions is missing. Taken by default 256 pixels in X")
+    }
+  }
+  if (max(dimensions) > 512) {
+    if (!quiet) {
+      cat("For large image is preferible use rgee::ee_download_*(...)",
+          "or rgee::ee_as_stars(...)")
     }
   }
 
-  if (max(dimensions) > 5000) {
-    if (!quiet) {
-      cat(sprintf(
-        "For large image (%sx%s) is preferible use rgee::ee_download_*()\n",
-        dimensions[1], dimensions[2]
-      ))
-    }
+  # Getting image ID if it is exist
+  image_id <- tryCatch(
+    expr = parse_json(x$id()$serialize())$
+      scope[[1]][[2]][["arguments"]][["id"]],
+    error = function(e) "thumbnail"
+  )
+
+  # Fixing Region if it is necessary
+  geotransform_image <- x$projection()$getInfo()
+  bounds_image <- ee_as_sf(x$geometry())
+  sf_region_fixed <- ee_fix_region(bounds_image, sf_region)
+  if (isFALSE(sf_region_fixed$equal)) {
+    cat('region does not overlap completely the image, changing',
+        'region \nFrom : ', as.character(sf_region$geometry),
+        '\nTo   : ', as.character(sf_region_fixed$region))
   }
+  sf_region_fixed <- sf_region_fixed$region
+  region <- sf_as_ee(sf_region_fixed, check_ring_dir = TRUE)
 
-  # rastergeometry ----------------------------------------------------------
-  bound_coord <- region$
-    coordinates()$
-    getInfo() %>%
-    ee_py_to_r() %>%
-    "[["(1)
+  # Getting image parameters
+  ee_x_crs <- geotransform_image$crs
+  ee_x_epsg <- as.numeric(gsub("EPSG:", "", ee_x_crs))
+  coord_x_matrix <- sf_region_fixed %>%
+    st_transform(ee_x_epsg) %>%
+    st_coordinates() %>%
+    '['(, c('X','Y'))
+  long <- coord_x_matrix[,'X']
+  lat <- coord_x_matrix[,'Y']
+  init_offset <- ee_fix_offset(geotransform_image, coord_x_matrix)
 
-
-  long <- vapply(bound_coord, function(x) x[1], FUN.VALUE = 0)
-  lat <- vapply(bound_coord, function(x) x[2], FUN.VALUE = 0)
-
+  # Solving bug when define a world extent in region.
   world_lat <- c(-90, -90,  90,  90, -90)
   world_long <- c(-180,  180,  180, -180, -180)
-
   if (!all(long %in% world_long & lat %in% world_lat)) {
     new_params <- list(
-      crs = ee_crs,
+      crs = ee_x_crs,
       dimensions = as.integer(dimensions),
       region = region
     )
   } else {
     new_params <- list(
-      crs = ee_crs,
+      crs = ee_x_crs,
       dimensions = as.integer(dimensions)
     )
-
   }
 
   viz_params_total <- c(new_params, vizparams)
@@ -154,11 +174,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
       "please wait\n"
     )
   }
+
   thumbnail_url <- x$getThumbURL(viz_params_total)
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
 
-  # -----------------------------------------------
   # Handling problems with respect to the format
   # of the getTHumbURL (sometimes jpeg other png)
   error_message_I <- paste0(
@@ -180,6 +200,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     error = function(e) stop(error_message_I)
   )
 
+  # It is a RGB or gray image?
   if (dim(raw_image)[3] == 1) {
     # jpeg
     bands <- 1
@@ -193,9 +214,9 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     bands <- 3
   }
 
-  # -----------------------------------------------
-  if (bands > 2) {
-    if (bands == 3) band_name <- c("R", "G", "B")
+  # Create a stars object for RGB images
+  if (bands == 3) {
+    band_name <- paste0(c("R", "G", "B"),"_",image_id)
     stars_png <- mapply(read_png_as_stars,
       bands,
       band_name,
@@ -216,64 +237,40 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     attr_dim$y$delta <- (min(lat) - max(lat)) / attr_dim$y$to
 
     attr(stars_png, "dimensions") <- attr_dim
-    st_crs(stars_png) <- crs
+    st_crs(stars_png) <- ee_x_epsg
     return(stars_png)
-  } else {
-    band_name <- "G"
+  } else if (bands == 1) {
+    # Image band name
+    band_name <- x$bandNames()$getInfo()
+    # Create a stars object for single band image
     stars_png <- mapply(read_png_as_stars,
       bands,
       band_name,
       SIMPLIFY = FALSE,
       MoreArgs = list(mtx = raw_image)
     )[[1]]
-    stars_png %>% st_set_dimensions(names = c("x", "y")) -> stars_png
+    stars_png <- st_set_dimensions(.x = stars_png,
+                                   names = c("x", "y","bands"))
     attr_dim <- attr(stars_png, "dimensions")
-    attr_dim$x$offset <- min(long)
-    attr_dim$y$offset <- max(lat)
-    attr_dim$x$delta <- (max(long) - min(long)) / dimensions[1]
-    attr_dim$y$delta <- (min(lat) - max(lat)) / dimensions[2]
-    attr(stars_png, "dimensions") <- attr_dim
-    st_crs(stars_png) <- crs
+    attr_dim$x$offset <- init_offset[1]
+    attr_dim$y$offset <- init_offset[2]
+    attr_dim$x$delta <- (max(long) - min(long)) / attr_dim$x$to
+    attr_dim$y$delta <- y_scale
+    st_crs(stars_png) <- ee_x_epsg
+    st_set_dimensions(stars_png, 3, values = band_name)
     return(stars_png)
+  } else {
+    stop('Number of bands not supported')
   }
 }
 
 # From R array to stars
 read_png_as_stars <- function(x, band_name, mtx) {
   rotate_x <- t(mtx[, , x])
-  stars_object <- st_as_stars(rotate_x)
+  dim_x <- dim(rotate_x)
+  array_x <- array(NA, dim = c(dim_x[1], dim_x[2], 1))
+  array_x[,,1] <- rotate_x
+  stars_object <- st_as_stars(array_x)
   names(stars_object) <- band_name
   stars_object
-}
-
-
-#' From a R spatial object to a valid region for ee_as_thumbnail
-#' @noRd
-#' @return a list that look like:
-#' [[1]]
-#' [1] xmin ymin
-#' [[2]]
-#' [1] xmin  ymax
-#' [[3]]
-#' [1] xmax  ymax
-#' [[4]]
-#' [1] xmax ymin
-#' [[5]]
-#' [1] xmin ymin
-#'
-create_region <- function(x) {
-  if (any(class(x) %in% "sfg")) {
-    region <- sf_as_ee(x)$getInfo()[["coordinates"]]
-  } else if (any(class(x) %in% "ee.geometry.Geometry")) {
-    region <- x$getInfo()[["coordinates"]]
-  } else if (any(class(x) %in% "numeric")) {
-    xmin <- x[1]
-    xmax <- x[3]
-    ymin <- x[2]
-    ymax <- x[4]
-    coord_x <- c(xmin, ymin, xmin, ymax, xmax, ymax, xmax, ymin, xmin, ymin)
-    sfg_obj <- st_polygon(list(matrix(coord_x, ncol = 2, byrow = TRUE)))
-    region <- sf_as_ee(sfg_obj)$getInfo()["coordinates"]
-  }
-  invisible(ee_py_to_r(region)[[1]])
 }

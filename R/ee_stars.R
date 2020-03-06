@@ -92,7 +92,7 @@ ee_as_stars <- function(image,
       img_proj <- image$projection()$getInfo()
     }
     # Image metadata
-    image_epsg <- gsub("EPSG:", "", img_proj$crs) %>% as.numeric
+    image_epsg <- as.numeric(gsub("EPSG:", "", img_proj$crs))
     if (is.null(scale)) {
       img_scale_x <- img_proj$transform[1][[1]]
       img_scale_y <- img_proj$transform[5][[1]]
@@ -240,18 +240,36 @@ stars_as_ee <- function(x) {
 
 #' Fix offset of stars object
 #' @noRd
-ee_fix_offset <- function(img_proj,rectangle_coord){
+ee_fix_offset <- function(img_proj,rectangle_coord) {
+  # image spatial parameters
   x_scale <- img_proj$transform[1][[1]]
   x_offset <- img_proj$transform[3][[1]]
   y_scale <- img_proj$transform[5][[1]]
   y_offset <- img_proj$transform[6][[1]]
+
   # X offset fixed
   x_offset_sf <- min(rectangle_coord[,'X'])
   x_npixels <- floor(abs((x_offset_sf - x_offset)/x_scale))
   x_offset_sf_fixed <- x_offset + x_npixels*x_scale
+
   # Y offset fixed
   y_offset_sf <- max(rectangle_coord[,'Y'])
   y_npixels <- floor(abs((y_offset_sf - y_offset)/y_scale))
   y_offset_sf_fixed <- y_offset + y_npixels*y_scale
+
   c(x_offset_sf_fixed, y_offset_sf_fixed)
+}
+
+#' Fix region in ee_as_thumbnail and ee_as_stars
+#' @importFrom sf st_intersection
+#' @noRd
+ee_fix_region <- function(bounds_image, sf_region) {
+  fix_region <- suppressMessages(
+    st_intersection(bounds_image$geometry,sf_region$geometry)
+  )
+  st_is_identical <- identical(
+    st_length(sf_region$geometry),
+    st_length(fix_region)
+  )
+  list(region = fix_region, equal = st_is_identical)
 }
