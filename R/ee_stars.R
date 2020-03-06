@@ -12,6 +12,7 @@
 #' @param quiet logical. Suppress info message
 #' @importFrom jsonlite parse_json
 #' @importFrom sf st_transform st_coordinates
+#' @importFrom stars st_set_dimensions
 #' @details
 #' The process to pass a ee$Image to your local env could be carried
 #' out by three different strategies. The first one ('getInfo') use the getInfo
@@ -88,9 +89,8 @@ ee_as_stars <- function(image,
     img_proj <- image$projection()$getInfo()
     if (!is.null(scale)) {
       image <- image$reproject(img_proj$crs, NULL, scale)
+      img_proj <- image$projection()$getInfo()
     }
-    img_proj <- image$projection()$getInfo()
-
     # Image metadata
     image_epsg <- gsub("EPSG:", "", img_proj$crs) %>% as.numeric
     if (is.null(scale)) {
@@ -177,7 +177,7 @@ ee_as_stars <- function(image,
     )
     if (!quiet) {
       cat("From Earth Engine to Google Drive\n",
-          "gmail_user  :",ee_user$email,"\n",
+          "Google user :",ee_user$email,"\n",
           "Folder name :",container,"\n",
           "File name   :", image_id)
     }
@@ -185,7 +185,13 @@ ee_as_stars <- function(image,
     ee_monitoring(img_task)
     # From Google Drive to local
     image_stars <- ee_drive_to_local(img_task)
-    st_set_dimensions(image_stars, 3, values = band_names)
+    if (length(band_names) > 1) {
+      st_set_dimensions(image_stars, 3, values = band_names)
+    } else {
+      image_stars <- st_set_dimensions(image_stars, "bands")
+      attr(image_stars,'dimensions')$bands$to <- 1
+      st_set_dimensions(image_stars, 3, values = band_names)
+    }
   } else if (via == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
       stop('Google Drive credentials were not loaded.',
@@ -205,7 +211,7 @@ ee_as_stars <- function(image,
     cat("Moving results from Earth Engine to Google Cloud Storage: ", image_id)
     if (!quiet) {
       cat("From Earth Engine to Google Cloud Storage\n",
-          "gmail_user  :",ee_user$email,"\n",
+          "Google user :",ee_user$email,"\n",
           "Bucket name :",container,"\n",
           "File name   :", image_id)
     }
@@ -213,8 +219,13 @@ ee_as_stars <- function(image,
     ee_monitoring(img_task)
     # From Google Cloud Storage to local
     image_stars <- ee_gcs_to_local(img_task)
-    st_set_dimensions(image_stars, 3, values = band_names)
-    image_stars
+    if (length(band_names) > 1) {
+      st_set_dimensions(image_stars, 3, values = band_names)
+    } else {
+      image_stars <- st_set_dimensions(image_stars, "bands")
+      attr(image_stars,'dimensions')$bands$to <- 1
+      st_set_dimensions(image_stars, 3, values = band_names)
+    }
   } else {
     stop("via argument invalid")
   }
@@ -230,10 +241,10 @@ stars_as_ee <- function(x) {
 #' Fix offset of stars object
 #' @noRd
 ee_fix_offset <- function(img_proj,rectangle_coord){
-  x_scale <- img_proj$transform[1]
-  x_offset <- img_proj$transform[3]
-  y_scale <- img_proj$transform[5]
-  y_offset <- img_proj$transform[6]
+  x_scale <- img_proj$transform[1][[1]]
+  x_offset <- img_proj$transform[3][[1]]
+  y_scale <- img_proj$transform[5][[1]]
+  y_offset <- img_proj$transform[6][[1]]
   # X offset fixed
   x_offset_sf <- min(rectangle_coord[,'X'])
   x_npixels <- floor(abs((x_offset_sf - x_offset)/x_scale))
