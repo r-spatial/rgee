@@ -8,20 +8,47 @@
 \alias{sf_as_ee.sfg}
 \title{Convert an sf object to EE object}
 \usage{
-sf_as_ee(x, check_ring_dir)
+sf_as_ee(x, check_ring_dir, evenOdd, proj, geodesic)
 
-\method{sf_as_ee}{character}(x, check_ring_dir = FALSE, ...)
+\method{sf_as_ee}{character}(x, check_ring_dir = FALSE, evenOdd = TRUE,
+  proj = NULL, geodesic = NULL, ...)
 
-\method{sf_as_ee}{sf}(x, check_ring_dir = FALSE)
+\method{sf_as_ee}{sf}(x, check_ring_dir = FALSE, evenOdd = TRUE,
+  proj = NULL, geodesic = NULL, ...)
 
-\method{sf_as_ee}{sfc}(x, check_ring_dir = FALSE)
+\method{sf_as_ee}{sfc}(x, check_ring_dir = FALSE, evenOdd = TRUE,
+  proj = NULL, geodesic = NULL, ...)
 
-\method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE)
+\method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE, evenOdd = TRUE,
+  proj = 4326, geodesic = NULL, ...)
 }
 \arguments{
 \item{x}{sf object to be converted into a EE object.}
 
 \item{check_ring_dir}{logical. See \link[sf]{st_read} and details.}
+
+\item{evenOdd}{If TRUE, polygon interiors will be determined
+by the even/odd rule, where a point is inside if it crosses
+an odd number of edges to reach a point at infinity. Otherwise
+polygons use the left-inside rule, where interiors are on the
+left side of the shell's edges when walking the vertices in
+the given order. If unspecified, defaults to TRUE.
+*args: For convenience, varargs may be used when all
+arguments are numbers. This allows creating geodesic
+EPSG:4326 Polygons with a single LinearRing given an even
+number of arguments, e.g.
+ee.Geometry.Polygon(aLng, aLat, bLng, bLat, ..., aLng, aLat).}
+
+\item{proj}{An optional projection specification, either as a CRS ID
+code or as a WKT string. If specified, overrides any CRS found in
+the GeoJSON parameter. If unspecified and the GeoJSON does not
+declare a CRS, defaults to "EPSG:4326" (x=longitude, y=latitude).}
+
+\item{geodesic}{Whether line segments should be interpreted as spherical
+geodesics. If FALSE, indicates that line segments should be interpreted
+as planar lines in the specified CRS. If absent, defaults to TRUE if
+the CRS is geographic (including the default EPSG:4326), or to FALSE
+if the CRS is projected.}
 
 \item{...}{\link[sf]{st_read} arguments might be included.}
 }
@@ -47,6 +74,7 @@ and clockwise for inner (hole) ones. By default this is FALSE because
 it is an expensive operation.
 }
 \examples{
+\dontrun{
 library(rgee)
 library(sf)
 
@@ -59,4 +87,23 @@ x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
 Map$centerObject(eeObject = ee_x)
 Map$addLayer(ee_x)
+
+# Create a right-inside polygon.
+toy_poly <- matrix(data = c(-35,-10,-35,10,35,10,35,-10,-35,-10),
+                   ncol = 2,
+                   byrow = TRUE) \%>\%
+  list() \%>\%
+  st_polygon()
+holePoly <- sf_as_ee(toy_poly, evenOdd = FALSE)
+
+# Create an even-odd version of the polygon.
+evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
+
+# Create a point to test the insideness of the polygon.
+pt <- ee$Geometry$Point(c(1.5, 1.5))
+
+# Check insideness with a contains operator.
+print(holePoly$contains(pt)$getInfo() \%>\% ee_py_to_r())     # FALSE
+print(evenOddPoly$contains(pt)$getInfo() \%>\% ee_py_to_r())  # TRUE
+}
 }
