@@ -11,21 +11,21 @@
 sf_as_ee(x, check_ring_dir, evenOdd, proj, geodesic)
 
 \method{sf_as_ee}{character}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = NULL, geodesic = NULL, ...)
+  proj = 4326, geodesic = TRUE, ...)
 
 \method{sf_as_ee}{sf}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = NULL, geodesic = NULL, ...)
+  proj = 4326, geodesic = TRUE, ...)
 
 \method{sf_as_ee}{sfc}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = NULL, geodesic = NULL, ...)
+  proj = 4326, geodesic = TRUE, ...)
 
 \method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = 4326, geodesic = NULL, ...)
+  proj = 4326, geodesic = TRUE, ...)
 }
 \arguments{
 \item{x}{sf object to be converted into a EE object.}
 
-\item{check_ring_dir}{logical. See \link[sf]{st_read} and details.}
+\item{check_ring_dir}{logical. See \link[sf]{st_read} for details.}
 
 \item{evenOdd}{If TRUE, polygon interiors will be determined
 by the even/odd rule, where a point is inside if it crosses

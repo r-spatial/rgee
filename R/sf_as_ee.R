@@ -2,7 +2,7 @@
 #'
 #' @name sf_as_ee
 #' @param x sf object to be converted into a EE object.
-#' @param check_ring_dir logical. See \link[sf]{st_read} and details.
+#' @param check_ring_dir logical. See \link[sf]{st_read} for details.
 #' @param evenOdd If TRUE, polygon interiors will be determined
 #' by the even/odd rule, where a point is inside if it crosses
 #' an odd number of edges to reach a point at infinity. Otherwise
@@ -85,16 +85,16 @@ sf_as_ee <- function(x, check_ring_dir,evenOdd, proj, geodesic) UseMethod("sf_as
 sf_as_ee.character <- function(x,
                                check_ring_dir = FALSE,
                                evenOdd = TRUE,
-                               proj = NULL,
-                               geodesic = NULL,
+                               proj = 4326,
+                               geodesic = TRUE,
                                ...) {
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- rgee:::ee_source_python(oauth_func_path)
+  sf_as_ee <- ee_source_python(oauth_func_path)
   eex <- st_read(dsn = x,
                  stringsAsFactors =  FALSE,
                  check_ring_dir = check_ring_dir,
                  quiet = TRUE, ...)
-  if (!is.null(proj)) {
+  if (proj != 4326) {
     eex <- eex %>% st_transform(proj)
   }
   eex_crs <- st_crs(eex)$epsg
@@ -102,23 +102,18 @@ sf_as_ee.character <- function(x,
     stop("The x EPSG needs to be defined, use sf::st_set_crs to",
          " set, replace or retrieve.")
   }
-  if (eex_crs == 4326 & evenOdd == FALSE) {
-    geojson_list <- geojson_json(eex)
-    sf_as_ee$sf_as_ee_py(geojson_list)
-  } else {
-    fc <- list()
-    for (index in seq_len(nrow(eex))) {
-      feature <- eex[index,]
-      py_geometry <- geojson_json(feature$geometry,type = 'skip')
-      ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                           opt_proj = paste0('EPSG:', eex_crs),
-                                           opt_geodesic = st_is_longlat(eex),
-                                           opt_evenOdd = evenOdd)
-      feature$geometry <- NULL
-      fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
-    }
-    ee$FeatureCollection(fc)
+  fc <- list()
+  for (index in seq_len(nrow(eex))) {
+    feature <- eex[index,]
+    py_geometry <- geojson_json(feature$geometry,type = 'skip')
+    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                         opt_proj = paste0('EPSG:', eex_crs),
+                                         opt_geodesic = geodesic,
+                                         opt_evenOdd = evenOdd)
+    feature$geometry <- NULL
+    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
+  ee$FeatureCollection(fc)
 }
 
 #' @rdname sf_as_ee
@@ -126,10 +121,10 @@ sf_as_ee.character <- function(x,
 sf_as_ee.sf <- function(x,
                         check_ring_dir = FALSE,
                         evenOdd = TRUE,
-                        proj = NULL,
-                        geodesic = NULL,
+                        proj = 4326,
+                        geodesic = TRUE,
                         ...) {
-  if (!is.null(proj)) {
+  if (proj != 4326) {
     x <- x %>% st_transform(proj)
   }
   x <- st_sf(x, check_ring_dir = check_ring_dir)
@@ -140,23 +135,18 @@ sf_as_ee.sf <- function(x,
     stop("The x EPSG needs to be defined, use sf::st_set_crs to",
          " set, replace or retrieve.")
   }
-  if (eex_crs == 4326 & evenOdd == FALSE) {
-    geojson_list <- geojson_json(x)
-    sf_as_ee$sf_as_ee_py(geojson_list)
-  } else {
-    fc <- list()
-    for (index in seq_len(nrow(x))) {
-      feature <- x[index,]
-      py_geometry <- geojson_json(feature$geometry,type = 'skip')
-      ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                           opt_proj = paste0('EPSG:', eex_crs),
-                                           opt_geodesic = st_is_longlat(x),
-                                           opt_evenOdd = evenOdd)
-      feature$geometry <- NULL
-      fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
-    }
-    ee$FeatureCollection(fc)
+  fc <- list()
+  for (index in seq_len(nrow(x))) {
+    feature <- x[index,]
+    py_geometry <- geojson_json(feature$geometry,type = 'skip')
+    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                         opt_proj = paste0('EPSG:', eex_crs),
+                                         opt_geodesic = st_is_longlat(x),
+                                         opt_evenOdd = evenOdd)
+    feature$geometry <- NULL
+    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
+  ee$FeatureCollection(fc)
 }
 
 #' @rdname sf_as_ee
@@ -164,36 +154,33 @@ sf_as_ee.sf <- function(x,
 sf_as_ee.sfc <- function(x,
                          check_ring_dir = FALSE,
                          evenOdd = TRUE,
-                         proj = NULL,
-                         geodesic = NULL,
+                         proj = 4326,
+                         geodesic = TRUE,
                          ...) {
-  if (!is.null(proj)) {
+  if (proj != 4326) {
     x <- x %>% st_transform(proj)
   }
   x <- st_sfc(x, check_ring_dir = check_ring_dir)
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)
   eex_crs <- st_crs(x)$epsg
+
   if (is.na(eex_crs)) {
     stop("The x EPSG needs to be defined, use sf::st_set_crs to",
          " set, replace or retrieve.")
   }
-  if (eex_crs == 4326 & evenOdd == FALSE) {
-    geojson_list <- geojson_json(x)
-    sf_as_ee$sfc_as_ee_py(geojson_list)
-  } else {
-    fc <- list()
-    for (index in seq_len(length(x))) {
-      geometry <- x[index]
-      py_geometry <- geojson_json(geometry,type = 'skip')
-      ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                           opt_proj = paste0('EPSG:', eex_crs),
-                                           opt_geodesic = st_is_longlat(x),
-                                           opt_evenOdd = evenOdd)
-      fc[[index]] <- ee$Feature(ee_geometry, NULL)
-    }
-    ee$FeatureCollection(fc)
+
+  fc <- list()
+  for (index in seq_len(length(x))) {
+    geometry <- x[index]
+    py_geometry <- geojson_json(geometry,type = 'skip')
+    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                         opt_proj = paste0('EPSG:', eex_crs),
+                                         opt_geodesic = geodesic,
+                                         opt_evenOdd = evenOdd)
+    fc[[index]] <- ee$Feature(ee_geometry, NULL)
   }
+  ee$FeatureCollection(fc)
 }
 
 #' @rdname sf_as_ee
@@ -202,7 +189,7 @@ sf_as_ee.sfg <- function(x,
                          check_ring_dir = FALSE,
                          evenOdd = TRUE,
                          proj = 4326,
-                         geodesic = NULL,
+                         geodesic = TRUE,
                          ...) {
   x <- st_sfc(x, crs =  proj, check_ring_dir = check_ring_dir)
   geodesic <- st_is_longlat(x)
