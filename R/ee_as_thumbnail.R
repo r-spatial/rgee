@@ -98,25 +98,52 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
   if (missing(region)) {
     region <- x$geometry()
   }
+
+  # region testing
+  sf_region <- ee_as_sf(region)$geometry
+  is_geodesic <- region$geodesic()$getInfo()
+  sf_image <- ee_as_sf(x$geometry())$geometry
+
+  ## it is geodesic?
+  if (is_geodesic && !quiet) {
+    message('Are you sure you want to consider line ',
+            'segments as spherical geodesics distances?.',
+            ' Fix it as follow: sf_as_ee(geom, geodesic = FALSE)')
+  }
+  ## region and x have the same crs?
+  if (!identical(st_crs(sf_image), st_crs(sf_region))) {
+   stop('The parameters region and x need to have the same crs\n',
+        'EPSG region: ', st_crs(sf_region)$epsg,
+        '\nEPSG x: ', st_crs(sf_image)$epsg)
+  }
+  ## region is a ee$Geometry$Rectangle?
   if (any(class(region) %in% "ee.geometry.Geometry")) {
-    sf_region <- ee_as_sf(region)
-    npoints <- sf_region$geometry %>% st_coordinates %>% nrow
+    npoints <- nrow(st_coordinates(sf_region))
     if (npoints != 5) {
-      stop('region needs to be a ee$Geometry$Rectangle.')
+      warning('region needs to be a ee$Geometry$Rectangle. ',
+              'Getting bounds ...\n')
+      region <- region$bounds()
+      sf_region <- ee_as_sf(region)$geometry
     }
   } else  {
     stop('region needs to be a ee$Geometry$Rectangle.')
   }
+
+  ## region is a world scene?
+  if (any(st_bbox(sf_region) %in% c(180,-90))) {
+    sf_region <- ee_fix_world_region(sf_image, sf_region)$geometry
+  }
+
   if (missing(dimensions)) {
     dimensions <- 256L
     if (!quiet) {
-      print("dimensions is missing. Taken by default 256 pixels in X")
+      message("dimensions param is missing. Taken by default 256 pixels in X")
     }
   }
-  if (max(dimensions) > 512) {
+  if (max(dimensions) > 2048) {
     if (!quiet) {
-      cat("For large image is preferible use rgee::ee_download_*(...)",
-          "or rgee::ee_as_stars(...)")
+      message("For large image is preferible use rgee::ee_download_*(...)",
+              "or rgee::ee_as_stars(...)")
     }
   }
 
@@ -127,47 +154,25 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     error = function(e) "thumbnail"
   )
 
-  # Fixing Region if it is necessary
-  geotransform_image <- x$projection()$getInfo()
-  bounds_image <- ee_as_sf(x$geometry())
-  sf_region_fixed <- ee_fix_region(bounds_image, sf_region)
-  if (isFALSE(sf_region_fixed$equal)) {
-    cat('region does not overlap completely the image, changing',
-        'region \nFrom : ', as.character(sf_region$geometry),
-        '\nTo   : ', as.character(sf_region_fixed$region))
-  }
-  sf_region_fixed <- sf_region_fixed$region
-  region <- sf_as_ee(sf_region_fixed, check_ring_dir = TRUE)
-
   # Getting image parameters
-  ee_x_crs <- geotransform_image$crs
-  ee_x_epsg <- as.numeric(gsub("EPSG:", "", ee_x_crs))
-  coord_x_matrix <- sf_region_fixed %>%
-    st_transform(ee_x_epsg) %>%
-    st_coordinates() %>%
-    '['(, c('X','Y'))
-  long <- coord_x_matrix[,'X']
-  lat <- coord_x_matrix[,'Y']
-  init_offset <- ee_fix_offset(geotransform_image, coord_x_matrix)
+  init_offset <- ee_fix_offset(x, sf_region)
+  ee_crs <- st_crs(sf_region)$epsg
+  region_fixed <- sf_as_ee(x = sf_region,
+                           check_ring_dir = TRUE,
+                           evenOdd = TRUE,
+                           proj = ee_crs,
+                           geodesic = is_geodesic)
 
-  # Solving bug when define a world extent in region.
-  world_lat <- c(-90, -90,  90,  90, -90)
-  world_long <- c(-180,  180,  180, -180, -180)
-  if (!all(long %in% world_long & lat %in% world_lat)) {
-    new_params <- list(
-      crs = ee_x_crs,
-      dimensions = as.integer(dimensions),
-      region = region
-    )
-  } else {
-    new_params <- list(
-      crs = ee_x_crs,
-      dimensions = as.integer(dimensions)
-    )
-  }
+  # Preparing parameters
+  new_params <- list(
+    crs = paste0('EPSG:', ee_crs),
+    dimensions = as.integer(dimensions),
+    region = ee$Geometry(region_fixed$geometry())
+  )
 
   viz_params_total <- c(new_params, vizparams)
 
+  # Creating thumbnail as either jpg or png
   if (!quiet) {
     cat(
       "Getting the thumbnail image from Earth Engine ...",
@@ -254,11 +259,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- init_offset[1]
     attr_dim$y$offset <- init_offset[2]
-    attr_dim$x$delta <- (max(long) - min(long)) / attr_dim$x$to
-    attr_dim$y$delta <- y_scale
-    st_crs(stars_png) <- ee_x_epsg
+    attr_dim$x$delta <- (init_offset[3] - init_offset[1]) / attr_dim$x$to
+    attr_dim$y$delta <- (init_offset[4] - init_offset[2]) / attr_dim$y$to
+    st_crs(stars_png) <- ee_crs
+    attr(stars_png, "dimensions") <- attr_dim
     st_set_dimensions(stars_png, 3, values = band_name)
-    return(stars_png)
   } else {
     stop('Number of bands not supported')
   }
@@ -274,3 +279,4 @@ read_png_as_stars <- function(x, band_name, mtx) {
   names(stars_object) <- band_name
   stars_object
 }
+
