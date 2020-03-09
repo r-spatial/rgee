@@ -4,8 +4,7 @@
 \alias{ee_as_thumbnail}
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
-ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
-  quiet = FALSE)
+ee_as_thumbnail(x, region, dimensions, vizparams = NULL, quiet = FALSE)
 }
 \arguments{
 \item{x}{EE Image object}
@@ -15,9 +14,6 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL, crs = 4326,
 \item{dimensions}{A number or pair of numbers in format XY.}
 
 \item{vizparams}{A list that contains the visualization parameters.}
-
-\item{crs}{The EE Image projection e.g. 'EPSG:3857'. WGS84 by default
-('EPSG:4326').}
 
 \item{quiet}{logical; suppress info messages.}
 }
@@ -68,6 +64,7 @@ Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for
 getting the CRS of an Earth Engine Image.
 }
 \examples{
+\dontrun{
 library(rgee)
 library(stars)
 
@@ -78,24 +75,34 @@ dem_palette <- c(
   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
 )
-ndvi_palette <- c(
-  "#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
-  "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60"
-)
-# Example 01  - SRTM AREQUIPA-PERU
+
+# DEM data -SRTM v4.0
 image <- ee$Image("CGIAR/SRTM90_V4")
 region <- nc$geometry[[1]] \%>\%
   st_bbox() \%>\%
   st_as_sfc() \%>\%
   st_set_crs(4326) \%>\%
-  sf_as_ee()
+  sf_as_ee(geodesic = FALSE) \%>\%
+  ee$FeatureCollection$geometry()
 
-arequipa_dem <- ee_as_thumbnail(x = image, region = region,
+## world DEM
+world_dem <- ee_as_thumbnail(x = image,
+                             dimensions = 1024,
+                             vizparams = list(min = 0, max = 5000))
+world_dem[world_dem <= 0] =NA
+world_dem <- world_dem*5000
+plot(x = world_dem, col = dem_palette, breaks = "equal",
+     reset = FALSE, main = "SRTM - World")
+
+## Arequipa-Peru DEM
+arequipa_dem <- ee_as_thumbnail(x = image,
+                                dimensions = 512,
+                                region = region,
                                 vizparams = list(min = 0, max = 5000))
 arequipa_dem <- arequipa_dem * 5000
-
 plot(x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
      reset = FALSE, main = "SRTM - Arequipa")
 suppressWarnings(plot(x = nc, col = NA, border = "black", add = TRUE,
                       lwd = 1.5))
+}
 }

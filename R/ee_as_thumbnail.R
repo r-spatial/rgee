@@ -7,8 +7,6 @@
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle)
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
-#' @param crs The EE Image projection e.g. 'EPSG:3857'. WGS84 by default
-#' ('EPSG:4326').
 #' @param quiet logical; suppress info messages.
 #' @details
 #'
@@ -59,6 +57,7 @@
 #' @importFrom utils download.file zip str
 #' @importFrom png readPNG
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #'
@@ -69,36 +68,48 @@
 #'   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
 #'   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
 #' )
-#' ndvi_palette <- c(
-#'   "#FC8D59", "#FC8D59", "#FC9964", "#FED89C", "#FFFFBF",
-#'   "#FFFFBF", "#DAEF9F", "#9DD46A", "#91CF60", "#91CF60"
-#' )
-#' # Example 01  - SRTM AREQUIPA-PERU
+#'
+#' # DEM data -SRTM v4.0
 #' image <- ee$Image("CGIAR/SRTM90_V4")
 #' region <- nc$geometry[[1]] %>%
 #'   st_bbox() %>%
 #'   st_as_sfc() %>%
 #'   st_set_crs(4326) %>%
-#'   sf_as_ee()
+#'   sf_as_ee(geodesic = FALSE) %>%
+#'   ee$FeatureCollection$geometry()
 #'
-#' arequipa_dem <- ee_as_thumbnail(x = image, region = region,
+#' ## world DEM
+#' world_dem <- ee_as_thumbnail(x = image,
+#'                              dimensions = 1024,
+#'                              vizparams = list(min = 0, max = 5000))
+#' world_dem[world_dem <= 0] =NA
+#' world_dem <- world_dem*5000
+#' plot(x = world_dem, col = dem_palette, breaks = "equal",
+#'      reset = FALSE, main = "SRTM - World")
+#'
+#' ## Arequipa-Peru DEM
+#' arequipa_dem <- ee_as_thumbnail(x = image,
+#'                                 dimensions = 512,
+#'                                 region = region,
 #'                                 vizparams = list(min = 0, max = 5000))
 #' arequipa_dem <- arequipa_dem * 5000
-#'
 #' plot(x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
 #'      reset = FALSE, main = "SRTM - Arequipa")
 #' suppressWarnings(plot(x = nc, col = NA, border = "black", add = TRUE,
 #'                       lwd = 1.5))
+#' }
 #' @export
-ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
+ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
                             quiet = FALSE) {
   if (!any(class(x) %in%  "ee.image.Image")) {
-    stop("x argument is not an ee$Image")
+    stop("x argument is not an ee$image$Image")
   }
   if (missing(region)) {
     region <- x$geometry()
   }
-
+  if (!any(class(region) %in% "ee.geometry.Geometry")) {
+    stop("region argument is not an ee$geometry$Geometry")
+  }
   # region testing
   sf_region <- ee_as_sf(region)$geometry
   is_geodesic <- region$geodesic()$getInfo()
@@ -261,8 +272,8 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL, crs = 4326,
     attr_dim$y$offset <- init_offset[2]
     attr_dim$x$delta <- (init_offset[3] - init_offset[1]) / attr_dim$x$to
     attr_dim$y$delta <- (init_offset[4] - init_offset[2]) / attr_dim$y$to
-    st_crs(stars_png) <- ee_crs
     attr(stars_png, "dimensions") <- attr_dim
+    st_crs(stars_png) <- ee_crs
     st_set_dimensions(stars_png, 3, values = band_name)
   } else {
     stop('Number of bands not supported')
