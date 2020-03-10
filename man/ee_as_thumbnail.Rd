@@ -4,16 +4,32 @@
 \alias{ee_as_thumbnail}
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
-ee_as_thumbnail(x, region, dimensions, vizparams = NULL, quiet = FALSE)
+ee_as_thumbnail(x, region, dimensions, vizparams = NULL,
+  geodesic = NULL, evenOdd = NULL, quiet = FALSE)
 }
 \arguments{
 \item{x}{EE Image object}
 
-\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle)}
+\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
+CRS needs to be the same that the x argument otherwise it will be
+forced.}
 
 \item{dimensions}{A number or pair of numbers in format XY.}
 
 \item{vizparams}{A list that contains the visualization parameters.}
+
+\item{geodesic}{Whether line segments of region should be interpreted as
+spherical geodesics. If FALSE, indicates that line segments should be
+interpreted as planar lines in the specified CRS. If it is not specified in
+the geometry (region argument) defaults to TRUE if the CRS is geographic
+(including the default EPSG:4326), or to FALSE if the CRS is projected.}
+
+\item{evenOdd}{If TRUE, polygon interiors will be determined by
+the even/odd rule, where a point is inside if it crosses an odd
+number of edges to reach a point at infinity. Otherwise polygons
+use the left- inside rule, where interiors are on the left side
+of the shell's edges when walking the vertices in the given order.
+If unspecified in the geometry (region argument) defaults to TRUE.}
 
 \item{quiet}{logical; suppress info messages.}
 }
@@ -65,9 +81,9 @@ getting the CRS of an Earth Engine Image.
 }
 \examples{
 \dontrun{
-library(rgee)
+library(raster)
 library(stars)
-
+library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
@@ -78,23 +94,24 @@ dem_palette <- c(
 
 # DEM data -SRTM v4.0
 image <- ee$Image("CGIAR/SRTM90_V4")
-region <- nc$geometry[[1]] \%>\%
+region <- nc \%>\%
   st_bbox() \%>\%
   st_as_sfc() \%>\%
   st_set_crs(4326) \%>\%
-  sf_as_ee(geodesic = FALSE) \%>\%
+  sf_as_ee() \%>\%
   ee$FeatureCollection$geometry()
 
-## world DEM
+## world
 world_dem <- ee_as_thumbnail(x = image,
                              dimensions = 1024,
+                             geodesic = FALSE,
                              vizparams = list(min = 0, max = 5000))
-world_dem[world_dem <= 0] =NA
+world_dem[world_dem <= 0] = NA
 world_dem <- world_dem*5000
 plot(x = world_dem, col = dem_palette, breaks = "equal",
      reset = FALSE, main = "SRTM - World")
 
-## Arequipa-Peru DEM
+## Arequipa-Peru
 arequipa_dem <- ee_as_thumbnail(x = image,
                                 dimensions = 512,
                                 region = region,
@@ -104,5 +121,23 @@ plot(x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
      reset = FALSE, main = "SRTM - Arequipa")
 suppressWarnings(plot(x = nc, col = NA, border = "black", add = TRUE,
                       lwd = 1.5))
+
+## LANDSAT 8
+img <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')$
+  select(c('B4', 'B3', 'B2'))
+Map$centerObject(img)
+Map$addLayer(img,list(min = 0, max = 5000, gamma = 1.5))
+
+## Teton Wilderness
+l8_img <- ee_as_thumbnail(x = img,
+                          dimensions = 1024,
+                          vizparams = list(min = 0,
+                                           max = 5000,
+                                           gamma = 1.5))
+dev.off()
+l8_img \%>\%
+  as('Raster') \%>\%
+  `names<-`(c('R','G','B')) \%>\%
+  plotRGB(stretch='lin')
 }
 }

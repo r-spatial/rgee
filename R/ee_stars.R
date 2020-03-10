@@ -67,6 +67,7 @@ ee_as_stars <- function(image,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
+
   # Creating name for temporal file in drive or gcs
   time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
@@ -240,36 +241,76 @@ stars_as_ee <- function(x) {
 
 #' Fix offset of stars object
 #' @noRd
-ee_fix_offset <- function(img_proj,rectangle_coord) {
+ee_fix_offset <- function(image, sf_region) {
+  img_proj <- image$projection()$getInfo()
+  rectangle_coord <- st_coordinates(sf_region)
   # image spatial parameters
-  x_scale <- img_proj$transform[1][[1]]
-  x_offset <- img_proj$transform[3][[1]]
-  y_scale <- img_proj$transform[5][[1]]
-  y_offset <- img_proj$transform[6][[1]]
+  img_x_scale <- img_proj$transform[1][[1]]
+  img_x_offset <- img_proj$transform[3][[1]]
+  img_y_scale <- img_proj$transform[5][[1]]
+  img_y_offset <- img_proj$transform[6][[1]]
 
   # X offset fixed
-  x_offset_sf <- min(rectangle_coord[,'X'])
-  x_npixels <- floor(abs((x_offset_sf - x_offset)/x_scale))
-  x_offset_sf_fixed <- x_offset + x_npixels*x_scale
+  sf_x_min <- min(rectangle_coord[,'X'])
+  sf_x_max <- max(rectangle_coord[,'X'])
+  x_npixels_init <- floor(abs((sf_x_min - img_x_offset)/img_x_scale))
+  x_npixels_last <- ceiling(
+    round(
+      x = abs((sf_x_max - img_x_offset)/img_x_scale),
+      digits = 6)
+  )
+  x_init_crop_img <- img_x_offset + x_npixels_init*img_x_scale
+  x_last_crop_img <- img_x_offset + x_npixels_last*img_x_scale
 
   # Y offset fixed
-  y_offset_sf <- max(rectangle_coord[,'Y'])
-  y_npixels <- floor(abs((y_offset_sf - y_offset)/y_scale))
-  y_offset_sf_fixed <- y_offset + y_npixels*y_scale
+  sf_y_min <- min(rectangle_coord[,'Y'])
+  sf_y_max <- max(rectangle_coord[,'Y'])
+  y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset)/img_y_scale))
+  y_npixels_last <- ceiling(
+    round(
+      x = abs((sf_y_min - img_y_offset)/img_x_scale),
+      digits = 6
+    )
+  )
+  y_init_crop_img <- img_y_offset + y_npixels_init*img_y_scale
+  y_last_crop_img <- img_y_offset + y_npixels_last*img_y_scale
+  c(x_init_crop_img, y_init_crop_img, x_last_crop_img, y_last_crop_img)
+}
 
-  c(x_offset_sf_fixed, y_offset_sf_fixed)
+ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {
+  bbox <- st_bbox(sfc)
+  xmin <- bbox['xmin']
+  xmax <- bbox['xmax']
+  ymin <- bbox['ymin']
+  ymax <- bbox['ymax']
+
+  # if (xmax == 180) xmax <- xmax - epsilon
+  # if (ymin == -90) ymin <- ymin + epsilon
+
+  new_bbox <- c(xmin,ymin,xmax,ymax)
+  class(new_bbox) <- "bbox"
+  st_set_crs(st_as_sfc(new_bbox), crs)
 }
 
 #' Fix region in ee_as_thumbnail and ee_as_stars
-#' @importFrom sf st_intersection
+#' @importFrom sf st_intersection st_length st_as_text st_set_crs st_as_sfc
 #' @noRd
-ee_fix_region <- function(bounds_image, sf_region) {
+ee_fix_world_region <- function(sf_image, sf_region, quiet) {
+  ee_crs <- st_crs(sf_image)
   fix_region <- suppressMessages(
-    st_intersection(bounds_image$geometry,sf_region$geometry)
+    st_intersection(sf_image,sf_region)
   )
   st_is_identical <- identical(
-    st_length(sf_region$geometry),
+    st_length(sf_region),
     st_length(fix_region)
   )
-  list(region = fix_region, equal = st_is_identical)
+  sf_fix_region <- ee_fix_world_boundary(sfc = fix_region,
+                                         crs = ee_crs)
+  if (isFALSE(st_is_identical) & !quiet) {
+    message('NOTE: region argument does not overlap completely the image, changing ',
+            'region \nFrom : ', st_as_text(sf_region),
+            '\nTo   : ', st_as_text(sf_fix_region))
+  }
+  list(geometry = sf_fix_region, equal = st_is_identical)
 }
+
