@@ -1,9 +1,25 @@
 #' Convert an Earth Engine (EE) image in a stars object
 #' @param image ee$Image to be converted into a sf object
-#' @param region ee$Geometry$Polygon. Region of interest
+#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
+#' CRS needs to be the same that the x argument otherwise it will be
+#' forced. If it is not specified image bounds will be taken.
 #' @param scale The resolution in meters per pixel. If scale
 #' is NULL, the native resolution of the first band will be
 #' taken.
+#' @param geodesic Whether line segments of region should be interpreted as
+#' spherical geodesics. If FALSE, indicates that line segments should be
+#' interpreted as planar lines in the specified CRS. If it is not specified in
+#' the geometry (region argument) defaults to TRUE if the CRS is geographic
+#' (including the default EPSG:4326), or to FALSE if the CRS is projected.
+#' @param evenOdd If TRUE, polygon interiors will be determined by
+#' the even/odd rule, where a point is inside if it crosses an odd
+#' number of edges to reach a point at infinity. Otherwise polygons
+#' use the left- inside rule, where interiors are on the left side
+#' of the shell's edges when walking the vertices in the given order.
+#' If unspecified in the geometry (region argument) defaults to TRUE.
+#' @param maxPixels The maximum allowed number of pixels in the
+#' exported image. The task will fail if the exported region covers
+#' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param via Method to download the image. Three methods
 #' are implemented 'getInfo', 'drive' and 'gcs'. See details.
 #' @param container Relevant when the "via" argument is
@@ -11,8 +27,8 @@
 #' folder ('drive') or bucket ('gcs') to export into.
 #' @param quiet logical. Suppress info message
 #' @importFrom jsonlite parse_json
-#' @importFrom sf st_transform st_coordinates
-#' @importFrom stars st_set_dimensions
+#' @importFrom sf st_transform st_coordinates st_make_grid
+#' @importFrom stars st_set_dimensions st_mosaic
 #' @details
 #' The process to pass a ee$Image to your local env could be carried
 #' out by three different strategies. The first one ('getInfo') use the getInfo
@@ -64,39 +80,111 @@
 ee_as_stars <- function(image,
                         region,
                         scale = NULL,
+                        geodesic = NULL,
+                        evenOdd = NULL,
+                        maxPixels = 1e9,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
+  if (!any(class(image) %in%  "ee.image.Image")) {
+    stop("image argument is not an ee$image$Image")
+  }
+  region_generated <- FALSE
+  if (missing(region)) {
+    message('region is not defined ... taking the image bounds.')
+    region <- image$geometry()
+    region_generated <- TRUE
+  }
+  if (!any(class(region) %in% "ee.geometry.Geometry")) {
+    stop("region argument is not an ee$geometry$Geometry")
+  }
 
-  # Creating name for temporal file in drive or gcs
-  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
-  ee_description <- paste0("ee_as_stars_task_", time_format)
+  # region testing
+  prj_image <- image$projection()$getInfo()
+  sf_image <- ee_as_sf(image$geometry())$geometry %>%
+    st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+  sf_region <- ee_as_sf(region)$geometry %>%
+    st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+
+  if (is.null(geodesic)) {
+    if (region_generated) {
+      is_geodesic <- st_is_longlat(sf_region)
+    } else {
+      is_geodesic <- region$geodesic()$getInfo()
+    }
+  } else {
+    is_geodesic <- geodesic
+  }
+
+  if (is.null(evenOdd)) {
+    query_params <- unlist(parse_json(region$serialize())$scope)
+    is_evenodd <- as.logical(
+      query_params[grepl("evenOdd", names(query_params))]
+    )
+    if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
+      is_evenodd <- TRUE
+    }
+  } else {
+    is_evenodd <- TRUE
+  }
+
+  if (!identical(st_crs(sf_image), st_crs(sf_region))) {
+    stop('The parameters region and x need to have the same crs\n',
+         'EPSG region: ', st_crs(sf_region)$epsg,
+         '\nEPSG x: ', st_crs(sf_image)$epsg)
+  }
+
+  if (any(class(region) %in% "ee.geometry.Geometry")) {
+    npoints <- nrow(st_coordinates(sf_region))
+    if (npoints != 5) {
+      message('region argument needs to be a ee$Geometry$Rectangle. ',
+              'Fixing it running region$bounds() ...\n')
+      region <- region$bounds()
+      sf_region <- ee_as_sf(region)$geometry %>%
+        st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+    }
+  } else  {
+    stop('region needs to be a ee$Geometry$Rectangle.')
+  }
+
+  ## region is a world scene?
+  if (any(st_bbox(sf_region) %in% c(180,-90))) {
+    sf_region <- ee_fix_world_region(sf_image, sf_region, quiet)$geometry
+  }
+
+  # Getting image ID if it is exist
   image_id <- tryCatch(
     expr = parse_json(image$id()$serialize())$
       scope[[1]][[2]][["arguments"]][["id"]],
-    error = function(e) "noid_"
+    error = function(e) "thumbnail"
   )
-  band_names <- image$bandNames()$getInfo()
-  file_name <- paste0(image_id, time_format)
 
-  # Load ee_Initialize() session
+  # Creating name for temporal file; just for either drive or gcs
+  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+  ee_description <- paste0("ee_as_stars_task_", time_format)
+  file_name <- paste0(image_id,'_', time_format)
+
+  # Load ee_Initialize() session; just for either drive or gcs
   ee_path <- path.expand("~/.config/earthengine")
   ee_user <- read.table(
     file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
     header = TRUE,
     stringsAsFactors = FALSE
   )
+
+  # Band names
+  band_names <- image$bandNames()$getInfo()
+
   if (via == "getInfo") {
-    img_proj <- image$projection()$getInfo()
     if (!is.null(scale)) {
-      image <- image$reproject(img_proj$crs, NULL, scale)
-      img_proj <- image$projection()$getInfo()
+      image <- image$reproject(prj_image$crs, NULL, scale)
+      prj_image <- image$projection()$getInfo()
     }
     # Image metadata
-    image_epsg <- as.numeric(gsub("EPSG:", "", img_proj$crs))
+    image_epsg <- as.numeric(gsub("EPSG:", "", prj_image$crs))
     if (is.null(scale)) {
-      img_scale_x <- img_proj$transform[1][[1]]
-      img_scale_y <- img_proj$transform[5][[1]]
+      img_scale_x <- prj_image$transform[1][[1]]
+      img_scale_y <- prj_image$transform[5][[1]]
     } else {
       if (!is.numeric(scale)) {
         stop('scale argument needs to be a numeric vector')
@@ -106,60 +194,100 @@ ee_as_stars <- function(image,
         img_scale_y <- -scale
       } else {
         stop('scale argument needs to be a numeric vector',
-             ' of the form: c(x_scale, y_scale)')
-      }
-    }
-    # Passing from region from earth engine to sf
-    if (any(class(region) %in% "ee.geometry.Geometry")) {
-      sf_region <- ee_as_sf(region) %>% st_transform(image_epsg)
-      npoints <- sf_region$geometry %>% st_coordinates %>% nrow
-      if (npoints != 5) {
-        stop('region needs to be a ee$Geometry$Rectangle.')
-      }
-    } else  {
-      stop('region needs to be a ee$Geometry$Rectangle.')
-    }
-    # Extracts a rectangular region of pixels from an image
-    # into a 2D array per (return a Feature)
-    ee_image_array <- image$sampleRectangle(region = region)
-
-    # Extract pixel values band by band
-    band_results <- list()
-    for (index in seq_along(band_names)) {
-      band <- band_names[index]
-      band_results[[band]] <- ee_image_array$get(band)$getInfo()
-      if (index == 1) {
-        nrow_array <- length(band_results[[band]])
-        ncol_array <- length(band_results[[band]][[1]])
+             ' of the form: c(x_scale, -y_scale)')
       }
     }
 
-    # Passing from an array to a stars object
-    ## Create array from a list
-    image_array <- array(
-      data = unlist(band_results),
-      dim = c(ncol_array, nrow_array, length(band_names))
+    # It is necessary just single batch? (512x512)
+    bbox <- sf_region %>%
+      st_bbox() %>%
+      as.numeric()
+    x_diff <- bbox[3] - bbox[1]
+    y_diff <- bbox[4] - bbox[2]
+    x_npixel <- round(abs(x_diff/prj_image$transform[1][[1]]))
+    y_npixel <- round(abs(y_diff/prj_image$transform[5][[1]]))
+    total_pixel <- x_npixel*y_npixel
+    if (total_pixel > maxPixels) {
+      stop(
+        sprintf('Export too large: specified %s pixels (max: %s).',
+                total_pixel,format(maxPixels,scientific = FALSE)),
+        'Specify higher maxPixels value if you intend to',
+        'export a large area.')
+    }
+
+    nbatch <- ceiling(sqrt(total_pixel/(512*512)))
+    if (nbatch > 3) {
+      stop('define "getInfo" in via argument is just for small images',
+           ' (< ~1536x1536). Please use "drive" or "gcs" instead.')
+    }
+    sf_region_gridded <- st_make_grid(sf_region,n = nbatch)
+    ee_crs <- st_crs(sf_region)$epsg
+    region_fixed <- sf_region_gridded %>%
+      sf_as_ee(check_ring_dir = TRUE,
+               evenOdd = is_evenodd,
+               proj = ee_crs,
+               geodesic = is_geodesic)
+
+    # FeatureCollection as a List
+    region_features <- region_fixed$toList(
+      length(sf_region_gridded)
     )
 
-    ## Create stars object
-    image_stars <- image_array %>%
-      st_as_stars() %>%
-      `names<-`(image_id) %>%
-      st_set_dimensions(names = c("x", "y", "bands"))
-    attr_dim <- attr(image_stars, "dimensions")
+    #Iterate for each tessellation
+    stars_img_list <- list()
+    cat('region too large ... creating ',
+        length(sf_region_gridded),' patch.\n')
+    for (r_index in seq_len(nbatch*nbatch)) {
+      cat(
+        sprintf('Getting data for the patch: %s/%s',
+                r_index, nbatch*nbatch),'\n'
+      )
+      index <- r_index - 1
+      feature <- ee$Feature(region_features$get(index))$geometry()
+      # Extracts a rectangular region of pixels from an image
+      # into a 2D array per (return a Feature)
+      ee_image_array <- image$sampleRectangle(region = feature)
+      # Extract pixel values band by band
+      band_results <- list()
+      for (index in seq_along(band_names)) {
+        band <- band_names[index]
+        band_results[[band]] <- ee_image_array$get(band)$getInfo()
+        if (index == 1) {
+          nrow_array <- length(band_results[[band]])
+          ncol_array <- length(band_results[[band]][[1]])
+        }
+      }
 
-    ## Set Geotransform and dimensions to local image
-    coord_matrix <- st_coordinates(sf_region)[,c('X','Y')]
-    init_offset <- ee_fix_offset(img_proj, coord_matrix)
-    min_long <- init_offset[1]
-    max_lat <- init_offset[2]
-    attr_dim$x$offset <- min_long
-    attr_dim$y$offset <- max_lat
-    attr_dim$x$delta <- img_scale_x
-    attr_dim$y$delta <- img_scale_y
-    attr(image_stars, "dimensions") <- attr_dim
-    st_crs(image_stars) <- image_epsg
-    st_set_dimensions(image_stars, 3, values = band_names)
+      # Passing from an array to a stars object
+      ## Create array from a list
+      image_array <- array(
+        data = unlist(band_results),
+        dim = c(ncol_array, nrow_array, length(band_names))
+      )
+
+      ## Create stars object
+      image_stars <- image_array %>%
+        st_as_stars() %>%
+        `names<-`(image_id) %>%
+        st_set_dimensions(names = c("x", "y", "bands"))
+      attr_dim <- attr(image_stars, "dimensions")
+
+      ## Set Geotransform and dimensions to local image
+      sf_region_batch <- ee_as_sf(feature)
+      coord_matrix <- st_coordinates(sf_region)[,c('X','Y')]
+      init_offset <- ee_fix_offset(image, sf_region_batch)
+      min_long <- init_offset[1]
+      max_lat <- init_offset[2]
+      attr_dim$x$offset <- min_long
+      attr_dim$y$offset <- max_lat
+      attr_dim$x$delta <- img_scale_x
+      attr_dim$y$delta <- img_scale_y
+      attr(image_stars, "dimensions") <- attr_dim
+      st_crs(image_stars) <- image_epsg
+      image_stars <- st_set_dimensions(image_stars, 3, values = band_names)
+      stars_img_list[[r_index]] <- image_stars
+    }
+    do.call(st_mosaic,stars_img_list)
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
       stop('Google Drive credentials were not loaded.',
