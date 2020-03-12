@@ -6,7 +6,7 @@
 #' @param x EE Image object
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
-#' forced.
+#' forced. If it is not specified image bounds will be taken.
 #' @param dimensions A number or pair of numbers in format XY.
 #' @param vizparams A list that contains the visualization parameters.
 #' @param geodesic Whether line segments of region should be interpreted as
@@ -137,11 +137,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   if (!any(class(x) %in%  "ee.image.Image")) {
     stop("x argument is not an ee$image$Image")
   }
-  img_generated <- FALSE
+  region_generated <- FALSE
   if (missing(region)) {
-    message('region is not defined ... taking all the image scene.')
+    message('region is not defined ... taking the image bounds.')
     region <- x$geometry()
-    img_generated <- TRUE
+    region_generated <- TRUE
   }
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
@@ -154,7 +154,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
 
   if (is.null(geodesic)) {
-    if (img_generated) {
+    if (region_generated) {
       is_geodesic <- st_is_longlat(sf_region)
     } else {
       is_geodesic <- region$geodesic()$getInfo()
@@ -174,13 +174,6 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     is_evenodd <- TRUE
   }
 
-  ## it is geodesic?
-  # if (is_geodesic && !quiet) {
-  #   message('Are you sure you want to consider line ',
-  #           'segments as spherical geodesics distances?.',
-  #           ' Fix it as follow: region = sf_as_ee(geom, geodesic = FALSE)')
-  # }
-  ## region and x have the same crs?
   if (!identical(st_crs(sf_image), st_crs(sf_region))) {
    stop('The parameters region and x need to have the same crs\n',
         'EPSG region: ', st_crs(sf_region)$epsg,
@@ -190,7 +183,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   if (any(class(region) %in% "ee.geometry.Geometry")) {
     npoints <- nrow(st_coordinates(sf_region))
     if (npoints != 5) {
-      warning('region needs to be a ee$Geometry$Rectangle. ',
+      message('region argument needs to be a ee$Geometry$Rectangle. ',
               'Fixing it running region$bounds() ...\n')
       region <- region$bounds()
       sf_region <- ee_as_sf(region)$geometry %>%
@@ -225,7 +218,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     error = function(e) "thumbnail"
   )
 
-  # Getting image parameters
+  # Fixing geometry if it is necessary
   init_offset <- ee_fix_offset(x, sf_region)
   ee_crs <- st_crs(sf_region)$epsg
   region_fixed <- sf_as_ee(x = sf_region,
@@ -349,5 +342,95 @@ read_png_as_stars <- function(x, band_name, mtx) {
   stars_object <- st_as_stars(array_x)
   names(stars_object) <- band_name
   stars_object
+}
+
+
+#' Dimensions of a Earth Engine Image object
+#'
+#' Get the approximate number of rows, cols and size of a
+#' Earth Engine Image.
+#' @param image Earth Engine Object.
+#' @param getsize Logical. If it is TRUE the size of the object
+#' will be estimated.
+#' @param compression_ratio Numeric. It is relevant just when
+#' getsize params is TRUE. compression_ratio params is a measurement
+#' of the relative reduction in size of data representation produced
+#' by a data compression algorithm. By default is 12.
+#' @param quiet logical. Suppress info message
+#' @return A list of parameters
+#' @examples
+#' \donotrun{
+#' library(rgee)
+#' ee_reattach()
+#' ee_Initialize()
+#'
+#' # World SRTM
+#' srtm <- ee$Image("CGIAR/SRTM90_V4")
+#' ee_get_npixel(srtm)
+#'
+#' # Landast8
+#' l8 <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')
+#' ee_get_npixel(l8)
+#'
+#' }
+#' @export
+ee_image_dim <- function(image,
+                         getsize = TRUE,
+                         compression_ratio = 12,
+                         quiet = FALSE) {
+  img_proj <- image$projection()$getInfo()
+  geotransform <- unlist(img_proj$transform)
+  img_totalarea <- ee_as_sf(image$geometry())
+  bbox <- img_totalarea %>%
+    st_transform(as.numeric(gsub('EPSG:','',img_proj$crs))) %>%
+    st_bbox() %>%
+    as.numeric()
+
+  x_diff <- bbox[3] - bbox[1]
+  y_diff <- bbox[4] - bbox[2]
+  x_npixel <- round(abs(x_diff/geotransform[1]))
+  y_npixel <- round(abs(y_diff/geotransform[5]))
+  total_pixel <- abs(as.numeric(x_npixel*y_npixel))
+  if (isFALSE(getsize)) return(invisible(total_pixel))
+  if (!quiet) {
+    cat('Image Rows       :', x_npixel,'\n')
+    cat('Image Cols       :', y_npixel,'\n')
+    cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
+  }
+  if (isTRUE(getsize)) {
+    img_types <- unlist(image$bandTypes()$getInfo())
+    band_types <- img_types[grepl('precision', names(img_types))]
+    band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
+    image_size <- ee_humansize(sum(total_pixel*band_precision/compression_ratio))
+    if (!quiet) {
+      cat('Image Size       :', image_size,'\n')
+    }
+  }
+  invisible(
+    list(nrow = x_npixel,
+         ncol = y_npixel,
+         total_pixel = total_pixel,
+         image_size = image_size)
+  )
+}
+
+ee_get_typeimage_size <- function(type) {
+  if (type ==  'int') {
+    32
+  } else if (type ==  'INT') {
+    32
+  } else if (type ==  'double') {
+    64
+  } else if (type ==  'float') {
+    64
+  } else if (type ==  'int8') {
+    8
+  } else if (type ==  'int16') {
+    16
+  } else if (type ==  'int32') {
+    32
+  } else {
+    32
+  }
 }
 

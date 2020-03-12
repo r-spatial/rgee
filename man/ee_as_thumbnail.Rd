@@ -12,7 +12,7 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL,
 
 \item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
 CRS needs to be the same that the x argument otherwise it will be
-forced.}
+forced. If it is not specified image bounds will be taken.}
 
 \item{dimensions}{A number or pair of numbers in format XY.}
 
