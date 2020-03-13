@@ -42,9 +42,10 @@ a direct and fast download. However, there is a limit of 5000 features
 that can be transferred by request which makes it unsatisfactory for
 large collections. The second ('drive') and third ('gcs') method are
 suitable for large images since it use Google Drive and Google Cloud
-Storage as a intermidiate container.
+Storage as a intermediate container.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize(
@@ -86,4 +87,5 @@ sf_randomPoints_gcs <- ee_as_sf(
   via = 'gcs',
   container = 'rgee_dev'
 )
+}
 }

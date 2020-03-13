@@ -24,9 +24,10 @@
 #' that can be transferred by request which makes it unsatisfactory for
 #' large collections. The second ('drive') and third ('gcs') method are
 #' suitable for large images since it use Google Drive and Google Cloud
-#' Storage as a intermidiate container.
+#' Storage as a intermediate container.
 #' @return An sf object.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(
@@ -68,6 +69,7 @@
 #'   via = 'gcs',
 #'   container = 'rgee_dev'
 #' )
+#' }
 #' @export
 ee_as_sf <- function(x,
                      via = "getInfo",

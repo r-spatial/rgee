@@ -68,6 +68,7 @@ since it use Google Drive and Google Cloud Storage as a intermidiate
 container.
 }
 \examples{
+\dontrun{
 library(raster)
 library(stars)
 library(rgee)
@@ -108,4 +109,5 @@ img_stars_03 <- ee_as_stars(
   container = "rgee_dev",
   via = "gcs"
 )
+}
 }

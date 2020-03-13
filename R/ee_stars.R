@@ -45,6 +45,7 @@
 #' @return A stars object, when via argument was defined as 'getInfo'. For
 #' other cases will return a stars-proxy object.
 #' @examples
+#' \dontrun{
 #' library(raster)
 #' library(stars)
 #' library(rgee)
@@ -85,6 +86,7 @@
 #'   container = "rgee_dev",
 #'   via = "gcs"
 #' )
+#' }
 #' @export
 ee_as_stars <- function(image,
                         region,
