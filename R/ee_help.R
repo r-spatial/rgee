@@ -154,7 +154,7 @@ ee_html_description_simple <- function(descrp) {
 ee_html_description_rstudio <- function(descrp) {
   api_ref <- "https://developers.google.com/earth-engine/api_docs"
   gee_message <- sprintf(
-    ' Documentation obtained from this <a href="%s">link</a>.',
+    '. Documentation obtained from this <a href="%s">link</a>.',
     api_ref
   )
   p_style <- "font-family: sans-serif; font-size: 10pt;"

@@ -58,8 +58,8 @@
 #' )
 #'
 #' # Define an image.
-#' img <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')$
-#'   select(c('B4', 'B5', 'B6'))
+#' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+#'   select(c("B4", "B5", "B6"))
 #' Map$centerObject(img)
 #' Map$addLayer(img)
 #'
@@ -67,18 +67,24 @@
 #' geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
 #'
 #' ## getInfo - Method 01
-#' img_stars_01 <- ee_as_stars(image = img,
-#'                             region = geometry,
-#'                             via = 'getInfo')
+#' img_stars_01 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   via = "getInfo"
+#' )
 #' ## drive - Method 02
-#' img_stars_02 <- ee_as_stars(image = img,
-#'                             region = geometry,
-#'                             via = 'drive')
+#' img_stars_02 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive"
+#' )
 #' ## gcs - Method 03
-#' img_stars_03 <- ee_as_stars(image = img,
-#'                             region = geometry,
-#'                             container = 'rgee_dev',
-#'                             via = 'gcs')
+#' img_stars_03 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   via = "gcs"
+#' )
 #' @export
 ee_as_stars <- function(image,
                         region,
@@ -90,12 +96,12 @@ ee_as_stars <- function(image,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
-  if (!any(class(image) %in%  "ee.image.Image")) {
+  if (!any(class(image) %in% "ee.image.Image")) {
     stop("image argument is not an ee$image$Image")
   }
   region_generated <- FALSE
   if (missing(region)) {
-    message('region is not defined ... taking the image bounds.')
+    message("region is not defined ... taking the image bounds.")
     region <- image$geometry()
     region_generated <- TRUE
   }
@@ -106,9 +112,9 @@ ee_as_stars <- function(image,
   # region testing
   prj_image <- image$projection()$getInfo()
   sf_image <- ee_as_sf(image$geometry())$geometry %>%
-    st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+    st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
   sf_region <- ee_as_sf(region)$geometry %>%
-    st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+    st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
 
   if (is.null(geodesic)) {
     if (region_generated) {
@@ -133,26 +139,30 @@ ee_as_stars <- function(image,
   }
 
   if (!identical(st_crs(sf_image), st_crs(sf_region))) {
-    stop('The parameters region and x need to have the same crs\n',
-         'EPSG region: ', st_crs(sf_region)$epsg,
-         '\nEPSG x: ', st_crs(sf_image)$epsg)
+    stop(
+      "The parameters region and x need to have the same crs",
+      "\nEPSG region: ", st_crs(sf_region)$epsg,
+      "\nEPSG x: ", st_crs(sf_image)$epsg
+    )
   }
 
   if (any(class(region) %in% "ee.geometry.Geometry")) {
     npoints <- nrow(st_coordinates(sf_region))
     if (npoints != 5) {
-      message('region argument needs to be a ee$Geometry$Rectangle. ',
-              'Fixing it running region$bounds() ...\n')
+      message(
+        "region argument needs to be a ee$Geometry$Rectangle. ",
+        "Fixing it running region$bounds() ...\n"
+      )
       region <- region$bounds()
       sf_region <- ee_as_sf(region)$geometry %>%
-        st_transform(as.numeric(gsub('EPSG:','',prj_image$crs)))
+        st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
     }
-  } else  {
-    stop('region needs to be a ee$Geometry$Rectangle.')
+  } else {
+    stop("region needs to be a ee$Geometry$Rectangle.")
   }
 
   ## region is a world scene?
-  if (any(st_bbox(sf_region) %in% c(180,-90))) {
+  if (any(st_bbox(sf_region) %in% c(180, -90))) {
     sf_region <- ee_fix_world_region(sf_image, sf_region, quiet)$geometry
   }
 
@@ -160,13 +170,13 @@ ee_as_stars <- function(image,
   image_id <- tryCatch(
     expr = parse_json(image$id()$serialize())$
       scope[[1]][[2]][["arguments"]][["id"]],
-    error = function(e) "thumbnail"
+    error = function(e) "noid_image"
   )
 
   # Creating name for temporal file; just for either drive or gcs
   time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
-  file_name <- paste0(image_id,'_', time_format)
+  file_name <- paste0(image_id, "_", time_format)
   # Load ee_Initialize() session; just for either drive or gcs
   ee_path <- path.expand("~/.config/earthengine")
   ee_user <- read.table(
@@ -190,14 +200,16 @@ ee_as_stars <- function(image,
       img_scale_y <- prj_image$transform[5][[1]]
     } else {
       if (!is.numeric(scale)) {
-        stop('scale argument needs to be a numeric vector')
+        stop("scale argument needs to be a numeric vector")
       }
       if (length(scale) == 1) {
         img_scale_x <- scale
         img_scale_y <- -scale
       } else {
-        stop('scale argument needs to be a numeric vector',
-             ' of the form: c(x_scale, -y_scale)')
+        stop(
+          "scale argument needs to be a numeric vector",
+          " of the form: c(x_scale, -y_scale)"
+        )
       }
     }
 
@@ -207,29 +219,36 @@ ee_as_stars <- function(image,
       as.numeric()
     x_diff <- bbox[3] - bbox[1]
     y_diff <- bbox[4] - bbox[2]
-    x_npixel <- round(abs(x_diff/prj_image$transform[1][[1]]))
-    y_npixel <- round(abs(y_diff/prj_image$transform[5][[1]]))
-    total_pixel <- x_npixel*y_npixel
+    x_npixel <- round(abs(x_diff / prj_image$transform[1][[1]]))
+    y_npixel <- round(abs(y_diff / prj_image$transform[5][[1]]))
+    total_pixel <- x_npixel * y_npixel
     if (total_pixel > maxPixels) {
       stop(
-        sprintf('Export too large: specified %s pixels (max: %s).',
-                total_pixel,format(maxPixels,scientific = FALSE)),
-        'Specify higher maxPixels value if you intend to',
-        'export a large area.')
+        sprintf(
+          "Export too large: specified %s pixels (max: %s).",
+          total_pixel, format(maxPixels, scientific = FALSE)
+        ),
+        "Specify higher maxPixels value if you intend to",
+        "export a large area."
+      )
     }
 
-    nbatch <- ceiling(sqrt(total_pixel/(512*512)))
+    nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
     if (nbatch > 3) {
-      stop('define "getInfo" in via argument is just for small images',
-           ' (< ~1536x1536). Please use "drive" or "gcs" instead.')
+      stop(
+        'define "getInfo" in via argument is just for small images',
+        ' (< ~1536x1536). Please use "drive" or "gcs" instead.'
+      )
     }
-    sf_region_gridded <- st_make_grid(sf_region,n = nbatch)
+    sf_region_gridded <- st_make_grid(sf_region, n = nbatch)
     ee_crs <- st_crs(sf_region)$epsg
     region_fixed <- sf_region_gridded %>%
-      sf_as_ee(check_ring_dir = TRUE,
-               evenOdd = is_evenodd,
-               proj = ee_crs,
-               geodesic = is_geodesic)
+      sf_as_ee(
+        check_ring_dir = TRUE,
+        evenOdd = is_evenodd,
+        proj = ee_crs,
+        geodesic = is_geodesic
+      )
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -245,20 +264,24 @@ ee_as_stars <- function(image,
       length(sf_region_gridded)
     )
 
-    #Iterate for each tessellation
+    # Iterate for each tessellation
     stars_img_list <- list()
     if (!quiet) {
-      if (nbatch*nbatch > 1) {
-        cat('region is too large ... creating ',
-            length(sf_region_gridded),' patches.\n')
+      if (nbatch * nbatch > 1) {
+        cat(
+          "region is too large ... creating ",
+          length(sf_region_gridded), " patches.\n"
+        )
       }
     }
-    for (r_index in seq_len(nbatch*nbatch)) {
+    for (r_index in seq_len(nbatch * nbatch)) {
       if (!quiet) {
-        if (nbatch*nbatch > 1) {
+        if (nbatch * nbatch > 1) {
           cat(
-            sprintf('Getting data for the patch: %s/%s',
-                    r_index, nbatch*nbatch),'\n'
+            sprintf(
+              "Getting data for the patch: %s/%s",
+              r_index, nbatch * nbatch
+            ), "\n"
           )
         }
       }
@@ -314,19 +337,23 @@ ee_as_stars <- function(image,
     }
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
-      stop('Google Drive credentials were not loaded.',
-           ' Run ee_Initialize(email = "myemail", drive = TRUE)',
-           ' to fix it')
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", drive = TRUE)',
+        " to fix it"
+      )
     }
 
     # Fixing geometry if it is necessary
     init_offset <- ee_fix_offset(image, sf_region)
     ee_crs <- st_crs(sf_region)$epsg
-    region_fixed <- sf_as_ee(x = sf_region,
-                             check_ring_dir = TRUE,
-                             evenOdd = is_evenodd,
-                             proj = ee_crs,
-                             geodesic = is_geodesic)
+    region_fixed <- sf_as_ee(
+      x = sf_region,
+      check_ring_dir = TRUE,
+      evenOdd = is_evenodd,
+      proj = ee_crs,
+      geodesic = is_geodesic
+    )
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -348,11 +375,13 @@ ee_as_stars <- function(image,
       fileNamePrefix = file_name
     )
     if (!quiet) {
-      cat("\n- download parameters (Google Drive)\n",
-          "\rImage ID    :", image_id,
-          "\rGoogle user :",ee_user$email,"\n",
-          "\rFolder name :",container,"\n",
-          "\rDate        :", time_format, "\n")
+      cat(
+        "\n- download parameters (Google Drive)\n",
+        "\rImage ID    :", image_id,
+        "\rGoogle user :", ee_user$email, "\n",
+        "\rFolder name :", container, "\n",
+        "\rDate        :", time_format, "\n"
+      )
     }
     img_task$start()
     if (isTRUE(monitoring)) {
@@ -364,24 +393,27 @@ ee_as_stars <- function(image,
       st_set_dimensions(image_stars, 3, values = band_names)
     } else {
       image_stars <- st_set_dimensions(image_stars, "bands")
-      attr(image_stars,'dimensions')$bands$to <- 1
+      attr(image_stars, "dimensions")$bands$to <- 1
       st_set_dimensions(image_stars, 3, values = band_names)
     }
   } else if (via == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
-      stop('Google Drive credentials were not loaded.',
-           ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
-           ' to fix it')
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " to fix it"
+      )
     }
-
     # Fixing geometry if it is necessary
     init_offset <- ee_fix_offset(image, sf_region)
     ee_crs <- st_crs(sf_region)$epsg
-    region_fixed <- sf_as_ee(x = sf_region,
-                             check_ring_dir = TRUE,
-                             evenOdd = is_evenodd,
-                             proj = ee_crs,
-                             geodesic = is_geodesic)
+    region_fixed <- sf_as_ee(
+      x = sf_region,
+      check_ring_dir = TRUE,
+      evenOdd = is_evenodd,
+      proj = ee_crs,
+      geodesic = is_geodesic
+    )
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -403,12 +435,13 @@ ee_as_stars <- function(image,
       fileNamePrefix = file_name
     )
     if (!quiet) {
-      cat("\n- download parameters (Google Cloud Storage)\n",
-          "\rImage ID    :", image_id,
-          "\rGoogle user :",ee_user$email,"\n",
-          "\rFolder name :",container,"\n",
-          "\rDate        :", time_format, "\n")
-
+      cat(
+        "\n- download parameters (Google Cloud Storage)\n",
+        "\rImage ID    :", image_id,
+        "\rGoogle user :", ee_user$email, "\n",
+        "\rFolder name :", container, "\n",
+        "\rDate        :", time_format, "\n"
+      )
     }
     img_task$start()
     if (isTRUE(monitoring)) {
@@ -420,7 +453,7 @@ ee_as_stars <- function(image,
       st_set_dimensions(image_stars, 3, values = band_names)
     } else {
       image_stars <- st_set_dimensions(image_stars, "bands")
-      attr(image_stars,'dimensions')$bands$to <- 1
+      attr(image_stars, "dimensions")$bands$to <- 1
       st_set_dimensions(image_stars, 3, values = band_names)
     }
   } else {
@@ -447,19 +480,21 @@ stars_as_ee <- function(x) {
 #' and 'gcs' are supported.
 #'
 #' @export
-ee_clean_container <- function(name = 'rgee_backup',
-                               type = 'drive') {
+ee_clean_container <- function(name = "rgee_backup",
+                               type = "drive") {
   ee_path <- path.expand("~/.config/earthengine")
   ee_user <- read.table(
     file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
     header = TRUE,
     stringsAsFactors = FALSE
   )
-  if (type == 'drive') {
+  if (type == "drive") {
     if (is.na(ee_user$drive_cre)) {
-      stop('Google Drive credentials were not loaded.',
-           ' Run ee_Initialize(email = "myemail", drive = TRUE)',
-           ' to fix it')
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", drive = TRUE)',
+        " to fix it"
+      )
     }
     count <- 1
     try_gd_rm <- try(googledrive::drive_rm(name))
@@ -467,18 +502,20 @@ ee_clean_container <- function(name = 'rgee_backup',
       try_gd_rm <- try(googledrive::drive_rm(name))
       count <- count + 1
     }
-  } else if (type == 'gcs') {
+  } else if (type == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
-      stop('Google Drive credentials were not loaded.',
-           ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
-           ' to fix it')
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " to fix it"
+      )
     }
     googleCloudStorageR::gcs_global_bucket(name)
     buckets <- googleCloudStorageR::gcs_list_objects()
     gcs_todelete <- buckets$name
     mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
   } else {
-    stop('type argument invalid.')
+    stop("type argument invalid.")
   }
 }
 
@@ -492,45 +529,45 @@ ee_fix_offset <- function(image, sf_region) {
   img_x_offset <- img_proj$transform[3][[1]]
   img_y_scale <- img_proj$transform[5][[1]]
   img_y_offset <- img_proj$transform[6][[1]]
-
   # X offset fixed
-  sf_x_min <- min(rectangle_coord[,'X'])
-  sf_x_max <- max(rectangle_coord[,'X'])
-  x_npixels_init <- floor(abs((sf_x_min - img_x_offset)/img_x_scale))
+  sf_x_min <- min(rectangle_coord[, "X"])
+  sf_x_max <- max(rectangle_coord[, "X"])
+  x_npixels_init <- floor(abs((sf_x_min - img_x_offset) / img_x_scale))
   x_npixels_last <- ceiling(
     round(
-      x = abs((sf_x_max - img_x_offset)/img_x_scale),
-      digits = 6)
-  )
-  x_init_crop_img <- img_x_offset + x_npixels_init*img_x_scale
-  x_last_crop_img <- img_x_offset + x_npixels_last*img_x_scale
-
-  # Y offset fixed
-  sf_y_min <- min(rectangle_coord[,'Y'])
-  sf_y_max <- max(rectangle_coord[,'Y'])
-  y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset)/img_y_scale))
-  y_npixels_last <- ceiling(
-    round(
-      x = abs((sf_y_min - img_y_offset)/img_x_scale),
+      x = abs((sf_x_max - img_x_offset) / img_x_scale),
       digits = 6
     )
   )
-  y_init_crop_img <- img_y_offset + y_npixels_init*img_y_scale
-  y_last_crop_img <- img_y_offset + y_npixels_last*img_y_scale
+  x_init_crop_img <- img_x_offset + x_npixels_init * img_x_scale
+  x_last_crop_img <- img_x_offset + x_npixels_last * img_x_scale
+
+  # Y offset fixed
+  sf_y_min <- min(rectangle_coord[, "Y"])
+  sf_y_max <- max(rectangle_coord[, "Y"])
+  y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset) / img_y_scale))
+  y_npixels_last <- ceiling(
+    round(
+      x = abs((sf_y_min - img_y_offset) / img_x_scale),
+      digits = 6
+    )
+  )
+  y_init_crop_img <- img_y_offset + y_npixels_init * img_y_scale
+  y_last_crop_img <- img_y_offset + y_npixels_last * img_y_scale
   c(x_init_crop_img, y_init_crop_img, x_last_crop_img, y_last_crop_img)
 }
 
 ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {
   bbox <- st_bbox(sfc)
-  xmin <- bbox['xmin']
-  xmax <- bbox['xmax']
-  ymin <- bbox['ymin']
-  ymax <- bbox['ymax']
+  xmin <- bbox["xmin"]
+  xmax <- bbox["xmax"]
+  ymin <- bbox["ymin"]
+  ymax <- bbox["ymax"]
 
   # if (xmax == 180) xmax <- xmax - epsilon
   # if (ymin == -90) ymin <- ymin + epsilon
 
-  new_bbox <- c(xmin,ymin,xmax,ymax)
+  new_bbox <- c(xmin, ymin, xmax, ymax)
   class(new_bbox) <- "bbox"
   st_set_crs(st_as_sfc(new_bbox), crs)
 }
@@ -541,19 +578,22 @@ ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {
 ee_fix_world_region <- function(sf_image, sf_region, quiet) {
   ee_crs <- st_crs(sf_image)
   fix_region <- suppressMessages(
-    st_intersection(sf_image,sf_region)
+    st_intersection(sf_image, sf_region)
   )
   st_is_identical <- identical(
     st_length(sf_region),
     st_length(fix_region)
   )
-  sf_fix_region <- ee_fix_world_boundary(sfc = fix_region,
-                                         crs = ee_crs)
+  sf_fix_region <- ee_fix_world_boundary(
+    sfc = fix_region,
+    crs = ee_crs
+  )
   if (isFALSE(st_is_identical) & !quiet) {
-    message('NOTE: region argument does not overlap completely the image, changing ',
-            'region \nFrom : ', st_as_text(sf_region),
-            '\nTo   : ', st_as_text(sf_fix_region))
+    message(
+      "NOTE: region argument does not overlap completely the image,",
+      " changing region \nFrom : ", st_as_text(sf_region),
+      "\nTo   : ", st_as_text(sf_fix_region)
+    )
   }
   list(geometry = sf_fix_region, equal = st_is_identical)
 }
-
