@@ -1,4 +1,628 @@
-#' Move Earth Engine (EE) results from Google Drive to a local directory
+#' Creates a task to export an EE Image to Drive.
+#'
+#' Creates a task to export an EE Image to Drive.
+#' This function is a wrapper around \code{ee$batch$Export$image$toDrive(...)}.
+#'
+#' @param image The image to be exported.
+#' @param description Human-readable name of the task.
+#' @param folder The name of a unique folder in your Drive account to export
+#' into. Defaults to the root of the drive.
+#' @param fileNamePrefix The Google Drive filename for the export. Defaults to
+#' the name of the task.
+#' @param dimensions The dimensions of the exported image. Takes either a
+#' single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
+#' WIDTH and HEIGHT are each positive integers.
+#' @param region The lon,lat coordinates for a LinearRing or Polygon specifying
+#' the region to export. Can be specified as a nested lists of numbers or a
+#' serialized string. Defaults to the image's region.
+#' @param scale The resolution in meters per pixel. Defaults to the native
+#' resolution of the image assset unless a crsTransform is specified.
+#' @param crs The coordinate reference system of the exported image's
+#' projection. Defaults to the image's default projection.
+#' @param crsTransform A comma-separated string of 6 numbers describing
+#' the affine transform of the coordinate reference system of the exported
+#' image's projection, in the order: xScale, xShearing, xTranslation,
+#' yShearing, yScale and yTranslation. Defaults to the image's native
+#' CRS transform.
+#' @param maxPixels The maximum allowed number of pixels in the
+#' exported image. The task will fail if the exported region covers
+#' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param shardSize Size in pixels of the shards in which this image
+#' will be computed. Defaults to 256.
+#' @param fileDimensions The dimensions in pixels of each image file,
+#' if the image is too large to fit in a single file. May specify a
+#' single number to indicate a square shape, or a list of two dimensions
+#' to indicate (width,height). Note that the image will still be clipped
+#' to the overall image dimensions. Must be a multiple of shardSize.
+#' @param skipEmptyTiles If true, skip writing empty (i.e. fully-masked)
+#' image tiles. Defaults to false.
+#' @param fileFormat The string file format to which the image is exported.
+#' Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'.
+#' @param formatOptions A dictionary of string keys to format specific
+#' options. **kwargs: Holds other keyword arguments that may have been
+#' deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.
+#'
+#' @return An unstarted Task that exports the image to Drive.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#'
+#' # Get the mean annual NDVI for 2011
+#' cloudMaskL457 <- function(image) {
+#'   qa <- image$select("pixel_qa")
+#'   cloud <- qa$bitwiseAnd(32L)$
+#'     And(qa$bitwiseAnd(128L))$
+#'     Or(qa$bitwiseAnd(8L))
+#'   mask2 <- image$mask()$reduce(ee$Reducer$min())
+#'   image <- image$updateMask(cloud$Not())$updateMask(mask2)
+#'   image$normalizedDifference(list("B4", "B3"))
+#' }
+#'
+#' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
+#'   filterBounds(ee_ROI)$
+#'   filterDate("2011-01-01", "2011-12-31")$
+#'   map(cloudMaskL457)
+#'
+#' # Create simple composite
+#' mean_l5 <- ic_l5$mean()$rename("NDVI")
+#' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
+#'
+#' # Move results from Earth Engine to Drive
+#' task_img <- ee_image_to_drive(
+#'   image = mean_l5_Amarakaeri,
+#'   folder = "Amarakaeri",
+#'   fileFormat = "GEO_TIFF",
+#'   fileNamePrefix = "my_image"
+#' )
+#'
+#' task_img$start()
+#' ee_monitoring(task_img)
+#'
+#' # Move results from Drive to local
+#' img <- ee_drive_to_local(task = task_img)
+#' plot(img)
+#' }
+#' @export
+ee_image_to_drive <- function(image,
+                              description = "myExportImageTask",
+                              folder = NULL,
+                              fileNamePrefix = NULL,
+                              dimensions = NULL,
+                              region = NULL,
+                              scale = NULL,
+                              crs = NULL,
+                              crsTransform = NULL,
+                              maxPixels = NULL,
+                              shardSize = NULL,
+                              fileDimensions = NULL,
+                              skipEmptyTiles = NULL,
+                              fileFormat = NULL,
+                              formatOptions = NULL) {
+  ee$batch$Export$image$toDrive(
+    image = image,
+    description = description,
+    folder = folder,
+    fileNamePrefix = fileNamePrefix,
+    dimensions = dimensions,
+    region = region,
+    scale = scale,
+    crs = crs,
+    crsTransform = crsTransform,
+    maxPixels = maxPixels,
+    shardSize = shardSize,
+    fileDimensions = fileDimensions,
+    skipEmptyTiles = skipEmptyTiles,
+    fileFormat = fileFormat,
+    formatOptions = formatOptions
+  )
+}
+
+#' Creates a task to export an EE Image to Google Cloud Storage.
+#'
+#' Creates a task to export an EE Image to Google Cloud Storage.
+#' This function is a wrapper around
+#' \code{ee$batch$Export$image$toCloudStorage(...)}.
+#'
+#' @param image The image to be exported.
+#' @param description Human-readable name of the task.
+#' @param bucket The name of a Cloud Storage bucket for the export.
+#' @param fileNamePrefix Cloud Storage object name prefix for the export.
+#' Defaults to the name of the task.
+#' @param dimensions The dimensions of the exported image. Takes either a
+#' single positive integer as the maximum dimension or "WIDTHxHEIGHT"
+#' where WIDTH and HEIGHT are each positive integers.
+#' @param region The lon,lat coordinates for a LinearRing or Polygon
+#' specifying the region to export. Can be specified as a nested lists
+#' of numbers or a serialized string. Defaults to the image's region.
+#' @param scale The resolution in meters per pixel. Defaults to the native
+#' resolution of the image assset unless a crsTransform is specified.
+#' @param crs The coordinate reference system of the exported image's
+#' projection. Defaults to the image's default projection.
+#' @param crsTransform A comma-separated string of 6 numbers describing
+#' the affine transform of the coordinate reference system of the exported
+#' image's projection, in the order:
+#' xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+#' Defaults to the image's native CRS transform.
+#' @param maxPixels The maximum allowed number of pixels in the
+#' exported image. The task will fail if the exported region covers more
+#' pixels in the specified projection. Defaults to 100,000,000.
+#' @param shardSize Size in pixels of the shards in which this image
+#' will be computed. Defaults to 256.
+#' @param fileDimensions The dimensions in pixels of each image file, if
+#' the image is too large to fit in a single file. May specify a single
+#' number to indicate a square shape, or a list of two dimensions to
+#' indicate (width,height). Note that the image will still be clipped to
+#' the overall image dimensions. Must be a multiple of shardSize.
+#' @param skipEmptyTiles If true, skip writing empty (i.e. fully-masked)
+#' image tiles. Defaults to false.
+#' @param fileFormat The string file format to which the image is exported.
+#' Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
+#' to 'GeoTIFF'.
+#' @param formatOptions A dictionary of string keys to format specific
+#' options. **kwargs: Holds other keyword arguments that may have been
+#' deprecated such as 'crs_transform'.
+#'
+#' @return An unstarted Task that exports the image to Google Cloud Storage.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#'
+#' # Get the mean annual NDVI for 2011
+#' cloudMaskL457 <- function(image) {
+#'   qa <- image$select("pixel_qa")
+#'   cloud <- qa$bitwiseAnd(32L)$
+#'     And(qa$bitwiseAnd(128L))$
+#'     Or(qa$bitwiseAnd(8L))
+#'   mask2 <- image$mask()$reduce(ee$Reducer$min())
+#'   image <- image$updateMask(cloud$Not())$updateMask(mask2)
+#'   image$normalizedDifference(list("B4", "B3"))
+#' }
+#'
+#' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
+#'   filterBounds(ee_ROI)$
+#'   filterDate("2011-01-01", "2011-12-31")$
+#'   map(cloudMaskL457)
+#'
+#' # Create simple composite
+#' mean_l5 <- ic_l5$mean()$rename("NDVI")
+#' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
+#'
+#' # Move results from Earth Engine to Drive
+#' task_img <- ee_image_to_gcs(
+#'     image = mean_l5_Amarakaeri,
+#'     bucket = "rgee_dev",
+#'     fileFormat = "GEO_TIFF",
+#'     fileNamePrefix = "my_image"
+#' )
+#'
+#' task_img$start()
+#' ee_monitoring(task_img)
+#'
+#' # Move results from Drive to local
+#' img <- ee_gcs_to_local(task = task_img)
+#' plot(img)
+#' }
+#' @export
+ee_image_to_gcs <- function(image,
+                            description = "myExportImageTask",
+                            bucket = NULL,
+                            fileNamePrefix = NULL,
+                            dimensions = NULL,
+                            region = NULL,
+                            scale = NULL,
+                            crs = NULL,
+                            crsTransform = NULL,
+                            maxPixels = NULL,
+                            shardSize = NULL,
+                            fileDimensions = NULL,
+                            skipEmptyTiles = NULL,
+                            fileFormat = NULL,
+                            formatOptions = NULL) {
+  ee$batch$Export$image$toCloudStorage(
+    image = image,
+    description = description,
+    bucket = bucket,
+    fileNamePrefix = fileNamePrefix,
+    dimensions = dimensions,
+    region = region,
+    scale = scale,
+    crs = crs,
+    crsTransform = crsTransform,
+    maxPixels = maxPixels,
+    shardSize = shardSize,
+    fileDimensions = fileDimensions,
+    skipEmptyTiles = skipEmptyTiles,
+    fileFormat = fileFormat,
+    formatOptions = formatOptions
+  )
+}
+
+#' Creates a task to export an EE Image to an EE Asset.
+#'
+#' Creates a task to export an EE Image to an EE Asset.
+#' This function is a wrapper around \code{ee$batch$Export$image$toAsset(...)}.
+#'
+#'
+#' @param image The image to be exported.
+#' @param description Human-readable name of the task.
+#' @param assetId The destination asset ID.
+#' @param pyramidingPolicy The pyramiding policy to apply to each band
+#' in the image, a dictionary keyed by band name. Values must be one
+#' of: "mean", "sample", "min", "max", or "mode". Defaults to "mean".
+#' A special key, ".default", may be used to change the default for all bands.
+#' @param dimensions The dimensions of the exported image. Takes either a
+#' single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
+#' WIDTH and HEIGHT are each positive integers.
+#' @param region The lon,lat coordinates for a LinearRing or Polygon
+#' specifying the region to export. Can be specified as a nested lists
+#' of numbers or a serialized string. Defaults to the image's region.
+#' @param scale The resolution in meters per pixel. Defaults to the native
+#' resolution of the image assset unless a crsTransform is specified.
+#' @param crs The coordinate reference system of the exported image's
+#' projection. Defaults to the image's default projection.
+#' @param crsTransform A comma-separated string of 6 numbers describing
+#' the affine transform of the coordinate reference system of the exported
+#' image's projection, in the order:
+#' xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+#' Defaults to the image's native CRS transform.
+#' @param maxPixels The maximum allowed number of pixels in the exported
+#' image. The task will fail if the exported region covers more pixels
+#' in the specified projection. Defaults to 100,000,000. **kwargs: Holds
+#' other keyword arguments that may have been deprecated such
+#' as 'crs_transform'.
+#'
+#' @return An unstarted Task that exports the image to Earth Engine Asset
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf')
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#'
+#' # Get the mean annual NDVI for 2011
+#' cloudMaskL457 <- function(image) {
+#'   qa <- image$select("pixel_qa")
+#'   cloud <- qa$bitwiseAnd(32L)$
+#'     And(qa$bitwiseAnd(128L))$
+#'     Or(qa$bitwiseAnd(8L))
+#'   mask2 <- image$mask()$reduce(ee$Reducer$min())
+#'   image <- image$updateMask(cloud$Not())$updateMask(mask2)
+#'   image$normalizedDifference(list("B4", "B3"))
+#' }
+#'
+#' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
+#'   filterBounds(ee_ROI)$
+#'   filterDate("2011-01-01", "2011-12-31")$
+#'   map(cloudMaskL457)
+#'
+#' # Create simple composite
+#' mean_l5 <- ic_l5$mean()$rename("NDVI")
+#' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
+#'
+#' # Move results from Earth Engine to Drive
+#' assetid <- paste0(ee_get_assethome(), '/l5_Amarakaeri')
+#' task_img <- ee_image_to_asset(
+#'   image = mean_l5_Amarakaeri,
+#'   assetId = assetid,
+#'   scale = 500
+#' )
+#'
+#' task_img$start()
+#' ee_monitoring(task_img)
+#'
+#' ee_l5 <- ee$Image(assetid)
+#' Map$centerObject(ee_l5)
+#' Map$addLayer(ee_l5)
+#' }
+#' @export
+ee_image_to_asset <- function(image,
+                              description = "myExportImageTask",
+                              assetId = NULL,
+                              pyramidingPolicy = NULL,
+                              dimensions = NULL,
+                              region = NULL,
+                              scale = NULL,
+                              crs = NULL,
+                              crsTransform = NULL,
+                              maxPixels = NULL) {
+  ee$batch$Export$image$toAsset(
+    image = image,
+    description = description,
+    assetId = assetId,
+    pyramidingPolicy = pyramidingPolicy,
+    dimensions = dimensions,
+    region = region,
+    scale = scale,
+    crs = crs,
+    crsTransform = crsTransform,
+    maxPixels = maxPixels
+  )
+}
+
+#' Creates a task to export a FeatureCollection to Google Drive.
+#'
+#' Creates a task to export a FeatureCollection to Google Drive.
+#' This function is a wrapper around \code{ee$batch$Export$table$toDrive(...)}.
+#'
+#' @param collection The feature collection to be exported.
+#' @param description Human-readable name of the task.
+#' @param folder The name of a unique folder in your Drive
+#' account to export into. Defaults to the root of the drive.
+#' @param fileNamePrefix The Google Drive filename for the
+#' export. Defaults to the name of the task.
+#' @param fileFormat The output format: "CSV" (default), "GeoJSON",
+#' "KML", "KMZ", "SHP", or "TFRecord".
+#' @param selectors The list of properties to include in the output,
+#' as a list of strings or a comma-separated string. By default, all
+#' properties are included. **kwargs: Holds other keyword arguments
+#' that may have been deprecated such as 'driveFolder' and
+#' 'driveFileNamePrefix'.
+#'
+#' @return An unstarted Task that exports the table to Google Drive.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+#'
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#' amk_fc <- ee$FeatureCollection(
+#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#' )
+#'
+#' task_vector <- ee_table_to_drive(
+#'   collection = amk_fc,
+#'   folder = "Amarakaeri",
+#'   fileFormat = "GEO_JSON",
+#'   fileNamePrefix = "geom_Amarakaeri"
+#' )
+#' task_vector$start()
+#' ee_monitoring(task_vector) # optional
+#' amk_geom <- ee_drive_to_local(task = task_vector)
+#' plot(amk_geom$geometry, border = "red", lwd = 10)
+#' }
+#' @export
+ee_table_to_drive <- function(collection,
+                              description = "myExportTableTask",
+                              folder = NULL,
+                              fileNamePrefix = NULL,
+                              fileFormat = NULL,
+                              selectors = NULL) {
+  ee$batch$Export$table$toDrive(
+    collection = collection,
+    description = description,
+    folder = folder,
+    fileNamePrefix = fileNamePrefix,
+    fileFormat = fileFormat,
+    selectors = selectors
+  )
+}
+
+#' Creates a task to export a FeatureCollection to Google Cloud Storage.
+#'
+#' Creates a task to export a FeatureCollection to Google Cloud Storage.
+#' This function is a wrapper around
+#' \code{ee$batch$Export$table$toCloudStorage(...)}.
+#'
+#' @param collection The feature collection to be exported.
+#' @param description Human-readable name of the task.
+#' @param bucket The name of a Cloud Storage bucket for the export.
+#' @param fileNamePrefix Cloud Storage object name prefix
+#' for the export. Defaults to the name of the task.
+#' @param fileFormat The output format: "CSV" (default),
+#' "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".
+#' @param selectors The list of properties to include in the output,
+#' as a list of strings or a comma-separated string. By default, all
+#' properties are included. **kwargs: Holds other keyword arguments
+#' that may have been deprecated such as 'outputBucket'.
+#'
+#' @return An unstarted Task that exports the table to Google Cloud Storage.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#' amk_fc <- ee$FeatureCollection(
+#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#' )
+#'
+#' task_vector <- ee_table_to_gcs(
+#'     collection = amk_fc,
+#'     bucket = "rgee_dev",
+#'     fileFormat = "SHP",
+#'     fileNamePrefix = "geom_Amarakaeri"
+#' )
+#' task_vector$start()
+#' ee_monitoring(task_vector) # optional
+#' amk_geom <- ee_gcs_to_local(task = task_vector)
+#' plot(amk_geom$geometry, border = "red", lwd = 10)
+#' }
+#' @export
+ee_table_to_gcs <- function(collection,
+                            description = "myExportTableTask",
+                            bucket = NULL,
+                            fileNamePrefix = NULL,
+                            fileFormat = NULL,
+                            selectors = NULL) {
+  ee$batch$Export$table$toCloudStorage(
+    collection = collection,
+    description = description,
+    bucket = bucket,
+    fileNamePrefix = fileNamePrefix,
+    fileFormat = fileFormat,
+    selectors = selectors
+  )
+}
+
+#' Creates a task to export a FeatureCollection to an EE table asset.
+#'
+#' Creates a task to export a FeatureCollection to an EE table asset.
+#' This function is a wrapper around \code{ee$batch$Export$table$toAsset(...)}.
+#'
+#' @param collection The feature collection to be exported.
+#' @param description Human-readable name of the task.
+#' @param assetId The destination asset ID. **kwargs: Holds other
+#' keyword arguments that may have been deprecated.
+#'
+#' @return An unstarted Task that exports the table to Earth Engine Asset.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' library(sf)
+#'
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf')
+#'
+#' # Define study area (local -> earth engine)
+#' # Communal Reserve Amarakaeri - Peru
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#'   list() %>%
+#'   st_polygon() %>%
+#'   st_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
+#' amk_fc <- ee$FeatureCollection(
+#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#' )
+#'
+#' assetid <- paste0(ee_get_assethome(), '/geom_Amarakaeri')
+#' task_vector <- ee_table_to_asset(
+#'   collection = amk_fc,
+#'   assetId = assetid
+#' )
+#' task_vector$start()
+#' ee_monitoring(task_vector) # optional
+#'
+#' ee_fc <- ee$FeatureCollection(assetid)
+#' Map$centerObject(ee_fc)
+#' Map$addLayer(ee_fc)
+#' }
+#' @export
+ee_table_to_asset <- function(collection,
+                              description = "myExportTableTask",
+                              assetId = NULL) {
+  ee$batch$Export$table$toAsset(
+    collection = collection,
+    description = description,
+    assetId = assetId
+  )
+}
+
+#' Move results from Google Drive to a local directory
 #'
 #' Move results of an EE saved in Google Drive to a local directory.
 #'
@@ -25,23 +649,25 @@
 #' library(stars)
 #' library(sf)
 #'
-#' ee_reattach()  # reattach ee as a reserved word
-#' ee_Initialize()
-#' ee_user_info()
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
 #'
-#' # Example 1 -- Download an Image
+#' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
-#' xmin <- -71.132591318
-#' xmax <- -70.953664315
-#' ymin <- -12.892451233
-#' ymax <- -12.731116372
-#' ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
-#' ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
 #'   list() %>%
 #'   st_polygon() %>%
 #'   st_sfc() %>%
-#'   st_set_crs(4326)
-#' ee_geom <- sf_as_ee(ROI_polygon)
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
 #'
 #' # Get the mean annual NDVI for 2011
 #' cloudMaskL457 <- function(image) {
@@ -55,15 +681,17 @@
 #' }
 #'
 #' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-#'   filterBounds(ee_geom)$
+#'   filterBounds(ee_ROI)$
 #'   filterDate("2011-01-01", "2011-12-31")$
 #'   map(cloudMaskL457)
 #'
+#' # Create simple composite
 #' mean_l5 <- ic_l5$mean()$rename("NDVI")
 #' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
-#' mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 #'
-#' task_img <- ee$batch$Export$image$toDrive(
+#' # Move results from Earth Engine to Drive
+#' task_img <- ee_image_to_drive(
 #'   image = mean_l5_Amarakaeri,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
@@ -73,26 +701,12 @@
 #' task_img$start()
 #' ee_monitoring(task_img)
 #'
-#' img <- ee_download_drive(task = task_img)
-#'
-#' # Example 2 -- Download a Table
-#' amk_fc <- ee$FeatureCollection(
-#'   list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
-#' )
-#'
-#' task_vector <- ee$batch$Export$table$toDrive(
-#'   collection = amk_fc,
-#'   folder = "Amarakaeri",
-#'   fileFormat = "GEO_JSON",
-#'   fileNamePrefix = "geom_Amarakaeri"
-#' )
-#' task_vector$start()
-#' ee_monitoring(task_vector) # optional
-#' amk_geom <- ee_download_drive(task = task_vector)
-#' plot(amk_geom$geometry, border = "red", lwd = 10)
+#' # Move results from Drive to local
+#' img <- ee_drive_to_local(task = task_img)
+#' plot(img)
 #' }
 #' @export
-ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
+ee_drive_to_local <- function(task, filename, overwrite = FALSE, st = TRUE,
                               quiet = FALSE) {
   if (!requireNamespace("googledrive", quietly = TRUE)) {
     stop("The googledrive package is required to use rgee::ee_download_drive",
@@ -167,8 +781,7 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
   }
 }
 
-
-#' Move EE results from Google Cloud Storage to a local directory
+#' Move results from Google Cloud Storage to a local directory
 #'
 #' Move results of an EE task saved in Google Cloud Storage to a local
 #' directory.
@@ -195,25 +808,25 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 #' library(stars)
 #' library(sf)
 #'
-#' ee_reattach()  # reattach ee as a reserved word
-#' ee_Initialize()
-#' ee_user_info()
+#' ee_users()
+#' ee_reattach() # reattach ee as a reserved word
+#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
 #'
+#' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
-#' xmin <- -71.132591318
-#' xmax <- -70.953664315
-#' ymin <- -12.892451233
-#' ymax <- -12.731116372
-#' x_mean <- (xmin + xmax) / 2
-#' y_mean <- (ymin + ymax) / 2
-#'
-#' ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
-#' ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
+#' rlist <- list(xmin = -71.13, xmax = -70.95,ymin = -12.89, ymax = -12.73)
+#' ROI <- c(rlist$xmin, rlist$ymin,
+#'          rlist$xmax, rlist$ymin,
+#'          rlist$xmax, rlist$ymax,
+#'          rlist$xmin, rlist$ymax,
+#'          rlist$xmin, rlist$ymin)
+#' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
 #'   list() %>%
 #'   st_polygon() %>%
 #'   st_sfc() %>%
-#'   st_set_crs(4326)
-#' ee_geom <- sf_as_ee(ROI_polygon)
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee()
+#'
 #'
 #' # Get the mean annual NDVI for 2011
 #' cloudMaskL457 <- function(image) {
@@ -227,43 +840,32 @@ ee_download_drive <- function(task, filename, overwrite = FALSE, st = TRUE,
 #' }
 #'
 #' ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-#'   filterBounds(ee_geom)$
+#'   filterBounds(ee_ROI)$
 #'   filterDate("2011-01-01", "2011-12-31")$
 #'   map(cloudMaskL457)
+#'
+#' # Create simple composite
 #' mean_l5 <- ic_l5$mean()$rename("NDVI")
 #' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
-#' mean_l5_Amarakaeri <- mean_l5$clip(ee_geom)
+#' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 #'
-#' # Download a EE Image
-#' task_img <- ee$batch$Export$image$toCloudStorage(
-#'   image = mean_l5_Amarakaeri,
-#'   bucket = "rgee_dev",
-#'   fileFormat = "GEO_TIFF",
-#'   fileNamePrefix = "my_image"
+#' # Move results from Earth Engine to Drive
+#' task_img <- ee_image_to_gcs(
+#'     image = mean_l5_Amarakaeri,
+#'     bucket = "rgee_dev",
+#'     fileFormat = "GEO_TIFF",
+#'     fileNamePrefix = "my_image"
 #' )
+#'
 #' task_img$start()
 #' ee_monitoring(task_img)
-#' img <- ee_download_gcs(task_img)
+#'
+#' # Move results from Drive to local
+#' img <- ee_gcs_to_local(task = task_img)
 #' plot(img)
-#'
-#' # Download a EE FeatureCollection
-#' amk_fc <- ee$FeatureCollection(
-#'   list(ee$Feature(ee_geom, list(name = "Amarakaeri")))
-#' )
-#'
-#' task_vector <- ee$batch$Export$table$toCloudStorage(
-#'   collection = amk_fc,
-#'   bucket = "rgee_dev",
-#'   fileFormat = "SHP",
-#'   fileNamePrefix = "geom_Amarakaeri"
-#' )
-#' task_vector$start()
-#' ee_monitoring(task_vector) # optional
-#' amk_geom <- ee_download_gcs(task = task_vector)
-#' plot(amk_geom$geometry, border = "red", lwd = 10)
 #' }
 #' @export
-ee_download_gcs <- function(task, filename, overwrite = FALSE,
+ee_gcs_to_local <- function(task, filename, overwrite = FALSE,
                             GCS_AUTH_FILE = getOption("rgee.gcs.auth"),
                             quiet = TRUE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
@@ -305,7 +907,6 @@ ee_download_gcs <- function(task, filename, overwrite = FALSE,
   }
 }
 
-
 #' Monitoring Earth Engine task progress
 #'
 #' @param task List generated after an EE task has been successfully completed.
@@ -332,7 +933,7 @@ ee_monitoring <- function(task, eeTaskList = FALSE) {
     cat("", paste0(task_list, "\n"))
   }
   cat("\n")
-  while (task$active()) {
+  while (task$active() & task$state != "CANCEL_REQUESTED") {
     print(sprintf("Polling for task (id: %s).", task$id))
     Sys.sleep(5)
   }
@@ -355,7 +956,7 @@ get_format_suffix <- function(x) {
   # tf_sx <- list(".json", sprintf("-%05d.tfrecord",0:(length(gd_folder)-2)))
   image_tf_sx <- list(".json", ".tfrecord")
   suffix <- list(
-    ".tif", "ee_export.csv", "ee_export.GEO_JSON", "ee_export.kml",
+    ".tif", "ee_export.csv", ".geojson", "ee_export.kml",
     "ee_export.kmz", shp_sx, image_tf_sx, image_ctf_sx,
     "ee_export.gz", "ee_export.gz"
   )
@@ -407,7 +1008,7 @@ create_filenames <- function(basename, suffix, fileformat) {
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
   if (fileformat == "GEO_TIFF") {
-    fread <- read_stars(filename, quiet = quiet)
+    fread <- read_stars(filename, proxy = TRUE, quiet = quiet)
     return(fread)
   } else if (fileformat %in% "SHP") {
     fread <- st_read(filename[grep("\\.shp$", filename)], quiet = quiet)

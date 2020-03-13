@@ -180,6 +180,7 @@ ee_Initialize <- function(email = NULL,
   }
 
   ee_user <- ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id)
+  options(rgee.ee_user = ee_user)
   ee_sessioninfo(
     email = email_clean,
     user = ee_user,
@@ -469,7 +470,6 @@ ee_source_python <- function(oauth_func_path) {
   import_from_path(module_name, path = module_path, convert = F)
 }
 
-
 #' function obtained from tidyverse
 #' https://github.com/tidyverse/tidyverse
 #' @noRd
@@ -491,7 +491,7 @@ text_col <- function(x) {
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
-  "0.1.213"
+  "0.1.215"
 }
 
 
@@ -508,7 +508,6 @@ add_extra_space <- function(name, space) {
   }
   result
 }
-
 
 #' Function used in ee_user
 #'
@@ -551,4 +550,16 @@ create_table <- function(user, wsc) {
       wsc,
       ee_symbol
     )
+}
+
+#' Get the Asset home name
+#' @examples
+#' \dontrun{
+#' ee_reattach()
+#' ee_Initialize()
+#' ee_get_assethome()
+#' }
+#' @export
+ee_get_assethome <- function() {
+  options('rgee.ee_user')[[1]]
 }

@@ -13,6 +13,7 @@
 \alias{ee_manage_asset_access}
 \alias{ee_manage_task}
 \alias{ee_manage_cancel_all_running_task}
+\alias{ee_manage_asset_size}
 \title{Interface for manage the Earth Engine Asset}
 \usage{
 ee_manage_create(path_asset, asset_type = "Folder", quiet = FALSE)
@@ -38,6 +39,8 @@ ee_manage_asset_access(path_asset, editor = NULL, viewer = NULL,
 ee_manage_task(cache = FALSE)
 
 ee_manage_cancel_all_running_task()
+
+ee_manage_asset_size(path_asset)
 }
 \arguments{
 \item{path_asset}{Character. Name of the EE asset (Table, Image, Folder or
@@ -139,4 +142,7 @@ ee_manage_cancel_all_running_task()
 # 9. Delete EE objects or folders
 ee_manage_delete("users/datacolecfbf/rgee/")
 }
+}
+\author{
+Samapriya Roy, adapted to R by csaybar.
 }

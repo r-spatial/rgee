@@ -1,5 +1,4 @@
-#' Create an isolated Python virtual environment to be used
-#' in rgee
+#' Create an isolated Python virtual environment to be used in rgee
 #' @param python_env The name of, or path to, a Python virtual environment.
 #' @importFrom reticulate conda_create virtualenv_create
 #' @examples
@@ -14,33 +13,25 @@
 #' }
 #' @export
 ee_create_pyenv <- function(python_env) {
-  os_type <- switch(Sys.info()[["sysname"]],
-                    Windows = {
-                      "windows"
-                    },
-                    Linux = {
-                      "linux"
-                    },
-                    Darwin = {
-                      "macos"
-                    }
-  )
-  if (os_type == "linux" | os_type == "macos") {
-    virtualenv_create(python_env)
-  } else {
+  if (is_windows()) {
     conda_create(python_env)
+  } else {
+    virtualenv_create(python_env)
   }
   invisible(TRUE)
 }
-
 
 #' Discover all the Python environments available
 #' in the system
 #'
 #' This function enables callers to check which versions
-#' of Python will be discovered on a system. This function
-#' was adapted from \code{\link[reticulate]{py_discover_config}}.
+#' of Python will be discovered on a system.
 #'
+#' @param use_py_discover_config Logical. If True
+#' will use \code{\link[reticulate]{py_discover_config}} to find
+#' versions of Python in the system.  Otherwise, will use
+#' \code{\link[reticulate]{conda_list}} for Window OS and
+#' \code{\link[reticulate]{virtualenv_list}} for Unix system.
 #' @importFrom reticulate py_discover_config conda_list
 #' @examples
 #' \dontrun{
@@ -53,33 +44,40 @@ ee_create_pyenv <- function(python_env) {
 #' ee_install_python_packages()
 #' }
 #' @export
-ee_discover_pyenvs <- function() {
-  os_type <- switch(Sys.info()[["sysname"]],
-                    Windows = {
-                      "windows"
-                    },
-                    Linux = {
-                      "linux"
-                    },
-                    Darwin = {
-                      "macos"
-                    }
-  )
-
-  if (os_type == 'windows') {
-    return(conda_list()$python)
-  } else {
-    ret_info <- py_discover_config()
-    if (!is.null(ret_info$forced)) {
-      cat(
-        "NOTE: Python version was forced by",
-        ret_info$forced,
-        "consider remove this environment variable",
-        "to display more options.",
-        "\n"
-      )
+ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
+  if (is_windows()) {
+    if (isTRUE(use_py_discover_config)) {
+      ret_info <- py_discover_config()
+      if (!is.null(ret_info$forced)) {
+        cat(
+          "NOTE: Python version was forced by",
+          ret_info$forced,
+          "consider remove this system variable",
+          "to display more options.",
+          "\n"
+        )
+      }
+      return(ret_info$python_versions)
+    } else {
+      return(conda_list()$python)
     }
-    return(ret_info$python_versions)
+  } else {
+    if (isTRUE(use_py_discover_config)) {
+      ret_info <- py_discover_config()
+      if (!is.null(ret_info$forced)) {
+        cat(
+          "NOTE: Python version was forced by",
+          ret_info$forced,
+          "consider remove this system variable",
+          "to display more options.",
+          "\n"
+        )
+      }
+      return(ret_info$python_versions)
+    } else {
+      ret_info <- ee_virtualenv_list()
+      return(ret_info)
+    }
   }
 }
 
@@ -171,7 +169,7 @@ ee_set_pyenv <- function(python_path,
   invisible(TRUE)
 }
 
-#' Install Python packages dependencies
+#' Install rgee Python packages dependencies
 #'
 #' Install the necessary Python packages to be used in rgee.
 #'
@@ -188,6 +186,10 @@ ee_set_pyenv <- function(python_path,
 #' rgee was built will be installed.
 #' @param envname Name of Python environment, or full path, which Python
 #' packages are to be installed.
+#' @param pip Logical. Use pip for package installation? This
+#' is only relevant when Conda environments are used, as
+#' otherwise packages will be installed from the
+#' Conda repositories.
 #' @param conda_python_version the Python version installed in the
 #' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to [reticulate::conda_install()] or
@@ -216,6 +218,7 @@ ee_install_python_packages <- function(method = c(
                                        conda = "auto",
                                        ee_version = NULL,
                                        envname = NULL,
+                                       pip = FALSE,
                                        conda_python_version = "3.7",
                                        quiet = FALSE,
                                        ...) {
@@ -252,7 +255,7 @@ ee_install_python_packages <- function(method = c(
     method = method,
     conda = conda,
     python_version = conda_python_version,
-    pip = TRUE,
+    pip = pip,
     ...
   )
 
@@ -268,7 +271,6 @@ ee_install_python_packages <- function(method = c(
 
 #' Install ChromeDriver in the system
 #'
-#' Install ChromeDriver in the system
 #' @param ChromeDriverVersion Google Chrome version of the system.
 #' @examples
 #' \dontrun{
@@ -283,7 +285,7 @@ ee_install_ChromeDriver <- function(ChromeDriverVersion) {
       "The ChromeDriverVersion argument was not defined.",
       " Find the appropriate version of Google Chrome visiting:\n",
       "- chrome://settings/help \n",
-      "- After that run,for e.g, rgee::ee_install_drivers(77)"
+      "- After, according to your Chrome version, run, for e.g, rgee::ee_install_drivers(77)"
     )
   }
 
@@ -291,17 +293,8 @@ ee_install_ChromeDriver <- function(ChromeDriverVersion) {
   ee_check_utils <- ee_source_python(oauth_func_path)
   directory <- path.expand("~/.config/earthengine/")
 
-  os_type <- switch(Sys.info()[["sysname"]],
-    Windows = {
-      "windows"
-    },
-    Linux = {
-      "linux"
-    },
-    Darwin = {
-      "macos"
-    }
-  )
+  os_type <- ee_detect_os()
+
   chromedriver_version <- ee_check_utils$download_chromedriver(
     directory = directory,
     operating_system = os_type,
@@ -316,3 +309,28 @@ ee_install_ChromeDriver <- function(ChromeDriverVersion) {
   return(invisible(TRUE))
 }
 
+#' Detect the Operating System type of the system
+#' @noRd
+ee_detect_os <- function() {
+  os_type <- switch(Sys.info()[["sysname"]],
+                    Windows = {"windows"},
+                    Linux = {"linux"},
+                    Darwin = {"macos"})
+  os_type
+}
+
+#' Is the OS windows?
+#' @noRd
+is_windows <- function() {
+  ee_detect_os() == 'windows'
+}
+
+#' Create a list of virtuals environments locacted in "~/.virtualenvs"
+#' @importFrom reticulate virtualenv_root virtualenv_list
+#' @noRd
+ee_virtualenv_list <- function() {
+  path.expand(
+    sprintf("%s/%s/bin/python",
+            virtualenv_root(),
+            virtualenv_list()))
+}

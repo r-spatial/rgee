@@ -5,6 +5,7 @@
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^docs$
+^docker$
 ^pkgdown$
 ^\.httr-oauth$
 ^\.covrignore$

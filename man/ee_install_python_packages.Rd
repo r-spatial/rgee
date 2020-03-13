@@ -2,10 +2,10 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_python_packages}
 \alias{ee_install_python_packages}
-\title{Install Python packages dependencies}
+\title{Install rgee Python packages dependencies}
 \usage{
 ee_install_python_packages(method = c("auto", "virtualenv", "conda"),
-  conda = "auto", ee_version = NULL, envname = NULL,
+  conda = "auto", ee_version = NULL, envname = NULL, pip = FALSE,
   conda_python_version = "3.7", quiet = FALSE, ...)
 }
 \arguments{
@@ -25,6 +25,11 @@ rgee was built will be installed.}
 
 \item{envname}{Name of Python environment, or full path, which Python
 packages are to be installed.}
+
+\item{pip}{Logical. Use pip for package installation? This
+is only relevant when Conda environments are used, as
+otherwise packages will be installed from the
+Conda repositories.}
 
 \item{conda_python_version}{the Python version installed in the
 created conda environment. Python 3.7 is installed by default.}

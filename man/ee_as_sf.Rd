@@ -4,44 +4,88 @@
 \alias{ee_as_sf}
 \title{Convert an EE table in a sf object}
 \usage{
-ee_as_sf(x)
+ee_as_sf(x, via = "getInfo", container = "rgee_backup",
+  selectors = NULL, monitoring = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{x}{EE table to be converted into a sf object.}
+
+\item{via}{Method to download the image. Three methods
+are implemented 'getInfo', 'drive' and 'gcs'. See details.}
+
+\item{container}{Relevant when the "via" argument is
+defined as "drive" or "gcs". It is the name of a unique
+folder ('drive') or bucket ('gcs') to export into.}
+
+\item{selectors}{The list of properties to include in
+the output, as a list of strings or a comma-separated
+string. By default, all properties are included.}
+
+\item{monitoring}{Relevant when the "via" argument is
+defined as 'drive' or 'gcs'. If is FALSE, ee_as_sf
+will wait until finishing the task.}
+
+\item{quiet}{logical. Suppress info message}
 }
 \value{
-An sf class object, see Details.
+An sf object.
 }
 \description{
 Convert an EE table in a sf object
 }
 \details{
-Export large spatial objects it preferable to create export pipelines
-by using \code{ee$batch$Export$table$*} and \code{rgee::ee_download_*} instead of
-using \code{ee_as_sf}. See
-\href{https://developers.google.com/earth-engine/client_server}{Client
-vs Server} documentation for details.
+The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
+your local env could be carried out by three different strategies. The
+first one ('getInfo') use the getInfo method, which fetch and return
+information about Earth Engine objects, the advantage of use this is
+a direct and fast download. However, there is a limit of 5000 features
+that can be transferred by request which makes it unsatisfactory for
+large collections. The second ('drive') and third ('gcs') method are
+suitable for large images since it use Google Drive and Google Cloud
+Storage as a intermediate container.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
-ee_Initialize()
+ee_Initialize(
+  email = "data.colec.fbf@gmail.com",
+  drive = TRUE,
+  gcs = TRUE
+)
+
+# Region of interest
 roi <- ee$Geometry$Polygon(list(
-  c(-122.27577209472656, 37.891247253777074),
-  c(-122.27577209472656, 37.86875557241152),
-  c(-122.24040985107422, 37.86875557241152),
-  c(-122.24040985107422, 37.891247253777074)
+  c(-122.275, 37.891),
+  c(-122.275, 37.868),
+  c(-122.240, 37.868),
+  c(-122.240, 37.891)
 ))
 
+# TIGER: US Census Blocks Dataset
 blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
-subset <- blocks$filterBounds(roi)$limit(10)
-sf_subset <- ee_as_sf(subset)
-cat('Object size in Mb:', as.numeric(object.size(sf_subset)/10^6))
+subset <- blocks$filterBounds(roi)$limit(2)
+sf_subset <- ee_as_sf(x = subset)
 plot(sf_subset)
-# Define an arbitrary region in which to compute random points.
+
+# Create Random points in Earth Engine
 region <- ee$Geometry$Rectangle(-119.224, 34.669, -99.536, 50.064)
-# Create 100 random points in the region.
-ee_randomPoints <- ee$FeatureCollection$randomPoints(region,100)
+ee_help(ee$FeatureCollection$randomPoints)
+ee_randomPoints <- ee$FeatureCollection$randomPoints(region, 100)
 sf_randomPoints <- ee_as_sf(ee_randomPoints)
 plot(sf_randomPoints)
+
+# Download via drive
+sf_randomPoints_drive <- ee_as_sf(
+  x = ee_randomPoints,
+  via = 'drive'
+)
+
+# Download via GCS
+sf_randomPoints_gcs <- ee_as_sf(
+  x = ee_randomPoints,
+  via = 'gcs',
+  container = 'rgee_dev'
+)
+}
 }

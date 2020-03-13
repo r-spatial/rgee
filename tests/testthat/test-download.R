@@ -57,7 +57,7 @@ mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
 # ### IMAGES
 # # 1. GEOTIFF - DRIVE
 test_that("GEOTIFF_DRIVE", {
-  task_img <- ee$batch$Export$image$toDrive(
+  task_img <- ee_image_to_drive(
     image = image_test,
     folder = "rgee_testing",
     fileFormat = "GEOTIFF",
@@ -65,13 +65,13 @@ test_that("GEOTIFF_DRIVE", {
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_download_drive(task = task_img)
+  img <- ee_drive_to_local(task = task_img)
   expect_is(img, "stars")
 })
 
 # # 2. CTFRECORD_IMAGE - DRIVE
 test_that("CTFRECORD_DRIVE", {
-  task_img <- ee$batch$Export$image$toDrive(
+  task_img <- ee_image_to_drive(
     image = image_test,
     folder = "rgee_testing",
     fileFormat = "TFRECORD",
@@ -80,13 +80,13 @@ test_that("CTFRECORD_DRIVE", {
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_download_drive(task = task_img)
+  img <- ee_drive_to_local(task = task_img)
   expect_equal(img, TRUE)
 })
 
 # # 3. TFRECORD_IMAGE - DRIVE
 test_that("TFRECORD_DRIVE", {
-  task_img <- ee$batch$Export$image$toDrive(
+  task_img <- ee_image_to_drive(
     image = image_test,
     folder = "rgee_testing",
     fileFormat = "TFRECORD",
@@ -95,13 +95,13 @@ test_that("TFRECORD_DRIVE", {
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_download_drive(task = task_img)
+  img <- ee_drive_to_local(task = task_img)
   expect_equal(img, TRUE)
 })
 
 # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS", {
-  task_img <- ee$batch$Export$image$toCloudStorage(
+  task_img <- ee_image_to_gcs(
     image = image_test,
     bucket = "rgee_dev",
     fileFormat = "GEOTIFF",
@@ -109,11 +109,10 @@ test_that("GEOTIFF_GCS", {
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_download_gcs(task = task_img)
+  img <- ee_gcs_to_local(task = task_img)
   expect_is(img, "stars")
 })
 
-#
 # # 5. CTFRECORD_IMAGE - GCS
 # test_that("CTFRECORD_GCS",{
 #   task_img <- ee$batch$Export$image$toCloudStorage(
@@ -146,18 +145,18 @@ test_that("GEOTIFF_GCS", {
 #
 # ### VECTOR
 # # 7. CSV_VECTOR - DRIVE
-# test_that("CSV_VECTOR_DRIVE",{
-#   task_vector <- ee$batch$Export$table$toDrive(
-#     collection = fc_test,
-#     folder = "rgee_testing",
-#     fileFormat = "CSV",
-#     fileNamePrefix = "test_fc_CSV"
-#   )
-#   task_vector$start()
-#   ee_monitoring(task_vector)
-#   vector <- ee_download_drive(task = task_vector)
-#   expect_equal(vector, TRUE)
-# })
+test_that("CSV_VECTOR_DRIVE",{
+  task_vector <- ee_table_to_drive(
+    collection = fc_test,
+    folder = "rgee_testing",
+    fileFormat = "CSV",
+    fileNamePrefix = "test_fc_CSV"
+  )
+  task_vector$start()
+  ee_monitoring(task_vector)
+  vector <- ee_drive_to_local(task = task_vector)
+  expect_equal(vector, TRUE)
+})
 #
 # # 8. SHP_VECTOR - DRIVE
 # test_that("SHP_VECTOR_DRIVE",{
@@ -342,3 +341,30 @@ test_that("GEOTIFF_GCS", {
 #   expect_equal(vector, TRUE)
 # })
 #
+
+
+# ASSET
+test_that("image to asset",{
+  assetid <- paste0(ee_get_assethome(), '/l5_Amarakaeri')
+  task_vector <- ee_table_to_asset(
+    collection = fc_test,
+    assetId = assetid
+  )
+  task_vector$start()
+  ee_monitoring(task_vector)
+  mess <- ee_manage_delete(assetid)
+  expect_equal(mess, TRUE)
+})
+
+
+test_that("table to asset",{
+  assetid <- paste0(ee_get_assethome(), '/image_test')
+  task_img <- ee_image_to_asset(
+    image = image_test,
+    assetId = assetid
+  )
+  task_img$start()
+  ee_monitoring(task_img)
+  mess <- ee_manage_delete(assetid)
+  expect_equal(mess, TRUE)
+})

@@ -2,8 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_create_pyenv}
 \alias{ee_create_pyenv}
-\title{Create an isolated Python virtual environment to be used
-in rgee}
+\title{Create an isolated Python virtual environment to be used in rgee}
 \usage{
 ee_create_pyenv(python_env)
 }
@@ -11,8 +10,7 @@ ee_create_pyenv(python_env)
 \item{python_env}{The name of, or path to, a Python virtual environment.}
 }
 \description{
-Create an isolated Python virtual environment to be used
-in rgee
+Create an isolated Python virtual environment to be used in rgee
 }
 \examples{
 \dontrun{

@@ -23,6 +23,7 @@ Useful links:
 
 Other contributors:
 \itemize{
+  \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
   \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
   \item Antony Barja \email{antony.barja8@gmail.com} (\href{https://orcid.org/0000-0001-5921-2858}{ORCID}) [contributor]
   \item MariaElena Adauto \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
