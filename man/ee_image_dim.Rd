@@ -28,7 +28,7 @@ Get the approximate number of rows, cols and size of a
 Earth Engine Image.
 }
 \examples{
-\\donotrun{
+\dontrun{
 library(rgee)
 ee_reattach()
 ee_Initialize()
@@ -38,8 +38,7 @@ srtm <- ee$Image("CGIAR/SRTM90_V4")
 ee_get_npixel(srtm)
 
 # Landast8
-l8 <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')
+l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
 ee_get_npixel(l8)
-
 }
 }

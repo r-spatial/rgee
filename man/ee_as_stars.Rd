@@ -59,8 +59,8 @@ Convert an Earth Engine (EE) image in a stars object
 \details{
 The process to pass a ee$Image to your local env could be carried
 out by three different strategies. The first one ('getInfo') use the getInfo
-image method, which fetch and return information about Earth Engine
-images, the advantage of use this is a direct and fast download.
+method, which fetch and return information about Earth Engine
+objects, the advantage of use this is a direct and fast download.
 However, there is a limit of 262144 pixels (512x512) that can
 be transferred by request which makes it unsatisfactory for large images.
 The second ('drive') and third ('gcs') method are suitable for large images
@@ -81,8 +81,8 @@ ee_Initialize(
 )
 
 # Define an image.
-img <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')$
-  select(c('B4', 'B5', 'B6'))
+img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+  select(c("B4", "B5", "B6"))
 Map$centerObject(img)
 Map$addLayer(img)
 
@@ -90,16 +90,22 @@ Map$addLayer(img)
 geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
 
 ## getInfo - Method 01
-img_stars_01 <- ee_as_stars(image = img,
-                            region = geometry,
-                            via = 'getInfo')
+img_stars_01 <- ee_as_stars(
+  image = img,
+  region = geometry,
+  via = "getInfo"
+)
 ## drive - Method 02
-img_stars_02 <- ee_as_stars(image = img,
-                            region = geometry,
-                            via = 'drive')
+img_stars_02 <- ee_as_stars(
+  image = img,
+  region = geometry,
+  via = "drive"
+)
 ## gcs - Method 03
-img_stars_03 <- ee_as_stars(image = img,
-                            region = geometry,
-                            container = 'rgee_dev',
-                            via = 'gcs')
+img_stars_03 <- ee_as_stars(
+  image = img,
+  region = geometry,
+  container = "rgee_dev",
+  via = "gcs"
+)
 }

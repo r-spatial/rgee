@@ -35,8 +35,8 @@
 #' @details
 #' The process to pass a ee$Image to your local env could be carried
 #' out by three different strategies. The first one ('getInfo') use the getInfo
-#' image method, which fetch and return information about Earth Engine
-#' images, the advantage of use this is a direct and fast download.
+#' method, which fetch and return information about Earth Engine
+#' objects, the advantage of use this is a direct and fast download.
 #' However, there is a limit of 262144 pixels (512x512) that can
 #' be transferred by request which makes it unsatisfactory for large images.
 #' The second ('drive') and third ('gcs') method are suitable for large images

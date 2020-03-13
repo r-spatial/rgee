@@ -39,7 +39,8 @@ Depends:
 Imports:
     reticulate (>= 1.13),
     stars (>= 0.3),
-    rstudioapi (>= 0.7),    
+    rstudioapi (>= 0.7),
+    dplyr,
     rgdal,
     sf,
     magrittr,

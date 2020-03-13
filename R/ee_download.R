@@ -907,7 +907,6 @@ ee_gcs_to_local <- function(task, filename, overwrite = FALSE,
   }
 }
 
-
 #' Monitoring Earth Engine task progress
 #'
 #' @param task List generated after an EE task has been successfully completed.
@@ -957,7 +956,7 @@ get_format_suffix <- function(x) {
   # tf_sx <- list(".json", sprintf("-%05d.tfrecord",0:(length(gd_folder)-2)))
   image_tf_sx <- list(".json", ".tfrecord")
   suffix <- list(
-    ".tif", "ee_export.csv", "ee_export.GEO_JSON", "ee_export.kml",
+    ".tif", "ee_export.csv", ".geojson", "ee_export.kml",
     "ee_export.kmz", shp_sx, image_tf_sx, image_ctf_sx,
     "ee_export.gz", "ee_export.gz"
   )

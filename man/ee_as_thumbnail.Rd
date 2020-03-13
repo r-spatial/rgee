@@ -102,42 +102,56 @@ region <- nc \%>\%
   ee$FeatureCollection$geometry()
 
 ## world
-world_dem <- ee_as_thumbnail(x = image,
-                             dimensions = 1024,
-                             geodesic = FALSE,
-                             vizparams = list(min = 0, max = 5000))
-world_dem[world_dem <= 0] = NA
-world_dem <- world_dem*5000
-plot(x = world_dem, col = dem_palette, breaks = "equal",
-     reset = FALSE, main = "SRTM - World")
+world_dem <- ee_as_thumbnail(
+  x = image,
+  dimensions = 1024,
+  geodesic = FALSE,
+  vizparams = list(min = 0, max = 5000)
+)
+world_dem[world_dem <= 0] <- NA
+world_dem <- world_dem * 5000
+plot(
+  x = world_dem, col = dem_palette, breaks = "equal",
+  reset = FALSE, main = "SRTM - World"
+)
 
 ## Arequipa-Peru
-arequipa_dem <- ee_as_thumbnail(x = image,
-                                dimensions = 512,
-                                region = region,
-                                vizparams = list(min = 0, max = 5000))
+arequipa_dem <- ee_as_thumbnail(
+  x = image,
+  dimensions = 512,
+  region = region,
+  vizparams = list(min = 0, max = 5000)
+)
 arequipa_dem <- arequipa_dem * 5000
-plot(x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
-     reset = FALSE, main = "SRTM - Arequipa")
-suppressWarnings(plot(x = nc, col = NA, border = "black", add = TRUE,
-                      lwd = 1.5))
+plot(
+  x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
+  reset = FALSE, main = "SRTM - Arequipa"
+)
+suppressWarnings(plot(
+  x = nc, col = NA, border = "black", add = TRUE,
+  lwd = 1.5
+))
 
 ## LANDSAT 8
-img <- ee$Image('LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810')$
-  select(c('B4', 'B3', 'B2'))
+img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+  select(c("B4", "B3", "B2"))
 Map$centerObject(img)
-Map$addLayer(img,list(min = 0, max = 5000, gamma = 1.5))
+Map$addLayer(img, list(min = 0, max = 5000, gamma = 1.5))
 
 ## Teton Wilderness
-l8_img <- ee_as_thumbnail(x = img,
-                          dimensions = 1024,
-                          vizparams = list(min = 0,
-                                           max = 5000,
-                                           gamma = 1.5))
+l8_img <- ee_as_thumbnail(
+  x = img,
+  dimensions = 1024,
+  vizparams = list(
+    min = 0,
+    max = 5000,
+    gamma = 1.5
+  )
+)
 dev.off()
 l8_img \%>\%
-  as('Raster') \%>\%
-  `names<-`(c('R','G','B')) \%>\%
-  plotRGB(stretch='lin')
+  as("Raster") \%>\%
+  `names<-`(c("R", "G", "B")) \%>\%
+  plotRGB(stretch = "lin")
 }
 }
