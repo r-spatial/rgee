@@ -181,13 +181,13 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
 ee_centerObject <- function(eeObject, zoom = NULL) {
-  if (any(class(eeObject) %in% rgee:::ee_get_spatial_objects("Nongeom"))) {
+  if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
         geometry()$
         centroid()$
-        coordinates()$
         getInfo() %>%
+        '[['('coordinates') %>%
         ee_py_to_r(),
       error = function(e) {
         message(
@@ -490,7 +490,8 @@ ee_get_boundary <- function(eeObject) {
   if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
     eeObject <- ee$Feature(eeObject)
   }
-  eeObject$geometry()$bounds()$coordinates()$getInfo() %>%
+  eeObject$geometry()$bounds()$getInfo() %>%
+    '[['('coordinates') %>%
     ee_py_to_r() %>%
     unlist() %>%
     matrix(ncol = 2, byrow = TRUE) %>%

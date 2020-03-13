@@ -163,7 +163,6 @@ ee_as_stars <- function(image,
   time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
   file_name <- paste0(image_id,'_', time_format)
-
   # Load ee_Initialize() session; just for either drive or gcs
   ee_path <- path.expand("~/.config/earthengine")
   ee_user <- read.table(
@@ -235,7 +234,7 @@ ee_as_stars <- function(image,
 
     #Iterate for each tessellation
     stars_img_list <- list()
-    cat('region too large ... creating ',
+    cat('region set it up is too large ... creating ',
         length(sf_region_gridded),' patch.\n')
     for (r_index in seq_len(nbatch*nbatch)) {
       cat(
@@ -274,7 +273,6 @@ ee_as_stars <- function(image,
 
       ## Set Geotransform and dimensions to local image
       sf_region_batch <- ee_as_sf(feature)
-      coord_matrix <- st_coordinates(sf_region)[,c('X','Y')]
       init_offset <- ee_fix_offset(image, sf_region_batch)
       min_long <- init_offset[1]
       max_lat <- init_offset[2]
@@ -294,14 +292,24 @@ ee_as_stars <- function(image,
            ' Run ee_Initialize(email = "myemail", drive = TRUE)',
            ' to fixed')
     }
-    # From Earth Engine to Google Drive
+
+    # Fixing geometry if it is necessary
+    init_offset <- ee_fix_offset(image, sf_region)
+    ee_crs <- st_crs(sf_region)$epsg
+    region_fixed <- sf_as_ee(x = sf_region,
+                             check_ring_dir = TRUE,
+                             evenOdd = is_evenodd,
+                             proj = ee_crs,
+                             geodesic = is_geodesic)
+
     img_task <- ee_image_to_drive(
       image = image,
       description = ee_description,
       scale = scale,
       folder = container,
       fileFormat = "GEO_TIFF",
-      region = region,
+      region = region_fixed$geometry(),
+      maxPixels = maxPixels,
       fileNamePrefix = file_name
     )
     if (!quiet) {
@@ -327,13 +335,23 @@ ee_as_stars <- function(image,
            ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
            ' to fixed')
     }
+
+    # Fixing geometry if it is necessary
+    init_offset <- ee_fix_offset(image, sf_region)
+    ee_crs <- st_crs(sf_region)$epsg
+    region_fixed <- sf_as_ee(x = sf_region,
+                             check_ring_dir = TRUE,
+                             evenOdd = is_evenodd,
+                             proj = ee_crs,
+                             geodesic = is_geodesic)
+
     # From Earth Engine to Google Cloud Storage
     img_task <- ee_image_to_gcs(
       image = image,
       description = ee_description,
       bucket = container,
       fileFormat = "GEO_TIFF",
-      region = region,
+      region = region_fixed$geometry(),
       scale = scale,
       fileNamePrefix = file_name
     )
