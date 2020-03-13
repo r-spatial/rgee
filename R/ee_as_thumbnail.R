@@ -168,10 +168,10 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
       query_params[grepl("evenOdd", names(query_params))]
     )
     if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
-      is_evenodd <- TRUE
+      is_evenodd <- FALSE
     }
   } else {
-    is_evenodd <- TRUE
+    is_evenodd <- evenOdd
   }
 
   if (!identical(st_crs(sf_image), st_crs(sf_region))) {
@@ -226,6 +226,18 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
                            evenOdd = is_evenodd,
                            proj = ee_crs,
                            geodesic = is_geodesic)
+  if (!quiet) {
+    cat(
+      '- region parameters\n',
+      '\rWKT      :', st_as_text(sf_region),
+      '\nCRS      :', ee_crs,
+      '\ngeodesic :', is_geodesic,
+      '\nevenOdd  :', is_evenodd,
+      '\n'
+
+    )
+  }
+
   # Preparing parameters
   new_params <- list(
     crs = paste0('EPSG:', ee_crs),

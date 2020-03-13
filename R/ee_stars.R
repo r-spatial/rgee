@@ -16,19 +16,22 @@
 #' number of edges to reach a point at infinity. Otherwise polygons
 #' use the left- inside rule, where interiors are on the left side
 #' of the shell's edges when walking the vertices in the given order.
-#' If unspecified in the geometry (region argument) defaults to TRUE.
+#' If unspecified in the geometry (region argument) defaults to FALSE.
 #' @param maxPixels The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param via Method to download the image. Three methods
 #' are implemented 'getInfo', 'drive' and 'gcs'. See details.
 #' @param container Relevant when the "via" argument is
-#' defined as 'drive' or 'gcs'. The name of a unique
+#' defined as 'drive' or 'gcs'. It is the name of a unique
 #' folder ('drive') or bucket ('gcs') to export into.
+#' @param monitoring Relevant when the "via" argument is
+#' defined as 'drive' or 'gcs'.If it is FALSE, ee_as_stars will wait
+#' until the task is finished.
 #' @param quiet logical. Suppress info message
 #' @importFrom jsonlite parse_json
 #' @importFrom sf st_transform st_coordinates st_make_grid
-#' @importFrom stars st_set_dimensions st_mosaic
+#' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' @details
 #' The process to pass a ee$Image to your local env could be carried
 #' out by three different strategies. The first one ('getInfo') use the getInfo
@@ -83,6 +86,7 @@ ee_as_stars <- function(image,
                         geodesic = NULL,
                         evenOdd = NULL,
                         maxPixels = 1e9,
+                        monitoring = TRUE,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
@@ -122,10 +126,10 @@ ee_as_stars <- function(image,
       query_params[grepl("evenOdd", names(query_params))]
     )
     if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
-      is_evenodd <- TRUE
+      is_evenodd <- FALSE
     }
   } else {
-    is_evenodd <- TRUE
+    is_evenodd <- evenOdd
   }
 
   if (!identical(st_crs(sf_image), st_crs(sf_region))) {
@@ -226,7 +230,16 @@ ee_as_stars <- function(image,
                evenOdd = is_evenodd,
                proj = ee_crs,
                geodesic = is_geodesic)
-
+    if (!quiet) {
+      cat(
+        '- region parameters\n',
+        '\rWKT      :', st_as_text(sf_region),
+        '\nCRS      :', ee_crs,
+        '\ngeodesic :', is_geodesic,
+        '\nevenOdd  :', is_evenodd,
+        '\n'
+      )
+    }
     # FeatureCollection as a List
     region_features <- region_fixed$toList(
       length(sf_region_gridded)
@@ -234,13 +247,21 @@ ee_as_stars <- function(image,
 
     #Iterate for each tessellation
     stars_img_list <- list()
-    cat('region set it up is too large ... creating ',
-        length(sf_region_gridded),' patch.\n')
+    if (!quiet) {
+      if (nbatch*nbatch > 1) {
+        cat('region is too large ... creating ',
+            length(sf_region_gridded),' patches.\n')
+      }
+    }
     for (r_index in seq_len(nbatch*nbatch)) {
-      cat(
-        sprintf('Getting data for the patch: %s/%s',
-                r_index, nbatch*nbatch),'\n'
-      )
+      if (!quiet) {
+        if (nbatch*nbatch > 1) {
+          cat(
+            sprintf('Getting data for the patch: %s/%s',
+                    r_index, nbatch*nbatch),'\n'
+          )
+        }
+      }
       index <- r_index - 1
       feature <- ee$Feature(region_features$get(index))$geometry()
       # Extracts a rectangular region of pixels from an image
@@ -285,7 +306,12 @@ ee_as_stars <- function(image,
       image_stars <- st_set_dimensions(image_stars, 3, values = band_names)
       stars_img_list[[r_index]] <- image_stars
     }
-    do.call(st_mosaic,stars_img_list)
+    mosaic <- do.call(st_mosaic, stars_img_list)
+    if (is.null(st_dimensions(mosaic)$band)) {
+      mosaic
+    } else {
+      st_set_dimensions(mosaic, 3, values = band_names)
+    }
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
       stop('Google Drive credentials were not loaded.',
@@ -301,7 +327,16 @@ ee_as_stars <- function(image,
                              evenOdd = is_evenodd,
                              proj = ee_crs,
                              geodesic = is_geodesic)
-
+    if (!quiet) {
+      cat(
+        '- region parameters\n',
+        '\rWKT      :', st_as_text(sf_region),
+        '\nCRS      :', ee_crs,
+        '\ngeodesic :', is_geodesic,
+        '\nevenOdd  :', is_evenodd,
+        '\n'
+      )
+    }
     img_task <- ee_image_to_drive(
       image = image,
       description = ee_description,
@@ -313,13 +348,16 @@ ee_as_stars <- function(image,
       fileNamePrefix = file_name
     )
     if (!quiet) {
-      cat("From Earth Engine to Google Drive\n",
-          "Google user :",ee_user$email,"\n",
-          "Folder name :",container,"\n",
-          "File name   :", image_id)
+      cat("\n- download parameters (Google Drive)\n",
+          "\rImage ID    :", image_id,
+          "\rGoogle user :",ee_user$email,"\n",
+          "\rFolder name :",container,"\n",
+          "\rDate        :", time_format, "\n")
     }
     img_task$start()
-    ee_monitoring(img_task)
+    if (isTRUE(monitoring)) {
+      ee_monitoring(img_task)
+    }
     # From Google Drive to local
     image_stars <- ee_drive_to_local(img_task)
     if (length(band_names) > 1) {
@@ -344,7 +382,16 @@ ee_as_stars <- function(image,
                              evenOdd = is_evenodd,
                              proj = ee_crs,
                              geodesic = is_geodesic)
-
+    if (!quiet) {
+      cat(
+        '- region parameters\n',
+        '\rWKT      :', st_as_text(sf_region),
+        '\nCRS      :', ee_crs,
+        '\ngeodesic :', is_geodesic,
+        '\nevenOdd  :', is_evenodd,
+        '\n'
+      )
+    }
     # From Earth Engine to Google Cloud Storage
     img_task <- ee_image_to_gcs(
       image = image,
@@ -355,15 +402,18 @@ ee_as_stars <- function(image,
       scale = scale,
       fileNamePrefix = file_name
     )
-    cat("Moving results from Earth Engine to Google Cloud Storage: ", image_id)
     if (!quiet) {
-      cat("From Earth Engine to Google Cloud Storage\n",
-          "Google user :",ee_user$email,"\n",
-          "Bucket name :",container,"\n",
-          "File name   :", image_id)
+      cat("\n- download parameters (Google Cloud Storage)\n",
+          "\rImage ID    :", image_id,
+          "\rGoogle user :",ee_user$email,"\n",
+          "\rFolder name :",container,"\n",
+          "\rDate        :", time_format, "\n")
+
     }
     img_task$start()
-    ee_monitoring(img_task)
+    if (isTRUE(monitoring)) {
+      ee_monitoring(img_task)
+    }
     # From Google Cloud Storage to local
     image_stars <- ee_gcs_to_local(img_task)
     if (length(band_names) > 1) {

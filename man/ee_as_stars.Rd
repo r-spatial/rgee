@@ -5,8 +5,8 @@
 \title{Convert an Earth Engine (EE) image in a stars object}
 \usage{
 ee_as_stars(image, region, scale = NULL, geodesic = NULL,
-  evenOdd = NULL, maxPixels = 1e+09, via = "getInfo",
-  container = "rgee_backup", quiet = FALSE)
+  evenOdd = NULL, maxPixels = 1e+09, monitoring = TRUE,
+  via = "getInfo", container = "rgee_backup", quiet = FALSE)
 }
 \arguments{
 \item{image}{ee$Image to be converted into a sf object}
@@ -30,17 +30,21 @@ the even/odd rule, where a point is inside if it crosses an odd
 number of edges to reach a point at infinity. Otherwise polygons
 use the left- inside rule, where interiors are on the left side
 of the shell's edges when walking the vertices in the given order.
-If unspecified in the geometry (region argument) defaults to TRUE.}
+If unspecified in the geometry (region argument) defaults to FALSE.}
 
 \item{maxPixels}{The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
 
+\item{monitoring}{Relevant when the "via" argument is
+defined as 'drive' or 'gcs'.If it is FALSE, ee_as_stars will wait
+until the task is finished.}
+
 \item{via}{Method to download the image. Three methods
 are implemented 'getInfo', 'drive' and 'gcs'. See details.}
 
 \item{container}{Relevant when the "via" argument is
-defined as 'drive' or 'gcs'. The name of a unique
+defined as 'drive' or 'gcs'. It is the name of a unique
 folder ('drive') or bucket ('gcs') to export into.}
 
 \item{quiet}{logical. Suppress info message}
