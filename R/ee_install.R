@@ -110,6 +110,7 @@ ee_set_pyenv <- function(python_path,
                          python_env,
                          install = FALSE,
                          confirm = interactive()) {
+  ee_clean_pyenv()
   if (isTRUE(install)) {
     home <- Sys.getenv("HOME")
     renv <- file.path(home, ".Renviron")
