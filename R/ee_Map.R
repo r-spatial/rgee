@@ -75,8 +75,8 @@
 #'
 #' If you add an Image to the map without any additional
 #' parameters, by default `Map$addLayer()` assigns the first three bands to red,
-#' green and blue bands, respectively. The default stretch is based on the
-#' min-max range.  For Geometry, Feature and/or FeatureCollection. The available
+#' green, and blue bands, respectively. The default stretch is based on the
+#' min-max range.  For Geometry, Feature, and/or FeatureCollection. The available
 #' visParams are:
 #' \itemize{
 #'  \item \strong{color}: A hex string in the format RRGGBB specifying the
@@ -160,7 +160,7 @@ ee_setZoom <- function(zoom) {
 #'
 #' Centers the map view at the given coordinates
 #' with the given zoom level. If no zoom level is
-#' provided, it uses 1.
+#' specified, it uses 1.
 #'
 #' https://developers.google.com/earth-engine/api_docs#map.setcenter
 #' @noRd
@@ -175,8 +175,8 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' Center a mapview using an EE object
 #'
 #' Centers the map view on a given object. If no zoom
-#' level is provided, it will predicted according the
-#' bounds of the Earth Engine object specified.
+#' level is specified, it will be predicted according to the
+#' bounds of the specified Earth Engine object.
 #'
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
@@ -452,7 +452,7 @@ ee_get_spatial_objects <- function(type = "all") {
   return(ee_spatial_object)
 }
 
-#' Estimate the zoom level for a given bounds
+#' Estimates the zoom level for a given bounds
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
