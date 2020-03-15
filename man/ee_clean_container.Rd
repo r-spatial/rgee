@@ -2,9 +2,10 @@
 % Please edit documentation in R/ee_stars.R
 \name{ee_clean_container}
 \alias{ee_clean_container}
-\title{Delete files from a file container}
+\title{Delete files from a either Folder or Bucket}
 \usage{
-ee_clean_container(name = "rgee_backup", type = "drive")
+ee_clean_container(name = "rgee_backup", type = "drive",
+  quiet = FALSE)
 }
 \arguments{
 \item{name}{Character. Name of the folder (Drive) or bucket (GCS)
@@ -12,6 +13,8 @@ to delete all files into.}
 
 \item{type}{Character. Name of the file storage web service. 'drive'
 and 'gcs' are supported.}
+
+\item{quiet}{logical. Suppress info message}
 }
 \description{
 Delete all files from a folder (Google Drive) or a bucket

@@ -179,14 +179,9 @@ ee_as_stars <- function(image,
   time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
   file_name <- paste0(image_id, "_", time_format)
-  # Load ee_Initialize() session; just for either drive or gcs
-  ee_path <- path.expand("~/.config/earthengine")
-  ee_user <- read.table(
-    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
-    header = TRUE,
-    stringsAsFactors = FALSE
-  )
 
+  # Load ee_Initialize() session; just for either drive or gcs
+  ee_user <- ee_exist_credentials()
   # Band names
   band_names <- image$bandNames()$getInfo()
 
@@ -470,7 +465,7 @@ stars_as_ee <- function(x) {
 
 }
 
-#' Delete files from a file container
+#' Delete files from a either Folder or Bucket
 #'
 #' Delete all files from a folder (Google Drive) or a bucket
 #' (Google Cloud Storage). Caution: This will permanently delete
@@ -480,17 +475,21 @@ stars_as_ee <- function(x) {
 #' to delete all files into.
 #' @param type Character. Name of the file storage web service. 'drive'
 #' and 'gcs' are supported.
+#' @param quiet logical. Suppress info message
 #'
 #' @export
 ee_clean_container <- function(name = "rgee_backup",
-                               type = "drive") {
-  ee_path <- path.expand("~/.config/earthengine")
-  ee_user <- read.table(
-    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
-    header = TRUE,
-    stringsAsFactors = FALSE
-  )
+                               type = "drive",
+                               quiet = FALSE) {
+  ee_user <- ee_exist_credentials()
+
   if (type == "drive") {
+    if (!requireNamespace("googledrive", quietly = TRUE)) {
+      stop(
+        "The googledrive package is required to use rgee::ee_download_drive",
+        call. = FALSE
+      )
+    }
     if (is.na(ee_user$drive_cre)) {
       stop(
         "Google Drive credentials were not loaded.",
@@ -499,12 +498,19 @@ ee_clean_container <- function(name = "rgee_backup",
       )
     }
     count <- 1
-    try_gd_rm <- try(googledrive::drive_rm(name))
+    try_gd_rm <- try(googledrive::drive_rm(name, verbose = !quiet))
     while (class(try_gd_rm) == "try-error" & count < 5) {
-      try_gd_rm <- try(googledrive::drive_rm(name))
+      try_gd_rm <- try(googledrive::drive_rm(name, verbose = !quiet))
       count <- count + 1
     }
   } else if (type == "gcs") {
+    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+      stop(
+        "The googleCloudStorageR package is required to use",
+        " rgee::ee_download_gcs",
+        call. = FALSE
+      )
+    }
     if (is.na(ee_user$gcs_cre)) {
       stop(
         "Google Drive credentials were not loaded.",
@@ -512,13 +518,27 @@ ee_clean_container <- function(name = "rgee_backup",
         " to fix it"
       )
     }
-    googleCloudStorageR::gcs_global_bucket(name)
-    buckets <- googleCloudStorageR::gcs_list_objects()
-    gcs_todelete <- buckets$name
-    mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+    if (isFALSE(quiet)) {
+      googleCloudStorageR::gcs_global_bucket(name)
+      buckets <- googleCloudStorageR::gcs_list_objects()
+      gcs_todelete <- buckets$name
+      mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+    } else {
+      suppressMessages(
+        googleCloudStorageR::gcs_global_bucket(name)
+      )
+      suppressMessages(
+        buckets <- googleCloudStorageR::gcs_list_objects()
+      )
+      gcs_todelete <- buckets$name
+      suppressMessages(
+        mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
+      )
+    }
   } else {
     stop("type argument invalid.")
   }
+  invisible(TRUE)
 }
 
 #' Fix offset of stars object
