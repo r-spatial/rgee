@@ -723,6 +723,14 @@ ee_drive_to_local <- function(task,
       call. = FALSE
     )
   } else {
+    ee_user <- ee_exist_credentials()
+    if (is.na(ee_user$gcs_cre)) {
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " to fix it"
+      )
+    }
     # global parameter of a task
     gd_folder <- basename(task$status()$destination_uris)
     gd_ExportOptions <- task$config$fileExportOptions
@@ -818,11 +826,10 @@ ee_drive_to_local <- function(task,
 #' directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
-#' @param filename Output filename.
-#' @param overwrite A boolean indicating whether "filename" should
+#' @param directory Character. Output directory. If missing, a temporary
+#' directory will be asigned.
+#' @param overwrite A boolean indicating whether the file should
 #' be overwritten.
-#' @param GCS_AUTH_FILE Authentication json file you have downloaded from
-#' your Google Cloud Project
 #' @param quiet Logical. Suppress info message
 #' @details
 #' The best way to use `rgee::ee_download_gcs` is save the Google Cloud
@@ -833,6 +840,7 @@ ee_drive_to_local <- function(task,
 #' The task argument needs "COMPLETED" task state to work, since the parameters
 #' necessaries to locate the file into google cloud storage are obtained from
 #' ee$batch$Export$*$toCloudStorage(...)$start()$status().
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -897,43 +905,64 @@ ee_drive_to_local <- function(task,
 #' }
 #' @export
 ee_gcs_to_local <- function(task,
-                            filename,
-                            overwrite = FALSE,
-                            GCS_AUTH_FILE = getOption("rgee.gcs.auth"),
-                            quiet = TRUE) {
+                            directory,
+                            overwrite = TRUE,
+                            quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-    stop("The googleCloudStorageR package is required to use",
-      "rgee::ee_download_gcs",
+    stop(
+      "The googleCloudStorageR package is required to use",
+      " rgee::ee_download_gcs",
       call. = FALSE
     )
   } else {
+    ee_user <- ee_exist_credentials()
+    if (is.na(ee_user$gcs_cre)) {
+      stop(
+        "Google Drive credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " to fix it"
+      )
+    }
     # Getting bucket name and filename
-    gcs_ExportOptions <- task$config$fileExportOptions$gcsDestination
-    gcs_bucket <- gcs_ExportOptions$bucket
-    gd_filename <- gcs_ExportOptions$filenamePrefix
-    if (missing(filename)) filename <- tempfile()
+    gcs_ExportOptions <- task$config$fileExportOptions
+    gcs_bucket <- gcs_ExportOptions$gcsDestination$bucket
+    gcs_filename <- gcs_ExportOptions$gcsDestination$filenamePrefix
+    gcs_fileFormat <- gcs_ExportOptions$fileFormat
 
-    # Trying to estimate the file suffix (buggy code!)
-    # The EarthEngine API change constantly this part
-    fileformat <- get_fileformat(task)
-    file_suffix <- get_format_suffix(fileformat)
+    # Select a gcs file considering the filename and bucket
+    count <- 1
+    files_gcs <- try(
+      googleCloudStorageR::gcs_list_objects(
+        bucket = gcs_bucket,
+        prefix = gcs_filename
+      )
+    )
+    while (any(class(files_gcs) %in% "try-error") & count < 5) {
+      files_gcs <- try(
+        googleCloudStorageR::gcs_list_objects(
+          bucket = gcs_bucket,
+          prefix = gcs_filename
+        )
+      )
+      count <- count + 1
+    }
 
-    filenames_gcs <- sprintf("%s%s", gd_filename, file_suffix)
-    filenames_local <- sprintf("%s%s", filename, file_suffix)
+    # Choose the right file using the driver_resource["originalFilename"]
+    fileformat <- toupper(gcs_fileFormat)
+    if (missing(directory)) ee_tempdir <- tempdir()
 
-    # sort files
-    filenames_gcs <- ee_sort_files(filenames_gcs, fileformat)
-    filenames_local <- ee_sort_files(filenames_local, fileformat)
+    filenames_local <- sprintf("%s/%s", ee_tempdir, files_gcs$name)
+
+    # It is necessary for ESRI shapefiles
+    to_download <- sort_drive_files(files_gcs, fileformat)
+    filenames_local <- ee_sort_localfiles(filenames_local, fileformat)
 
     for (index in seq_along(filenames_local)) {
-      try(
-        expr = googleCloudStorageR::gcs_get_object(
-          object_name = filenames_gcs[index],
+      googleCloudStorageR::gcs_get_object(
+          object_name = to_download[index,]$name,
           bucket = gcs_bucket,
           saveToDisk = filenames_local[index],
           overwrite = TRUE
-        ),
-        silent = TRUE
       )
     }
     read_filenames(filenames_local, fileformat, quiet = quiet)
@@ -985,85 +1014,6 @@ ee_monitoring <- function(task, quiet = FALSE, eeTaskList = FALSE) {
   }
 }
 
-#' get format file suffix - GCS
-#' @noRd
-get_format_suffix <- function(fileformat) {
-  format_suffix <- list(
-    GEO_TIFF = list(option_01 = ".tif"),
-    CSV = list(
-      option_01 = ".csv",
-      option_02 = "ee_export.csv"
-    ),
-    GEO_JSON = list(
-      option_01 = ".geojson",
-      option_02 = "ee_export.GEO_JSON"
-    ),
-    KML = list(
-      option_01 = ".kml",
-      option_02 = "ee_export.kml"
-    ),
-    KMZ = list(
-      option_01 = ".kmz",
-      option_02 = "ee_export.kmz"
-    ),
-    SHP = list(
-      option_01 = c(
-        ".dbf",
-        ".shx",
-        ".prj",
-        ".shp"
-      ),
-      option_02 = c(
-        "ee_export.dbf",
-        "ee_export.shx",
-        "ee_export.prj",
-        "ee_export.shp"
-      )
-    ),
-    TF_RECORD_IMAGE = list(
-      option_01 = c(".json", ".tfrecord")
-    ),
-    CTF_RECORD_IMAGE = list(
-      option_01 = c(".json", ".tfrecord.gz")
-    ),
-    TF_RECORD_VECTOR = list(
-      option_01 = ".gz",
-      option_02 = "ee_export.gz"
-    ),
-    CTF_RECORD_VECTOR = list(
-      option_01 = ".gz",
-      option_02 = "ee_export.gz"
-    )
-  )
-  format_suffix[[fileformat]]
-}
-
-#'  Get the file format
-#'  Format available: "GEO_TIFF", "CSV", "GEO_JSON", "KML", "KMZ",
-#'                    "SHP", "TF_RECORD_IMAGE", "CTF_RECORD_IMAGE",
-#'                    "TF_RECORD_VECTOR", "CTF_RECORD_VECTOR"
-#' @noRd
-get_fileformat <- function(task) {
-  ExportOptions <- task$config$fileExportOptions
-  if (ExportOptions$fileFormat == "TFRECORD") {
-    if (task$task_type == "EXPORT_FEATURES") {
-      if (ExportOptions$formatOptions$compressed == TRUE) {
-        "CTF_RECORD_VECTOR"
-      } else {
-        "TF_RECORD_VECTOR"
-      }
-    } else {
-      if (ExportOptions$tfrecordCompressed == TRUE) {
-        "CTF_RECORD_IMAGE"
-      } else {
-        "TFRECORD_IMAGE"
-      }
-    }
-  } else {
-    ExportOptions$fileFormat
-  }
-}
-
 #' Create a download file according to its format
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
@@ -1111,4 +1061,16 @@ ee_sort_localfiles <- function(filenames, fileformat) {
   } else {
     filenames[order(filenames)]
   }
+}
+
+
+#' GCS or Google Drive Exist credentials?
+#' @noRd
+ee_exist_credentials <- function() {
+  ee_path <- path.expand("~/.config/earthengine")
+  read.table(
+    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+    header = TRUE,
+    stringsAsFactors = FALSE
+  )
 }
