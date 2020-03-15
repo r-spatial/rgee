@@ -32,12 +32,15 @@
 #'   \itemize{
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
 #'   }
-#'   \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+#'   \item \strong{centerObject(eeObject, zoom = NULL)}: Centers the
 #'   map view on a given object. If no zoom level is provided, it will
 #'   be predicted according the bounds of the Earth Engine object specified.
 #'   \itemize{
 #'     \item \strong{eeObject:} EE object.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
+#'     \item \strong{maxError:} 	Max error when input
+#'     image must be reprojected to an explicitly
+#'     requested result projection or geodesic state.
 #'   }
 #' }
 #'
@@ -180,12 +183,14 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #'
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
-ee_centerObject <- function(eeObject, zoom = NULL) {
+ee_centerObject <- function(eeObject,
+                            maxError = ee$ErrorMargin(1),
+                            zoom = NULL) {
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
         geometry()$
-        centroid()$
+        centroid(maxError)$
         getInfo() %>%
         '[['('coordinates') %>%
         ee_py_to_r(),
@@ -217,7 +222,7 @@ ee_centerObject <- function(eeObject, zoom = NULL) {
   }
 
   if (is.null(zoom)) {
-    zoom <- ee_getZoom(eeObject)
+    zoom <- ee_getZoom(eeObject, maxError = maxError)
   }
   Map$setCenter(lon = center[1], lat = center[2], zoom = zoom)
 }
@@ -432,6 +437,12 @@ ee_get_spatial_objects <- function(type = "all") {
       "ee.image.Image"
     )
   }
+  if (type == "justfeature") {
+    ee_spatial_object <- c(
+      "ee.feature.Feature",
+      "ee.featurecollection.FeatureCollection"
+    )
+  }
   if (type == "Simple") {
     ee_spatial_object <- c(
       "ee.geometry.Geometry",
@@ -456,8 +467,8 @@ ee_get_spatial_objects <- function(type = "all") {
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
-ee_getZoom <- function(eeObject) {
-  bounds <- ee_get_boundary(eeObject)
+ee_getZoom <- function(eeObject, maxError = ee$ErrorMargin(1)) {
+  bounds <- ee_get_boundary(eeObject, maxError)
 
   WORLD_DIM <- list(height = 256, width = 256)
   ZOOM_MAX <- 18
@@ -486,11 +497,11 @@ ee_getZoom <- function(eeObject) {
 #' Get boundary of a Earth Engine Object
 #' @importFrom sf st_polygon st_bbox
 #' @noRd
-ee_get_boundary <- function(eeObject) {
+ee_get_boundary <- function(eeObject, maxError) {
   if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
     eeObject <- ee$Feature(eeObject)
   }
-  eeObject$geometry()$bounds()$getInfo() %>%
+  eeObject$geometry()$bounds(maxError)$getInfo() %>%
     '[['('coordinates') %>%
     ee_py_to_r() %>%
     unlist() %>%

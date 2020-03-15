@@ -741,15 +741,15 @@ ee_drive_to_local <- function(task,
     files_gd <- try(googledrive::drive_find(
       q = sprintf("'%s' in parents", gd_folder),
       q = sprintf("name contains '%s'", gd_filename)
-    ))
+    ), silent = TRUE)
     while (any(class(files_gd) %in% "try-error") & count < 5) {
       files_gd <- try(googledrive::drive_find(
         q = sprintf("'%s' in parents", gd_folder),
         q = sprintf("name contains '%s'", gd_filename)
-      ))
+      ), silent = TRUE)
       count <- count + 1
     }
-    files_gd$name
+
     # (Problem) Google Drive support files with the same name
     if (nrow(files_gd) > 0) {
       ee_getTime <- function(x) {
@@ -772,16 +772,16 @@ ee_drive_to_local <- function(task,
           )
         }
         if (choices[file_selected] == 'last') {
-          files_gd_todownload <- files_gd[1,]
+          files_gd <- files_gd[1,]
         } else if (choices[file_selected] == 'all') {
-          files_gd_todownload <- files_gd
+          files_gd <- files_gd
         } else {
-          files_gd_todownload <- files_gd[file_selected, ]
+          files_gd <- files_gd[file_selected, ]
         }
       } else if (consider == "last") {
-        files_gd_todownload <- files_gd[1, ]
+        files_gd <- files_gd[1, ]
       } else if (consider == "all") {
-        files_gd_todownload <- files_gd
+        files_gd <- files_gd
       } else {
         stop("consider argument was not defined properly.")
       }
@@ -796,10 +796,10 @@ ee_drive_to_local <- function(task,
     fileformat <- toupper(gd_ExportOptions$fileFormat)
     if (missing(directory)) ee_tempdir <- tempdir()
 
-    filenames_local <- sprintf("%s/%s", ee_tempdir, files_gd_todownload$name)
+    filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gd$name))
 
     # it is necessary for ESRI shapefiles
-    to_download <- sort_drive_files(files_gd_todownload, fileformat)
+    to_download <- sort_drive_files(files_gd, fileformat)
     filenames_local <- ee_sort_localfiles(filenames_local, fileformat)
 
     # if (nrow(to_download) > 4) {
@@ -932,17 +932,19 @@ ee_gcs_to_local <- function(task,
     # Select a gcs file considering the filename and bucket
     count <- 1
     files_gcs <- try(
-      googleCloudStorageR::gcs_list_objects(
+      expr = googleCloudStorageR::gcs_list_objects(
         bucket = gcs_bucket,
         prefix = gcs_filename
-      )
+      ),
+      silent = TRUE
     )
     while (any(class(files_gcs) %in% "try-error") & count < 5) {
       files_gcs <- try(
-        googleCloudStorageR::gcs_list_objects(
+        expr = googleCloudStorageR::gcs_list_objects(
           bucket = gcs_bucket,
           prefix = gcs_filename
-        )
+        ),
+        silent = TRUE
       )
       count <- count + 1
     }
@@ -951,19 +953,30 @@ ee_gcs_to_local <- function(task,
     fileformat <- toupper(gcs_fileFormat)
     if (missing(directory)) ee_tempdir <- tempdir()
 
-    filenames_local <- sprintf("%s/%s", ee_tempdir, files_gcs$name)
+    filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
 
     # It is necessary for ESRI shapefiles
     to_download <- sort_drive_files(files_gcs, fileformat)
     filenames_local <- ee_sort_localfiles(filenames_local, fileformat)
 
     for (index in seq_along(filenames_local)) {
-      googleCloudStorageR::gcs_get_object(
-          object_name = to_download[index,]$name,
-          bucket = gcs_bucket,
-          saveToDisk = filenames_local[index],
-          overwrite = TRUE
-      )
+      if (isTRUE(quiet)) {
+        suppressMessages(
+          googleCloudStorageR::gcs_get_object(
+            object_name = to_download[index,]$name,
+            bucket = gcs_bucket,
+            saveToDisk = filenames_local[index],
+            overwrite = TRUE
+          )
+        )
+      } else {
+        googleCloudStorageR::gcs_get_object(
+            object_name = to_download[index,]$name,
+            bucket = gcs_bucket,
+            saveToDisk = filenames_local[index],
+            overwrite = TRUE
+        )
+      }
     }
     read_filenames(filenames_local, fileformat, quiet = quiet)
   }
@@ -1031,7 +1044,7 @@ read_filenames <- function(filename, fileformat, quiet) {
         fileformat
       ))
     }
-    invisible(TRUE)
+    invisible(filename)
   }
 }
 

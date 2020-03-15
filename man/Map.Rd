@@ -32,12 +32,15 @@ is provided, it uses 1 by default.
 \itemize{
 \item \strong{zoom:} The zoom level, from 1 to 24.
 }
-\item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+\item \strong{centerObject(eeObject, zoom = NULL)}: Centers the
 map view on a given object. If no zoom level is provided, it will
 be predicted according the bounds of the Earth Engine object specified.
 \itemize{
 \item \strong{eeObject:} EE object.\cr
 \item \strong{zoom:} The zoom level, from 1 to 24.
+\item \strong{maxError:} 	Max error when input
+image must be reprojected to an explicitly
+requested result projection or geodesic state.
 }
 }}
 \usage{

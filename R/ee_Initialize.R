@@ -414,11 +414,18 @@ ee_user_info <- function() {
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
   cat(crayon::blue('Google Drive Credentials:'),
       crayon::green(basename(gd)), '\n')
+  email_drive <- sub("[^_]+_(.*)@.*", "\\1", basename(gd))
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
   cat(crayon::blue('Google Cloud Storage Credentials:'),
       crayon::green(basename(gcs)), '\n')
+
+  ee_user <- ee_exist_credentials()
+  if (isFALSE(grepl(email_drive, ee_user$email))) {
+    warning("Google Drive does not match with your",
+            "Earth Engine account.")
+  }
 }
 
 #' Create session info of the last init inside the

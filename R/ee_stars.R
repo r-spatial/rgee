@@ -49,20 +49,25 @@
 #' library(raster)
 #' library(stars)
 #' library(rgee)
-#' # Initialize a specific Earth Engine account and
-#' # load Google Drive and Google Cloud Storage credentials
+#'
+#' # Initialize a specific Earth Engine account and load
+#' # either Google Drive or Google Cloud Storage credentials
 #' ee_reattach()
 #' ee_Initialize(
 #'   email = "data.colec.fbf@gmail.com",
 #'   drive = TRUE,
 #'   gcs = TRUE
 #' )
+#' ee_user_info()
 #'
 #' # Define an image.
 #' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
-#'   select(c("B4", "B5", "B6"))
-#' Map$centerObject(img)
-#' Map$addLayer(img)
+#'   select(c("B4", "B3", "B2"))$
+#'   divide(10000)
+#'
+#' # OPTIONAL display it using Map
+#' Map$centerObject(eeObject = img)
+#' Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
 #'
 #' # Define an area of interest.
 #' geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
@@ -73,18 +78,30 @@
 #'   region = geometry,
 #'   via = "getInfo"
 #' )
+#'
 #' ## drive - Method 02
 #' img_stars_02 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
+#'
 #' ## gcs - Method 03
 #' img_stars_03 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
 #'   container = "rgee_dev",
 #'   via = "gcs"
+#' )
+#'
+#' # OPTIONAL: Delete containers
+#' ee_clean_container(
+#'   name = "rgee_backup",
+#'   type = "drive"
+#' )
+#' ee_clean_container(
+#'   name = "rgee_dev",
+#'   type = "gcs"
 #' )
 #' }
 #' @export
@@ -248,12 +265,11 @@ ee_as_stars <- function(image,
       )
     if (!quiet) {
       cat(
-        '- region parameters',
-        '\nWKT      :', st_as_text(sf_region),
-        '\nCRS      :', ee_crs,
-        '\ngeodesic :', is_geodesic,
-        '\nevenOdd  :', is_evenodd,
-        '\n'
+        '- region parameters\n',
+        'WKT      :', st_as_text(sf_region), "\n",
+        'CRS      :', ee_crs, "\n",
+        'geodesic :', is_geodesic, "\n",
+        'evenOdd  :', is_evenodd, "\n"
       )
     }
     # FeatureCollection as a List
@@ -354,11 +370,10 @@ ee_as_stars <- function(image,
     if (!quiet) {
       cat(
         '- region parameters\n',
-        '\rWKT      :', st_as_text(sf_region),
-        '\nCRS      :', ee_crs,
-        '\ngeodesic :', is_geodesic,
-        '\nevenOdd  :', is_evenodd,
-        '\n'
+        'WKT      :', st_as_text(sf_region), "\n",
+        'CRS      :', ee_crs, "\n",
+        'geodesic :', is_geodesic, "\n",
+        'evenOdd  :', is_evenodd, "\n"
       )
     }
     img_task <- ee_image_to_drive(
@@ -385,7 +400,7 @@ ee_as_stars <- function(image,
       ee_monitoring(task = img_task, quiet = quiet)
     }
     # From Google Drive to local
-    image_stars <- ee_drive_to_local(task = img_task)
+    image_stars <- ee_drive_to_local(task = img_task, consider = 'all')
     if (length(band_names) > 1) {
       st_set_dimensions(image_stars, 3, values = band_names)
     } else {
@@ -414,11 +429,10 @@ ee_as_stars <- function(image,
     if (!quiet) {
       cat(
         '- region parameters\n',
-        '\rWKT      :', st_as_text(sf_region),
-        '\nCRS      :', ee_crs,
-        '\ngeodesic :', is_geodesic,
-        '\nevenOdd  :', is_evenodd,
-        '\n'
+        'WKT      :', st_as_text(sf_region), "\n",
+        'CRS      :', ee_crs, "\n",
+        'geodesic :', is_geodesic, "\n",
+        'evenOdd  :', is_evenodd, "\n"
       )
     }
     # From Earth Engine to Google Cloud Storage
@@ -436,7 +450,7 @@ ee_as_stars <- function(image,
         "\n- download parameters (Google Cloud Storage)\n",
         "Image ID    :", image_id,
         "Google user :", ee_user$email, "\n",
-        "Folder name :", container, "\n",
+        "Bucket name :", container, "\n",
         "Date        :", time_format, "\n"
       )
     }
@@ -498,9 +512,15 @@ ee_clean_container <- function(name = "rgee_backup",
       )
     }
     count <- 1
-    try_gd_rm <- try(googledrive::drive_rm(name, verbose = !quiet))
+    try_gd_rm <- try(
+      expr = googledrive::drive_rm(name, verbose = !quiet),
+      silent = TRUE
+    )
     while (class(try_gd_rm) == "try-error" & count < 5) {
-      try_gd_rm <- try(googledrive::drive_rm(name, verbose = !quiet))
+      try_gd_rm <- try(
+        expr = googledrive::drive_rm(name, verbose = !quiet),
+        silent = TRUE
+      )
       count <- count + 1
     }
   } else if (type == "gcs") {
@@ -520,7 +540,7 @@ ee_clean_container <- function(name = "rgee_backup",
     }
     if (isFALSE(quiet)) {
       googleCloudStorageR::gcs_global_bucket(name)
-      buckets <- googleCloudStorageR::gcs_list_objects()
+      buckets <- googleCloudStorageR::gcs_list_objects(bucket = )
       gcs_todelete <- buckets$name
       mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
     } else {
