@@ -1,20 +1,20 @@
-#' Convert an Earth Engine (EE) image in a stars object
+#' Convert an Earth Engine (EE) image into a stars object
 #' @param image ee$Image to be converted into a sf object
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
-#' forced. If it is not specified image bounds will be taken.
+#' forced. If not specified, image bounds will be taken.
 #' @param scale The resolution in meters per pixel. If scale
-#' is NULL, the native resolution of the first band will be
+#' is set to NULL, the native resolution of the first band will be
 #' taken.
 #' @param geodesic Whether line segments of region should be interpreted as
 #' spherical geodesics. If FALSE, indicates that line segments should be
-#' interpreted as planar lines in the specified CRS. If it is not specified in
+#' interpreted as planar lines in the specified CRS. If not specified in
 #' the geometry (region argument) defaults to TRUE if the CRS is geographic
 #' (including the default EPSG:4326), or to FALSE if the CRS is projected.
 #' @param evenOdd If TRUE, polygon interiors will be determined by
 #' the even/odd rule, where a point is inside if it crosses an odd
 #' number of edges to reach a point at infinity. Otherwise polygons
-#' use the left- inside rule, where interiors are on the left side
+#' use the left-inside rule, where interiors are on the left side
 #' of the shell's edges when walking the vertices in the given order.
 #' If unspecified in the geometry (region argument) defaults to FALSE.
 #' @param maxPixels The maximum allowed number of pixels in the
@@ -26,7 +26,7 @@
 #' defined as 'drive' or 'gcs'. It is the name of a unique
 #' folder ('drive') or bucket ('gcs') to export into.
 #' @param monitoring Relevant when the "via" argument is
-#' defined as 'drive' or 'gcs'.If it is FALSE, ee_as_stars will wait
+#' defined as 'drive' or 'gcs'.If FALSE, ee_as_stars will wait
 #' until the task is finished.
 #' @param quiet logical. Suppress info message
 #' @importFrom jsonlite parse_json
