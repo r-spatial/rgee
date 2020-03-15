@@ -4,13 +4,15 @@
 \alias{ee_monitoring}
 \title{Monitoring Earth Engine task progress}
 \usage{
-ee_monitoring(task, eeTaskList = FALSE)
+ee_monitoring(task, quiet = FALSE, eeTaskList = FALSE)
 }
 \arguments{
 \item{task}{List generated after an EE task has been successfully completed.}
 
-\item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will
+\item{quiet}{logical. Suppress info message
 be listed.}
+
+\item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will}
 }
 \description{
 Monitoring Earth Engine task progress

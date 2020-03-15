@@ -95,6 +95,7 @@ ee_as_sf <- function(x,
   x_fc <- ee$FeatureCollection(x)
 
   if (via == "getInfo") {
+    x_fc <- x_fc$getInfo()
     class(x_fc) <- "geo_list"
     geojson_sf(x_fc)
   } else if (via == "drive") {
@@ -134,7 +135,7 @@ ee_as_sf <- function(x,
     }
     table_task$start()
     if (isTRUE(monitoring)) {
-      ee_monitoring(table_task)
+      ee_monitoring(task = table_task, quiet = quiet)
     }
     ee_drive_to_local(table_task)
   } else if (via == 'gcs') {
@@ -175,7 +176,7 @@ ee_as_sf <- function(x,
     }
     table_task$start()
     if (isTRUE(monitoring)) {
-      ee_monitoring(table_task)
+      ee_monitoring(task = table_task, quiet = quiet)
     }
     ee_gcs_to_local(table_task)
   } else {

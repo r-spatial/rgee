@@ -148,7 +148,7 @@ ee_set_pyenv <- function(python_path,
     # if (restart_session && hasFun("restartSession")) {
     #   restartSession()
     # }
-    if (confirm) {
+    if (isTRUE(confirm)) {
       title <- paste0(
         "rgee needs to restart R session to see changes.\n",
         "Do you want to continues?"

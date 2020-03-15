@@ -4,20 +4,19 @@
 \alias{ee_drive_to_local}
 \title{Move results from Google Drive to a local directory}
 \usage{
-ee_drive_to_local(task, filename, overwrite = FALSE, st = TRUE,
-  quiet = FALSE)
+ee_drive_to_local(task, directory, overwrite = TRUE,
+  consider = interactive(), quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Character. Output filename. If missing, a temporary
-file is created.}
+\item{directory}{Character. Output directory. If missing, a temporary
+directory will be asigned.}
 
 \item{overwrite}{A boolean argument which indicates indicating
-whether "filename" should be overwritten.}
+whether "filename" should be overwritten. By default it is TRUE.}
 
-\item{st}{logical. By default it is TRUE, returning a sf (stars)
-object for EE tables (images). If FALSE, the output filename is returned.}
+\item{consider}{Character. See details.}
 
 \item{quiet}{logical. Suppress info message}
 }
@@ -31,6 +30,14 @@ Move results of an EE saved in Google Drive to a local directory.
 The task argument needs a status as task "COMPLETED" to work, since the
 parameters necessary to locate the file into google drive are obtained
 from ee$batch$Export$*$toDrive(...)$start()$status().
+
+Google Drive permits users to create files with the same name. The
+argument "consider", which use an interactive R session by default,
+is created to help users to deal with it. If it is specified
+as 'last', and exist multiple files (images or vectors) with
+the same filename, ee_drive_to_local will download just the last
+file saved. On the another hand, if it is specified as 'all', all
+files will be download.
 }
 \examples{
 \dontrun{

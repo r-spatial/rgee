@@ -253,8 +253,8 @@ ee_as_stars <- function(image,
       )
     if (!quiet) {
       cat(
-        '- region parameters\n',
-        '\rWKT      :', st_as_text(sf_region),
+        '- region parameters',
+        '\nWKT      :', st_as_text(sf_region),
         '\nCRS      :', ee_crs,
         '\ngeodesic :', is_geodesic,
         '\nevenOdd  :', is_evenodd,
@@ -379,18 +379,18 @@ ee_as_stars <- function(image,
     if (!quiet) {
       cat(
         "\n- download parameters (Google Drive)\n",
-        "\rImage ID    :", image_id,
-        "\rGoogle user :", ee_user$email, "\n",
-        "\rFolder name :", container, "\n",
-        "\rDate        :", time_format, "\n"
+        "Image ID    :", image_id, "\n",
+        "Google user :", ee_user$email, "\n",
+        "Folder name :", container, "\n",
+        "Date        :", time_format, "\n"
       )
     }
     img_task$start()
     if (isTRUE(monitoring)) {
-      ee_monitoring(img_task)
+      ee_monitoring(task = img_task, quiet = quiet)
     }
     # From Google Drive to local
-    image_stars <- ee_drive_to_local(img_task)
+    image_stars <- ee_drive_to_local(task = img_task)
     if (length(band_names) > 1) {
       st_set_dimensions(image_stars, 3, values = band_names)
     } else {
@@ -439,15 +439,15 @@ ee_as_stars <- function(image,
     if (!quiet) {
       cat(
         "\n- download parameters (Google Cloud Storage)\n",
-        "\rImage ID    :", image_id,
-        "\rGoogle user :", ee_user$email, "\n",
-        "\rFolder name :", container, "\n",
-        "\rDate        :", time_format, "\n"
+        "Image ID    :", image_id,
+        "Google user :", ee_user$email, "\n",
+        "Folder name :", container, "\n",
+        "Date        :", time_format, "\n"
       )
     }
     img_task$start()
     if (isTRUE(monitoring)) {
-      ee_monitoring(img_task)
+      ee_monitoring(task = img_task, quiet = quiet)
     }
     # From Google Cloud Storage to local
     image_stars <- ee_gcs_to_local(img_task)
