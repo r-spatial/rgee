@@ -16,7 +16,7 @@
 #' acquisition time for single scenes.
 #' @param selenium_params List. Optional parameters when bucket is NULL.
 #' For parameters to set selenium. See details.
-#' @param clean Logical; If is TRUE the cache is cleaned, see Description.
+#' @param clean Logical; If TRUE, the cache is cleaned, see Description.
 #' @param reinit Logical; run ee_Initialize(gcs=TRUE) before uploading.
 #' @param quiet Logical. Suppress info message.
 #' @param ... ignored
@@ -38,7 +38,7 @@
 #' \link{ee_manage_set_properties} and then \link{ee_upload}.
 #'
 #' The selenium_params argument is a three-element list which consists of:\cr
-#'  - gmail_account: Google account. If it is not specified, it will
+#'  - gmail_account: Google account. If not specified, it will
 #'  obtained from rgee::ee_user_info().\cr
 #'  - showpassword: Logical. Once google account is filled into
 #'  \link[getPass]{getPass}, should be shown?.
