@@ -5,7 +5,7 @@
 #'
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
-#' @param folder The name of a unique folder in your Drive account to export
+#' @param folder The name of a unique folder in your Drive account to be exported
 #' into. Defaults to the root of the drive.
 #' @param fileNamePrefix The Google Drive filename for the export. Defaults to
 #' the name of the task.
@@ -34,8 +34,8 @@
 #' single number to indicate a square shape, or a list of two dimensions
 #' to indicate (width,height). Note that the image will still be clipped
 #' to the overall image dimensions. Must be a multiple of shardSize.
-#' @param skipEmptyTiles If true, skip writing empty (i.e. fully-masked)
-#' image tiles. Defaults to false.
+#' @param skipEmptyTiles If TRUE, skip writing empty (i.e. fully-masked)
+#' image tiles. Defaults to FALSE.
 #' @param fileFormat The string file format to which the image is exported.
 #' Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'.
 #' @param formatOptions A dictionary of string keys to format specific
@@ -176,8 +176,8 @@ ee_image_to_drive <- function(image,
 #' number to indicate a square shape, or a list of two dimensions to
 #' indicate (width,height). Note that the image will still be clipped to
 #' the overall image dimensions. Must be a multiple of shardSize.
-#' @param skipEmptyTiles If true, skip writing empty (i.e. fully-masked)
-#' image tiles. Defaults to false.
+#' @param skipEmptyTiles If TRUE, skip writing empty (i.e. fully-masked)
+#' image tiles. Defaults to FALSE.
 #' @param fileFormat The string file format to which the image is exported.
 #' Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
 #' to 'GeoTIFF'.
@@ -645,9 +645,9 @@ ee_table_to_asset <- function(collection,
 #' as 'last', and exist multiple files (images or vectors) with
 #' the same filename, ee_drive_to_local will download just the last
 #' file saved. On the another hand, if it is specified as 'all', all
-#' files will be download.
+#' files will be downloaded.
 #' @return
-#' An sf, stars or character depending on the retunclass argument.
+#' An sf, stars, or character depending on the retunclass argument.
 #' @importFrom stars read_stars
 #' @importFrom utils menu
 #' @examples
