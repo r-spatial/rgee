@@ -27,7 +27,7 @@ ee_create_pyenv <- function(python_env) {
 #' This function enables callers to check which versions
 #' of Python will be discovered on a system.
 #'
-#' @param use_py_discover_config Logical. If True
+#' @param use_py_discover_config Logical. If TRUE
 #' will use \code{\link[reticulate]{py_discover_config}} to find
 #' versions of Python in the system.  Otherwise, will use
 #' \code{\link[reticulate]{conda_list}} for Window OS and
