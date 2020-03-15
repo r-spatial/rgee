@@ -5,7 +5,7 @@
 #'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
-#' @param clean Logical. If it is TRUE the cache will be cleaned.
+#' @param clean Logical. If TRUE, the cache will be cleaned.
 #' @param max_display Set the max number of properties to display.
 #' @importFrom sf st_crs
 #' @examples
