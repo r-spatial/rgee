@@ -78,7 +78,7 @@ create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
 #' @param bucket bucketname you are uploading to
 #' @param selenium_params List. Optional parameters when bucket is NULL.
 #' Parameters for setting selenium. See details.
-#' @param clean Logical; Whether is TRUE cache will cleaned, see Details.
+#' @param clean Logical; If TRUE, cache will cleaned, see Details.
 #' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
 #' @param quiet Logical. Suppress info message.
 #' @importFrom getPass getPass
