@@ -5,7 +5,7 @@
 #' ee$Date or unix time stamp.
 #'
 #' @param date R date object
-#' @param eeobject Logical. Whether TRUE, it will return
+#' @param eeobject Logical. If TRUE, return
 #' a ee$object otherwise return the date in milliseconds.
 #' @examples
 #' library(rgee)
@@ -36,7 +36,7 @@ rdate_to_eedate <- function(date, eeobject = TRUE) {
 #' to as.POSIXct or numeric (unix time stamp)
 #'
 #' @param ee_date EE date object (ee$Date)
-#' @param js Logical. Whether TRUE, it will return a numeric
+#' @param js Logical. If TRUE, return a numeric
 #' date otherwise return the date as a POSIXct object.
 #' @examples
 #' library(rgee)
@@ -61,12 +61,12 @@ eedate_to_rdate <- function(ee_date, js = FALSE) {
 #' Get the date of a Earth Engine Image
 #'
 #' @param image The Earth Engine Image
-#' @param time_end Logical. If it is TRUE the
+#' @param time_end Logical. If TRUE, the
 #' system:time_end property will also be returned.
 #' See details.
 #' @details
 #' The properties system:time_start and system:time_end represent the
-#' images date based on a timestamp in milliseconds
+#' image dates based on a timestamp in milliseconds
 #' since the UNIX epoch. The system:time_start set the
 #' start period while system:time_end the end period. See
 #' this \href{https://developers.google.com/earth-engine/glossary}{link}
