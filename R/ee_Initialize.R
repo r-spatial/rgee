@@ -1,8 +1,8 @@
 #' Authenticate and Initialize Earth Engine
 #'
-#' Authorize rgee to manage Earth Engine resource, Google
-#' Drive and Google Cloud Storage. The \code{ee_initialize()} via
-#' web-browser asked to sign in to your Google account and
+#' Authorize rgee to manage Earth Engine resources, Google
+#' Drive, and Google Cloud Storage. The \code{ee_initialize()} via
+#' web-browser will ask to sign in to your Google account and
 #' allows you to grant permission to manage resources. This function is
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
@@ -10,9 +10,9 @@
 #' name is used as a folder inside the path `rgee::ee_get_earthengine_path()`.
 #' This enable a multi-user support allowing to target a specific
 #' Google identity.
-#' @param drive Logical (optional). If TRUE the drive credential
+#' @param drive Logical (optional). If TRUE, the drive credential
 #' will be cached in the path `rgee::ee_get_earthengine_path()`.
-#' @param gcs logical. If TRUE the Google Cloud Storage
+#' @param gcs logical. If TRUE, the Google Cloud Storage
 #' credential will be cached in the path `rgee::ee_get_earthengine_path()`.
 #' @param quiet logical. Suppress info messages.
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -21,9 +21,9 @@
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
-#' googlecloudStorageR respectively. By default, rgee does not need to them,
-#' these are just necessary for export and import tasks.
-#' All the user credentials are saved in directory
+#' googlecloudStorageR, respectively. By default, rgee does not require them,
+#' these are only necessary for exporting and importing tasks.
+#' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specified the
 #' the email argument all user credentials will be saved in a subdirectory
 #' called ndef.
@@ -208,13 +208,13 @@ ee_Initialize <- function(email = NULL,
 #' Authorize rgee to view and manage your Earth Engine account.
 #' This is a three-step function:
 #' \itemize {
-#' \item First get the full path name of the EE credentials
+#' \item First get the full path name of the Earth Engine credentials
 #' considering the email address.
 #' \item Second, use the file.copy function to set up the
 #' "credentials" file, so that the Earth Engine Python API can read it.
 #' \item Finally, if the file.copy fails at copy it, the credentials
 #' will download from Internet, you will be directed to a web browser.
-#' Just sign in to your Google account to be granted rgee
+#' Sign in to your Google account to be granted rgee
 #' permission to operate on your behalf with Google Earth Engine.
 #' These user credentials are cached in a folder below your
 #' home directory, `rgee::ee_get_earthengine_path()`, from
@@ -349,7 +349,7 @@ ee_create_credentials_gcs <- function(email) {
 
 #' Display credentials of all users as a table
 #'
-#' Display Earth Engine, Google Drive and Google Cloud Storage Credentials as
+#' Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 #' a table.
 #' @examples
 #' \dontrun{
