@@ -16,7 +16,7 @@
 #' @param editor Character vector. Define editor users in the IAM Policy.
 #' @param viewer Character vector. Define viewer users in the IAM Policy.
 #' @param all_users_can_read Logical. All users can see the asset element.
-#' @param cache Logical. Whether is TRUE, the task report will be saved
+#' @param cache Logical. If TRUE, the task report will be saved
 #' in the /temp directory and used when the function .
 #' @param quiet Logical. Suppress info message.
 #' @importFrom stats na.omit
