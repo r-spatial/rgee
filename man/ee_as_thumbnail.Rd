@@ -11,8 +11,8 @@ ee_as_thumbnail(x, region, dimensions, vizparams = NULL,
 \item{x}{EE Image object}
 
 \item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
-CRS needs to be the same that the x argument otherwise it will be
-forced. If it is not specified image bounds will be taken.}
+CRS needs to be the same as the x argument, otherwise, it will be
+forced. If not specified, image bounds will be taken.}
 
 \item{dimensions}{A number or pair of numbers in format XY.}
 
@@ -20,14 +20,14 @@ forced. If it is not specified image bounds will be taken.}
 
 \item{geodesic}{Whether line segments of region should be interpreted as
 spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If it is not specified in
-the geometry (region argument) defaults to TRUE if the CRS is geographic
+interpreted as planar lines in the specified CRS. If not specified in
+the geometry (region argument), defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.}
 
 \item{evenOdd}{If TRUE, polygon interiors will be determined by
 the even/odd rule, where a point is inside if it crosses an odd
 number of edges to reach a point at infinity. Otherwise polygons
-use the left- inside rule, where interiors are on the left side
+use the left-inside rule, where interiors are on the left side
 of the shell's edges when walking the vertices in the given order.
 If unspecified in the geometry (region argument) defaults to TRUE.}
 
@@ -37,14 +37,14 @@ If unspecified in the geometry (region argument) defaults to TRUE.}
 An \link[sf]{sf} object
 }
 \description{
-Download EE thumbnail images and read them as stars objects.
+Download EE thumbnail images and read them as star objects.
 This function is a wrapper around \code{ee$Image()$getThumbURL()}.
 }
 \details{
 The argument dimensions will define the stars object parameters
 "from" & "to". It must be a single numeric value or a two-element vector.
 If not defined, 256 is taken by default as the dimension of x
-(from 1 to 256), and y scales down proportionally. Huge images
+(from 1 to 256), and y scales down proportionally. Large images
 might cause plodding connections. See
 \href{https://developers.google.com/earth-engine/client_server}{Client vs
 Server} for more details.

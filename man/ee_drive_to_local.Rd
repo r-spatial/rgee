@@ -21,7 +21,7 @@ whether "filename" should be overwritten. By default it is TRUE.}
 \item{quiet}{logical. Suppress info message}
 }
 \value{
-An sf, stars or character depending on the retunclass argument.
+An sf, stars, or character depending on the retunclass argument.
 }
 \description{
 Move results of an EE saved in Google Drive to a local directory.
@@ -37,7 +37,7 @@ is created to help users to deal with it. If it is specified
 as 'last', and exist multiple files (images or vectors) with
 the same filename, ee_drive_to_local will download just the last
 file saved. On the another hand, if it is specified as 'all', all
-files will be download.
+files will be downloaded.
 }
 \examples{
 \dontrun{

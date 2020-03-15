@@ -13,27 +13,27 @@ name is used as a folder inside the path \code{rgee::ee_get_earthengine_path()}.
 This enable a multi-user support allowing to target a specific
 Google identity.}
 
-\item{drive}{Logical (optional). If TRUE the drive credential
+\item{drive}{Logical (optional). If TRUE, the drive credential
 will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
-\item{gcs}{logical. If TRUE the Google Cloud Storage
+\item{gcs}{logical. If TRUE, the Google Cloud Storage
 credential will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
 \item{quiet}{logical. Suppress info messages.}
 }
 \description{
-Authorize rgee to manage Earth Engine resource, Google
-Drive and Google Cloud Storage. The \code{ee_initialize()} via
-web-browser asked to sign in to your Google account and
+Authorize rgee to manage Earth Engine resources, Google
+Drive, and Google Cloud Storage. The \code{ee_initialize()} via
+web-browser will ask to sign in to your Google account and
 allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
 \code{ee_Initialize(...)} can also manage Google drive and Google
 Cloud Storage resources using the R packages googledrive and
-googlecloudStorageR respectively. By default, rgee does not need to them,
-these are just necessary for export and import tasks.
-All the user credentials are saved in directory
+googlecloudStorageR, respectively. By default, rgee does not require them,
+these are only necessary for exporting and importing tasks.
+All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specified the
 the email argument all user credentials will be saved in a subdirectory
 called ndef.

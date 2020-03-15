@@ -9,7 +9,7 @@ ee_get_date(image, time_end = FALSE)
 \arguments{
 \item{image}{The Earth Engine Image}
 
-\item{time_end}{Logical. If it is TRUE the
+\item{time_end}{Logical. If TRUE, the
 system:time_end property will also be returned.
 See details.}
 }
@@ -18,7 +18,7 @@ Get the date of a Earth Engine Image
 }
 \details{
 The properties system:time_start and system:time_end represent the
-images date based on a timestamp in milliseconds
+image dates based on a timestamp in milliseconds
 since the UNIX epoch. The system:time_start set the
 start period while system:time_end the end period. See
 this \href{https://developers.google.com/earth-engine/glossary}{link}

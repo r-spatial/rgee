@@ -10,7 +10,7 @@ ee_image_dim(image, getsize = TRUE, compression_ratio = 12,
 \arguments{
 \item{image}{Earth Engine Object.}
 
-\item{getsize}{Logical. If it is TRUE the size of the object
+\item{getsize}{Logical. If TRUE, the size of the object
 will be estimated.}
 
 \item{compression_ratio}{Numeric. It is relevant just when
@@ -24,7 +24,7 @@ by a data compression algorithm. By default is 12.}
 A list of parameters
 }
 \description{
-Get the approximate number of rows, cols and size of a
+Get the approximate number of rows, cols, and size of an
 Earth Engine Image.
 }
 \examples{

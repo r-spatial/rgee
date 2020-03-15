@@ -30,7 +30,7 @@ ee_print(eeobject, clean = FALSE, max_display = 0)
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
 
-\item{clean}{Logical. If it is TRUE the cache will be cleaned.}
+\item{clean}{Logical. If TRUE, the cache will be cleaned.}
 
 \item{max_display}{Set the max number of properties to display.}
 }

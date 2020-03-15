@@ -66,7 +66,7 @@ details.}
 
 \item{all_users_can_read}{Logical. All users can see the asset element.}
 
-\item{cache}{Logical. Whether is TRUE, the task report will be saved
+\item{cache}{Logical. If TRUE, the task report will be saved
 in the /temp directory and used when the function .}
 }
 \description{

@@ -4,19 +4,16 @@
 \alias{ee_gcs_to_local}
 \title{Move results from Google Cloud Storage to a local directory}
 \usage{
-ee_gcs_to_local(task, filename, overwrite = FALSE,
-  GCS_AUTH_FILE = getOption("rgee.gcs.auth"), quiet = TRUE)
+ee_gcs_to_local(task, directory, overwrite = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Output filename.}
+\item{directory}{Character. Output directory. If missing, a temporary
+directory will be asigned.}
 
-\item{overwrite}{A boolean indicating whether "filename" should
+\item{overwrite}{A boolean indicating whether the file should
 be overwritten.}
-
-\item{GCS_AUTH_FILE}{Authentication json file you have downloaded from
-your Google Cloud Project}
 
 \item{quiet}{Logical. Suppress info message}
 }

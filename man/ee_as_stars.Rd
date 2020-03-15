@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_stars.R
 \name{ee_as_stars}
 \alias{ee_as_stars}
-\title{Convert an Earth Engine (EE) image in a stars object}
+\title{Convert an Earth Engine (EE) image into a stars object}
 \usage{
 ee_as_stars(image, region, scale = NULL, geodesic = NULL,
   evenOdd = NULL, maxPixels = 1e+09, monitoring = TRUE,
@@ -13,22 +13,22 @@ ee_as_stars(image, region, scale = NULL, geodesic = NULL,
 
 \item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
 CRS needs to be the same that the x argument otherwise it will be
-forced. If it is not specified image bounds will be taken.}
+forced. If not specified, image bounds will be taken.}
 
 \item{scale}{The resolution in meters per pixel. If scale
-is NULL, the native resolution of the first band will be
+is set to NULL, the native resolution of the first band will be
 taken.}
 
 \item{geodesic}{Whether line segments of region should be interpreted as
 spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If it is not specified in
+interpreted as planar lines in the specified CRS. If not specified in
 the geometry (region argument) defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.}
 
 \item{evenOdd}{If TRUE, polygon interiors will be determined by
 the even/odd rule, where a point is inside if it crosses an odd
 number of edges to reach a point at infinity. Otherwise polygons
-use the left- inside rule, where interiors are on the left side
+use the left-inside rule, where interiors are on the left side
 of the shell's edges when walking the vertices in the given order.
 If unspecified in the geometry (region argument) defaults to FALSE.}
 
@@ -37,7 +37,7 @@ exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
 
 \item{monitoring}{Relevant when the "via" argument is
-defined as 'drive' or 'gcs'.If it is FALSE, ee_as_stars will wait
+defined as 'drive' or 'gcs'.If FALSE, ee_as_stars will wait
 until the task is finished.}
 
 \item{via}{Method to download the image. Three methods
@@ -54,7 +54,7 @@ A stars object, when via argument was defined as 'getInfo'. For
 other cases will return a stars-proxy object.
 }
 \description{
-Convert an Earth Engine (EE) image in a stars object
+Convert an Earth Engine (EE) image into a stars object
 }
 \details{
 The process to pass a ee$Image to your local env could be carried

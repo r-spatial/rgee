@@ -9,7 +9,7 @@ eedate_to_rdate(ee_date, js = FALSE)
 \arguments{
 \item{ee_date}{EE date object (ee$Date)}
 
-\item{js}{Logical. Whether TRUE, it will return a numeric
+\item{js}{Logical. If TRUE, return a numeric
 date otherwise return the date as a POSIXct object.}
 }
 \description{

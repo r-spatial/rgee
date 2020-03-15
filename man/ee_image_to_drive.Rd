@@ -15,7 +15,7 @@ ee_image_to_drive(image, description = "myExportImageTask",
 
 \item{description}{Human-readable name of the task.}
 
-\item{folder}{The name of a unique folder in your Drive account to export
+\item{folder}{The name of a unique folder in your Drive account to be exported
 into. Defaults to the root of the drive.}
 
 \item{fileNamePrefix}{The Google Drive filename for the export. Defaults to
@@ -54,8 +54,8 @@ single number to indicate a square shape, or a list of two dimensions
 to indicate (width,height). Note that the image will still be clipped
 to the overall image dimensions. Must be a multiple of shardSize.}
 
-\item{skipEmptyTiles}{If true, skip writing empty (i.e. fully-masked)
-image tiles. Defaults to false.}
+\item{skipEmptyTiles}{If TRUE, skip writing empty (i.e. fully-masked)
+image tiles. Defaults to FALSE.}
 
 \item{fileFormat}{The string file format to which the image is exported.
 Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'.}

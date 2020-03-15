@@ -9,7 +9,7 @@ rdate_to_eedate(date, eeobject = TRUE)
 \arguments{
 \item{date}{R date object}
 
-\item{eeobject}{Logical. Whether TRUE, it will return
+\item{eeobject}{Logical. If TRUE, return
 a ee$object otherwise return the date in milliseconds.}
 }
 \description{
