@@ -3,14 +3,14 @@
 #' @param x EE table to be converted into a sf object.
 #' @param container Relevant when the "via" argument is
 #' defined as "drive" or "gcs". It is the name of a unique
-#' folder ('drive') or bucket ('gcs') to export into.
+#' folder ('drive') or bucket ('gcs') to be exported into.
 #' @param via Method to download the image. Three methods
-#' are implemented 'getInfo', 'drive' and 'gcs'. See details.
+#' are implemented 'getInfo', 'drive', and 'gcs'. See details.
 #' @param selectors The list of properties to include in
 #' the output, as a list of strings or a comma-separated
 #' string. By default, all properties are included.
 #' @param monitoring Relevant when the "via" argument is
-#' defined as 'drive' or 'gcs'. If is FALSE, ee_as_sf
+#' defined as 'drive' or 'gcs'. If FALSE, ee_as_sf
 #' will wait until finishing the task.
 #' @param quiet logical. Suppress info message
 #' @importFrom geojsonio geojson_sf
@@ -19,12 +19,12 @@
 #' The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
 #' your local env could be carried out by three different strategies. The
 #' first one ('getInfo') use the getInfo method, which fetch and return
-#' information about Earth Engine objects, the advantage of use this is
+#' information about Earth Engine objects, the advantage of use this strategy is
 #' a direct and fast download. However, there is a limit of 5000 features
-#' that can be transferred by request which makes it unsatisfactory for
-#' large collections. The second ('drive') and third ('gcs') method are
-#' suitable for large images since it use Google Drive and Google Cloud
-#' Storage as a intermediate container.
+#' that can be transferred by request which makes it not recommendable for
+#' large collections. The second ('drive') and third ('gcs') methods are
+#' suitable for large images since it uses Google Drive and Google Cloud
+#' Storage as intermediate containers.
 #' @return An sf object.
 #' @examples
 #' \dontrun{
