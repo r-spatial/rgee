@@ -5,8 +5,8 @@
 \title{Convert an Earth Engine (EE) image into a stars object}
 \usage{
 ee_as_stars(image, region, scale = NULL, geodesic = NULL,
-  evenOdd = NULL, maxPixels = 1e+09, monitoring = TRUE,
-  via = "getInfo", container = "rgee_backup", quiet = FALSE)
+  evenOdd = NULL, maxPixels = 1e+09, via = "getInfo",
+  container = "rgee_backup", quiet = FALSE)
 }
 \arguments{
 \item{image}{ee$Image to be converted into a sf object}
@@ -35,10 +35,6 @@ If unspecified in the geometry (region argument) defaults to FALSE.}
 \item{maxPixels}{The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
-
-\item{monitoring}{Relevant when the "via" argument is
-defined as 'drive' or 'gcs'.If FALSE, ee_as_stars will wait
-until the task is finished.}
 
 \item{via}{Method to download the image. Three methods
 are implemented 'getInfo', 'drive' and 'gcs'. See details.}
@@ -72,20 +68,25 @@ container.
 library(raster)
 library(stars)
 library(rgee)
-# Initialize a specific Earth Engine account and
-# load Google Drive and Google Cloud Storage credentials
+
+# Initialize a specific Earth Engine account and load
+# either Google Drive or Google Cloud Storage credentials
 ee_reattach()
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )
+ee_user_info()
 
 # Define an image.
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
-  select(c("B4", "B5", "B6"))
-Map$centerObject(img)
-Map$addLayer(img)
+  select(c("B4", "B3", "B2"))$
+  divide(10000)
+
+# OPTIONAL display it using Map
+Map$centerObject(eeObject = img)
+Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
 
 # Define an area of interest.
 geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
@@ -96,18 +97,30 @@ img_stars_01 <- ee_as_stars(
   region = geometry,
   via = "getInfo"
 )
+
 ## drive - Method 02
 img_stars_02 <- ee_as_stars(
   image = img,
   region = geometry,
   via = "drive"
 )
+
 ## gcs - Method 03
 img_stars_03 <- ee_as_stars(
   image = img,
   region = geometry,
   container = "rgee_dev",
   via = "gcs"
+)
+
+# OPTIONAL: Delete containers
+ee_clean_container(
+  name = "rgee_backup",
+  type = "drive"
+)
+ee_clean_container(
+  name = "rgee_dev",
+  type = "gcs"
 )
 }
 }

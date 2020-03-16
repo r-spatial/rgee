@@ -25,9 +25,6 @@
 #' @param container Relevant when the "via" argument is
 #' defined as 'drive' or 'gcs'. It is the name of a unique
 #' folder ('drive') or bucket ('gcs') to export into.
-#' @param monitoring Relevant when the "via" argument is
-#' defined as 'drive' or 'gcs'.If FALSE, ee_as_stars will wait
-#' until the task is finished.
 #' @param quiet logical. Suppress info message
 #' @importFrom jsonlite parse_json
 #' @importFrom sf st_transform st_coordinates st_make_grid
@@ -111,7 +108,6 @@ ee_as_stars <- function(image,
                         geodesic = NULL,
                         evenOdd = NULL,
                         maxPixels = 1e9,
-                        monitoring = TRUE,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
@@ -396,9 +392,7 @@ ee_as_stars <- function(image,
       )
     }
     img_task$start()
-    if (isTRUE(monitoring)) {
-      ee_monitoring(task = img_task, quiet = quiet)
-    }
+    ee_monitoring(task = img_task, quiet = quiet)
     # From Google Drive to local
     image_stars <- ee_drive_to_local(task = img_task, consider = 'all')
     if (length(band_names) > 1) {
@@ -455,9 +449,7 @@ ee_as_stars <- function(image,
       )
     }
     img_task$start()
-    if (isTRUE(monitoring)) {
-      ee_monitoring(task = img_task, quiet = quiet)
-    }
+    ee_monitoring(task = img_task, quiet = quiet)
     # From Google Cloud Storage to local
     image_stars <- ee_gcs_to_local(img_task)
     if (length(band_names) > 1) {

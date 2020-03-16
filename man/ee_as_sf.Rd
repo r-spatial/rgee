@@ -5,7 +5,7 @@
 \title{Convert an EE table in a sf object}
 \usage{
 ee_as_sf(x, via = "getInfo", container = "rgee_backup",
-  selectors = NULL, monitoring = TRUE, quiet = FALSE)
+  selectors = NULL, quiet = FALSE)
 }
 \arguments{
 \item{x}{EE table to be converted into a sf object.}
@@ -20,10 +20,6 @@ folder ('drive') or bucket ('gcs') to be exported into.}
 \item{selectors}{The list of properties to include in
 the output, as a list of strings or a comma-separated
 string. By default, all properties are included.}
-
-\item{monitoring}{Relevant when the "via" argument is
-defined as 'drive' or 'gcs'. If FALSE, ee_as_sf
-will wait until finishing the task.}
 
 \item{quiet}{logical. Suppress info message}
 }

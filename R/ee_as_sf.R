@@ -9,9 +9,6 @@
 #' @param selectors The list of properties to include in
 #' the output, as a list of strings or a comma-separated
 #' string. By default, all properties are included.
-#' @param monitoring Relevant when the "via" argument is
-#' defined as 'drive' or 'gcs'. If FALSE, ee_as_sf
-#' will wait until finishing the task.
 #' @param quiet logical. Suppress info message
 #' @importFrom geojsonio geojson_sf
 #' @importFrom utils tail
@@ -75,7 +72,6 @@ ee_as_sf <- function(x,
                      via = "getInfo",
                      container = "rgee_backup",
                      selectors = NULL,
-                     monitoring = TRUE,
                      quiet = FALSE) {
 
   sp_eeobjects <- ee_get_spatial_objects('Table')
@@ -134,9 +130,7 @@ ee_as_sf <- function(x,
       )
     }
     table_task$start()
-    if (isTRUE(monitoring)) {
-      ee_monitoring(task = table_task, quiet = quiet)
-    }
+    ee_monitoring(task = table_task, quiet = quiet)
     ee_drive_to_local(table_task)
   } else if (via == 'gcs') {
     # Creating name for temporal file; just for either drive or gcs
@@ -175,9 +169,7 @@ ee_as_sf <- function(x,
       )
     }
     table_task$start()
-    if (isTRUE(monitoring)) {
-      ee_monitoring(task = table_task, quiet = quiet)
-    }
+    ee_monitoring(task = table_task, quiet = quiet)
     ee_gcs_to_local(table_task)
   } else {
     stop("type argument invalid.")
