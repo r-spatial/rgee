@@ -1,7 +1,7 @@
-#' Convert an sf object to EE object
+#' Convert an sf object to an EE object
 #'
-#' @name sf_as_ee
 #' @param x sf object to be converted into a EE object.
+#' @param assetId Destination asset ID for the uploaded file.
 #' @param check_ring_dir logical. See \link[sf]{st_read} for details.
 #' @param evenOdd If TRUE, polygon interiors will be determined
 #' by the even/odd rule, where a point is inside if it crosses
@@ -23,25 +23,39 @@
 #' as planar lines in the specified CRS. If absent, defaults to TRUE if
 #' the CRS is geographic (including the default EPSG:4326), or to FALSE
 #' if the CRS is projected.
+#' @param via Method to download the image. Three methods
+#' are implemented 'getInfo', 'asset' and 'gcs'. See details.
+#' @param bucket	name you want this session to use by default, or a bucket object
+#' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
+#' @return A ee$FeatureCollection object
 #' @details
-#' The conversion from sf to EE is a two-step process. First,
-#' \code{sf_as_ee} transform sf objects into a GeoJSON format using
-#' \link[geojsonio]{geojson_json}. Second, the GeoJSON generated will be
-#' encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
-#' If the sf object is a large spatial object (>1Mb) it is likely to cause
-#' bottlenecks and plodding connections. See
+#' The process to pass a sf object to Earth Engine Asset could be carried
+#' out by three different strategies. These are controlled by the "via"
+#' parameter. The first method implemented is 'getInfo'. In this method the
+#' sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
+#' and then encrusted in an HTTP request using the server-side objects that are
+#' implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
+#' is too large (>1Mb) it is likely to cause bottlenecks and plodding
+#' connections. One advantage of this method is that it create temporary files and
+#' will not be saved in your Earth Engine Asset. See
 #' \href{https://developers.google.com/earth-engine/client_server}{Client
-#' vs Server} documentation for more details. For dealing with very large spatial
-#' objects, it is recommended to import it into the GEE asset. See
-#' \link[rgee]{ee_upload} for creating uploaded pipelines.
+#' vs Server} documentation for more details. The second method implemented is
+#' 'toasset'. It is similar to the previous one, with the difference that
+#' the spatial object will be saved in your Earth Engine Asset. For dealing
+#' with very large spatial objects, it is preferable to use the third method
+#' called 'gcs'. In this method, firstly, the sf object will be saved as a
+#' *.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
+#' will move the shapefile from local to Google Cloud Storage. Finally, using
+#' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
+#' Asset.
 #'
 #' Earth Engine is strict on polygon ring directions (outer ring
 #' counter-clockwise, and the inner one clockwise). If `check_ring_dir` is TRUE,
-#' it check every ring, and revert them if necessary, to counter clockwise for outer,
-#' and clockwise for inner (hole) ones. By default this is FALSE because
+#' it check every ring, and revert them if necessary, to counter clockwise for
+#' outer, and clockwise for inner (hole) ones. By default this is FALSE because
 #' it is an expensive operation.
 #'
 #' @examples
@@ -78,126 +92,102 @@
 #' print(evenOddPoly$contains(pt)$getInfo() %>% ee_py_to_r())  # TRUE
 #' }
 #' @export
-sf_as_ee <- function(x, check_ring_dir,evenOdd, proj, geodesic) UseMethod("sf_as_ee")
+sf_as_ee <- function(x,
+                     assetId = NULL,
+                     check_ring_dir = FALSE,
+                     evenOdd = TRUE,
+                     proj = NULL,
+                     geodesic = NULL,
+                     via = 'json',
+                     bucket = NULL,
+                     quiet = FALSE,
+                     ...) {
+  # Create a temporary shapefile as
+  ee_temp <- tempdir()
 
-#' @rdname sf_as_ee
-#' @export
-sf_as_ee.character <- function(x,
-                               check_ring_dir = FALSE,
-                               evenOdd = TRUE,
-                               proj = 4326,
-                               geodesic = TRUE,
-                               ...) {
-  oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- ee_source_python(oauth_func_path)
-  eex <- st_read(dsn = x,
-                 stringsAsFactors =  FALSE,
-                 check_ring_dir = check_ring_dir,
-                 quiet = TRUE, ...)
-  if (proj != 4326) {
-    eex <- eex %>% st_transform(proj)
+  # Read geometry
+  eex <- ee_st_read(
+    x = x,
+    check_ring_dir = check_ring_dir,
+    quiet = quiet
+  )
+
+  # geodesic is null?
+  if (is.null(geodesic)) {
+    is_geodesic <- st_is_longlat(eex)
+  } else {
+    is_geodesic <- geodesic
   }
-  eex_crs <- st_crs(eex)$epsg
-  if (is.na(eex_crs)) {
-    stop("The x EPSG needs to be defined, use sf::st_set_crs to",
-         " set, replace or retrieve.")
+
+  # proj
+  if (is.null(proj)) {
+    eex_proj <- paste0('EPSG:',st_crs(eex)$epsg)
+  } else {
+    eex_proj <- paste0('EPSG:',proj)
   }
-  fc <- list()
-  for (index in seq_len(nrow(eex))) {
-    feature <- eex[index,]
-    py_geometry <- geojson_json(feature$geometry,type = 'skip')
-    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                         opt_proj = paste0('EPSG:', eex_crs),
-                                         opt_geodesic = geodesic,
-                                         opt_evenOdd = evenOdd)
-    feature$geometry <- NULL
-    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
+  if (is.na(st_crs(eex)$epsg)) {
+    stop(
+      "The x EPSG needs to be defined, use sf::st_set_crs to",
+      " set, replace or retrieve."
+    )
   }
-  ee$FeatureCollection(fc)
+  if (via == 'json') {
+    # sf to geojson
+    ee_sf_to_fc(
+      sf = eex,
+      proj = eex_proj,
+      geodesic = is_geodesic,
+      evenOdd = evenOdd
+    )
+  } else if (via == 'asset') {
+    # sf to geojson
+    sf_fc <- ee_sf_to_fc(
+      sf = eex,
+      proj = eex_proj,
+      geodesic = is_geodesic,
+      evenOdd = evenOdd
+    )
+
+    # Creating description name
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    ee_description <- paste0("ee_as_sf_task_", time_format)
+
+    # Verify if assetId exist and the EE asset path
+    if (is.null(assetId)) {
+      stop('assetId was not defined')
+    }
+    assetId <- ee_verify_filename(
+      path_asset = assetId,
+      strict = FALSE
+    )
+    # geojson to assset
+    ee_task <- ee_table_to_asset(
+      collection = sf_fc,
+      description = ee_description,
+      assetId = assetId
+    )
+    ee_task$start()
+    ee_monitoring(ee_task)
+    ee$FeatureCollection(assetId)
+  } else if (via == 'gcs') {
+    shp_dir <- sprintf("%s.shp", tempfile())
+    geozip_dir <- create_shp_zip(x, shp_dir)
+    gcs_filename <- ee_local_to_gcs(
+      x = geozip_dir,
+      bucket = bucket,
+      quiet = quiet
+    )
+    ee_gcs_to_asset_table(
+      x = x,
+      gs_uri = gcs_filename,
+      filename = filename,
+      type = 'table',
+      properties = NULL
+    )
+    ee_monitoring()
+    ee$FeatureCollection(filename)
+  } else {
+    stop('Invalid via argument')
+  }
 }
 
-#' @rdname sf_as_ee
-#' @export
-sf_as_ee.sf <- function(x,
-                        check_ring_dir = FALSE,
-                        evenOdd = TRUE,
-                        proj = 4326,
-                        geodesic = TRUE,
-                        ...) {
-  if (proj != 4326) {
-    x <- x %>% st_transform(proj)
-  }
-  x <- st_sf(x, check_ring_dir = check_ring_dir)
-  oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- ee_source_python(oauth_func_path)
-  eex_crs <- st_crs(x)$epsg
-  if (is.na(eex_crs)) {
-    stop("The x EPSG needs to be defined, use sf::st_set_crs to",
-         " set, replace or retrieve.")
-  }
-  fc <- list()
-  for (index in seq_len(nrow(x))) {
-    feature <- x[index,]
-    py_geometry <- geojson_json(feature$geometry,type = 'skip')
-    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                         opt_proj = paste0('EPSG:', eex_crs),
-                                         opt_geodesic = st_is_longlat(x),
-                                         opt_evenOdd = evenOdd)
-    feature$geometry <- NULL
-    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
-  }
-  ee$FeatureCollection(fc)
-}
-
-#' @rdname sf_as_ee
-#' @export
-sf_as_ee.sfc <- function(x,
-                         check_ring_dir = FALSE,
-                         evenOdd = TRUE,
-                         proj = 4326,
-                         geodesic = TRUE,
-                         ...) {
-  if (proj != 4326) {
-    x <- x %>% st_transform(proj)
-  }
-  x <- st_sfc(x, check_ring_dir = check_ring_dir)
-  oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- ee_source_python(oauth_func_path)
-  eex_crs <- st_crs(x)$epsg
-
-  if (is.na(eex_crs)) {
-    stop("The x EPSG needs to be defined, use sf::st_set_crs to",
-         " set, replace or retrieve.")
-  }
-
-  fc <- list()
-  for (index in seq_len(length(x))) {
-    geometry <- x[index]
-    py_geometry <- geojson_json(geometry,type = 'skip')
-    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
-                                         opt_proj = paste0('EPSG:', eex_crs),
-                                         opt_geodesic = geodesic,
-                                         opt_evenOdd = evenOdd)
-    fc[[index]] <- ee$Feature(ee_geometry, NULL)
-  }
-  ee$FeatureCollection(fc)
-}
-
-#' @rdname sf_as_ee
-#' @export
-sf_as_ee.sfg <- function(x,
-                         check_ring_dir = FALSE,
-                         evenOdd = TRUE,
-                         proj = 4326,
-                         geodesic = TRUE,
-                         ...) {
-  x <- st_sfc(x, crs =  proj, check_ring_dir = check_ring_dir)
-  geodesic <- st_is_longlat(x)
-  oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- ee_source_python(oauth_func_path)
-  geojson_list <- geojson_json(x)
-  sf_as_ee$sfg_as_ee_py(x = geojson_list,
-                        opt_proj = paste0('EPSG:', proj),
-                        opt_geodesic = geodesic,
-                        opt_evenOdd = evenOdd)
-}

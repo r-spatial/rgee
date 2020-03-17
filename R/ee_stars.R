@@ -405,7 +405,7 @@ ee_as_stars <- function(image,
   } else if (via == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
       stop(
-        "Google Drive credentials were not loaded.",
+        "Google Cloud Storage credentials were not loaded.",
         ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
         " to fix it"
       )
@@ -464,11 +464,58 @@ ee_as_stars <- function(image,
   }
 }
 
-#' Convert an sf object to an Earth Engine Image
-#' @param x ee$Image
-#' @export
-stars_as_ee <- function(x) {
 
+#' Convert an stars object to an EE object
+#'
+#' @param x stars object to be converted into a ee$Image.
+#' @param assetId Destination asset ID for the uploaded file.
+#' @param bucket name you want this session to use by default,
+#' or a bucket object.
+#' @param quiet Logical. Suppress info message.
+#' @importFrom sf st_read st_sf st_sfc st_is_longlat
+#' @importFrom geojsonio geojson_json
+#' @return An ee$Image object
+#' @details
+#' The process to pass a sf object to Earth Engine Asset could be carried
+#' out by three different strategies. These are controlled by the "via"
+#' parameter. The first method implemented is 'getInfo'. In this method the
+#' sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
+#' and then encrusted in an HTTP request using the server-side objects that are
+#' implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
+#' is too large (>1Mb) it is likely to cause bottlenecks and plodding
+#' connections. One advantage of this method is that it create temporary files and
+#' will not be saved in your Earth Engine Asset. See
+#' \href{https://developers.google.com/earth-engine/client_server}{Client
+#' vs Server} documentation for more details. The second method implemented is
+#' 'toasset'. It is similar to the previous one, with the difference that
+#' the spatial object will be saved in your Earth Engine Asset. For dealing
+#' with very large spatial objects, it is preferable to use the third method
+#' called 'gcs'. In this method, firstly, the sf object will be saved as a
+#' *.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
+#' will move the shapefile from local to Google Cloud Storage. Finally, using
+#' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
+#' Asset.
+#'
+#' @export
+stars_as_ee <- function(x, assetId, bucket = NULL, quiet = FALSE) {
+  # Create a temporary shapefile as
+  ee_temp <- tempdir()
+
+  stars_proxy <- ee_as_proxystars(x, temp_dir = ee_temp)
+  gcs_filename <- ee_local_to_gcs(
+    x = stars_proxy[[1]],
+    bucket = bucket,
+    quiet = quiet
+  )
+  ee_gcs_to_asset_image(
+    x = x,
+    gs_uri = gcs_filename,
+    filename = filename,
+    type = 'table',
+    properties = NULL
+  )
+  ee_monitoring()
+  ee$Image(filename)
 }
 
 #' Delete files from a either Folder or Bucket
