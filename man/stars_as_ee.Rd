@@ -2,13 +2,44 @@
 % Please edit documentation in R/ee_stars.R
 \name{stars_as_ee}
 \alias{stars_as_ee}
-\title{Convert an sf object to an Earth Engine Image}
+\title{Convert an stars object to an EE object}
 \usage{
-stars_as_ee(x)
+stars_as_ee(x, assetId, bucket = NULL, quiet = FALSE)
 }
 \arguments{
-\item{x}{ee$Image}
+\item{x}{stars object to be converted into a ee$Image.}
+
+\item{assetId}{Destination asset ID for the uploaded file.}
+
+\item{bucket}{name you want this session to use by default,
+or a bucket object.}
+
+\item{quiet}{Logical. Suppress info message.}
+}
+\value{
+An ee$Image object
 }
 \description{
-Convert an sf object to an Earth Engine Image
+Convert an stars object to an EE object
+}
+\details{
+The process to pass a sf object to Earth Engine Asset could be carried
+out by three different strategies. These are controlled by the "via"
+parameter. The first method implemented is 'getInfo'. In this method the
+sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
+and then encrusted in an HTTP request using the server-side objects that are
+implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
+is too large (>1Mb) it is likely to cause bottlenecks and plodding
+connections. One advantage of this method is that it create temporary files and
+will not be saved in your Earth Engine Asset. See
+\href{https://developers.google.com/earth-engine/client_server}{Client
+vs Server} documentation for more details. The second method implemented is
+'toasset'. It is similar to the previous one, with the difference that
+the spatial object will be saved in your Earth Engine Asset. For dealing
+with very large spatial objects, it is preferable to use the third method
+called 'gcs'. In this method, firstly, the sf object will be saved as a
+*.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
+will move the shapefile from local to Google Cloud Storage. Finally, using
+the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
+Asset.
 }

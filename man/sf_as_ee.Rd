@@ -2,28 +2,16 @@
 % Please edit documentation in R/sf_as_ee.R
 \name{sf_as_ee}
 \alias{sf_as_ee}
-\alias{sf_as_ee.character}
-\alias{sf_as_ee.sf}
-\alias{sf_as_ee.sfc}
-\alias{sf_as_ee.sfg}
-\title{Convert an sf object to EE object}
+\title{Convert an sf object to an EE object}
 \usage{
-sf_as_ee(x, check_ring_dir, evenOdd, proj, geodesic)
-
-\method{sf_as_ee}{character}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = 4326, geodesic = TRUE, ...)
-
-\method{sf_as_ee}{sf}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = 4326, geodesic = TRUE, ...)
-
-\method{sf_as_ee}{sfc}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = 4326, geodesic = TRUE, ...)
-
-\method{sf_as_ee}{sfg}(x, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = 4326, geodesic = TRUE, ...)
+sf_as_ee(x, assetId = NULL, check_ring_dir = FALSE, evenOdd = TRUE,
+  proj = NULL, geodesic = NULL, via = "json", bucket = NULL,
+  quiet = FALSE, ...)
 }
 \arguments{
 \item{x}{sf object to be converted into a EE object.}
+
+\item{assetId}{Destination asset ID for the uploaded file.}
 
 \item{check_ring_dir}{logical. See \link[sf]{st_read} for details.}
 
@@ -50,27 +38,46 @@ as planar lines in the specified CRS. If absent, defaults to TRUE if
 the CRS is geographic (including the default EPSG:4326), or to FALSE
 if the CRS is projected.}
 
+\item{via}{Method to download the image. Three methods
+are implemented 'getInfo', 'asset' and 'gcs'. See details.}
+
+\item{bucket}{name you want this session to use by default, or a bucket object}
+
+\item{quiet}{Logical. Suppress info message.}
+
 \item{...}{\link[sf]{st_read} arguments might be included.}
 }
+\value{
+A ee$FeatureCollection object
+}
 \description{
-Convert an sf object to EE object
+Convert an sf object to an EE object
 }
 \details{
-The conversion from sf to EE is a two-step process. First,
-\code{sf_as_ee} transform sf objects into a GeoJSON format using
-\link[geojsonio]{geojson_json}. Second, the GeoJSON generated will be
-encrusted in an HTTP request using the server-side objects (ee$Geometry$*).
-If the sf object is a large spatial object (>1Mb) it is likely to cause
-bottlenecks and plodding connections. See
+The process to pass a sf object to Earth Engine Asset could be carried
+out by three different strategies. These are controlled by the "via"
+parameter. The first method implemented is 'getInfo'. In this method the
+sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
+and then encrusted in an HTTP request using the server-side objects that are
+implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
+is too large (>1Mb) it is likely to cause bottlenecks and plodding
+connections. One advantage of this method is that it create temporary files and
+will not be saved in your Earth Engine Asset. See
 \href{https://developers.google.com/earth-engine/client_server}{Client
-vs Server} documentation for more details. For dealing with very large spatial
-objects, it is recommended to import it into the GEE asset. See
-\link[rgee]{ee_upload} for creating uploaded pipelines.
+vs Server} documentation for more details. The second method implemented is
+'toasset'. It is similar to the previous one, with the difference that
+the spatial object will be saved in your Earth Engine Asset. For dealing
+with very large spatial objects, it is preferable to use the third method
+called 'gcs'. In this method, firstly, the sf object will be saved as a
+*.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
+will move the shapefile from local to Google Cloud Storage. Finally, using
+the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
+Asset.
 
 Earth Engine is strict on polygon ring directions (outer ring
 counter-clockwise, and the inner one clockwise). If \code{check_ring_dir} is TRUE,
-it check every ring, and revert them if necessary, to counter clockwise for outer,
-and clockwise for inner (hole) ones. By default this is FALSE because
+it check every ring, and revert them if necessary, to counter clockwise for
+outer, and clockwise for inner (hole) ones. By default this is FALSE because
 it is an expensive operation.
 }
 \examples{

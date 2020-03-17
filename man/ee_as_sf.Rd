@@ -60,7 +60,7 @@ roi <- ee$Geometry$Polygon(list(
 
 # TIGER: US Census Blocks Dataset
 blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
-subset <- blocks$filterBounds(roi)$limit(2)
+subset <- blocks$filterBounds(roi)
 sf_subset <- ee_as_sf(x = subset)
 plot(sf_subset)
 
@@ -68,6 +68,8 @@ plot(sf_subset)
 region <- ee$Geometry$Rectangle(-119.224, 34.669, -99.536, 50.064)
 ee_help(ee$FeatureCollection$randomPoints)
 ee_randomPoints <- ee$FeatureCollection$randomPoints(region, 100)
+
+# Download via GetInfo
 sf_randomPoints <- ee_as_sf(ee_randomPoints)
 plot(sf_randomPoints)
 
@@ -79,8 +81,9 @@ sf_randomPoints_drive <- ee_as_sf(
 
 # Download via GCS
 sf_randomPoints_gcs <- ee_as_sf(
-  x = ee_randomPoints,
+  x = subset,
   via = 'gcs',
+  monitoring = FALSE,
   container = 'rgee_dev'
 )
 }
