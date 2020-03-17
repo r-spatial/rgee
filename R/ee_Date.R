@@ -46,7 +46,7 @@ rdate_to_eedate <- function(date, eeobject = TRUE) {
 #' eedate_to_rdate(eeDate)
 #' @export
 eedate_to_rdate <- function(ee_date, js = FALSE) {
-  oauth_func_path <- system.file("python/ee_selenium_functions.py",
+  oauth_func_path <- system.file("python/ee_utils.py",
                                  package = "rgee")
   ee_selenium_functions <- ee_source_python(oauth_func_path)
   date_numeric <- ee_selenium_functions$eedate_to_rdate(ee$Date(ee_date)) %>%

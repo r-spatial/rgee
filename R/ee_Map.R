@@ -45,7 +45,6 @@
 #' }
 #'
 #' @details
-#'
 #' `Map` takes advantage of
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 #' getMapId} for fetch and return both a mapid and a token suitable

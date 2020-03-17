@@ -140,12 +140,6 @@ ee_Initialize <- function(email = NULL,
   }
   ## rgee session file
   options(rgee.gcs.auth = gcs_credentials)
-  options(rgee.selenium.params = list(
-    email = email,
-    email_password = Sys.getenv("PASSWORD_GMAIL"),
-    showpassword = FALSE,
-    check_driver = FALSE
-  ))
   options(rgee.manage.setIamPolicy = list(bindings = list(
     list(
       role = "roles/owner",
