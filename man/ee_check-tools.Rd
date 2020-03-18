@@ -20,7 +20,7 @@ ee_check_credentials()
 \item{quiet}{logical. Suppress info message}
 }
 \description{
-R functions for checking sanity of Python Selenium Chromedriver, Third-Party
+R functions for checking sanity of Python Third-Party
 Python packages and credentials
 }
 \examples{

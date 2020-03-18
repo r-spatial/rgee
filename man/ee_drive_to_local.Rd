@@ -11,7 +11,7 @@ ee_drive_to_local(task, directory, overwrite = TRUE,
 \item{task}{List generated after finished correctly a EE task. See details.}
 
 \item{directory}{Character. Output directory. If missing, a temporary
-directory will be asigned.}
+directory will be assigned.}
 
 \item{overwrite}{A boolean argument which indicates indicating
 whether "filename" should be overwritten. By default it is TRUE.}

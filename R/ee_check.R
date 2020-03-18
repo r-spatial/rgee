@@ -1,6 +1,6 @@
 #' Interface to check Python and non-R rgee dependencies
 #'
-#' R functions for checking sanity of Python Selenium Chromedriver, Third-Party
+#' R functions for checking sanity of Python Third-Party
 #' Python packages and credentials
 #' @name ee_check-tools
 #' @param quiet logical. Suppress info message
@@ -115,19 +115,6 @@ ee_check_drivers <- function() {
     "\n", crayon::blue(cli::symbol$circle_filled),
     crayon::blue("  Selenium drivers: \n")
   )
-  if (condition) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick, "[Ok]"),
-      crayon::blue(cli::symbol$check, "Chromedriver \n")
-    )
-  } else {
-    cli::cat_line(crayon::yellow(
-      cli::symbol$circle_cross,
-      "chromedriver not available in their system.",
-      "rgee::ee_upload(bucket=NULL) will not work."
-    ))
-    message("Try rgee::ee_install_ChromeDriver() to fixed.\n")
-  }
 }
 
 #' @rdname ee_check-tools

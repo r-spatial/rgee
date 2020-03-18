@@ -269,47 +269,6 @@ ee_install_python_packages <- function(method = c(
   invisible(TRUE)
 }
 
-
-#' Install ChromeDriver in the system
-#'
-#' @param ChromeDriverVersion Google Chrome version of the system.
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_install_ChromeDriver()
-#' }
-#' @seealso \code{\link[rgee]{ee_upload}}
-#' @export
-ee_install_ChromeDriver <- function(ChromeDriverVersion) {
-  if (missing(ChromeDriverVersion)) {
-    stop(
-      "The ChromeDriverVersion argument was not defined.",
-      " Find the appropriate version of Google Chrome visiting:\n",
-      "- chrome://settings/help \n",
-      "- After, according to your Chrome version, run, for e.g, rgee::ee_install_drivers(77)"
-    )
-  }
-
-  oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
-  ee_check_utils <- ee_source_python(oauth_func_path)
-  directory <- path.expand("~/.config/earthengine/")
-
-  os_type <- ee_detect_os()
-
-  chromedriver_version <- ee_check_utils$download_chromedriver(
-    directory = directory,
-    operating_system = os_type,
-    version = substr(as.character(ChromeDriverVersion), 1, 2)
-  )
-  cat(
-    "Selenium ChromeDriver v",
-    ee_py_to_r(chromedriver_version),
-    "saved in",
-    directory
-  )
-  return(invisible(TRUE))
-}
-
 #' Detect the Operating System type of the system
 #' @noRd
 ee_detect_os <- function() {

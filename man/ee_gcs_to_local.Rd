@@ -10,7 +10,7 @@ ee_gcs_to_local(task, directory, overwrite = TRUE, quiet = FALSE)
 \item{task}{List generated after finished correctly a EE task. See details.}
 
 \item{directory}{Character. Output directory. If missing, a temporary
-directory will be asigned.}
+directory will be assigned.}
 
 \item{overwrite}{A boolean indicating whether the file should
 be overwritten.}

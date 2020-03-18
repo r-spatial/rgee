@@ -628,7 +628,7 @@ ee_table_to_asset <- function(collection,
 #'
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param directory Character. Output directory. If missing, a temporary
-#' directory will be asigned.
+#' directory will be assigned.
 #' @param overwrite A boolean argument which indicates indicating
 #' whether "filename" should be overwritten. By default it is TRUE.
 #' @param consider Character. See details.
@@ -827,7 +827,7 @@ ee_drive_to_local <- function(task,
 #'
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param directory Character. Output directory. If missing, a temporary
-#' directory will be asigned.
+#' directory will be assigned.
 #' @param overwrite A boolean indicating whether the file should
 #' be overwritten.
 #' @param quiet Logical. Suppress info message

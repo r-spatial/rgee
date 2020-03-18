@@ -1,13 +1,5 @@
 context("rgee: ee_install test")
 
-test_that("ee_install_drivers() error",{
-  expect_error(ee_install_ChromeDriver())
-})
-
-test_that("ee_install_drivers()",{
-  expect_true(ee_install_ChromeDriver(77))
-})
-
 ### Instalation module
 test_that("ee_create_pyenv ",{
   result <- ee_create_pyenv('earthengine_test')

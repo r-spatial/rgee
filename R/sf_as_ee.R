@@ -27,7 +27,7 @@
 #' are implemented 'getInfo', 'toasset' and 'gcs'. See details.
 #' @param bucket name you want this session to use by default, or a bucket
 #' object.
-#' @param monitoring Relevant parameter when the argument via is setted as
+#' @param monitoring Relevant parameter when the argument via is set as
 #' either "toasset" or "gcs". If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.

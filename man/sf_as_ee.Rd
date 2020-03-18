@@ -44,7 +44,7 @@ are implemented 'getInfo', 'toasset' and 'gcs'. See details.}
 \item{bucket}{name you want this session to use by default, or a bucket
 object.}
 
-\item{monitoring}{Relevant parameter when the argument via is setted as
+\item{monitoring}{Relevant parameter when the argument via is set as
 either "toasset" or "gcs". If TRUE the exportation task will be monitored.}
 
 \item{quiet}{Logical. Suppress info message.}

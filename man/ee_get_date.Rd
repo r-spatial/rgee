@@ -26,8 +26,8 @@ for more information.
 }
 \examples{
 library(rgee)
-ee_Initialize()
 ee_reattach()
+ee_Initialize()
 l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
 ee_get_date(l8)
 srtm <- ee$Image('CGIAR/SRTM90_V4')

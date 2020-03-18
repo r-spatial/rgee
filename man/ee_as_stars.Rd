@@ -60,7 +60,7 @@ objects, the advantage of use this is a direct and fast download.
 However, there is a limit of 262144 pixels (512x512) that can
 be transferred by request which makes it unsatisfactory for large images.
 The second ('drive') and third ('gcs') method are suitable for large images
-since it use Google Drive and Google Cloud Storage as a intermidiate
+since it use Google Drive and Google Cloud Storage as a intermediate
 container.
 }
 \examples{
