@@ -36,6 +36,9 @@ ee_local_to_gcs <- function(x,
       call. = FALSE
     )
   } else {
+    if (is.null(bucket)) {
+      stop('The argument bucket was not defined')
+    }
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$gcs_cre)) {
       stop(
@@ -355,6 +358,7 @@ create_shp_zip <- function(x,
 }
 
 #' From sf object to Earth Engine FeatureCollection
+#' @importFrom sf st_geometry
 #' @noRd
 ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
   # Load python module
@@ -363,7 +367,7 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
   fc <- list()
   for (index in seq_len(nrow(sf))) {
     feature <- sf[index,]
-    py_geometry <- geojson_json(feature$geometry,type = 'skip')
+    py_geometry <- geojson_json(st_geometry(feature),type = 'skip')
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                          opt_proj = proj,
                                          opt_geodesic = geodesic,
@@ -375,18 +379,35 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
 }
 
 #' Pass a character, sfg, sfc to sf
+#' @importFrom sf NA_crs_
 #' @noRd
-ee_st_read <- function(x, check_ring_dir = FALSE, quiet = TRUE) {
+ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = TRUE) {
   if (any(class(x) %in% 'sf')) {
     x
+  } else if (any(class(x) %in% 'sfg')) {
+    if (is.null(proj)) {
+      proj <- 4326
+    }
+    st_sf(
+      index = 1,
+      geometry = st_sfc(
+        x,
+        crs = 4326,
+        check_ring_dir = check_ring_dir
+      )
+    )
   } else {
-    tryCatch(
+    result <- tryCatch(
       expr = st_sf(x, check_ring_dir = check_ring_dir),
       error = function(e) st_read(dsn = x,
                                   stringsAsFactors =  FALSE,
                                   check_ring_dir = check_ring_dir,
                                   quiet = quiet)
     )
+    if (ncol(result) == 1) {
+      result$index <- seq_len(nrow(result))
+    }
+    result
   }
 }
 

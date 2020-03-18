@@ -24,8 +24,11 @@
 #' the CRS is geographic (including the default EPSG:4326), or to FALSE
 #' if the CRS is projected.
 #' @param via Method to download the image. Three methods
-#' are implemented 'getInfo', 'asset' and 'gcs'. See details.
-#' @param bucket	name you want this session to use by default, or a bucket object
+#' are implemented 'getInfo', 'toasset' and 'gcs'. See details.
+#' @param bucket name you want this session to use by default, or a bucket
+#' object.
+#' @param monitoring Relevant parameter when the argument via is setted as
+#' either "toasset" or "gcs". If TRUE the exportation task will monitor.
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
@@ -66,10 +69,12 @@
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
-#' # sf
-#' x <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-#'   st_transform(4326)
-#' ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
+#' # 1. Handling geometry parameters
+#' # Simple
+#' ee_x <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
+#'   st_transform(4326) %>%
+#'   sf_as_ee()
+#'
 #' Map$centerObject(eeObject = ee_x)
 #' Map$addLayer(ee_x)
 #'
@@ -79,7 +84,7 @@
 #'                    byrow = TRUE) %>%
 #'   list() %>%
 #'   st_polygon()
-#' holePoly <- sf_as_ee(toy_poly, evenOdd = FALSE)
+#' holePoly <- sf_as_ee(x = toy_poly, evenOdd = FALSE)
 #'
 #' # Create an even-odd version of the polygon.
 #' evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
@@ -88,26 +93,42 @@
 #' pt <- ee$Geometry$Point(c(1.5, 1.5))
 #'
 #' # Check insideness with a contains operator.
-#' print(holePoly$contains(pt)$getInfo() %>% ee_py_to_r())     # FALSE
-#' print(evenOddPoly$contains(pt)$getInfo() %>% ee_py_to_r())  # TRUE
+#' print(holePoly$geometry()$contains(pt)$getInfo() %>% ee_py_to_r())     # FALSE
+#' print(evenOddPoly$geometry()$contains(pt)$getInfo() %>% ee_py_to_r())  # TRUE
+#'
+#' # 2. Upload small geometries to EE asset
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')
+#' eex <- sf_as_ee(
+#'   x = toy_poly,
+#'   assetId = assetId,
+#'   via = 'toasset')
+#'
+#' # 3. Upload large geometries to EE asset
+#' ee_Initialize(gcs = TRUE)
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
+#' eex <- sf_as_ee(
+#'   x = toy_poly,
+#'   assetId = assetId,
+#'   bucket = 'rgee_dev',
+#'   monitoring = FALSE,
+#'   via = 'gcs')
 #' }
 #' @export
 sf_as_ee <- function(x,
-                     assetId = NULL,
                      check_ring_dir = FALSE,
                      evenOdd = TRUE,
                      proj = NULL,
                      geodesic = NULL,
                      via = 'json',
+                     assetId = NULL,
                      bucket = NULL,
+                     monitoring = TRUE,
                      quiet = FALSE,
                      ...) {
-  # Create a temporary shapefile as
-  ee_temp <- tempdir()
-
   # Read geometry
   eex <- ee_st_read(
     x = x,
+    proj = proj,
     check_ring_dir = check_ring_dir,
     quiet = quiet
   )
@@ -139,7 +160,7 @@ sf_as_ee <- function(x,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
-  } else if (via == 'asset') {
+  } else if (via == 'toasset') {
     # sf to geojson
     sf_fc <- ee_sf_to_fc(
       sf = eex,
@@ -166,28 +187,33 @@ sf_as_ee <- function(x,
       description = ee_description,
       assetId = assetId
     )
-    ee_task$start()
-    ee_monitoring(ee_task)
-    ee$FeatureCollection(assetId)
+    if (isTRUE(monitoring)) {
+      ee_task$start()
+      ee_monitoring(ee_task)
+      ee$FeatureCollection(assetId)
+    } else {
+      assetId
+    }
   } else if (via == 'gcs') {
     shp_dir <- sprintf("%s.shp", tempfile())
-    geozip_dir <- create_shp_zip(x, shp_dir)
+    geozip_dir <- create_shp_zip(eex, shp_dir)
     gcs_filename <- ee_local_to_gcs(
       x = geozip_dir,
       bucket = bucket,
       quiet = quiet
     )
     ee_gcs_to_asset_table(
-      x = x,
       gs_uri = gcs_filename,
-      filename = filename,
-      type = 'table',
-      properties = NULL
+      asset_id = assetId
     )
-    ee_monitoring()
-    ee$FeatureCollection(filename)
+    if (isTRUE(monitoring)) {
+      ee_task$start()
+      ee_monitoring(ee_task)
+      ee$FeatureCollection(assetId)
+    } else {
+      assetId
+    }
   } else {
     stop('Invalid via argument')
   }
 }
-

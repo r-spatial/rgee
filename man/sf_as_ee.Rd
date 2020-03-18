@@ -4,14 +4,12 @@
 \alias{sf_as_ee}
 \title{Convert an sf object to an EE object}
 \usage{
-sf_as_ee(x, assetId = NULL, check_ring_dir = FALSE, evenOdd = TRUE,
-  proj = NULL, geodesic = NULL, via = "json", bucket = NULL,
-  quiet = FALSE, ...)
+sf_as_ee(x, check_ring_dir = FALSE, evenOdd = TRUE, proj = NULL,
+  geodesic = NULL, via = "json", assetId = NULL, bucket = NULL,
+  monitoring = TRUE, quiet = FALSE, ...)
 }
 \arguments{
 \item{x}{sf object to be converted into a EE object.}
-
-\item{assetId}{Destination asset ID for the uploaded file.}
 
 \item{check_ring_dir}{logical. See \link[sf]{st_read} for details.}
 
@@ -39,9 +37,15 @@ the CRS is geographic (including the default EPSG:4326), or to FALSE
 if the CRS is projected.}
 
 \item{via}{Method to download the image. Three methods
-are implemented 'getInfo', 'asset' and 'gcs'. See details.}
+are implemented 'getInfo', 'toasset' and 'gcs'. See details.}
 
-\item{bucket}{name you want this session to use by default, or a bucket object}
+\item{assetId}{Destination asset ID for the uploaded file.}
+
+\item{bucket}{name you want this session to use by default, or a bucket
+object.}
+
+\item{monitoring}{Relevant parameter when the argument via is setted as
+either "toasset" or "gcs". If TRUE the exportation task will monitor.}
 
 \item{quiet}{Logical. Suppress info message.}
 
@@ -88,10 +92,12 @@ library(sf)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
-# sf
-x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
-  st_transform(4326)
-ee_x <- sf_as_ee(x, check_ring_dir = TRUE)
+# 1. Handling geometry parameters
+# Simple
+ee_x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
+  st_transform(4326) \%>\%
+  sf_as_ee()
+
 Map$centerObject(eeObject = ee_x)
 Map$addLayer(ee_x)
 
@@ -101,7 +107,7 @@ toy_poly <- matrix(data = c(-35,-10,-35,10,35,10,35,-10,-35,-10),
                    byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon()
-holePoly <- sf_as_ee(toy_poly, evenOdd = FALSE)
+holePoly <- sf_as_ee(x = toy_poly, evenOdd = FALSE)
 
 # Create an even-odd version of the polygon.
 evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
@@ -110,7 +116,24 @@ evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
 pt <- ee$Geometry$Point(c(1.5, 1.5))
 
 # Check insideness with a contains operator.
-print(holePoly$contains(pt)$getInfo() \%>\% ee_py_to_r())     # FALSE
-print(evenOddPoly$contains(pt)$getInfo() \%>\% ee_py_to_r())  # TRUE
+print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())     # FALSE
+print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())  # TRUE
+
+# 2. Upload small geometries to EE asset
+assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')
+eex <- sf_as_ee(
+  x = toy_poly,
+  assetId = assetId,
+  via = 'toasset')
+
+# 3. Upload large geometries to EE asset
+ee_Initialize(gcs = TRUE)
+assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
+eex <- sf_as_ee(
+  x = toy_poly,
+  assetId = assetId,
+  bucket = 'rgee_dev',
+  monitoring = FALSE,
+  via = 'gcs')
 }
 }
