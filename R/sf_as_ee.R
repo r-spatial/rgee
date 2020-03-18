@@ -130,7 +130,7 @@ sf_as_ee <- function(x,
     x = x,
     proj = proj,
     check_ring_dir = check_ring_dir,
-    quiet = quiet
+    quiet = TRUE
   )
 
   # geodesic is null?

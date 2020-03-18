@@ -24,11 +24,13 @@ test_that("ee_as_thumbnail full parameters", {
     sf::st_bbox() %>%
     sf::st_as_sfc() %>%
     sf::st_set_crs(4326) %>%
-    sf_as_ee()
-  arequipa_dem <- ee_as_thumbnail(x = image, region = region,
+    sf_as_ee() %>%
+    ee$FeatureCollection$geometry()
+  arequipa_dem <- ee_as_thumbnail(x = image,
+                                  region = region,
                                   vizparams = list(min = 0, max = 5000))
   arequipa_dem <- arequipa_dem * 5000
-  expect_equal(max(arequipa_dem$G), 5000, tolerance = 1)
+  expect_equal(max(arequipa_dem[[1]]), 5000, tolerance = 1)
 })
 
 test_that("ee_as_thumbnail min-max", {
@@ -42,7 +44,7 @@ test_that("ee_as_thumbnail min-max", {
       max = 500
     )
   )
-  expect_equal(max(shed_dem$G), 0.4470588, tolerance = .002)
+  expect_equal(max(shed_dem[[1]]), 0.4470588, tolerance = .002)
 })
 
 # RGB band -----------------------------------------------------------
@@ -52,14 +54,15 @@ test_that("ee_as_thumbnail palette, min-max", {
     sf::st_bbox() %>%
     sf::st_as_sfc() %>%
     sf::st_set_crs(4326) %>%
-    sf_as_ee()
+    sf_as_ee() %>%
+    ee$FeatureCollection$geometry()
   arequipa_dem <- ee_as_thumbnail(
     x = image,
     region = region,
     vizparams = list(palette = dem_palette, min = 0, max = 5000)
   )
   arequipa_dem <- arequipa_dem * 5000
-  expect_equal(max(arequipa_dem$X), 5000, tolerance = 1)
+  expect_equal(max(arequipa_dem[[1]]), 5000, tolerance = 1)
 })
 
 

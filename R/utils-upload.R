@@ -389,7 +389,7 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
 
 #' Pass a character, sfg, sfc to sf
 #' @noRd
-ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = TRUE) {
+ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
   if (any(class(x) %in% 'sf')) {
     x
   } else if (any(class(x) %in% 'sfg')) {

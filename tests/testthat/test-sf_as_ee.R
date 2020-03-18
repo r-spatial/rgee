@@ -10,36 +10,32 @@ test_that("sf_as_ee.character", {
     geometry()$
     centroid()$
     getInfo() %>%
-    "["("coordinates") %>%
+    "[["("coordinates") %>%
     ee_py_to_r() %>%
     mean()
   expect_equal(centroid, 27.93429, tolerance = 0.1)
-  expect_error(sf_as_ee(nc))
 })
 
 test_that("sf_as_ee.sf", {
   p <- raster::shapefile(filename) %>%
-    st_as_sf() %>%
+    sf::st_as_sf() %>%
     sf_as_ee(check_ring_dir = TRUE)
   expect_is(p, "ee.featurecollection.FeatureCollection")
-  expect_error(sf_as_ee(st_read(nc)))
 })
 
 test_that("sf_as_ee.sfc", {
   p <- raster::shapefile(filename) %>%
-    st_as_sf() %>%
-    st_geometry() %>%
+    sf::st_as_sf() %>%
+    sf::st_geometry() %>%
     sf_as_ee(check_ring_dir = TRUE)
-  expect_is(p, "ee.geometry.Geometry")
-  expect_error(sf_as_ee(st_read(nc)[["geometry"]]))
+  expect_is(p$geometry(), "ee.geometry.Geometry")
 })
 
 test_that("sf_as_ee.sfg", {
   p <- raster::shapefile(filename) %>%
-    st_as_sf() %>%
+    sf::st_as_sf() %>%
     st_geometry() %>%
     "[["(1) %>%
     sf_as_ee(check_ring_dir = TRUE)
-
-  expect_is(p, "ee.geometry.Geometry")
+  expect_is(p$geometry(), "ee.geometry.Geometry")
 })

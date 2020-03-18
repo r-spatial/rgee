@@ -1,7 +1,7 @@
 context("rgee: sf_as_ee test")
 
 # data --------------------------------------------------------------------
-ee$Initialize()
+ee_Initialize()
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -12,35 +12,35 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   sort("CLOUD_COVER")
 
 # testing -----------------------------------------------------------------
-test_that("ee_Map default", {
+test_that("Map default", {
   expect_s4_class(rgee:::ee_mapview(),'mapview')
 })
 
-test_that("ee_Map geometry", {
-  m1 <- ee_Map$addLayer(geom,
+test_that("Map geometry", {
+  m1 <- Map$addLayer(geom,
                         list(pointRadius = 10, color = "FF0000"),
                         "Geometry-Arequipa-test")
-  m1_noviz <- ee_Map$addLayer(geom,name =  "Geometry-Arequipa")
+  m1_noviz <- Map$addLayer(geom,name =  "Geometry-Arequipa")
   expect_equal(m1@object$names, "Geometry-Arequipa-test")
   expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
 })
 
-test_that("ee_Map feature", {
-  m2 <- ee_Map$addLayer(ee$Feature(geom),
+test_that("Map feature", {
+  m2 <- Map$addLayer(ee$Feature(geom),
                         name = "Feature-Arequipa-test")
   expect_equal(m2@object$names,"Feature-Arequipa-test")
 })
 
 # Case: FeatureCollection
-test_that("ee_Map FeatureCollection", {
-  m3 <- ee_Map$addLayer(eeObject = eeobject_fc,
+test_that("Map FeatureCollection", {
+  m3 <- Map$addLayer(eeObject = eeobject_fc,
                         name = "FeatureCollection")
   expect_equal(m3@object$names,"FeatureCollection")
 })
 
 # Case: Image
-test_that("ee_Map Image", {
-  m4 <- ee_Map$addLayer(eeObject = image,
+test_that("Map Image", {
+  m4 <- Map$addLayer(eeObject = image,
                         visParams = list(bands = c("B4", "B3", "B2"),
                                          max = 10000),
                         name = "SF")
@@ -48,18 +48,18 @@ test_that("ee_Map Image", {
 })
 
 
-test_that("ee_Map$centerObject", {
-  ee_Map$centerObject(eeObject = image)
-  expect_equal(ee_Map$lat, 37.4716,tolerance = .001)
+test_that("Map$centerObject", {
+  Map$centerObject(eeObject = image)
+  expect_equal(Map$lat, 37.4716,tolerance = .001)
 })
 
-test_that("ee_Map$centerObject", {
-  ee_Map$setZoom(zoom = 10)
-  expect_equal(ee_Map$zoom, 10)
+test_that("Map$centerObject", {
+  Map$setZoom(zoom = 10)
+  expect_equal(Map$zoom, 10)
 })
 
-test_that("ee_Map$centerObject", {
-  ee_Map$setCenter(lon = 10,lat = 10)
-  expect_equal(ee_Map$lon, 10)
-  expect_equal(ee_Map$lat, 10)
+test_that("Map$centerObject", {
+  Map$setCenter(lon = 10,lat = 10)
+  expect_equal(Map$lon, 10)
+  expect_equal(Map$lat, 10)
 })
