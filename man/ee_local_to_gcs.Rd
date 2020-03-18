@@ -18,7 +18,7 @@ Character which represents the full name of the
 object in the GCS bucket specified.
 }
 \description{
-Upload images or tables into google cloud storage
+Upload images or tables into Google Cloud Storage
 for EE asset ingestion tasks.
 }
 \examples{

@@ -5,7 +5,7 @@
 \title{Convert an sf object to an EE object}
 \usage{
 sf_as_ee(x, check_ring_dir = FALSE, evenOdd = TRUE, proj = NULL,
-  geodesic = NULL, via = "json", assetId = NULL, bucket = NULL,
+  geodesic = NULL, via = "getInfo", assetId = NULL, bucket = NULL,
   monitoring = TRUE, quiet = FALSE, ...)
 }
 \arguments{
@@ -45,7 +45,7 @@ are implemented 'getInfo', 'toasset' and 'gcs'. See details.}
 object.}
 
 \item{monitoring}{Relevant parameter when the argument via is setted as
-either "toasset" or "gcs". If TRUE the exportation task will monitor.}
+either "toasset" or "gcs". If TRUE the exportation task will be monitored.}
 
 \item{quiet}{Logical. Suppress info message.}
 

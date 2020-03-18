@@ -4,12 +4,15 @@
 \alias{stars_as_ee}
 \title{Convert an stars object to an EE object}
 \usage{
-stars_as_ee(x, assetId, bucket = NULL, quiet = FALSE)
+stars_as_ee(x, assetId, monitoring = TRUE, bucket = NULL,
+  quiet = FALSE)
 }
 \arguments{
 \item{x}{stars object to be converted into a ee$Image.}
 
 \item{assetId}{Destination asset ID for the uploaded file.}
+
+\item{monitoring}{If TRUE the exportation task will be monitored.}
 
 \item{bucket}{name you want this session to use by default,
 or a bucket object.}
@@ -42,4 +45,42 @@ called 'gcs'. In this method, firstly, the sf object will be saved as a
 will move the shapefile from local to Google Cloud Storage. Finally, using
 the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
 Asset.
+}
+\examples{
+\\donotrun{
+library(rgee)
+library(stars)
+ee_Initialize(gcs = TRUE)
+
+# Get the filename of a image
+tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+x <- read_stars(tif)
+asset_id <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
+
+# Method 1
+# 1. Move from local to gcs
+gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+
+# 2. Pass from gcs to asset
+ee_gcs_to_asset_image(
+  x = x,
+  gs_uri = gs_uri,
+  asset_id = asset_id
+)
+
+# OPTIONAL: Monitoring progress
+ee_monitoring()
+
+# OPTIONAL: Display results
+ee_stars_01 <- ee$Image(asset_id)
+Map$centerObject(ee_stars_01)
+Map$addLayer(ee_stars_01)
+
+# Method 2
+ee_sf_02 <- stars_as_ee(x = x,
+                        assetId = asset_id,
+                        bucket = "rgee_dev")
+Map$centerObject(ee_sf_02)
+Map$addLayer(ee_sf_02)
+}
 }

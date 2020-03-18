@@ -1,6 +1,6 @@
 #' Upload local files to google cloud storage
 #'
-#' Upload images or tables into google cloud storage
+#' Upload images or tables into Google Cloud Storage
 #' for EE asset ingestion tasks.
 #'
 #' @param x Character. filename.
@@ -87,6 +87,7 @@ ee_local_to_gcs <- function(x,
 #' Move a zipped shapefile from GCS to EE asset
 #'
 #' Pass a zipped shapefile of gcs to Earth Engine Asset
+#'
 #' @param gs_uri Character. It represents the full name of an
 #' zipped shapefile in a GCS bucket.
 #' @param asset_id Character. What to call the file once uploaded
@@ -124,7 +125,10 @@ ee_local_to_gcs <- function(x,
 #' Map$addLayer(ee_sf_01)
 #'
 #' # Method 2
-#' ee_sf_02 <- sf_as_ee(nc, asset_id,via = 'gcs')
+#' ee_sf_02 <- sf_as_ee(x = nc,
+#'                      assetId = asset_id,
+#'                      bucket = "rgee_dev",
+#'                      via = 'gcs')
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
 #' }
@@ -166,6 +170,7 @@ ee_gcs_to_asset_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' or date.
 #' @param pyramiding_policy The pyramid reduction policy to use.
 #' @param quiet Logical. Suppress info message.
+#' @importFrom rgdal showWKT
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -197,7 +202,9 @@ ee_gcs_to_asset_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' Map$addLayer(ee_stars_01)
 #'
 #' # Method 2
-#' ee_sf_02 <- stars_as_ee(x = x, assetId = asset_id)
+#' ee_sf_02 <- stars_as_ee(x = x,
+#'                         assetId = asset_id,
+#'                         bucket = "rgee_dev")
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
 #' }
@@ -338,7 +345,9 @@ ee_gcs_to_asset_image <- function(x,
 #' Map$addLayer(ee_sf_01)
 #'
 #' # Method 2
-#' ee_sf_02 <- sf_as_ee(nc, asset_id,via = 'gcs')
+#' ee_sf_02 <- stars_as_ee(x = x,
+#'                         assetId = asset_id,
+#'                         bucket = "rgee_dev")
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
 #' }
@@ -372,14 +381,13 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
                                          opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
-    feature$geometry <- NULL
+    st_geometry(feature) <- NULL
     fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
   ee$FeatureCollection(fc)
 }
 
 #' Pass a character, sfg, sfc to sf
-#' @importFrom sf NA_crs_
 #' @noRd
 ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = TRUE) {
   if (any(class(x) %in% 'sf')) {
@@ -398,7 +406,9 @@ ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = TRUE) {
     )
   } else {
     result <- tryCatch(
-      expr = st_sf(x, check_ring_dir = check_ring_dir),
+      expr = st_sf(index = 1,
+                   geometry = x,
+                   check_ring_dir = check_ring_dir),
       error = function(e) st_read(dsn = x,
                                   stringsAsFactors =  FALSE,
                                   check_ring_dir = check_ring_dir,

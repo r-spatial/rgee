@@ -28,7 +28,7 @@
 #' @param bucket name you want this session to use by default, or a bucket
 #' object.
 #' @param monitoring Relevant parameter when the argument via is setted as
-#' either "toasset" or "gcs". If TRUE the exportation task will monitor.
+#' either "toasset" or "gcs". If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
@@ -119,7 +119,7 @@ sf_as_ee <- function(x,
                      evenOdd = TRUE,
                      proj = NULL,
                      geodesic = NULL,
-                     via = 'json',
+                     via = 'getInfo',
                      assetId = NULL,
                      bucket = NULL,
                      monitoring = TRUE,
@@ -152,7 +152,7 @@ sf_as_ee <- function(x,
       " set, replace or retrieve."
     )
   }
-  if (via == 'json') {
+  if (via == 'getInfo') {
     # sf to geojson
     ee_sf_to_fc(
       sf = eex,
@@ -207,8 +207,7 @@ sf_as_ee <- function(x,
       asset_id = assetId
     )
     if (isTRUE(monitoring)) {
-      ee_task$start()
-      ee_monitoring(ee_task)
+      ee_monitoring()
       ee$FeatureCollection(assetId)
     } else {
       assetId

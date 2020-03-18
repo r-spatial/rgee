@@ -1,4 +1,5 @@
 #' Convert an Earth Engine (EE) image into a stars object
+#'
 #' @param image ee$Image to be converted into a sf object
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
@@ -471,6 +472,7 @@ ee_as_stars <- function(image,
 #' @param assetId Destination asset ID for the uploaded file.
 #' @param bucket name you want this session to use by default,
 #' or a bucket object.
+#' @param monitoring If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
@@ -495,9 +497,49 @@ ee_as_stars <- function(image,
 #' will move the shapefile from local to Google Cloud Storage. Finally, using
 #' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
 #' Asset.
+#' @examples
+#' \donotrun{
+#' library(rgee)
+#' library(stars)
+#' ee_Initialize(gcs = TRUE)
 #'
+#' # Get the filename of a image
+#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' x <- read_stars(tif)
+#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+#'
+#' # Method 1
+#' # 1. Move from local to gcs
+#' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#'
+#' # 2. Pass from gcs to asset
+#' ee_gcs_to_asset_image(
+#'   x = x,
+#'   gs_uri = gs_uri,
+#'   asset_id = asset_id
+#' )
+#'
+#' # OPTIONAL: Monitoring progress
+#' ee_monitoring()
+#'
+#' # OPTIONAL: Display results
+#' ee_stars_01 <- ee$Image(asset_id)
+#' Map$centerObject(ee_stars_01)
+#' Map$addLayer(ee_stars_01)
+#'
+#' # Method 2
+#' ee_sf_02 <- stars_as_ee(x = x,
+#'                         assetId = asset_id,
+#'                         bucket = "rgee_dev")
+#' Map$centerObject(ee_sf_02)
+#' Map$addLayer(ee_sf_02)
+#' }
 #' @export
-stars_as_ee <- function(x, assetId, bucket = NULL, quiet = FALSE) {
+stars_as_ee <- function(x,
+                        assetId,
+                        monitoring = TRUE,
+                        bucket = NULL,
+                        quiet = FALSE) {
   # Create a temporary shapefile as
   ee_temp <- tempdir()
 
@@ -510,12 +552,14 @@ stars_as_ee <- function(x, assetId, bucket = NULL, quiet = FALSE) {
   ee_gcs_to_asset_image(
     x = x,
     gs_uri = gcs_filename,
-    filename = filename,
-    type = 'table',
-    properties = NULL
+    asset_id = assetId
   )
-  ee_monitoring()
-  ee$Image(filename)
+  if (isTRUE(monitoring)) {
+    ee_monitoring()
+    ee$Image(assetId)
+  } else {
+    assetId
+  }
 }
 
 #' Delete files from a either Folder or Bucket
