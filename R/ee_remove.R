@@ -8,11 +8,11 @@
 #' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`).
 #' The directory (all user credentials) to delete.
 #' @param quiet Logical (optional). Suppress info messages.
-#' @examples {
+#' @examples
 #' \dontrun{
+#' library(rgee)
 #' ee_remove_credentials()
 #' ee_remove_credentials('data.colec.fbf@gmail.com')
-#' }
 #' }
 #' @export
 ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
@@ -52,7 +52,7 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
 #' library(rgee)
 #' ee_remove_ChromeDriver()
 #' }
-#' @export
+#' @noRd
 ee_remove_ChromeDriver <- function(quiet = FALSE) {
   ee_path <- path.expand("~/.config/earthengine/")
   gecko_driver_linux <- sprintf("%s/chromedriver", ee_path)
@@ -74,7 +74,7 @@ ee_remove_ChromeDriver <- function(quiet = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_remove_driver()
+#' ee_clean_pyenv()
 #' }
 #' @export
 ee_clean_pyenv <- function() {

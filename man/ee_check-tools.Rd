@@ -5,7 +5,6 @@
 \alias{ee_check}
 \alias{ee_check_python}
 \alias{ee_check_rgee_python_packages}
-\alias{ee_check_drivers}
 \alias{ee_check_credentials}
 \title{Interface to check Python and non-R rgee dependencies}
 \usage{
@@ -14,8 +13,6 @@ ee_check()
 ee_check_python(quiet = FALSE)
 
 ee_check_rgee_python_packages()
-
-ee_check_drivers()
 
 ee_check_credentials()
 }

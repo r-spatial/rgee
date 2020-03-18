@@ -97,6 +97,7 @@
 #'   x = image,
 #'   dimensions = 1024,
 #'   geodesic = FALSE,
+#'   evenOdd = TRUE,
 #'   vizparams = list(min = 0, max = 5000)
 #' )
 #' world_dem[world_dem <= 0] <- NA
@@ -133,6 +134,7 @@
 #' l8_img <- ee_as_thumbnail(
 #'   x = img,
 #'   dimensions = 1024,
+#'   evenOdd = TRUE,
 #'   vizparams = list(
 #'     min = 0,
 #'     max = 5000,
@@ -182,7 +184,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
       query_params[grepl("evenOdd", names(query_params))]
     )
     if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
-      is_evenodd <- FALSE
+      is_evenodd <- TRUE
     }
   } else {
     is_evenodd <- evenOdd

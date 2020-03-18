@@ -83,7 +83,6 @@ sf_randomPoints_drive <- ee_as_sf(
 sf_randomPoints_gcs <- ee_as_sf(
   x = subset,
   via = 'gcs',
-  monitoring = FALSE,
   container = 'rgee_dev'
 )
 }

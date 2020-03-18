@@ -50,9 +50,9 @@ Map$centerObject(ee_sf_01)
 Map$addLayer(ee_sf_01)
 
 # Method 2
-ee_sf_02 <- stars_as_ee(x = x,
-                        assetId = asset_id,
-                        bucket = "rgee_dev")
+ee_sf_02 <- sf_as_ee(x = nc,
+                     assetId = asset_id,
+                     bucket = "rgee_dev")
 Map$centerObject(ee_sf_02)
 Map$addLayer(ee_sf_02)
 }

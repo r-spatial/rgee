@@ -498,7 +498,7 @@ ee_as_stars <- function(image,
 #' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
 #' Asset.
 #' @examples
-#' \donotrun{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' ee_Initialize(gcs = TRUE)

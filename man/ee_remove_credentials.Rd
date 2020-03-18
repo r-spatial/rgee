@@ -20,10 +20,9 @@ successfully at least once  \code{ee_Initialize(...)}. However, if you run
 will be overwritten.
 }
 \examples{
-{
 \dontrun{
+library(rgee)
 ee_remove_credentials()
 ee_remove_credentials('data.colec.fbf@gmail.com')
-}
 }
 }

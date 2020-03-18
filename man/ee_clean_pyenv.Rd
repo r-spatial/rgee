@@ -12,6 +12,6 @@ Remove reticulate system variables from .Renviron
 \examples{
 \dontrun{
 library(rgee)
-ee_remove_driver()
+ee_clean_pyenv()
 }
 }
