@@ -3,7 +3,7 @@
 # Google Earth Engine for R
 
 **NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-**The current version of rgee has been built considering the [earthengine-api 0.1.213](https://pypi.org/project/earthengine-api/0.1.213/)**
+**The current version of rgee has been built considering the [earthengine-api 0.1.216](https://pypi.org/project/earthengine-api/0.1.216/)**
 
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
@@ -14,10 +14,9 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=master&svg=true)](https://ci.appveyor.com/project/csaybar/rgee)
 [![codecov](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![CII Best
 Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
-[![DOI](https://zenodo.org/badge/205997187.svg)](https://zenodo.org/badge/latestdoi/205997187)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
@@ -55,8 +54,16 @@ image.bandNames().getInfo()
 ``` r
 library(rgee)
 ee_Initialize()
+
+# Python Style
 image <- ee$Image('CGIAR/SRTM90_V4')
 image$bandNames()$getInfo()
+#> [1] "elevation"
+
+# Or use Pipes instead!!
+image <- ee$Image('CGIAR/SRTM90_V4') %>%
+  ee$Image$bandNames() %>% 
+  ee$List$getInfo()
 #> [1] "elevation"
 ```
 
@@ -70,7 +77,7 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("csaybar/rgee")
 ```
 
-`rgee` depends on [sf](https://github.com/r-spatial/sf). Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
+**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
 
 #### Docker image
     
@@ -93,7 +100,7 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-ee_create_pyenv(env = "ee")
+ee_create_pyenv(python_env = "ee")
 
 # 3. Find all Python environments  in the system.
 ee_discover_pyenvs()
@@ -105,22 +112,18 @@ ee_set_pyenv(python_path = '/home/user/.virtualenvs/ee/bin/python',
 # 5. Install Python package dependencies
 ee_install_python_packages()
 
-# 6. Install Python package dependencies
+# 6. Initialize rgee again!
 ee_Initialize()
 ```
 
-Additionally, use these functions, as many times as you want, for checking user info and sanity of credentials, drivers and  Python packages.
+Additionally, use the functions below, as many times as you want, for checking user info, check sanity of credentials and  Python packages, and remove credentials.
 
 ```r
-ee_check()
-ee_user_info()
-ee_users()
-```
-
-Use this function to clean the system variables set in ee_set_pyenv.
-
-```r
-ee_clean_pyenv()
+ee_check() # Check non-R dependencies
+ee_user_info() # Display credentials information
+ee_users() # Display credentials information of all users
+ee_remove_credentials() # Remove credentials of a specific user
+ee_clean_pyenv() # Remove reticulate system variables
 ```
 
 Also, consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
@@ -821,11 +824,122 @@ ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
 plot(ee_nc_rain["Jan"], main = "2001 Jan Precipitation - Terraclimate", reset = FALSE)
 ```
 
-![](https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png">
+</p>
+  
+### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
+
+
+Load sf and authenticate and initialize the Earth Engine R API.
+
+``` r
+library(rgee)
+library(sf)
+ee_Initialize()
+# ee_reattach() # reattach ee as a reserve word
+```
+
+Define the regional bounds of animation frames and a mask to clip the NDVI data by.
+
+``` r
+mask <- system.file("shp/arequipa.shp", package = "rgee") %>% 
+  st_read(quiet = TRUE) %>% 
+  sf_as_ee()
+region <- mask$geometry()$bounds()
+```
+
+Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection`
+and select the NDVI band.
+
+``` r
+col <- ee$ImageCollection('MODIS/006/MOD13A2')$select('NDVI')
+```
+
+Group images by composite date
+
+``` r
+col <- col$map(function(img) {
+  doy <- ee$Date(img$get('system:time_start'))$getRelative('day', 'year')
+  img$set('doy', doy)
+})
+distinctDOY <- col$filterDate('2013-01-01', '2014-01-01')
+```
+
+Define a filter that identifies which images from the complete collection match the DOY
+from the distinct DOY collection.
+
+``` r
+filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy');
+```
+
+Define and Apply the join; convert the resulting FeatureCollection to an ImageCollection.
+
+``` r
+join <- ee$Join$saveAll('doy_matches')
+joinCol <- ee$ImageCollection(join$apply(distinctDOY, col, filter))
+```
+
+Apply median reduction among matching DOY collections.
+
+``` r
+comp <- joinCol$map(function(img) {
+  doyCol = ee$ImageCollection$fromImages(
+    img$get('doy_matches')
+  )
+  doyCol$reduce(ee$Reducer$median())
+})
+```
+
+Define RGB visualization parameters.
+
+``` r
+visParams = list(
+  min = 0.0,
+  max = 9000.0,
+  bands = "NDVI_median",
+  palette = c(
+    'FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
+    '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01',
+    '012E01', '011D01', '011301'
+    )
+)
+```
+
+Create RGB visualization images for use as animation frames.
+
+```r
+rgbVis <- comp$map(function(img) {
+  do.call(img$visualize, visParams) %>% 
+    ee$Image$clip(mask)
+})
+```
+
+Define GIF visualization parameters.
+
+```r
+gifParams <- list(
+  region = region,
+  dimensions = 600,
+  crs = 'EPSG:3857',
+  framesPerSecond = 10
+)
+```
+
+Render the GIF animation in the console.
+
+```r
+print(rgbVis$getVideoThumbURL(gifParams))
+browseURL(rgbVis$getVideoThumbURL(gifParams))
+```
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif">
+</p>
 
 ## How does rgee work?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine process is created in R, firstly, `reticulate` transforms this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the query (in JSON) is received by the Google Earth Engine Platform thanks to a Web REST API. The response will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/ee_upload.html)([download](https://csaybar.github.io/rgee/reference/ee_download_drive.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the query (in JSON) is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/sf_as_ee.html)([download](https://csaybar.github.io/rgee/reference/ee_as_sf.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
