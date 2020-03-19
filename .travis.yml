@@ -55,15 +55,8 @@ install:
 - sudo -H pip3 install virtualenv
 - sudo -H pip3 install earthengine-api
 - sudo -H pip3 install coveralls
-- sudo -H pip3 install pyasn1==0.4.8
 - sudo -H pip3 install oauth2client
-- sudo -H pip3 install selenium
-- sudo -H pip3 install bs4
 - sudo -H pip3 install numpy
-- sudo -H pip3 install requests_toolbelt
-- python3 -V
-- pip3 freeze
-- google-chrome --version
 - R -q -e 'tic::install()'
 script:
   - R CMD build . $R_BUILD_ARGS

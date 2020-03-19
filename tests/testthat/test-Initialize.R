@@ -1,5 +1,13 @@
 context("rgee: ee_Initialize() test")
 
+test_that("get_authorization_url is working weel?",{
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- rgee:::ee_source_python(oauth_func_path)
+  code_challenge <- utils_py$create_code_challenge()
+  ee_url <- ee$oauth$get_authorization_url(code_challenge)
+  expect_type(ee_url,'character')
+})
+
 test_that("complex init",{
   out <- tryCatch(
     expr = ee_Initialize(email = 'data.colec.fbf@gmail.com',

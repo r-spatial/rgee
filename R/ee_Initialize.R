@@ -217,6 +217,9 @@ ee_Initialize <- function(email = NULL,
 #' @noRd
 #'
 ee_create_credentials_earthengine <- function(email_clean) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+
   # first step
   ee_path <- path.expand("~/.config/earthengine")
   main_ee_credential <- sprintf("%s/credentials", ee_path)
@@ -227,19 +230,20 @@ ee_create_credentials_earthengine <- function(email_clean) {
   )
   # second step
   path_condition <- file.exists(user_ee_credential)
-  if (path_condition) {
+  if (isTRUE(path_condition)) {
     path_condition <- file.copy(
       from = user_ee_credential,
       to = main_ee_credential,
       overwrite = TRUE
     )
-  }
-  # third step
-  if (!path_condition) {
-    earthengine_auth <- ee$oauth$get_authorization_url()
+  } else {
+    oauth_codes <- ee_py_to_r(utils_py$create_codes())
+    code_verifier <- oauth_codes[[1]]
+    code_challenge <- oauth_codes[[2]]
+    earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
     browseURL(earthengine_auth)
     auth_code <- getPass("Enter Earth Engine Authentication: ")
-    token <- ee$oauth$request_token(auth_code)
+    token <- ee$oauth$request_token(auth_code, code_verifier)
     credential <- sprintf('{"refresh_token":"%s"}', token)
     write(credential, main_ee_credential)
     write(credential, user_ee_credential)

@@ -12,6 +12,7 @@
 #' @param quiet logical. Suppress info message
 #' @importFrom geojsonio geojson_sf
 #' @importFrom utils tail
+#' @import methods
 #' @details
 #' The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
 #' your local env could be carried out by three different strategies. The
