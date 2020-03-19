@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 import ee
 ```
 
-`rgee` is extremedly similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) in all the aspects, with the exception of **three** particular cases. Each of these are explained in-depth below.
+`rgee` is extremely similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) in all the aspects, with the exception of **three** particular cases. Each of these are explained in-depth below.
 
 ### 1) The **map** message error:
 

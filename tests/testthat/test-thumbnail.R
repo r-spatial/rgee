@@ -70,10 +70,11 @@ test_that("ee_as_thumbnail palette, min-max", {
 test_that("ee_as_thumbnail region", {
   # PNG images
   region <- nc$geometry[[1]] %>%
-    st_bbox() %>%
-    st_as_sfc() %>%
-    st_set_crs(4326) %>%
-    sf_as_ee()
+    sf::st_bbox() %>%
+    sf::st_as_sfc() %>%
+    sf::st_set_crs(4326) %>%
+    sf_as_ee() %>%
+    ee$FeatureCollection$geometry()
   image_clip <- image$clip(region)
   arequipa_dem <- ee_as_thumbnail(
     x = image_clip,
@@ -85,5 +86,5 @@ test_that("ee_as_thumbnail region", {
     )
   )
   arequipa_dem <- arequipa_dem * 5000
-  expect_equal(max(arequipa_dem$X), 0, tolerance = 1)
+  expect_equal(max(arequipa_dem[[1]]), 5000, tolerance = 1)
 })

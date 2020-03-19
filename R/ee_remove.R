@@ -71,6 +71,7 @@ ee_clean_pyenv <- function() {
       lines[ii] <- line
       ii <- ii + 1
     }
+    close(con)
 
     # Remove system variables
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV

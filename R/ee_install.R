@@ -223,10 +223,7 @@ ee_install_python_packages <- function(method = c(
                                        conda_python_version = "3.7",
                                        quiet = FALSE,
                                        ...) {
-  rgee_packages <- c(
-    "selenium", "bs4", "pysmartDL",
-    "requests_toolbelt", "oauth2client"
-  )
+  rgee_packages <- "oauth2client"
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
     stop(

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 ### External Required 
 
-- <span style="color:#b52b09">Google acount with Earth Engine activated</span>
+- <span style="color:#b52b09">Google account with Earth Engine activated</span>
 - <span style="color:#b52b09">Python > v3.5</span>
 - <span style="color:#f0df26">Google Cloud Storage (GCS)</span>
 - <span style="color:#f0df26">Google Chrome version > v76 </span>
@@ -64,7 +64,7 @@ install.packages('googledrive')
 install.packages('googleCloudStorageR')
 ```
 
-Google Drive (`ee_download_drive`) is more friendly to novice Earth Engine users because the authentification process could be done without leaving R. However, if you are trying to move large amounts of data, it is preferable use Google Cloud Storage (`ee_download_gcs`) instead. It is important mentioning that, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the [GCS_AUTH_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial to create your own service account key. If you want to understand why this is necessary, please have a look [Mark Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial.
+Google Drive (`ee_download_drive`) is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large amounts of data, it is preferable use Google Cloud Storage (`ee_download_gcs`) instead. It is important mentioning that, you will need to have your own Google Project with a credit card added to used it, charges will apply. See the [GCS_AUTH_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial to create your own service account key. If you want to understand why this is necessary, please have a look [Mark Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) tutorial.
 
 Batch **upload** is a harder process, in `rgee` we try to make it simple by using the [ee_upload](https://csaybar.github.io/rgee/reference/ee_upload.html) function. Whether you want to upload files in a batch way, you must get authorization to read & write into a Google Cloud Storage (GCS) bucket. Fortunately, Earth Engine provides a **provisional** for free space to all users into GCS (gs://earthengine-uploads/). Inspired in the [geeup](https://pypi.org/project/geeup/0.3.3/) Python package we provide a connection to gs://earthengine-uploads/ when the bucket argument in the `ee_upload` function is not defined by the user. This process will use **Selenium** and will require **ChromeDriver**. To install ChromeDriver in your system run as follow:
 
