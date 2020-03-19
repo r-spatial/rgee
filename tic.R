@@ -4,7 +4,6 @@ if (ci_on_travis()) {
 
 get_stage("before_install") %>%
   add_code_step({
-
     # Upload/Download packages
     install.packages("rjson")
     install.packages("dplyr")

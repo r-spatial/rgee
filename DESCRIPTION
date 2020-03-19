@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -34,8 +34,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 Depends:
-    R (>= 3.4.0),
-    methods    
+    R (>= 3.4.0)
 Imports:
     reticulate (>= 1.13),
     stars (>= 0.3),

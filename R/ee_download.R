@@ -918,9 +918,9 @@ ee_gcs_to_local <- function(task,
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$gcs_cre)) {
       stop(
-        "Google Drive credentials were not loaded.",
+        "Google Cloud Storage credentials were not loaded.",
         ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
-        " to fix it"
+        " to fix it."
       )
     }
     # Getting bucket name and filename

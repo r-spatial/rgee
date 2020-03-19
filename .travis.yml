@@ -39,7 +39,7 @@ env:
   global:
   - R_BUILD_ARGS=" --no-manual "
   - R_CHECK_ARGS=" --no-manual --as-cran --no-multiarch --no-examples"
-
+  - _R_CHECK_FORCE_SUGGESTS_: false
 before_install:
 - sudo apt-get update
 - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
