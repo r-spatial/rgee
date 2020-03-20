@@ -6,10 +6,11 @@ ee_Initialize(
   gcs = TRUE
 )
 
-test_that("ee_local_to_gcs",{
+test_that("ee_local_to_gcs - character",{
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+  gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev',quiet = TRUE)
   expect_type(gcsuri,'character')
 })
 

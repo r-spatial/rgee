@@ -17,7 +17,7 @@
 #' number of edges to reach a point at infinity. Otherwise polygons
 #' use the left-inside rule, where interiors are on the left side
 #' of the shell's edges when walking the vertices in the given order.
-#' If unspecified in the geometry (region argument) defaults to FALSE.
+#' If unspecified in the geometry (region argument) defaults to TRUE.
 #' @param maxPixels The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
@@ -74,6 +74,7 @@
 #' img_stars_01 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
+#'   geodesic = FALSE,
 #'   via = "getInfo"
 #' )
 #'
@@ -81,6 +82,7 @@
 #' img_stars_02 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
+#'   geodesic = FALSE,
 #'   via = "drive"
 #' )
 #'
@@ -88,6 +90,7 @@
 #' img_stars_03 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
+#'   geodesic = FALSE,
 #'   container = "rgee_dev",
 #'   via = "gcs"
 #' )
@@ -148,7 +151,7 @@ ee_as_stars <- function(image,
       query_params[grepl("evenOdd", names(query_params))]
     )
     if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
-      is_evenodd <- FALSE
+      is_evenodd <- TRUE
     }
   } else {
     is_evenodd <- evenOdd
@@ -528,11 +531,11 @@ ee_as_stars <- function(image,
 #' Map$addLayer(ee_stars_01)
 #'
 #' # Method 2
-#' ee_sf_02 <- stars_as_ee(x = x,
-#'                         assetId = asset_id,
-#'                         bucket = "rgee_dev")
-#' Map$centerObject(ee_sf_02)
-#' Map$addLayer(ee_sf_02)
+#' ee_stars_02 <- stars_as_ee(x = x,
+#'                            assetId = asset_id,
+#'                            bucket = "rgee_dev")
+#' Map$centerObject(ee_stars_02)
+#' Map$addLayer(ee_stars_02)
 #' }
 #' @export
 stars_as_ee <- function(x,

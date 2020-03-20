@@ -30,7 +30,7 @@ the even/odd rule, where a point is inside if it crosses an odd
 number of edges to reach a point at infinity. Otherwise polygons
 use the left-inside rule, where interiors are on the left side
 of the shell's edges when walking the vertices in the given order.
-If unspecified in the geometry (region argument) defaults to FALSE.}
+If unspecified in the geometry (region argument) defaults to TRUE.}
 
 \item{maxPixels}{The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
@@ -95,6 +95,7 @@ geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
 img_stars_01 <- ee_as_stars(
   image = img,
   region = geometry,
+  geodesic = FALSE,
   via = "getInfo"
 )
 
@@ -102,6 +103,7 @@ img_stars_01 <- ee_as_stars(
 img_stars_02 <- ee_as_stars(
   image = img,
   region = geometry,
+  geodesic = FALSE,
   via = "drive"
 )
 
@@ -109,6 +111,7 @@ img_stars_02 <- ee_as_stars(
 img_stars_03 <- ee_as_stars(
   image = img,
   region = geometry,
+  geodesic = FALSE,
   container = "rgee_dev",
   via = "gcs"
 )

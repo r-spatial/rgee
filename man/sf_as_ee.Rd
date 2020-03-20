@@ -18,12 +18,7 @@ by the even/odd rule, where a point is inside if it crosses
 an odd number of edges to reach a point at infinity. Otherwise
 polygons use the left-inside rule, where interiors are on the
 left side of the shell's edges when walking the vertices in
-the given order. If unspecified, defaults to TRUE.
-*args: For convenience, varargs may be used when all
-arguments are numbers. This allows creating geodesic
-EPSG:4326 Polygons with a single LinearRing given an even
-number of arguments, e.g.
-ee.Geometry.Polygon(aLng, aLat, bLng, bLat, ..., aLng, aLat).}
+the given order. If unspecified, defaults to TRUE.}
 
 \item{proj}{An optional projection specification, either as a CRS ID
 code or as a WKT string. If specified, overrides any CRS found in

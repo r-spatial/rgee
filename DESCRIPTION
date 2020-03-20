@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -34,20 +34,20 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 Depends:
-    R (>= 3.4.0)
-Imports:
+    R (>= 3.4.0),
     reticulate (>= 1.13),
-    stars (>= 0.3),
+    stars,
+    sf
+Imports:
+    methods,
     rstudioapi (>= 0.7),
     dplyr,
     rgdal,
-    sf,
     magrittr,
     leaflet (>= 2.0.2),
     mapview,
     geojsonio,
     jsonlite,
-    methods,
     getPass,
     crayon,
     cli,

@@ -77,10 +77,10 @@ Map$centerObject(ee_stars_01)
 Map$addLayer(ee_stars_01)
 
 # Method 2
-ee_sf_02 <- stars_as_ee(x = x,
-                        assetId = asset_id,
-                        bucket = "rgee_dev")
-Map$centerObject(ee_sf_02)
-Map$addLayer(ee_sf_02)
+ee_stars_02 <- stars_as_ee(x = x,
+                           assetId = asset_id,
+                           bucket = "rgee_dev")
+Map$centerObject(ee_stars_02)
+Map$addLayer(ee_stars_02)
 }
 }
