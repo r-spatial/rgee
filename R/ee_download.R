@@ -1031,11 +1031,11 @@ ee_monitoring <- function(task, quiet = FALSE, eeTaskList = FALSE) {
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
   if (fileformat == "GEO_TIFF") {
-    read_stars(filename, proxy = TRUE, quiet = quiet)
+    read_stars(filename, proxy = TRUE, quiet = TRUE)
   } else if (fileformat %in% "SHP") {
-    st_read(filename[grep("\\.shp$", filename)], quiet = quiet)
+    st_read(filename[grep("\\.shp$", filename)], quiet = TRUE)
   } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
-    st_read(filename, quiet = quiet)
+    st_read(filename, quiet = TRUE)
   } else {
     if (!quiet) {
       print(sprintf(

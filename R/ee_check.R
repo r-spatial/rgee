@@ -14,7 +14,6 @@
 ee_check <- function() {
   ee_check_python()
   ee_check_rgee_python_packages()
-  #ee_check_drivers()
   ee_check_credentials()
 }
 
@@ -96,9 +95,6 @@ ee_check_rgee_python_packages <- function() {
     )
   }
   ee_check_py_package("oauth2client")
-  ee_check_py_package("requests")
-  ee_check_py_package("bs4")
-  ee_check_py_package("requests_toolbelt")
 }
 
 #' @rdname ee_check-tools

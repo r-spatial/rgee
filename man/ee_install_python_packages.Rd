@@ -5,7 +5,7 @@
 \title{Install rgee Python packages dependencies}
 \usage{
 ee_install_python_packages(method = c("auto", "virtualenv", "conda"),
-  conda = "auto", ee_version = NULL, envname = NULL, pip = FALSE,
+  conda = "auto", ee_version = NULL, envname = NULL, pip = TRUE,
   conda_python_version = "3.7", quiet = FALSE, ...)
 }
 \arguments{

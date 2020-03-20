@@ -219,7 +219,7 @@ ee_install_python_packages <- function(method = c(
                                        conda = "auto",
                                        ee_version = NULL,
                                        envname = NULL,
-                                       pip = FALSE,
+                                       pip = TRUE,
                                        conda_python_version = "3.7",
                                        quiet = FALSE,
                                        ...) {

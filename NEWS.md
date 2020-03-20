@@ -1,3 +1,16 @@
+# rgee 0.3.3
+- Several bugs fixed
+# rgee 0.3.0
+- changed ee_map from Map.
+- New friendly-user installation module implemented.
+- ee_download and ee_upload were deprecated
+- selenium functionality deprecated
+- ee_as_sf and sf_as_ee now support gcs and drive
+- ee_as_stars and stars_as_ee functions created.
+- rgee support geometry with differents CRS.
+- arguments evenOdd, Geodesic, and proj implemented in several funtions.
+- ee_help permit you display Earth Engine documentation.
+
 # rgee 0.2.0
 - Several bugs fixed.
 - A collection of 300+ examples for using Google Earth Engine in [R](https://github.com/csaybar/rgee-examples).

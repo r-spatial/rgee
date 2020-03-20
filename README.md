@@ -106,8 +106,10 @@ ee_create_pyenv(python_env = "ee")
 ee_discover_pyenvs()
 
 # 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g
-ee_set_pyenv(python_path = '/home/user/.virtualenvs/ee/bin/python',
-             python_env = 'ee')
+ee_set_pyenv(
+  python_path = '/home/MY_USER_HERE/.virtualenvs/ee/bin/python',
+  python_env = 'ee'
+)
 
 # 5. Install Python package dependencies
 ee_install_python_packages()
