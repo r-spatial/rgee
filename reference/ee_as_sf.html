@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -161,7 +161,8 @@
     <p>Convert an EE table in a sf object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_as_sf</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_as_sf</span>(<span class='no'>x</span>, <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>, <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
+  <span class='kw'>selectors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -170,40 +171,90 @@
       <th>x</th>
       <td><p>EE table to be converted into a sf object.</p></td>
     </tr>
+    <tr>
+      <th>via</th>
+      <td><p>Method to download the image. Three methods
+are implemented 'getInfo', 'drive', and 'gcs'. See details.</p></td>
+    </tr>
+    <tr>
+      <th>container</th>
+      <td><p>Relevant when the "via" argument is
+defined as "drive" or "gcs". It is the name of a unique
+folder ('drive') or bucket ('gcs') to be exported into.</p></td>
+    </tr>
+    <tr>
+      <th>selectors</th>
+      <td><p>The list of properties to include in
+the output, as a list of strings or a comma-separated
+string. By default, all properties are included.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>logical. Suppress info message</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An sf class object, see Details.</p>
+    <p>An sf object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Export large spatial objects it preferable to create export pipelines
-by using <code>ee$batch$Export$table$*</code> and <code>rgee::ee_download_*</code> instead of
-using <code>ee_as_sf</code>. See
-<a href='https://developers.google.com/earth-engine/client_server'>Client
-vs Server</a> documentation for details.</p>
+    <p>The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
+your local env could be carried out by three different strategies. The
+first one ('getInfo') use the getInfo method, which fetch and return
+information about Earth Engine objects, the advantage of use this strategy is
+a direct and fast download. However, there is a limit of 5000 features
+that can be transferred by request which makes it not recommendable for
+large collections. The second ('drive') and third ('gcs') methods are
+suitable for large images since it uses Google Drive and Google Cloud
+Storage as intermediate containers.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='no'>roi</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Polygon</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.27577209472656</span>, <span class='fl'>37.891247253777074</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.27577209472656</span>, <span class='fl'>37.86875557241152</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.24040985107422</span>, <span class='fl'>37.86875557241152</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.24040985107422</span>, <span class='fl'>37.891247253777074</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(
+  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"data.colec.fbf@gmail.com"</span>,
+  <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+
+<span class='co'># Region of interest</span>
+<span class='no'>roi</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Polygon</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.275</span>, <span class='fl'>37.891</span>),
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.275</span>, <span class='fl'>37.868</span>),
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.240</span>, <span class='fl'>37.868</span>),
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>122.240</span>, <span class='fl'>37.891</span>)
 ))
 
+<span class='co'># TIGER: US Census Blocks Dataset</span>
 <span class='no'>blocks</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"TIGER/2010/Blocks"</span>)
-<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='no'>blocks</span>$<span class='fu'>filterBounds</span>(<span class='no'>roi</span>)$<span class='fu'>limit</span>(<span class='fl'>10</span>)
-<span class='no'>sf_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>subset</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>'Object size in Mb:'</span>, <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/utils/object.size.html'>object.size</a></span>(<span class='no'>sf_subset</span>)/<span class='fl'>10</span>^<span class='fl'>6</span>))</div><div class='output co'>#&gt; Object size in Mb: 0.03228</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_subset</span>)</div><div class='img'><img src='ee_as_sf-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># Define an arbitrary region in which to compute random points.</span>
+<span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='no'>blocks</span>$<span class='fu'>filterBounds</span>(<span class='no'>roi</span>)
+<span class='no'>sf_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>subset</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_subset</span>)
+
+<span class='co'># Create Random points in Earth Engine</span>
 <span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(-<span class='fl'>119.224</span>, <span class='fl'>34.669</span>, -<span class='fl'>99.536</span>, <span class='fl'>50.064</span>)
-<span class='co'># Create 100 random points in the region.</span>
-<span class='no'>ee_randomPoints</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='fu'>randomPoints</span>(<span class='no'>region</span>,<span class='fl'>100</span>)
+<span class='fu'><a href='ee_help.html'>ee_help</a></span>(<span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='no'>randomPoints</span>)
+<span class='no'>ee_randomPoints</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='fu'>randomPoints</span>(<span class='no'>region</span>, <span class='fl'>100</span>)
+
+<span class='co'># Download via GetInfo</span>
 <span class='no'>sf_randomPoints</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>ee_randomPoints</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_randomPoints</span>)</div><div class='img'><img src='ee_as_sf-2.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_randomPoints</span>)
+
+<span class='co'># Download via drive</span>
+<span class='no'>sf_randomPoints_drive</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>ee_randomPoints</span>,
+  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'drive'</span>
+)
+
+<span class='co'># Download via GCS</span>
+<span class='no'>sf_randomPoints_gcs</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>subset</span>,
+  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'gcs'</span>,
+  <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>
+)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

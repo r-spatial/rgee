@@ -76,7 +76,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -172,6 +172,19 @@
       <tr>
         
         <td>
+          <p><code><a href="Map.html">Map</a></code> </p>
+        </td>
+        <td><p>Module to display Earth Engine (EE) spatial
+objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_shp_zip.html">create_shp_zip()</a></code> </p>
+        </td>
+        <td><p>Create a zip file from a sf object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_Initialize.html">ee_Initialize()</a></code> </p>
         </td>
         <td><p>Authenticate and Initialize Earth Engine</p></td>
@@ -184,15 +197,27 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_as_stars.html">ee_as_stars()</a></code> </p>
+        </td>
+        <td><p>Convert an Earth Engine (EE) image into a stars object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_as_thumbnail.html">ee_as_thumbnail()</a></code> </p>
         </td>
         <td><p>Create a stars object based on an EE thumbnail image</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_drivers()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> </p>
+          <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> </p>
         </td>
         <td><p>Interface to check Python and non-R rgee dependencies</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_clean_container.html">ee_clean_container()</a></code> </p>
+        </td>
+        <td><p>Delete files from a either Folder or Bucket</p></td>
       </tr><tr>
         
         <td>
@@ -204,8 +229,7 @@
         <td>
           <p><code><a href="ee_create_pyenv.html">ee_create_pyenv()</a></code> </p>
         </td>
-        <td><p>Create an isolated Python virtual environment to be used
-in rgee</p></td>
+        <td><p>Create an isolated Python virtual environment to be used in rgee</p></td>
       </tr><tr>
         
         <td>
@@ -216,15 +240,9 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_download_drive.html">ee_download_drive()</a></code> </p>
+          <p><code><a href="ee_drive_to_local.html">ee_drive_to_local()</a></code> </p>
         </td>
-        <td><p>Move Earth Engine (EE) results from Google Drive to a local directory</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_download_gcs.html">ee_download_gcs()</a></code> </p>
-        </td>
-        <td><p>Move EE results from Google Cloud Storage to a local directory</p></td>
+        <td><p>Move results from Google Drive to a local directory</p></td>
       </tr><tr>
         
         <td>
@@ -234,33 +252,87 @@ in the system</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_gcs_to_asset_image.html">ee_gcs_to_asset_image()</a></code> </p>
+        </td>
+        <td><p>Move a GeoTIFF image from GCS to EE asset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_gcs_to_asset_table.html">ee_gcs_to_asset_table()</a></code> </p>
+        </td>
+        <td><p>Move a zipped shapefile from GCS to EE asset</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_gcs_to_local.html">ee_gcs_to_local()</a></code> </p>
+        </td>
+        <td><p>Move results from Google Cloud Storage to a local directory</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_get_assethome.html">ee_get_assethome()</a></code> </p>
+        </td>
+        <td><p>Get the Asset home name</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_get_date.html">ee_get_date()</a></code> </p>
+        </td>
+        <td><p>Get the date of a Earth Engine Image</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_get_earthengine_path.html">ee_get_earthengine_path()</a></code> </p>
         </td>
         <td><p>Get the path where the credentials are stored by rgee</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_install_ChromeDriver.html">ee_install_ChromeDriver()</a></code> </p>
+          <p><code><a href="ee_help.html">ee_help()</a></code> </p>
         </td>
-        <td><p>Install ChromeDriver in the system</p></td>
+        <td><p>Documentation for Earth Engine Objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_dim.html">ee_image_dim()</a></code> </p>
+        </td>
+        <td><p>Dimensions of a Earth Engine Image object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_to_asset.html">ee_image_to_asset()</a></code> </p>
+        </td>
+        <td><p>Creates a task to export an EE Image to an EE Asset.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_to_drive.html">ee_image_to_drive()</a></code> </p>
+        </td>
+        <td><p>Creates a task to export an EE Image to Drive.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_to_gcs.html">ee_image_to_gcs()</a></code> </p>
+        </td>
+        <td><p>Creates a task to export an EE Image to Google Cloud Storage.</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_install_python_packages.html">ee_install_python_packages()</a></code> </p>
         </td>
-        <td><p>Install Python packages dependencies</p></td>
+        <td><p>Install rgee Python packages dependencies</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_manage-tools.html">ee_manage_create()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assetlist()</a></code> <code><a href="ee_manage-tools.html">ee_manage_quota()</a></code> <code><a href="ee_manage-tools.html">ee_manage_copy()</a></code> <code><a href="ee_manage-tools.html">ee_manage_move()</a></code> <code><a href="ee_manage-tools.html">ee_manage_set_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_asset_access()</a></code> <code><a href="ee_manage-tools.html">ee_manage_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_cancel_all_running_task()</a></code> </p>
+          <p><code><a href="ee_local_to_gcs.html">ee_local_to_gcs()</a></code> </p>
+        </td>
+        <td><p>Upload local files to google cloud storage</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_manage-tools.html">ee_manage_create()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assetlist()</a></code> <code><a href="ee_manage-tools.html">ee_manage_quota()</a></code> <code><a href="ee_manage-tools.html">ee_manage_copy()</a></code> <code><a href="ee_manage-tools.html">ee_manage_move()</a></code> <code><a href="ee_manage-tools.html">ee_manage_set_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_asset_access()</a></code> <code><a href="ee_manage-tools.html">ee_manage_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_cancel_all_running_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_asset_size()</a></code> </p>
         </td>
         <td><p>Interface for manage the Earth Engine Asset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_map.html">ee_map()</a></code> </p>
-        </td>
-        <td><p>Adds a given Earth Engine (EE) spatial object to mapview as a layer.</p></td>
       </tr><tr>
         
         <td>
@@ -294,12 +366,6 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_remove_ChromeDriver.html">ee_remove_ChromeDriver()</a></code> </p>
-        </td>
-        <td><p>Delete chromedriver</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_remove_credentials.html">ee_remove_credentials()</a></code> </p>
         </td>
         <td><p>Delete Credentials</p></td>
@@ -324,15 +390,21 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_upload.html">ee_upload()</a></code> </p>
+          <p><code><a href="ee_table_to_asset.html">ee_table_to_asset()</a></code> </p>
         </td>
-        <td><p>Upload sf or stars objects into a GEE asset</p></td>
+        <td><p>Creates a task to export a FeatureCollection to an EE table asset.</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_upload_file_to_gcs.html">ee_upload_file_to_gcs()</a></code> </p>
+          <p><code><a href="ee_table_to_drive.html">ee_table_to_drive()</a></code> </p>
         </td>
-        <td><p>Upload local files to google cloud storage</p></td>
+        <td><p>Creates a task to export a FeatureCollection to Google Drive.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_table_to_gcs.html">ee_table_to_gcs()</a></code> </p>
+        </td>
+        <td><p>Creates a task to export a FeatureCollection to Google Cloud Storage.</p></td>
       </tr><tr>
         
         <td>
@@ -374,7 +446,13 @@ in the system</p></td>
         <td>
           <p><code><a href="sf_as_ee.html">sf_as_ee()</a></code> </p>
         </td>
-        <td><p>Convert an sf object to EE object</p></td>
+        <td><p>Convert an sf object to an EE object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="stars_as_ee.html">stars_as_ee()</a></code> </p>
+        </td>
+        <td><p>Convert an stars object to an EE object</p></td>
       </tr>
     </tbody>
     </table>

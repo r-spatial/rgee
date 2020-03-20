@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Move EE results from Google Cloud Storage to a local directory — ee_download_gcs • rgee</title>
+<title>Creates a task to export an EE Image to Google Cloud Storage. — ee_image_to_gcs • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,10 @@
 
 
 
-<meta property="og:title" content="Move EE results from Google Cloud Storage to a local directory — ee_download_gcs" />
-<meta property="og:description" content="Move results of an EE task saved in Google Cloud Storage to a local
-directory." />
+<meta property="og:title" content="Creates a task to export an EE Image to Google Cloud Storage. — ee_image_to_gcs" />
+<meta property="og:description" content="Creates a task to export an EE Image to Google Cloud Storage.
+This function is a wrapper around
+ee$batch$Export$image$toCloudStorage(...)." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +79,7 @@ directory." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -153,55 +154,114 @@ directory." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Move EE results from Google Cloud Storage to a local directory</h1>
+    <h1>Creates a task to export an EE Image to Google Cloud Storage.</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
-    <div class="hidden name"><code>ee_download_gcs.Rd</code></div>
+    <div class="hidden name"><code>ee_image_to_gcs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Move results of an EE task saved in Google Cloud Storage to a local
-directory.</p>
+    <p>Creates a task to export an EE Image to Google Cloud Storage.
+This function is a wrapper around
+<code>ee$batch$Export$image$toCloudStorage(...)</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_download_gcs</span>(<span class='no'>task</span>, <span class='no'>filename</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>GCS_AUTH_FILE</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.gcs.auth"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_image_to_gcs</span>(<span class='no'>image</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportImageTask"</span>,
+  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crsTransform</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxPixels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shardSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileDimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>skipEmptyTiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>formatOptions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>task</th>
-      <td><p>List generated after finished correctly a EE task. See details.</p></td>
+      <th>image</th>
+      <td><p>The image to be exported.</p></td>
     </tr>
     <tr>
-      <th>filename</th>
-      <td><p>Output filename.</p></td>
+      <th>description</th>
+      <td><p>Human-readable name of the task.</p></td>
     </tr>
     <tr>
-      <th>overwrite</th>
-      <td><p>A boolean indicating whether "filename" should
-be overwritten.</p></td>
+      <th>bucket</th>
+      <td><p>The name of a Cloud Storage bucket for the export.</p></td>
     </tr>
     <tr>
-      <th>GCS_AUTH_FILE</th>
-      <td><p>Authentication json file you have downloaded from
-your Google Cloud Project</p></td>
+      <th>fileNamePrefix</th>
+      <td><p>Cloud Storage object name prefix for the export.
+Defaults to the name of the task.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p>Logical. Suppress info message</p></td>
+      <th>dimensions</th>
+      <td><p>The dimensions of the exported image. Takes either a
+single positive integer as the maximum dimension or "WIDTHxHEIGHT"
+where WIDTH and HEIGHT are each positive integers.</p></td>
+    </tr>
+    <tr>
+      <th>region</th>
+      <td><p>The lon,lat coordinates for a LinearRing or Polygon
+specifying the region to export. Can be specified as a nested lists
+of numbers or a serialized string. Defaults to the image's region.</p></td>
+    </tr>
+    <tr>
+      <th>scale</th>
+      <td><p>The resolution in meters per pixel. Defaults to the native
+resolution of the image assset unless a crsTransform is specified.</p></td>
+    </tr>
+    <tr>
+      <th>crs</th>
+      <td><p>The coordinate reference system of the exported image's
+projection. Defaults to the image's default projection.</p></td>
+    </tr>
+    <tr>
+      <th>crsTransform</th>
+      <td><p>A comma-separated string of 6 numbers describing
+the affine transform of the coordinate reference system of the exported
+image's projection, in the order:
+xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+Defaults to the image's native CRS transform.</p></td>
+    </tr>
+    <tr>
+      <th>maxPixels</th>
+      <td><p>The maximum allowed number of pixels in the
+exported image. The task will fail if the exported region covers more
+pixels in the specified projection. Defaults to 100,000,000.</p></td>
+    </tr>
+    <tr>
+      <th>shardSize</th>
+      <td><p>Size in pixels of the shards in which this image
+will be computed. Defaults to 256.</p></td>
+    </tr>
+    <tr>
+      <th>fileDimensions</th>
+      <td><p>The dimensions in pixels of each image file, if
+the image is too large to fit in a single file. May specify a single
+number to indicate a square shape, or a list of two dimensions to
+indicate (width,height). Note that the image will still be clipped to
+the overall image dimensions. Must be a multiple of shardSize.</p></td>
+    </tr>
+    <tr>
+      <th>skipEmptyTiles</th>
+      <td><p>If TRUE, skip writing empty (i.e. fully-masked)
+image tiles. Defaults to FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>fileFormat</th>
+      <td><p>The string file format to which the image is exported.
+Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
+to 'GeoTIFF'.</p></td>
+    </tr>
+    <tr>
+      <th>formatOptions</th>
+      <td><p>A dictionary of string keys to format specific
+options. **kwargs: Holds other keyword arguments that may have been
+deprecated such as 'crs_transform'.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The best way to use <code>rgee::ee_download_gcs</code> is save the Google Cloud
-Project JSON file into <code><a href='ee_get_earthengine_path.html'>ee_get_earthengine_path()</a></code> with the name
-GCS_AUTH_FILE.json. It is necessary in order to attain that rgee can
-read the credentials automatically.</p>
-<p>The task argument needs "COMPLETED" task state to work, since the parameters
-necessaries to locate the file into google cloud storage are obtained from
-ee$batch$Export$*$toCloudStorage(...)$start()$status().</p>
+    <p>An unstarted Task that exports the image to Google Cloud Storage.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -209,25 +269,25 @@ ee$batch$Export$*$toCloudStorage(...)$start()$status().</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()  <span class='co'># reattach ee as a reserved word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()
+<span class='fu'><a href='ee_users.html'>ee_users</a></span>()
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>'data.colec.fbf'</span>,<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
+<span class='co'># Define study area (local -&gt; earth engine)</span>
 <span class='co'># Communal Reserve Amarakaeri - Peru</span>
-<span class='no'>xmin</span> <span class='kw'>&lt;-</span> -<span class='fl'>71.132591318</span>
-<span class='no'>xmax</span> <span class='kw'>&lt;-</span> -<span class='fl'>70.953664315</span>
-<span class='no'>ymin</span> <span class='kw'>&lt;-</span> -<span class='fl'>12.892451233</span>
-<span class='no'>ymax</span> <span class='kw'>&lt;-</span> -<span class='fl'>12.731116372</span>
-<span class='no'>x_mean</span> <span class='kw'>&lt;-</span> (<span class='no'>xmin</span> + <span class='no'>xmax</span>) / <span class='fl'>2</span>
-<span class='no'>y_mean</span> <span class='kw'>&lt;-</span> (<span class='no'>ymin</span> + <span class='no'>ymax</span>) / <span class='fl'>2</span>
-
-<span class='no'>ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>xmin</span>, <span class='no'>ymin</span>, <span class='no'>xmax</span>, <span class='no'>ymin</span>, <span class='no'>xmax</span>, <span class='no'>ymax</span>, <span class='no'>xmin</span>, <span class='no'>ymax</span>, <span class='no'>xmin</span>, <span class='no'>ymin</span>)
-<span class='no'>ROI_polygon</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>rlist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>xmin</span> <span class='kw'>=</span> -<span class='fl'>71.13</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> -<span class='fl'>70.95</span>,<span class='kw'>ymin</span> <span class='kw'>=</span> -<span class='fl'>12.89</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> -<span class='fl'>12.73</span>)
+<span class='no'>ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>,
+         <span class='no'>rlist</span>$<span class='no'>xmax</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>,
+         <span class='no'>rlist</span>$<span class='no'>xmax</span>, <span class='no'>rlist</span>$<span class='no'>ymax</span>,
+         <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymax</span>,
+         <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>)
+<span class='no'>ee_ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>)
-<span class='no'>ee_geom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>(<span class='no'>ROI_polygon</span>)
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
+
 
 <span class='co'># Get the mean annual NDVI for 2011</span>
 <span class='no'>cloudMaskL457</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>image</span>) {
@@ -241,47 +301,36 @@ ee$batch$Export$*$toCloudStorage(...)$start()$status().</p>
 }
 
 <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
-  <span class='fu'>filterBounds</span>(<span class='no'>ee_geom</span>)$
+  <span class='fu'>filterBounds</span>(<span class='no'>ee_ROI</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2011-01-01"</span>, <span class='st'>"2011-12-31"</span>)$
   <span class='fu'>map</span>(<span class='no'>cloudMaskL457</span>)
+
+<span class='co'># Create simple composite</span>
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ic_l5</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()$<span class='fu'>rename</span>(<span class='st'>"NDVI"</span>)
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'>reproject</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>500</span>)
-<span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://rdrr.io/r/graphics/clip.html'>clip</a></span>(<span class='no'>ee_geom</span>)
+<span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://rdrr.io/r/graphics/clip.html'>clip</a></span>(<span class='no'>ee_ROI</span>)
 
-<span class='co'># Download a EE Image</span>
-<span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>image</span>$<span class='fu'>toCloudStorage</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_TIFF"</span>,
-  <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
+<span class='co'># Move results from Earth Engine to Drive</span>
+<span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_image_to_gcs</span>(
+    <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
+    <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
+    <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_TIFF"</span>,
+    <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
 )
+
 <span class='no'>task_img</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_gcs</span>(<span class='no'>task_img</span>)
+
+<span class='co'># Move results from Drive to local</span>
+<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_gcs_to_local.html'>ee_gcs_to_local</a></span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>)
 <span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
-
-<span class='co'># Download a EE FeatureCollection</span>
-<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_geom</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
-)
-
-<span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>batch</span>$<span class='no'>Export</span>$<span class='no'>table</span>$<span class='fu'>toCloudStorage</span>(
-  <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"SHP"</span>,
-  <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"geom_Amarakaeri"</span>
-)
-<span class='no'>task_vector</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_vector</span>) <span class='co'># optional</span>
-<span class='no'>amk_geom</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_download_gcs</span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_vector</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

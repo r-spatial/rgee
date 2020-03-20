@@ -43,7 +43,7 @@
 
 
 <meta property="og:title" content="Create a stars object based on an EE thumbnail image — ee_as_thumbnail" />
-<meta property="og:description" content="Download EE thumbnail images and read them as stars objects.
+<meta property="og:description" content="Download EE thumbnail images and read them as star objects.
 This function is a wrapper around ee$Image()$getThumbURL()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -78,7 +78,7 @@ This function is a wrapper around ee$Image()$getThumbURL()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -159,12 +159,12 @@ This function is a wrapper around ee$Image()$getThumbURL()." />
     </div>
 
     <div class="ref-description">
-    <p>Download EE thumbnail images and read them as stars objects.
+    <p>Download EE thumbnail images and read them as star objects.
 This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>dimensions</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='fl'>4326</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(<span class='no'>x</span>, <span class='no'>region</span>, <span class='no'>dimensions</span>, <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>geodesic</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>evenOdd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,7 +175,9 @@ This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     </tr>
     <tr>
       <th>region</th>
-      <td><p>EE Geometry Rectangle (ee$Geometry$Rectangle)</p></td>
+      <td><p>EE Geometry Rectangle (ee$Geometry$Rectangle). The
+CRS needs to be the same as the x argument, otherwise, it will be
+forced. If not specified, image bounds will be taken.</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
@@ -186,9 +188,21 @@ This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
       <td><p>A list that contains the visualization parameters.</p></td>
     </tr>
     <tr>
-      <th>crs</th>
-      <td><p>The EE Image projection e.g. 'EPSG:3857'. WGS84 by default
-('EPSG:4326').</p></td>
+      <th>geodesic</th>
+      <td><p>Whether line segments of region should be interpreted as
+spherical geodesics. If FALSE, indicates that line segments should be
+interpreted as planar lines in the specified CRS. If not specified in
+the geometry (region argument), defaults to TRUE if the CRS is geographic
+(including the default EPSG:4326), or to FALSE if the CRS is projected.</p></td>
+    </tr>
+    <tr>
+      <th>evenOdd</th>
+      <td><p>If TRUE, polygon interiors will be determined by
+the even/odd rule, where a point is inside if it crosses an odd
+number of edges to reach a point at infinity. Otherwise polygons
+use the left-inside rule, where interiors are on the left side
+of the shell's edges when walking the vertices in the given order.
+If unspecified in the geometry (region argument) defaults to TRUE.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
@@ -204,7 +218,7 @@ This function is a wrapper around <code>ee$Image()$getThumbURL()</code>.</p>
     <p>The argument dimensions will define the stars object parameters
 "from" &amp; "to". It must be a single numeric value or a two-element vector.
 If not defined, 256 is taken by default as the dimension of x
-(from 1 to 256), and y scales down proportionally. Huge images
+(from 1 to 256), and y scales down proportionally. Large images
 might cause plodding connections. See
 <a href='https://developers.google.com/earth-engine/client_server'>Client vs
 Server</a> for more details.</p>
@@ -234,43 +248,82 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 getting the CRS of an Earth Engine Image.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: abind</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sf</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>raster</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rgee"</span>))</div><div class='output co'>#&gt; Reading layer `arequipa' from data source `/tmp/RtmpuYJ5Lx/temp_libpath44a22c9566cb/rgee/shp/arequipa.shp' using driver `ESRI Shapefile'
-#&gt; Simple feature collection with 1 feature and 2 fields
-#&gt; geometry type:  POLYGON
-#&gt; dimension:      XY
-#&gt; bbox:           xmin: -75.07333 ymin: -17.28501 xmax: -70.80408 ymax: -14.63274
-#&gt; epsg (SRID):    4326
-#&gt; proj4string:    +proj=longlat +datum=WGS84 +no_defs</div><div class='input'><span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rgee"</span>))
+<span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
   <span class='st'>"#F4C84E"</span>, <span class='st'>"#D59F3C"</span>, <span class='st'>"#A36D2D"</span>, <span class='st'>"#C6A889"</span>, <span class='st'>"#FFFFFF"</span>
 )
-<span class='no'>ndvi_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
-  <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC8D59"</span>, <span class='st'>"#FC9964"</span>, <span class='st'>"#FED89C"</span>, <span class='st'>"#FFFFBF"</span>,
-  <span class='st'>"#FFFFBF"</span>, <span class='st'>"#DAEF9F"</span>, <span class='st'>"#9DD46A"</span>, <span class='st'>"#91CF60"</span>, <span class='st'>"#91CF60"</span>
-)
-<span class='co'># Example 01  - SRTM AREQUIPA-PERU</span>
+
+<span class='co'># DEM data -SRTM v4.0</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span>$<span class='no'>geometry</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>%&gt;%</span>
+<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>st_bbox</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>st_as_sfc</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()</div><div class='output co'>#&gt; <span class='message'>Loading required namespace: stringi</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'crul':</span>
-#&gt; <span class='message'>  method                 from</span>
-#&gt; <span class='message'>  as.character.form_file httr</span></div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'geojsonlint':</span>
-#&gt; <span class='message'>  method         from </span>
-#&gt; <span class='message'>  print.location dplyr</span></div><div class='input'>
-<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>, <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>,
-                                <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>))</div><div class='output co'>#&gt; dimensions is missing, 256x256 is taken by default as dimension of x. 
-#&gt; Getting the thumbnail image from Earth Engine ... please wait</div><div class='input'><span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='fu'>geometry</span>()
 
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-     <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>)</div><div class='output co'>#&gt; <span class='message'>although coordinates are longitude/latitude, st_intersects assumes that they are planar</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                      <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))</div><div class='img'><img src='ee_as_thumbnail-1.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='co'>## world</span>
+<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>,
+  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
+  <span class='kw'>geodesic</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>evenOdd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
+)
+<span class='no'>world_dem</span>[<span class='no'>world_dem</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
+<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
+<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>world_dem</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
+  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - World"</span>
+)
+
+<span class='co'>## Arequipa-Peru</span>
+<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>,
+  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>512</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>region</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
+)
+<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
+<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
+  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>
+)
+<span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>
+))
+
+<span class='co'>## LANDSAT 8</span>
+<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)$
+  <span class='fu'><a href='https://rdrr.io/pkg/raster/man/select.html'>select</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>))
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>img</span>)
+<span class='no'>Map</span>$<span class='fu'><a href='https://rdrr.io/pkg/raster/man/addLayer.html'>addLayer</a></span>(<span class='no'>img</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))
+
+<span class='co'>## Teton Wilderness</span>
+<span class='no'>l8_img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>img</span>,
+  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
+  <span class='kw'>evenOdd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    <span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+    <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
+    <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>
+  )
+)
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()
+<span class='no'>l8_img</span> <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/stars/man/coerce-methods.html'>as</a></span>(<span class='st'>"Raster"</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>`names&lt;-`</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"R"</span>, <span class='st'>"G"</span>, <span class='st'>"B"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plotRGB.html'>plotRGB</a></span>(<span class='kw'>stretch</span> <span class='kw'>=</span> <span class='st'>"lin"</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

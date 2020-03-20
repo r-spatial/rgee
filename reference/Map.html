@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>mapview + mapview; adds data from the second map to the first — +,mapview,mapview-method • rgee</title>
+<title>Module to display Earth Engine (EE) spatial
+objects — Map • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +43,11 @@
 
 
 
-<meta property="og:title" content="mapview + mapview; adds data from the second map to the first — +,mapview,mapview-method" />
-<meta property="og:description" content="mapview + mapview; adds data from the second map to the first" />
+<meta property="og:title" content="Module to display Earth Engine (EE) spatial
+objects — Map" />
+<meta property="og:description" content="Create interactive visualizations of spatial EE objects
+(ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
+through mapview." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -152,30 +156,98 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>mapview + mapview; adds data from the second map to the first</h1>
+    <h1>Module to display Earth Engine (EE) spatial
+objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Map.R'><code>R/ee_Map.R</code></a></small>
-    <div class="hidden name"><code>plus-mapview-mapview-method.Rd</code></div>
+    <div class="hidden name"><code>Map.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>mapview + mapview; adds data from the second map to the first</p>
+    <p>Create interactive visualizations of spatial EE objects
+(ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
+through <code><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></code>.</p>
     </div>
 
-    <pre class="usage"># S4 method for mapview,mapview
-+(e1, e2)</pre>
+    <pre class="usage"><span class='no'>Map</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>e1</th>
-      <td><p>a mapview map to which e2 should be added.</p></td>
-    </tr>
-    <tr>
-      <th>e2</th>
-      <td><p>a mapview map from which the objects should be added to e1.</p></td>
-    </tr>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class environment with the
+following functions:</p><ul>
+<li><p><strong>addLayer(eeObject, visParams, name = NULL, shown = TRUE,
+opacity = 1)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
+<li><p><strong>eeObject:</strong> The object to add to mapview.<br /></p></li>
+<li><p><strong>visParams:</strong> List of parameters for visualization.
+See details.<br /></p></li>
+<li><p><strong>name:</strong> The name of the layer.<br /></p></li>
+<li><p><strong>shown:</strong> A flag indicating whether the
+layer should be on by default. <br /></p></li>
+<li><p><strong>opacity:</strong> The layer's opacity represented as a number
+between 0 and 1. Defaults to 1. <br /></p></li>
+</ul></li>
+<li><p><strong>setCenter(lon = 0, lat = 0, zoom = NULL)</strong>: Centers the map
+view at the given coordinates with the given zoom level. If no zoom level
+is provided, it uses 1 by default.</p><ul>
+<li><p><strong>lon:</strong> The longitude of the center, in degrees.<br /></p></li>
+<li><p><strong>lat:</strong> The latitude of the center, in degrees.<br /></p></li>
+<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
+</ul></li>
+<li><p><strong>setZoom(zoom = NULL)</strong>: Sets the zoom level of the map.</p><ul>
+<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
+</ul></li>
+<li><p><strong>centerObject(eeObject, zoom = NULL)</strong>: Centers the
+map view on a given object. If no zoom level is provided, it will
+be predicted according the bounds of the Earth Engine object specified.</p><ul>
+<li><p><strong>eeObject:</strong> EE object.<br /></p></li>
+<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
+<li><p><strong>maxError:</strong> 	Max error when input
+image must be reprojected to an explicitly
+requested result projection or geodesic state.</p></li>
+</ul></li>
+</ul>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>Map</code> takes advantage of
+<a href='https://developers.google.com/earth-engine/api_docs#ee.data.getmapid'>
+getMapId</a> for fetch and return both a mapid and a token suitable
+to use in a <code><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></code> object. To achieve desirable
+visualization effect, it will depend on the type of spatial EE object . For
+Image objects, you can provide visualization parameters to
+Map$addLayer() by using the argument visParams. The
+<a href='https://developers.google.com/earth-engine/image_visualization'>
+parameters</a> available are:</p>
+<table class='table'>
+<tr><td><strong>Parameter</strong></td><td><strong>Description</strong></td><td><strong>Type</strong></td></tr>
+<tr><td><strong>bands</strong></td><td>Comma-delimited list of three band names to be
+mapped to RGB</td><td>list</td></tr>
+<tr><td><strong>min</strong></td><td>Value(s) to map to 0</td><td>number or list of three
+numbers, one for each band</td></tr>
+<tr><td><strong>max</strong></td><td>Value(s) to map to 1</td><td>number or list of three
+numbers, one for each band</td></tr>
+<tr><td><strong>gain</strong></td><td>Value(s) by which to multiply each pixel value</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td><strong>bias</strong></td><td>Value(s) to add to each Digital Number (DN)
+value</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td><strong>gamma</strong></td><td>Gamma correction factor(s)</td><td>number or list of
+three numbers, one for each band</td></tr>
+<tr><td><strong>palette</strong></td><td>List of CSS-style color strings
+(single-band images only)</td><td>comma-separated list of hex strings</td></tr>
+<tr><td><strong>opacity</strong></td><td>The opacity of the layer (0.0 is fully transparent
+and 1.0 is fully opaque)</td><td>number</td></tr>
+</table>
+
+
+<p>If you add an Image to the map without any additional
+parameters, by default <code>Map$addLayer()</code> assigns the first three bands to red,
+green, and blue bands, respectively. The default stretch is based on the
+min-max range.  For Geometry, Feature, and/or FeatureCollection. The available
+visParams are:</p><ul>
+<li><p><strong>color</strong>: A hex string in the format RRGGBB specifying the
+color to use for drawing the features. By default 000000.</p></li>
+<li><p><strong>pointRadius</strong>: The radius of the point markers. By default 3.</p></li>
+<li><p><strong>strokeWidth</strong>: The width of lines and polygon borders. By
+default 3.</p></li>
+</ul>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -227,14 +299,11 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#format">Format</a></li>
+      <li><a href="#details">Details</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
-    <h2>Author</h2>
-    <p>Adapted from
-<a href='https://github.com/r-spatial/mapview/blob/develop/R/plus.R'>
-tim-salabim code</a>.</p>
   </div>
 </div>
 

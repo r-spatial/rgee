@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -123,36 +123,44 @@
 
     
     
-<p><code>rgee</code> is extremedly similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> in all the aspects, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
+<p><code>rgee</code> is extremely similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> in all the aspects, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
-<p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue just will happen when the <strong>map</strong> method will use in these two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
+<p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue happens when the <strong>map</strong> method is used under the next two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.1-CAPI-1.11.1</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; and GEOS at installation 3.5.1-CAPI-1.9.1differ</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">mylist =<span class="st"> </span>ee<span class="op">$</span>List<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">mylist<span class="op">$</span><span class="kw">map</span>(<span class="cf">function</span>(x) ee<span class="op">$</span><span class="kw">Number</span>(x)<span class="op">$</span><span class="kw">add</span>(<span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; Detailed traceback: </span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/apifunction.py", line 205, in &lt;lambda&gt;</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 67, in call</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/__init__.py", line 240, in _Promote</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create</span></a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt;     return CustomFunction(signature, func)</span></a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span></a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt;     self._body = body(*variables)</span></a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Loading required package: reticulate</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Loading required package: stars</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Loading required package: abind</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Loading required package: sf</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; Warning in fun(libname, pkgname): rgeos: versions of GEOS runtime 3.7.1-CAPI-1.11.1</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; and GEOS at installation 3.5.1-CAPI-1.9.1differ</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; Registered S3 method overwritten by 'geojsonio':</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;   method         from </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;   print.location dplyr</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">mylist =<span class="st"> </span>ee<span class="op">$</span>List<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">mylist<span class="op">$</span><span class="kw">map</span>(<span class="cf">function</span>(x) ee<span class="op">$</span><span class="kw">Number</span>(x)<span class="op">$</span><span class="kw">add</span>(<span class="dv">1</span>))</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt; Detailed traceback: </span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/apifunction.py", line 205, in &lt;lambda&gt;</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 67, in call</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/__init__.py", line 242, in _Promote</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create</span></a>
+<a class="sourceLine" id="cb1-29" data-line-number="29"><span class="co">#&gt;     return CustomFunction(signature, func)</span></a>
+<a class="sourceLine" id="cb1-30" data-line-number="30"><span class="co">#&gt;   File "/home/aybarpc01/.local/share/r-miniconda/envs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span></a>
+<a class="sourceLine" id="cb1-31" data-line-number="31"><span class="co">#&gt;     self._body = body(*variables)</span></a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></a></code></pre></div>
 <p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rgee)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">ee<span class="op">$</span><span class="kw">Initialize</span>()</a>

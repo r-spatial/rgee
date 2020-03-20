@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Delete chromedriver — ee_remove_ChromeDriver • rgee</title>
+<title>Move a GeoTIFF image from GCS to EE asset — ee_gcs_to_asset_image • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,8 +42,8 @@
 
 
 
-<meta property="og:title" content="Delete chromedriver — ee_remove_ChromeDriver" />
-<meta property="og:description" content="Delete chromedriver" />
+<meta property="og:title" content="Move a GeoTIFF image from GCS to EE asset — ee_gcs_to_asset_image" />
+<meta property="og:description" content="Pass a GeoTIFF image of gcs to Earth Engine Asset" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -152,23 +152,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Delete chromedriver</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_remove.R'><code>R/ee_remove.R</code></a></small>
-    <div class="hidden name"><code>ee_remove_ChromeDriver.Rd</code></div>
+    <h1>Move a GeoTIFF image from GCS to EE asset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
+    <div class="hidden name"><code>ee_gcs_to_asset_image.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Delete chromedriver</p>
+    <p>Pass a GeoTIFF image of gcs to Earth Engine Asset</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_remove_ChromeDriver</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_gcs_to_asset_image</span>(<span class='no'>x</span>, <span class='no'>gs_uri</span>, <span class='no'>asset_id</span>, <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>start_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>, <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>pyramiding_policy</span> <span class='kw'>=</span> <span class='st'>"MEAN"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>x</th>
+      <td><p>stars object.</p></td>
+    </tr>
+    <tr>
+      <th>gs_uri</th>
+      <td><p>Character. It represents the full name of the
+GeoTIFF file in a GCS bucket.</p></td>
+    </tr>
+    <tr>
+      <th>asset_id</th>
+      <td><p>Character. What to call the file once uploaded
+to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.</p></td>
+    </tr>
+    <tr>
+      <th>properties</th>
+      <td><p>List. Set of parameters to be set up as properties
+of the EE object.</p></td>
+    </tr>
+    <tr>
+      <th>start_time</th>
+      <td><p>Character. Sets the start time property to a number
+or date.</p></td>
+    </tr>
+    <tr>
+      <th>end_time</th>
+      <td><p>Character. Sets the end time property to a number
+or date.</p></td>
+    </tr>
+    <tr>
+      <th>pyramiding_policy</th>
+      <td><p>The pyramid reduction policy to use.</p></td>
+    </tr>
+    <tr>
       <th>quiet</th>
-      <td><p>Logical (optional). Suppress info messages.</p></td>
+      <td><p>Logical. Suppress info message.</p></td>
     </tr>
     </table>
 
@@ -176,7 +211,39 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_remove_ChromeDriver</span>()
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># Get the filename of a image</span>
+<span class='no'>tif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/L7_ETMs.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>)
+<span class='no'>asset_id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'stars_l7'</span>)
+
+<span class='co'># Method 1</span>
+<span class='co'># 1. Move from local to gcs</span>
+<span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_local_to_gcs.html'>ee_local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>tif</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
+
+<span class='co'># 2. Pass from gcs to asset</span>
+<span class='fu'>ee_gcs_to_asset_image</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
+  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
+  <span class='kw'>asset_id</span> <span class='kw'>=</span> <span class='no'>asset_id</span>
+)
+
+<span class='co'># OPTIONAL: Monitoring progress</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
+
+<span class='co'># OPTIONAL: Display results</span>
+<span class='no'>ee_stars_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>asset_id</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_stars_01</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_stars_01</span>)
+
+<span class='co'># Method 2</span>
+<span class='no'>ee_sf_02</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='stars_as_ee.html'>stars_as_ee</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
+                        <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>asset_id</span>,
+                        <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_02</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_02</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

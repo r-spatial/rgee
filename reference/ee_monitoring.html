@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -161,7 +161,7 @@
     <p>Monitoring Earth Engine task progress</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_monitoring</span>(<span class='no'>task</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_monitoring</span>(<span class='no'>task</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -171,9 +171,13 @@
       <td><p>List generated after an EE task has been successfully completed.</p></td>
     </tr>
     <tr>
-      <th>eeTaskList</th>
-      <td><p>Logical, if <code>TRUE</code>, all Earth Engine tasks will
+      <th>quiet</th>
+      <td><p>logical. Suppress info message
 be listed.</p></td>
+    </tr>
+    <tr>
+      <th>eeTaskList</th>
+      <td><p>Logical, if <code>TRUE</code>, all Earth Engine tasks will</p></td>
     </tr>
     </table>
 

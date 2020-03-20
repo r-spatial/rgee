@@ -46,8 +46,7 @@ in the system — ee_discover_pyenvs • rgee</title>
 <meta property="og:title" content="Discover all the Python environments available
 in the system — ee_discover_pyenvs" />
 <meta property="og:description" content="This function enables callers to check which versions
-of Python will be discovered on a system. This function
-was adapted from py_discover_config." />
+of Python will be discovered on a system." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -81,7 +80,7 @@ was adapted from py_discover_config." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -164,12 +163,23 @@ in the system</h1>
 
     <div class="ref-description">
     <p>This function enables callers to check which versions
-of Python will be discovered on a system. This function
-was adapted from <code><a href='https://rdrr.io/pkg/reticulate/man/py_discover_config.html'>py_discover_config</a></code>.</p>
+of Python will be discovered on a system.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_discover_pyenvs</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_discover_pyenvs</span>(<span class='kw'>use_py_discover_config</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>use_py_discover_config</th>
+      <td><p>Logical. If TRUE
+will use <code><a href='https://rdrr.io/pkg/reticulate/man/py_discover_config.html'>py_discover_config</a></code> to find
+versions of Python in the system.  Otherwise, will use
+<code><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>conda_list</a></code> for Window OS and
+<code><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>virtualenv_list</a></code> for Unix system.</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -186,6 +196,7 @@ was adapted from <code><a href='https://rdrr.io/pkg/reticulate/man/py_discover_c
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

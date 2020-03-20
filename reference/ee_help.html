@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Upload local files to google cloud storage — ee_upload_file_to_gcs • rgee</title>
+<title>Documentation for Earth Engine Objects — ee_help • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,9 +42,8 @@
 
 
 
-<meta property="og:title" content="Upload local files to google cloud storage — ee_upload_file_to_gcs" />
-<meta property="og:description" content="Upload images or tables into google cloud storage for EE asset ingestion
-tasks." />
+<meta property="og:title" content="Documentation for Earth Engine Objects — ee_help" />
+<meta property="og:description" content="Documentation for Earth Engine Objects" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
 
@@ -78,7 +77,7 @@ tasks." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -153,78 +152,47 @@ tasks." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Upload local files to google cloud storage</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
-    <div class="hidden name"><code>ee_upload_file_to_gcs.Rd</code></div>
+    <h1>Documentation for Earth Engine Objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_help.R'><code>R/ee_help.R</code></a></small>
+    <div class="hidden name"><code>ee_help.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Upload images or tables into google cloud storage for EE asset ingestion
-tasks.</p>
+    <p>Documentation for Earth Engine Objects</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_upload_file_to_gcs</span>(<span class='no'>x</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>selenium_params</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.selenium.params"</span>), <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>reinit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_help</span>(<span class='no'>eeobject</span>, <span class='kw'>browser</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>filename (character), sf or stars object.</p></td>
+      <th>eeobject</th>
+      <td><p>Earth Engine Object to print documentation.</p></td>
     </tr>
     <tr>
-      <th>bucket</th>
-      <td><p>bucketname you are uploading to</p></td>
-    </tr>
-    <tr>
-      <th>selenium_params</th>
-      <td><p>List. Optional parameters when bucket is NULL.
-Parameters for setting selenium. See details.</p></td>
-    </tr>
-    <tr>
-      <th>clean</th>
-      <td><p>Logical; Whether is TRUE cache will cleaned, see Details.</p></td>
-    </tr>
-    <tr>
-      <th>reinit</th>
-      <td><p>Logical; run ee_Initialize(gcs=TRUE) before start to upload</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>Logical. Suppress info message.</p></td>
+      <th>browser</th>
+      <td><p>Logical. Display documentation in the browser.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Character indicating the full name of the x argument inside
-gs://earthengine-uploads/</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>It is necessary, for uploading process, get authorization to read &amp; write
-into a Google Cloud Storage (GCS) bucket. Earth Engine provides a provisional
-for free space into GCS through gs://earthengine-uploads/. If the bucket
-argument is absent, this function will use Selenium driver for getting access
-to the URI mentioned bellow. The process for getting access to
-gs://earthengine-uploads/ was written entirely in Python and is as follow:</p><ul>
-<li><p>1. Connecting to https://code.earthengine.google.com/
-through selenium.</p></li>
-<li><p>2. Download all the cookies and saved in a request object.</p></li>
-<li><p>3. Get the URL for ingest the data  temporarily.</p></li>
-<li><p>4. Create the request headers.</p></li>
-<li><p>5. Upload the x argument to GCS via POST request.</p></li>
-</ul>
-
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
+<span class='no'>ee</span>$<span class='fu'>Image</span>()$<span class='fu'>geometry</span>()$<span class='no'>centroid</span> <span class='kw'>%&gt;%</span> <span class='fu'>ee_help</span>()
+<span class='no'>ee</span>$<span class='fu'>Image</span>()$<span class='fu'>geometry</span>() <span class='kw'>%&gt;%</span> <span class='fu'>ee_help</span>()
+<span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>110.8</span>, <span class='fl'>44.6</span>, -<span class='fl'>110.6</span>, <span class='fl'>44.7</span>)) <span class='kw'>%&gt;%</span> <span class='fu'>ee_help</span>()
+<span class='no'>ee</span>$<span class='no'>Image</span> <span class='kw'>%&gt;%</span> <span class='fu'>ee_help</span>()
+<span class='no'>ee</span>$<span class='no'>Image</span> <span class='kw'>%&gt;%</span> <span class='fu'>ee_help</span>(<span class='kw'>browser</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

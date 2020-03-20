@@ -78,7 +78,7 @@ to as.POSIXct or numeric (unix time stamp)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@ to as.POSIXct or numeric (unix time stamp)</p>
     </tr>
     <tr>
       <th>js</th>
-      <td><p>Logical. Whether TRUE, it will return a numeric
+      <td><p>Logical. If TRUE, return a numeric
 date otherwise return the date as a POSIXct object.</p></td>
     </tr>
     </table>
@@ -183,9 +183,9 @@ date otherwise return the date as a POSIXct object.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.2.0</span><span> ──────────────────────── earthengine-api 0.1.213 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.3</span><span> ───────────────── earthengine-api 0.1.216 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
 #&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>─────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='no'>eeDate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Date</span>$<span class='fu'>fromYMD</span>(<span class='fl'>1980</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)
+#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>──────────────────────────────────────────────────────────</span></div><div class='input'><span class='no'>eeDate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Date</span>$<span class='fu'>fromYMD</span>(<span class='fl'>1980</span>,<span class='fl'>1</span>,<span class='fl'>1</span>)
 <span class='fu'>eedate_to_rdate</span>(<span class='no'>eeDate</span>)</div><div class='output co'>#&gt; [1] "1980-01-01 GMT"</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

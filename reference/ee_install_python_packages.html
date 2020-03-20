@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install Python packages dependencies — ee_install_python_packages • rgee</title>
+<title>Install rgee Python packages dependencies — ee_install_python_packages • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -42,7 +42,7 @@
 
 
 
-<meta property="og:title" content="Install Python packages dependencies — ee_install_python_packages" />
+<meta property="og:title" content="Install rgee Python packages dependencies — ee_install_python_packages" />
 <meta property="og:description" content="Install the necessary Python packages to be used in rgee." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install Python packages dependencies</h1>
+    <h1>Install rgee Python packages dependencies</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
     <div class="hidden name"><code>ee_install_python_packages.Rd</code></div>
     </div>
@@ -162,7 +162,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_python_packages</span>(<span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>, <span class='st'>"conda"</span>),
-  <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>pip</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.7"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,6 +192,13 @@ rgee was built will be installed.</p></td>
       <th>envname</th>
       <td><p>Name of Python environment, or full path, which Python
 packages are to be installed.</p></td>
+    </tr>
+    <tr>
+      <th>pip</th>
+      <td><p>Logical. Use pip for package installation? This
+is only relevant when Conda environments are used, as
+otherwise packages will be installed from the
+Conda repositories.</p></td>
     </tr>
     <tr>
       <th>conda_python_version</th>
