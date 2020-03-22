@@ -967,6 +967,7 @@ citation("rgee")
 #> WORKING ON THIS :)
 ``` 
 
+
 ## Credits :bow:
 
 Most of the `rgee` functionalities were based in the following third-party R/Python packages:
@@ -981,5 +982,5 @@ Most of the `rgee` functionalities were based in the following third-party R/Pyt
   - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf)**
   - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars)**
   - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes)**
-
+  
 #### Readme template obtained from [dbparser](https://github.com/Dainanahan/dbparser)
