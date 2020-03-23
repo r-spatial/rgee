@@ -35,7 +35,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 Depends:
     R (>= 3.4.0),
-    reticulate (>= 1.13),
+    reticulate,
     stars,
     sf
 Imports:
