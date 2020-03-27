@@ -1,9 +1,4 @@
-  <img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="right" width = 15%/>
-
-# Google Earth Engine for R
-
 **NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-**The current version of rgee has been built considering the [earthengine-api 0.1.216](https://pypi.org/project/earthengine-api/0.1.216/)**
 
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
@@ -20,12 +15,16 @@ Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](ht
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
-### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
+
+# Google Earth Engine for R
+<a href="http://csaybar.github.io/rgee"><img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="6" width="12%"></a>
 
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The `rgee` package structure has been inspired by the [TensorFlow R
-package](https://github.com/rstudio/tensorflow/).
+Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/)
+
+### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
+
 
 ## What is Google Earth Engine?
 
