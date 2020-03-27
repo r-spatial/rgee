@@ -6,6 +6,7 @@
 ^_pkgdown\.yml$
 ^docs$
 ^docker$
+^examples$
 ^pkgdown$
 ^\.httr-oauth$
 ^\.covrignore$
