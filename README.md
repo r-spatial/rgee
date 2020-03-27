@@ -1,5 +1,3 @@
-**NOTE: Access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
 [![Project Status: Active – The project has reached a stable, usable
@@ -21,7 +19,7 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/)
+Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/). **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 ### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
 
@@ -186,10 +184,17 @@ ee_print(col_reduce)
 Create a interactive visualization\! 
 
 ``` r
-ee_map(eeobject = col_reduce,
-       vizparams = list(min=0, max= c(0.18, 20, -0.18)),
-       bands=c('scale', 'offset', 'scale'),
-       objname = 'stable lights trend')
+Map$setCenter(9.08203, 47.39835, 3)
+Map$addLayer(
+  eeObject = col_reduce,
+  visParams = list(
+    bands = c("scale", "offset", "scale"),
+    min = 0,
+    max = c(0.18, 20, -0.18)
+  ),
+  name = "stable lights trend"
+)
+
 ```
 
 ![rgee\_01](https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png)
