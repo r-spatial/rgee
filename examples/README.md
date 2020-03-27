@@ -25,9 +25,11 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 ### [Machine Learning](https://github.com/csaybar/rgee/tree/master/examples/MachineLearning)
 
 * Supervised Classification Algorithms
-* [Classification and Regression Trees (CART)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/cart_classifier.R) | [Support Vector Machine (SVM)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/svm_classifier.R) | [Confusion Matrix](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/confusion_matrix.R)
+  * [Classification and Regression Trees (CART)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/cart_classifier.R) 
+  * [Support Vector Machine (SVM)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/svm_classifier.R) 
+  * [Confusion Matrix](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/confusion_matrix.R)
 * Unsupervised Classification Algorithms
-* [KMeans Clustering](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/clustering.R)
+  * [KMeans Clustering](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/clustering.R)
 
 ### [Image](https://github.com/csaybar/rgee/blob/master/examples/image)
 
@@ -46,7 +48,26 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 * [Cumulative Cost Mapping](https://github.com/csaybar/rgee/blob/master/examples/image/cumulative_cost_mapping.R)
 * [Registering Images](https://github.com/csaybar/rgee/blob/master/examples/image/image_displacement.R)
 * Miscellaneous
-* [Band statistics (min, max, mean, std)](https://github.com/csaybar/rgee/blob/master/examples/Image/band_stats.R) | [Image statistics by band](https://github.com/csaybar/rgee/blob/master/examples/image/image_stats_by_band.R) | [Extract value to points](https://github.com/csaybar/rgee/blob/master/examples/image/extract_value_to_points.R) | [Rename bands](https://github.com/csaybar/rgee/blob/master/examples/image/rename_bands.R) | [Clipping](https://github.com/csaybar/rgee/blob/master/examples/image/clipping.R) | [Find image by path and row](https://github.com/csaybar/rgee/blob/master/examples/image/find_image_by_path_row.R) | [Get image resolution](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_resolution.R) | [Get image extent](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_extent.R) | [Set image properties](https://github.com/csaybar/rgee/blob/master/examples/image/set_image_properties.R) | [Select bands](https://github.com/csaybar/rgee/blob/master/examples/image/select_bands.R) | [Convert bands to ImageCollection](https://github.com/csaybar/rgee/blob/master/examples/image/convert_bands_to_image_collection.R) | [Reclassify](https://github.com/csaybar/rgee/blob/master/examples/image/reclassify.R) | [Composite bands](https://github.com/csaybar/rgee/blob/master/examples/image/composite_bands.R) | [Image smoothing](https://github.com/csaybar/rgee/blob/master/examples/image/image_smoothing.R) | [Download image](https://github.com/csaybar/rgee/blob/master/examples/image/download.R) | [Cell statistics](https://github.com/csaybar/rgee/blob/master/examples/image/cell_statistics.R) | [Image patch area](https://github.com/csaybar/rgee/blob/master/examples/image/image_patch_area.R) | [Get image id](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_id.R) | [Get band name and type](https://github.com/csaybar/rgee/blob/master/examples/image/get_band_name_and_type.R) | [Filtering by calendar range](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_calendar_range.R) 
+  * [Band statistics (min, max, mean, std)](https://github.com/csaybar/rgee/blob/master/examples/Image/band_stats.R)
+  * [Image statistics by band](https://github.com/csaybar/rgee/blob/master/examples/image/image_stats_by_band.R)
+  * [Extract value to points](https://github.com/csaybar/rgee/blob/master/examples/image/extract_value_to_points.R) 
+  * [Rename bands](https://github.com/csaybar/rgee/blob/master/examples/image/rename_bands.R) 
+  * [Clipping](https://github.com/csaybar/rgee/blob/master/examples/image/clipping.R) 
+  * [Find image by path and row](https://github.com/csaybar/rgee/blob/master/examples/image/find_image_by_path_row.R)
+  * [Get image resolution](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_resolution.R) 
+  * [Get image extent](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_extent.R) 
+  * [Set image properties](https://github.com/csaybar/rgee/blob/master/examples/image/set_image_properties.R) 
+  * [Select bands](https://github.com/csaybar/rgee/blob/master/examples/image/select_bands.R) 
+  * [Convert bands to ImageCollection](https://github.com/csaybar/rgee/blob/master/examples/image/convert_bands_to_image_collection.R) 
+  * [Reclassify](https://github.com/csaybar/rgee/blob/master/examples/image/reclassify.R)   
+  * [Composite bands](https://github.com/csaybar/rgee/blob/master/examples/image/composite_bands.R) 
+  * [Image smoothing](https://github.com/csaybar/rgee/blob/master/examples/image/image_smoothing.R) 
+  * [Download image](https://github.com/csaybar/rgee/blob/master/examples/image/download.R) 
+  * [Cell statistics](https://github.com/csaybar/rgee/blob/master/examples/image/cell_statistics.R) 
+  * [Image patch area](https://github.com/csaybar/rgee/blob/master/examples/image/image_patch_area.R) 
+  * [Get image id](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_id.R) 
+  * [Get band name and type](https://github.com/csaybar/rgee/blob/master/examples/image/get_band_name_and_type.R) 
+  * [Filtering by calendar range](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_calendar_range.R) 
 
 ### [ImageCollection](https://github.com/csaybar/rgee/tree/master/examples/ImageCollection)
 
@@ -57,7 +78,13 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 * [Reducing an ImageCollection](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/reducing_collection.R)
 * [Compositing and Mosaicking](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/mosaicking.R)
 * Miscellaneous
-* [Get image centroid](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/get_image_centroid.R) | [Convert ImageCollection to Image](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/convert_imagecollection_to_image.R) | [Sort by cloud and date](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/sort_by_cloud_and_date.R) | [Filtering by metadata](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_metadata.R) | [Filtering by band names](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_band_names.R) | [Select image by index](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/select_image_by_index.R) | [Creating monthly imagery](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/creating_monthly_imagery.R)
+  * [Get image centroid](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/get_image_centroid.R) 
+  * [Convert ImageCollection to Image](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/convert_imagecollection_to_image.R) 
+  * [Sort by cloud and date](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/sort_by_cloud_and_date.R) 
+  * [Filtering by metadata](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_metadata.R) 
+  * [Filtering by band names](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_band_names.R) 
+  * [Select image by index](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/select_image_by_index.R) 
+  * [Creating monthly imagery](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/creating_monthly_imagery.R)
 
 ### [Geometry, Feature, FeatureCollection](https://github.com/csaybar/rgee/tree/master/examples/FeatureCollection)
 
@@ -74,7 +101,22 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 * [Reducing a FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/reducing_feature_collection.R)
 * [Vector to Raster Interpolation](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/idw_interpolation.R)
 * Miscellaneous
-* [Add new attribute](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/add_new_attribute.R) | [Add area column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_area_column.R) | [Add random value column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_random_value_column.R) | [Single column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics.R) | [Multiple column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_multiple.R) | [Simplify polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/simplify_polygons.R) | [Column statistics by group](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_by_group.R) | [Select by location](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_location.R) | [Select by attributes](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_attributes.R) | [Select by strings](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_strings.R) | [Vector symbology](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/vector_symbology.R) | [Merge FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/merge_feature_collections.R) | [Search by buffer distance](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R) | [Select columns](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_columns.R) | [Mimimum bounding geometry](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/minimum_bounding_geometry.R) | [Clipping polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/clipping.R)
+  * [Add new attribute](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/add_new_attribute.R) 
+  * [Add area column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_area_column.R) 
+  * [Add random value column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_random_value_column.R) 
+  * [Single column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics.R) 
+  * [Multiple column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_multiple.R) 
+  * [Simplify polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/simplify_polygons.R) 
+  * [Column statistics by group](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_by_group.R) 
+  * [Select by location](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_location.R) 
+  * [Select by attributes](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_attributes.R) 
+  * [Select by strings](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_strings.R) 
+  * [Vector symbology](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/vector_symbology.R) 
+  * [Merge FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/merge_feature_collections.R) 
+  * [Search by buffer distance](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R) 
+  * [Select columns](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_columns.R) 
+  * [Mimimum bounding geometry](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/minimum_bounding_geometry.R) 
+  * [Clipping polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/clipping.R)
 
 ### [Reducer](https://github.com/csaybar/rgee/tree/master/examples/Reducer)
 
@@ -88,9 +130,10 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 * [Raster to Vector Conversion](https://github.com/csaybar/rgee/blob/master/examples//Reducer/convert_raster_to_vector.R)
 * [Vector to Raster Conversion](https://github.com/csaybar/rgee/blob/master/examples//Reducer/convert_vector_to_raster.R)
 * Grouped Reductions and Zonal Statistics
-* [Statistics by group](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_by_group.R) | [Zonal Statistics](https://github.com/csaybar/rgee/blob/master/examples//Reducer/zonal_statistics.R)
-* [Weighted Reductions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/weighted_reductions.R)
-* [Linear Regression](https://github.com/csaybar/rgee/blob/master/examples//Reducer/linear_regression.R)
+  * [Statistics by group](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_by_group.R) 
+  * [Zonal Statistics](https://github.com/csaybar/rgee/blob/master/examples//Reducer/zonal_statistics.R)
+  * [Weighted Reductions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/weighted_reductions.R)
+  * [Linear Regression](https://github.com/csaybar/rgee/blob/master/examples//Reducer/linear_regression.R)
 
 ### [Join](https://github.com/csaybar/rgee/tree/master/examples/Join)
 
@@ -111,13 +154,17 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 ### [Specialized Algorithms](https://github.com/csaybar/rgee/tree/master/examples/Algorithms)
 
 * Landsat Algorithms
-* [Radiance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_radiance.R) | [Surface Reflectance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_surface_reflectance.R) | [Simple cloud score](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_cloud_score.R) | [Simple composite](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_simple_composite.R)
+  * [Radiance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_radiance.R) 
+  * [Surface Reflectance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_surface_reflectance.R) 
+  * [Simple cloud score](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_cloud_score.R) 
+  * [Simple composite](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_simple_composite.R)
 * [Sentinel-1 Algorithms](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/sentinel-1_filtering.R)
 * Resampling and Reducing Resolution
-* [Resampling](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/resampling.R) | [Reducing Resolution](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/reduce_resolution.R)
-* [Linear fit](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/ntl_linear_fit.R)
+  * [Resampling](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/resampling.R) 
+  * [Reducing Resolution](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/reduce_resolution.R)
+  * [Linear fit](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/ntl_linear_fit.R)
 * Pattern recognition
-* [Center-pivot Irrigation Detector](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/center_pivot_irrigation_detector.R)
+  * [Center-pivot Irrigation Detector](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/center_pivot_irrigation_detector.R)
 
 ### [Asset Management](https://github.com/csaybar/rgee/tree/master/examples/AssetManagement)
 
@@ -160,7 +207,12 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 * [NLCD Land Cover](https://github.com/csaybar/rgee/blob/master/examples//Visualization/nlcd_land_cover.R)
 * [US Counties](https://github.com/csaybar/rgee/blob/master/examples//Visualization/us_counties.R)
 * Miscellaneous
-* [NDVI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) | [NDWI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) | [Landsat symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/landsat_symbology.R) | [NWI wetlands symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/nwi_wetlands_symbology.R) | [Color by attribute](https://github.com/csaybar/rgee/blob/master/examples/Visualization/color_by_attribute.R) | [Random color visualizer](https://github.com/csaybar/rgee/blob/master/examples/Visualization/random_color_visualizer.R)
+  * [NDVI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) 
+  * [NDWI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) 
+  * [Landsat symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/landsat_symbology.R) 
+  * [NWI wetlands symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/nwi_wetlands_symbology.R) 
+  * [Color by attribute](https://github.com/csaybar/rgee/blob/master/examples/Visualization/color_by_attribute.R) 
+  * [Random color visualizer](https://github.com/csaybar/rgee/blob/master/examples/Visualization/random_color_visualizer.R)
 
 ### [Datasets](https://github.com/csaybar/rgee/tree/master/examples/Datasets)
 
@@ -189,5 +241,6 @@ The Table of Contents below mimics the structure of the Google Earth Engine [API
 
 ### [RGEE examples](https://github.com/csaybar/rgee/tree/master/examples/rgee)
 
-#### COMING SOON!
+##### COMING SOON!
+
 ---
