@@ -21,24 +21,24 @@ Additionally, several functions have been implemented to make simple the connect
 
 ### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
 
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_01_distance.png" height="100"/></a>
-<a href="https://www.qries2.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_02_convolutions.png" height="100"/></a>
-<a href="https://www.qries3.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_03_idw.png" height="100"/></a>
-<a href="https://www.qries4.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_05_spectral_unmixing.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_17_sentinel2.png" height="100"/></a>
-<a href="https://www.qries6.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_07_canny_edge_detector.png" height="100"/></a>
-<a href="https://www.qries5.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_06_cumulative_cost_mapping.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_09_zeroCrossing.png" height="100"/></a>
-<a href="https://www.qries3.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_04_hillshade.PNG" height="100" hspace="5"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_11_styled_layer.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_12_terrain_visualization.png" height="100" hspace="5"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_13_us_counties.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_14_global_power_plant_database.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_15_landsat_wr2_grid.png" height="100" hspace="4"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_16_jrc_metadata.png" height="100"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_18_visualizing_geometries.png" height="100" hspace="1"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_08_center_pivot_irrigation.png" height="100" hspace="2"/></a>
-<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_10_image_color_ramp.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/image/convolutions.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_02_convolutions.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/idw_interpolation.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_03_idw_interpolation.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/image/spectral_unmixing.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_04_spectral_unmixing.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_05_sentinel2.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/image/canny_edge_detector.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_06_canny_edge_detector.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/image/cumulative_cost_mapping.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_07_cumulative_cost_mapping.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/image/zero_crossing.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_08_zero_crossing.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/hillshade.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_09_hillshade.png" height="100" hspace="5"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/styled_layer_descriptors.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_10_styled_layer_descriptors.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/terrain_visualization.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_11_terrain_visualization.png" height="100" hspace="5"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_counties.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_12_us_census_counties.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_13_global_power_plant_database.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Water/jrc_metadata.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_15_jrc_metadata.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_17_center_pivot_irrigation.png" height="100" hspace="2"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/image_color_ramp.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_18_image_color_ramp.png" height="100"/></a>
 
 
 
