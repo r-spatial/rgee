@@ -37,7 +37,7 @@ Additionally, several functions have been implemented to make simple the connect
 <a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
 <a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Water/jrc_metadata.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_15_jrc_metadata.png" height="100"/></a>
 <a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_17_center_pivot_irrigation.png" height="100" hspace="2"/></a>
+<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
 <a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/image_color_ramp.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_18_image_color_ramp.png" height="100"/></a>
 
 
