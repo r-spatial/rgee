@@ -66,15 +66,17 @@ test_that("ee_as_stars - gcs", {
 test_that("stars_as_ee - gcs", {
   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
   # 2. Pass from gcs to asset
+  stars_x <- read_stars(tif)
+  st_crs(stars_x) <- 4326
   ee_gcs_to_asset_image(
-    x = read_stars(tif),
+    x = stars_x,
     gs_uri = gs_uri,
     asset_id = asset_id
   )
   ee_image <- ee$Image(asset_id)
   expect_s3_class(ee_image,'ee.image.Image')
   ee_image_02 <- stars_as_ee(
-    x = read_stars(tif),
+    x = stars_x,
     assetId = asset_id,
     bucket = "rgee_dev"
   )
@@ -83,7 +85,7 @@ test_that("stars_as_ee - gcs", {
 
 # world image thumbnail ---------------------------------------------------
 test_that("ee_as_thumbnail world", {
-  world_dem <- ee_as_thumbnail(image_srtm, geodesic = FALSE)
+  world_dem <- ee_as_thumbnail(x = image_srtm, geodesic = FALSE)
   expect_s3_class(world_dem, 'stars')
 })
 

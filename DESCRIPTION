@@ -1,17 +1,12 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.3.3
+Version: 0.3.4
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
              role = c("aut", "cre"),
              email = "csaybar@gmail.com",
              comment = c(ORCID = "0000-0003-2745-9535")),
-      person(given = "Gabriel",
-             family = "Carrasco",
-             role = c("ctb"),
-             email = "gabriel.carrasco@upch.pe",
-             comment = c(ORCID = "0000-0002-6945-0419")),
       person(given = "Roy",
              family = "Yali",
              role = c("ctb"),
@@ -22,6 +17,11 @@ Authors@R:
              role = c("ctb"),
              email = "antony.barja8@gmail.com",
              comment = c(ORCID = "0000-0001-5921-2858")),
+      person(given = "Gabriel",
+             family = "Carrasco",
+             role = c("ctb"),
+             email = "gabriel.carrasco@upch.pe",
+             comment = c(ORCID = "0000-0002-6945-0419")),
       person(given = "MariaElena",
              family = "Adauto",
              role = c("ctb"),

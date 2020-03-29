@@ -9,9 +9,10 @@
 #' taken.
 #' @param geodesic Whether line segments of region should be interpreted as
 #' spherical geodesics. If FALSE, indicates that line segments should be
-#' interpreted as planar lines in the specified CRS. If not specified in
-#' the geometry (region argument) defaults to TRUE if the CRS is geographic
-#' (including the default EPSG:4326), or to FALSE if the CRS is projected.
+#' interpreted as planar lines in the specified CRS. If not specified, it
+#' will take it from the geometry (region argument) defaults to TRUE if the CRS
+#' is geographic (including the default EPSG:4326), or to FALSE if the CRS is
+#' projected.
 #' @param evenOdd If TRUE, polygon interiors will be determined by
 #' the even/odd rule, where a point is inside if it crosses an odd
 #' number of edges to reach a point at infinity. Otherwise polygons
@@ -115,13 +116,16 @@ ee_as_stars <- function(image,
                         via = "getInfo",
                         container = "rgee_backup",
                         quiet = FALSE) {
+
+  prj_image <- image$projection()$getInfo()
+
   if (!any(class(image) %in% "ee.image.Image")) {
     stop("image argument is not an ee$image$Image")
   }
   region_generated <- FALSE
   if (missing(region)) {
     message("region is not defined ... taking the image bounds.")
-    region <- image$geometry()
+    region <- image$geometry()$bounds(proj = prj_image$crs)
     region_generated <- TRUE
   }
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
@@ -129,7 +133,6 @@ ee_as_stars <- function(image,
   }
 
   # region testing
-  prj_image <- image$projection()$getInfo()
   sf_image <- ee_as_sf(image$geometry())$geometry %>%
     st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
   sf_region <- ee_as_sf(region)$geometry %>%
@@ -137,7 +140,7 @@ ee_as_stars <- function(image,
 
   if (is.null(geodesic)) {
     if (region_generated) {
-      is_geodesic <- st_is_longlat(sf_region)
+      is_geodesic <- st_is_longlat(sf_image)
     } else {
       is_geodesic <- region$geodesic()$getInfo()
     }
@@ -182,6 +185,9 @@ ee_as_stars <- function(image,
 
   ## region is a world scene?
   if (any(st_bbox(sf_region) %in% c(180, -90))) {
+    if (is.null(geodesic)) {
+      is_geodesic <- FALSE
+    }
     sf_region <- ee_fix_world_region(sf_image, sf_region, quiet)$geometry
   }
 
@@ -226,7 +232,7 @@ ee_as_stars <- function(image,
         )
       }
     }
-
+    maxPixels <- 512*512*4
     # It is necessary just single batch? (512x512)
     bbox <- sf_region %>%
       st_bbox() %>%
@@ -246,7 +252,6 @@ ee_as_stars <- function(image,
         "export a large area."
       )
     }
-
     nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
     if (nbatch > 3) {
       stop(
@@ -302,7 +307,10 @@ ee_as_stars <- function(image,
       feature <- ee$Feature(region_features$get(index))$geometry()
       # Extracts a rectangular region of pixels from an image
       # into a 2D array per (return a Feature)
-      ee_image_array <- image$sampleRectangle(region = feature)
+      ee_image_array <- image$sampleRectangle(
+        region = feature,
+        defaultValue = 0
+      )
       # Extract pixel values band by band
       band_results <- list()
       for (index in seq_along(band_names)) {
@@ -708,6 +716,7 @@ ee_fix_world_region <- function(sf_image, sf_region, quiet) {
   fix_region <- suppressMessages(
     st_intersection(sf_image, sf_region)
   )
+
   st_is_identical <- identical(
     st_length(sf_region),
     st_length(fix_region)

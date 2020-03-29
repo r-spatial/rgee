@@ -1,3 +1,5 @@
+# rgee 0.3.4
+- Several bugs fixed
 # rgee 0.3.3
 - Several bugs fixed
 # rgee 0.3.0
@@ -7,8 +9,8 @@
 - selenium functionality deprecated
 - ee_as_sf and sf_as_ee now support gcs and drive
 - ee_as_stars and stars_as_ee functions created.
-- rgee support geometry with differents CRS.
-- arguments evenOdd, Geodesic, and proj implemented in several funtions.
+- rgee support geometry with different CRS.
+- arguments evenOdd, Geodesic, and proj implemented in several functions.
 - ee_help permit you display Earth Engine documentation.
 
 # rgee 0.2.0

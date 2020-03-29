@@ -37,6 +37,7 @@ test_that("ee_gcs_to_asset_image ", {
   # Get the filename of a image
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   x <- read_stars(tif)
+  st_crs(x) <- 4326
   asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 
   # Method 1

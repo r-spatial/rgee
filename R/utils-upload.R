@@ -238,6 +238,11 @@ ee_gcs_to_asset_image <- function(x,
   if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
   name <- sprintf("projects/earthengine-legacy/assets/%s", asset_id)
 
+
+  if (is.na(st_crs(x)$proj4string)) {
+    stop("x needs previously defined a coordinate reference system")
+  }
+
   # Creating tileset
   tilesets <- list(
     crs = showWKT(st_crs(x)$proj4string),

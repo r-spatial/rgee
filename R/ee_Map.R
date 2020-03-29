@@ -230,11 +230,11 @@ ee_centerObject <- function(eeObject,
 #' https://developers.google.com/earth-engine/api_docs#map.addlaye
 #' @noRd
 ee_addLayer <- function(eeObject,
-                        visParams,
+                        visParams = NULL,
                         name = NULL,
                         shown = TRUE,
                         opacity = 1) {
-  if (missing(visParams)) {
+  if (is.null(visParams)) {
     visParams <- list()
   }
 

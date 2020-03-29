@@ -724,7 +724,7 @@ ee_drive_to_local <- function(task,
     )
   } else {
     ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$gcs_cre)) {
+    if (is.na(ee_user$drive_cre)) {
       stop(
         "Google Drive credentials were not loaded.",
         ' Run ee_Initialize(email = "myemail", gcs = TRUE)',

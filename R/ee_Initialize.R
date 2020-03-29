@@ -513,7 +513,7 @@ text_col <- function(x) {
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
-  "0.1.216"
+  "0.1.217"
 }
 
 

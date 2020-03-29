@@ -11,9 +11,10 @@
 #' @param vizparams A list that contains the visualization parameters.
 #' @param geodesic Whether line segments of region should be interpreted as
 #' spherical geodesics. If FALSE, indicates that line segments should be
-#' interpreted as planar lines in the specified CRS. If not specified in
-#' the geometry (region argument), defaults to TRUE if the CRS is geographic
-#' (including the default EPSG:4326), or to FALSE if the CRS is projected.
+#' interpreted as planar lines in the specified CRS. If not specified, it
+#' will take it from the geometry (region argument) defaults to TRUE if the CRS is
+#' geographic (including the default EPSG:4326), or to FALSE if the CRS is
+#' projected.
 #' @param evenOdd If TRUE, polygon interiors will be determined by
 #' the even/odd rule, where a point is inside if it crosses an odd
 #' number of edges to reach a point at infinity. Otherwise polygons
@@ -150,20 +151,23 @@
 #' @export
 ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
                             geodesic = NULL, evenOdd = NULL, quiet = FALSE) {
+
+  prj_image <- x$projection()$getInfo()
+
   if (!any(class(x) %in% "ee.image.Image")) {
     stop("x argument is not an ee$image$Image")
   }
   region_generated <- FALSE
   if (missing(region)) {
     message("region is not defined ... taking the image bounds.")
-    region <- x$geometry()
+    region <- x$geometry()$bounds(proj = prj_image$crs)
     region_generated <- TRUE
   }
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
   }
+
   # region testing
-  prj_image <- x$projection()$getInfo()
   sf_image <- ee_as_sf(x$geometry())$geometry %>%
     st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
   sf_region <- ee_as_sf(region)$geometry %>%
@@ -171,7 +175,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
 
   if (is.null(geodesic)) {
     if (region_generated) {
-      is_geodesic <- st_is_longlat(sf_region)
+      is_geodesic <- st_is_longlat(sf_image)
     } else {
       is_geodesic <- region$geodesic()$getInfo()
     }
@@ -215,9 +219,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
 
   ## region is a world scene?
   if (any(st_bbox(sf_region) %in% c(180, -90))) {
+    if (is.null(geodesic)) {
+      is_geodesic <- FALSE
+    }
     sf_region <- ee_fix_world_region(sf_image, sf_region, quiet)$geometry
   }
-
   if (missing(dimensions)) {
     dimensions <- 256L
     if (!quiet) {
