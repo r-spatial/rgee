@@ -19,7 +19,7 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/). **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
-### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
+### More than 250+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/README.html)
 
 <a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
 <a href="https://github.com/csaybar/rgee/blob/master/examples/image/convolutions.R"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_02_convolutions.png" height="100"/></a>
