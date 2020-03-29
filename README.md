@@ -8,8 +8,6 @@ status](https://ci.appveyor.com/api/projects/status/github/csaybar/rgee?branch=m
 [![codecov](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![CII Best
-Practices](https://bestpractices.coreinfrastructure.org/projects/3527/badge)](https://bestpractices.coreinfrastructure.org/projects/3527)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
@@ -22,6 +20,26 @@ API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/). **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 ### More than 300+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/)
+
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_01_distance.png" height="100"/></a>
+<a href="https://www.qries2.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_02_convolutions.png" height="100"/></a>
+<a href="https://www.qries3.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_03_idw.png" height="100"/></a>
+<a href="https://www.qries4.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_05_spectral_unmixing.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_17_sentinel2.png" height="100"/></a>
+<a href="https://www.qries6.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_07_canny_edge_detector.png" height="100"/></a>
+<a href="https://www.qries5.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_06_cumulative_cost_mapping.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_09_zeroCrossing.png" height="100"/></a>
+<a href="https://www.qries3.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_04_hillshade.PNG" height="100" hspace="5"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_11_styled_layer.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_12_terrain_visualization.png" height="100" hspace="5"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_13_us_counties.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_14_global_power_plant_database.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_15_landsat_wr2_grid.png" height="100" hspace="4"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_16_jrc_metadata.png" height="100"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_18_visualizing_geometries.png" height="100" hspace="1"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_08_center_pivot_irrigation.png" height="100" hspace="2"/></a>
+<a href="https://www.qries1.com/"><img src="https://github.com/ryali93/ryali93-gmail.com/blob/master/images/img_10_image_color_ramp.png" height="100"/></a>
+
 
 
 ## What is Google Earth Engine?
