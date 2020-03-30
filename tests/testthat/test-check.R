@@ -1,12 +1,6 @@
 context("rgee: ee_check test")
 
-library(rgee)
-library(reticulate)
-library(raster)
-library(stars)
-library(sf)
-
-ee <- reticulate::import("ee")
+ee_reattach()
 ee_Initialize(email = 'data.colec.fbf@gmail.com',
               drive = TRUE,
               gcs = TRUE)
