@@ -52,12 +52,15 @@ script:
   - sudo -H pip3 install --upgrade pip
   - sudo -H pip3 install setuptools
   - sudo -H pip3 install virtualenv
+  - sudo -H pip3 install pyasn1==0.4.8
+  - sudo -H pip3 install urllib3
   - sudo -H pip3 install earthengine-api
   - sudo -H pip3 install coveralls
   - sudo -H pip3 install oauth2client
   - sudo -H pip3 install numpy
   - R CMD build . $R_BUILD_ARGS
   - R -q -e 'library(reticulate);py_config()'
+  - earthengine -h
   - R CMD check *tar.gz $R_CHECK_ARGS
 after_success:
 - R -q -e 'covr::codecov(quiet = FALSE)'
