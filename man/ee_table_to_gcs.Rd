@@ -4,9 +4,14 @@
 \alias{ee_table_to_gcs}
 \title{Creates a task to export a FeatureCollection to Google Cloud Storage.}
 \usage{
-ee_table_to_gcs(collection, description = "myExportTableTask",
-  bucket = NULL, fileNamePrefix = NULL, fileFormat = NULL,
-  selectors = NULL)
+ee_table_to_gcs(
+  collection,
+  description = "myExportTableTask",
+  bucket = NULL,
+  fileNamePrefix = NULL,
+  fileFormat = NULL,
+  selectors = NULL
+)
 }
 \arguments{
 \item{collection}{The feature collection to be exported.}

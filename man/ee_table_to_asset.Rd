@@ -4,8 +4,11 @@
 \alias{ee_table_to_asset}
 \title{Creates a task to export a FeatureCollection to an EE table asset.}
 \usage{
-ee_table_to_asset(collection, description = "myExportTableTask",
-  assetId = NULL)
+ee_table_to_asset(
+  collection,
+  description = "myExportTableTask",
+  assetId = NULL
+)
 }
 \arguments{
 \item{collection}{The feature collection to be exported.}

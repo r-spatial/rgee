@@ -4,8 +4,13 @@
 \alias{ee_as_sf}
 \title{Convert an EE table in a sf object}
 \usage{
-ee_as_sf(x, via = "getInfo", container = "rgee_backup",
-  selectors = NULL, quiet = FALSE)
+ee_as_sf(
+  x,
+  via = "getInfo",
+  container = "rgee_backup",
+  selectors = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{x}{EE table to be converted into a sf object.}

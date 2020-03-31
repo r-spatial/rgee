@@ -4,8 +4,7 @@
 \alias{ee_image_dim}
 \title{Dimensions of a Earth Engine Image object}
 \usage{
-ee_image_dim(image, getsize = TRUE, compression_ratio = 12,
-  quiet = FALSE)
+ee_image_dim(image, getsize = TRUE, compression_ratio = 12, quiet = FALSE)
 }
 \arguments{
 \item{image}{Earth Engine Object.}

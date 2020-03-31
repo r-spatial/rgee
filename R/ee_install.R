@@ -107,7 +107,7 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' }
 #' @export
 ee_set_pyenv <- function(python_path,
-                         python_env,
+                         python_env = NULL,
                          install = FALSE,
                          confirm = interactive()) {
   ee_clean_pyenv()
@@ -138,9 +138,12 @@ ee_set_pyenv <- function(python_path,
 
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
     ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
-    ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
-    system_vars <- c(lines, ret_python, ret_python_env)
-
+    if (is.null(python_env)) {
+      system_vars <- c(lines, ret_python)
+    } else {
+      ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
+      system_vars <- c(lines, ret_python, ret_python_env)
+    }
     writeLines(system_vars, con)
     close(con)
 
@@ -165,7 +168,9 @@ ee_set_pyenv <- function(python_path,
             "in future sessions, run this function",
             " with `install = TRUE`.")
     Sys.setenv(RETICULATE_PYTHON = python_path)
-    Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+    if (!is.null(python_env)) {
+      Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+    }
   }
   invisible(TRUE)
 }

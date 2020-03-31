@@ -4,8 +4,7 @@
 \alias{stars_as_ee}
 \title{Convert an stars object to an EE object}
 \usage{
-stars_as_ee(x, assetId, monitoring = TRUE, bucket = NULL,
-  quiet = FALSE)
+stars_as_ee(x, assetId, monitoring = TRUE, bucket = NULL, quiet = FALSE)
 }
 \arguments{
 \item{x}{stars object to be converted into a ee$Image.}

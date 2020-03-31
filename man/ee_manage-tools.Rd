@@ -30,11 +30,15 @@ ee_manage_move(path_asset, final_path, quiet = FALSE)
 
 ee_manage_set_properties(path_asset, add_properties)
 
-ee_manage_delete_properties(path_asset,
-  del_properties = "ee_rmv_all_prp")
+ee_manage_delete_properties(path_asset, del_properties = "ee_rmv_all_prp")
 
-ee_manage_asset_access(path_asset, editor = NULL, viewer = NULL,
-  all_users_can_read = TRUE, quiet = FALSE)
+ee_manage_asset_access(
+  path_asset,
+  editor = NULL,
+  viewer = NULL,
+  all_users_can_read = TRUE,
+  quiet = FALSE
+)
 
 ee_manage_task(cache = FALSE)
 

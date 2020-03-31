@@ -4,8 +4,7 @@
 \alias{create_shp_zip}
 \title{Create a zip file from a sf object}
 \usage{
-create_shp_zip(x, filename, SHP_EXTENSIONS = c("dbf", "prj", "shp",
-  "shx"))
+create_shp_zip(x, filename, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx"))
 }
 \arguments{
 \item{x}{sf object}

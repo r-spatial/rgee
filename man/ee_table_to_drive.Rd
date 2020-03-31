@@ -4,9 +4,14 @@
 \alias{ee_table_to_drive}
 \title{Creates a task to export a FeatureCollection to Google Drive.}
 \usage{
-ee_table_to_drive(collection, description = "myExportTableTask",
-  folder = NULL, fileNamePrefix = NULL, fileFormat = NULL,
-  selectors = NULL)
+ee_table_to_drive(
+  collection,
+  description = "myExportTableTask",
+  folder = NULL,
+  fileNamePrefix = NULL,
+  fileFormat = NULL,
+  selectors = NULL
+)
 }
 \arguments{
 \item{collection}{The feature collection to be exported.}

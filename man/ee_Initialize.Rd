@@ -4,8 +4,7 @@
 \alias{ee_Initialize}
 \title{Authenticate and Initialize Earth Engine}
 \usage{
-ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE,
-  quiet = FALSE)
+ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email

@@ -1,6 +1,5 @@
 context("rgee: ee_download test")
 
-#library(testthat)
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
@@ -72,40 +71,40 @@ test_that("GEOTIFF_DRIVE", {
 })
 
 # # 2. CTFRECORD_IMAGE - DRIVE
-test_that("CTFRECORD_DRIVE", {
-  task_img <- ee_image_to_drive(
-    image = image_test,
-    folder = drive_folder,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "test_image_CTFRECORD",
-    formatOptions = imageExportFormatOptions_1
-  )
-  task_img$start()
-  ee_monitoring(task_img)
-  img <- ee_drive_to_local(
-    task = task_img,
-    consider = 'all'
-  )
-  expect_type(img, 'character')
-})
+# test_that("CTFRECORD_DRIVE", {
+#   task_img <- ee_image_to_drive(
+#     image = image_test,
+#     folder = drive_folder,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "test_image_CTFRECORD",
+#     formatOptions = imageExportFormatOptions_1
+#   )
+#   task_img$start()
+#   ee_monitoring(task_img)
+#   img <- ee_drive_to_local(
+#     task = task_img,
+#     consider = 'all'
+#   )
+#   expect_type(img, 'character')
+# })
 
 # # 3. TFRECORD_IMAGE - DRIVE
-test_that("TFRECORD_DRIVE", {
-  task_img <- ee_image_to_drive(
-    image = image_test,
-    folder = drive_folder,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "test_image_TFRECORD",
-    formatOptions = imageExportFormatOptions_2
-  )
-  task_img$start()
-  ee_monitoring(task_img)
-  img <- ee_drive_to_local(
-    task = task_img,
-    consider = 'all'
-  )
-  expect_type(img, 'character')
-})
+# test_that("TFRECORD_DRIVE", {
+#   task_img <- ee_image_to_drive(
+#     image = image_test,
+#     folder = drive_folder,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "test_image_TFRECORD",
+#     formatOptions = imageExportFormatOptions_2
+#   )
+#   task_img$start()
+#   ee_monitoring(task_img)
+#   img <- ee_drive_to_local(
+#     task = task_img,
+#     consider = 'all'
+#   )
+#   expect_type(img, 'character')
+# })
 
 # # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS", {
@@ -122,55 +121,55 @@ test_that("GEOTIFF_GCS", {
 })
 
 # # 5. CTFRECORD_IMAGE - GCS
-test_that("CTFRECORD_GCS",{
-  task_img <- ee_image_to_gcs(
-    image = image_test,
-    bucket = gcs_bucket,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "testing/test_image_CTFRECORD",
-    formatOptions = imageExportFormatOptions_1
-  )
-  task_img$start()
-  ee_monitoring(task_img)
-  img <- ee_gcs_to_local(task = task_img)
-  expect_type(img, 'character')
-})
+# test_that("CTFRECORD_GCS",{
+#   task_img <- ee_image_to_gcs(
+#     image = image_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "testing/test_image_CTFRECORD",
+#     formatOptions = imageExportFormatOptions_1
+#   )
+#   task_img$start()
+#   ee_monitoring(task_img)
+#   img <- ee_gcs_to_local(task = task_img)
+#   expect_type(img, 'character')
+# })
 
 
 #
 # # 6. TFRECORD_IMAGE - GCS
-test_that("TFRECORD_GCS",{
-  task_img <- ee_image_to_gcs(
-    image = image_test,
-    bucket = gcs_bucket,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "testing/test_image_TFRECORD",
-    formatOptions = imageExportFormatOptions_2
-  )
-  task_img$start()
-  ee_monitoring(task_img)
-  img <- ee_gcs_to_local(task = task_img)
-  expect_type(img, 'character')
-})
+# test_that("TFRECORD_GCS",{
+#   task_img <- ee_image_to_gcs(
+#     image = image_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "testing/test_image_TFRECORD",
+#     formatOptions = imageExportFormatOptions_2
+#   )
+#   task_img$start()
+#   ee_monitoring(task_img)
+#   img <- ee_gcs_to_local(task = task_img)
+#   expect_type(img, 'character')
+# })
 
 
 # ### VECTOR
 # # 7. CSV_VECTOR - DRIVE
-test_that("CSV_VECTOR_DRIVE",{
-  task_vector <- ee_table_to_drive(
-    collection = fc_test,
-    folder = drive_folder,
-    fileFormat = "CSV",
-    fileNamePrefix = "test_fc_CSV"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_drive_to_local(
-    task = task_vector,
-    consider = 'last'
-  )
-  expect_type(vector, 'character')
-})
+# test_that("CSV_VECTOR_DRIVE",{
+#   task_vector <- ee_table_to_drive(
+#     collection = fc_test,
+#     folder = drive_folder,
+#     fileFormat = "CSV",
+#     fileNamePrefix = "test_fc_CSV"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_drive_to_local(
+#     task = task_vector,
+#     consider = 'last'
+#   )
+#   expect_type(vector, 'character')
+# })
 
 # # 8. SHP_VECTOR - DRIVE
 test_that("SHP_VECTOR_DRIVE",{
@@ -241,65 +240,65 @@ test_that("GEOJSON_VECTOR_DRIVE",{
 })
 
 # # 12. CTFRECORD_VECTOR - DRIVE
-test_that("CTFRECORD_VECTOR_DRIVE",{
-  task_vector <- ee_table_to_drive(
-    collection = fc_test,
-    folder = drive_folder,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "test_fc_CTFRECORD"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_drive_to_local(
-    task = task_vector,
-    consider = 'all'
-  )
-  expect_type(vector, "character")
-})
+# test_that("CTFRECORD_VECTOR_DRIVE",{
+#   task_vector <- ee_table_to_drive(
+#     collection = fc_test,
+#     folder = drive_folder,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "test_fc_CTFRECORD"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_drive_to_local(
+#     task = task_vector,
+#     consider = 'all'
+#   )
+#   expect_type(vector, "character")
+# })
 
 
 # # 14. CSV_VECTOR - GCS
-test_that("CSV_VECTOR_GCS",{
-  task_vector <- ee_table_to_gcs(
-    collection = fc_test,
-    bucket = gcs_bucket,
-    fileFormat = "CSV",
-    fileNamePrefix = "testing/test_fc_CSV"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
-  expect_type(vector, "character")
-})
+# test_that("CSV_VECTOR_GCS",{
+#   task_vector <- ee_table_to_gcs(
+#     collection = fc_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "CSV",
+#     fileNamePrefix = "testing/test_fc_CSV"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_gcs_to_local(task = task_vector)
+#   expect_type(vector, "character")
+# })
 
 
 # # 15. SHP_VECTOR - GCS
-test_that("SHP_VECTOR_GCS",{
-  task_vector <- ee_table_to_gcs(
-    collection = fc_test,
-    bucket = gcs_bucket,
-    fileFormat = "SHP",
-    fileNamePrefix = "testing/test_fc_SHP"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
-  expect_equal(as.character(vector[['test']]), "feature")
-})
+# test_that("SHP_VECTOR_GCS",{
+#   task_vector <- ee_table_to_gcs(
+#     collection = fc_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "SHP",
+#     fileNamePrefix = "testing/test_fc_SHP"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_gcs_to_local(task = task_vector)
+#   expect_equal(as.character(vector[['test']]), "feature")
+# })
 
 # # 16. KML_VECTOR - GCS
-test_that("KML_VECTOR_GCS",{
-  task_vector <- ee_table_to_gcs(
-    collection = fc_test,
-    bucket = gcs_bucket,
-    fileFormat = "KML",
-    fileNamePrefix = "testing/test_fc_KML"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
-  expect_equal(as.character(vector[['test']]), "feature")
-})
+# test_that("KML_VECTOR_GCS",{
+#   task_vector <- ee_table_to_gcs(
+#     collection = fc_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "KML",
+#     fileNamePrefix = "testing/test_fc_KML"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_gcs_to_local(task = task_vector)
+#   expect_equal(as.character(vector[['test']]), "feature")
+# })
 
 # # 17. KMZ_VECTOR - GCS
 test_that("KMZ_VECTOR_GCS",{
@@ -329,18 +328,18 @@ test_that("GEOJSON_VECTOR_GCS",{
   expect_equal(as.character(vector[['test']]), "feature")
 })
 # # 19. CTFRECORD_VECTOR - GCS
-test_that("CTFRECORD_VECTOR_GCS",{
-  task_vector <- ee_table_to_gcs(
-    collection = fc_test,
-    bucket = gcs_bucket,
-    fileFormat = "TFRECORD",
-    fileNamePrefix = "testing/test_fc_CTFRECORD"
-  )
-  task_vector$start()
-  ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
-  expect_type(vector, 'character')
-})
+# test_that("CTFRECORD_VECTOR_GCS",{
+#   task_vector <- ee_table_to_gcs(
+#     collection = fc_test,
+#     bucket = gcs_bucket,
+#     fileFormat = "TFRECORD",
+#     fileNamePrefix = "testing/test_fc_CTFRECORD"
+#   )
+#   task_vector$start()
+#   ee_monitoring(task_vector)
+#   vector <- ee_gcs_to_local(task = task_vector)
+#   expect_type(vector, 'character')
+# })
 
 # ASSET
 test_that("table to asset",{

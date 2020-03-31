@@ -4,9 +4,16 @@
 \alias{ee_install_python_packages}
 \title{Install rgee Python packages dependencies}
 \usage{
-ee_install_python_packages(method = c("auto", "virtualenv", "conda"),
-  conda = "auto", ee_version = NULL, envname = NULL, pip = TRUE,
-  conda_python_version = "3.7", quiet = FALSE, ...)
+ee_install_python_packages(
+  method = c("auto", "virtualenv", "conda"),
+  conda = "auto",
+  ee_version = NULL,
+  envname = NULL,
+  pip = TRUE,
+  conda_python_version = "3.7",
+  quiet = FALSE,
+  ...
+)
 }
 \arguments{
 \item{method}{Installation method. By default, "auto" automatically

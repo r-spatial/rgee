@@ -5,7 +5,8 @@
 \alias{Map}
 \title{Module to display Earth Engine (EE) spatial
 objects}
-\format{An object of class environment with the
+\format{
+An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
@@ -42,7 +43,8 @@ be predicted according the bounds of the Earth Engine object specified.
 image must be reprojected to an explicitly
 requested result projection or geodesic state.
 }
-}}
+}
+}
 \usage{
 Map
 }

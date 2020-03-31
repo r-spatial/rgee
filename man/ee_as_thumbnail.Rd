@@ -4,8 +4,15 @@
 \alias{ee_as_thumbnail}
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
-ee_as_thumbnail(x, region, dimensions, vizparams = NULL,
-  geodesic = NULL, evenOdd = NULL, quiet = FALSE)
+ee_as_thumbnail(
+  x,
+  region,
+  dimensions,
+  vizparams = NULL,
+  geodesic = NULL,
+  evenOdd = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{x}{EE Image object}
@@ -20,9 +27,10 @@ forced. If not specified, image bounds will be taken.}
 
 \item{geodesic}{Whether line segments of region should be interpreted as
 spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If not specified in
-the geometry (region argument), defaults to TRUE if the CRS is geographic
-(including the default EPSG:4326), or to FALSE if the CRS is projected.}
+interpreted as planar lines in the specified CRS. If not specified, it
+will take it from the geometry (region argument) defaults to TRUE if the CRS is
+geographic (including the default EPSG:4326), or to FALSE if the CRS is
+projected.}
 
 \item{evenOdd}{If TRUE, polygon interiors will be determined by
 the even/odd rule, where a point is inside if it crosses an odd

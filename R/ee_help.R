@@ -83,6 +83,7 @@ ee_help <- function(eeobject, browser = FALSE) {
     close(fileConn)
     browseURL(temp_file)
   }
+  invisible(TRUE)
 }
 
 

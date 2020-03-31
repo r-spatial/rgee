@@ -7,7 +7,7 @@ test_that("simple search",{
     ee_search_tags("srtm", "flow", "direction", "dem") %>%
     ee_search_tagstitle("srtm", "flow", "direction", "dem") %>%
     ee_search_title("15", "Flow", logical_operator = "AND")
-  expect_equal(myquery$id[1],"WWF/HydroSHEDS/15ACC")
+  expect_type(myquery$id[1],"character")
 })
 
 test_that("testing date queries",{
