@@ -53,7 +53,7 @@ script:
   - sudo -H pip3 install setuptools
   - sudo -H pip3 install virtualenv
   - sudo -H pip3 install pyasn1==0.4.8
-  - sudo -H pip3 install urllib3
+  - sudo -H pip3 install urllib3==1.25.8
   - sudo -H pip3 install earthengine-api
   - sudo -H pip3 install coveralls
   - sudo -H pip3 install oauth2client
@@ -61,9 +61,9 @@ script:
   - R CMD build . $R_BUILD_ARGS
   - R -q -e 'library(reticulate);py_config()'
   - earthengine -h
-  - R CMD check *tar.gz $R_CHECK_ARGS
+  - travis_wait 30 R CMD check *tar.gz $R_CHECK_ARGS
 after_success:
-- R -q -e 'covr::codecov(quiet = FALSE)'
+- travis_wait 30 R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
 deploy:
   provider: script
