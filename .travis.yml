@@ -57,8 +57,8 @@ script:
   - sudo -H pip3 install oauth2client
   - sudo -H pip3 install numpy
   - R CMD build . $R_BUILD_ARGS
-  - R CMD check *tar.gz $R_CHECK_ARGS
   - R -q -e 'library(reticulate);py_config()'
+  - R CMD check *tar.gz $R_CHECK_ARGS
 after_success:
 - R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
