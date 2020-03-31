@@ -4,8 +4,7 @@
 \alias{ee_set_pyenv}
 \title{Set the Python environment to be used on rgee}
 \usage{
-ee_set_pyenv(python_path, python_env, install = FALSE,
-  confirm = interactive())
+ee_set_pyenv(python_path, python_env, install = FALSE, confirm = interactive())
 }
 \arguments{
 \item{python_path}{The path to a Python interpreter, to be used with rgee.}

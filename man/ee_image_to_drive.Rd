@@ -4,11 +4,23 @@
 \alias{ee_image_to_drive}
 \title{Creates a task to export an EE Image to Drive.}
 \usage{
-ee_image_to_drive(image, description = "myExportImageTask",
-  folder = NULL, fileNamePrefix = NULL, dimensions = NULL,
-  region = NULL, scale = NULL, crs = NULL, crsTransform = NULL,
-  maxPixels = NULL, shardSize = NULL, fileDimensions = NULL,
-  skipEmptyTiles = NULL, fileFormat = NULL, formatOptions = NULL)
+ee_image_to_drive(
+  image,
+  description = "myExportImageTask",
+  folder = NULL,
+  fileNamePrefix = NULL,
+  dimensions = NULL,
+  region = NULL,
+  scale = NULL,
+  crs = NULL,
+  crsTransform = NULL,
+  maxPixels = NULL,
+  shardSize = NULL,
+  fileDimensions = NULL,
+  skipEmptyTiles = NULL,
+  fileFormat = NULL,
+  formatOptions = NULL
+)
 }
 \arguments{
 \item{image}{The image to be exported.}

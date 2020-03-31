@@ -4,8 +4,13 @@
 \alias{ee_drive_to_local}
 \title{Move results from Google Drive to a local directory}
 \usage{
-ee_drive_to_local(task, directory, overwrite = TRUE,
-  consider = interactive(), quiet = FALSE)
+ee_drive_to_local(
+  task,
+  directory,
+  overwrite = TRUE,
+  consider = interactive(),
+  quiet = FALSE
+)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}

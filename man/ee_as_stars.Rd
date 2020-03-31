@@ -4,9 +4,17 @@
 \alias{ee_as_stars}
 \title{Convert an Earth Engine (EE) image into a stars object}
 \usage{
-ee_as_stars(image, region, scale = NULL, geodesic = NULL,
-  evenOdd = NULL, maxPixels = 1e+09, via = "getInfo",
-  container = "rgee_backup", quiet = FALSE)
+ee_as_stars(
+  image,
+  region,
+  scale = NULL,
+  geodesic = NULL,
+  evenOdd = NULL,
+  maxPixels = 1e+09,
+  via = "getInfo",
+  container = "rgee_backup",
+  quiet = FALSE
+)
 }
 \arguments{
 \item{image}{ee$Image to be converted into a sf object}
@@ -21,9 +29,10 @@ taken.}
 
 \item{geodesic}{Whether line segments of region should be interpreted as
 spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If not specified in
-the geometry (region argument) defaults to TRUE if the CRS is geographic
-(including the default EPSG:4326), or to FALSE if the CRS is projected.}
+interpreted as planar lines in the specified CRS. If not specified, it
+will take it from the geometry (region argument) defaults to TRUE if the CRS
+is geographic (including the default EPSG:4326), or to FALSE if the CRS is
+projected.}
 
 \item{evenOdd}{If TRUE, polygon interiors will be determined by
 the even/odd rule, where a point is inside if it crosses an odd

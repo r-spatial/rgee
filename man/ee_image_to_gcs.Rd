@@ -4,11 +4,23 @@
 \alias{ee_image_to_gcs}
 \title{Creates a task to export an EE Image to Google Cloud Storage.}
 \usage{
-ee_image_to_gcs(image, description = "myExportImageTask",
-  bucket = NULL, fileNamePrefix = NULL, dimensions = NULL,
-  region = NULL, scale = NULL, crs = NULL, crsTransform = NULL,
-  maxPixels = NULL, shardSize = NULL, fileDimensions = NULL,
-  skipEmptyTiles = NULL, fileFormat = NULL, formatOptions = NULL)
+ee_image_to_gcs(
+  image,
+  description = "myExportImageTask",
+  bucket = NULL,
+  fileNamePrefix = NULL,
+  dimensions = NULL,
+  region = NULL,
+  scale = NULL,
+  crs = NULL,
+  crsTransform = NULL,
+  maxPixels = NULL,
+  shardSize = NULL,
+  fileDimensions = NULL,
+  skipEmptyTiles = NULL,
+  fileFormat = NULL,
+  formatOptions = NULL
+)
 }
 \arguments{
 \item{image}{The image to be exported.}

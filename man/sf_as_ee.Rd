@@ -4,9 +4,19 @@
 \alias{sf_as_ee}
 \title{Convert an sf object to an EE object}
 \usage{
-sf_as_ee(x, check_ring_dir = FALSE, evenOdd = TRUE, proj = NULL,
-  geodesic = NULL, via = "getInfo", assetId = NULL, bucket = NULL,
-  monitoring = TRUE, quiet = FALSE, ...)
+sf_as_ee(
+  x,
+  check_ring_dir = FALSE,
+  evenOdd = TRUE,
+  proj = NULL,
+  geodesic = NULL,
+  via = "getInfo",
+  assetId = NULL,
+  bucket = NULL,
+  monitoring = TRUE,
+  quiet = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{sf object to be converted into a EE object.}

@@ -48,17 +48,18 @@ before_install:
 - tar -xvf /home/travis/secret.tar -C /home/travis/
 - R -q -e 'tic::before_install()'
 script:
+  - sudo apt-get install python3-venv
+  - sudo -H pip3 install --upgrade pip
+  - sudo -H pip3 install setuptools
+  - sudo -H pip3 install virtualenv
+  - sudo -H pip3 install earthengine-api
+  - sudo -H pip3 install coveralls
+  - sudo -H pip3 install oauth2client
+  - sudo -H pip3 install numpy
   - R CMD build . $R_BUILD_ARGS
   - R CMD check *tar.gz $R_CHECK_ARGS
+  - R -q -e 'library(reticulate);py_config()'
 after_success:
-- sudo apt-get install python3-venv
-- sudo -H pip3 install --upgrade pip
-- sudo -H pip3 install setuptools
-- sudo -H pip3 install virtualenv
-- sudo -H pip3 install earthengine-api
-- sudo -H pip3 install coveralls
-- sudo -H pip3 install oauth2client
-- sudo -H pip3 install numpy
 - R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
 deploy:

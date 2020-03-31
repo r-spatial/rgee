@@ -4,9 +4,16 @@
 \alias{ee_gcs_to_asset_image}
 \title{Move a GeoTIFF image from GCS to EE asset}
 \usage{
-ee_gcs_to_asset_image(x, gs_uri, asset_id, properties = NULL,
-  start_time = "1970-01-01", end_time = "1970-01-01",
-  pyramiding_policy = "MEAN", quiet = FALSE)
+ee_gcs_to_asset_image(
+  x,
+  gs_uri,
+  asset_id,
+  properties = NULL,
+  start_time = "1970-01-01",
+  end_time = "1970-01-01",
+  pyramiding_policy = "MEAN",
+  quiet = FALSE
+)
 }
 \arguments{
 \item{x}{stars object.}

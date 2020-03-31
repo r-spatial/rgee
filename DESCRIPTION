@@ -32,7 +32,7 @@ License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
+RoxygenNote: 7.1.0
 Depends:
     R (>= 3.4.0),
     reticulate (>= 1.13),

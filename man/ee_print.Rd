@@ -11,20 +11,15 @@
 \usage{
 ee_print(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.geometry.Geometry}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.geometry.Geometry}(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.feature.Feature}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.feature.Feature}(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject,
-  clean = FALSE, max_display = 0)
+\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.image.Image}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.image.Image}(eeobject, clean = FALSE, max_display = 0)
 
-\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject,
-  clean = FALSE, max_display = 0)
+\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, clean = FALSE, max_display = 0)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,

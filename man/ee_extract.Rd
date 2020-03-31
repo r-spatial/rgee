@@ -4,8 +4,7 @@
 \alias{ee_extract}
 \title{Extract values from Earth Engine Images or ImageCollections objects}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
-  ...)
+ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, ...)
 }
 \arguments{
 \item{x}{ee$Image or ee$ImageCollection.}

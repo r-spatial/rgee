@@ -4,8 +4,7 @@
 \alias{ee_clean_container}
 \title{Delete files from a either Folder or Bucket}
 \usage{
-ee_clean_container(name = "rgee_backup", type = "drive",
-  quiet = FALSE)
+ee_clean_container(name = "rgee_backup", type = "drive", quiet = FALSE)
 }
 \arguments{
 \item{name}{Character. Name of the folder (Drive) or bucket (GCS)
