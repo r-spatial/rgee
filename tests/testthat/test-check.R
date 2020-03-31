@@ -1,10 +1,9 @@
 context("rgee: ee_check test")
-library(rgee)
+
 ee_reattach()
-try(ee_Initialize(email = 'data.colec.fbf@gmail.com',
+ee_Initialize(email = 'data.colec.fbf@gmail.com',
               drive = TRUE,
-              gcs = TRUE))
-filename <- system.file("external/lux.shp", package = "raster")
+              gcs = TRUE)
 
 test_that("simple ee_check ",{
   expect_true(ee_check_python())
