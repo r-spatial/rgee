@@ -1,6 +1,5 @@
 context("rgee: ee_print test")
 
-
 # clean TRUE
 test_that("simple ee_print test - ImageCollection", {
   eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$

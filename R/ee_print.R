@@ -28,10 +28,12 @@ ee_print <- function(eeobject, clean = FALSE, max_display = 0) {
 #' @export
 ee_print.ee.geometry.Geometry <- function(eeobject, clean = FALSE,
                                           max_display = 0) {
+  past_eeobject <- NULL
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
-  } else {
+  }
+  if (!identical(past_eeobject, eeobject$serialize())) {
     geom <- eeobject$getInfo()
     projection_properties <- eeobject$projection()$getInfo()
 
@@ -52,12 +54,13 @@ ee_print.ee.geometry.Geometry <- function(eeobject, clean = FALSE,
       geom_geotransform = geom_geotransform,
       geom_geodesic = geom_geodesic
     )
-    save(mtd, file = fc_metadata)
+    past_eeobject <- eeobject$serialize()
+    save(mtd, past_eeobject, file = fc_metadata)
   }
   cat(cli::rule(),"\n")
   cat(sprintf("Class                          : %s \n", mtd$name))
   cat(sprintf("Geometry type                  : %s \n", mtd$geom_type))
-  cat(sprintf("nGeometries                    : %s \n", mtd$geom_ngeom))
+  cat(sprintf("Number of geometries           : %s \n", mtd$geom_ngeom))
   cat(sprintf("EPSG (SRID)                    : %s \n", mtd$geom_epsg))
   cat(sprintf("proj4string                    : %s \n", mtd$geom_proj4string))
   cat(sprintf("Geodesic                       : %s \n", mtd$geom_geodesic))
@@ -70,16 +73,18 @@ ee_print.ee.geometry.Geometry <- function(eeobject, clean = FALSE,
 #' @export
 ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE,
                                         max_display = 0) {
+  past_eeobject <- NULL
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
-  } else {
+  }
+  if (!identical(past_eeobject, eeobject$serialize())) {
     feature <- eeobject$getInfo()
     projection_properties <- eeobject$geometry()$projection()$getInfo()
 
     name <- "Feature"
     ft_type <- feature$geometry$type
-    ft_ngeom <- length(feature$geometry)
+    ft_ngeom <- length(feature$geometry$coordinates)
     ft_epsg <- as.numeric(gsub("EPSG:", "", projection_properties$crs))
     ft_proj4string <- st_crs(ft_epsg)$proj4string
     ft_geotransform <- paste0(projection_properties$transform, collapse = " ")
@@ -98,16 +103,17 @@ ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE,
       ft_properties_length = ft_properties_length,
       ft_properties_names = ft_properties_names
     )
-    save(mtd, file = fc_metadata)
+    past_eeobject <- eeobject$serialize()
+    save(mtd, past_eeobject, file = fc_metadata)
   }
   cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
   cat(sprintf("Geometry type              : %s \n", mtd$ft_type))
-  cat(sprintf("nGeometries                : %s \n", mtd$ft_ngeom))
+  cat(sprintf("Number of geometries       : %s \n", mtd$ft_ngeom))
   cat(sprintf("EPSG (SRID)                : %s \n", mtd$ft_epsg))
   cat(sprintf("proj4string                : %s \n", mtd$ft_proj4string))
   cat(sprintf("Geodesic                   : %s \n", mtd$ft_geodesic))
-  cat(sprintf("nFeature properties        : %s \n", mtd$ft_properties_length))
+  cat(sprintf("Feature properties         : %s \n", mtd$ft_properties_length))
   if (max_display != 0) {
     cat(ee_create_table(mtd$ft_properties_names, max_display))
   }
@@ -120,10 +126,12 @@ ee_print.ee.feature.Feature <- function(eeobject, clean = FALSE,
 ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                             clean = FALSE,
                                                             max_display = 0) {
+  past_eeobject <- NULL
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
-  } else {
+  }
+  if (!identical(past_eeobject, eeobject$serialize())) {
     # FeatureCollection properties
     fc_properties_names <- eeobject$propertyNames()$getInfo()
     fc_properties_length <- length(fc_properties_names)
@@ -154,40 +162,43 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
       f_properties_length = f_properties_length,
       f_properties_names = f_properties_names
     )
-    save(mtd, file = fc_metadata)
+    past_eeobject <- eeobject$serialize()
+    save(mtd, past_eeobject, file = fc_metadata)
   }
   cat(cli::rule(),"\n")
   cat(sprintf("Class                          : %s \n", mtd$name))
-  cat(sprintf("nFeatures                      : %s \n", mtd$fc_nfeatures))
+  cat(sprintf("Number of features             : %s \n", mtd$fc_nfeatures))
   cat(sprintf("Geometry type*                 : %s \n", mtd$fc_geometry_type))
   cat(sprintf("EPSG (SRID)*                   : %s \n", mtd$fc_epsg))
   cat(sprintf("proj4string*                   : %s \n", mtd$fc_proj4string))
   cat(sprintf(
-    "nFeatureCollection properties  : %s \n",
+    "FeatureCollection properties  : %s \n",
     mtd$fc_properties_length
   ))
   if (max_display != 0) {
     cat(ee_create_table(mtd$fc_properties_names, max_display))
   }
   cat(sprintf(
-    "nFeature properties*           : %s \n",
+    "Feature properties*           : %s \n",
     mtd$f_properties_length
   ))
   if (max_display != 0) {
     cat(ee_create_table(mtd$f_properties_names, max_display))
   }
   cat(cli::rule(),"\n")
-  cat("* Note: Calculated from the first element (ee.Feature)")
+  cat("* Properties calculated from the first element (ee.Feature)")
   invisible(mtd)
 }
 
 #' @name ee_print
 #' @export
 ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
+  past_eeobject <- NULL
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata) && !clean) {
     load(fc_metadata)
-  } else {
+  }
+  if (!identical(past_eeobject, eeobject$serialize())) {
     img <- eeobject$getInfo()
     bands <- unlist(lapply(img$bands, "[[", "id"))
     base_img <- img$bands[[1]]
@@ -232,11 +243,13 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
       img_properties_names = img_properties_names,
       img_properties_length = img_properties_length
     )
-    save(mtd, file = fc_metadata)
+
+    past_eeobject <- eeobject$serialize()
+    save(mtd, past_eeobject, file = fc_metadata)
   }
   cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
-  cat(sprintf("#Bands                     : %s \n", mtd$img_nbands))
+  cat(sprintf("Number of Bands            : %s \n", mtd$img_nbands))
   cat(sprintf("Bands names                : %s \n", paste0(mtd$img_bands_names,
     collapse = " "
   )))
@@ -245,7 +258,7 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
   cat(sprintf("Geotransform               : [%s] \n", mtd$img_geotransform))
   cat(sprintf("Scale (m)                  : %s \n", mtd$img_scale))
   cat(sprintf("Dimensions                 : %s \n", mtd$img_dimensions))
-  cat(sprintf("#Pixels by image           : %s \n", mtd$img_npixels))
+  cat(sprintf("Number of Pixels           : %s \n", mtd$img_npixels))
   cat(sprintf("Data type                  : %s \n", mtd$img_datatype))
   cat(sprintf("Image Properties           : %s \n", mtd$img_properties_length))
   if (max_display != 0) {
@@ -260,10 +273,12 @@ ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
 ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
                                                         clean = FALSE,
                                                         max_display = 0) {
+  past_eeobject <- NULL
   fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
   if (file.exists(fc_metadata) & !clean) {
     load(fc_metadata)
-  } else {
+  }
+  if (!identical(past_eeobject, eeobject$serialize())) {
     ic <- eeobject$getInfo()
     bands <- unlist(lapply(ic$features[[1]]$bands, "[[", "id"))
     base_ic <- ic$features[[1]]
@@ -312,12 +327,13 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
       ic_properties_i = ic_properties_i,
       ic_properties_ic = ic_properties_ic
     )
-    save(mtd, file = fc_metadata)
+    past_eeobject <- eeobject$serialize()
+    save(mtd, past_eeobject, file = fc_metadata)
   }
   cat(cli::rule(),"\n")
   cat(sprintf("Class                      : %s \n", mtd$name))
-  cat(sprintf("nImages                    : %s \n", mtd$ic_nimages))
-  cat(sprintf("nBands*                    : %s \n", mtd$ic_nbands))
+  cat(sprintf("Number of Images           : %s \n", mtd$ic_nimages))
+  cat(sprintf("Number of Bands*           : %s \n", mtd$ic_nbands))
   cat(sprintf("Bands names*               : %s \n", paste0(mtd$ic_bands_names,
     collapse = " "
   )))
@@ -326,7 +342,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
   cat(sprintf("Geotransform*              : [%s] \n", mtd$ic_geotransform))
   cat(sprintf("Scale (m)*                 : %s \n", mtd$ic_scale))
   cat(sprintf("Dimensions*                : %s \n", mtd$ic_dimensions))
-  cat(sprintf("nPixels by image*          : %s \n", mtd$ic_npixels))
+  cat(sprintf("Number of pixels           : %s \n", mtd$ic_npixels))
   cat(sprintf("Data type*                 : %s \n", mtd$ic_datatype))
   cat(sprintf(
     "Image Properties*          : %s \n",
@@ -343,7 +359,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     cat(ee_create_table(mtd$ic_properties_ic, max_display))
   }
   cat(cli::rule(),"\n")
-  cat("* Note: Calculated from the first element (ee.Image)")
+  cat("* Properties calculated from the first element (ee.Image)")
   invisible(mtd)
 }
 
