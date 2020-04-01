@@ -183,8 +183,8 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
 ee_centerObject <- function(eeObject,
-                            maxError = ee$ErrorMargin(1),
-                            zoom = NULL) {
+                            zoom = NULL,
+                            maxError = ee$ErrorMargin(1)) {
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
@@ -201,10 +201,17 @@ ee_centerObject <- function(eeObject,
         c(0, 0)
       }
     )
+    if (is.null(center)) {
+      message(
+        "The centroid coordinate was not possible",
+        " to estimate, assigning: c(0,0)"
+      )
+      center <- c(0, 0)
+    }
   } else if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
     center <- tryCatch(
       expr = eeObject$
-        centroid()$
+        centroid(maxError)$
         coordinates()$
         getInfo() %>%
         ee_py_to_r(),
