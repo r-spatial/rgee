@@ -23,6 +23,7 @@ Useful links:
 
 Other contributors:
 \itemize{
+  \item Wu Qiusheng \email{giswqs@gmail.com} (\href{https://orcid.org/0000-0001-5437-4073}{ORCID}) [contributor]
   \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
   \item Antony Barja \email{antony.barja8@gmail.com} (\href{https://orcid.org/0000-0001-5921-2858}{ORCID}) [contributor]
   \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]

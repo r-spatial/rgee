@@ -12,7 +12,7 @@ ee_check()
 
 ee_check_python(quiet = FALSE)
 
-ee_check_rgee_python_packages()
+ee_check_rgee_python_packages(quiet = FALSE)
 
 ee_check_credentials()
 }

@@ -43,7 +43,7 @@ ee_help <- function(eeobject, browser = FALSE) {
 
   doc_to_display <- fun_name %>%
     paste(collapse = '') %>%
-    py_function_docs
+    ee_function_docs
 
   # Creating html to display
   temp_file <- sprintf("%s/ee_help.html", tempdir())
@@ -56,7 +56,7 @@ ee_help <- function(eeobject, browser = FALSE) {
     writeLines(
       text = c(
         ee_html_head_rstudio(doc_to_display$qualified_name),
-        ee_html_title_rstudio(doc_to_display$description),
+        ee_html_title_rstudio(doc_to_display$title),
         ee_html_description_rstudio(doc_to_display$description),
         ee_html_usage_rstudio(doc_to_display),
         ee_html_arguments_rstudio(doc_to_display$parameters),
@@ -139,7 +139,7 @@ ee_html_title_rstudio <- function(title) {
 ee_html_description_simple <- function(descrp) {
   api_ref <- "https://developers.google.com/earth-engine/api_docs"
   gee_message <- sprintf(
-    '. Documentation obtained from this <a href="%s">link</a>.',
+    ' Documentation obtained from this <a href="%s">link</a>.',
     api_ref
   )
   sprintf(
@@ -155,7 +155,7 @@ ee_html_description_simple <- function(descrp) {
 ee_html_description_rstudio <- function(descrp) {
   api_ref <- "https://developers.google.com/earth-engine/api_docs"
   gee_message <- sprintf(
-    '. Documentation obtained from this <a href="%s">link</a>.',
+    ' Documentation obtained from this <a href="%s">link</a>.',
     api_ref
   )
   p_style <- "font-family: sans-serif; font-size: 10pt;"
@@ -397,5 +397,67 @@ ee_get_lhs <- function() {
   if (any(is_magrittr_env)) {
     deparse(get("lhs", sys.frames()[[max(which(is_magrittr_env))]]))
   }
+}
+
+
+#' Scaffold R wrappers for Python functions
+#'
+#' @param python_function Fully qualified name of Python function or class
+#' constructor (e.g. ee$Image()$geometry()$Rectangle)
+#' @noRd
+ee_function_docs <- function(ee_function) {
+  inspect <- import("inspect")
+  function_docs <- inspect$getdoc(eval(parse(text = ee_function)))
+  output_help <- py_function_docs(ee_function)
+  real_description <- paste(output_help$description,output_help$details)
+  real_args <- ee_help_create_arg(function_docs)
+  output_help$title <- output_help$description
+  output_help$description <- gsub("\n"," ",real_description)
+  output_help$details <- ""
+  output_help$parameters <- real_args$arg
+  output_help$signature <- sprintf(
+    "%s(%s, ...)",
+    gsub( " *\\(.*?\\) *", "", output_help$signature),
+    real_args$signature)
+  output_help
+}
+
+#' Create args argument
+#' @noRd
+ee_help_create_arg <- function(function_docs) {
+  # get just the argument text
+  arguments <- strsplit(function_docs,"(\nArgs:\n) ")[[1]][2]
+  if (is.na(arguments)) {
+    return(list(signature = "cls", arg = ""))
+  }
+  arguments <- gsub("Returns.*","", arguments)
+  groups <- strsplit(arguments,"\n")[[1]]
+  group_condition <- grepl(":\\s", groups)
+
+  #Create text groups
+  walk <- 0
+  result <- rep(NA, length(group_condition))
+  for (index in seq_along(group_condition)) {
+    cond <- group_condition[index]
+    walk <- walk + cond
+    result[index] <- walk
+  }
+  # Handling text inside the groups
+  arguments_des <- rep(NA, length(unique(result)))
+  arguments_name <- rep(NA, length(unique(result)))
+
+  for (group in unique(result)) {
+    message <- paste0(groups[which(result == group)],collapse = "")
+    arg <- sub("^([^:]+:).+$", "\\1", message)
+    arg_clean  <-  trimws(sub(":","",sub("\\s","",arg)))
+    message_clean <- trimws(gsub("\\s+"," ", sub(arg,"",message, fixed = TRUE)))
+    arguments_des[group] <- message_clean
+    arguments_name[group] <- arg_clean
+  }
+  names(arguments_des) <- arguments_name
+  arguments_des <- arguments_des[!names(arguments_des) %in% "DEPRECATED"]
+  arguments_name <- arguments_name[!arguments_name == "DEPRECATED"]
+  signature_text <- paste(arguments_name, collapse = ", ")
+  return(list(arg = arguments_des, signature = signature_text))
 }
 

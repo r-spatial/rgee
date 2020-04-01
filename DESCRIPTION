@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.3.4
+Version: 0.3.5
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",

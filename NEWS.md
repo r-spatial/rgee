@@ -1,3 +1,7 @@
+# rgee 0.3.5
+- ee_help display enhanced.
+- ee_Initialize() now display reticulate Python version.
+- Several bug fixed.
 # rgee 0.3.4
 - Several bugs fixed
 # rgee 0.3.3
