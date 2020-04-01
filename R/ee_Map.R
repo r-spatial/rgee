@@ -185,6 +185,10 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 ee_centerObject <- function(eeObject,
                             zoom = NULL,
                             maxError = ee$ErrorMargin(1)) {
+  if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
+    message("NOTE: Center got from the first element.")
+    eeObject <- ee$Feature(eeObject$first())
+  }
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
