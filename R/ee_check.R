@@ -45,56 +45,66 @@ ee_check_python <- function(quiet = FALSE) {
 
 #' @rdname ee_check-tools
 #' @export
-ee_check_rgee_python_packages <- function() {
+ee_check_rgee_python_packages <- function(quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_check_utils_exist.py",
     package = "rgee"
   )
   ee_check_utils_exist <- ee_source_python(oauth_func_path)
-
-  cli::cat_line(
-    "\n",
-    crayon::blue(
-      cli::symbol$circle_filled,
-      " Python Third-Party Libraries used in rgee: \n"
+  if (isFALSE(quiet)) {
+    cli::cat_line(
+      "\n",
+      crayon::blue(
+        cli::symbol$circle_filled,
+        " Python Third-Party Libraries used in rgee: \n"
+      )
     )
-  )
+  }
   # ee
   version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == ee_version()) {
-      cli::cat_line(
-        crayon::green(cli::symbol$tick, "[Ok]"),
-        crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
-        crayon::green(version_ee)
-      )
+      if (isFALSE(quiet)) {
+        cli::cat_line(
+          crayon::green(cli::symbol$tick, "[Ok]"),
+          crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
+          crayon::green(version_ee)
+        )
+      }
     } else {
       ee_message <- sprintf(
-        "The Earth Engine Python API (version %s) is %s%s%s%s%s(%s)%s%s",
+        "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s",
+        "The Earth Engine Python API",
         version_ee,
         "installed correctly in the system but rgee was built ",
         "using the version ",
         ee_version(),
         ". To avoid possible issues, we ",
-        "highly recommend install version used by rgee ",
+        "highly recommend install the version used by rgee ",
         ee_version(),
-        ", you could use ee_install_python_packages() to achieve it. ",
-        "If the installation is successful, restart to see changes."
+        ", you might use:\n >>> ee_install_python_packages() \n",
+        " >>> pip install earthengine-api==",ee_version(),
+        "\n >>> conda install earthengine-api==",ee_version(),
+        "\nIf the installation is successful, restart to see changes."
       )
       warning(ee_message)
     }
   } else {
-    cli::cat_line(
-      crayon::red(cli::symbol$tick, "[X]"),
-      crayon::red(" Not installed"),
-      crayon::red(
-        cli::symbol$check,
-        "Python Earth Engine API",
-        "(earthengine-api)"
+    if (isFALSE(quiet)) {
+      cli::cat_line(
+        crayon::red(cli::symbol$tick, "[X]"),
+        crayon::red(" Not installed"),
+        crayon::red(
+          cli::symbol$check,
+          "Python Earth Engine API",
+          "(earthengine-api)"
+        )
       )
-    )
+    }
   }
-  ee_check_py_package("oauth2client")
+  if (isFALSE(quiet)) {
+    ee_check_py_package("oauth2client")
+  }
 }
 
 #' @rdname ee_check-tools

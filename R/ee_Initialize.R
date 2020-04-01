@@ -78,13 +78,25 @@ ee_Initialize <- function(email = NULL,
   }
 
   if (!quiet) {
+    ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
+    ee_utils <- ee_source_python(ee_current_version)
     message(text_col(
       cli::rule(
         left = crayon::bold("rgee", packageVersion("rgee")),
-        right = paste0("earthengine-api ", ee_version())
+        right = paste0("earthengine-api ", ee_utils$ee_getversion())
       )
     ))
   }
+
+  if (isFALSE(quiet)) {
+    py_used <- py_discover_config()$python
+    cat(
+      "", crayon::green(cli::symbol$tick),
+      crayon::blue("Python version:"),
+      crayon::green(py_used), "\n"
+    )
+  }
+
   # 1. simple checking
   if (is.null(email)) {
     email <- "ndef"
@@ -213,6 +225,7 @@ ee_Initialize <- function(email = NULL,
       )
     ))
   }
+  ee_check_rgee_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
 

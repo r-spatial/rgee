@@ -31,3 +31,7 @@ def create_codes():
   code_verifier = _base64param(os.urandom(32))
   code_challenge = _base64param(hashlib.sha256(code_verifier).digest())
   return code_verifier, code_challenge
+
+# Get current python version
+def ee_getversion():
+  return ee.__version__
