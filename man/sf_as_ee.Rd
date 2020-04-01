@@ -70,8 +70,8 @@ sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
 and then encrusted in an HTTP request using the server-side objects that are
 implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
 is too large (>1Mb) it is likely to cause bottlenecks and plodding
-connections. One advantage of this method is that it create temporary files and
-will not be saved in your Earth Engine Asset. See
+connections. One advantage of this method is that it create temporary files
+and will not be saved in your Earth Engine Asset. See
 \href{https://developers.google.com/earth-engine/client_server}{Client
 vs Server} documentation for more details. The second method implemented is
 'toasset'. It is similar to the previous one, with the difference that
@@ -121,8 +121,8 @@ evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
 pt <- ee$Geometry$Point(c(1.5, 1.5))
 
 # Check insideness with a contains operator.
-print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())     # FALSE
-print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())  # TRUE
+print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())   # FALSE
+print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())# TRUE
 
 # 2. Upload small geometries to EE asset
 assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')

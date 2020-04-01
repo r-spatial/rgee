@@ -71,7 +71,8 @@
 #'   add_properties = list(message = "hello-world", language = "R")
 #' )
 #'
-#' test_ic <- ee$ImageCollection("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
+#' ic_id <- "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+#' test_ic <- ee$ImageCollection(ic_id)
 #' test_ic$getInfo()
 #'
 #' # 6. Delete properties
@@ -419,7 +420,8 @@ ee_verify_filename <- function(path_asset, strict = TRUE) {
   if (is.null(response) & strict) {
     message <- c(
       "%s is not a valid destination.",
-      " Make sure a correct full path is provided (e.g. either users/user/nameofcollection",
+      " Make sure a correct full path is provided",
+      " (e.g. either users/user/nameofcollection",
       " or projects/myproject/myfolder/newcollection).")
     stop(sprintf(message, path_asset))
   }

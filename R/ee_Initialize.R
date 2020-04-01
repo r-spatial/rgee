@@ -446,7 +446,10 @@ ee_user_info <- function() {
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
 #' @noRd
-ee_sessioninfo <- function(email = NULL, user = NULL, drive_cre = NULL, gcs_cre = NULL) {
+ee_sessioninfo <- function(email = NULL,
+                           user = NULL,
+                           drive_cre = NULL,
+                           gcs_cre = NULL) {
   sessioninfo <- sprintf(
     "%s/rgee_sessioninfo.txt",
     path.expand("~/.config/earthengine")
@@ -455,7 +458,7 @@ ee_sessioninfo <- function(email = NULL, user = NULL, drive_cre = NULL, gcs_cre 
     email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
     stringsAsFactors = FALSE
   )
-  write.table(df, sessioninfo, row.names = F)
+  write.table(df, sessioninfo, row.names = FALSE)
 }
 
 
@@ -489,7 +492,7 @@ ee_get_earthengine_path <- function() {
 ee_source_python <- function(oauth_func_path) {
   module_name <- gsub("\\.py$", "", basename(oauth_func_path))
   module_path <- dirname(oauth_func_path)
-  import_from_path(module_name, path = module_path, convert = F)
+  import_from_path(module_name, path = module_path, convert = FALSE)
 }
 
 #' function obtained from tidyverse

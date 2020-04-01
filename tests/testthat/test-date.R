@@ -1,12 +1,12 @@
 context("rgee: ee_date test")
 
 test_that("rdate_to_eedate I", {
-  eedate = rdate_to_eedate('2000-01-01')
+  eedate <- rdate_to_eedate('2000-01-01')
   expect_true('ee.ee_date.Date' %in% class(eedate))
 })
 
 test_that("rdate_to_eedate II", {
-  eedate = rdate_to_eedate('2000-01-01',eeobject = FALSE)
+  eedate <- rdate_to_eedate('2000-01-01',eeobject = FALSE)
   expect_equal(eedate, 946684800000)
 })
 

@@ -87,8 +87,8 @@ and 1.0 is fully opaque) \tab  number \cr
 If you add an Image to the map without any additional
 parameters, by default \code{Map$addLayer()} assigns the first three bands to red,
 green, and blue bands, respectively. The default stretch is based on the
-min-max range.  For Geometry, Feature, and/or FeatureCollection. The available
-visParams are:
+min-max range.  For Geometry, Feature, and/or FeatureCollection. The
+available visParams are:
 \itemize{
 \item \strong{color}: A hex string in the format RRGGBB specifying the
 color to use for drawing the features. By default 000000.

@@ -17,8 +17,10 @@ test_that("ee_manage_assetlist", {
 })
 
 test_that("ee_manage_move", {
-  ee_manage_move(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
-                 final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+  ee_manage_move(
+    path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+    final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'
+  )
   ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
                    asset_type = 'ImageCollection')
   ret <- ee_manage_delete('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
@@ -37,10 +39,14 @@ test_that("ee_manage_copy", {
 test_that("ee_manage_move - II", {
   ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
                    asset_type = 'ImageCollection')
-  ee_manage_copy(path_asset = 'users/datacolecfbf/rgee_test',
-                 final_path = 'users/datacolecfbf/rgee/rgee_ic2/rgee_test')
-  ee_manage_move(path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
-                 final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+  ee_manage_copy(
+    path_asset = 'users/datacolecfbf/rgee_test',
+    final_path = 'users/datacolecfbf/rgee/rgee_ic2/rgee_test'
+  )
+  ee_manage_move(
+    path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
+    final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'
+  )
   ret <- ee_manage_delete('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
   expect_true(ret)
 })

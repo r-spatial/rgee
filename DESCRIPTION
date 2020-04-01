@@ -7,6 +7,11 @@ Authors@R:
              role = c("aut", "cre"),
              email = "csaybar@gmail.com",
              comment = c(ORCID = "0000-0003-2745-9535")),
+      person(given = "Wu",
+             family = "Qiusheng",
+	     role = c("ctb"),
+	     email = "giswqs@gmail.com",
+	     comment = c(ORCID = "0000-0001-5437-4073")),
       person(given = "Roy",
              family = "Yali",
              role = c("ctb"),
@@ -34,11 +39,11 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
-    R (>= 3.4.0),
+    R (>= 3.4.0)
+Imports:
     reticulate (>= 1.13),
     stars,
-    sf
-Imports:
+    sf,
     methods,
     rstudioapi (>= 0.7),
     dplyr,

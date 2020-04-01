@@ -45,7 +45,7 @@ ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
       try(
         expr = read.csv(
           file = sprintf(ee_template,user_samapriya, ee_date),
-          stringsAsFactors = F),
+          stringsAsFactors = FALSE),
         silent = TRUE
       )
     )
@@ -61,7 +61,7 @@ ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
         try(
           expr = read.csv(
             file = sprintf(ee_template,user_samapriya, ee_date),
-            stringsAsFactors = F),
+            stringsAsFactors = FALSE),
           silent = TRUE
         )
       )

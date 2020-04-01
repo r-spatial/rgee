@@ -5,8 +5,8 @@
 #'
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
-#' @param folder The name of a unique folder in your Drive account to be exported
-#' into. Defaults to the root of the drive.
+#' @param folder The name of a unique folder in your Drive account to be
+#' exported into. Defaults to the root of the drive.
 #' @param fileNamePrefix The Google Drive filename for the export. Defaults to
 #' the name of the task.
 #' @param dimensions The dimensions of the exported image. Takes either a

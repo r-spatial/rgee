@@ -133,7 +133,7 @@ ee_set_pyenv <- function(python_path,
         break()
       }
       lines[ii] <- line
-      ii = ii + 1
+      ii <- ii + 1
     }
 
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV

@@ -126,7 +126,8 @@ ee_manage_set_properties(
   add_properties = list(message = "hello-world", language = "R")
 )
 
-test_ic <- ee$ImageCollection("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
+ic_id <- "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+test_ic <- ee$ImageCollection(ic_id)
 test_ic$getInfo()
 
 # 6. Delete properties
