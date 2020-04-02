@@ -1,3 +1,5 @@
+# rgee 0.3.6
+- bugs in ee_as_thumbnail and ee_as_stars were fixed.
 # rgee 0.3.5
 - ee_help display enhanced.
 - ee_Initialize() now display reticulate Python version.

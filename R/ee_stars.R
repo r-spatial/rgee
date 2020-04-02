@@ -125,7 +125,14 @@ ee_as_stars <- function(image,
   region_generated <- FALSE
   if (missing(region)) {
     message("region is not defined ... taking the image bounds.")
-    region <- image$geometry()$bounds(proj = prj_image$crs)
+    region <- image$geometry()$bounds(
+      maxError = ee$ErrorMargin(0.1),
+      proj = prj_image$crs
+    )
+    suppressWarnings(
+      sf_region <- ee_as_sf(region)$geometry %>%
+        "st_crs<-"(as.numeric(gsub("EPSG:", "", prj_image$crs)))
+    )
     region_generated <- TRUE
   }
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
@@ -135,8 +142,11 @@ ee_as_stars <- function(image,
   # region testing
   sf_image <- ee_as_sf(image$geometry())$geometry %>%
     st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
-  sf_region <- ee_as_sf(region)$geometry %>%
-    st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
+
+  if (isFALSE(region_generated)) {
+    sf_region <- ee_as_sf(region)$geometry %>%
+      st_transform(as.numeric(gsub("EPSG:", "", prj_image$crs)))
+  }
 
   if (is.null(geodesic)) {
     if (region_generated) {
@@ -160,7 +170,7 @@ ee_as_stars <- function(image,
     is_evenodd <- evenOdd
   }
 
-  if (!identical(st_crs(sf_image), st_crs(sf_region))) {
+  if (!st_crs(sf_image) == st_crs(sf_region)) {
     stop(
       "The parameters region and x need to have the same crs",
       "\nEPSG region: ", st_crs(sf_region)$epsg,

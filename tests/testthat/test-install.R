@@ -26,20 +26,20 @@ test_that("ee_set_pyenv",{
 #   expect_true(fmsg)
 # })
 
-os_type <- switch(Sys.info()[["sysname"]],
-                  Windows = {
-                    "windows"
-                  },
-                  Linux = {
-                    "linux"
-                  },
-                  Darwin = {
-                    "macos"
-                  }
-)
-if (os_type == "linux" | os_type == "macos") {
-  reticulate::virtualenv_remove('earthengine_test',
-                                confirm = FALSE)
-} else {
-  reticulate::conda_remove('earthengine_test')
-}
+# os_type <- switch(Sys.info()[["sysname"]],
+#                   Windows = {
+#                     "windows"
+#                   },
+#                   Linux = {
+#                     "linux"
+#                   },
+#                   Darwin = {
+#                     "macos"
+#                   }
+# )
+# if (os_type == "linux" | os_type == "macos") {
+#   reticulate::virtualenv_remove('earthengine_test',
+#                                 confirm = FALSE)
+# } else {
+#   reticulate::conda_remove('earthengine_test')
+# }
