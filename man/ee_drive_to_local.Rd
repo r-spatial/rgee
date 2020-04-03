@@ -6,7 +6,7 @@
 \usage{
 ee_drive_to_local(
   task,
-  directory,
+  dsn,
   overwrite = TRUE,
   consider = interactive(),
   quiet = FALSE
@@ -15,8 +15,8 @@ ee_drive_to_local(
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{directory}{Character. Output directory. If missing, a temporary
-directory will be assigned.}
+\item{dsn}{Character. Output filename. If missing, a temporary
+file will be assigned.}
 
 \item{overwrite}{A boolean argument which indicates indicating
 whether "filename" should be overwritten. By default it is TRUE.}

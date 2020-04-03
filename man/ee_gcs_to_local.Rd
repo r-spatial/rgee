@@ -4,13 +4,13 @@
 \alias{ee_gcs_to_local}
 \title{Move results from Google Cloud Storage to a local directory}
 \usage{
-ee_gcs_to_local(task, directory, overwrite = TRUE, quiet = FALSE)
+ee_gcs_to_local(task, dsn, overwrite = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{directory}{Character. Output directory. If missing, a temporary
-directory will be assigned.}
+\item{dsn}{Character. Output filename. If missing, a temporary
+file will be assigned.}
 
 \item{overwrite}{A boolean indicating whether the file should
 be overwritten.}

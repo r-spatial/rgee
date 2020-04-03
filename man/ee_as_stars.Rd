@@ -7,6 +7,7 @@
 ee_as_stars(
   image,
   region,
+  dsn,
   scale = NULL,
   geodesic = NULL,
   evenOdd = NULL,
@@ -22,6 +23,9 @@ ee_as_stars(
 \item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
 CRS needs to be the same that the x argument otherwise it will be
 forced. If not specified, image bounds will be taken.}
+
+\item{dsn}{Output filename. If it is missing, it will create a temporary
+file.}
 
 \item{scale}{The resolution in meters per pixel. If scale
 is set to NULL, the native resolution of the first band will be

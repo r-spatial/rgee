@@ -7,7 +7,7 @@
 ee_image_to_drive(
   image,
   description = "myExportImageTask",
-  folder = NULL,
+  folder = "rgee_backup",
   fileNamePrefix = NULL,
   dimensions = NULL,
   region = NULL,
@@ -28,7 +28,7 @@ ee_image_to_drive(
 \item{description}{Human-readable name of the task.}
 
 \item{folder}{The name of a unique folder in your Drive account to be
-exported into. Defaults to the root of the drive.}
+exported into. Defaults to the folder rgee-backup.}
 
 \item{fileNamePrefix}{The Google Drive filename for the export. Defaults to
 the name of the task.}
