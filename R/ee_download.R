@@ -6,7 +6,7 @@
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
 #' @param folder The name of a unique folder in your Drive account to be
-#' exported into. Defaults to the root of the drive.
+#' exported into. Defaults to the folder rgee-backup.
 #' @param fileNamePrefix The Google Drive filename for the export. Defaults to
 #' the name of the task.
 #' @param dimensions The dimensions of the exported image. Takes either a
@@ -108,7 +108,7 @@
 #' @export
 ee_image_to_drive <- function(image,
                               description = "myExportImageTask",
-                              folder = NULL,
+                              folder = "rgee_backup",
                               fileNamePrefix = NULL,
                               dimensions = NULL,
                               region = NULL,
@@ -794,12 +794,23 @@ ee_drive_to_local <- function(task,
 
     # Choose the right file using the driver_resource["originalFilename"]
     fileformat <- toupper(gd_ExportOptions$fileFormat)
+
     if (missing(dsn)) {
       ee_tempdir <- tempdir()
       filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gd$name))
     } else {
       pattern <- "(.*)(\\..*)$"
-      file_ft <- sub(pattern, "\\2", files_gd$name)
+        element_len <- length(files_gd$name)
+        # Neccesary for large GEOTIFF and TFRecord files
+      if (task$task_type == "EXPORT_IMAGE" & element_len > 1) {
+        file_ft <- sprintf(
+          "-%04d%s",
+          seq_len(element_len),
+          sub(pattern, "\\2", files_gd$name)
+        )
+      } else {
+        file_ft <- sub(pattern, "\\2", files_gd$name)
+      }
       dsn_n <- sub(pattern,"\\1",basename(dsn))
       filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
     }
@@ -961,7 +972,17 @@ ee_gcs_to_local <- function(task,
       filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
     } else {
       pattern <- "(.*)(\\..*)$"
-      file_ft <- sub(pattern, "\\2", files_gcs$name)
+      element_len <- length(files_gcs$name)
+      # Neccesary for large GEOTIFF and TFRecord files
+      if (task$task_type == "EXPORT_IMAGE" & element_len > 1) {
+        file_ft <- sprintf(
+          "-%04d%s",
+          seq_len(element_len),
+          sub(pattern, "\\2", files_gcs$name)
+        )
+      } else {
+        file_ft <- sub(pattern, "\\2", files_gcs$name)
+      }
       dsn_n <- sub(pattern,"\\1",basename(dsn))
       filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
     }

@@ -4,6 +4,8 @@
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
 #' forced. If not specified, image bounds will be taken.
+#' @param dsn Output filename. If it is missing, it will create a temporary
+#' file.
 #' @param scale The resolution in meters per pixel. If scale
 #' is set to NULL, the native resolution of the first band will be
 #' taken.
@@ -109,6 +111,7 @@
 #' @export
 ee_as_stars <- function(image,
                         region,
+                        dsn,
                         scale = NULL,
                         geodesic = NULL,
                         evenOdd = NULL,
@@ -242,6 +245,7 @@ ee_as_stars <- function(image,
         )
       }
     }
+
     maxPixels <- 512*512*4
     # It is necessary just single batch? (512x512)
     bbox <- sf_region %>%
@@ -255,11 +259,10 @@ ee_as_stars <- function(image,
     if (total_pixel > maxPixels) {
       stop(
         sprintf(
-          "Export too large: specified %s pixels (max: %s).",
-          total_pixel, format(maxPixels, scientific = FALSE)
-        ),
-        "Specify higher maxPixels value if you intend to",
-        "export a large area."
+          paste("Trying to download a large image (%s pixels) if",
+                "the image to download is larger than 1048576 (1024x1024) change",
+                "the via argument by 'drive' or 'gcs'."),total_pixel
+        )
       )
     }
     nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
@@ -356,16 +359,14 @@ ee_as_stars <- function(image,
       attr_dim$x$delta <- img_scale_x
       attr_dim$y$delta <- img_scale_y
       attr(image_stars, "dimensions") <- attr_dim
-      st_crs(image_stars) <- image_epsg
       image_stars <- st_set_dimensions(image_stars, 3, values = band_names)
       stars_img_list[[r_index]] <- image_stars
     }
     mosaic <- do.call(st_mosaic, stars_img_list)
-    if (is.null(st_dimensions(mosaic)$band)) {
-      mosaic
-    } else {
-      st_set_dimensions(mosaic, 3, values = band_names)
-    }
+    st_crs(mosaic) <- image_epsg
+    stars_mosaic <- st_set_dimensions(mosaic, 3, values = band_names)
+    if (!missing(dsn)) write_stars(stars_mosaic, dsn)
+    stars_mosaic
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
       stop(
@@ -413,16 +414,20 @@ ee_as_stars <- function(image,
         "Date        :", time_format, "\n"
       )
     }
+
     img_task$start()
     ee_monitoring(task = img_task, quiet = quiet)
+
     # From Google Drive to local
-    image_stars <- ee_drive_to_local(task = img_task, consider = 'all')
-    if (length(band_names) > 1) {
-      st_set_dimensions(image_stars, 3, values = band_names)
+    cat('Moving image from Google Drive to Local ... Please wait  \n')
+    img_st <- ee_drive_to_local(task = img_task, dsn = dsn, consider = 'all')
+    if (is(img_st, "list")) {
+      for (index in seq_along(img_st)) {
+        img_st[[index]] <- set_crs(img_st[[index]], prj_image, band_names)
+      }
+      img_st
     } else {
-      image_stars <- st_set_dimensions(image_stars, "bands")
-      attr(image_stars, "dimensions")$bands$to <- 1
-      st_set_dimensions(image_stars, 3, values = band_names)
+      set_crs(img_st, prj_image, band_names)
     }
   } else if (via == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
@@ -458,6 +463,7 @@ ee_as_stars <- function(image,
       bucket = container,
       fileFormat = "GEO_TIFF",
       region = region_fixed$geometry(),
+      maxPixels = maxPixels,
       scale = scale,
       fileNamePrefix = file_name
     )
@@ -473,15 +479,18 @@ ee_as_stars <- function(image,
     img_task$start()
     ee_monitoring(task = img_task, quiet = quiet)
     # From Google Cloud Storage to local
-    image_stars <- ee_gcs_to_local(img_task)
-    if (length(band_names) > 1) {
-      st_set_dimensions(image_stars, 3, values = band_names)
+    cat('Moving image from GCS to Local ... Please wait  \n')
+    img_st <- ee_gcs_to_local(img_task,  dsn = dsn)
+
+    if (is(img_st, "list")) {
+      for (index in seq_along(img_st)) {
+        img_st[[index]] <- set_crs(img_st[[index]], prj_image, band_names)
+      }
+      img_st
     } else {
-      image_stars <- st_set_dimensions(image_stars, "bands")
-      attr(image_stars, "dimensions")$bands$to <- 1
-      st_set_dimensions(image_stars, 3, values = band_names)
+      set_crs(img_st, prj_image, band_names)
     }
-  } else {
+} else {
     stop("via argument invalid")
   }
 }
@@ -744,3 +753,18 @@ ee_fix_world_region <- function(sf_image, sf_region, quiet) {
   }
   list(geometry = sf_fix_region, equal = st_is_identical)
 }
+
+#' Set crs and band names
+#' @noRd
+set_crs <- function(image_stars, prj_image, band_names) {
+  img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
+  st_crs(image_stars) <- img_crs
+  if (length(band_names) > 1) {
+    st_set_dimensions(image_stars, 3, values = band_names)
+  } else {
+    image_stars <- st_set_dimensions(image_stars, "bands")
+    attr(image_stars, "dimensions")$bands$to <- 1
+    st_set_dimensions(image_stars, 3, values = band_names)
+  }
+}
+
