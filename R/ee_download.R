@@ -627,8 +627,8 @@ ee_table_to_asset <- function(collection,
 #' Move results of an EE saved in Google Drive to a local directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
-#' @param directory Character. Output directory. If missing, a temporary
-#' directory will be assigned.
+#' @param dsn Character. Output filename. If missing, a temporary
+#' file will be assigned.
 #' @param overwrite A boolean argument which indicates indicating
 #' whether "filename" should be overwritten. By default it is TRUE.
 #' @param consider Character. See details.
@@ -714,7 +714,7 @@ ee_table_to_asset <- function(collection,
 #' }
 #' @export
 ee_drive_to_local <- function(task,
-                              directory,
+                              dsn,
                               overwrite = TRUE,
                               consider = interactive(),
                               quiet = FALSE) {
@@ -794,13 +794,18 @@ ee_drive_to_local <- function(task,
 
     # Choose the right file using the driver_resource["originalFilename"]
     fileformat <- toupper(gd_ExportOptions$fileFormat)
-    if (missing(directory)) ee_tempdir <- tempdir()
-
-    filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gd$name))
-
+    if (missing(dsn)) {
+      ee_tempdir <- tempdir()
+      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gd$name))
+    } else {
+      pattern <- "(.*)(\\..*)$"
+      file_ft <- sub(pattern, "\\2", files_gd$name)
+      dsn_n <- sub(pattern,"\\1",basename(dsn))
+      filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
+    }
     # it is necessary for ESRI shapefiles
-    to_download <- sort_drive_files(files_gd, fileformat)
     filenames_local <- ee_sort_localfiles(filenames_local, fileformat)
+    to_download <- sort_drive_files(files_gd, fileformat)
 
     # if (nrow(to_download) > 4) {
     #   stop(
@@ -826,8 +831,8 @@ ee_drive_to_local <- function(task,
 #' directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
-#' @param directory Character. Output directory. If missing, a temporary
-#' directory will be assigned.
+#' @param dsn Character. Output filename. If missing, a temporary
+#' file will be assigned.
 #' @param overwrite A boolean indicating whether the file should
 #' be overwritten.
 #' @param quiet Logical. Suppress info message
@@ -905,7 +910,7 @@ ee_drive_to_local <- function(task,
 #' }
 #' @export
 ee_gcs_to_local <- function(task,
-                            directory,
+                            dsn,
                             overwrite = TRUE,
                             quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
@@ -951,13 +956,18 @@ ee_gcs_to_local <- function(task,
 
     # Choose the right file using the driver_resource["originalFilename"]
     fileformat <- toupper(gcs_fileFormat)
-    if (missing(directory)) ee_tempdir <- tempdir()
-
-    filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
-
-    # It is necessary for ESRI shapefiles
-    to_download <- sort_drive_files(files_gcs, fileformat)
+    if (missing(dsn)) {
+      ee_tempdir <- tempdir()
+      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
+    } else {
+      pattern <- "(.*)(\\..*)$"
+      file_ft <- sub(pattern, "\\2", files_gcs$name)
+      dsn_n <- sub(pattern,"\\1",basename(dsn))
+      filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
+    }
+    # it is necessary for ESRI shapefiles
     filenames_local <- ee_sort_localfiles(filenames_local, fileformat)
+    to_download <- sort_drive_files(files_gcs, fileformat)
 
     for (index in seq_along(filenames_local)) {
       if (isTRUE(quiet)) {
@@ -1031,7 +1041,15 @@ ee_monitoring <- function(task, quiet = FALSE, eeTaskList = FALSE) {
 #' @noRd
 read_filenames <- function(filename, fileformat, quiet) {
   if (fileformat == "GEO_TIFF") {
-    read_stars(filename, proxy = TRUE, quiet = TRUE)
+    if (length(filename) == 1) {
+      read_stars(filename, proxy = TRUE, quiet = TRUE)
+    } else {
+      strs_list <- list()
+      for (i in seq_along(filename)) {
+        strs_list[[i]] <- read_stars(filename[[i]], proxy = TRUE, quiet = TRUE)
+      }
+      strs_list
+    }
   } else if (fileformat %in% "SHP") {
     st_read(filename[grep("\\.shp$", filename)], quiet = TRUE)
   } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
