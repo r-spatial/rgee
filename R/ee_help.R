@@ -31,16 +31,26 @@ ee_help <- function(eeobject, browser = FALSE) {
       topic <- components[[length(components)]]
       source <- paste(components[1:(length(components) - 1)],
                       collapse = "$")
-      extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
-                                           topic,
-                                           perl = TRUE)
-      parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
-      to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
-      to_display <- gsub("\\(|\\)", "", to_display)
-      fun_name <- paste(source,to_display,sep = "$")
+      if (topic == source) {
+        fun_name <- topic
+      } else {
+        extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
+                                             topic,
+                                             perl = TRUE)
+        parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
+        to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
+        to_display <- gsub("\\(|\\)", "", to_display)
+        fun_name <- paste(source,to_display,sep = "$")
+      }
     }
   }
 
+  is_object_or_class <- paste0(
+    "ee.computedobject.",
+    c("ComputedObject", "ComputedObjectMetaclass"))
+  if (!any(class(eeobject) %in% is_object_or_class)) {
+    fun_name <- ee_real_name(fun_name)
+  }
   doc_to_display <- fun_name %>%
     paste(collapse = '') %>%
     ee_function_docs
@@ -399,7 +409,6 @@ ee_get_lhs <- function() {
   }
 }
 
-
 #' Scaffold R wrappers for Python functions
 #'
 #' @param python_function Fully qualified name of Python function or class
@@ -421,6 +430,26 @@ ee_function_docs <- function(ee_function) {
     real_args$signature)
   output_help
 }
+
+#' Get the real name of the function
+#' @noRd
+ee_real_name <- function(ee_function){
+  components <- strsplit(ee_function, "\\$")[[1]]
+  topic <- components[[length(components)]]
+  source <- paste(components[1:(length(components) - 1)],
+                  collapse = "$")
+  fn_name <- paste0(source,"$name()")
+  ee_object_name <- tryCatch(
+    expr = eval(parse(text = fn_name)),
+    error = function(e) stop(
+      "'",source,"' is not subsettable. Are you using a ",
+      "function name that matches the names of the R base",
+      " library?. If 'base::",source,"' exists ee_help will not work."
+    )
+  )
+  sprintf("ee$%s$%s",ee_object_name,topic)
+}
+
 
 #' Create args argument
 #' @noRd
