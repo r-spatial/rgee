@@ -1072,9 +1072,17 @@ read_filenames <- function(filename, fileformat, quiet) {
       strs_list
     }
   } else if (fileformat %in% "SHP") {
-    st_read(filename[grep("\\.shp$", filename)], quiet = TRUE)
+    st_read(
+      dsn = filename[grep("\\.shp$", filename)],
+      stringsAsFactors = FALSE,
+      quiet = TRUE
+    )
   } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
-    st_read(filename, quiet = TRUE)
+    st_read(
+      dsn = filename,
+      stringsAsFactors = FALSE,
+      quiet = TRUE
+    )
   } else {
     if (!quiet) {
       print(sprintf(

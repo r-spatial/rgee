@@ -272,7 +272,7 @@ ee_as_stars <- function(image,
       message(
         "Warning: getInfo is just for small images (max: ",
         maxPixels_getInfo,
-        "). Use 'drive' or 'gcs' for a faster download."
+        "). Use 'drive' or 'gcs' instead for faster download."
       )
     }
     sf_region_gridded <- st_make_grid(sf_region, n = nbatch)
@@ -313,7 +313,7 @@ ee_as_stars <- function(image,
         if (nbatch * nbatch > 1) {
           cat(
             sprintf(
-              "Getting data for the patch: %s/%s",
+              "Getting data from the patch: %s/%s",
               r_index, nbatch * nbatch
             ), "\n"
           )
