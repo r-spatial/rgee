@@ -6,6 +6,9 @@
 \usage{
 ee_as_sf(
   x,
+  dsn,
+  overwrite = TRUE,
+  maxFeatures = 5000,
   via = "getInfo",
   container = "rgee_backup",
   selectors = NULL,
@@ -14,6 +17,17 @@ ee_as_sf(
 }
 \arguments{
 \item{x}{EE table to be converted into a sf object.}
+
+\item{dsn}{Output filename. If it is missing, it will create
+a temporary file.}
+
+\item{overwrite}{Logical. Delete data source dsn before
+attempting to write?.}
+
+\item{maxFeatures}{If you do not set "getInfo" in via
+argument, ignored it. The maximum allowed number of features
+in the exported table. The task will fail if the exported region
+covers more features in the specified projection. Defaults to 5000.}
 
 \item{via}{Method to download the image. Three methods
 are implemented 'getInfo', 'drive', and 'gcs'. See details.}
