@@ -439,8 +439,8 @@ ee_image_dim <- function(image,
 
   x_diff <- bbox[3] - bbox[1]
   y_diff <- bbox[4] - bbox[2]
-  x_npixel <- round(abs(x_diff / geotransform[1]))
-  y_npixel <- round(abs(y_diff / geotransform[5]))
+  x_npixel <- ceiling(abs(x_diff / geotransform[1]))
+  y_npixel <- ceiling(abs(y_diff / geotransform[5]))
   total_pixel <- abs(as.numeric(x_npixel * y_npixel))
   if (isFALSE(getsize)) {
     return(invisible(total_pixel))

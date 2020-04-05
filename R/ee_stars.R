@@ -246,30 +246,33 @@ ee_as_stars <- function(image,
       }
     }
 
-    maxPixels <- 512*512*4
+    maxPixels_getInfo <- 1024*1024
     # It is necessary just single batch? (512x512)
     bbox <- sf_region %>%
       st_bbox() %>%
       as.numeric()
     x_diff <- bbox[3] - bbox[1]
     y_diff <- bbox[4] - bbox[2]
-    x_npixel <- round(abs(x_diff / prj_image$transform[1][[1]]))
-    y_npixel <- round(abs(y_diff / prj_image$transform[5][[1]]))
+    x_npixel <- ceiling(abs(x_diff / prj_image$transform[1][[1]]))
+    y_npixel <- ceiling(abs(y_diff / prj_image$transform[5][[1]]))
     total_pixel <- x_npixel * y_npixel
     if (total_pixel > maxPixels) {
       stop(
-        sprintf(
-          paste("Trying to download a large image (%s pixels) if",
-                "the image to download is larger than 1048576 (1024x1024) change",
-                "the via argument by 'drive' or 'gcs'."),total_pixel
-        )
+        "Export too large. Specified ",
+        total_pixel,
+        " pixels (max:",
+        maxPixels,
+        "). ",
+        "Specify higher maxPixels value if you",
+        "intend to export a large area."
       )
     }
     nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
     if (nbatch > 3) {
-      stop(
-        'define "getInfo" in via argument is just for small images',
-        ' (< ~1536x1536). Please use "drive" or "gcs" instead.'
+      message(
+        "Warning: getInfo is just for small images (max: ",
+        maxPixels_getInfo,
+        "). Use 'drive' or 'gcs' for a faster download."
       )
     }
     sf_region_gridded <- st_make_grid(sf_region, n = nbatch)
@@ -405,6 +408,7 @@ ee_as_stars <- function(image,
       maxPixels = maxPixels,
       fileNamePrefix = file_name
     )
+
     if (!quiet) {
       cat(
         "\n- download parameters (Google Drive)\n",
@@ -417,6 +421,9 @@ ee_as_stars <- function(image,
 
     img_task$start()
     ee_monitoring(task = img_task, quiet = quiet)
+    if (img_task$status()$state != "COMPLETED") {
+      stop(img_task$status()$error_message)
+    }
 
     # From Google Drive to local
     cat('Moving image from Google Drive to Local ... Please wait  \n')
@@ -447,6 +454,7 @@ ee_as_stars <- function(image,
       proj = ee_crs,
       geodesic = is_geodesic
     )
+
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -467,6 +475,7 @@ ee_as_stars <- function(image,
       scale = scale,
       fileNamePrefix = file_name
     )
+
     if (!quiet) {
       cat(
         "\n- download parameters (Google Cloud Storage)\n",
@@ -476,8 +485,13 @@ ee_as_stars <- function(image,
         "Date        :", time_format, "\n"
       )
     }
+
     img_task$start()
     ee_monitoring(task = img_task, quiet = quiet)
+    if (img_task$status()$state != "COMPLETED") {
+      stop(img_task$status()$error_message)
+    }
+
     # From Google Cloud Storage to local
     cat('Moving image from GCS to Local ... Please wait  \n')
     img_st <- ee_gcs_to_local(img_task,  dsn = dsn)

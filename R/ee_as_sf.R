@@ -132,8 +132,13 @@ ee_as_sf <- function(x,
         "Date        :", time_format, "\n"
       )
     }
+
     table_task$start()
     ee_monitoring(task = table_task, quiet = quiet)
+    if (table_task$status()$state != "COMPLETED") {
+      stop(table_task$status()$error_message)
+    }
+
     ee_drive_to_local(table_task)
   } else if (via == 'gcs') {
     # Creating name for temporal file; just for either drive or gcs
@@ -171,8 +176,12 @@ ee_as_sf <- function(x,
         "Date        :", time_format, "\n"
       )
     }
+
     table_task$start()
     ee_monitoring(task = table_task, quiet = quiet)
+    if (table_task$status()$state != "COMPLETED") {
+      stop(table_task$status()$error_message)
+    }
     ee_gcs_to_local(table_task)
   } else {
     stop("type argument invalid.")
