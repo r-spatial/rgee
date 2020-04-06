@@ -1,3 +1,6 @@
+# rgee 0.3.8
+- ee_as_sf support the download of large tables
+- Several bug fixed
 # rgee 0.3.6
 - bugs in ee_as_thumbnail and ee_as_stars were fixed.
 # rgee 0.3.5

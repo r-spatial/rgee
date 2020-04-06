@@ -14,8 +14,10 @@
 #' }
 #' @export
 ee_help <- function(eeobject, browser = FALSE) {
+  #obs : simple earth engine objects like ee$Number will return NULL
   eequery_scope <- try(expr = unlist(parse_json(eeobject$serialize())$scope),
                        silent = TRUE)
+  # If eeobject is an Earth Engine object get the last function
   if (class(eequery_scope) != 'try-error' & !is.null(eequery_scope)) {
     search_funnames <- grepl("functionName", names(eequery_scope))
     ee_functions <- eequery_scope[search_funnames]
@@ -26,14 +28,28 @@ ee_help <- function(eeobject, browser = FALSE) {
     if (length(fun_name) == 0) {
       fun_name <- deparse(substitute(eeobject))
     }
+
     if (is.null(eequery_scope)) {
       components <- strsplit(fun_name, "\\$")[[1]]
       topic <- components[[length(components)]]
       source <- paste(components[1:(length(components) - 1)],
                       collapse = "$")
+      # The name is a base function?
+      is_a_basefunction <- tryCatch(
+        expr = {eval(parse(text = sprintf("base::%s", fun_name))); TRUE},
+        error = function(e) FALSE
+      )
+      if (isTRUE(is_a_basefunction)) {
+        stop(
+          "'", fun_name, "' is not subsettable. Are you using a ",
+          "function name that matches the names of the R base",
+          " library?. If 'base::", fun_name, "' exists ee_help will not work."
+        )
+      }
       if (topic == source) {
         fun_name <- topic
       } else {
+        # Remove just the last parenthesis
         extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
                                              topic,
                                              perl = TRUE)
@@ -45,15 +61,15 @@ ee_help <- function(eeobject, browser = FALSE) {
     }
   }
 
-  is_object_or_class <- paste0(
-    "ee.computedobject.",
-    c("ComputedObject", "ComputedObjectMetaclass"))
-  if (!any(class(eeobject) %in% is_object_or_class)) {
-    fun_name <- ee_real_name(fun_name)
-  }
-  doc_to_display <- fun_name %>%
-    paste(collapse = '') %>%
-    ee_function_docs
+  doc_to_display <- tryCatch(
+    expr = fun_name %>%
+      paste(collapse = '') %>%
+      ee_function_docs,
+    error = function(e) ee_real_name(fun_name) %>%
+      paste(collapse = '') %>%
+      ee_function_docs
+  )
+
 
   # Creating html to display
   temp_file <- sprintf("%s/ee_help.html", tempdir())
@@ -442,9 +458,7 @@ ee_real_name <- function(ee_function){
   ee_object_name <- tryCatch(
     expr = eval(parse(text = fn_name)),
     error = function(e) stop(
-      "'",source,"' is not subsettable. Are you using a ",
-      "function name that matches the names of the R base",
-      " library?. If 'base::",source,"' exists ee_help will not work."
+      "ee_help was not able to determinate the function name."
     )
   )
   sprintf("ee$%s$%s",ee_object_name,topic)
@@ -461,7 +475,7 @@ ee_help_create_arg <- function(function_docs) {
   }
   arguments <- gsub("Returns.*","", arguments)
   groups <- strsplit(arguments,"\n")[[1]]
-  group_condition <- grepl(":\\s", groups)
+  group_condition <- grepl("^\\s*[aA0-zZ9|**]*:", groups, perl = TRUE)
 
   #Create text groups
   walk <- 0
