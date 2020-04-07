@@ -13,6 +13,10 @@ eedate_to_rdate(ee_date, timestamp = FALSE)
 from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
 date as a POSIXct object. By default FALSE.}
 }
+\value{
+\code{eedate_to_rdate} will return a numeric timestamp or
+an POSIXct object depending on the \code{timestamp} argument.
+}
 \description{
 Pass an Earth Engine date object to R
 }

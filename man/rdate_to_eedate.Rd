@@ -13,6 +13,10 @@ rdate_to_eedate(date, timestamp = FALSE)
 from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
 EE date object. By default FALSE.}
 }
+\value{
+\code{rdate_to_eedate} will return a numeric timestamp or
+an EE Date depending on the \code{timestamp} argument.
+}
 \description{
 Pass an R date object ("Date", "Numeric", "character", "POSIXt",
 and "POSIXct") to Google Earth Engine (ee$Date).

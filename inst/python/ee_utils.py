@@ -21,6 +21,10 @@ def ee_create_json_py(towrite, manifest):
 def eedate_to_rdate(eedate):
   return float(eedate.getInfo()['value'])
 
+# ee_Date.R --> ee_get_date function
+def eedate_to_rdate_ic(ic , var = "system:time_start"):
+  return [float(img) for img in ic.aggregate_array(var).getInfo()]
+
 # ee_Initialize.R --> ee_create_credentials_earthengine
 def _base64param(byte_string):
   """Encodes bytes for use as a URL parameter."""
@@ -32,6 +36,6 @@ def create_codes():
   code_challenge = _base64param(hashlib.sha256(code_verifier).digest())
   return code_verifier, code_challenge
 
-# Get current python version
+# Get current Earth Engine version
 def ee_getversion():
   return ee.__version__
