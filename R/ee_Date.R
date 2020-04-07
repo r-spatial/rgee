@@ -1,12 +1,12 @@
-#' Pass R date object to Earth Engine
+#' Pass an R date object to Earth Engine
 #'
-#' Function to pass objects of classes "Date",
-#' "character", "POSIXt", and "POSIXct" to
-#' ee$Date or unix time stamp.
+#' Pass an R date object ("Date", "Numeric", "character", "POSIXt",
+#' and "POSIXct") to Google Earth Engine (ee$Date).
 #'
 #' @param date R date object
-#' @param eeobject Logical. If TRUE, return
-#' a ee$object otherwise return the date in milliseconds.
+#' @param timestamp Logical. If TRUE, return the date in milliseconds
+#' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
+#' EE date object. By default FALSE.
 #' @examples
 #' library(rgee)
 #' ee_reattach()
@@ -14,7 +14,7 @@
 #' rdate_to_eedate('2000-01-01')
 #' rdate_to_eedate(315532800000) # float number
 #' @export
-rdate_to_eedate <- function(date, eeobject = TRUE) {
+rdate_to_eedate <- function(date, timestamp = FALSE) {
   condition <- any(class(date) %in% c('Date', 'character', 'POSIXt', 'POSIXct'))
   if (condition) {
     date <- date %>%
@@ -22,36 +22,42 @@ rdate_to_eedate <- function(date, eeobject = TRUE) {
       as.numeric() %>%
       prod(1000)
   }
-
-  if (isTRUE(eeobject)) {
-    ee$Date(date)
-  } else {
+  if (isTRUE(timestamp)) {
     date
+  } else {
+    ee$Date(date)
   }
 }
 
-#' Pass Earth Engine date object to R
-#'
-#' Function to pass objects of class ee$Date
-#' to as.POSIXct or numeric (unix time stamp)
+#' Pass an Earth Engine date object to R
 #'
 #' @param ee_date EE date object (ee$Date)
-#' @param js Logical. If TRUE, return a numeric
-#' date otherwise return the date as a POSIXct object.
+#' @param timestamp Logical. If TRUE, return the date in milliseconds
+#' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
+#' date as a POSIXct object. By default FALSE.
+#' @details
+#' \code{eedate_to_rdate} is essential to avoid potential errors which
+#' could appear when users call to retrieve the date. Currently,
+#' R integer only support 32 bit signed, such integers can only
+#' count up to about 2 billion. This range is extremely insufficient to
+#' deal with Google Earth Engine date, which is represent by timestamp in
+#' milliseconds since the UNIX epoch. \code{eedate_to_rdate} use Python as a
+#' backend to obtain the date and convert it in float before to export to R.
 #' @examples
 #' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
-#' eeDate <- ee$Date$fromYMD(1980,1,1)
-#' eedate_to_rdate(eeDate)
+#' eeDate <- ee$Date$fromYMD(2010,1,1)
+#' eedate_to_rdate(eeDate,timestamp = TRUE) # good
+#' eeDate$getInfo()$value # bad
 #' @export
-eedate_to_rdate <- function(ee_date, js = FALSE) {
+eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py",
                                  package = "rgee")
-  ee_selenium_functions <- ee_source_python(oauth_func_path)
-  date_numeric <- ee_selenium_functions$eedate_to_rdate(ee$Date(ee_date)) %>%
+  ee_utils <- ee_source_python(oauth_func_path)
+  date_numeric <- ee_utils$eedate_to_rdate(ee$Date(ee_date)) %>%
     ee_py_to_r()
-  if (isTRUE(js)) {
+  if (isTRUE(timestamp)) {
     date_numeric
   } else {
     as.POSIXct(x = date_numeric/1000, origin = "1970-01-01", tz = "GMT")
@@ -93,5 +99,5 @@ ee_get_date <- function(image, time_end = FALSE) {
   } else {
     time_end <- NULL
   }
-  c('system:time_start' = time_start,'system:time_end'=time_end)
+  c('system:time_start' = time_start,'system:time_end' = time_end)
 }

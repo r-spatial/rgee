@@ -2,24 +2,34 @@
 % Please edit documentation in R/ee_Date.R
 \name{eedate_to_rdate}
 \alias{eedate_to_rdate}
-\title{Pass Earth Engine date object to R}
+\title{Pass an Earth Engine date object to R}
 \usage{
-eedate_to_rdate(ee_date, js = FALSE)
+eedate_to_rdate(ee_date, timestamp = FALSE)
 }
 \arguments{
 \item{ee_date}{EE date object (ee$Date)}
 
-\item{js}{Logical. If TRUE, return a numeric
-date otherwise return the date as a POSIXct object.}
+\item{timestamp}{Logical. If TRUE, return the date in milliseconds
+from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
+date as a POSIXct object. By default FALSE.}
 }
 \description{
-Function to pass objects of class ee$Date
-to as.POSIXct or numeric (unix time stamp)
+Pass an Earth Engine date object to R
+}
+\details{
+\code{eedate_to_rdate} is essential to avoid potential errors which
+could appear when users call to retrieve the date. Currently,
+R integer only support 32 bit signed, such integers can only
+count up to about 2 billion. This range is extremely insufficient to
+deal with Google Earth Engine date, which is represent by timestamp in
+milliseconds since the UNIX epoch. \code{eedate_to_rdate} use Python as a
+backend to obtain the date and convert it in float before to export to R.
 }
 \examples{
 library(rgee)
 ee_reattach()
 ee_Initialize()
-eeDate <- ee$Date$fromYMD(1980,1,1)
-eedate_to_rdate(eeDate)
+eeDate <- ee$Date$fromYMD(2010,1,1)
+eedate_to_rdate(eeDate,timestamp = TRUE) # good
+eeDate$getInfo()$value # bad
 }

@@ -2,20 +2,20 @@
 % Please edit documentation in R/ee_Date.R
 \name{rdate_to_eedate}
 \alias{rdate_to_eedate}
-\title{Pass R date object to Earth Engine}
+\title{Pass an R date object to Earth Engine}
 \usage{
-rdate_to_eedate(date, eeobject = TRUE)
+rdate_to_eedate(date, timestamp = FALSE)
 }
 \arguments{
 \item{date}{R date object}
 
-\item{eeobject}{Logical. If TRUE, return
-a ee$object otherwise return the date in milliseconds.}
+\item{timestamp}{Logical. If TRUE, return the date in milliseconds
+from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
+EE date object. By default FALSE.}
 }
 \description{
-Function to pass objects of classes "Date",
-"character", "POSIXt", and "POSIXct" to
-ee$Date or unix time stamp.
+Pass an R date object ("Date", "Numeric", "character", "POSIXt",
+and "POSIXct") to Google Earth Engine (ee$Date).
 }
 \examples{
 library(rgee)
