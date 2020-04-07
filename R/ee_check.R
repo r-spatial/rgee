@@ -1,7 +1,7 @@
 #' Interface to check Python and non-R rgee dependencies
 #'
-#' R functions for checking sanity of Python Third-Party
-#' Python packages and credentials
+#' R functions for checking sanity of Third-Party Python
+#' packages and credentials.
 #' @name ee_check-tools
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate py_available py_module_available
@@ -9,7 +9,10 @@
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_check()
+#' ee_check_python()
+#' ee_check_rgee_python_packages()
+#' ee_check_credentials()
+#' ee_check() # put it all together
 #' @export
 ee_check <- function() {
   ee_check_python()
@@ -103,7 +106,12 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
     }
   }
   if (isFALSE(quiet)) {
+    ee_check_py_package("pyasn1")
+    ee_check_py_package("urllib3")
+    ee_check_py_package("setuptools")
     ee_check_py_package("oauth2client")
+    ee_check_py_package("numpy")
+    cat("\n")
   }
 }
 

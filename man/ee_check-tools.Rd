@@ -20,11 +20,14 @@ ee_check_credentials()
 \item{quiet}{logical. Suppress info message}
 }
 \description{
-R functions for checking sanity of Python Third-Party
-Python packages and credentials
+R functions for checking sanity of Third-Party Python
+packages and credentials.
 }
 \examples{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
-ee_check()
+ee_check_python()
+ee_check_rgee_python_packages()
+ee_check_credentials()
+ee_check() # put it all together
 }
