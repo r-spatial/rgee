@@ -50,14 +50,14 @@ An stars object
 }
 \description{
 Wrapper function to create a stars object with projection from a
-\href{https://developers.google.com/earth-engine/
-image_visualization#thumbnail-images}{EE thumbnail image}.
+\href{developers.google.com/earth-engine/image_visualization#thumbnail-images
+}{EE thumbnail image}.
 }
 \details{
 \code{vizparams} set up the details of the thumbnail image. With
 \code{ee_as_thumbnail} only is possible export one-band (G) or three-band
 (RGB) images. Several parameters can be passed on to control color,
-intensity, the maximum and minimum values, etc. The below table provides
+intensity, the maximum and minimum values, etc. The table below provides
 all the parameters that admit \code{ee_as_thumbnail}.
 
 \tabular{lll}{

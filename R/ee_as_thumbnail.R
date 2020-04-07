@@ -1,8 +1,8 @@
 #' Create a stars object based on an EE thumbnail image
 #'
 #' Wrapper function to create a stars object with projection from a
-#' \href{https://developers.google.com/earth-engine/
-#' image_visualization#thumbnail-images}{EE thumbnail image}.
+#' \href{developers.google.com/earth-engine/image_visualization#thumbnail-images
+#' }{EE thumbnail image}.
 #'
 #' @param x EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
@@ -393,17 +393,17 @@ read_png_as_stars <- function(x, band_name, mtx) {
 }
 
 
-#' Dimensions of a Earth Engine Image object
+#' Approximate size of an EE Image object
 #'
 #' Get the approximate number of rows, cols, and size of an
 #' Earth Engine Image.
-#' @param image Earth Engine Object.
+#'
+#' @param image EE Image object.
 #' @param getsize Logical. If TRUE, the size of the object
 #' will be estimated.
-#' @param compression_ratio Numeric. It is relevant just when
-#' getsize params is TRUE. compression_ratio params is a measurement
-#' of the relative reduction in size of data representation produced
-#' by a data compression algorithm. By default is 12.
+#' @param compression_ratio Numeric. Measurement of the relative reduction
+#' in size of data representation produced by a data compression algorithm
+#' (ignored if \code{getsize} is FALSE). By default is 12.
 #' @param quiet logical. Suppress info message
 #' @return A list of parameters
 #' @examples
@@ -414,17 +414,17 @@ read_png_as_stars <- function(x, band_name, mtx) {
 #'
 #' # World SRTM
 #' srtm <- ee$Image("CGIAR/SRTM90_V4")
-#' ee_image_dim(srtm)
+#' ee_image_info(srtm)
 #'
 #' # Landast8
 #' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-#' ee_image_dim(l8)
+#' ee_image_info(l8)
 #' }
 #' @export
-ee_image_dim <- function(image,
-                         getsize = TRUE,
-                         compression_ratio = 12,
-                         quiet = FALSE) {
+ee_image_info <- function(image,
+                          getsize = TRUE,
+                          compression_ratio = 12,
+                          quiet = FALSE) {
   img_proj <- image$projection()$getInfo()
   geotransform <- unlist(img_proj$transform)
   img_totalarea <- ee_as_sf(image$geometry())
