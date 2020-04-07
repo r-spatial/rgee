@@ -624,30 +624,30 @@ ee_table_to_asset <- function(collection,
 
 #' Move results from Google Drive to a local directory
 #'
-#' Move results of an EE saved in Google Drive to a local directory.
+#' Move results of an EE task saved in Google Drive to a local directory.
 #'
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
 #' @param overwrite A boolean argument which indicates indicating
-#' whether "filename" should be overwritten. By default it is TRUE.
-#' @param consider Character. See details.
+#' whether "filename" should be overwritten. By default TRUE.
+#' @param consider Interactive. See details.
 #' @param quiet logical. Suppress info message
 #'
 #' @details
 #' The task argument needs a status as task "COMPLETED" to work, since the
-#' parameters necessary to locate the file into google drive are obtained
+#' parameters necessary to identify EE objects into google drive are obtained
 #' from ee$batch$Export$*$toDrive(...)$start()$status().
 #'
-#' Google Drive permits users to create files with the same name. The
-#' argument "consider", which use an interactive R session by default,
-#' is created to help users to deal with it. If it is specified
-#' as 'last', and exist multiple files (images or vectors) with
-#' the same filename, ee_drive_to_local will download just the last
-#' file saved. On the another hand, if it is specified as 'all', all
+#' \code{consider} argument is necessary since Google Drive permits users to
+#' create files with the same name. \code{consider} uses an interactive R
+#' session by default to help users identify just the files that they want to
+#' download. Additionally, the options "last" and "all" are implemented. "last"
+#' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
 #' @return
-#' An sf, stars, or character depending on the retunclass argument.
+#' An sf, stars, character or a list object depending on the \code{consider}
+#' argument.
 #' @importFrom stars read_stars
 #' @importFrom utils menu
 #' @examples
@@ -844,14 +844,10 @@ ee_drive_to_local <- function(task,
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
-#' @param overwrite A boolean indicating whether the file should
+#' @param overwrite Logical. A boolean indicating whether the file should
 #' be overwritten.
 #' @param quiet Logical. Suppress info message
 #' @details
-#' The best way to use `rgee::ee_download_gcs` is save the Google Cloud
-#' Project JSON file into `ee_get_earthengine_path()` with the name
-#' GCS_AUTH_FILE.json. It is necessary in order to attain that rgee can
-#' read the credentials automatically.
 #'
 #' The task argument needs "COMPLETED" task state to work, since the parameters
 #' necessaries to locate the file into google cloud storage are obtained from
@@ -1015,20 +1011,20 @@ ee_gcs_to_local <- function(task,
 
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after an EE task has been successfully completed.
-#' @param eeTaskList Logical, if \code{TRUE}, all Earth Engine tasks will
+#' @param task List generated after an created an EE task.
+#' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
+#' listed.
 #' @param quiet logical. Suppress info message
-#' be listed.
 #'
 #' @export
 #' @examples
 #' \dontrun{
 #' library(rgee)
 #' ee_initialize()
-#' ee_download_monitoring(eelist = TRUE)
+#' ee_monitoring(eeTaskList = TRUE)
 #' }
 #' @export
-ee_monitoring <- function(task, quiet = FALSE, eeTaskList = FALSE) {
+ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
   if (missing(task)) {
     task <- ee$batch$Task$list()[[1]]
   }

@@ -12,7 +12,7 @@ ee_gcs_to_local(task, dsn, overwrite = TRUE, quiet = FALSE)
 \item{dsn}{Character. Output filename. If missing, a temporary
 file will be assigned.}
 
-\item{overwrite}{A boolean indicating whether the file should
+\item{overwrite}{Logical. A boolean indicating whether the file should
 be overwritten.}
 
 \item{quiet}{Logical. Suppress info message}
@@ -22,11 +22,6 @@ Move results of an EE task saved in Google Cloud Storage to a local
 directory.
 }
 \details{
-The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud
-Project JSON file into \code{ee_get_earthengine_path()} with the name
-GCS_AUTH_FILE.json. It is necessary in order to attain that rgee can
-read the credentials automatically.
-
 The task argument needs "COMPLETED" task state to work, since the parameters
 necessaries to locate the file into google cloud storage are obtained from
 ee$batch$Export$*$toCloudStorage(...)$start()$status().

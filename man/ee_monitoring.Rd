@@ -4,15 +4,15 @@
 \alias{ee_monitoring}
 \title{Monitoring Earth Engine task progress}
 \usage{
-ee_monitoring(task, quiet = FALSE, eeTaskList = FALSE)
+ee_monitoring(task, eeTaskList = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{task}{List generated after an EE task has been successfully completed.}
+\item{task}{List generated after an created an EE task.}
 
-\item{quiet}{logical. Suppress info message
-be listed.}
+\item{eeTaskList}{Logical. If \code{TRUE}, all Earth Engine tasks will be
+listed.}
 
-\item{eeTaskList}{Logical, if \code{TRUE}, all Earth Engine tasks will}
+\item{quiet}{logical. Suppress info message}
 }
 \description{
 Monitoring Earth Engine task progress
@@ -21,6 +21,6 @@ Monitoring Earth Engine task progress
 \dontrun{
 library(rgee)
 ee_initialize()
-ee_download_monitoring(eelist = TRUE)
+ee_monitoring(eeTaskList = TRUE)
 }
 }
