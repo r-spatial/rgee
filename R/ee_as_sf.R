@@ -1,19 +1,18 @@
 #' Convert an EE table in a sf object
 #'
 #' @param x EE table to be converted into a sf object.
-#' @param dsn Output filename. If it is missing, it will create
-#' a temporary file.
-#' @param maxFeatures If you do not set "getInfo" in via
-#' argument, ignored it. The maximum allowed number of features
-#' in the exported table. The task will fail if the exported region
-#' covers more features in the specified projection. Defaults to 5000.
-#' @param overwrite Logical. Delete data source dsn before
-#' attempting to write?.
-#' @param container Relevant when the "via" argument is
-#' defined as "drive" or "gcs". It is the name of a unique
-#' folder ('drive') or bucket ('gcs') to be exported into.
-#' @param via Method to download the image. Three methods
-#' are implemented 'getInfo', 'drive', and 'gcs'. See details.
+#' @param dsn Character. Output filename; in case \code{dsn} is missing
+#' \code{ee_as_sf} will create a temporary file.
+#' @param maxFeatures Numeric. The maximum allowed number of features to
+#' export  (ignored if \code{via} is not set as "getInfo"). The task will fail
+#' if the exported region covers more features in the specified projection.
+#' Defaults to 5000.
+#' @param overwrite Logical. Delete data source \code{dsn} before attempting
+#' to write?.
+#' @param via Character. Method to fetch data about the object. Multiple
+#' options supported. See details.
+#' @param container Name of the folder ('drive') or bucket ('gcs') to be
+#' exported into (ignored if \code{via} is not defined as "drive" or "gcs").
 #' @param selectors The list of properties to include in
 #' the output, as a list of strings or a comma-separated
 #' string. By default, all properties are included.
@@ -23,15 +22,19 @@
 #' @importFrom methods as setMethod new is setGeneric
 #' @importFrom sf st_write
 #' @details
-#' The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
-#' your local env could be carried out by three different strategies. The
-#' first one ('getInfo') use the getInfo method, which fetch and return
-#' information about Earth Engine objects, the advantage of use this strategy is
-#' a direct and fast download. However, there is a limit of 5000 features
-#' that can be transferred by request which makes it not recommendable for
-#' large collections. The second ('drive') and third ('gcs') methods are
-#' suitable for large images since it uses Google Drive and Google Cloud
-#' Storage as intermediate containers.
+#' \code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
+#' \code{ee$Feature} and \code{ee$Geometry} by three different options:
+#' "getInfo", "drive", and "gcs". When "getInfo" is set in the \code{via}
+#' argument, \code{ee_as_sf} will make an REST call to retrieve
+#' all the known information about the object. The advantage of use
+#' "getInfo" is a direct and faster download. However, there is a limitation of
+#' 5000 features by request which makes it not recommendable for large
+#' collections. Instead of "getInfo", the options: "drive" and "gcs" are
+#' suitable for large collections since they use an intermediate container,
+#' which may be Google Drive and Google Cloud Storage respectively. For getting
+#' more information about exporting data take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
+#' Engine Guide - Export data}.
 #' @return An sf object.
 #' @examples
 #' \dontrun{
@@ -83,8 +86,8 @@
 ee_as_sf <- function(x,
                      dsn,
                      overwrite = TRUE,
-                     maxFeatures = 5000,
                      via = "getInfo",
+                     maxFeatures = 5000,
                      container = "rgee_backup",
                      selectors = NULL,
                      quiet = FALSE) {
@@ -93,7 +96,7 @@ ee_as_sf <- function(x,
     dsn <- paste0(tempfile(),".geojson")
   }
   if (!any(class(x) %in% sp_eeobjects)) {
-    stop("x is not a spatial vector Earth Engine object\n")
+    stop("x is not a Earth Engine table\n")
   }
 
   # Load ee_Initialize() session; just for either drive or gcs
@@ -249,7 +252,7 @@ ee_as_sf <- function(x,
     }
     ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
   } else {
-    stop("type argument invalid.")
+    stop("via argument invalid.")
   }
 }
 
