@@ -1,14 +1,19 @@
 #' Create a stars object based on an EE thumbnail image
 #'
-#' Download EE thumbnail images and read them as star objects.
-#' This function is a wrapper around \code{ee$Image()$getThumbURL()}.
+#' Wrapper function to create a stars object with projection from a
+#' \href{https://developers.google.com/earth-engine/
+#' image_visualization#thumbnail-images}{EE thumbnail image}.
 #'
-#' @param x EE Image object
-#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
-#' CRS needs to be the same as the x argument, otherwise, it will be
-#' forced. If not specified, image bounds will be taken.
-#' @param dimensions A number or pair of numbers in format XY.
+#' @param x EE Image object to be converted into a stars object.
+#' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
+#' the region to export.The CRS needs to be the same as the \code{x} argument,
+#' otherwise, it will be forced. If not specified, image bounds will be taken.
+#' @param dimensions Numeric vector of length 2. Thumbnail dimensions in pixel
+#' units. If a single integer is provided, it defines the size of the
+#' image's larger aspect dimension and scales the smaller dimension
+#' proportionally. Defaults to 512 pixels for the larger image aspect dimension.
 #' @param vizparams A list that contains the visualization parameters.
+#' See details.
 #' @param geodesic Whether line segments of region should be interpreted as
 #' spherical geodesics. If FALSE, indicates that line segments should be
 #' interpreted as planar lines in the specified CRS. If not specified, it
@@ -24,19 +29,11 @@
 #' @param quiet logical; suppress info messages.
 #' @details
 #'
-#' The argument dimensions will define the stars object parameters
-#' "from" & "to". It must be a single numeric value or a two-element vector.
-#' If not defined, 256 is taken by default as the dimension of x
-#' (from 1 to 256), and y scales down proportionally. Large images
-#' might cause plodding connections. See
-#' \href{https://developers.google.com/earth-engine/client_server}{Client vs
-#' Server} for more details.
-#'
-#' The vizparams set up the number of bands up. In `ee_as_thumbnail` just is
-#' possible export only one (G) or three-band (RGB) images. Additional
-#' parameters can be passed on to control color, intensity, the maximum and
-#' minimum values, etc. The below table provides all the parameters that
-#' admit `ee_as_thumbnail`.
+#' \code{vizparams} set up the details of the thumbnail image. With
+#' `ee_as_thumbnail` only is possible export one-band (G) or three-band
+#' (RGB) images. Several parameters can be passed on to control color,
+#' intensity, the maximum and minimum values, etc. The table below provides
+#' all the parameters that admit `ee_as_thumbnail`.
 #'
 #' \tabular{lll}{
 #' \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
@@ -59,10 +56,8 @@
 #' number \cr
 #' }
 #'
-#' Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for
-#' getting the CRS of an Earth Engine Image.
 #' @return
-#' An \link[sf]{sf} object
+#' An stars object
 #'
 #' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom sf st_crs<-
@@ -235,12 +230,13 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     sf_region <- ee_fix_world_region(sf_image, sf_region, quiet)$geometry
   }
   if (missing(dimensions)) {
-    dimensions <- 256L
+    dimensions <- 512L
     if (!quiet) {
-      message("dimensions param is missing. Taken by default 256 pixels in X")
+      message("dimensions param is missing. Assuming 512",
+              " for the larger image aspect dimension.")
     }
   }
-  if (max(dimensions) > 2048) {
+  if (max(dimensions) > 4096) {
     if (!quiet) {
       message(
         "For large image is preferible use rgee::ee_download_*(...)",
@@ -300,7 +296,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   # of the getTHumbURL (sometimes jpeg other png)
   error_message_I <- paste0(
     "Error arise after trying to download ",
-    "the getThumbURL (it needs to be ",
+    "via getThumbURL (it needs to be ",
     "either jpeg or png)"
   )
 
@@ -418,11 +414,11 @@ read_png_as_stars <- function(x, band_name, mtx) {
 #'
 #' # World SRTM
 #' srtm <- ee$Image("CGIAR/SRTM90_V4")
-#' ee_get_npixel(srtm)
+#' ee_image_dim(srtm)
 #'
 #' # Landast8
 #' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-#' ee_get_npixel(l8)
+#' ee_image_dim(l8)
 #' }
 #' @export
 ee_image_dim <- function(image,

@@ -15,15 +15,19 @@ ee_as_thumbnail(
 )
 }
 \arguments{
-\item{x}{EE Image object}
+\item{x}{EE Image object to be converted into a stars object.}
 
-\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
-CRS needs to be the same as the x argument, otherwise, it will be
-forced. If not specified, image bounds will be taken.}
+\item{region}{EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
+the region to export.The CRS needs to be the same as the \code{x} argument,
+otherwise, it will be forced. If not specified, image bounds will be taken.}
 
-\item{dimensions}{A number or pair of numbers in format XY.}
+\item{dimensions}{Numeric vector of length 2. Thumbnail dimensions in pixel
+units. If a single integer is provided, it defines the size of the
+image's larger aspect dimension and scales the smaller dimension
+proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
 
-\item{vizparams}{A list that contains the visualization parameters.}
+\item{vizparams}{A list that contains the visualization parameters.
+See details.}
 
 \item{geodesic}{Whether line segments of region should be interpreted as
 spherical geodesics. If FALSE, indicates that line segments should be
@@ -42,26 +46,19 @@ If unspecified in the geometry (region argument) defaults to TRUE.}
 \item{quiet}{logical; suppress info messages.}
 }
 \value{
-An \link[sf]{sf} object
+An stars object
 }
 \description{
-Download EE thumbnail images and read them as star objects.
-This function is a wrapper around \code{ee$Image()$getThumbURL()}.
+Wrapper function to create a stars object with projection from a
+\href{https://developers.google.com/earth-engine/
+image_visualization#thumbnail-images}{EE thumbnail image}.
 }
 \details{
-The argument dimensions will define the stars object parameters
-"from" & "to". It must be a single numeric value or a two-element vector.
-If not defined, 256 is taken by default as the dimension of x
-(from 1 to 256), and y scales down proportionally. Large images
-might cause plodding connections. See
-\href{https://developers.google.com/earth-engine/client_server}{Client vs
-Server} for more details.
-
-The vizparams set up the number of bands up. In \code{ee_as_thumbnail} just is
-possible export only one (G) or three-band (RGB) images. Additional
-parameters can be passed on to control color, intensity, the maximum and
-minimum values, etc. The below table provides all the parameters that
-admit \code{ee_as_thumbnail}.
+\code{vizparams} set up the details of the thumbnail image. With
+\code{ee_as_thumbnail} only is possible export one-band (G) or three-band
+(RGB) images. Several parameters can be passed on to control color,
+intensity, the maximum and minimum values, etc. The below table provides
+all the parameters that admit \code{ee_as_thumbnail}.
 
 \tabular{lll}{
 \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
@@ -83,9 +80,6 @@ number or list of three numbers, one for each band \cr
 (0.0 is fully transparent and 1.0 is fully opaque) \tab
 number \cr
 }
-
-Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for
-getting the CRS of an Earth Engine Image.
 }
 \examples{
 \dontrun{
