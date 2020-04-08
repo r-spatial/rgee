@@ -1,3 +1,7 @@
+# rgee 0.3.9
+- ee_date functions upgraded
+- Documentation enhanced
+- Several bug fixed
 # rgee 0.3.8
 - ee_as_sf support the download of large tables
 - Several bug fixed

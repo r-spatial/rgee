@@ -25,6 +25,7 @@ Get the date of a EE ImageCollection
 Engine glossary} for more information.
 }
 \examples{
+\dontrun{
 library(rgee)
 library(sf)
 
@@ -39,5 +40,6 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
   filterBounds(nc)
 
-ee_get_ic_date(ee_s2) \%>\% View()
+ee_get_ic_date(ee_s2)
+}
 }

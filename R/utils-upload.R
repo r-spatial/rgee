@@ -262,8 +262,8 @@ ee_gcs_to_asset_image <- function(x,
   )
 
   # from R date to JS timestamp: time_start + time_end
-  time_start <- rdate_to_eedate(start_time, eeobject = FALSE)
-  time_end <- rdate_to_eedate(end_time, eeobject = FALSE)
+  time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
+  time_end <- rdate_to_eedate(end_time, timestamp = TRUE)
 
   # Adding bands
   bands <- list()

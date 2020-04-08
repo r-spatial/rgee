@@ -126,6 +126,7 @@ ee_get_img_date <- function(x, time_end = FALSE) {
 #' Engine glossary} for more information.
 #' @return A data.frame.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #'
@@ -140,7 +141,8 @@ ee_get_img_date <- function(x, time_end = FALSE) {
 #'   filterDate("2016-01-01", "2016-01-31")$
 #'   filterBounds(nc)
 #'
-#' ee_get_ic_date(ee_s2) %>% View()
+#' ee_get_ic_date(ee_s2)
+#' }
 #' @export
 ee_get_ic_date <- function(x, time_end = FALSE) {
   # Call Python module
