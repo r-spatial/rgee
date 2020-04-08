@@ -20,7 +20,7 @@ Monitoring Earth Engine task progress
 \examples{
 \dontrun{
 library(rgee)
-ee_initialize()
+ee_Initialize()
 ee_monitoring(eeTaskList = TRUE)
 }
 }

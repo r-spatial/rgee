@@ -65,14 +65,14 @@ ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   sf_as_ee()
 
 amk_fc <- ee$FeatureCollection(
-  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+  list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 )
 
 task_vector <- ee_table_to_gcs(
     collection = amk_fc,
     bucket = "rgee_dev",
     fileFormat = "SHP",
-    fileNamePrefix = "geom_Amarakaeri"
+    fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
 )
 task_vector$start()
 ee_monitoring(task_vector) # optional

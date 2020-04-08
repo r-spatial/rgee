@@ -78,7 +78,8 @@ task_img <- ee_image_to_gcs(
     image = mean_l5_Amarakaeri,
     bucket = "rgee_dev",
     fileFormat = "GEO_TIFF",
-    fileNamePrefix = "my_image"
+    region = ee_ROI$geometry(),
+    fileNamePrefix = paste0("my_image", Sys.time())
 )
 
 task_img$start()

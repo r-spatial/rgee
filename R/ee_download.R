@@ -95,7 +95,8 @@
 #'   image = mean_l5_Amarakaeri,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
-#'   fileNamePrefix = "my_image"
+#'   region = ee_ROI$geometry(),
+#'   fileNamePrefix = paste0("my_image", Sys.time())
 #' )
 #'
 #' task_img$start()
@@ -235,10 +236,11 @@ ee_image_to_drive <- function(image,
 #'
 #' # Move results from Earth Engine to Drive
 #' task_img <- ee_image_to_gcs(
-#'     image = mean_l5_Amarakaeri,
-#'     bucket = "rgee_dev",
-#'     fileFormat = "GEO_TIFF",
-#'     fileNamePrefix = "my_image"
+#'   image = mean_l5_Amarakaeri,
+#'   bucket = "rgee_dev",
+#'   fileFormat = "GEO_TIFF",
+#'   region = ee_ROI$geometry(),
+#'   fileNamePrefix = paste0("my_image", Sys.time())
 #' )
 #'
 #' task_img$start()
@@ -370,7 +372,8 @@ ee_image_to_gcs <- function(image,
 #' task_img <- ee_image_to_asset(
 #'   image = mean_l5_Amarakaeri,
 #'   assetId = assetid,
-#'   scale = 500
+#'   scale = 500,
+#'   region = ee_ROI$geometry()
 #' )
 #'
 #' task_img$start()
@@ -452,14 +455,14 @@ ee_image_to_asset <- function(image,
 #'   sf_as_ee()
 #'
 #' amk_fc <- ee$FeatureCollection(
-#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#'   list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 #' )
 #'
 #' task_vector <- ee_table_to_drive(
 #'   collection = amk_fc,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_JSON",
-#'   fileNamePrefix = "geom_Amarakaeri"
+#'   fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
 #' )
 #' task_vector$start()
 #' ee_monitoring(task_vector) # optional
@@ -528,14 +531,14 @@ ee_table_to_drive <- function(collection,
 #'   sf_as_ee()
 #'
 #' amk_fc <- ee$FeatureCollection(
-#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#'   list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 #' )
 #'
 #' task_vector <- ee_table_to_gcs(
 #'     collection = amk_fc,
 #'     bucket = "rgee_dev",
 #'     fileFormat = "SHP",
-#'     fileNamePrefix = "geom_Amarakaeri"
+#'     fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
 #' )
 #' task_vector$start()
 #' ee_monitoring(task_vector) # optional
@@ -596,7 +599,7 @@ ee_table_to_gcs <- function(collection,
 #'   sf_as_ee()
 #'
 #' amk_fc <- ee$FeatureCollection(
-#'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+#'   list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 #' )
 #'
 #' assetid <- paste0(ee_get_assethome(), '/geom_Amarakaeri')
@@ -702,7 +705,8 @@ ee_table_to_asset <- function(collection,
 #'   image = mean_l5_Amarakaeri,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
-#'   fileNamePrefix = "my_image"
+#'   region = ee_ROI$geometry(),
+#'   fileNamePrefix = paste0("my_image", Sys.time())
 #' )
 #'
 #' task_img$start()
@@ -905,7 +909,8 @@ ee_drive_to_local <- function(task,
 #'     image = mean_l5_Amarakaeri,
 #'     bucket = "rgee_dev",
 #'     fileFormat = "GEO_TIFF",
-#'     fileNamePrefix = "my_image"
+#'     region = ee_ROI$geometry(),
+#'     fileNamePrefix = paste0("my_image", Sys.time())
 #' )
 #'
 #' task_img$start()
@@ -1020,7 +1025,7 @@ ee_gcs_to_local <- function(task,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_initialize()
+#' ee_Initialize()
 #' ee_monitoring(eeTaskList = TRUE)
 #' }
 #' @export
