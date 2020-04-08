@@ -88,28 +88,37 @@ library(sf)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
-# get monthly precipitation from terraclimate
+# Define a Image or ImageCollection: Terraclimate
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01", "2001-01-01")$
+  filterDate("2001-01-01", "2002-01-01")$
   map(function(x) x$select("pr"))
 
-# extract values with polygons
-nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) \%>\%
-  st_transform(4326)
-ee_nc_rain <- ee_extract(
-  x = terraclimate, y = nc, fun = ee$Reducer$max(),
-  id = "FIPS"
+# Define a geometry
+nc <- st_read(
+  dsn = system.file("shape/nc.shp", package = "sf"),
+  stringsAsFactors = FALSE,
+  quiet = TRUE
 )
-ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
-plot(ee_nc_rain["X200006"],
+
+# Extract values
+ee_nc_rain <- ee_extract(
+  x = terraclimate,
+  y = nc,
+  scale = 250,
+  fun = ee$Reducer$max(),
+  sf = TRUE
+)
+
+# Spatial plot
+plot(ee_nc_rain["X200106"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
+dev.off()
 
-## plot time series
+# Temporal plot
 ee_nc <- ee_nc_rain
-st_geometry(ee_nc) <- NULL
-time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200001:200012)])
+time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200101:200112)])
 main <- sprintf("2001 Precipitation - \%s", ee_nc$NAME[1])
 plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
 points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)

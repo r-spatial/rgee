@@ -30,12 +30,12 @@ a wrapper around \code{rgee::ee$Initialize()}.
 \details{
 \code{ee_Initialize(...)} can also manage Google drive and Google
 Cloud Storage resources using the R packages googledrive and
-googlecloudStorageR, respectively. By default, rgee does not require them,
-these are only necessary for exporting and importing tasks.
+googlecloudStorageR, respectively. By default, rgee does not require
+them, these are only necessary for exporting and importing tasks.
 All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specified the
 the email argument all user credentials will be saved in a subdirectory
-called ndef.
+called \code{ndef}.
 }
 \examples{
 library(rgee)

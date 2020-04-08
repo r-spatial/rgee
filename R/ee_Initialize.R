@@ -21,12 +21,12 @@
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
-#' googlecloudStorageR, respectively. By default, rgee does not require them,
-#' these are only necessary for exporting and importing tasks.
+#' googlecloudStorageR, respectively. By default, rgee does not require
+#' them, these are only necessary for exporting and importing tasks.
 #' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specified the
 #' the email argument all user credentials will be saved in a subdirectory
-#' called ndef.
+#' called \code{ndef}.
 #' @seealso remove credential function: \cr
 #' \link[rgee]{ee_remove_credentials}
 #' @examples
@@ -245,7 +245,6 @@ ee_Initialize <- function(email = NULL,
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-#'
 ee_create_credentials_earthengine <- function(email_clean) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
@@ -280,7 +279,7 @@ ee_create_credentials_earthengine <- function(email_clean) {
   }
 }
 
-#' Create credentials Google Drive
+#' Create credentials - Google Drive
 #' @noRd
 ee_create_credentials_drive <- function(email) {
   if (!requireNamespace("googledrive", quietly = TRUE)) {
@@ -415,8 +414,6 @@ ee_users <- function() {
 
 #' Display credentials info of initialized user
 #'
-#' Display credentials info of initialized user
-#' a table.
 #' @examples
 #' \dontrun{
 #' library(rgee)

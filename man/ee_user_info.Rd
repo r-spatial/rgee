@@ -8,7 +8,6 @@ ee_user_info()
 }
 \description{
 Display credentials info of initialized user
-a table.
 }
 \examples{
 \dontrun{
