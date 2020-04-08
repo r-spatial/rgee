@@ -2,32 +2,36 @@
 % Please edit documentation in R/ee_extract.R
 \name{ee_extract}
 \alias{ee_extract}
-\title{Extract values from Earth Engine Images or ImageCollections objects}
+\title{Extract values from EE Images or ImageCollections objects}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL, ...)
+ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = FALSE, ...)
 }
 \arguments{
-\item{x}{ee$Image or ee$ImageCollection.}
+\item{x}{EE Image or ImageCollection.}
 
-\item{y}{ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.}
+\item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.}
 
-\item{fun}{ee$Reducer object. Function to summarize the values. See details.}
+\item{fun}{ee$Reducer object. Function to summarize the values. The function
+should take a single numeric vector as argument and return a single value.
+See details.}
 
-\item{scale}{A nominal scale in meters of the projection to work in.}
+\item{scale}{A nominal scale in meters of the Image projection to work in.
+By default 1000.}
 
-\item{id}{Character. Name of the column to be used as a geometry index.}
+\item{sf}{Logical. Should the extracted values be added to the data.frame of
+the sf object y? This only applies if y is a sf object.}
 
 \item{...}{reduceRegions additional parameters. See
-reticulate::ee_help(ee$Image()$reduceRegions) for more details.}
+ee_help(ee$Image()$reduceRegions) for more details.}
 }
 \description{
-Extract values from a Image or ImageCollection spatial object
-at the locations of a geometry object. You can use ee.Geometries,
-ee.Features, ee.FeatureCollection and sf objects.
+Extract values from a \code{ee$Image} or \code{ImageCollection} at the
+locations of a geometry object. You can use \code{ee$Geometry$*},
+\code{ee$Feature}, \code{ee$FeatureCollection} and sf objects. This function
+try to mimics how \link[raster]{extract} currently works.
 }
 \details{
-The fun arguments just admit Reducer objects that return one value.
-These are:
+In Google Earth Engine the reducer functions that return one value are:
 \itemize{
 \item  \strong{allNonZero}: Returns a Reducer that returns 1 if all of its
 inputs are non-zero, 0 otherwise. \cr
