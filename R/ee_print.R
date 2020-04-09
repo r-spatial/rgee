@@ -7,6 +7,7 @@
 #' FeatureCollection, Image or ImageCollection.
 #' @param clean Logical. If TRUE, the cache will be cleaned.
 #' @param max_display Set the max number of properties to display.
+#' @param quiet logical. Suppress info message
 #' @importFrom sf st_crs
 #' @examples
 #' library(rgee)
@@ -20,7 +21,7 @@
 #'   filterDate("2014-03-01", "2014-08-01")
 #' ee_print(eeobject, max_display = 0)
 #' @export
-ee_print <- function(eeobject, clean = FALSE, max_display = 0) {
+ee_print <- function(eeobject, clean = FALSE, max_display = 0, quiet = FALSE) {
   UseMethod("ee_print")
 }
 
@@ -192,80 +193,92 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
 
 #' @name ee_print
 #' @export
-ee_print.ee.image.Image <- function(eeobject, clean = FALSE, max_display = 0) {
+ee_print.ee.image.Image <- function(eeobject,
+                                    band,
+                                    clean = FALSE,
+                                    quiet = FALSE) {
+  # 1. Search if Image metadata exist in the /tempdir
+  band_exist <- FALSE
   past_eeobject <- NULL
-  fc_metadata <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
-  if (file.exists(fc_metadata) && !clean) {
-    load(fc_metadata)
-  }
-  if (!identical(past_eeobject, eeobject$serialize())) {
-    img <- eeobject$getInfo()
-    bands <- unlist(lapply(img$bands, "[[", "id"))
-    base_img <- img$bands[[1]]
-    scale <- eeobject$select(bands[1])$projection()$nominalScale()$getInfo()
-
-    name <- "Image"
-    img_nbands <- length(bands)
-    img_bands_names <- bands
-    img_epsg <- as.numeric(gsub("EPSG:", "", base_img$crs))
-    img_proj4string <- st_crs(img_epsg)$proj4string
-    img_geotransform <- paste0(base_img$crs_transform, collapse = " ")
-    img_scale <- scale
-    img_dimensions <- try(do.call(sprintf, as.list(c(
-      "%s x %s (nrow x ncol):",
-      base_img$dimensions
-    ))))
-    img_npixels <- format(base_img$dimensions[1] * base_img$dimensions[2],
-      big.mark = "'", small.interval = 3
+  metadata_file <- sprintf("%s/%s", tempdir(), deparse(substitute(eeobject)))
+  if (file.exists(metadata_file) && !clean) {
+    suppressWarnings(
+      try(load(metadata_file), silent = TRUE) # it will load the past_eeobject
     )
-    img_datatype <- toupper(base_img$data_type$precision)
-    img_properties_names <- names(img$properties)
-    img_properties_length <- length(img$properties)
+    band_exist <- ee_metadata$band_name
+  }
 
-    if (class(img_dimensions) == "try-error") {
-      img_dimensions <- "N/A"
-      img_properties_names <- "N/A"
-      img_properties_length <- 0
-      img_npixels <- "N/A"
+  ## Get band name
+  img_bandNames <- eeobject$bandNames()$getInfo()
+  if (missing(band)) {
+    band <- img_bandNames[1]
+  }
+
+  if (!identical(past_eeobject, eeobject$serialize()) & band_exist != band) {
+
+    # 2. Fetch and Return ee$Image metadata
+    img_bandNames <- eeobject$bandNames()$getInfo()
+    img_nband <- length(img_bandNames)
+    if (missing(band)) {
+      band <- img_bandNames[1]
     }
 
-    mtd <- list(
-      name = name,
-      img_nbands = img_nbands,
-      img_bands_names = img_bands_names,
-      img_epsg = img_epsg,
-      img_proj4string = img_proj4string,
-      img_geotransform = img_geotransform,
-      img_scale = img_scale,
-      img_dimensions = img_dimensions,
-      img_npixels = img_npixels,
-      img_datatype = img_datatype,
-      img_properties_names = img_properties_names,
-      img_properties_length = img_properties_length
-    )
+    # 3. Fetch and Return ee$Image band metadata
+    selected_img <- eeobject$select(band)
+    band_info <- selected_img$getInfo()
+    band_properties <- band_info$properties
+    band_metadata <- band_info$bands[[1]]
+    band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
+    band_metadata_geom <- ee_image_info(selected_img, quiet = TRUE)
+    band_metadata_nominal_scale <- selected_img %>%
+      ee$Image$projection() %>%
+      ee$Projection$nominalScale() %>%
+      ee$Projection$getInfo()
 
+    ee_metadata <- list(
+      name = "Image",
+      img_nbands = length(img_bandNames),
+      img_bands_names = paste0(img_bandNames, collapse = " "),
+      img_size = ee_humansize(band_metadata_geom$image_size * img_nband),
+      img_properties_names = names(band_properties),
+      img_properties_length = length(band_properties),
+      band_name = band,
+      band_epsg = band_metadata_epsg,
+      band_proj4string = st_crs(band_metadata_epsg)$proj4string,
+      band_geotransform = paste0(band_metadata$crs_transform, collapse = " "),
+      band_scale_x = band_metadata$crs_transform[1],
+      band_scale_y = band_metadata$crs_transform[5],
+      band_nominal_scale = band_metadata_nominal_scale,
+      band_dimensions = c(band_metadata_geom$nrow, band_metadata_geom$ncol),
+      band_datatype = toupper(band_metadata$data_type$precision),
+      band_pixel = band_metadata_geom$nrow * band_metadata_geom$ncol * img_nband
+    )
+    # 4. Save ee_metadata in /tmpdir
     past_eeobject <- eeobject$serialize()
-    save(mtd, past_eeobject, file = fc_metadata)
+    suppressWarnings(
+      try(save(ee_metadata, past_eeobject, file = metadata_file),silent = TRUE)
+    )
   }
-  cat(cli::rule(),"\n")
-  cat(sprintf("Class                      : %s \n", mtd$name))
-  cat(sprintf("Number of Bands            : %s \n", mtd$img_nbands))
-  cat(sprintf("Bands names                : %s \n", paste0(mtd$img_bands_names,
-    collapse = " "
-  )))
-  cat(sprintf("EPSG (SRID)                : %s \n", mtd$img_epsg))
-  cat(sprintf("proj4string                : %s \n", mtd$img_proj4string))
-  cat(sprintf("Geotransform               : [%s] \n", mtd$img_geotransform))
-  cat(sprintf("Scale (m)                  : %s \n", mtd$img_scale))
-  cat(sprintf("Dimensions                 : %s \n", mtd$img_dimensions))
-  cat(sprintf("Number of Pixels           : %s \n", mtd$img_npixels))
-  cat(sprintf("Data type                  : %s \n", mtd$img_datatype))
-  cat(sprintf("Image Properties           : %s \n", mtd$img_properties_length))
-  if (max_display != 0) {
-    cat(ee_create_table(mtd$img_properties_names, max_display))
+  if (isFALSE(quiet)) {
+    # 5. Display Results
+    cat(rule(right = bold(paste0("Earth Engine Image"))))
+    cat(blue$bold("\nImage Property:"))
+    cat("\n - Class                      :", "ee$Image")
+    cat("\n - Number of Bands            :", ee_metadata$img_nbands)
+    cat("\n - Bands names                :", ee_metadata$img_bands_names)
+    cat("\n - Approximate Image size     :", ee_metadata$img_size)
+    cat("\n - Number of Image Properties :", ee_metadata$img_properties_length)
+    cat(blue$bold(sprintf("\nBand Property (%s):", band)))
+    cat("\n - EPSG (SRID)                :", ee_metadata$band_epsg)
+    cat("\n - proj4string                :", ee_metadata$band_proj4string)
+    cat("\n - Geotransform               :", ee_metadata$band_geotransform)
+    cat("\n - Nominal scale (meters)     :", ee_metadata$band_nominal_scale)
+    cat("\n - Dimensions                 :", ee_metadata$band_dimensions)
+    cat("\n - Number of Pixels           :", ee_metadata$band_pixel)
+    cat("\n - Data type                  :", ee_metadata$band_datatype)
+    cat("\n", rule())
   }
-  cat(cli::rule(),"\n")
-  invisible(mtd)
+  invisible(ee_metadata)
 }
 
 #' @name ee_print
@@ -287,6 +300,8 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
       projection()$
       nominalScale()$
       getInfo()
+
+    geom_meta_img <- ee_image_info(eeobject, quiet = TRUE)
 
     name <- "ImageCollection"
     ic_nbands <- length(bands)

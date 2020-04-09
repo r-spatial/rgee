@@ -1,9 +1,9 @@
-#' Module to display Earth Engine (EE) spatial
-#' objects
+#' Module to display Earth Engine (EE) spatial objects
 #'
 #' Create interactive visualizations of spatial EE objects
 #' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
 #' through \code{\link[mapview]{mapview}}.
+#' @usage Map$*
 #' @importFrom jsonlite parse_json
 #' @format An object of class environment with the
 #' following functions:
@@ -32,7 +32,8 @@
 #'   \itemize{
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
 #'   }
-#'   \item \strong{centerObject(eeObject, zoom = NULL)}: Centers the
+#'   \item \strong{centerObject(eeObject, zoom = NULL,
+#'    maxError = ee$ErrorMargin(1))}: Centers the
 #'   map view on a given object. If no zoom level is provided, it will
 #'   be predicted according the bounds of the Earth Engine object specified.
 #'   \itemize{

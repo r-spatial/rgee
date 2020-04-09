@@ -105,7 +105,7 @@ ee_local_to_gcs <- function(x,
 #'
 #' # Method 1
 #' # 1. Pass the sf to a zip file
-#' zipfile <- create_shp_zip(nc)
+#' zipfile <- ee_create_shp_zip(nc)
 #'
 #' # 2. From local to gcs
 #' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
@@ -330,7 +330,7 @@ ee_gcs_to_asset_image <- function(x,
 #'
 #' # Method 1
 #' # 1. Pass the sf to a zip file
-#' zipfile <- create_shp_zip(nc)
+#' zipfile <- ee_create_shp_zip(nc)
 #'
 #' # 2. From local to gcs
 #' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
@@ -357,7 +357,7 @@ ee_gcs_to_asset_image <- function(x,
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-create_shp_zip <- function(x,
+ee_create_shp_zip <- function(x,
                            filename,
                            SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
   if (missing(filename)) {
