@@ -1,7 +1,6 @@
 #' Print and return metadata about Spatial Earth Engine Objects
 #'
-#' Print and return metadata about Spatial Earth Engine Objects. By default
-#' ee_print will create a table printing all the available metadata.
+#' Print and return metadata about Spatial Earth Engine Objects.
 #'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
@@ -20,15 +19,34 @@
 #' @importFrom digest digest
 #' @examples
 #' library(rgee)
-#'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
-#' eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+#' # Geometry
+#' geom <- ee$Geometry$Rectangle(-10,-10,10,10)
+#' Map$addLayer(geom)
+#' ee_print(geom)
+#'
+#' # Feature
+#' feature <- ee$Feature(geom, list(rgee = "ee_print", data = TRUE))
+#' ee_print(feature)
+#'
+#' # FeatureCollection
+#' featurecollection <- ee$FeatureCollection(feature)
+#' ee_print(featurecollection)
+#'
+#' # Image
+#' srtm <- ee$Image("CGIAR/SRTM90_V4")
+#' ee_print(srtm)
+#'
+#' srtm_clip <- ee$Image("CGIAR/SRTM90_V4")$clip(geom)
+#' ee_print(srtm_clip)
+#'
+#' # ImageCollection
+#' object <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 #'   filter(ee$Filter()$eq("WRS_PATH", 44))$
 #'   filter(ee$Filter()$eq("WRS_ROW", 34))$
-#'   filterDate("2014-03-01", "2014-08-01")
-#' ee_print(eeobject, max_display = 0)
+#'   filterDate("2014-03-01", "2014-08-01")$
+#'   aside(ee_print)
 #' @export
 ee_print <- function(eeobject, ...) {
   UseMethod("ee_print")

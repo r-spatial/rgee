@@ -8,8 +8,7 @@ test_that("simple ee_print test - ImageCollection", {
     filterDate("2014-03-01", "2014-08-01")
   ee_print_obj <- ee_print(
     eeobject = eeobject,
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "ImageCollection")
 })
@@ -31,8 +30,7 @@ test_that("simple ee_print test -  2 - ImageCollection", {
     filterDate("2011-01-01", "2011-12-31")
   ee_print_obj <- ee_print(
     eeobject = eeobject,
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "ImageCollection")
 })
@@ -42,8 +40,7 @@ test_that("simple ee_print test - Image", {
     first()
   ee_print_obj <- ee_print(
     eeobject = eeobject,
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "Image")
 })
@@ -55,8 +52,7 @@ test_that("simple ee_print test - FeatureCollection", {
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
     eeobject = ee_nc,
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
@@ -69,8 +65,7 @@ test_that("simple ee_print test - Feature", {
   ee_nc <- ee$Feature(sf_as_ee(nc)$first())
   ee_print_obj <- ee_print(
     eeobject = ee_nc,
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "Feature")
 })
@@ -84,8 +79,7 @@ test_that("simple ee_print test - Geometry", {
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
     eeobject = ee_nc$geometry(),
-    clean = TRUE,
-    max_display = 0
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "Geometry")
 })
@@ -98,8 +92,7 @@ test_that("simple ee_print test - FeatureCollection", {
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
     eeobject = ee_nc,
-    clean = TRUE,
-    max_display = 4
+    clean = TRUE
   )
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
