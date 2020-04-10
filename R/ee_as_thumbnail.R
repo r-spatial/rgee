@@ -403,7 +403,7 @@ read_png_as_stars <- function(x, band_name, mtx) {
 #' will be estimated.
 #' @param compression_ratio Numeric. Measurement of the relative reduction
 #' in size of data representation produced by a data compression algorithm
-#' (ignored if \code{getsize} is FALSE). By default is 12.
+#' (ignored if \code{getsize} is FALSE). By default is 20
 #' @param quiet logical. Suppress info message
 #' @return A list of parameters
 #' @examples
@@ -423,7 +423,7 @@ read_png_as_stars <- function(x, band_name, mtx) {
 #' @export
 ee_image_info <- function(image,
                           getsize = TRUE,
-                          compression_ratio = 12,
+                          compression_ratio = 20,
                           quiet = FALSE) {
   img_proj <- image$projection()$getInfo()
   geotransform <- unlist(img_proj$transform)
@@ -447,13 +447,14 @@ ee_image_info <- function(image,
     cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
   }
   if (isTRUE(getsize)) {
-    img_types <- unlist(image$bandTypes()$getInfo())
+    bandtypes_info <- image$bandTypes()$getInfo()
+    img_types <- unlist(bandtypes_info)
     band_types <- img_types[grepl("precision", names(img_types))]
     band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
     number_of_bytes <- total_pixel * band_precision / compression_ratio
-    image_size <- ee_humansize(sum(number_of_bytes))
+    image_size <- sum(number_of_bytes)
     if (!quiet) {
-      cat("Image Size       :", image_size, "\n")
+      cat("Image Size       :", ee_humansize(image_size), "\n")
     }
   }
   invisible(
