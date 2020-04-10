@@ -4,7 +4,7 @@
 \alias{ee_image_info}
 \title{Approximate size of an EE Image object}
 \usage{
-ee_image_info(image, getsize = TRUE, compression_ratio = 12, quiet = FALSE)
+ee_image_info(image, getsize = TRUE, compression_ratio = 20, quiet = FALSE)
 }
 \arguments{
 \item{image}{EE Image object.}
@@ -14,7 +14,7 @@ will be estimated.}
 
 \item{compression_ratio}{Numeric. Measurement of the relative reduction
 in size of data representation produced by a data compression algorithm
-(ignored if \code{getsize} is FALSE). By default is 12.}
+(ignored if \code{getsize} is FALSE). By default is 20}
 
 \item{quiet}{logical. Suppress info message}
 }

@@ -9,25 +9,36 @@
 \alias{ee_print.ee.imagecollection.ImageCollection}
 \title{Print and return metadata about Spatial Earth Engine Objects}
 \usage{
-ee_print(eeobject, clean = FALSE, max_display = 0)
+ee_print(eeobject, ...)
 
-\method{ee_print}{ee.geometry.Geometry}(eeobject, clean = FALSE, max_display = 0)
+\method{ee_print}{ee.geometry.Geometry}(eeobject, ..., clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.feature.Feature}(eeobject, clean = FALSE, max_display = 0)
+\method{ee_print}{ee.feature.Feature}(eeobject, ..., clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject, clean = FALSE, max_display = 0)
+\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject, ..., f_index = 0, clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.image.Image}(eeobject, clean = FALSE, max_display = 0)
+\method{ee_print}{ee.image.Image}(eeobject, ..., img_band, clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, clean = FALSE, max_display = 0)
+\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, ..., img_index = 0, img_band, clean = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
 
+\item{...}{ignored}
+
 \item{clean}{Logical. If TRUE, the cache will be cleaned.}
 
-\item{max_display}{Set the max number of properties to display.}
+\item{quiet}{logical. Suppress info message}
+
+\item{f_index}{Numeric. Index of the \code{ee$FeatureCollection} to fetch.
+Relevant just for \code{ee$FeatureCollection} objects.}
+
+\item{img_band}{Character. Band name of the \code{ee$Image} to fetch.
+Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
+
+\item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
+Relevant just for \code{ee$ImageCollection} objects.}
 }
 \description{
 Print and return metadata about Spatial Earth Engine Objects. By default
