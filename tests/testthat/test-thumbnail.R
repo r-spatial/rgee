@@ -38,13 +38,13 @@ test_that("ee_as_thumbnail min-max", {
   mysheds <- ee$Feature(sheds$first())$geometry()
   shed_dem <- ee_as_thumbnail(
     x = image,
-    region = mysheds,
+    region = mysheds$bounds(),
     vizparams = list(
       min = 0,
       max = 500
     )
   )
-  expect_equal(max(shed_dem[[1]]), 0.45009804, tolerance = .002)
+  expect_equal(max(shed_dem[[1]]), 0.4470588, tolerance = .002)
 })
 
 # RGB band -----------------------------------------------------------

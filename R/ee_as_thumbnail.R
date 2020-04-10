@@ -70,23 +70,22 @@
 #'   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
 #' )
 #'
-#' # DEM data -SRTM v4.0
+#' ## DEM data -SRTM v4.0
 #' image <- ee$Image("CGIAR/SRTM90_V4")
-#' region <- nc %>%
-#'   st_bbox() %>%
-#'   st_as_sfc() %>%
-#'   st_set_crs(4326) %>%
-#'   sf_as_ee() %>%
-#'   ee$FeatureCollection$geometry()
+#' world_region <- ee$Geometry$Rectangle(
+#'   coords = c(-180,-60,180,60),
+#'   proj = "EPSG:4326",
+#'   geodesic = FALSE
+#' )
 #'
-#' ## world
+#' ## world - elevation
 #' world_dem <- ee_as_thumbnail(
 #'   x = image,
+#'   region = world_region,
 #'   dimensions = 1024,
-#'   geodesic = FALSE,
-#'   evenOdd = TRUE,
 #'   vizparams = list(min = 0, max = 5000)
 #' )
+#'
 #' world_dem[world_dem <= 0] <- NA
 #' world_dem <- world_dem * 5000
 #' plot(
@@ -95,21 +94,31 @@
 #' )
 #'
 #' ## Arequipa-Peru
+#' arequipa_region <- nc %>%
+#'   st_bbox() %>%
+#'   st_as_sfc() %>%
+#'   st_set_crs(4326) %>%
+#'   sf_as_ee() %>%
+#'   ee$FeatureCollection$geometry()
+#'
 #' arequipa_dem <- ee_as_thumbnail(
 #'   x = image,
+#'   region = arequipa_region,
 #'   dimensions = 512,
-#'   region = region,
 #'   vizparams = list(min = 0, max = 5000)
 #' )
+#'
 #' arequipa_dem <- arequipa_dem * 5000
 #' plot(
 #'   x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
 #'   reset = FALSE, main = "SRTM - Arequipa"
 #' )
+#'
 #' suppressWarnings(plot(
 #'   x = nc, col = NA, border = "black", add = TRUE,
 #'   lwd = 1.5
 #' ))
+#' dev.off()
 #'
 #' ## LANDSAT 8
 #' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -120,19 +129,12 @@
 #' ## Teton Wilderness
 #' l8_img <- ee_as_thumbnail(
 #'   x = img,
+#'   region = img$geometry()$bounds(),
 #'   dimensions = 1024,
-#'   evenOdd = TRUE,
-#'   vizparams = list(
-#'     min = 0,
-#'     max = 5000,
-#'     gamma = 1.5
-#'   )
+#'   vizparams = list(min = 0, max = 5000, gamma = 1.5),
+#'   raster = TRUE
 #' )
-#' dev.off()
-#' l8_img %>%
-#'   as("Raster") %>%
-#'   `names<-`(c("R", "G", "B")) %>%
-#'   plotRGB(stretch = "lin")
+#' plotRGB(l8_img, stretch = "lin")
 #' }
 #' @export
 ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
@@ -212,7 +214,9 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   # Preparing parameters
   vizparams$dimensions <- dimensions
   vizparams$region <- region
-  vizparams$format <- "png"
+  if (is.null(vizparams$format)) {
+    vizparams$format <- "png"
+  }
 
   # Creating thumbnail as either jpg or png
   if (!quiet) {
@@ -243,6 +247,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     ),
     error = function(e) stop(error_message_I)
   )
+
+  # matrix to array
+  if (length(dim(raw_image)) == 2) {
+    dim(raw_image) <- c(dim(raw_image), 1)
+  }
 
   # It is a RGB or gray image?
   if (dim(raw_image)[3] == 1) {
