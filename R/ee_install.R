@@ -83,7 +83,6 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 
 #' Set the Python environment to be used on rgee
 #'
-#'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
 #' @param python_env The name of, or path to, a Python virtual environment.
 #' @param install if TRUE, rgee will save the Python interpreter path and

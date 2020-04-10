@@ -191,7 +191,7 @@ sf_as_ee <- function(x,
     }
   } else if (via == 'gcs') {
     shp_dir <- sprintf("%s.shp", tempfile())
-    geozip_dir <- create_shp_zip(eex, shp_dir)
+    geozip_dir <- ee_create_shp_zip(eex, shp_dir)
     gcs_filename <- ee_local_to_gcs(
       x = geozip_dir,
       bucket = bucket,
