@@ -47,6 +47,7 @@ Imports:
     methods,
     rstudioapi (>= 0.7),
     dplyr,
+    digest,
     rgdal,
     magrittr,
     leaflet (>= 2.0.2),

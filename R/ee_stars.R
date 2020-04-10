@@ -692,38 +692,42 @@ ee_clean_container <- function(name = "rgee_backup",
 #' @noRd
 ee_fix_offset <- function(image, sf_region) {
   img_proj <- image$projection()$getInfo()
-  rectangle_coord <- st_coordinates(sf_region)
-  # image spatial parameters
-  img_x_scale <- img_proj$transform[1][[1]]
-  img_x_offset <- img_proj$transform[3][[1]]
-  img_y_scale <- img_proj$transform[5][[1]]
-  img_y_offset <- img_proj$transform[6][[1]]
-  # X offset fixed
-  sf_x_min <- min(rectangle_coord[, "X"])
-  sf_x_max <- max(rectangle_coord[, "X"])
-  x_npixels_init <- floor(abs((sf_x_min - img_x_offset) / img_x_scale))
-  x_npixels_last <- ceiling(
-    round(
-      x = abs((sf_x_max - img_x_offset) / img_x_scale),
-      digits = 6
+  if (all(img_proj$transform %in% c(1, 0, 0, 0, 1, 0))) {
+    st_bbox(sf_region)
+  } else {
+    rectangle_coord <- st_coordinates(sf_region)
+    # image spatial parameters
+    img_x_scale <- img_proj$transform[1][[1]]
+    img_x_offset <- img_proj$transform[3][[1]]
+    img_y_scale <- img_proj$transform[5][[1]]
+    img_y_offset <- img_proj$transform[6][[1]]
+    # X offset fixed
+    sf_x_min <- min(rectangle_coord[, "X"])
+    sf_x_max <- max(rectangle_coord[, "X"])
+    x_npixels_init <- floor(abs((sf_x_min - img_x_offset) / img_x_scale))
+    x_npixels_last <- ceiling(
+      round(
+        x = abs((sf_x_max - img_x_offset) / img_x_scale),
+        digits = 6
+      )
     )
-  )
-  x_init_crop_img <- img_x_offset + x_npixels_init * img_x_scale
-  x_last_crop_img <- img_x_offset + x_npixels_last * img_x_scale
+    x_init_crop_img <- img_x_offset + x_npixels_init * img_x_scale
+    x_last_crop_img <- img_x_offset + x_npixels_last * img_x_scale
 
-  # Y offset fixed
-  sf_y_min <- min(rectangle_coord[, "Y"])
-  sf_y_max <- max(rectangle_coord[, "Y"])
-  y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset) / img_y_scale))
-  y_npixels_last <- ceiling(
-    round(
-      x = abs((sf_y_min - img_y_offset) / img_x_scale),
-      digits = 6
+    # Y offset fixed
+    sf_y_min <- min(rectangle_coord[, "Y"])
+    sf_y_max <- max(rectangle_coord[, "Y"])
+    y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset) / img_y_scale))
+    y_npixels_last <- ceiling(
+      round(
+        x = abs((sf_y_min - img_y_offset) / img_x_scale),
+        digits = 6
+      )
     )
-  )
-  y_init_crop_img <- img_y_offset + y_npixels_init * img_y_scale
-  y_last_crop_img <- img_y_offset + y_npixels_last * img_y_scale
-  c(x_init_crop_img, y_init_crop_img, x_last_crop_img, y_last_crop_img)
+    y_init_crop_img <- img_y_offset + y_npixels_init * img_y_scale
+    y_last_crop_img <- img_y_offset + y_npixels_last * img_y_scale
+    c(x_init_crop_img, y_init_crop_img, x_last_crop_img, y_last_crop_img)
+  }
 }
 
 ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {

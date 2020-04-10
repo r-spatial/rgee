@@ -9,8 +9,7 @@ ee_as_thumbnail(
   region,
   dimensions,
   vizparams = NULL,
-  geodesic = NULL,
-  evenOdd = NULL,
+  raster = FALSE,
   quiet = FALSE
 )
 }
@@ -19,7 +18,7 @@ ee_as_thumbnail(
 
 \item{region}{EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
 the region to export.The CRS needs to be the same as the \code{x} argument,
-otherwise, it will be forced. If not specified, image bounds will be taken.}
+otherwise, it will be forced.}
 
 \item{dimensions}{Numeric vector of length 2. Thumbnail dimensions in pixel
 units. If a single integer is provided, it defines the size of the
@@ -29,19 +28,8 @@ proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
 \item{vizparams}{A list that contains the visualization parameters.
 See details.}
 
-\item{geodesic}{Whether line segments of region should be interpreted as
-spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If not specified, it
-will take it from the geometry (region argument) defaults to TRUE if the CRS
-is geographic (including the default EPSG:4326), or to FALSE if the CRS is
-projected.}
-
-\item{evenOdd}{If TRUE, polygon interiors will be determined by
-the even/odd rule, where a point is inside if it crosses an odd
-number of edges to reach a point at infinity. Otherwise polygons
-use the left-inside rule, where interiors are on the left side
-of the shell's edges when walking the vertices in the given order.
-If unspecified in the geometry (region argument) defaults to TRUE.}
+\item{raster}{Logical. Should the thumbnail image be saved as a
+raster object?}
 
 \item{quiet}{logical; suppress info messages.}
 }

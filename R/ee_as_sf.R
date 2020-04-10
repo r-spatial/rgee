@@ -261,15 +261,7 @@ ee_as_sf <- function(x,
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
 ee_fc_to_sf_getInfo <- function(x_fc, dsn, overwrite = TRUE) {
-  x_list <- tryCatch(
-    expr = x_fc$getInfo(),
-    error = function(e) stop(
-      "Collection query aborted",
-      " after accumulating over 5000 elements.",
-      " Specify higher maxFeatures value if you",
-      " intend to export a large area via getInfo."
-    )
-  )
+  x_list <- x_fc$getInfo()
   class(x_list) <- "geo_list"
   x_sf <- geojson_sf(x_list, stringsAsFactors = FALSE)
   if (missing(dsn)) {
