@@ -3,7 +3,6 @@
 #' Create interactive visualizations of spatial EE objects
 #' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
 #' through \code{\link[mapview]{mapview}}.
-#' @usage Map$*
 #' @importFrom jsonlite parse_json
 #' @format An object of class environment with the
 #' following functions:
