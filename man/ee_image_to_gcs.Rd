@@ -9,6 +9,7 @@ ee_image_to_gcs(
   description = "myExportImageTask",
   bucket = NULL,
   fileNamePrefix = NULL,
+  timePrefix = TRUE,
   dimensions = NULL,
   region = NULL,
   scale = NULL,
@@ -31,6 +32,8 @@ ee_image_to_gcs(
 
 \item{fileNamePrefix}{Cloud Storage object name prefix for the export.
 Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{dimensions}{The dimensions of the exported image. Takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT"
@@ -137,14 +140,14 @@ task_img <- ee_image_to_gcs(
   bucket = "rgee_dev",
   fileFormat = "GEO_TIFF",
   region = ee_ROI$geometry(),
-  fileNamePrefix = paste0("my_image", Sys.time())
+  fileNamePrefix = "my_image"
 )
 
 task_img$start()
 ee_monitoring(task_img)
 
 # Move results from Drive to local
-img <- ee_gcs_to_local(task = task_img)
+ee_gcs_to_local(task = task_img)
 plot(img)
 }
 }

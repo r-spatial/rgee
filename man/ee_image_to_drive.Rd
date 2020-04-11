@@ -9,6 +9,7 @@ ee_image_to_drive(
   description = "myExportImageTask",
   folder = "rgee_backup",
   fileNamePrefix = NULL,
+  timePrefix = TRUE,
   dimensions = NULL,
   region = NULL,
   scale = NULL,
@@ -32,6 +33,8 @@ exported into. Defaults to the folder rgee-backup.}
 
 \item{fileNamePrefix}{The Google Drive filename for the export. Defaults to
 the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{dimensions}{The dimensions of the exported image. Takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
@@ -133,17 +136,15 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 # Move results from Earth Engine to Drive
 task_img <- ee_image_to_drive(
   image = mean_l5_Amarakaeri,
-  folder = "Amarakaeri",
   fileFormat = "GEO_TIFF",
   region = ee_ROI$geometry(),
-  fileNamePrefix = paste0("my_image", Sys.time())
+  fileNamePrefix = "my_image"
 )
 
 task_img$start()
 ee_monitoring(task_img)
 
 # Move results from Drive to local
-img <- ee_drive_to_local(task = task_img)
-plot(img)
+ee_drive_to_local(task = task_img)
 }
 }

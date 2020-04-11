@@ -87,6 +87,5 @@ ee_monitoring(task_img)
 
 # Move results from Drive to local
 img <- ee_gcs_to_local(task = task_img)
-plot(img)
 }
 }

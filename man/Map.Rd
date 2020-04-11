@@ -46,7 +46,7 @@ requested result projection or geodesic state.
 }
 }
 \usage{
-Map$*
+Map
 }
 \description{
 Create interactive visualizations of spatial EE objects

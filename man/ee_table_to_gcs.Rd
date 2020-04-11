@@ -9,6 +9,7 @@ ee_table_to_gcs(
   description = "myExportTableTask",
   bucket = NULL,
   fileNamePrefix = NULL,
+  timePrefix = TRUE,
   fileFormat = NULL,
   selectors = NULL
 )
@@ -22,6 +23,8 @@ ee_table_to_gcs(
 
 \item{fileNamePrefix}{Cloud Storage object name prefix
 for the export. Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{fileFormat}{The output format: "CSV" (default),
 "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".}
@@ -72,7 +75,7 @@ task_vector <- ee_table_to_gcs(
     collection = amk_fc,
     bucket = "rgee_dev",
     fileFormat = "SHP",
-    fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
+    fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()
 ee_monitoring(task_vector) # optional

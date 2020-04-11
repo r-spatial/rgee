@@ -9,6 +9,7 @@ ee_table_to_drive(
   description = "myExportTableTask",
   folder = NULL,
   fileNamePrefix = NULL,
+  timePrefix = TRUE,
   fileFormat = NULL,
   selectors = NULL
 )
@@ -23,6 +24,8 @@ account to export into. Defaults to the root of the drive.}
 
 \item{fileNamePrefix}{The Google Drive filename for the
 export. Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{fileFormat}{The output format: "CSV" (default), "GeoJSON",
 "KML", "KMZ", "SHP", or "TFRecord".}
@@ -72,13 +75,11 @@ amk_fc <- ee$FeatureCollection(
 
 task_vector <- ee_table_to_drive(
   collection = amk_fc,
-  folder = "Amarakaeri",
   fileFormat = "GEO_JSON",
-  fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
+  fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()
 ee_monitoring(task_vector) # optional
-amk_geom <- ee_drive_to_local(task = task_vector)
-plot(amk_geom$geometry, border = "red", lwd = 10)
+ee_drive_to_local(task = task_vector)
 }
 }
