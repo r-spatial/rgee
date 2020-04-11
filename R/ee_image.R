@@ -300,7 +300,7 @@ ee_image_local <- function(image,
   prj_image <- image$projection()$getInfo()
   img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
 
-  sf_region <- ee_table_as_sf(x = region)$geometry
+  sf_region <- ee_as_sf(x = region)$geometry
   region_crs <- st_crs(sf_region)$epsg
 
   if (isFALSE(region_crs == img_crs)) {
@@ -479,7 +479,7 @@ ee_image_local <- function(image,
       attr_dim <- attr(image_stars, "dimensions")
 
       ## Set Geotransform and dimensions to local image
-      sf_region_batch <- ee_table_as_sf(feature)
+      sf_region_batch <- ee_as_sf(feature)
       init_offset <- rgee:::ee_fix_offset(image, sf_region_batch)
       min_long <- init_offset[1]
       max_lat <- init_offset[2]

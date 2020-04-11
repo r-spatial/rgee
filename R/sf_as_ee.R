@@ -166,7 +166,7 @@ sf_as_ee <- function(x,
 
     # Creating description name
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
-    ee_description <- paste0("ee_table_as_sf_task_", time_format)
+    ee_description <- paste0("ee_as_sf_task_", time_format)
 
     # Verify if assetId exist and the EE asset path
     if (is.null(assetId)) {

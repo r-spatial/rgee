@@ -11,8 +11,9 @@
 #' to write?.
 #' @param via Character. Method to fetch data about the object. Multiple
 #' options supported. See details.
-#' @param container Name of the folder ('drive') or bucket ('gcs') to be
-#' exported into (ignored if \code{via} is not defined as "drive" or "gcs").
+#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
+#' to be exported into (ignored if \code{via} is not defined as "drive" or
+#' "gcs").
 #' @param selectors The list of properties to include in
 #' the output, as a list of strings or a comma-separated
 #' string. By default, all properties are included.
