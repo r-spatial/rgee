@@ -148,7 +148,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     stop("region argument is not an ee$geometry$Geometry")
   }
 
-  sf_region <- ee_as_sf(x = region)$geometry
+  sf_region <- ee_table_as_sf(x = region)$geometry
   ## region is a ee$Geometry$Rectangle?
   if (any(class(region) %in% "ee.geometry.Geometry")) {
     npoints <- nrow(st_coordinates(sf_region))
@@ -388,7 +388,7 @@ ee_image_info <- function(image,
                           quiet = FALSE) {
   img_proj <- image$projection()$getInfo()
   geotransform <- unlist(img_proj$transform)
-  img_totalarea <- ee_as_sf(image$geometry())
+  img_totalarea <- ee_table_as_sf(image$geometry())
   bbox <- img_totalarea %>%
     st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
     st_bbox() %>%
