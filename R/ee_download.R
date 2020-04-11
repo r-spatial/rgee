@@ -9,6 +9,7 @@
 #' exported into. Defaults to the folder rgee-backup.
 #' @param fileNamePrefix The Google Drive filename for the export. Defaults to
 #' the name of the task.
+#' @param timePrefix Add current date and time as a prefix to files to export.
 #' @param dimensions The dimensions of the exported image. Takes either a
 #' single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
 #' WIDTH and HEIGHT are each positive integers.
@@ -93,24 +94,23 @@
 #' # Move results from Earth Engine to Drive
 #' task_img <- ee_image_to_drive(
 #'   image = mean_l5_Amarakaeri,
-#'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI$geometry(),
-#'   fileNamePrefix = paste0("my_image", Sys.time())
+#'   fileNamePrefix = "my_image"
 #' )
 #'
 #' task_img$start()
 #' ee_monitoring(task_img)
 #'
 #' # Move results from Drive to local
-#' img <- ee_drive_to_local(task = task_img)
-#' plot(img)
+#' ee_drive_to_local(task = task_img)
 #' }
 #' @export
 ee_image_to_drive <- function(image,
                               description = "myExportImageTask",
                               folder = "rgee_backup",
                               fileNamePrefix = NULL,
+                              timePrefix = TRUE,
                               dimensions = NULL,
                               region = NULL,
                               scale = NULL,
@@ -122,6 +122,14 @@ ee_image_to_drive <- function(image,
                               skipEmptyTiles = NULL,
                               fileFormat = NULL,
                               formatOptions = NULL) {
+  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  if (isTRUE(timePrefix)) {
+    if (is.null(fileNamePrefix)) {
+      fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
+    } else {
+      fileNamePrefix <- sprintf("%s_%s", fileNamePrefix, timePrefix_chr)
+    }
+  }
   ee$batch$Export$image$toDrive(
     image = image,
     description = description,
@@ -152,6 +160,7 @@ ee_image_to_drive <- function(image,
 #' @param bucket The name of a Cloud Storage bucket for the export.
 #' @param fileNamePrefix Cloud Storage object name prefix for the export.
 #' Defaults to the name of the task.
+#' @param timePrefix Add current date and time as a prefix to files to export.
 #' @param dimensions The dimensions of the exported image. Takes either a
 #' single positive integer as the maximum dimension or "WIDTHxHEIGHT"
 #' where WIDTH and HEIGHT are each positive integers.
@@ -240,14 +249,14 @@ ee_image_to_drive <- function(image,
 #'   bucket = "rgee_dev",
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI$geometry(),
-#'   fileNamePrefix = paste0("my_image", Sys.time())
+#'   fileNamePrefix = "my_image"
 #' )
 #'
 #' task_img$start()
 #' ee_monitoring(task_img)
 #'
 #' # Move results from Drive to local
-#' img <- ee_gcs_to_local(task = task_img)
+#' ee_gcs_to_local(task = task_img)
 #' plot(img)
 #' }
 #' @export
@@ -255,6 +264,7 @@ ee_image_to_gcs <- function(image,
                             description = "myExportImageTask",
                             bucket = NULL,
                             fileNamePrefix = NULL,
+                            timePrefix = TRUE,
                             dimensions = NULL,
                             region = NULL,
                             scale = NULL,
@@ -266,6 +276,14 @@ ee_image_to_gcs <- function(image,
                             skipEmptyTiles = NULL,
                             fileFormat = NULL,
                             formatOptions = NULL) {
+  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  if (isTRUE(timePrefix)) {
+    if (is.null(fileNamePrefix)) {
+      fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
+    } else {
+      fileNamePrefix <- sprintf("%s_%s", fileNamePrefix, timePrefix_chr)
+    }
+  }
   ee$batch$Export$image$toCloudStorage(
     image = image,
     description = description,
@@ -419,6 +437,7 @@ ee_image_to_asset <- function(image,
 #' account to export into. Defaults to the root of the drive.
 #' @param fileNamePrefix The Google Drive filename for the
 #' export. Defaults to the name of the task.
+#' @param timePrefix Add current date and time as a prefix to files to export.
 #' @param fileFormat The output format: "CSV" (default), "GeoJSON",
 #' "KML", "KMZ", "SHP", or "TFRecord".
 #' @param selectors The list of properties to include in the output,
@@ -460,22 +479,29 @@ ee_image_to_asset <- function(image,
 #'
 #' task_vector <- ee_table_to_drive(
 #'   collection = amk_fc,
-#'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_JSON",
-#'   fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
+#'   fileNamePrefix = "geom_Amarakaeri"
 #' )
 #' task_vector$start()
 #' ee_monitoring(task_vector) # optional
-#' amk_geom <- ee_drive_to_local(task = task_vector)
-#' plot(amk_geom$geometry, border = "red", lwd = 10)
+#' ee_drive_to_local(task = task_vector)
 #' }
 #' @export
 ee_table_to_drive <- function(collection,
                               description = "myExportTableTask",
                               folder = NULL,
                               fileNamePrefix = NULL,
+                              timePrefix = TRUE,
                               fileFormat = NULL,
                               selectors = NULL) {
+  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  if (isTRUE(timePrefix)) {
+    if (is.null(fileNamePrefix)) {
+      fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
+    } else {
+      fileNamePrefix <- sprintf("%s_%s", fileNamePrefix, timePrefix_chr)
+    }
+  }
   ee$batch$Export$table$toDrive(
     collection = collection,
     description = description,
@@ -497,6 +523,7 @@ ee_table_to_drive <- function(collection,
 #' @param bucket The name of a Cloud Storage bucket for the export.
 #' @param fileNamePrefix Cloud Storage object name prefix
 #' for the export. Defaults to the name of the task.
+#' @param timePrefix Add current date and time as a prefix to files to export.
 #' @param fileFormat The output format: "CSV" (default),
 #' "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".
 #' @param selectors The list of properties to include in the output,
@@ -538,7 +565,7 @@ ee_table_to_drive <- function(collection,
 #'     collection = amk_fc,
 #'     bucket = "rgee_dev",
 #'     fileFormat = "SHP",
-#'     fileNamePrefix = paste0("geom_Amarakaeri", Sys.time())
+#'     fileNamePrefix = "geom_Amarakaeri"
 #' )
 #' task_vector$start()
 #' ee_monitoring(task_vector) # optional
@@ -550,8 +577,17 @@ ee_table_to_gcs <- function(collection,
                             description = "myExportTableTask",
                             bucket = NULL,
                             fileNamePrefix = NULL,
+                            timePrefix = TRUE,
                             fileFormat = NULL,
                             selectors = NULL) {
+  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  if (isTRUE(timePrefix)) {
+    if (is.null(fileNamePrefix)) {
+      fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
+    } else {
+      fileNamePrefix <- sprintf("%s_%s", fileNamePrefix, timePrefix_chr)
+    }
+  }
   ee$batch$Export$table$toCloudStorage(
     collection = collection,
     description = description,
@@ -714,7 +750,6 @@ ee_table_to_asset <- function(collection,
 #'
 #' # Move results from Drive to local
 #' img <- ee_drive_to_local(task = task_img)
-#' plot(img)
 #' }
 #' @export
 ee_drive_to_local <- function(task,
@@ -836,7 +871,8 @@ ee_drive_to_local <- function(task,
         verbose = !quiet
       )
     }
-    read_filenames(filenames_local, fileformat, quiet = quiet)
+    filenames_local
+    #read_filenames(filenames_local, fileformat, quiet = quiet)
   }
 }
 
@@ -918,7 +954,6 @@ ee_drive_to_local <- function(task,
 #'
 #' # Move results from Drive to local
 #' img <- ee_gcs_to_local(task = task_img)
-#' plot(img)
 #' }
 #' @export
 ee_gcs_to_local <- function(task,
@@ -1010,128 +1045,7 @@ ee_gcs_to_local <- function(task,
         )
       }
     }
-    read_filenames(filenames_local, fileformat, quiet = quiet)
+    # read_filenames(filenames_local, fileformat, quiet = quiet)
+    filenames_local
   }
-}
-
-#' Monitoring Earth Engine task progress
-#'
-#' @param task List generated after an created an EE task.
-#' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
-#' listed.
-#' @param quiet logical. Suppress info message
-#'
-#' @export
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#' ee_monitoring(eeTaskList = TRUE)
-#' }
-#' @export
-ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
-  if (missing(task)) {
-    task <- ee$batch$Task$list()[[1]]
-  }
-  if (eeTaskList) {
-    if (!quiet) {
-      cat("EETaskList:\n")
-    }
-    task_list <- mapply(function(x) {
-      sprintf("<Task %s: %s (%s)>", x$task_type, x$config, x$state)
-    }, ee$batch$Task$list())
-    if (!quiet) {
-      cat("", paste0(task_list, "\n"))
-      cat("\n")
-    }
-  }
-  while (task$active() & task$state != "CANCEL_REQUESTED") {
-    if (!quiet) {
-      print(sprintf("Polling for task (id: %s).", task$id))
-    }
-    Sys.sleep(5)
-  }
-  if (!quiet) {
-    print(sprintf("State: %s", task$status()$state))
-  }
-  if (!is.null(task$status()$error_message)) {
-    print(task$status()$error_message)
-  }
-}
-
-#' Create a download file according to its format
-#' @noRd
-read_filenames <- function(filename, fileformat, quiet) {
-  if (fileformat == "GEO_TIFF") {
-    if (length(filename) == 1) {
-      read_stars(filename, proxy = TRUE, quiet = TRUE)
-    } else {
-      strs_list <- list()
-      for (i in seq_along(filename)) {
-        strs_list[[i]] <- read_stars(filename[[i]], proxy = TRUE, quiet = TRUE)
-      }
-      strs_list
-    }
-  } else if (fileformat %in% "SHP") {
-    st_read(
-      dsn = filename[grep("\\.shp$", filename)],
-      stringsAsFactors = FALSE,
-      quiet = TRUE
-    )
-  } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
-    st_read(
-      dsn = filename,
-      stringsAsFactors = FALSE,
-      quiet = TRUE
-    )
-  } else {
-    if (!quiet) {
-      print(sprintf(
-        "Download completed:%s (%s)",
-        filename,
-        fileformat
-      ))
-    }
-    invisible(filename)
-  }
-}
-
-#' Sort google drives files
-#' @noRd
-sort_drive_files <- function(drive_files, fileformat) {
-  if (fileformat == "SHP") {
-    shp_file <- grep(
-      pattern = "(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)",
-      x = drive_files[["name"]]
-    )
-    selected_drive_files <- drive_files[shp_file, ]
-    drive_files_sort <- selected_drive_files[order(selected_drive_files$name), ]
-  } else {
-    drive_files_sort <- drive_files[order(drive_files[["name"]]), ]
-  }
-  drive_files_sort
-}
-
-#' Sort local files
-#' @noRd
-ee_sort_localfiles <- function(filenames, fileformat) {
-  if (fileformat == "SHP") {
-    shp_file <- grep("(\\.prj)|(\\.dbf)|(\\.shp)|(\\.shx)", filenames)
-    shp_file <- filenames[shp_file]
-    shp_file[order(shp_file)]
-  } else {
-    filenames[order(filenames)]
-  }
-}
-
-
-#' GCS or Google Drive Exist credentials?
-#' @noRd
-ee_exist_credentials <- function() {
-  ee_path <- path.expand("~/.config/earthengine")
-  read.table(
-    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
-    header = TRUE,
-    stringsAsFactors = FALSE
-  )
 }
