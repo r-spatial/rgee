@@ -388,7 +388,10 @@ ee_image_info <- function(image,
                           quiet = FALSE) {
   img_proj <- image$projection()$getInfo()
   geotransform <- unlist(img_proj$transform)
-  img_totalarea <- ee_as_sf(image$geometry())
+  img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
+  suppressWarnings(
+    st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
+  )
   bbox <- img_totalarea %>%
     st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
     st_bbox() %>%

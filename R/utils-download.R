@@ -207,46 +207,68 @@ ee_exist_credentials <- function() {
 
 #' Fix offset of stars object
 #' @noRd
-ee_fix_offset <- function(image, sf_region) {
-  img_proj <- image$projection()$getInfo()
-  if (all(img_proj$transform %in% c(1, 0, 0, 0, 1, 0))) {
+ee_fix_offset <- function(img_transform, sf_region) {
+  if (all(img_transform %in% c(1, 0, 0, 0, 1, 0))) {
     st_bbox(sf_region)
   } else {
     rectangle_coord <- st_coordinates(sf_region)
     # image spatial parameters
-    img_x_scale <- img_proj$transform[1][[1]]
-    img_x_offset <- img_proj$transform[3][[1]]
-    img_y_scale <- img_proj$transform[5][[1]]
-    img_y_offset <- img_proj$transform[6][[1]]
+    img_x_scale <- img_transform[1][[1]]
+    img_x_offset <- img_transform[3][[1]]
+    img_y_scale <- img_transform[5][[1]]
+    img_y_offset <- img_transform[6][[1]]
     # X offset fixed
     sf_x_min <- min(rectangle_coord[, "X"])
+    x_min <- ee_fix_x_coord(img_x_offset, sf_x_min, img_x_scale, option = 'min')
     sf_x_max <- max(rectangle_coord[, "X"])
-    x_npixels_init <- floor(abs((sf_x_min - img_x_offset) / img_x_scale))
-    x_npixels_last <- ceiling(
-      round(
-        x = abs((sf_x_max - img_x_offset) / img_x_scale),
-        digits = 6
-      )
-    )
-    x_init_crop_img <- img_x_offset + x_npixels_init * img_x_scale
-    x_last_crop_img <- img_x_offset + x_npixels_last * img_x_scale
+    x_max <- ee_fix_x_coord(img_x_offset, sf_x_max, img_x_scale, option = 'max')
 
     # Y offset fixed
     sf_y_min <- min(rectangle_coord[, "Y"])
+    y_min <- ee_fix_y_coord(img_y_offset, sf_y_min, img_y_scale, option = 'min')
     sf_y_max <- max(rectangle_coord[, "Y"])
-    y_npixels_init <- floor(x = abs((sf_y_max - img_y_offset) / img_y_scale))
-    y_npixels_last <- ceiling(
-      round(
-        x = abs((sf_y_min - img_y_offset) / img_x_scale),
-        digits = 6
-      )
-    )
-    y_init_crop_img <- img_y_offset + y_npixels_init * img_y_scale
-    y_last_crop_img <- img_y_offset + y_npixels_last * img_y_scale
-    c(x_init_crop_img, y_init_crop_img, x_last_crop_img, y_last_crop_img)
+    y_max <- ee_fix_y_coord(img_y_offset, sf_y_max, img_y_scale, option = 'max')
+  }
+  c(xmin = x_min, ymin = y_min, xmax = x_max, ymax = y_max)
+}
+
+#' Fix x coordinates
+#' @noRd
+ee_fix_x_coord <- function(img_offset, sf_offset, scale, option) {
+  # fix the offset
+  if (img_offset <= sf_offset) {
+    if (option == "min") {
+      n <- floor(abs((img_offset - sf_offset)/scale))
+    } else if (option == "max") {
+      n <- ceiling(abs((img_offset - sf_offset)/scale))
+    }
+    img_offset + n * scale
+  } else {
+    n <- ceiling(abs((img_offset - sf_offset)/scale))
+    img_offset - n * scale
   }
 }
 
+
+#' Fix y coordinates
+#' @noRd
+ee_fix_y_coord <- function(img_offset, sf_offset, scale, option) {
+  # fix the offset
+  if (img_offset > sf_offset) {
+    if (option == "min") {
+      n <- ceiling(abs((sf_offset - img_offset)/scale))
+    } else if (option == "max") {
+      n <- floor(abs((sf_offset - img_offset)/scale))
+    }
+    img_offset + n * scale
+  } else {
+    n <- ceiling(abs((sf_offset - img_offset)/scale))
+    img_offset - n * scale
+  }
+}
+
+#' Fix world boundary
+#' @noRd
 ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {
   bbox <- st_bbox(sfc)
   xmin <- bbox["xmin"]
@@ -302,4 +324,3 @@ set_crs <- function(image_stars, prj_image, band_names) {
     st_set_dimensions(image_stars, 3, values = band_names)
   }
 }
-
