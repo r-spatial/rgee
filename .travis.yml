@@ -9,9 +9,6 @@ cache:
 - ccache
 r_github_packages:
 - r-lib/covr
-- r-spatial/sf
-- r-spatial/stars
-- r-spatial/sf
 - tidyverse/dplyr
 addons:
   apt:
