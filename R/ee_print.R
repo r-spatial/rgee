@@ -18,7 +18,9 @@
 #' @importFrom cli rule
 #' @importFrom digest digest
 #' @examples
+#' \dontrun{
 #' library(rgee)
+#' ee_reattach()
 #' ee_Initialize()
 #'
 #' # Geometry
@@ -39,7 +41,8 @@
 #' ee_print(srtm)
 #'
 #' srtm_clip <- ee$Image("CGIAR/SRTM90_V4")$clip(geom)
-#' ee_print(srtm_clip)
+#' srtm_metadata <- ee_print(srtm_clip)
+#' srtm_metadata$img_bands_names
 #'
 #' # ImageCollection
 #' object <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
@@ -47,6 +50,7 @@
 #'   filter(ee$Filter()$eq("WRS_ROW", 34))$
 #'   filterDate("2014-03-01", "2014-08-01")$
 #'   aside(ee_print)
+#' }
 #' @export
 ee_print <- function(eeobject, ...) {
   UseMethod("ee_print")

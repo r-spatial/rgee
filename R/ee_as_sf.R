@@ -93,7 +93,6 @@ ee_as_sf <- function(x,
                      selectors = NULL,
                      quiet = FALSE) {
   sp_eeobjects <- ee_get_spatial_objects('Table')
-  ft_proj <- as.numeric(gsub("EPSG:","", x$projection()$getInfo()$crs))
 
   if (missing(dsn)) {
     dsn <- paste0(tempfile(),".geojson")
@@ -112,7 +111,9 @@ ee_as_sf <- function(x,
 
   # Geometry or Feature --> FeatureCollection
   x_fc <- ee$FeatureCollection(x)
-
+  ## OBS: we assume that all the featurecollection have the same crs
+  ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
+  ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
   if (via == "getInfo") {
     fc_size <- 5000
     if (maxFeatures > 5000) {

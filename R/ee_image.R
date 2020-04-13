@@ -31,6 +31,10 @@
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
 #' @return A character object
+#' @importFrom jsonlite parse_json
+#' @importFrom raster raster stack
+#' @importFrom sf st_transform st_coordinates st_make_grid
+#' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -460,9 +464,6 @@ stars_as_ee <- function(x,
 
 
 #' Passing an Earth Engine Image to Local
-#' @importFrom jsonlite parse_json
-#' @importFrom sf st_transform st_coordinates st_make_grid
-#' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' @noRd
 ee_image_local <- function(image,
                            region,
@@ -494,12 +495,6 @@ ee_image_local <- function(image,
 
   # region crs and image crs are equal?, otherwise force it.
   if (isFALSE(region_crs == img_crs)) {
-    message(
-      "The parameters region and x need to have the same crs",
-      "\nEPSG region: ", region_crs,
-      "\nEPSG x: ", img_crs,
-      "\nForcing region to have the same CRS that x."
-    )
     sf_region <- st_transform(sf_region, img_crs)
   }
 
@@ -711,10 +706,11 @@ ee_image_local <- function(image,
     write_stars(mosaic, dsn)
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
-      stop(
+      ee_Initialize(email = ee_user$email, drive = TRUE)
+      message(
         "Google Drive credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", drive = TRUE)',
-        " to fix it"
+        " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+        " to fix it."
       )
     }
     # region parameter display
@@ -753,14 +749,22 @@ ee_image_local <- function(image,
     try(ee_monitoring(task = img_task, quiet = quiet))
 
     # From Google Drive to local
-    cat('Moving image from Google Drive to Local ... Please wait  \n')
-    dsn <- ee_drive_to_local(task = img_task, dsn = dsn, consider = 'all')
+    if (isFALSE(quiet)) {
+      cat('Moving image from Google Drive to Local ... Please wait  \n')
+    }
+    dsn <- ee_drive_to_local(
+      task = img_task,
+      dsn = dsn,
+      consider = 'all',
+      quiet = quiet
+    )
   } else if (via == "gcs") {
     if (is.na(ee_user$gcs_cre)) {
-      stop(
+      ee_Initialize(email = ee_user$email, gcs = TRUE)
+      message(
         "Google Cloud Storage credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
-        " to fix it"
+        " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
+        " to fix it."
       )
     }
     # region parameter display
@@ -800,7 +804,7 @@ ee_image_local <- function(image,
 
     # From Google Cloud Storage to local
     cat('Moving image from GCS to Local ... Please wait  \n')
-    dsn <- ee_gcs_to_local(img_task,  dsn = dsn)
+    dsn <- ee_gcs_to_local(img_task,  dsn = dsn, quiet = quiet)
   } else {
     stop("via argument invalid")
   }

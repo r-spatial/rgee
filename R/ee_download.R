@@ -764,10 +764,11 @@ ee_drive_to_local <- function(task,
   } else {
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$drive_cre)) {
-      stop(
+      ee_Initialize(email = ee_user$email, drive = TRUE)
+      message(
         "Google Drive credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
-        " to fix it"
+        " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+        " to fix it."
       )
     }
     # global parameter of a task
@@ -969,9 +970,10 @@ ee_gcs_to_local <- function(task,
   } else {
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$gcs_cre)) {
-      stop(
+      ee_Initialize(email = ee_user$email, gcs = TRUE)
+      message(
         "Google Cloud Storage credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
         " to fix it."
       )
     }
