@@ -64,7 +64,6 @@ ee_print.ee.geometry.Geometry <- function(eeobject, ..., clean = FALSE, quiet = 
     )
   }
   if (!identical(past_eeobject, ee_hash(eeobject))) {
-    print("hi")
     # 2. Feature metadata
     geometry <- eeobject$getInfo()
 
@@ -264,7 +263,7 @@ ee_print.ee.image.Image <- function(eeobject,
     band_properties <- band_info$properties
     band_metadata <- band_info$bands[[1]]
     band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
-    band_metadata_geom <- ee_image_info(selected_img, quiet = TRUE)
+    band_metadata_geom <- ee_image_info(image = selected_img, quiet = TRUE)
     band_metadata_nominal_scale <- selected_img %>%
       ee$Image$projection() %>%
       ee$Projection$nominalScale() %>%

@@ -93,6 +93,8 @@ ee_as_sf <- function(x,
                      selectors = NULL,
                      quiet = FALSE) {
   sp_eeobjects <- ee_get_spatial_objects('Table')
+  ft_proj <- as.numeric(gsub("EPSG:","", x$projection()$getInfo()$crs))
+
   if (missing(dsn)) {
     dsn <- paste0(tempfile(),".geojson")
   }
@@ -157,9 +159,9 @@ ee_as_sf <- function(x,
       }
       x_sf_mosaic <- do.call(rbind, sf_list)
       st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
-      x_sf_mosaic
+      local_sf <- x_sf_mosaic
     } else {
-      ee_fc_to_sf_getInfo(x_fc, dsn, overwrite)
+      local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, overwrite)
     }
   } else if (via == "drive") {
     # Creating name for temporal file; just for either drive or gcs
@@ -198,7 +200,7 @@ ee_as_sf <- function(x,
     }
 
     table_task$start()
-    ee_monitoring(task = table_task, quiet = quiet)
+    try(ee_monitoring(task = table_task, quiet = quiet))
     if (table_task$status()$state != "COMPLETED") {
       stop(table_task$status()$error_message)
     }
@@ -209,6 +211,7 @@ ee_as_sf <- function(x,
       overwrite = overwrite,
       consider = 'all'
     )
+    local_sf <- read_sf(dsn, quiet = TRUE)
   } else if (via == 'gcs') {
     # Creating name for temporal file; just for either drive or gcs
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
@@ -252,11 +255,13 @@ ee_as_sf <- function(x,
       stop(table_task$status()$error_message)
     }
     ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
+    local_sf <- read_sf(dsn, quiet = TRUE)
   } else {
     stop("via argument invalid.")
   }
+  suppressWarnings(st_crs(local_sf) <- ft_proj)
+  local_sf
 }
-
 
 
 #' Convert a FeatureCollection to sf via getInfo
