@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract values from Earth Engine Images or ImageCollections objects — ee_extract • rgee</title>
+<title>Extract values from EE Images or ImageCollections objects — ee_extract • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,12 +46,12 @@
 
 
 
-<meta property="og:title" content="Extract values from Earth Engine Images or ImageCollections objects — ee_extract" />
-<meta property="og:description" content="Extract values from a Image or ImageCollection spatial object
-at the locations of a geometry object. You can use ee.Geometries,
-ee.Features, ee.FeatureCollection and sf objects." />
+<meta property="og:title" content="Extract values from EE Images or ImageCollections objects — ee_extract" />
+<meta property="og:description" content="Extract values from a ee$Image or ImageCollection at the
+locations of a geometry object. You can use ee$Geometry$*,
+ee$Feature, ee$FeatureCollection and sf objects. This function
+try to mimics how extract currently works." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +69,7 @@ ee.Features, ee.FeatureCollection and sf objects." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -79,7 +83,7 @@ ee.Features, ee.FeatureCollection and sf objects." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -154,54 +158,57 @@ ee.Features, ee.FeatureCollection and sf objects." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract values from Earth Engine Images or ImageCollections objects</h1>
+    <h1>Extract values from EE Images or ImageCollections objects</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_extract.R'><code>R/ee_extract.R</code></a></small>
     <div class="hidden name"><code>ee_extract.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract values from a Image or ImageCollection spatial object
-at the locations of a geometry object. You can use ee.Geometries,
-ee.Features, ee.FeatureCollection and sf objects.</p>
+    <p>Extract values from a <code>ee$Image</code> or <code>ImageCollection</code> at the
+locations of a geometry object. You can use <code>ee$Geometry$*</code>,
+<code>ee$Feature</code>, <code>ee$FeatureCollection</code> and sf objects. This function
+try to mimics how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>ee$Image or ee$ImageCollection.</p></td>
+      <td><p>EE Image or ImageCollection.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.</p></td>
+      <td><p>ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.</p></td>
     </tr>
     <tr>
       <th>fun</th>
-      <td><p>ee$Reducer object. Function to summarize the values. See details.</p></td>
+      <td><p>ee$Reducer object. Function to summarize the values. The function
+should take a single numeric vector as argument and return a single value.
+See details.</p></td>
     </tr>
     <tr>
       <th>scale</th>
-      <td><p>A nominal scale in meters of the projection to work in.</p></td>
+      <td><p>A nominal scale in meters of the Image projection to work in.
+By default 1000.</p></td>
     </tr>
     <tr>
-      <th>id</th>
-      <td><p>Character. Name of the column to be used as a geometry index.</p></td>
+      <th>sf</th>
+      <td><p>Logical. Should the extracted values be added to the data.frame of
+the sf object y? This only applies if y is a sf object.</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>reduceRegions additional parameters. See
-reticulate::ee_help(ee$Image()$reduceRegions) for more details.</p></td>
+ee_help(ee$Image()$reduceRegions) for more details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The fun arguments just admit Reducer objects that return one value.
-These are:</p><ul>
+    <p>In Google Earth Engine the reducer functions that return one value are:</p><ul>
 <li><p><strong>allNonZero</strong>: Returns a Reducer that returns 1 if all of its
 inputs are non-zero, 0 otherwise. <br /></p></li>
 <li><p><strong>anyNonZero</strong>: Returns a Reducer that returns 1 if any of its
@@ -253,45 +260,50 @@ of its inputs.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
-
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.1, GDAL 2.4.0, PROJ 5.2.0</span></div><div class='input'>
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.3</span><span> ───────────────── earthengine-api 0.1.216 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>──────────────────────────────────────────────────────────</span></div><div class='input'>
-<span class='co'># get monthly precipitation from terraclimate</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.10</span><span> ───────────────────────────────────────────────────────────────────────── earthengine-api 0.1.217 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Python version:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/ee/bin/python3</span><span> 
+#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
+#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></div><div class='input'>
+<span class='co'># Define a Image or ImageCollection: Terraclimate</span>
 <span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
-  <span class='fu'>filterDate</span>(<span class='st'>"2000-01-01"</span>, <span class='st'>"2001-01-01"</span>)$
+  <span class='fu'>filterDate</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span>)$
   <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>))
 
-<span class='co'># extract values with polygons</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>), <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>)
-<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_extract</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(),
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"FIPS"</span>
+<span class='co'># Define a geometry</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(
+  <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>),
+  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
-<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>nc</span>, <span class='no'>ee_nc_rain</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='st'>"FIPS"</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>ee_nc_rain</span>[<span class='st'>"X200006"</span>],
+
+<span class='co'># Extract values</span>
+<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_extract</span>(
+  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>,
+  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>,
+  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>250</span>,
+  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(),
+  <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+
+<span class='co'># Spatial plot</span>
+<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>ee_nc_rain</span>[<span class='st'>"X200106"</span>],
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='img'><img src='ee_extract-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'>## plot time series</span>
+)</div><div class='img'><img src='ee_extract-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
+#&gt;           1 </div><div class='input'>
+<span class='co'># Temporal plot</span>
 <span class='no'>ee_nc</span> <span class='kw'>&lt;-</span> <span class='no'>ee_nc_rain</span>
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_geometry.html'>st_geometry</a></span>(<span class='no'>ee_nc</span>) <span class='kw'>&lt;-</span> <span class='kw'>NULL</span>
-<span class='no'>time_serie</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>ee_nc</span>[<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"X%s"</span>, <span class='fl'>200001</span>:<span class='fl'>200012</span>)])
+<span class='no'>time_serie</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>ee_nc</span>[<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"X%s"</span>, <span class='fl'>200101</span>:<span class='fl'>200112</span>)])
 <span class='no'>main</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"2001 Precipitation - %s"</span>, <span class='no'>ee_nc</span>$<span class='no'>NAME</span>[<span class='fl'>1</span>])
 <span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>time_serie</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"pp (mm/month)"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='no'>main</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='img'><img src='ee_extract-2.png' alt='' width='700' height='433' /></div></span></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -302,7 +314,7 @@ of its inputs.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

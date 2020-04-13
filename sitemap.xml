@@ -7,16 +7,10 @@
     <loc>http://csaybar.github.io/rgee/reference/Map.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/create_shp_zip.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_Initialize.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_as_sf.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_as_stars.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_as_thumbnail.html</loc>
@@ -32,6 +26,9 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_create_pyenv.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_create_shp_zip.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_discover_pyenvs.html</loc>
@@ -55,16 +52,25 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_get_assethome.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_date.html</loc>
+    <loc>http://csaybar.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
+    <loc>http://csaybar.github.io/rgee/reference/ee_get_ic_date.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_get_img_date.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_help.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_dim.html</loc>
+    <loc>http://csaybar.github.io/rgee/reference/ee_image_as_raster.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_image_as_stars.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_image_info.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_image_to_asset.html</loc>
@@ -74,6 +80,12 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_image_to_gcs.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_image_to_local.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_install_python_packages.html</loc>

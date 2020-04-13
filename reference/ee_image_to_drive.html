@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="Creates a task to export an EE Image to Drive.
 This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -78,7 +81,7 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -163,11 +166,24 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 This function is a wrapper around <code>ee$batch$Export$image$toDrive(...)</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_image_to_drive</span>(<span class='no'>image</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportImageTask"</span>,
-  <span class='kw'>folder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>crsTransform</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maxPixels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shardSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileDimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>skipEmptyTiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>formatOptions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_image_to_drive</span>(
+  <span class='no'>image</span>,
+  <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportImageTask"</span>,
+  <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
+  <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>timePrefix</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>crsTransform</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>maxPixels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>shardSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fileDimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>skipEmptyTiles</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>formatOptions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,13 +198,17 @@ This function is a wrapper around <code>ee$batch$Export$image$toDrive(...)</code
     </tr>
     <tr>
       <th>folder</th>
-      <td><p>The name of a unique folder in your Drive account to be exported
-into. Defaults to the root of the drive.</p></td>
+      <td><p>The name of a unique folder in your Drive account to be
+exported into. Defaults to the folder rgee-backup.</p></td>
     </tr>
     <tr>
       <th>fileNamePrefix</th>
       <td><p>The Google Drive filename for the export. Defaults to
 the name of the task.</p></td>
+    </tr>
+    <tr>
+      <th>timePrefix</th>
+      <td><p>Add current date and time as a prefix to files to export.</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
@@ -311,8 +331,8 @@ deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p
 <span class='co'># Move results from Earth Engine to Drive</span>
 <span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_image_to_drive</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
-  <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>,
   <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_TIFF"</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>ee_ROI</span>$<span class='fu'>geometry</span>(),
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"my_image"</span>
 )
 
@@ -320,18 +340,13 @@ deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
 
 <span class='co'># Move results from Drive to local</span>
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_drive_to_local.html'>ee_drive_to_local</a></span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/stars/man/plot.html'>plot</a></span>(<span class='no'>img</span>)
+<span class='fu'><a href='ee_drive_to_local.html'>ee_drive_to_local</a></span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>)
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -342,7 +357,7 @@ deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

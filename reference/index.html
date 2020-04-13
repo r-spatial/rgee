@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@
 
 <meta property="og:title" content="Function reference" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -169,19 +172,17 @@
           <p class="section-desc"></p>
         </th>
       </tr>
+      
+      
+    </tbody><tbody>
+      
+      
       <tr>
         
         <td>
           <p><code><a href="Map.html">Map</a></code> </p>
         </td>
-        <td><p>Module to display Earth Engine (EE) spatial
-objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_shp_zip.html">create_shp_zip()</a></code> </p>
-        </td>
-        <td><p>Create a zip file from a sf object</p></td>
+        <td><p>Module to display Earth Engine (EE) spatial objects</p></td>
       </tr><tr>
         
         <td>
@@ -194,12 +195,6 @@ objects</p></td>
           <p><code><a href="ee_as_sf.html">ee_as_sf()</a></code> </p>
         </td>
         <td><p>Convert an EE table in a sf object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_as_stars.html">ee_as_stars()</a></code> </p>
-        </td>
-        <td><p>Convert an Earth Engine (EE) image into a stars object</p></td>
       </tr><tr>
         
         <td>
@@ -233,6 +228,12 @@ objects</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_create_shp_zip.html">ee_create_shp_zip()</a></code> </p>
+        </td>
+        <td><p>Create a zip file from a sf object</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_discover_pyenvs.html">ee_discover_pyenvs()</a></code> </p>
         </td>
         <td><p>Discover all the Python environments available
@@ -248,7 +249,7 @@ in the system</p></td>
         <td>
           <p><code><a href="ee_extract.html">ee_extract()</a></code> </p>
         </td>
-        <td><p>Extract values from Earth Engine Images or ImageCollections objects</p></td>
+        <td><p>Extract values from EE Images or ImageCollections objects</p></td>
       </tr><tr>
         
         <td>
@@ -276,15 +277,21 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_get_date.html">ee_get_date()</a></code> </p>
-        </td>
-        <td><p>Get the date of a Earth Engine Image</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_get_earthengine_path.html">ee_get_earthengine_path()</a></code> </p>
         </td>
         <td><p>Get the path where the credentials are stored by rgee</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_get_ic_date.html">ee_get_ic_date()</a></code> </p>
+        </td>
+        <td><p>Get the date of a EE ImageCollection</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_get_img_date.html">ee_get_img_date()</a></code> </p>
+        </td>
+        <td><p>Get the date of a EE Image</p></td>
       </tr><tr>
         
         <td>
@@ -294,9 +301,21 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_image_dim.html">ee_image_dim()</a></code> </p>
+          <p><code><a href="ee_image_as_raster.html">ee_image_as_raster()</a></code> </p>
         </td>
-        <td><p>Dimensions of a Earth Engine Image object</p></td>
+        <td><p>Convert an Earth Engine (EE) image into a raster object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_as_stars.html">ee_image_as_stars()</a></code> </p>
+        </td>
+        <td><p>Convert an Earth Engine (EE) image into a stars object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_info.html">ee_image_info()</a></code> </p>
+        </td>
+        <td><p>Approximate size of an EE Image object</p></td>
       </tr><tr>
         
         <td>
@@ -315,6 +334,18 @@ in the system</p></td>
           <p><code><a href="ee_image_to_gcs.html">ee_image_to_gcs()</a></code> </p>
         </td>
         <td><p>Creates a task to export an EE Image to Google Cloud Storage.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_image_to_local.html">ee_image_to_local()</a></code> </p>
+        </td>
+        <td><p>Save an EE Image in their local system</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_imagecollection_to_local.html">ee_imagecollection_to_local()</a></code> </p>
+        </td>
+        <td><p>Save an EE ImageCollection in their local system</p></td>
       </tr><tr>
         
         <td>
@@ -428,7 +459,7 @@ in the system</p></td>
         <td>
           <p><code><a href="eedate_to_rdate.html">eedate_to_rdate()</a></code> </p>
         </td>
-        <td><p>Pass Earth Engine date object to R</p></td>
+        <td><p>Pass an Earth Engine date object to R</p></td>
       </tr><tr>
         
         <td>
@@ -440,7 +471,7 @@ in the system</p></td>
         <td>
           <p><code><a href="rdate_to_eedate.html">rdate_to_eedate()</a></code> </p>
         </td>
-        <td><p>Pass R date object to Earth Engine</p></td>
+        <td><p>Pass an R date object to Earth Engine</p></td>
       </tr><tr>
         
         <td>
@@ -458,11 +489,10 @@ in the system</p></td>
     </table>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -473,7 +503,7 @@ in the system</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

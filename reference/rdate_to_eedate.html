@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pass R date object to Earth Engine — rdate_to_eedate • rgee</title>
+<title>Pass an R date object to Earth Engine — rdate_to_eedate • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,12 +46,10 @@
 
 
 
-<meta property="og:title" content="Pass R date object to Earth Engine — rdate_to_eedate" />
-<meta property="og:description" content="Function to pass objects of classes &quot;Date&quot;,
-&quot;character&quot;, &quot;POSIXt&quot;, and &quot;POSIXct&quot; to
-ee$Date or unix time stamp." />
+<meta property="og:title" content="Pass an R date object to Earth Engine — rdate_to_eedate" />
+<meta property="og:description" content="Pass an R date object (&quot;Date&quot;, &quot;Numeric&quot;, &quot;character&quot;, &quot;POSIXt&quot;,
+and &quot;POSIXct&quot;) to Google Earth Engine (ee$Date)." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +67,7 @@ ee$Date or unix time stamp." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -79,7 +81,7 @@ ee$Date or unix time stamp." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
       </span>
     </div>
 
@@ -154,18 +156,17 @@ ee$Date or unix time stamp." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pass R date object to Earth Engine</h1>
+    <h1>Pass an R date object to Earth Engine</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Date.R'><code>R/ee_Date.R</code></a></small>
     <div class="hidden name"><code>rdate_to_eedate.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to pass objects of classes "Date",
-"character", "POSIXt", and "POSIXct" to
-ee$Date or unix time stamp.</p>
+    <p>Pass an R date object ("Date", "Numeric", "character", "POSIXt",
+and "POSIXct") to Google Earth Engine (ee$Date).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>rdate_to_eedate</span>(<span class='no'>date</span>, <span class='kw'>eeobject</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>rdate_to_eedate</span>(<span class='no'>date</span>, <span class='kw'>timestamp</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,19 +176,25 @@ ee$Date or unix time stamp.</p>
       <td><p>R date object</p></td>
     </tr>
     <tr>
-      <th>eeobject</th>
-      <td><p>Logical. If TRUE, return
-a ee$object otherwise return the date in milliseconds.</p></td>
+      <th>timestamp</th>
+      <td><p>Logical. If TRUE, return the date in milliseconds
+from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
+EE date object. By default FALSE.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p><code>rdate_to_eedate</code> will return a numeric timestamp or
+an EE Date depending on the <code>timestamp</code> argument.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.3</span><span> ───────────────── earthengine-api 0.1.216 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✔</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>──────────────────────────────────────────────────────────</span></div><div class='input'><span class='fu'>rdate_to_eedate</span>(<span class='st'>'2000-01-01'</span>)</div><div class='output co'>#&gt; ee.Date({
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.10</span><span> ───────────────────────────────────────────────────────────────────────── earthengine-api 0.1.217 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Python version:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/ee/bin/python3</span><span> 
+#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
+#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
+#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='fu'>rdate_to_eedate</span>(<span class='st'>'2000-01-01'</span>)</div><div class='output co'>#&gt; ee.Date({
 #&gt;   "type": "Invocation",
 #&gt;   "arguments": {
 #&gt;     "value": 946684800000.0
@@ -201,13 +208,10 @@ a ee$object otherwise return the date in milliseconds.</p></td>
 #&gt;   "functionName": "Date"
 #&gt; })</div></span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -218,7 +222,7 @@ a ee$object otherwise return the date in milliseconds.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
