@@ -61,3 +61,52 @@ getting more information about exporting data take a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 Engine Guide - Export data}.
 }
+\examples{
+\dontrun{
+library(rgee)
+library(raster)
+
+# Initialize a specific Earth Engine account and load
+# either Google Drive or Google Cloud Storage credentials
+ee_reattach()
+ee_Initialize(
+  email = "data.colec.fbf@gmail.com",
+  drive = TRUE,
+  gcs = TRUE
+)
+
+# USDA example
+loc <- ee$Geometry$Point(-99.2222, 46.7816)
+collection <- ee$ImageCollection('USDA/NAIP/DOQQ')$
+  filterBounds(loc)$
+  filterDate('2008-01-01', '2020-01-01')$
+  filter(ee$Filter$listContains("system:band_names", "N"))
+
+# From ImageCollection to local directory
+ee_crs <- collection$first()$projection()$getInfo()$crs
+geometry <- collection$first()$geometry(proj = ee_crs)$bounds()
+tmp <- tempdir()
+
+## Using getInfo
+ic_getinfo_files <- ee_imagecollection_to_local(
+  ic = collection,
+  region = geometry,
+  scale = 100,
+  dsn = tmp,
+  via = "getInfo",
+  quiet = TRUE
+)
+
+## Using drive
+ic_drive_files <- ee_imagecollection_to_local(
+  ic = collection,
+  region = geometry,
+  scale = 100,
+  dsn = file.path(tmp, "drive_"),
+  via = "drive"
+)
+
+# Testing results
+raster(ic_getinfo_files[1]) - raster(ic_getinfo_files[1])
+}
+}
