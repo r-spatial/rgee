@@ -1,3 +1,12 @@
+# rgee 0.3.10
+- ee_imagecollection_to_local local added.
+- ee_as_stars changed by ee_image_as_stars.
+- ee_image_stars and ee_image_to_local added
+- ee_extract new argument added "sf = FALSE".
+- ee_as_thumbnail arguments modified.
+- ee_print new display.
+- ee_help bug fixed.
+- ee_fix_ofsset function added to support image downloads by getInfo.
 # rgee 0.3.9
 - ee_date functions upgraded
 - Documentation enhanced

@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.3.9
+Version: 0.3.10
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -43,6 +43,7 @@ Depends:
 Imports:
     reticulate (>= 1.13),
     stars,
+    raster,
     sf,
     methods,
     rstudioapi (>= 0.7),
@@ -68,7 +69,6 @@ Suggests:
     googledrive (>= 1.0.0),
     googleCloudStorageR (>= 0.5.1),
     geojsonlint,
-    raster,
     lwgeom
 URL: https://github.com/csaybar/rgee
 BugReports: https://github.com/csaybar/rgee/issues
