@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_image.R
 \name{ee_image_to_local}
 \alias{ee_image_to_local}
-\title{Save an Earth Engine (EE) image in their local system}
+\title{Save an EE Image in their local system}
 \usage{
 ee_image_to_local(
   image,
@@ -20,10 +20,10 @@ ee_image_to_local(
 
 \item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
 CRS needs to be the same that the x argument otherwise it will be
-forced. If not specified, image bounds will be taken.}
+forced.}
 
 \item{dsn}{Character. Output filename. If missing,
-\code{ee_image_as_character} will create a temporary file.}
+\code{ee_image_to_local} will create a temporary file.}
 
 \item{via}{Character. Method to fetch data about the object. Multiple
 options supported. See details.}
@@ -45,19 +45,82 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 A character object
 }
 \description{
-Save an Earth Engine (EE) image in their local system
+Save an EE Image in their local system
 }
 \details{
-\code{ee_image_as_character} supports the download of \code{ee$Image}
+\code{ee_image_to_local} supports the download of \code{ee$Image}
 by three different options: "getInfo", "drive", and "gcs". When "getInfo"
 is set in the \code{via} argument, \code{ee_image_as_character} will make an
 REST call to retrieve all the known information about the object. The
 advantage of use "getInfo" is a direct and faster download. However, there
-is a limitation of 5000 features by request which makes it not recommendable
-for large collections. Instead of "getInfo", the options: "drive" and "gcs"
+is a limitation of 262144 pixels by request which makes it not recommendable
+for large images. Instead of "getInfo", the options: "drive" and "gcs"
 are suitable for large collections since they use an intermediate container.
-They are Google Drive and Google Cloud Storage respectively. For getting
+They use Google Drive and Google Cloud Storage respectively. For getting
 more information about exporting data take a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 Engine Guide - Export data}.
+}
+\examples{
+\dontrun{
+library(rgee)
+
+# Initialize a specific Earth Engine account and load
+# either Google Drive or Google Cloud Storage credentials
+ee_reattach()
+ee_Initialize(
+  email = "data.colec.fbf@gmail.com",
+  drive = TRUE,
+  gcs = TRUE
+)
+ee_user_info()
+
+# Define an image.
+img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+  select(c("B4", "B3", "B2"))$
+  divide(10000)
+
+# OPTIONAL display it using Map
+Map$centerObject(eeObject = img)
+Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
+
+# Define an area of interest.
+geometry <- ee$Geometry$Rectangle(
+  coords = c(-110.8, 44.6, -110.6, 44.7),
+  proj = "EPSG:4326",
+  geodesic = FALSE
+)
+
+## getInfo - Option 01
+img_01 <- ee_image_to_local(
+  image = img,
+  region = geometry,
+  via = "getInfo"
+)
+
+## drive - Method 02
+img_02 <- ee_image_to_local(
+  image = img,
+  region = geometry,
+  via = "drive"
+)
+
+## gcs - Method 03
+img_03 <- ee_image_to_local(
+  image = img,
+  region = geometry,
+  container = "rgee_dev",
+  via = "gcs"
+)
+
+# OPTIONAL: Delete containers
+ee_clean_container(
+  name = "rgee_backup",
+  type = "drive"
+)
+ee_clean_container(
+  name = "rgee_dev",
+  type = "gcs"
+)
+}
 }

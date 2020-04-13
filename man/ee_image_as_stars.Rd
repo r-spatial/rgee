@@ -61,3 +61,66 @@ more information about exporting data take a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 Engine Guide - Export data}.
 }
+\examples{
+\dontrun{
+library(rgee)
+
+# Initialize a specific Earth Engine account and load
+# either Google Drive or Google Cloud Storage credentials
+ee_reattach()
+ee_Initialize(
+  email = "data.colec.fbf@gmail.com",
+  drive = TRUE,
+  gcs = TRUE
+)
+ee_user_info()
+
+# Define an image.
+img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+  select(c("B4", "B3", "B2"))$
+  divide(10000)
+
+# OPTIONAL display it using Map
+Map$centerObject(eeObject = img)
+Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
+
+# Define an area of interest.
+geometry <- ee$Geometry$Rectangle(
+  coords = c(-110.8, 44.6, -110.6, 44.7),
+  proj = "EPSG:4326",
+  geodesic = FALSE
+)
+
+## getInfo - Option 01
+img_01 <- ee_image_as_stars(
+  image = img,
+  region = geometry,
+  via = "getInfo"
+)
+
+## drive - Method 02
+img_02 <- ee_image_as_stars(
+  image = img,
+  region = geometry,
+  via = "drive"
+)
+
+## gcs - Method 03
+img_03 <- ee_image_as_stars(
+  image = img,
+  region = geometry,
+  container = "rgee_dev",
+  via = "gcs"
+)
+
+# OPTIONAL: Delete containers
+ee_clean_container(
+  name = "rgee_backup",
+  type = "drive"
+)
+ee_clean_container(
+  name = "rgee_dev",
+  type = "gcs"
+)
+}
+}
