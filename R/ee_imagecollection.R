@@ -30,7 +30,57 @@
 #' getting more information about exporting data take a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
+#' @importFrom crayon green
 #' @return A character object
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(raster)
+#'
+#' # Initialize a specific Earth Engine account and load
+#' # either Google Drive or Google Cloud Storage credentials
+#' ee_reattach()
+#' ee_Initialize(
+#'   email = "data.colec.fbf@gmail.com",
+#'   drive = TRUE,
+#'   gcs = TRUE
+#' )
+#'
+#' # USDA example
+#' loc <- ee$Geometry$Point(-99.2222, 46.7816)
+#' collection <- ee$ImageCollection('USDA/NAIP/DOQQ')$
+#'   filterBounds(loc)$
+#'   filterDate('2008-01-01', '2020-01-01')$
+#'   filter(ee$Filter$listContains("system:band_names", "N"))
+#'
+#' # From ImageCollection to local directory
+#' ee_crs <- collection$first()$projection()$getInfo()$crs
+#' geometry <- collection$first()$geometry(proj = ee_crs)$bounds()
+#' tmp <- tempdir()
+#'
+#' ## Using getInfo
+#' ic_getinfo_files <- ee_imagecollection_to_local(
+#'   ic = collection,
+#'   region = geometry,
+#'   scale = 100,
+#'   dsn = tmp,
+#'   via = "getInfo",
+#'   quiet = TRUE
+#' )
+#'
+#' ## Using drive
+#' ic_drive_files <- ee_imagecollection_to_local(
+#'   ic = collection,
+#'   region = geometry,
+#'   scale = 100,
+#'   dsn = file.path(tmp, "drive_"),
+#'   via = "drive"
+#' )
+#'
+#' # Testing results
+#' raster(ic_getinfo_files[1]) - raster(ic_getinfo_files[1])
+#' }
+#' @export
 ee_imagecollection_to_local <- function(ic,
                                         region,
                                         dsn = NULL,
@@ -72,12 +122,25 @@ ee_imagecollection_to_local <- function(ic,
     ic_names <- dsn
   }
 
+  # Output filename
   ic_names <- paste0(gsub("\\.tif$","", ic_names),".tif")
+
+  if (isFALSE(quiet)) {
+    cat(
+      rule(
+        right = bold(sprintf("%s - via %s", "Downloading ImageCollection", via))
+      )
+    )
+    ee_geometry_message(region)
+  }
 
   ic_files <- list()
   for (r_index in seq_len(ic_count)) {
     index <- r_index - 1
     image <- ee$Image(ic$toList(count = index + 1, offset = index)$get(0))
+    if (isFALSE(quiet)) {
+      cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
+    }
     img_files <- ee_image_to_local(
       image = image,
       region = region,
@@ -86,10 +149,41 @@ ee_imagecollection_to_local <- function(ic,
       scale = scale,
       maxPixels = maxPixels,
       container = container,
-      quiet = quiet
+      quiet = TRUE
     )
     ic_files[[r_index]] <- ic_names[r_index]
+  }
+  if (isFALSE(quiet)) {
+    cat("\n", rule())
   }
   as.character(ic_files)
 }
 
+#' geometry message
+#' @noRd
+ee_geometry_message <- function(region) {
+  # From geometry to sf
+  sf_region <- ee_as_sf(x = region)$geometry
+  region_crs <- st_crs(sf_region)$epsg
+
+  ### Metadata getting from region and image
+  #is geodesic?
+  is_geodesic <- region$geodesic()$getInfo()
+  #is evenodd?
+  query_params <- unlist(parse_json(region$serialize())$scope)
+  is_evenodd <- as.logical(
+    query_params[grepl("evenOdd", names(query_params))]
+  )
+  if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
+    is_evenodd <- TRUE
+  }
+
+  #### geom message to display
+  cat(
+    '- region parameters\n',
+    'WKT      :', st_as_text(sf_region), "\n",
+    'CRS      :', region_crs, "\n",
+    'geodesic :', is_geodesic, "\n",
+    'evenOdd  :', is_evenodd, "\n"
+  )
+}
