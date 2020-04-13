@@ -1,5 +1,5 @@
 context("rgee: ee_download test")
-
+library(rgee)
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
@@ -67,7 +67,7 @@ test_that("GEOTIFF_DRIVE", {
     task = task_img,
     consider = 'last'
   )
-  expect_is(img, "stars")
+  expect_is(img, "character")
 })
 
 # # 2. CTFRECORD_IMAGE - DRIVE
@@ -117,7 +117,7 @@ test_that("GEOTIFF_GCS", {
   task_img$start()
   ee_monitoring(task_img)
   img <- ee_gcs_to_local(task = task_img)
-  expect_is(img, "stars")
+  expect_is(img, "character")
 })
 
 # # 5. CTFRECORD_IMAGE - GCS
@@ -185,7 +185,7 @@ test_that("SHP_VECTOR_DRIVE",{
     task = task_vector,
     consider = 'all'
   )
-  expect_equal(as.character(vector[["test"]]), "feature")
+  expect_is(vector, "character")
 })
 
 # # 9. KML_VECTOR - DRIVE
@@ -202,7 +202,7 @@ test_that("KML_VECTOR_DRIVE",{
     task = task_vector,
     consider = 'all'
   )
-  expect_equal(as.character(vector[['test']]), "feature")
+  expect_is(vector, "character")
 })
 
 # # 10. KMZ_VECTOR - DRIVE
@@ -219,7 +219,7 @@ test_that("KMZ_VECTOR_DRIVE",{
     task = task_vector,
     consider = 'all'
   )
-  expect_equal(as.character(vector[['test']]), "feature")
+  expect_is(vector, "character")
 })
 
 # # 11. GEOJSON_VECTOR - DRIVE
@@ -236,7 +236,7 @@ test_that("GEOJSON_VECTOR_DRIVE",{
     task = task_vector,
     consider = 'last'
   )
-  expect_equal(as.character(vector[['test']]), "feature")
+  expect_is(vector, "character")
 })
 
 # # 12. CTFRECORD_VECTOR - DRIVE
@@ -311,7 +311,7 @@ test_that("KMZ_VECTOR_GCS",{
   task_vector$start()
   ee_monitoring(task_vector)
   vector <- ee_gcs_to_local(task = task_vector)
-  expect_equal(as.character(vector[['test']]), "feature")
+  expect_is(vector, "character")
 })
 
 # # 18. GEOJSON_VECTOR - GCS
@@ -325,7 +325,7 @@ test_that("GEOJSON_VECTOR_GCS",{
   task_vector$start()
   ee_monitoring(task_vector)
   vector <- ee_gcs_to_local(task = task_vector)
-  expect_equal(as.character(vector[['test']]), "feature")
+  expect_is(vector, "character")
 })
 # # 19. CTFRECORD_VECTOR - GCS
 # test_that("CTFRECORD_VECTOR_GCS",{

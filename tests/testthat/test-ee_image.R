@@ -12,7 +12,11 @@ ee_Initialize(
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
   select(c("B4", "B3", "B2"))$
   divide(10000)
-geometry <- ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7))
+geometry <- ee$Geometry$Rectangle(
+  coords = c(-110.8, 44.6, -110.6, 44.7),
+  proj = "EPSG:4326",
+  geodesic = FALSE
+)
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 stars_x <- read_stars(tif)
 starsproxy_x <- read_stars(tif, proxy = TRUE)
@@ -31,35 +35,31 @@ test_that("ee_as_proxystars ", {
 
 
 test_that("ee_as_stars - getInfo ", {
-  img_stars_01 <- ee_as_stars(
+  img_stars_01 <- ee_image_as_stars(
     image = img,
     region = geometry,
-    geodesic = FALSE,
     via = "getInfo"
   )
   expect_s3_class(img_stars_01,'stars')
 })
 
 test_that("ee_as_stars - drive ", {
-  img_stars_02 <- ee_as_stars(
+  img_stars_02 <- ee_image_as_stars(
     image = img,
     region = geometry,
-    geodesic = FALSE,
     via = "drive"
   )
   expect_s3_class(img_stars_02, 'stars')
 })
 
-
 test_that("ee_as_stars - gcs", {
-  img_stars_03 <- ee_as_stars(
+  img_raster_03 <- ee_image_as_raster(
     image = img,
     region = geometry,
-    geodesic = FALSE,
     via = "gcs",
     container = 'rgee_dev'
   )
-  expect_s3_class(img_stars_03, 'stars')
+  expect_s4_class(img_raster_03, 'RasterStack')
 })
 
 
@@ -84,8 +84,14 @@ test_that("stars_as_ee - gcs", {
 })
 
 # world image thumbnail ---------------------------------------------------
+region <- ee$Geometry$Rectangle(
+  coords = c(-180,-60,180,60),
+  proj =  "EPSG:4326",
+  geodesic = FALSE
+)
+
 test_that("ee_as_thumbnail world", {
-  world_dem <- ee_as_thumbnail(x = image_srtm, geodesic = FALSE)
+  world_dem <- ee_as_thumbnail(x = image_srtm, region = region)
   expect_s3_class(world_dem, 'stars')
 })
 

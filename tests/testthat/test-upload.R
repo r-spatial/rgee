@@ -18,14 +18,14 @@ test_that("ee_local_to_gcs - character",{
 test_that("ee_gcs_to_asset_table ", {
   nc <- st_read(system.file("shape/nc.shp", package = "sf"))
   asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
-  zipfile <- create_shp_zip(nc)
+  zipfile <- ee_create_shp_zip(nc)
   gs_uri <- ee_local_to_gcs(x = zipfile,
                             bucket = 'rgee_dev')
   ee_gcs_to_asset_table(
     gs_uri = gs_uri,
     asset_id = asset_id
   )
-  ee_monitoring()
+  #ee_monitoring()
   ee_sf_01 <- ee$FeatureCollection(asset_id)
   expect_s3_class(object = ee_sf_01,
                   class =  "ee.featurecollection.FeatureCollection")
