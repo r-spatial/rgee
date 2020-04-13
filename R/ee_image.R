@@ -1,4 +1,4 @@
-#' Save an Earth Engine (EE) image in their local system
+#' Save an EE Image in their local system
 #'
 #' @param image ee$Image to be saved in the system.
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
@@ -31,6 +31,68 @@
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
 #' @return A character object
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Initialize a specific Earth Engine account and load
+#' # either Google Drive or Google Cloud Storage credentials
+#' ee_reattach()
+#' ee_Initialize(
+#'   email = "data.colec.fbf@gmail.com",
+#'   drive = TRUE,
+#'   gcs = TRUE
+#' )
+#' ee_user_info()
+#'
+#' # Define an image.
+#' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+#'   select(c("B4", "B3", "B2"))$
+#'   divide(10000)
+#'
+#' # OPTIONAL display it using Map
+#' Map$centerObject(eeObject = img)
+#' Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
+#'
+#' # Define an area of interest.
+#' geometry <- ee$Geometry$Rectangle(
+#'   coords = c(-110.8, 44.6, -110.6, 44.7),
+#'   proj = "EPSG:4326",
+#'   geodesic = FALSE
+#' )
+#'
+#' ## getInfo - Option 01
+#' img_01 <- ee_image_to_local(
+#'   image = img,
+#'   region = geometry,
+#'   via = "getInfo"
+#' )
+#'
+#' ## drive - Method 02
+#' img_02 <- ee_image_to_local(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive"
+#' )
+#'
+#' ## gcs - Method 03
+#' img_03 <- ee_image_to_local(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   via = "gcs"
+#' )
+#'
+#' # OPTIONAL: Delete containers
+#' ee_clean_container(
+#'   name = "rgee_backup",
+#'   type = "drive"
+#' )
+#' ee_clean_container(
+#'   name = "rgee_dev",
+#'   type = "gcs"
+#' )
+#' }
 #' @export
 ee_image_to_local  <- function(image,
                                region,
@@ -87,14 +149,77 @@ ee_image_to_local  <- function(image,
 #' Engine Guide - Export data}.
 #' @return A character object
 #' @export
-ee_image_as_stars  <- function(image,
-                               region,
-                               dsn = NULL,
-                               via = "getInfo",
-                               scale = NULL,
-                               maxPixels = 1e9,
-                               container = "rgee_backup",
-                               quiet = FALSE) {
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Initialize a specific Earth Engine account and load
+#' # either Google Drive or Google Cloud Storage credentials
+#' ee_reattach()
+#' ee_Initialize(
+#'   email = "data.colec.fbf@gmail.com",
+#'   drive = TRUE,
+#'   gcs = TRUE
+#' )
+#' ee_user_info()
+#'
+#' # Define an image.
+#' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+#'   select(c("B4", "B3", "B2"))$
+#'   divide(10000)
+#'
+#' # OPTIONAL display it using Map
+#' Map$centerObject(eeObject = img)
+#' Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
+#'
+#' # Define an area of interest.
+#' geometry <- ee$Geometry$Rectangle(
+#'   coords = c(-110.8, 44.6, -110.6, 44.7),
+#'   proj = "EPSG:4326",
+#'   geodesic = FALSE
+#' )
+#'
+#' ## getInfo - Option 01
+#' img_01 <- ee_image_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   via = "getInfo"
+#' )
+#'
+#' ## drive - Method 02
+#' img_02 <- ee_image_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive"
+#' )
+#'
+#' ## gcs - Method 03
+#' img_03 <- ee_image_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   via = "gcs"
+#' )
+#'
+#' # OPTIONAL: Delete containers
+#' ee_clean_container(
+#'   name = "rgee_backup",
+#'   type = "drive"
+#' )
+#' ee_clean_container(
+#'   name = "rgee_dev",
+#'   type = "gcs"
+#' )
+#' }
+#' @export
+ee_image_as_stars <- function(image,
+                              region,
+                              dsn = NULL,
+                              via = "getInfo",
+                              scale = NULL,
+                              maxPixels = 1e9,
+                              container = "rgee_backup",
+                              quiet = FALSE) {
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -144,6 +269,68 @@ ee_image_as_stars  <- function(image,
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
 #' @return A character object
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Initialize a specific Earth Engine account and load
+#' # either Google Drive or Google Cloud Storage credentials
+#' ee_reattach()
+#' ee_Initialize(
+#'   email = "data.colec.fbf@gmail.com",
+#'   drive = TRUE,
+#'   gcs = TRUE
+#' )
+#' ee_user_info()
+#'
+#' # Define an image.
+#' img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
+#'   select(c("B4", "B3", "B2"))$
+#'   divide(10000)
+#'
+#' # OPTIONAL display it using Map
+#' Map$centerObject(eeObject = img)
+#' Map$addLayer(eeObject = img, visParams = list(max = 0.4,gamma=0.1))
+#'
+#' # Define an area of interest.
+#' geometry <- ee$Geometry$Rectangle(
+#'   coords = c(-110.8, 44.6, -110.6, 44.7),
+#'   proj = "EPSG:4326",
+#'   geodesic = FALSE
+#' )
+#'
+#' ## getInfo - Option 01
+#' img_01 <- ee_image_as_raster(
+#'   image = img,
+#'   region = geometry,
+#'   via = "getInfo"
+#' )
+#'
+#' ## drive - Method 02
+#' img_02 <- ee_image_as_raster(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive"
+#' )
+#'
+#' ## gcs - Method 03
+#' img_03 <- ee_image_as_raster(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   via = "gcs"
+#' )
+#'
+#' # OPTIONAL: Delete containers
+#' ee_clean_container(
+#'   name = "rgee_backup",
+#'   type = "drive"
+#' )
+#' ee_clean_container(
+#'   name = "rgee_dev",
+#'   type = "gcs"
+#' )
+#' }
 #' @export
 ee_image_as_raster  <- function(image,
                                 region,
@@ -285,24 +472,27 @@ ee_image_local <- function(image,
                            maxPixels = 1e9,
                            container = "rgee_backup",
                            quiet = FALSE) {
+  # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
     dsn <- paste0(tempfile(),".tif")
   }
-
+  # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
     stop("x argument is not an ee$image$Image")
   }
-
+  # is region an ee.geometry.Geometry?
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
   }
-
+  # Default projection on an Image
   prj_image <- image$projection()$getInfo()
   img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
 
+  # From geometry to sf
   sf_region <- ee_as_sf(x = region)$geometry
   region_crs <- st_crs(sf_region)$epsg
 
+  # region crs and image crs are equal?, otherwise force it.
   if (isFALSE(region_crs == img_crs)) {
     message(
       "The parameters region and x need to have the same crs",
@@ -312,7 +502,8 @@ ee_image_local <- function(image,
     )
     sf_region <- st_transform(sf_region, img_crs)
   }
-  ## region is a ee$Geometry$Rectangle?
+
+  # region is a ee$Geometry$Rectangle?
   if (any(class(region) %in% "ee.geometry.Geometry")) {
     npoints <- nrow(st_coordinates(sf_region))
     if (npoints != 5) {
@@ -329,19 +520,22 @@ ee_image_local <- function(image,
     error = function(e) "noid_image"
   )
 
-  # Creating name for temporal file; just for either drive or gcs
+  # Create description (Human-readable name of the task)
+  # Relevant for either drive or gcs.
   time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
   file_name <- paste0(image_id, "_", time_format)
 
-  # Load ee_Initialize() session; just for either drive or gcs
-  ee_user <- rgee:::ee_exist_credentials()
+  # Have you loaded the necessary credentials?
+  # Relevant for either drive or gcs.
+  ee_user <- ee_exist_credentials()
+
+  ### Metadata getting from region and image
   # Band names
   band_names <- image$bandNames()$getInfo()
-
   #is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
-  # is_evenodd?
+  #is evenodd?
   query_params <- unlist(parse_json(region$serialize())$scope)
   is_evenodd <- as.logical(
     query_params[grepl("evenOdd", names(query_params))]
@@ -349,10 +543,19 @@ ee_image_local <- function(image,
   if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
     is_evenodd <- TRUE
   }
+  ### -----------
 
   if (via == "getInfo") {
-    # fetch the scale
-    if (isTRUE(is.null(scale))) {
+    # Reproject image if you defined a scale
+    if (!is.null(scale)) {
+      prj_image$transform[1] <- scale
+      prj_image$transform[5] <- -scale
+      image <- image$reproject(prj_image$crs, prj_image$transform)
+      prj_image <- image$projection()$getInfo()
+    }
+
+    # if not, get the scale from geotransform parameter
+    if (is.null(scale)) {
       img_scale_x <- prj_image$transform[1][[1]]
       img_scale_y <- prj_image$transform[5][[1]]
     } else {
@@ -362,9 +565,6 @@ ee_image_local <- function(image,
       if (length(scale) == 1) {
         img_scale_x <- scale
         img_scale_y <- -scale
-      } else if(length(scale) == 2) {
-        img_scale_x <- scale[1]
-        img_scale_y <- -scale[2]
       } else {
         stop(
           "scale argument needs to be a numeric vector",
@@ -372,17 +572,17 @@ ee_image_local <- function(image,
         )
       }
     }
-    # Image metadata
-    maxPixels_getInfo <- 1024*1024
-    # It is necessary just single batch? (512x512)
+
+    # Estimating the number of pixels (approximately)
+    # It is necessary just a single batch? (512x512)
     bbox <- sf_region %>%
       st_bbox() %>%
       as.numeric()
     x_diff <- bbox[3] - bbox[1]
     y_diff <- bbox[4] - bbox[2]
-    x_npixel <- ceiling(abs(x_diff / prj_image$transform[1][[1]]))
-    y_npixel <- ceiling(abs(y_diff / prj_image$transform[5][[1]]))
-    total_pixel <- x_npixel * y_npixel
+    x_npixel <- tail(abs(x_diff / prj_image$transform[1][[1]]))
+    y_npixel <- tail(abs(y_diff / prj_image$transform[5][[1]]))
+    total_pixel <- x_npixel * y_npixel # approximately
     if (total_pixel > maxPixels) {
       stop(
         "Export too large. Specified ",
@@ -394,6 +594,9 @@ ee_image_local <- function(image,
         "intend to export a large area."
       )
     }
+
+    # Warning message if your image is large
+    maxPixels_getInfo <- 1024*1024
     nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
     if (nbatch > 3) {
       message(
@@ -402,6 +605,9 @@ ee_image_local <- function(image,
         "). Use 'drive' or 'gcs' instead for faster download."
       )
     }
+
+    # Create a regular tesselation over the bounding box
+    # after that move to earth engine.
     sf_region_gridded <- st_make_grid(sf_region, n = nbatch)
     region_fixed <- sf_region_gridded %>%
       sf_as_ee(
@@ -410,6 +616,8 @@ ee_image_local <- function(image,
         proj = img_crs,
         geodesic = is_geodesic
       )
+
+    # region parameters display
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -419,7 +627,8 @@ ee_image_local <- function(image,
         'evenOdd  :', is_evenodd, "\n"
       )
     }
-    # FeatureCollection as a List
+
+    # ee$FeatureCollection to ee$List
     region_features <- region_fixed$toList(
       length(sf_region_gridded)
     )
@@ -434,6 +643,7 @@ ee_image_local <- function(image,
         )
       }
     }
+
     for (r_index in seq_len(nbatch * nbatch)) {
       if (!quiet) {
         if (nbatch * nbatch > 1) {
@@ -463,26 +673,27 @@ ee_image_local <- function(image,
           ncol_array <- length(band_results[[band]][[1]])
         }
       }
-
       # Passing from an array to a stars object
-      ## Create array from a list
+      # Create array from a list
       image_array <- array(
         data = unlist(band_results),
         dim = c(ncol_array, nrow_array, length(band_names))
       )
 
-      ## Create stars object
+      # Create stars object
       image_stars <- image_array %>%
         st_as_stars() %>%
         `names<-`(image_id) %>%
         st_set_dimensions(names = c("x", "y", "band"))
       attr_dim <- attr(image_stars, "dimensions")
 
-      ## Set Geotransform and dimensions to local image
+
+      ## Configure metadata of the local image and geotransform
       sf_region_batch <- ee_as_sf(feature)
-      init_offset <- rgee:::ee_fix_offset(image, sf_region_batch)
+      # Fix the init_x and init_y of each image
+      init_offset <- ee_fix_offset(prj_image$transform, sf_region_batch)
       min_long <- init_offset[1]
-      max_lat <- init_offset[2]
+      max_lat <- init_offset[4]
       attr_dim$x$offset <- min_long
       attr_dim$y$offset <- max_lat
       attr_dim$x$delta <- img_scale_x
@@ -506,16 +717,7 @@ ee_image_local <- function(image,
         " to fix it"
       )
     }
-
-    # Fixing geometry if it is necessary
-    init_offset <- ee_fix_offset(image, sf_region)
-    region_fixed <- sf_as_ee(
-      x = sf_region,
-      check_ring_dir = TRUE,
-      evenOdd = is_evenodd,
-      proj = img_crs,
-      geodesic = is_geodesic
-    )
+    # region parameter display
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -525,16 +727,18 @@ ee_image_local <- function(image,
         'evenOdd  :', is_evenodd, "\n"
       )
     }
+    # From Google Earth Engine to Google Drive
     img_task <- ee_image_to_drive(
       image = image,
       description = ee_description,
       scale = scale,
       folder = container,
       fileFormat = "GEO_TIFF",
-      region = region_fixed$geometry(),
+      region = region,
       maxPixels = maxPixels,
       fileNamePrefix = file_name
     )
+    # download parameter display
     if (!quiet) {
       cat(
         "\n- download parameters (Google Drive)\n",
@@ -559,16 +763,7 @@ ee_image_local <- function(image,
         " to fix it"
       )
     }
-    # Fixing geometry if it is necessary
-    init_offset <- ee_fix_offset(image, sf_region)
-    region_fixed <- sf_as_ee(
-      x = sf_region,
-      check_ring_dir = TRUE,
-      evenOdd = is_evenodd,
-      proj = img_crs,
-      geodesic = is_geodesic
-    )
-
+    # region parameter display
     if (!quiet) {
       cat(
         '- region parameters\n',
@@ -578,19 +773,18 @@ ee_image_local <- function(image,
         'evenOdd  :', is_evenodd, "\n"
       )
     }
-
     # From Earth Engine to Google Cloud Storage
     img_task <- ee_image_to_gcs(
       image = image,
       description = ee_description,
       bucket = container,
       fileFormat = "GEO_TIFF",
-      region = region_fixed$geometry(),
+      region = region,
       maxPixels = maxPixels,
       scale = scale,
       fileNamePrefix = file_name
     )
-
+    # download parameter display
     if (!quiet) {
       cat(
         "\n- download parameters (Google Cloud Storage)\n",
@@ -600,8 +794,8 @@ ee_image_local <- function(image,
         "Date        :", time_format, "\n"
       )
     }
-
     img_task$start()
+
     try(ee_monitoring(task = img_task, quiet = quiet))
 
     # From Google Cloud Storage to local
