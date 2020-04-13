@@ -6,7 +6,7 @@
 - ee_as_thumbnail arguments modified.
 - ee_print new display.
 - ee_help bug fixed.
-- ee_fix_ofsset function added to support image downloads by getInfo.
+- ee_fix_offset function added to support image downloads by getInfo.
 # rgee 0.3.9
 - ee_date functions upgraded
 - Documentation enhanced

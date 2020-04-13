@@ -21,7 +21,7 @@
 #' @importFrom geojsonio geojson_sf
 #' @importFrom utils tail
 #' @importFrom methods as setMethod new is setGeneric
-#' @importFrom sf st_write
+#' @importFrom sf st_write read_sf
 #' @details
 #' \code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
 #' \code{ee$Feature} and \code{ee$Geometry} by three different options:
