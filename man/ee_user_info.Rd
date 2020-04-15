@@ -2,12 +2,12 @@
 % Please edit documentation in R/ee_Initialize.R
 \name{ee_user_info}
 \alias{ee_user_info}
-\title{Display credentials info of initialized user}
+\title{Display credentials and general info of the initialized user}
 \usage{
 ee_user_info()
 }
 \description{
-Display credentials info of initialized user
+Display credentials and general info of the initialized user
 }
 \examples{
 \dontrun{

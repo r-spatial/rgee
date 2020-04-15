@@ -18,6 +18,8 @@
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import install_miniconda py_available
 #' @importFrom getPass getPass
+#' @importFrom cli symbol rule
+#' @importFrom crayon blue green black red bold white
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
@@ -32,17 +34,17 @@
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
-#' #ee_user_info()
 #'
 #' # Simple init
 #' ee_Initialize()
 #'
 #' # Advanced init
-#' expr <- ee_Initialize(
+#' ee_Initialize(
 #'   email = "data.colec.fbf@gmail.com",
 #'   drive = TRUE,
 #'   gcs = TRUE
 #' )
+#'
 #' ee_user_info()
 #'
 #' @export
@@ -81,20 +83,11 @@ ee_Initialize <- function(email = NULL,
     ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
     ee_utils <- ee_source_python(ee_current_version)
     message(text_col(
-      cli::rule(
-        left = crayon::bold("rgee", packageVersion("rgee")),
+      rule(
+        left = bold("rgee", packageVersion("rgee")),
         right = paste0("earthengine-api ", ee_utils$ee_getversion())
       )
     ))
-  }
-
-  if (isFALSE(quiet)) {
-    py_used <- py_discover_config()$python
-    cat(
-      "", crayon::green(cli::symbol$tick),
-      crayon::blue("Python version:"),
-      crayon::green(py_used), "\n"
-    )
   }
 
   # 1. simple checking
@@ -105,15 +98,15 @@ ee_Initialize <- function(email = NULL,
   if (isFALSE(quiet)) {
     if (email == "ndef") {
       cat(
-        "", crayon::green(cli::symbol$tick),
-        crayon::blue("email:"),
-        crayon::green("not_defined\n")
+        "", green(symbol$tick),
+        blue("email:"),
+        green("not_defined\n")
       )
     } else {
       cat(
-        "", crayon::green(cli::symbol$tick),
-        crayon::blue("email:"),
-        crayon::green(email), "\n"
+        "", green(symbol$tick),
+        blue("email:"),
+        green(email), "\n"
       )
     }
   }
@@ -132,18 +125,18 @@ ee_Initialize <- function(email = NULL,
     if (!quiet) {
       cat(
         "",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("Google Drive credentials:")
+        green(symbol$tick),
+        blue("Google Drive credentials:")
       )
     }
     drive_credentials <- ee_create_credentials_drive(email)
     if (!quiet) {
       cat(
         "\r",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("Google Drive credentials:"),
+        green(symbol$tick),
+        blue("Google Drive credentials:"),
         # drive_credentials,
-        crayon::green(" FOUND\n")
+        green(" FOUND\n")
       )
     }
   }
@@ -152,18 +145,18 @@ ee_Initialize <- function(email = NULL,
     if (!quiet) {
       cat(
         "",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("GCS credentials:")
+        green(symbol$tick),
+        blue("GCS credentials:")
       )
     }
     gcs_credentials <- ee_create_credentials_gcs(email)
     if (!quiet) {
       cat(
         "\r",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("GCS credentials:"),
+        green(symbol$tick),
+        blue("GCS credentials:"),
         # gcs_credentials,
-        crayon::green(" FOUND\n")
+        green(" FOUND\n")
       )
     }
   }
@@ -185,8 +178,8 @@ ee_Initialize <- function(email = NULL,
   )))
   if (!quiet) {
     cat(
-      "", crayon::green(cli::symbol$tick),
-      crayon::blue("Initializing Google Earth Engine:")
+      "", green(symbol$tick),
+      blue("Initializing Google Earth Engine:")
     )
   }
 
@@ -196,9 +189,9 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     cat(
       "\r",
-      crayon::green(cli::symbol$tick),
-      crayon::blue("Initializing Google Earth Engine:"),
-      crayon::green(" DONE!\n")
+      green(symbol$tick),
+      blue("Initializing Google Earth Engine:"),
+      green(" DONE!\n")
     )
   }
 
@@ -214,14 +207,14 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     cat(
       "\r",
-      crayon::green(cli::symbol$tick),
-      crayon::blue("Earth Engine user:"),
-      crayon::green(crayon::bold(ee_user)),
+      green(symbol$tick),
+      blue("Earth Engine user:"),
+      green(bold(ee_user)),
       "\n"
     )
     message(text_col(
-      cli::rule(
-        #right = paste0("Welcome back ",crayon::bold(ee_user))
+      rule(
+        #right = paste0("Welcome back ",bold(ee_user))
       )
     ))
   }
@@ -405,14 +398,14 @@ ee_users <- function() {
   title[1] <- add_extra_space(name = title[1],
                               space = max_char - nchar(title[1]))
 
-  cat("",crayon::bold(paste0(title, collapse = wsc)),"\n")
+  cat("",bold(paste0(title, collapse = wsc)),"\n")
   users <- add_extra_space(ee_path, add_space)
   for (user in users) {
     create_table(user,wsc)
   }
 }
 
-#' Display credentials info of initialized user
+#' Display credentials and general info of the initialized user
 #'
 #' @examples
 #' \dontrun{
@@ -426,30 +419,42 @@ ee_user_info <- function() {
   user_session <- ee_get_earthengine_path()
   user_session_list <- list.files(user_session,full.names = TRUE)
   user <- ee$data$getAssetRoots()[[1]]$id
+
+  cat(rule(right = bold(paste0("Earth Engine user info"))))
+  # python version
+  py_used <- py_discover_config()$python
+  cat(blue$bold("\nReticulate python version:"))
+  cat("\n - ", py_used)
+
   # asset home
   asset_home <- ee_remove_project_chr(user)
-  cat(crayon::blue('Earth Engine Asset Home:'),
-      crayon::green(asset_home), '\n')
+  cat(blue$bold('\nEarth Engine Asset Home:'))
+  cat("\n - ", asset_home)
 
   # credentials directory path
-  cat(crayon::blue('Credentials Directory Path:'),
-      crayon::green(user_session), '\n')
+  cat(blue$bold('\nCredentials Directory Path:'))
+  cat("\n - ", user_session)
 
   # google drive
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
-  cat(crayon::blue('Google Drive Credentials:'),
-      crayon::green(basename(gd)), '\n')
+  cat(blue$bold('\nGoogle Drive Credentials:'))
+  cat("\n - ", basename(gd))
   email_drive <- sub("[^_]+_(.*)@.*", "\\1", basename(gd))
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
-  cat(crayon::blue('Google Cloud Storage Credentials:'),
-      crayon::green(basename(gcs)), '\n')
+  cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
+  cat("\n - ",basename(gcs))
+
+  cat("\n", rule())
 
   ee_user <- ee_exist_credentials()
   if (isFALSE(grepl(email_drive, ee_user$email))) {
-    warning("Google Drive does not match with your",
-            "Earth Engine account.")
+    message(
+      "\nNOTE: Google Drive credential does not match with your Google",
+      " Earth Engine credentials. All functions which depend on Google",
+      " Drive will not work (e.g. ee_image_to_drive)."
+    )
   }
 }
 
@@ -517,7 +522,7 @@ text_col <- function(x) {
     return(x)
   }
   theme <- rstudioapi::getThemeInfo()
-  if (isTRUE(theme$dark)) crayon::white(x) else crayon::black(x)
+  if (isTRUE(theme$dark)) white(x) else black(x)
 }
 
 #' Earth Engine API version
@@ -557,23 +562,23 @@ create_table <- function(user, wsc) {
 
   #google drive
   if (any(grepl("@gmail.com",credentials))) {
-    gmail_symbol <- crayon::green(cli::symbol$tick)
+    gmail_symbol <- green(symbol$tick)
   } else {
-    gmail_symbol <- crayon::red(cli::symbol$cross)
+    gmail_symbol <- red(symbol$cross)
   }
 
   #GCS
   if (any(grepl(".json",credentials))) {
-    gcs_symbol <- crayon::green(cli::symbol$tick)
+    gcs_symbol <- green(symbol$tick)
   } else {
-    gcs_symbol <- crayon::red(cli::symbol$cross)
+    gcs_symbol <- red(symbol$cross)
   }
 
   #Earth Engine
   if (any(grepl("credentials",credentials))) {
-    ee_symbol <- crayon::green(cli::symbol$tick)
+    ee_symbol <- green(symbol$tick)
   } else {
-    ee_symbol <- crayon::red(cli::symbol$cross)
+    ee_symbol <- red(symbol$cross)
   }
 
   cat("\n",

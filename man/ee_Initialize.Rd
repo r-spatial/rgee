@@ -40,17 +40,17 @@ called \code{ndef}.
 \examples{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
-#ee_user_info()
 
 # Simple init
 ee_Initialize()
 
 # Advanced init
-expr <- ee_Initialize(
+ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )
+
 ee_user_info()
 
 }
