@@ -1,3 +1,8 @@
+# rgee 0.3.11
+- sf_as_ee now permits their use not just in polygons.
+- ee_as_thumbnail bug: it does not work in one-band images (fixed).
+- ee_user_info new display.
+- ee_Initialize now does not display Python version used (use ee_user_info instead).
 # rgee 0.3.10
 - ee_imagecollection_to_local local added.
 - ee_as_stars changed by ee_image_as_stars.
