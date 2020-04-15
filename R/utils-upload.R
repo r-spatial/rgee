@@ -381,11 +381,17 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
   fc <- list()
   for (index in seq_len(nrow(sf))) {
     feature <- sf[index,]
-    py_geometry <- geojson_json(st_geometry(feature),type = 'skip')
+    sfc_feature <- st_geometry(feature)
+    py_geometry <- geojson_json(sfc_feature,type = 'skip')
+    wkt_type <- class(sfc_feature)[1] # wkt type identifier
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                         sfc_class = wkt_type,
                                          opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
+    if (isFALSE(ee_geometry)) {
+      stop("rgee does not support GEOMETRYCOLLECTION objects")
+    }
     st_geometry(feature) <- NULL
     fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
