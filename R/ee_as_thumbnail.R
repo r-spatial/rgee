@@ -235,6 +235,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     "via getThumbURL (it needs to be ",
     "either jpeg or png)"
   )
+
   raw_image <- tryCatch(
     tryCatch(readPNG(z),
              error = function(e) {
@@ -330,11 +331,16 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     attr(stars_png, "dimensions") <- attr_dim
     st_crs(stars_png) <- ee_crs
     if (isFALSE(raster)) {
-      thumbnail_stars <- st_as_stars(as(stars_png, "Raster"))
+      thumbnail_stars <- stars_png %>%
+        split("bands") %>%
+        as("Raster") %>%
+        st_as_stars()
       names(thumbnail_stars) <- image_id
       thumbnail_stars
     } else {
-      thumbnail_raster <- as(stars_png, "Raster")
+      thumbnail_raster <- stars_png %>%
+        split("bands") %>%
+        as("Raster")
       names(thumbnail_raster) <- image_id
       thumbnail_raster
     }
