@@ -236,20 +236,17 @@ ee_install_python_packages <- function(method = c(
     )
   }
 
+  # get the version of the earthengine-api
   if (is.null(ee_version)) {
     ee_version <- ee_version()
   }
+  ee_version <- paste0("earthengine-api==", ee_version)
 
   # verify Python version
   ee_check_python(quiet = quiet)
 
   method <- match.arg(method)
   rgee_packages <- unique(rgee_packages)
-  if (ee_version == "latest") {
-    ee_version <- "earthengine-api"
-  } else {
-    ee_version <- paste0("earthengine-api==", ee_version)
-  }
 
   py_install(
     packages = c(ee_version, rgee_packages),
@@ -268,6 +265,63 @@ ee_install_python_packages <- function(method = c(
   #   restartSession()
   # }
   invisible(TRUE)
+}
+
+#' Upgrade the EarthEngine Python API
+#'
+#' This function upgrade the EarthEngine Python API (earthengine-api)
+#' to the latest version.
+#'
+#' @param method Installation method. By default, "auto" automatically
+#' finds a method that will work in the local environment. Change the
+#' default to force a specific installation method. Note that the
+#' "virtualenv" method is not available on Windows (as this isn't
+#' supported by rgee). Note also that since this command runs
+#' without privilege the "system" method is available only on Windows.
+#' @param conda Path to conda executable (or "auto" to find conda
+#' using the PATH and other conventional install locations).
+#' @param envname Name of Python environment, or full path, which Python
+#' packages are to be installed.
+#' @param pip Logical. Use pip for package installation? This
+#' is only relevant when Conda environments are used, as
+#' otherwise packages will be installed from the
+#' Conda repositories.
+#' @param conda_python_version the Python version installed in the
+#' created conda environment. Python 3.7 is installed by default.
+#' @param ... other arguments passed to [reticulate::conda_install()] or
+#' [reticulate::virtualenv_install()].
+#' @param quiet logical. Suppress info message
+#' @importFrom reticulate source_python py_install
+#' @details It is neccessary restart R to observe change when
+#' installing Python packages. rgee only is compatible with Python
+#' version 3.5 >=.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_earthengine_upgrade()
+#' }
+#' @export
+ee_earthengine_upgrade <- function(method = c(
+                                      "auto",
+                                      "virtualenv",
+                                      "conda"
+                                   ),
+                                   conda = "auto",
+                                   envname = NULL,
+                                   pip = TRUE,
+                                   conda_python_version = "3.7",
+                                   quiet = FALSE,
+                                   ...) {
+  ee_version <- "earthengine-api"
+  py_install(
+    packages = ee_version,
+    envname = envname,
+    method = method,
+    conda = conda,
+    python_version = conda_python_version,
+    pip = pip,
+    ...
+  )
 }
 
 #' Detect the Operating System type of the system
@@ -295,3 +349,4 @@ ee_virtualenv_list <- function() {
             virtualenv_root(),
             virtualenv_list()))
 }
+

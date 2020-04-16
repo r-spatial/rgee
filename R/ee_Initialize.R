@@ -218,7 +218,7 @@ ee_Initialize <- function(email = NULL,
       )
     ))
   }
-  ee_check_rgee_python_packages(quiet = TRUE)
+  # ee_check_rgee_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
 
@@ -456,6 +456,9 @@ ee_user_info <- function() {
       " Drive will not work (e.g. ee_image_to_drive)."
     )
   }
+
+  ee_check_rgee_python_packages(quiet = TRUE)
+  invisible(TRUE)
 }
 
 #' Create session info of the last init inside the
@@ -531,7 +534,7 @@ text_col <- function(x) {
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
-  "0.1.217"
+  "0.1.218"
 }
 
 
