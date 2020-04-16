@@ -15,6 +15,7 @@
 #' and rgee::ee_search_title. 'AND' represents inclusiveness between tags in
 #' searching and 'OR' exclusiveness.
 #' @param upgrade Logical. If the dataset needs to be upgraded.
+#' @param maxdisplay Numeric. Maximum number of tabs to display in their browser
 #' @name ee_search-tools
 #' @return a data.frame.
 #' @examples
@@ -55,7 +56,7 @@ ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
       cat("Downloading(Upgrading) the Earth Engine catalog ... please wait\n")
     }
 
-    while (class(ee_dataset) == "try-error" & ncount < 15) {
+    while (class(ee_dataset) == "try-error" & ncount < 30) {
       ee_date <- ee_date - 1
       ee_dataset <- suppressWarnings(
         try(
@@ -210,4 +211,19 @@ fix_date <- function(x) {
   }
   final_date <- as.Date(sprintf("%s-%s-%s", year, month, day))
   return(final_date)
+}
+
+#' @name ee_search-tools
+#' @export
+ee_datacatalog_display <- function(ee_dataset, maxdisplay = 10){
+  db_catalog <- "https://developers.google.com/earth-engine/datasets/catalog/"
+  tag_name <- gsub("\\/","_",ee_dataset$id)
+  catalog_uri <- paste0(db_catalog, tag_name) %>%
+    '['(1:maxdisplay) %>%
+    na.omit() %>%
+    as.character()
+  for (uri in catalog_uri) {
+    browseURL(uri)
+  }
+  invisible(TRUE)
 }

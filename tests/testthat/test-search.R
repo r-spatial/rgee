@@ -23,10 +23,10 @@ test_that("testing date queries",{
   expect_equal(mean(as.numeric(extract_year)),10)
 })
 
-# test_that("Update dataset",{
-#   my_db <- ee_dataset(upgrade = TRUE)
-#   expect_type(my_db$id,'character')
-# })
+test_that("Update dataset",{
+  my_db <- ee_dataset(upgrade = TRUE)
+  expect_type(my_db$id,'character')
+})
 
 test_that("Get title",{
   tl <- ee_search_title_list(ee_dataset())

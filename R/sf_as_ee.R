@@ -1,54 +1,57 @@
 #' Convert an sf object to an EE object
 #'
 #' @param x sf object to be converted into a EE object.
-#' @param assetId Destination asset ID for the uploaded file.
-#' @param check_ring_dir logical. See \link[sf]{st_read} for details.
-#' @param evenOdd If TRUE, polygon interiors will be determined
-#' by the even/odd rule, where a point is inside if it crosses
-#' an odd number of edges to reach a point at infinity. Otherwise
-#' polygons use the left-inside rule, where interiors are on the
-#' left side of the shell's edges when walking the vertices in
-#' the given order. If unspecified, defaults to TRUE.
-#' @param proj An optional projection specification, either as a CRS ID
-#' code or as a WKT string. If specified, overrides any CRS found in
+#' @param via Method to download the image. Three methods are implemented
+#' 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.
+#' @param monitoring Logical. Ignore if via is not set as
+#' \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
+#' will be monitored.
+#' @param assetId Character. Destination asset ID for the uploaded file. Ignore
+#' if \code{via} argument is "getInfo".
+#' @param check_ring_dir Logical. See \link[sf]{st_read} for details.
+#' @param proj Character. An optional projection specification, either as a CRS
+#' ID code or as a WKT string. If specified, overrides any CRS found in
 #' the GeoJSON parameter. If unspecified and the GeoJSON does not
 #' declare a CRS, defaults to "EPSG:4326" (x=longitude, y=latitude).
-#' @param geodesic Whether line segments should be interpreted as spherical
-#' geodesics. If FALSE, indicates that line segments should be interpreted
-#' as planar lines in the specified CRS. If absent, defaults to TRUE if
-#' the CRS is geographic (including the default EPSG:4326), or to FALSE
-#' if the CRS is projected.
-#' @param via Method to download the image. Three methods
-#' are implemented 'getInfo', 'toasset' and 'gcs'. See details.
-#' @param bucket name you want this session to use by default, or a bucket
-#' object.
-#' @param monitoring Relevant parameter when the argument via is set as
-#' either "toasset" or "gcs". If TRUE the exportation task will be monitored.
+#' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
+#' Whether line segments should be interpreted as spherical geodesics. If
+#' FALSE, indicates that line segments should be interpreted as planar lines
+#' in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
+#' (including the default EPSG:4326), or to FALSE if the CRS is projected.
+#' @param evenOdd Logical. Ignored if \code{x} is not a Polygon. If TRUE,
+#' polygon interiors will be determined by the even/odd rule, where a point
+#' is inside if it crosses an odd number of edges to reach a point at infinity.
+#' Otherwise polygons use the left-inside rule, where interiors are on the
+#' left side of the shell's edges when walking the vertices in the given order.
+#' If unspecified, defaults to TRUE.
+#' @param bucket Character. Name of the bucket (GCS) to save intermediate files
+#' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
 #' @return A ee$FeatureCollection object
 #' @details
-#' The process to pass a sf object to Earth Engine Asset could be carried
-#' out by three different strategies. These are controlled by the "via"
-#' parameter. The first method implemented is 'getInfo'. In this method the
-#' sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
-#' and then encrusted in an HTTP request using the server-side objects that are
-#' implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
-#' is too large (>1Mb) it is likely to cause bottlenecks and plodding
-#' connections. One advantage of this method is that it create temporary files
-#' and will not be saved in your Earth Engine Asset. See
+#' \code{sf_as_ee} supports the upload of \code{sf} objects by three different
+#' options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
+#' When "getInfo" is set in the \code{via} argument the sf object is
+#' transformed to GeoJSON using \link[geojsonio]{geojson_json} and then
+#' encrusted in an HTTP request using the server-side objects that are
+#' implemented in the Earth Engine API (ee$Geometry). If the sf object is too
+#' large (~ >1Mb) it is likely to cause bottlenecks since it is a temporary
+#' file that is not saved in your Earth Engine Asset. See
 #' \href{https://developers.google.com/earth-engine/client_server}{Client
 #' vs Server} documentation for more details. The second method implemented is
-#' 'toasset'. It is similar to the previous one, with the difference that
-#' the spatial object will be saved in your Earth Engine Asset. For dealing
-#' with very large spatial objects, it is preferable to use the third method
-#' called 'gcs'. In this method, firstly, the sf object will be saved as a
-#' *.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
+#' 'getInfo_to_asset'. It is similar to the previous one, with the difference
+#' that the result will be saved in your Earth Engine Asset. For dealing
+#' with very large spatial objects, it is preferable to use the third option
+#' 'gcs_to_asset'. This option firstly save the sf object as a  *.shp file
+#' in the /temp directory . Secondly, using the function \code{ee_local_to_gcs}
 #' will move the shapefile from local to Google Cloud Storage. Finally, using
-#' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
-#' Asset.
+#' the function \code{ee_gcs_to_asset_table} the ESRI shapefile will be loaded
+#' to the Earth Engine Asset.
+#' See \href{https://developers.google.com/earth-engine/importing}{Importing
+#' table data} documentation for more details.
 #'
 #' Earth Engine is strict on polygon ring directions (outer ring
 #' counter-clockwise, and the inner one clockwise). If `check_ring_dir` is TRUE,
@@ -110,14 +113,14 @@
 #' }
 #' @export
 sf_as_ee <- function(x,
-                     check_ring_dir = FALSE,
-                     evenOdd = TRUE,
-                     proj = NULL,
-                     geodesic = NULL,
                      via = 'getInfo',
                      assetId = NULL,
                      bucket = NULL,
                      monitoring = TRUE,
+                     check_ring_dir = FALSE,
+                     evenOdd = TRUE,
+                     proj = NULL,
+                     geodesic = NULL,
                      quiet = FALSE,
                      ...) {
   # Read geometry
@@ -147,7 +150,7 @@ sf_as_ee <- function(x,
       " set, replace or retrieve."
     )
   }
-  if (via == 'getInfo') {
+  if (via == "getInfo") {
     # sf to geojson
     ee_sf_to_fc(
       sf = eex,
@@ -155,7 +158,7 @@ sf_as_ee <- function(x,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
-  } else if (via == 'toasset') {
+  } else if (via == "getInfo_to_asset") {
     # sf to geojson
     sf_fc <- ee_sf_to_fc(
       sf = eex,
@@ -189,7 +192,7 @@ sf_as_ee <- function(x,
     } else {
       assetId
     }
-  } else if (via == 'gcs') {
+  } else if (via == "gcs_to_asset") {
     shp_dir <- sprintf("%s.shp", tempfile())
     geozip_dir <- ee_create_shp_zip(eex, shp_dir)
     gcs_filename <- ee_local_to_gcs(

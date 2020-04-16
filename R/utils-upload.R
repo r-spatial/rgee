@@ -390,7 +390,8 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
     if (isFALSE(ee_geometry)) {
-      stop("rgee does not support GEOMETRYCOLLECTION objects")
+      stop("rgee does not support the upload of GEOMETRYCOLLECTION",
+           " (sfg object).")
     }
     st_geometry(feature) <- NULL
     fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))

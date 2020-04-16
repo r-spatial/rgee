@@ -18,7 +18,7 @@ def sfg_as_ee_py(x, sfc_class, opt_proj, opt_geodesic, opt_evenOdd):
                            opt_proj = opt_proj,
                            opt_geodesic = opt_geodesic,
                            opt_evenOdd = opt_evenOdd)
-    elif sfc_class in ["sfc_LINESTRING","sfc_LINESTRING"]:
+    elif sfc_class in ["sfc_MULTILINESTRING","sfc_LINESTRING"]:
         return ee.Geometry(geo_json = eval(x),
                            opt_proj = opt_proj,
                            opt_geodesic = opt_geodesic)
