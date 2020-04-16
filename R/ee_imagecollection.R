@@ -77,8 +77,6 @@
 #'   via = "drive"
 #' )
 #'
-#' # Testing results
-#' raster(ic_getinfo_files[1]) - raster(ic_getinfo_files[1])
 #' }
 #' @export
 ee_imagecollection_to_local <- function(ic,

@@ -106,7 +106,5 @@ ic_drive_files <- ee_imagecollection_to_local(
   via = "drive"
 )
 
-# Testing results
-raster(ic_getinfo_files[1]) - raster(ic_getinfo_files[1])
 }
 }

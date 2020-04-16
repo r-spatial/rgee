@@ -28,12 +28,12 @@ to write?.}
 options supported. See details.}
 
 \item{maxFeatures}{Numeric. The maximum allowed number of features to
-export  (ignored if \code{via} is not set as "getInfo"). The task will fail
+export  (ignore if \code{via} is not set as "getInfo"). The task will fail
 if the exported region covers more features in the specified projection.
 Defaults to 5000.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignored if \code{via} is not defined as "drive" or
+to be exported into (ignore if \code{via} is not defined as "drive" or
 "gcs").}
 
 \item{selectors}{The list of properties to include in
