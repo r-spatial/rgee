@@ -1,3 +1,6 @@
+# rgee 0.3.12
+- Minor changes in ee_Initialize and ee_install-
+- ee_version passed from 0.1.127 to 0.1.128.
 # rgee 0.3.11
 - sf_as_ee now permits their use not just in polygons.
 - ee_as_thumbnail bug: it does not work in one-band images (fixed).
