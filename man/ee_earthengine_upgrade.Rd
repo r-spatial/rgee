@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_earthengine_upgrade}
 \alias{ee_earthengine_upgrade}
-\title{Upgrade the EarthEngine Python API}
+\title{Upgrade the Earth Engine Python API}
 \usage{
 ee_earthengine_upgrade(
   method = c("auto", "virtualenv", "conda"),

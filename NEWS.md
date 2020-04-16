@@ -1,3 +1,7 @@
+# rgee 0.3.13
+- new function inside the ee_search interface: `ee_datacatalog_display`
+- sf_as_ee doc upgrade.
+- `ee_Image_to_local`: now region arg must be a ee$Geometry$Rectangle only when via = "getInfo" is used. It is will affect also to download of `ee$ImageCollections`.
 # rgee 0.3.12
 - Minor changes in ee_Initialize and ee_install-
 - ee_version passed from 0.1.127 to 0.1.128.

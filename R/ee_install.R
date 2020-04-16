@@ -267,7 +267,7 @@ ee_install_python_packages <- function(method = c(
   invisible(TRUE)
 }
 
-#' Upgrade the EarthEngine Python API
+#' Upgrade the Earth Engine Python API
 #'
 #' This function upgrade the EarthEngine Python API (earthengine-api)
 #' to the latest version.
