@@ -498,16 +498,6 @@ ee_image_local <- function(image,
     sf_region <- st_transform(sf_region, img_crs)
   }
 
-  # region is a ee$Geometry$Rectangle?
-  if (any(class(region) %in% "ee.geometry.Geometry")) {
-    npoints <- nrow(st_coordinates(sf_region))
-    if (npoints != 5) {
-      stop(
-        stop("region needs to be a ee$Geometry$Rectangle.")
-      )
-    }
-  }
-
   # Getting image ID if it is exist
   image_id <- tryCatch(
     expr = parse_json(image$id()$serialize())$
@@ -541,6 +531,15 @@ ee_image_local <- function(image,
   ### -----------
 
   if (via == "getInfo") {
+
+    # region is a ee$Geometry$Rectangle?
+    if (any(class(region) %in% "ee.geometry.Geometry")) {
+      npoints <- nrow(st_coordinates(sf_region))
+      if (npoints != 5) {
+        stop("region needs to be a ee$Geometry$Rectangle.")
+      }
+    }
+
     # Reproject image if you defined a scale
     if (!is.null(scale)) {
       prj_image$transform[1] <- scale
