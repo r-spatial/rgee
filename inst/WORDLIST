@@ -1,5 +1,4 @@
-️
-allNonZero
+️allNonZero
 anyNonZero
 AppVeyor
 AUTH
@@ -182,3 +181,8 @@ proj
 dsn
 ErrorMargin
 LineString
+googleCloudStorageR
+RasterLayer
+RasterBrick
+RasterStack
+arg

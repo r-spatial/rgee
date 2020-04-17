@@ -1,3 +1,6 @@
+# rgee 0.3.14
+- ee_image module upgrade: new tests, new doc, and several bugs fixed.
+- functions ee_gcs_to_asset_* renamed to ee_gcs_to_*
 # rgee 0.3.13
 - new function inside the ee_search interface: `ee_datacatalog_display`
 - sf_as_ee doc upgrade.

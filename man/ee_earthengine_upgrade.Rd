@@ -42,7 +42,7 @@ created conda environment. Python 3.7 is installed by default.}
 \code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
 }
 \description{
-This function upgrade the EarthEngine Python API (earthengine-api)
+This function upgrade the Earth Engine Python API (earthengine-api)
 to the latest version.
 }
 \details{

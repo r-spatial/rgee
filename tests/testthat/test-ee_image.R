@@ -1,6 +1,7 @@
 context("rgee: sf_as_stars test")
 
 library(rgee)
+library(raster)
 library(stars)
 ee_reattach()
 ee_Initialize(

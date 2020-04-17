@@ -269,7 +269,7 @@ ee_install_python_packages <- function(method = c(
 
 #' Upgrade the Earth Engine Python API
 #'
-#' This function upgrade the EarthEngine Python API (earthengine-api)
+#' This function upgrade the Earth Engine Python API (earthengine-api)
 #' to the latest version.
 #'
 #' @param method Installation method. By default, "auto" automatically
