@@ -228,8 +228,8 @@ ee_fix_offset <- function(img_transform, sf_region) {
     y_min <- ee_fix_y_coord(img_y_offset, sf_y_min, img_y_scale, option = 'min')
     sf_y_max <- max(rectangle_coord[, "Y"])
     y_max <- ee_fix_y_coord(img_y_offset, sf_y_max, img_y_scale, option = 'max')
+    c(xmin = x_min, ymin = y_min, xmax = x_max, ymax = y_max)
   }
-  c(xmin = x_min, ymin = y_min, xmax = x_max, ymax = y_max)
 }
 
 #' Fix x coordinates

@@ -2,6 +2,7 @@ context("rgee: sf_as_stars test")
 
 library(rgee)
 library(stars)
+ee_reattach()
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
@@ -12,6 +13,7 @@ ee_Initialize(
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
   select(c("B4", "B3", "B2"))$
   divide(10000)
+
 geometry <- ee$Geometry$Rectangle(
   coords = c(-110.8, 44.6, -110.6, 44.7),
   proj = "EPSG:4326",
@@ -23,7 +25,28 @@ starsproxy_x <- read_stars(tif, proxy = TRUE)
 asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 image_srtm <- ee$Image("CGIAR/SRTM90_V4")
 
-# Test --------------------------------------------------------------------
+# getInfo geometry ---------------------------------------------------
+test_that('Geometry consideration for "getInfo"', {
+  rect_01 <- ee$Geometry$Rectangle(-3, -3, 3, 3)
+  test_image_01 <- ee$Image(0)$add(1)
+
+  # test01: base case
+  img_01 <- ee_image_as_raster(image = test_image_01, region = rect_01,
+                               quiet = TRUE)
+  expect_equal(extent(img_01), extent(-3,3,-3,3))
+
+  # test02: even a small increase will add a new pixel
+  nominalscale = test_image_01$projection()$nominalScale()$getInfo()
+  test_image_02 <- test_image_01$reproject(
+    crs = "EPSG:4326",
+    scale = round(nominalscale)
+  )
+  img_02 <- ee_image_as_raster(image = test_image_02, region = rect_01,
+                               quiet = TRUE)
+  expect_equal(dim(img_02), c(8, 8, 1))
+})
+
+# ee_Image_local ---------------------------------------------------
 test_that("ee_as_proxystars ", {
   proxy_01 <- rgee:::ee_as_proxystars(tif)
   proxy_02 <- rgee:::ee_as_proxystars(stars_x)
@@ -33,26 +56,23 @@ test_that("ee_as_proxystars ", {
   expect_s3_class(proxy_03, 'stars_proxy')
 })
 
-
-test_that("ee_as_stars - getInfo ", {
+test_that("ee_as_stars - simple ", {
+  #getinfo
   img_stars_01 <- ee_image_as_stars(
     image = img,
     region = geometry,
     via = "getInfo"
   )
   expect_s3_class(img_stars_01,'stars')
-})
 
-test_that("ee_as_stars - drive ", {
+  #drive
   img_stars_02 <- ee_image_as_stars(
     image = img,
     region = geometry,
     via = "drive"
   )
   expect_s3_class(img_stars_02, 'stars')
-})
 
-test_that("ee_as_stars - gcs", {
   img_raster_03 <- ee_image_as_raster(
     image = img,
     region = geometry,
@@ -60,15 +80,20 @@ test_that("ee_as_stars - gcs", {
     container = 'rgee_dev'
   )
   expect_s4_class(img_raster_03, 'RasterStack')
+
+  getInfo <- mean(getValues(raster(img_stars_01[[1]])))
+  drive <- mean(getValues(raster(img_stars_02[[1]])),na.rm = TRUE)
+  # Equal value but some problems in the bounds
+  expect_equal(getInfo, drive, tolerance = 0.1)
 })
 
 
-test_that("stars_as_ee - gcs", {
+test_that("ee to drive to local - gcs", {
   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
   # 2. Pass from gcs to asset
   stars_x <- read_stars(tif)
   st_crs(stars_x) <- 4326
-  ee_gcs_to_asset_image(
+  ee_gcs_to_image(
     x = stars_x,
     gs_uri = gs_uri,
     asset_id = asset_id
@@ -81,9 +106,51 @@ test_that("stars_as_ee - gcs", {
     bucket = "rgee_dev"
   )
   expect_s3_class(ee_image_02,'ee.image.Image')
+
+  ee_image_03 <- stars_as_ee(
+    x = stars_x,
+    assetId = asset_id,
+    bucket = "rgee_dev",
+    monitoring = FALSE
+  )
+  expect_type(ee_image_03,'character')
 })
 
-# world image thumbnail ---------------------------------------------------
+test_that("ee_image_to_local", {
+  img_01 <- ee_image_to_local(
+    image = image_srtm,
+    region = geometry,
+    scale = 250,
+    via = "getInfo"
+  )
+
+  img_02 <- ee_image_to_local(
+    image = image_srtm,
+    region = geometry,
+    scale = 250,
+    via = "drive"
+  )
+
+  expect_equal(dim(raster(img_02)), dim(raster(img_01)))
+  expect_equal(extent(raster(img_02)), extent(raster(img_01)))
+  expect_equal(
+    mean(getValues(raster(img_02))),
+    mean(getValues(raster(img_01))),
+    tolerance = 0.1
+  )
+})
+
+test_that("ee_image_as_raster", {
+  img_01 <- ee_image_as_raster(
+    image = image_srtm,
+    region = geometry,
+    scale = 10,
+    via = "getInfo"
+  )
+  expect_s4_class(img_01, "RasterStack")
+})
+
+# world image thumbnail -----------------------------------------------
 region <- ee$Geometry$Rectangle(
   coords = c(-180,-60,180,60),
   proj =  "EPSG:4326",
@@ -95,9 +162,124 @@ test_that("ee_as_thumbnail world", {
   expect_s3_class(world_dem, 'stars')
 })
 
+# clean containers  ---------------------------------------------------
 test_that("ee_clean_container", {
   drive <- ee_clean_container()
   gcs <- ee_clean_container(name = 'rgee_dev',type = 'gcs')
   expect_true(gcs)
   expect_true(drive)
 })
+
+# errors  ------------------------------------------------------------
+test_that("ee_image_local error 1", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = "ee$Image",
+      region = geometry,
+      scale = 100,
+      via = "getInfo"
+      )
+    )
+  }
+)
+
+
+test_that("ee_image_local error 2", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = image_srtm,
+      scale = 100,
+      via = "getInfo"
+      )
+    )
+  }
+)
+
+test_that("ee_image_local error 3", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = geometry$centroid(maxError = 1)$buffer(100),
+      scale = 100,
+      via = "getInfo"
+    )
+  )
+}
+)
+
+test_that("ee_image_local error 4", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = geometry,
+      scale = "100",
+      via = "getInfo"
+    )
+  )
+}
+)
+
+
+test_that("ee_image_local error 5", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = geometry,
+      scale = c(100, 120),
+      via = "getInfo"
+    )
+  )
+}
+)
+
+test_that("ee_image_local error 6", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = geometry,
+      via = "testing"
+    )
+  )
+}
+)
+
+
+test_that("ee_image_local error 7", {
+  expect_error(
+    rgee:::ee_image_local(
+      image = image_srtm,
+      region = geometry,
+      scale = 0.1,
+      via = "getInfo"
+    )
+  )
+}
+)
+
+test_that("ee_image_local error 8", {
+  expect_error(
+  ee_image_as_raster(
+    image = image_srtm,
+    region = geometry,
+    scale = 20000,
+    via = "getInfo"
+  )
+  )
+})
+
+test_that("ee_image_local error 9", {
+  GEOtransform <- image_srtm$projection()$getInfo()$transform
+  GEOtransform[[2]] <- 10
+  GEOtransform[[4]] <- 10
+  expect_error(
+    ee_image_as_raster(
+      image = image_srtm$reproject(crs = "EPSG:4326",
+                                   crsTransform = GEOtransform),
+      region = geometry,
+      scale = 20000,
+      via = "getInfo"
+    )
+  )
+})
+

@@ -20,21 +20,25 @@
 #' @details
 #' \code{ee_image_to_local} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_image_as_character} will make an
+#' is set in the \code{via} argument, \code{ee_image_to_local} will make an
 #' REST call to retrieve all the known information about the object. The
 #' advantage of use "getInfo" is a direct and faster download. However, there
 #' is a limitation of 262144 pixels by request which makes it not recommendable
 #' for large images. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large collections since they use an intermediate container.
-#' They use Google Drive and Google Cloud Storage respectively. For getting
-#' more information about exporting data take a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
-#' Engine Guide - Export data}.
+#' are suitable for large collections since they use an intermediate web store
+#' service. Before to use any of this options, it is necessary previously
+#' install the R packages
+#' \href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+#' and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+#' googleCloudStorageR}. For getting more information about exporting data take
+#' a look at the \href{developers.google.com/earth-engine/exporting}{Google
+#' Earth Engine Guide - Export data}.
 #' @return A character object
 #' @importFrom jsonlite parse_json
 #' @importFrom raster raster stack
 #' @importFrom sf st_transform st_coordinates st_make_grid
 #' @importFrom stars st_set_dimensions st_mosaic st_dimensions
+#' st_get_dimension_values
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -72,14 +76,14 @@
 #'   via = "getInfo"
 #' )
 #'
-#' ## drive - Method 02
+#' ## drive - Option 02
 #' img_02 <- ee_image_to_local(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
-#' ## gcs - Method 03
+#' ## gcs - Option 03
 #' img_03 <- ee_image_to_local(
 #'   image = img,
 #'   region = geometry,
@@ -126,7 +130,7 @@ ee_image_to_local  <- function(image,
 #' CRS needs to be the same that the x argument otherwise it will be
 #' forced. If not specified, image bounds will be taken.
 #' @param dsn Character. Output filename. If missing,
-#' \code{ee_image_as_character} will create a temporary file.
+#' \code{ee_image_as_stars} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
 #' to the native resolution of the image assset.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
@@ -137,21 +141,24 @@ ee_image_to_local  <- function(image,
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param quiet logical. Suppress info message
+#' @param quiet Logical. Suppress info message
 #' @details
 #' \code{ee_image_as_stars} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
 #' is set in the \code{via} argument, \code{ee_image_as_stars} will make an
 #' REST call to retrieve all the known information about the object. The
 #' advantage of use "getInfo" is a direct and faster download. However, there
-#' is a limitation of 5000 features by request which makes it not recommendable
-#' for large collections. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large collections since they use an intermediate container.
-#' They are Google Drive and Google Cloud Storage respectively. For getting
-#' more information about exporting data take a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
-#' Engine Guide - Export data}.
-#' @return A character object
+#' is a limitation of 262144 pixels by request which makes it not recommendable
+#' for large images. Instead of "getInfo", the options: "drive" and "gcs"
+#' are suitable for large collections since they use an intermediate web store
+#' service. Before to use any of this options, it is necessary previously
+#' install the R packages
+#' \href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+#' and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+#' googleCloudStorageR}. For getting more information about exporting data take
+#' a look at the \href{developers.google.com/earth-engine/exporting}{Google
+#' Earth Engine Guide - Export data}.
+#' @return A stars-proxy object
 #' @export
 #' @examples
 #' \dontrun{
@@ -224,6 +231,7 @@ ee_image_as_stars <- function(image,
                               maxPixels = 1e9,
                               container = "rgee_backup",
                               quiet = FALSE) {
+
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -234,6 +242,7 @@ ee_image_as_stars <- function(image,
     container = container,
     quiet = quiet
   )
+
   img_stars <- read_stars(img_files$file,proxy = TRUE)
   st_crs(img_stars) <- img_files$crs
   st_set_dimensions(img_stars, 3, values = img_files$band_names)
@@ -247,7 +256,7 @@ ee_image_as_stars <- function(image,
 #' CRS needs to be the same that the x argument otherwise it will be
 #' forced. If not specified, image bounds will be taken.
 #' @param dsn Character. Output filename. If missing,
-#' \code{ee_image_as_character} will create a temporary file.
+#' \code{ee_image_as_raster} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
 #' to the native resolution of the image assset.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
@@ -265,14 +274,17 @@ ee_image_as_stars <- function(image,
 #' is set in the \code{via} argument, \code{ee_image_as_raster} will make an
 #' REST call to retrieve all the known information about the object. The
 #' advantage of use "getInfo" is a direct and faster download. However, there
-#' is a limitation of 5000 features by request which makes it not recommendable
-#' for large collections. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large collections since they use an intermediate container.
-#' They are Google Drive and Google Cloud Storage respectively. For getting
-#' more information about exporting data take a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
-#' Engine Guide - Export data}.
-#' @return A character object
+#' is a limitation of 262144 pixels by request which makes it not recommendable
+#' for large images. Instead of "getInfo", the options: "drive" and "gcs"
+#' are suitable for large collections since they use an intermediate web store
+#' service. Before to use any of this options, it is necessary previously
+#' install the R packages
+#' \href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+#' and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+#' googleCloudStorageR}. For getting more information about exporting data take
+#' a look at the \href{developers.google.com/earth-engine/exporting}{Google
+#' Earth Engine Guide - Export data}.
+#' @return A RasterStack object
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -365,37 +377,18 @@ ee_image_as_raster  <- function(image,
   }
 }
 
-#' Convert an stars object to an EE object
+#' Convert a local image into an EE Image
 #'
-#' @param x stars object to be converted into a ee$Image.
-#' @param assetId Destination asset ID for the uploaded file.
-#' @param bucket name you want this session to use by default,
-#' or a bucket object.
-#' @param monitoring If TRUE the exportation task will be monitored.
+#' @param x Character, RasterLayer, RasterStack, RasterBrick, stars or
+#' stars-proxy object to be converted into an ee$Image.
+#' @param assetId Character. Destination asset ID for the uploaded file.
+#' @param bucket Character. Name of the GCS bucket.
+#' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
 #' @return An ee$Image object
-#' @details
-#' The process to pass a sf object to Earth Engine Asset could be carried
-#' out by three different strategies. These are controlled by the "via"
-#' parameter. The first method implemented is 'getInfo'. In this method the
-#' sf objects are transformed to GeoJSON using \link[geojsonio]{geojson_json}
-#' and then encrusted in an HTTP request using the server-side objects that are
-#' implemented in the Earth Engine API (e.g. ee$Geometry$*). If the sf object
-#' is too large (>1Mb) it is likely to cause bottlenecks and plodding
-#' connections. One advantage of this method is that it create temporary files
-#' and will not be saved in your Earth Engine Asset. See
-#' \href{https://developers.google.com/earth-engine/client_server}{Client
-#' vs Server} documentation for more details. The second method implemented is
-#' 'toasset'. It is similar to the previous one, with the difference that
-#' the spatial object will be saved in your Earth Engine Asset. For dealing
-#' with very large spatial objects, it is preferable to use the third method
-#' called 'gcs'. In this method, firstly, the sf object will be saved as a
-#' *.shp in the  /temp directory. Secondly, using the function ee_local_to_gcs
-#' will move the shapefile from local to Google Cloud Storage. Finally, using
-#' the function ee_gcs_to_asset_table it will be loaded to the Earth Engine
-#' Asset.
+#' @name local_as_image
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -412,7 +405,7 @@ ee_image_as_raster  <- function(image,
 #' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
-#' ee_gcs_to_asset_image(
+#' ee_gcs_to_image(
 #'   x = x,
 #'   gs_uri = gs_uri,
 #'   asset_id = asset_id
@@ -427,9 +420,11 @@ ee_image_as_raster  <- function(image,
 #' Map$addLayer(ee_stars_01)
 #'
 #' # Method 2
-#' ee_stars_02 <- stars_as_ee(x = x,
-#'                            assetId = asset_id,
-#'                            bucket = "rgee_dev")
+#' ee_stars_02 <- stars_as_ee(
+#'   x = x,
+#'   assetId = asset_id,
+#'   bucket = "rgee_dev"
+#' )
 #' Map$centerObject(ee_stars_02)
 #' Map$addLayer(ee_stars_02)
 #' }
@@ -448,11 +443,13 @@ stars_as_ee <- function(x,
     bucket = bucket,
     quiet = quiet
   )
-  ee_gcs_to_asset_image(
+
+  ee_gcs_to_image(
     x = x,
     gs_uri = gcs_filename,
     asset_id = assetId
   )
+
   if (isTRUE(monitoring)) {
     try(ee_monitoring())
     ee$Image(assetId)
@@ -461,7 +458,13 @@ stars_as_ee <- function(x,
   }
 }
 
+#' @name local_as_image
+#' @export
+raster_as_ee <- stars_as_ee
 
+#' @name local_as_image
+#' @export
+ee_local_image_as_ee <- stars_as_ee
 
 #' Passing an Earth Engine Image to Local
 #' @noRd
@@ -531,6 +534,19 @@ ee_image_local <- function(image,
   ### -----------
 
   if (via == "getInfo") {
+    # initial crstransform
+    xScale <- prj_image$transform[[1]]
+    yScale <- -abs(prj_image$transform[[5]]) #always negative
+    xshearing <- prj_image$transform[[2]]
+    yshearing <- prj_image$transform[[4]]
+
+    # getInfo does not support xShearing and yShearing different to zero
+    if ((xshearing | yshearing) != 0) {
+      stop(
+        " 'getInfo' does not support xShearing and yShearing different",
+        " to zero. Use 'drive' or 'gcs' instead."
+      )
+    }
 
     # region is a ee$Geometry$Rectangle?
     if (any(class(region) %in% "ee.geometry.Geometry")) {
@@ -541,30 +557,23 @@ ee_image_local <- function(image,
     }
 
     # Reproject image if you defined a scale
-    if (!is.null(scale)) {
-      prj_image$transform[1] <- scale
-      prj_image$transform[5] <- -scale
-      image <- image$reproject(prj_image$crs, prj_image$transform)
-      prj_image <- image$projection()$getInfo()
-    }
-
     # if not, get the scale from geotransform parameter
-    if (is.null(scale)) {
-      img_scale_x <- prj_image$transform[1][[1]]
-      img_scale_y <- prj_image$transform[5][[1]]
-    } else {
+    if (!is.null(scale)) {
       if (!is.numeric(scale)) {
         stop("scale argument needs to be a numeric vector")
       }
-      if (length(scale) == 1) {
-        img_scale_x <- scale
-        img_scale_y <- -scale
-      } else {
-        stop(
-          "scale argument needs to be a numeric vector",
-          " of the form: c(x_scale, -y_scale)"
-        )
+      if (!length(scale) == 1) {
+        stop("scale argument needs to be a one-length numeric vector")
       }
+      nominalscale <- image$projection()$nominalScale()$getInfo()
+      xScale <- xScale * scale/nominalscale
+      yScale <- yScale * scale/nominalscale
+      prj_image$transform[[1]] <- xScale
+      prj_image$transform[[5]] <- yScale
+      image <- image$reproject(
+        crs = prj_image$crs,
+        crsTransform = prj_image$transform
+      )
     }
 
     # Estimating the number of pixels (approximately)
@@ -574,8 +583,8 @@ ee_image_local <- function(image,
       as.numeric()
     x_diff <- bbox[3] - bbox[1]
     y_diff <- bbox[4] - bbox[2]
-    x_npixel <- tail(abs(x_diff / prj_image$transform[1][[1]]))
-    y_npixel <- tail(abs(y_diff / prj_image$transform[5][[1]]))
+    x_npixel <- tail(abs(x_diff / xScale))
+    y_npixel <- tail(abs(y_diff / yScale))
     total_pixel <- x_npixel * y_npixel # approximately
     if (total_pixel > maxPixels) {
       stop(
@@ -602,7 +611,7 @@ ee_image_local <- function(image,
 
     # Create a regular tesselation over the bounding box
     # after that move to earth engine.
-    sf_region_gridded <- st_make_grid(sf_region, n = nbatch)
+    sf_region_gridded <- suppressMessages(st_make_grid(sf_region, n = nbatch))
     region_fixed <- sf_region_gridded %>%
       sf_as_ee(
         check_ring_dir = TRUE,
@@ -681,28 +690,45 @@ ee_image_local <- function(image,
         st_set_dimensions(names = c("x", "y", "band"))
       attr_dim <- attr(image_stars, "dimensions")
 
-
       ## Configure metadata of the local image and geotransform
       sf_region_batch <- ee_as_sf(feature)
       # Fix the init_x and init_y of each image
-      init_offset <- ee_fix_offset(prj_image$transform, sf_region_batch)
-      min_long <- init_offset[1]
-      max_lat <- init_offset[4]
-      attr_dim$x$offset <- min_long
-      attr_dim$y$offset <- max_lat
-      attr_dim$x$delta <- img_scale_x
-      attr_dim$y$delta <- img_scale_y
+      init_offset <- ee_fix_offset(
+        img_transform = prj_image$transform,
+        sf_region =  sf_region_batch
+      )
+      xTranslation_fixed <- init_offset[1]
+      yTranslation_fixed <- init_offset[4]
+      attr_dim$x$offset <- xTranslation_fixed
+      attr_dim$y$offset <- yTranslation_fixed
+      attr_dim$x$delta <- xScale
+      attr_dim$y$delta <- yScale
       attr(image_stars, "dimensions") <- attr_dim
       image_stars <- st_set_dimensions(image_stars, 3, values = band_names)
       stars_img_list[[r_index]] <- image_stars
     }
 
-    # Upgrading metadata of mosaic
-    mosaic <- do.call(st_mosaic, stars_img_list)
-    st_crs(mosaic) <- img_crs
-    mosaic <- st_set_dimensions(mosaic, 3, values = band_names)
-    # Save results in dsn
-    write_stars(mosaic, dsn)
+    # Analizing the stars dimensions
+    dim_x <- st_get_dimension_values(stars_img_list[[1]],"x")
+    dim_y <- st_get_dimension_values(stars_img_list[[1]],"y")
+
+    if (length(dim_x) == 0 | length(dim_y) == 0) {
+      stop(
+        "The number of pixels of the resulting image in x (y) is zero. ",
+        "Are you define the scale properly?"
+      )
+    } else {
+      # Upgrading metadata of mosaic
+      mosaic <- do.call(st_mosaic, stars_img_list)
+      st_crs(mosaic) <- img_crs
+
+      # The stars object have bands dimensions?
+      if (!is.null(st_get_dimension_values(mosaic,"bands"))) {
+        st_set_dimensions(mosaic, 3, values = band_names)
+      }
+      # Save results in dsn
+      write_stars(mosaic, dsn)
+    }
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
       ee_Initialize(email = ee_user$email, drive = TRUE)
@@ -809,3 +835,4 @@ ee_image_local <- function(image,
   }
   return(list(file = dsn, band_names = band_names, crs = img_crs))
 }
+
