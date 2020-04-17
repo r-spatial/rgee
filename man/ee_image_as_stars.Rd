@@ -23,7 +23,7 @@ CRS needs to be the same that the x argument otherwise it will be
 forced. If not specified, image bounds will be taken.}
 
 \item{dsn}{Character. Output filename. If missing,
-\code{ee_image_as_character} will create a temporary file.}
+\code{ee_image_as_stars} will create a temporary file.}
 
 \item{via}{Character. Method to fetch data about the object. Multiple
 options supported. See details.}
@@ -39,10 +39,10 @@ more pixels in the specified projection. Defaults to 100,000,000.}
 to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \value{
-A character object
+A stars-proxy object
 }
 \description{
 Convert an Earth Engine (EE) image into a stars object
@@ -53,13 +53,16 @@ by three different options: "getInfo", "drive", and "gcs". When "getInfo"
 is set in the \code{via} argument, \code{ee_image_as_stars} will make an
 REST call to retrieve all the known information about the object. The
 advantage of use "getInfo" is a direct and faster download. However, there
-is a limitation of 5000 features by request which makes it not recommendable
-for large collections. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large collections since they use an intermediate container.
-They are Google Drive and Google Cloud Storage respectively. For getting
-more information about exporting data take a look at the
-\href{https://developers.google.com/earth-engine/exporting}{Google Earth
-Engine Guide - Export data}.
+is a limitation of 262144 pixels by request which makes it not recommendable
+for large images. Instead of "getInfo", the options: "drive" and "gcs"
+are suitable for large collections since they use an intermediate web store
+service. Before to use any of this options, it is necessary previously
+install the R packages
+\href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+googleCloudStorageR}. For getting more information about exporting data take
+a look at the \href{developers.google.com/earth-engine/exporting}{Google
+Earth Engine Guide - Export data}.
 }
 \examples{
 \dontrun{

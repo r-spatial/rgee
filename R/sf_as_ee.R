@@ -48,7 +48,7 @@
 #' 'gcs_to_asset'. This option firstly save the sf object as a  *.shp file
 #' in the /temp directory . Secondly, using the function \code{ee_local_to_gcs}
 #' will move the shapefile from local to Google Cloud Storage. Finally, using
-#' the function \code{ee_gcs_to_asset_table} the ESRI shapefile will be loaded
+#' the function \code{ee_gcs_to_table} the ESRI shapefile will be loaded
 #' to the Earth Engine Asset.
 #' See \href{https://developers.google.com/earth-engine/importing}{Importing
 #' table data} documentation for more details.
@@ -200,7 +200,7 @@ sf_as_ee <- function(x,
       bucket = bucket,
       quiet = quiet
     )
-    ee_gcs_to_asset_table(
+    ee_gcs_to_table(
       gs_uri = gcs_filename,
       asset_id = assetId
     )

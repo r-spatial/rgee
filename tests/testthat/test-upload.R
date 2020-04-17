@@ -15,13 +15,13 @@ test_that("ee_local_to_gcs - character",{
 })
 
 # ee_upload with bucket -----------------------------------------------------
-test_that("ee_gcs_to_asset_table ", {
+test_that("ee_gcs_to_table ", {
   nc <- st_read(system.file("shape/nc.shp", package = "sf"))
   asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
   zipfile <- ee_create_shp_zip(nc)
   gs_uri <- ee_local_to_gcs(x = zipfile,
                             bucket = 'rgee_dev')
-  ee_gcs_to_asset_table(
+  ee_gcs_to_table(
     gs_uri = gs_uri,
     asset_id = asset_id
   )
@@ -33,7 +33,7 @@ test_that("ee_gcs_to_asset_table ", {
 
 system.time(2)
 
-test_that("ee_gcs_to_asset_image ", {
+test_that("ee_gcs_to_image ", {
   # Get the filename of a image
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   x <- read_stars(tif)
@@ -45,7 +45,7 @@ test_that("ee_gcs_to_asset_image ", {
   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 
   # 2. Pass from gcs to asset
-  result <- ee_gcs_to_asset_image(
+  result <- ee_gcs_to_image(
     x = x,
     gs_uri = gs_uri,
     asset_id = asset_id

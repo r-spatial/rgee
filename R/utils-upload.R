@@ -111,7 +111,7 @@ ee_local_to_gcs <- function(x,
 #' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 #'
 #' # 3. Pass the sf to a zip file
-#' ee_gcs_to_asset_table(
+#' ee_gcs_to_table(
 #'   gs_uri = gs_uri,
 #'   asset_id = asset_id
 #' )
@@ -133,14 +133,14 @@ ee_local_to_gcs <- function(x,
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-ee_gcs_to_asset_table <- function(gs_uri, asset_id, quiet = FALSE) {
+ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
   if (isFALSE(quiet)) {
     cat(
-      crayon::blue('Uploading'),
-      crayon::green(gs_uri),
-      crayon::blue('to'),
-      crayon::green(asset_id),
-      crayon::blue('... please wait\n')
+      blue('Uploading'),
+      green(gs_uri),
+      blue('to'),
+      green(asset_id),
+      blue('... please wait\n')
     )
   }
   system(
@@ -187,7 +187,7 @@ ee_gcs_to_asset_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
-#' ee_gcs_to_asset_image(
+#' ee_gcs_to_image(
 #'   x = x,
 #'   gs_uri = gs_uri,
 #'   asset_id = asset_id
@@ -209,15 +209,14 @@ ee_gcs_to_asset_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-ee_gcs_to_asset_image <- function(x,
-                                  gs_uri,
-                                  asset_id,
-                                  properties = NULL,
-                                  start_time = "1970-01-01",
-                                  end_time = "1970-01-01",
-                                  pyramiding_policy = 'MEAN',
-                                  quiet = FALSE
-                                  ) {
+ee_gcs_to_image <- function(x,
+                            gs_uri,
+                            asset_id,
+                            properties = NULL,
+                            start_time = "1970-01-01",
+                            end_time = "1970-01-01",
+                            pyramiding_policy = 'MEAN',
+                            quiet = FALSE) {
   tempdir_gee <- tempdir()
 
   # Load python module
@@ -294,11 +293,11 @@ ee_gcs_to_asset_image <- function(x,
 
   if (isFALSE(quiet)) {
     cat(
-      crayon::blue('Uploading'),
-      crayon::green(gs_uri),
-      crayon::blue('to'),
-      crayon::green(asset_id),
-      crayon::blue('... please wait\n')
+      blue('Uploading'),
+      green(gs_uri),
+      blue('to'),
+      green(asset_id),
+      blue('... please wait\n')
     )
   }
 
@@ -336,7 +335,7 @@ ee_gcs_to_asset_image <- function(x,
 #' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 #'
 #' # 3. Pass the sf to a zip file
-#' ee_gcs_to_asset_table(
+#' ee_gcs_to_table(
 #'   gs_uri = gs_uri,
 #'   asset_id = asset_id
 #' )

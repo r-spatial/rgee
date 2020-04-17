@@ -50,16 +50,19 @@ Save an EE Image in their local system
 \details{
 \code{ee_image_to_local} supports the download of \code{ee$Image}
 by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the \code{via} argument, \code{ee_image_as_character} will make an
+is set in the \code{via} argument, \code{ee_image_to_local} will make an
 REST call to retrieve all the known information about the object. The
 advantage of use "getInfo" is a direct and faster download. However, there
 is a limitation of 262144 pixels by request which makes it not recommendable
 for large images. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large collections since they use an intermediate container.
-They use Google Drive and Google Cloud Storage respectively. For getting
-more information about exporting data take a look at the
-\href{https://developers.google.com/earth-engine/exporting}{Google Earth
-Engine Guide - Export data}.
+are suitable for large collections since they use an intermediate web store
+service. Before to use any of this options, it is necessary previously
+install the R packages
+\href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+googleCloudStorageR}. For getting more information about exporting data take
+a look at the \href{developers.google.com/earth-engine/exporting}{Google
+Earth Engine Guide - Export data}.
 }
 \examples{
 \dontrun{
@@ -98,14 +101,14 @@ img_01 <- ee_image_to_local(
   via = "getInfo"
 )
 
-## drive - Method 02
+## drive - Option 02
 img_02 <- ee_image_to_local(
   image = img,
   region = geometry,
   via = "drive"
 )
 
-## gcs - Method 03
+## gcs - Option 03
 img_03 <- ee_image_to_local(
   image = img,
   region = geometry,
