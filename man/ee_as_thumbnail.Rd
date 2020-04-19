@@ -107,15 +107,12 @@ plot(
 
 ## Arequipa-Peru
 arequipa_region <- nc \%>\%
-  st_bbox() \%>\%
-  st_as_sfc() \%>\%
-  st_set_crs(4326) \%>\%
   sf_as_ee() \%>\%
   ee$FeatureCollection$geometry()
 
 arequipa_dem <- ee_as_thumbnail(
   image = image,
-  region = arequipa_region,
+  region = arequipa_region$buffer(1000)$bounds(),
   dimensions = 512,
   vizparams = list(min = 0, max = 5000)
 )
