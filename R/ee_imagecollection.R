@@ -102,22 +102,22 @@ ee_imagecollection_to_local <- function(ic,
     }
   }
 
-  # if dsn is a directory or a character
-  if (tryCatch(dir.exists(dsn), error = function(e) FALSE)) {
-    ic_names <- ic$aggregate_array('system:index')$getInfo()
-    ic_names <- sprintf("%s/%s",dsn,ic_names)
-  }
-
-  # if dsn is a directory or a character
-  if (tryCatch(dir.exists(dirname(dsn)), error = function(e) FALSE)) {
-    ic_names <- ic$aggregate_array('system:index')$getInfo()
-    ic_names <- sprintf("%s_%s",dsn,ic_names)
-  }
-
   # if dsn  is a vector character with the same length of the
   # imagecollection.
   if (length(dsn) == ic_count) {
     ic_names <- dsn
+  } else {
+    # if dsn is a directory or a character
+    if (tryCatch(dir.exists(dsn), error = function(e) FALSE)) {
+      ic_names <- ic$aggregate_array('system:index')$getInfo()
+      ic_names <- sprintf("%s/%s",dsn,ic_names)
+    }
+
+    # if dsn is a directory or a character
+    if (tryCatch(dir.exists(dirname(dsn)), error = function(e) FALSE)) {
+      ic_names <- ic$aggregate_array('system:index')$getInfo()
+      ic_names <- sprintf("%s_%s",dsn,ic_names)
+    }
   }
 
   # Output filename
@@ -139,7 +139,7 @@ ee_imagecollection_to_local <- function(ic,
     if (isFALSE(quiet)) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-    img_files <- ee_image_to_local(
+    ee_image_to_local(
       image = image,
       region = region,
       dsn = ic_names[r_index],

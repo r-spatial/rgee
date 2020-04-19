@@ -712,7 +712,7 @@ ee_image_local <- function(image,
     dim_x <- st_get_dimension_values(stars_img_list[[1]],"x")
     dim_y <- st_get_dimension_values(stars_img_list[[1]],"y")
 
-    if (length(dim_x) == 0 | length(dim_y) == 0) {
+    if (length(dim_x) == 1 | length(dim_y) == 1) {
       stop(
         "The number of pixels of the resulting image in x (y) is zero. ",
         "Are you define the scale properly?"

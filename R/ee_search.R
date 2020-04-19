@@ -215,7 +215,7 @@ fix_date <- function(x) {
 
 #' @name ee_search-tools
 #' @export
-ee_datacatalog_display <- function(ee_dataset, maxdisplay = 10){
+ee_search_display <- function(ee_dataset, maxdisplay = 10){
   db_catalog <- "https://developers.google.com/earth-engine/datasets/catalog/"
   tag_name <- gsub("\\/","_",ee_dataset$id)
   catalog_uri <- paste0(db_catalog, tag_name) %>%

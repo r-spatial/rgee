@@ -207,8 +207,7 @@ ee_manage_quota <- function() {
   quota <- ee_py_to_r(ee_quota$quota(ID))
   total_msg <- ee_humansize(as.numeric(quota[1]))
   used_msg <- ee_humansize(as.numeric(quota[2]))
-  cat(sprintf(" Total Quota: %s
- Used Quota: %s", total_msg, used_msg))
+  cat(sprintf(" Total Quota: %s \n Used Quota: %s", total_msg, used_msg))
   invisible(quota)
 }
 

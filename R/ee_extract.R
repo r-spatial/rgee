@@ -166,10 +166,10 @@ ee_extract <- function(x,
 
 #' Convert a character if it is a factor
 #' @noRd
-ee_isfactor_to_character <- function(x){
-  if (is(x,"factor")) {
-    as.character(x)
-  } else {
-    x
-  }
-}
+# ee_isfactor_to_character <- function(x){
+#   if (is(x,"factor")) {
+#     as.character(x)
+#   } else {
+#     x
+#   }
+# }

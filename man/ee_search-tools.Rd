@@ -12,7 +12,7 @@
 \alias{ee_search_title}
 \alias{ee_search_tagstitle}
 \alias{ee_search_title_list}
-\alias{ee_datacatalog_display}
+\alias{ee_search_display}
 \title{Interface to search into the Earth Engine Data Catalog}
 \usage{
 ee_dataset(quiet = FALSE, upgrade = FALSE)
@@ -35,7 +35,7 @@ ee_search_tagstitle(ee_dataset, ..., logical_operator = "OR")
 
 ee_search_title_list(ee_dataset)
 
-ee_datacatalog_display(ee_dataset, maxdisplay = 10)
+ee_search_display(ee_dataset, maxdisplay = 10)
 }
 \arguments{
 \item{quiet}{logical. Suppress info message}
