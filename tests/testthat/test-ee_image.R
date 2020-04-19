@@ -159,7 +159,7 @@ region <- ee$Geometry$Rectangle(
 )
 
 test_that("ee_as_thumbnail world", {
-  world_dem <- ee_as_thumbnail(x = image_srtm, region = region)
+  world_dem <- ee_as_thumbnail(image = image_srtm, region = region)
   expect_s3_class(world_dem, 'stars')
 })
 
@@ -282,5 +282,17 @@ test_that("ee_image_local error 9", {
       via = "getInfo"
     )
   )
-})
+ }
+)
 
+
+# ee_image_info test
+test_that("ee_image_info", {
+  # World SRTM
+  srtm <- ee$Image("CGIAR/SRTM90_V4")
+  ee_image_info(srtm)
+  # Landast8
+  l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
+  ee_image_info(l8,getsize = FALSE)
+
+})

@@ -5,7 +5,7 @@
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
 ee_as_thumbnail(
-  x,
+  image,
   region,
   dimensions,
   vizparams = NULL,
@@ -14,7 +14,7 @@ ee_as_thumbnail(
 )
 }
 \arguments{
-\item{x}{EE Image object to be converted into a stars object.}
+\item{image}{EE Image object to be converted into a stars object.}
 
 \item{region}{EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
 the region to export.The CRS needs to be the same as the \code{x} argument,
@@ -34,7 +34,7 @@ raster object?}
 \item{quiet}{logical; suppress info messages.}
 }
 \value{
-An stars object
+An stars or Raster object depending on the \code{raster} argument.
 }
 \description{
 Wrapper function to create a stars object with projection from a
@@ -92,7 +92,7 @@ world_region <- ee$Geometry$Rectangle(
 
 ## world - elevation
 world_dem <- ee_as_thumbnail(
-  x = image,
+  image = image,
   region = world_region,
   dimensions = 1024,
   vizparams = list(min = 0, max = 5000)
@@ -114,7 +114,7 @@ arequipa_region <- nc \%>\%
   ee$FeatureCollection$geometry()
 
 arequipa_dem <- ee_as_thumbnail(
-  x = image,
+  image = image,
   region = arequipa_region,
   dimensions = 512,
   vizparams = list(min = 0, max = 5000)
@@ -140,7 +140,7 @@ Map$addLayer(img, list(min = 0, max = 5000, gamma = 1.5))
 
 ## Teton Wilderness
 l8_img <- ee_as_thumbnail(
-  x = img,
+  image = img,
   region = img$geometry()$bounds(),
   dimensions = 1024,
   vizparams = list(min = 0, max = 5000, gamma = 1.5),

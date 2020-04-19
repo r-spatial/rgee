@@ -4,7 +4,7 @@
 #' \href{developers.google.com/earth-engine/image_visualization#thumbnail-images
 #' }{EE thumbnail image}.
 #'
-#' @param x EE Image object to be converted into a stars object.
+#' @param image EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
 #' the region to export.The CRS needs to be the same as the \code{x} argument,
 #' otherwise, it will be forced.
@@ -46,8 +46,7 @@
 #' number \cr
 #' }
 #'
-#' @return
-#' An stars object
+#' @return An stars or Raster object depending on the \code{raster} argument.
 #'
 #' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom methods as
@@ -80,7 +79,7 @@
 #'
 #' ## world - elevation
 #' world_dem <- ee_as_thumbnail(
-#'   x = image,
+#'   image = image,
 #'   region = world_region,
 #'   dimensions = 1024,
 #'   vizparams = list(min = 0, max = 5000)
@@ -102,7 +101,7 @@
 #'   ee$FeatureCollection$geometry()
 #'
 #' arequipa_dem <- ee_as_thumbnail(
-#'   x = image,
+#'   image = image,
 #'   region = arequipa_region,
 #'   dimensions = 512,
 #'   vizparams = list(min = 0, max = 5000)
@@ -128,7 +127,7 @@
 #'
 #' ## Teton Wilderness
 #' l8_img <- ee_as_thumbnail(
-#'   x = img,
+#'   image = img,
 #'   region = img$geometry()$bounds(),
 #'   dimensions = 1024,
 #'   vizparams = list(min = 0, max = 5000, gamma = 1.5),
@@ -137,18 +136,22 @@
 #' plotRGB(l8_img, stretch = "lin")
 #' }
 #' @export
-ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
+ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                             raster = FALSE, quiet = FALSE) {
 
-  if (!any(class(x) %in% "ee.image.Image")) {
-    stop("x argument is not an ee$image$Image")
+  # is image an ee.image.Image?
+  if (!any(class(image) %in% "ee.image.Image")) {
+    stop("image argument is not an ee$image$Image")
   }
 
+  # is region an ee.geometry.Geometry?
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
   }
 
+  # From ee$Geometry$Rectangle to sf
   sf_region <- ee_as_sf(x = region)$geometry
+
   ## region is a ee$Geometry$Rectangle?
   if (any(class(region) %in% "ee.geometry.Geometry")) {
     npoints <- nrow(st_coordinates(sf_region))
@@ -159,6 +162,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     }
   }
 
+  # is dimensions missing?
   if (missing(dimensions)) {
     dimensions <- 512L
     if (!quiet) {
@@ -167,11 +171,12 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     }
   }
 
-  if (max(dimensions) > 4096) {
+  # it is a large image?
+  if (max(dimensions) > 2048) {
     if (!quiet) {
       message(
         "For large image is preferible use rgee::ee_download_*(...)",
-        "or rgee::ee_as_stars(...)"
+        "or rgee::ee_as_*(...)"
       )
     }
   }
@@ -183,10 +188,9 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     error = function(e) "thumbnail"
   )
 
-
+  # Metadata of the Geometry to display
   ## is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
-
   ## is_evenodd?
   query_params <- unlist(parse_json(region$serialize())$scope)
   is_evenodd <- as.logical(
@@ -196,7 +200,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     is_evenodd <- TRUE
   }
 
-  # bbox and CRS
+  # bbox and CRS of the geometry
   init_offset <- st_bbox(sf_region)
   ee_crs <- st_crs(sf_region)$epsg
 
@@ -214,40 +218,20 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   # Preparing parameters
   vizparams$dimensions <- dimensions
   vizparams$region <- region
-  if (is.null(vizparams$format)) {
-    vizparams$format <- "png"
-  }
+  vizparams$format <- "png"
 
-  # Creating thumbnail as either jpg or png
+  # Creating thumbnail in png format
   if (!quiet) {
     cat(
       "Getting the thumbnail image ... please wait\n"
     )
   }
-  thumbnail_url <- x$getThumbURL(vizparams)
+  thumbnail_url <- image$getThumbURL(vizparams)
+
+  # Reading the png image
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
-
-  # Handling problems with respect to the format
-  # of the getTHumbURL (sometimes jpeg other png)
-  error_message_I <- paste0(
-    "Error arise after trying to download ",
-    "via getThumbURL (it needs to be ",
-    "either jpeg or png)"
-  )
-
-  raw_image <- tryCatch(
-    tryCatch(readPNG(z),
-             error = function(e) {
-               pre_raw <- readJPEG(z)
-               if (length(dim(pre_raw)) == 2) {
-                 dim(pre_raw) <- c(dim(pre_raw), 1)
-               }
-               pre_raw
-             }
-    ),
-    error = function(e) stop(error_message_I)
-  )
+  raw_image <- readPNG(z)
 
   # matrix to array
   if (length(dim(raw_image)) == 2) {
@@ -256,13 +240,10 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
 
   # It is a RGB or gray image?
   if (dim(raw_image)[3] == 1) {
-    # jpeg
     bands <- 1
   } else if (dim(raw_image)[3] == 2) {
-    # png
     bands <- 1
   } else if (dim(raw_image)[3] == 3) {
-    # png(color) or others
     bands <- 3
   } else if (dim(raw_image)[3] == 4) {
     bands <- 3
@@ -309,7 +290,7 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
     }
   } else if (bands == 1) {
     # Image band name
-    band_name <- x$bandNames()$getInfo()
+    band_name <- image$bandNames()$getInfo()
     # Create a stars object for single band image
     stars_png <- mapply(read_png_as_stars,
                         bands,
@@ -349,9 +330,11 @@ ee_as_thumbnail <- function(x, region, dimensions, vizparams = NULL,
   }
 }
 
-# From R array to stars
+#' From R array to stars
+#' @noRd
 read_png_as_stars <- function(x, band_name, mtx) {
-  rotate_x <- t(mtx[, , x])
+  rotate <- function(x) t(apply(x, 2, rev))
+  rotate_x <- rotate(mtx[, , x])
   dim_x <- dim(rotate_x)
   array_x <- array(NA, dim = c(dim_x[1], dim_x[2], 1))
   array_x[, , 1] <- rotate_x
@@ -360,99 +343,4 @@ read_png_as_stars <- function(x, band_name, mtx) {
   stars_object
 }
 
-#' Approximate size of an EE Image object
-#'
-#' Get the approximate number of rows, cols, and size of an
-#' Earth Engine Image.
-#'
-#' @param image EE Image object.
-#' @param getsize Logical. If TRUE, the size of the object
-#' will be estimated.
-#' @param compression_ratio Numeric. Measurement of the relative reduction
-#' in size of data representation produced by a data compression algorithm
-#' (ignored if \code{getsize} is FALSE). By default is 20
-#' @param quiet logical. Suppress info message
-#' @return A list of parameters
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_reattach()
-#' ee_Initialize()
-#'
-#' # World SRTM
-#' srtm <- ee$Image("CGIAR/SRTM90_V4")
-#' ee_image_info(srtm)
-#'
-#' # Landast8
-#' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-#' ee_image_info(l8)
-#' }
-#' @export
-ee_image_info <- function(image,
-                          getsize = TRUE,
-                          compression_ratio = 20,
-                          quiet = FALSE) {
-  img_proj <- image$projection()$getInfo()
-  geotransform <- unlist(img_proj$transform)
-  img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
-  suppressWarnings(
-    st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
-  )
-  bbox <- img_totalarea %>%
-    st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
-    st_bbox() %>%
-    as.numeric()
 
-  x_diff <- bbox[3] - bbox[1]
-  y_diff <- bbox[4] - bbox[2]
-  x_npixel <- ceiling(abs(x_diff / geotransform[1]))
-  y_npixel <- ceiling(abs(y_diff / geotransform[5]))
-  total_pixel <- abs(as.numeric(x_npixel * y_npixel))
-  if (isFALSE(getsize)) {
-    return(invisible(total_pixel))
-  }
-  if (!quiet) {
-    cat('Image Rows       :', x_npixel,'\n')
-    cat('Image Cols       :', y_npixel,'\n')
-    cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
-  }
-  if (isTRUE(getsize)) {
-    bandtypes_info <- image$bandTypes()$getInfo()
-    img_types <- unlist(bandtypes_info)
-    band_types <- img_types[grepl("precision", names(img_types))]
-    band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
-    number_of_bytes <- total_pixel * band_precision / compression_ratio
-    image_size <- sum(number_of_bytes)
-    if (!quiet) {
-      cat("Image Size       :", ee_humansize(image_size), "\n")
-    }
-  }
-  invisible(
-    list(
-      nrow = x_npixel,
-      ncol = y_npixel,
-      total_pixel = total_pixel,
-      image_size = image_size
-    )
-  )
-}
-
-ee_get_typeimage_size <- function(type) {
-  if (type == "int") {
-    32
-  } else if (type == "INT") {
-    32
-  } else if (type == "double") {
-    64
-  } else if (type == "float") {
-    64
-  } else if (type == "int8") {
-    8
-  } else if (type == "int16") {
-    16
-  } else if (type == "int32") {
-    32
-  } else {
-    32
-  }
-}

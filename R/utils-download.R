@@ -43,7 +43,6 @@ ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
   }
 }
 
-
 #' Delete files from a either Folder or Bucket
 #'
 #' Delete all files from a folder (Google Drive) or a bucket
@@ -322,5 +321,27 @@ set_crs <- function(image_stars, prj_image, band_names) {
     image_stars <- st_set_dimensions(image_stars, "bands")
     attr(image_stars, "dimensions")$bands$to <- 1
     st_set_dimensions(image_stars, 3, values = band_names)
+  }
+}
+
+#' type of an Earth Engine Image
+#' @noRd
+ee_get_typeimage_size <- function(type) {
+  if (type == "int") {
+    32
+  } else if (type == "INT") {
+    32
+  } else if (type == "double") {
+    64
+  } else if (type == "float") {
+    64
+  } else if (type == "int8") {
+    8
+  } else if (type == "int16") {
+    16
+  } else if (type == "int32") {
+    32
+  } else {
+    32
   }
 }

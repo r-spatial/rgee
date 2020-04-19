@@ -39,10 +39,10 @@ more pixels in the specified projection. Defaults to 100,000,000.}
 to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \value{
-A character object
+A character object which represents the filename of the image.
 }
 \description{
 Save an EE Image in their local system

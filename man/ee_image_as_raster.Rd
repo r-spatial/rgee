@@ -39,7 +39,7 @@ more pixels in the specified projection. Defaults to 100,000,000.}
 to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \value{
 A RasterStack object

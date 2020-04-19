@@ -16,7 +16,7 @@
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param quiet logical. Suppress info message
+#' @param quiet Logical. Suppress info message
 #' @details
 #' \code{ee_image_to_local} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
@@ -33,7 +33,7 @@
 #' googleCloudStorageR}. For getting more information about exporting data take
 #' a look at the \href{developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
-#' @return A character object
+#' @return A character object which represents the filename of the image.
 #' @importFrom jsonlite parse_json
 #' @importFrom raster raster stack
 #' @importFrom sf st_transform st_coordinates st_make_grid
@@ -267,7 +267,7 @@ ee_image_as_stars <- function(image,
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param quiet logical. Suppress info message
+#' @param quiet Logical. Suppress info message
 #' @details
 #' \code{ee_image_as_raster} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
@@ -836,3 +836,87 @@ ee_image_local <- function(image,
   return(list(file = dsn, band_names = band_names, crs = img_crs))
 }
 
+#' Approximate size of an EE Image object
+#'
+#' Get the approximate number of rows, cols, and size of an
+#' Earth Engine Image.
+#'
+#' @param image EE Image object.
+#' @param getsize Logical. If TRUE, the size of the object
+#' will be estimated.
+#' @param compression_ratio Numeric. Measurement of the relative reduction
+#' in size of data representation produced by a data compression algorithm
+#' (ignored if \code{getsize} is FALSE). By default is 20
+#' @param quiet Logical. Suppress info message
+#' @return A list of parameters
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_reattach()
+#' ee_Initialize()
+#'
+#' # World SRTM
+#' srtm <- ee$Image("CGIAR/SRTM90_V4")
+#' ee_image_info(srtm)
+#'
+#' # Landast8
+#' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
+#' ee_image_info(l8)
+#' }
+#' @export
+ee_image_info <- function(image,
+                          getsize = TRUE,
+                          compression_ratio = 20,
+                          quiet = FALSE) {
+  img_proj <- image$projection()$getInfo()
+  geotransform <- unlist(img_proj$transform)
+  img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
+  suppressWarnings(
+    st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
+  )
+  bbox <- img_totalarea %>%
+    st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
+    st_bbox() %>%
+    as.numeric()
+
+  x_diff <- bbox[3] - bbox[1]
+  y_diff <- bbox[4] - bbox[2]
+  x_npixel <- ceiling(abs(x_diff / geotransform[1]))
+  y_npixel <- ceiling(abs(y_diff / geotransform[5]))
+  total_pixel <- abs(as.numeric(x_npixel * y_npixel))
+
+  if (!quiet) {
+    cat('Image Rows       :', x_npixel,'\n')
+    cat('Image Cols       :', y_npixel,'\n')
+    cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
+  }
+
+
+  if (isFALSE(getsize)) {
+    invisible(
+      list(
+        nrow = x_npixel,
+        ncol = y_npixel,
+        total_pixel = total_pixel
+      )
+    )
+  } else {
+    bandtypes_info <- image$bandTypes()$getInfo()
+    img_types <- unlist(bandtypes_info)
+    band_types <- img_types[grepl("precision", names(img_types))]
+    band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
+    number_of_bytes <- total_pixel * band_precision / compression_ratio
+    image_size <- sum(number_of_bytes)
+    if (!quiet) {
+      cat("Image Size       :", ee_humansize(image_size), "\n")
+    }
+    invisible(
+      list(
+        nrow = x_npixel,
+        ncol = y_npixel,
+        total_pixel = total_pixel,
+        image_size = image_size
+      )
+    )
+  }
+}
