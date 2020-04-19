@@ -1,19 +1,29 @@
 context("rgee: ee_manage test")
 ee_Initialize()
-message <- try(ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/'))
+
+try(ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/'))
 
 test_that("ee_manage_create", {
   ee_manage_create(path_asset = 'users/datacolecfbf/rgee')
   ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_folder',
                    asset_type = 'Folder')
+
+  ee_manage_copy(
+    path_asset = 'users/datacolecfbf/rgee/rgee_folder',
+    final_path = 'users/datacolecfbf/rgee/rgee_folder1'
+  )
+
   msg <- ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
                           asset_type = 'ImageCollection')
+  expect_error(ee_manage_create(path_asset = 'users/pinkipie/rgee/rgee_ic'))
   expect_true(msg)
 })
 
 test_that("ee_manage_assetlist", {
-  data <- ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
-  expect_s3_class(data,'data.frame')
+  data_01 <- ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
+  expect_s3_class(data_01,'data.frame')
+  data_02 <- ee_manage_assetlist()
+  expect_s3_class(data_02,'data.frame')
 })
 
 test_that("ee_manage_move", {
@@ -103,3 +113,34 @@ test_that("ee_manage_create - error message", {
     expected =  TRUE)
   }
 )
+
+test_that("ee_manage_quota", {
+  ee_manage_quota()
+  }
+)
+
+test_that("ee_manage_asset_access", {
+  ee_Initialize(
+    email = "data.colec.fbf@gmail.com",
+    drive = TRUE,
+    gcs = TRUE
+  )
+  ee_manage_asset_access('users/datacolecfbf/rgee',
+                       editor =  'data.colec.fbf@gmail.com')
+  message <- ee_manage_asset_access('users/datacolecfbf/rgee',
+                                    editor =  'data.colec.fbf@gmail.com',
+                                    all_users_can_read = TRUE)
+  expect_true(message)
+  }
+)
+
+test_that("ee_manage_asset_access", {
+  mes_01 <- ee_humansize(120)
+  mes_02 <- ee_humansize(1200)
+  expect_type(mes_01, "character")
+  expect_type(mes_02, "character")
+})
+
+test_that("ee_manage_asset_size", {
+ee_manage_asset_size(path_asset = 'MODIS/006/MOD09GA/2012_03_09')
+})

@@ -180,7 +180,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
 
   # Getting image ID if it is exist
   image_id <- tryCatch(
-    expr = parse_json(x$id()$serialize())$
+    expr = parse_json(image$id()$serialize())$
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "thumbnail"
   )

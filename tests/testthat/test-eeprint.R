@@ -10,6 +10,7 @@ test_that("simple ee_print test - ImageCollection", {
     eeobject = eeobject,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = eeobject)
   expect_equal(ee_print_obj$name, "ImageCollection")
 })
 
@@ -32,6 +33,7 @@ test_that("simple ee_print test -  2 - ImageCollection", {
     eeobject = eeobject,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = eeobject)
   expect_equal(ee_print_obj$name, "ImageCollection")
 })
 
@@ -42,6 +44,7 @@ test_that("simple ee_print test - Image", {
     eeobject = eeobject,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = eeobject)
   expect_equal(ee_print_obj$name, "Image")
 })
 
@@ -54,6 +57,7 @@ test_that("simple ee_print test - FeatureCollection", {
     eeobject = ee_nc,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = ee_nc)
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
 
@@ -67,6 +71,7 @@ test_that("simple ee_print test - Feature", {
     eeobject = ee_nc,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = ee_nc)
   expect_equal(ee_print_obj$name, "Feature")
 })
 
@@ -81,6 +86,7 @@ test_that("simple ee_print test - Geometry", {
     eeobject = ee_nc$geometry(),
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = ee_nc$geometry())
   expect_equal(ee_print_obj$name, "Geometry")
 })
 
@@ -94,6 +100,7 @@ test_that("simple ee_print test - FeatureCollection", {
     eeobject = ee_nc,
     clean = TRUE
   )
+  ee_print_obj <- ee_print(eeobject = ee_nc)
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
 

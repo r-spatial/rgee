@@ -58,6 +58,11 @@ test_that("GEOTIFF_DRIVE", {
   task_img <- ee_image_to_drive(
     image = image_test,
     folder = drive_folder,
+    fileFormat = "GEOTIFF"
+  )
+  task_img <- ee_image_to_drive(
+    image = image_test,
+    folder = drive_folder,
     fileFormat = "GEOTIFF",
     fileNamePrefix = "test_image_GEOTIFF"
   )
@@ -65,7 +70,8 @@ test_that("GEOTIFF_DRIVE", {
   ee_monitoring(task_img)
   img <- ee_drive_to_local(
     task = task_img,
-    consider = 'last'
+    consider = 'last',
+    dsn = tempfile()
   )
   expect_is(img, "character")
 })
@@ -111,12 +117,18 @@ test_that("GEOTIFF_GCS", {
   task_img <- ee_image_to_gcs(
     image = image_test,
     bucket = gcs_bucket,
+    fileFormat = "GEOTIFF"
+  )
+  task_img <- ee_image_to_gcs(
+    image = image_test,
+    bucket = gcs_bucket,
     fileFormat = "GEOTIFF",
     fileNamePrefix = "testing/test_image_GEOTIFF"
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_gcs_to_local(task = task_img)
+  img <- ee_gcs_to_local(task = task_img, dsn = tempfile())
+  img <- ee_gcs_to_local(task = task_img, dsn = tempfile(), quiet = TRUE)
   expect_is(img, "character")
 })
 
@@ -173,6 +185,12 @@ test_that("GEOTIFF_GCS", {
 
 # # 8. SHP_VECTOR - DRIVE
 test_that("SHP_VECTOR_DRIVE",{
+  task_vector <- ee_table_to_drive(
+    collection = fc_test,
+    folder = drive_folder,
+    fileFormat = "SHP"
+  )
+
   task_vector <- ee_table_to_drive(
     collection = fc_test,
     folder = drive_folder,
@@ -302,6 +320,11 @@ test_that("GEOJSON_VECTOR_DRIVE",{
 
 # # 17. KMZ_VECTOR - GCS
 test_that("KMZ_VECTOR_GCS",{
+  task_vector <- ee_table_to_gcs(
+    collection = fc_test,
+    bucket = gcs_bucket,
+    fileFormat = "KMZ"
+  )
   task_vector <- ee_table_to_gcs(
     collection = fc_test,
     bucket = gcs_bucket,
