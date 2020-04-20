@@ -266,7 +266,21 @@ ee_print.ee.image.Image <- function(eeobject,
     band_info <- selected_img$getInfo()
     band_properties <- band_info$properties
     band_metadata <- band_info$bands[[1]]
-    band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
+
+    is_EPSG <- grepl("EPSG:", "", band_metadata$crs)
+    if (is_EPSG) {
+      band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
+    } else {
+      message(
+        band_metadata$crs, " is not a valid PROJ.4 CRS string",
+        ". Reprojecting to EPSG:4326 ...."
+      )
+      selected_img <- selected_img$reproject(crs = "EPSG:4326")
+      band_info <- selected_img$reproject(crs = "EPSG:4326")$getInfo()
+      band_properties <- band_info$properties
+      band_metadata <- band_info$bands[[1]]
+      band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
+    }
     band_metadata_geom <- ee_image_info(image = selected_img, quiet = TRUE)
     band_metadata_nominal_scale <- selected_img %>%
       ee$Image$projection() %>%
