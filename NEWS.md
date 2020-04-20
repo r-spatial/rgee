@@ -1,3 +1,6 @@
+# rgee 0.3.15
+- git action button added.
+- minor bug solved
 # rgee 0.3.14
 - ee_image module upgrade: new tests, new doc, and several bugs fixed.
 - functions ee_gcs_to_asset_* renamed to ee_gcs_to_*
