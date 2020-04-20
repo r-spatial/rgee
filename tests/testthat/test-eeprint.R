@@ -117,3 +117,10 @@ test_that("different typ ee_print test - json", {
   ee_print_obj <- print(ee_nc, type = "ee_print")
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
+
+test_that("simple ee_print test - ImageCollection not EPSG", {
+mod11a2 <- ee$ImageCollection("MODIS/006/MOD11A2")$
+  filter(ee$Filter$date('2001-01-01', '2002-12-31'))$
+  filter(ee$Filter$calendarRange(7,field = "month"))
+ee_print(eeobject = mod11a2)
+})

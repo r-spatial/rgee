@@ -1,3 +1,4 @@
+[![R build status](https://github.com/csaybar/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/csaybar/rgee/actions)
 [![Build
 Status](https://travis-ci.org/csaybar/rgee.svg?branch=master)](https://travis-ci.org/csaybar/rgee)
 [![Project Status: Active – The project has reached a stable, usable
