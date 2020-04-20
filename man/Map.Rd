@@ -4,8 +4,7 @@
 \name{Map}
 \alias{Map}
 \title{Module to display Earth Engine (EE) spatial objects}
-\format{
-An object of class environment with the
+\format{An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
@@ -43,21 +42,20 @@ be predicted according the bounds of the Earth Engine object specified.
 image must be reprojected to an explicitly
 requested result projection or geodesic state.
 }
-}
-}
+}}
 \usage{
 Map
 }
 \description{
 Create interactive visualizations of spatial EE objects
 (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
-through \code{\link[mapview]{mapview}}.
+through #' \link[=mapview]{mapview}.
 }
 \details{
 \code{Map} takes advantage of
 \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 getMapId} for fetch and return both a mapid and a token suitable
-to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
+to use in a #' \link[=mapview]{mapview}  object. To achieve desirable
 visualization effect, it will depend on the type of spatial EE object . For
 Image objects, you can provide visualization parameters to
 Map$addLayer() by using the argument visParams. The
