@@ -78,7 +78,7 @@ R functions for managing the Earth Engine Asset
 }
 \details{
 If the argument \code{del_properties} is 'ee_rmv_all_prp',
-\link[rgee]{ee_manage_delete_properties} will delete all
+\link[=rgee]{ee_manage_delete_properties} will delete all
 the properties.
 }
 \examples{

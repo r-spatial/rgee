@@ -43,8 +43,8 @@ created conda environment. Python 3.7 is installed by default.}
 
 \item{quiet}{logical. Suppress info message}
 
-\item{...}{other arguments passed to \code{\link[reticulate:conda_install]{reticulate::conda_install()}} or
-\code{\link[reticulate:virtualenv_install]{reticulate::virtualenv_install()}}.}
+\item{...}{other arguments passed to \link[=reticulate]{conda_install} or
+\link[=reticulate]{virtualenv_install}.}
 }
 \description{
 Install the necessary Python packages to be used in rgee.

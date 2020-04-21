@@ -9,10 +9,10 @@ ee_discover_pyenvs(use_py_discover_config = FALSE)
 }
 \arguments{
 \item{use_py_discover_config}{Logical. If TRUE
-will use \code{\link[reticulate]{py_discover_config}} to find
+will use \code{\link{reticulate}} to find
 versions of Python in the system.  Otherwise, will use
-\code{\link[reticulate]{conda_list}} for Window OS and
-\code{\link[reticulate]{virtualenv_list}} for Unix system.}
+\link[=reticulate]{conda_list} for Window OS and
+\link[=reticulate]{virtualenv_list} for Unix system.}
 }
 \description{
 This function enables callers to check which versions

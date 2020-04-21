@@ -28,10 +28,10 @@ ee_create_pyenv <- function(python_env) {
 #' of Python will be discovered on a system.
 #'
 #' @param use_py_discover_config Logical. If TRUE
-#' will use \code{\link[reticulate]{py_discover_config}} to find
+#' will use \code{\link{reticulate}} to find
 #' versions of Python in the system.  Otherwise, will use
-#' \code{\link[reticulate]{conda_list}} for Window OS and
-#' \code{\link[reticulate]{virtualenv_list}} for Unix system.
+#' \link[=reticulate]{conda_list} for Window OS and
+#' \link[=reticulate]{virtualenv_list} for Unix system.
 #' @importFrom reticulate py_discover_config conda_list
 #' @examples
 #' \dontrun{
@@ -197,8 +197,8 @@ ee_set_pyenv <- function(python_path,
 #' Conda repositories.
 #' @param conda_python_version the Python version installed in the
 #' created conda environment. Python 3.7 is installed by default.
-#' @param ... other arguments passed to [reticulate::conda_install()] or
-#' [reticulate::virtualenv_install()].
+#' @param ... other arguments passed to \link[=reticulate]{conda_install} or
+#' \link[=reticulate]{virtualenv_install}.
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
@@ -288,8 +288,8 @@ ee_install_python_packages <- function(method = c(
 #' Conda repositories.
 #' @param conda_python_version the Python version installed in the
 #' created conda environment. Python 3.7 is installed by default.
-#' @param ... other arguments passed to [reticulate::conda_install()] or
-#' [reticulate::virtualenv_install()].
+#' @param ... other arguments passed to \link[=reticulate]{conda_install}  or
+#' \link[=reticulate]{virtualenv_install}.
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
