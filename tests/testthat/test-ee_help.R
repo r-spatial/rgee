@@ -23,3 +23,46 @@ test_that("complex query ee_help + browser - py function", {
     ee_help(browser = TRUE)
   expect_true(return_message)
 })
+
+test_that("eequery_scope null", {
+  ee_help(ee$Image(0))
+})
+
+
+test_that("real_name null", {
+  expect_equal(
+    rgee:::ee_real_name("ee$Image(0)$clip"),
+    "ee$Image$clip"
+  )
+})
+
+test_that("ee_html_head_rstudio", {
+  expect_type(
+    rgee:::ee_html_head_rstudio("ee"),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_html_description_rstudio("ee"),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_html_arguments_rstudio("ee"),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_html_details_rstudio("ee"),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_html_returns_rstudio("ee"),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_css_h2_rstudio(),
+    "character"
+  )
+  expect_type(
+    rgee:::ee_css_h3_rstudio(),
+    "character"
+  )
+})

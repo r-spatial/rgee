@@ -125,43 +125,6 @@ ee_clean_container <- function(name = "rgee_backup",
   invisible(TRUE)
 }
 
-#' Create a download file according to its format
-#' @noRd
-read_filenames <- function(filename, fileformat, quiet) {
-  if (fileformat == "GEO_TIFF") {
-    if (length(filename) == 1) {
-      read_stars(filename, proxy = TRUE, quiet = TRUE)
-    } else {
-      strs_list <- list()
-      for (i in seq_along(filename)) {
-        strs_list[[i]] <- read_stars(filename[[i]], proxy = TRUE, quiet = TRUE)
-      }
-      strs_list
-    }
-  } else if (fileformat %in% "SHP") {
-    st_read(
-      dsn = filename[grep("\\.shp$", filename)],
-      stringsAsFactors = FALSE,
-      quiet = TRUE
-    )
-  } else if (fileformat %in% c("GEO_JSON", "KML", "KMZ")) {
-    st_read(
-      dsn = filename,
-      stringsAsFactors = FALSE,
-      quiet = TRUE
-    )
-  } else {
-    if (!quiet) {
-      print(sprintf(
-        "Download completed:%s (%s)",
-        filename,
-        fileformat
-      ))
-    }
-    invisible(filename)
-  }
-}
-
 #' Sort google drives files
 #' @noRd
 sort_drive_files <- function(drive_files, fileformat) {
@@ -264,50 +227,6 @@ ee_fix_y_coord <- function(img_offset, sf_offset, scale, option) {
     n <- ceiling(abs((sf_offset - img_offset)/scale))
     img_offset - n * scale
   }
-}
-
-#' Fix world boundary
-#' @noRd
-ee_fix_world_boundary <- function(sfc, crs, epsilon = 0.0001) {
-  bbox <- st_bbox(sfc)
-  xmin <- bbox["xmin"]
-  xmax <- bbox["xmax"]
-  ymin <- bbox["ymin"]
-  ymax <- bbox["ymax"]
-
-  # if (xmax == 180) xmax <- xmax - epsilon
-  # if (ymin == -90) ymin <- ymin + epsilon
-
-  new_bbox <- c(xmin, ymin, xmax, ymax)
-  class(new_bbox) <- "bbox"
-  st_set_crs(st_as_sfc(new_bbox), crs)
-}
-
-#' Fix region in ee_as_thumbnail and ee_as_stars
-#' @importFrom sf st_intersection st_length st_as_text st_set_crs st_as_sfc
-#' @noRd
-ee_fix_world_region <- function(sf_image, sf_region, quiet) {
-  ee_crs <- st_crs(sf_image)
-  fix_region <- suppressMessages(
-    st_intersection(sf_image, sf_region)
-  )
-
-  st_is_identical <- identical(
-    st_length(sf_region),
-    st_length(fix_region)
-  )
-  sf_fix_region <- ee_fix_world_boundary(
-    sfc = fix_region,
-    crs = ee_crs
-  )
-  if (isFALSE(st_is_identical) & !quiet) {
-    message(
-      "NOTE: region argument does not overlap completely the image,",
-      " changing region \nFrom : ", st_as_text(sf_region),
-      "\nTo   : ", st_as_text(sf_fix_region)
-    )
-  }
-  list(geometry = sf_fix_region, equal = st_is_identical)
 }
 
 #' Set crs and band names

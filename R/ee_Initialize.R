@@ -403,6 +403,7 @@ ee_users <- function() {
   for (user in users) {
     create_table(user,wsc)
   }
+  invisible(TRUE)
 }
 
 #' Display credentials and general info of the initialized user

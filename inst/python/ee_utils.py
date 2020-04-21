@@ -23,7 +23,11 @@ def eedate_to_rdate(eedate):
 
 # ee_Date.R --> ee_get_date function
 def eedate_to_rdate_ic(ic , var = "system:time_start"):
-  return [float(img) for img in ic.aggregate_array(var).getInfo()]
+  ic_dates = [float(img) for img in ic.aggregate_array(var).getInfo()]
+  if len(ic_dates) == 0:
+    return None
+  else:
+    return ic_dates
 
 # ee_Initialize.R --> ee_create_credentials_earthengine
 def _base64param(byte_string):

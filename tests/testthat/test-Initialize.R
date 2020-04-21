@@ -34,3 +34,13 @@ test_that("ee_source_python - fn",{
                                               convert = F)
   expect_type(class(sf_as_ee_py),'character')
 })
+
+test_that("ee_users",{
+  counts <- ee_users()
+  expect_true(counts)
+})
+
+test_that("ee_users",{
+  counts <- ee_user_info()
+  expect_true(counts)
+})

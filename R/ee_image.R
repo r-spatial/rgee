@@ -36,7 +36,7 @@
 #' @return A character object which represents the filename of the image.
 #' @importFrom jsonlite parse_json
 #' @importFrom raster raster stack
-#' @importFrom sf st_transform st_coordinates st_make_grid
+#' @importFrom sf st_transform st_coordinates st_make_grid st_as_text st_set_crs
 #' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' st_get_dimension_values
 #' @examples

@@ -150,37 +150,52 @@ ee_get_ic_date <- function(x, time_end = FALSE) {
   ee_utils <- ee_source_python(oauth_func_path)
 
   # Fetch the time_start of each Image
-  time_start <- tryCatch(
-    expr = ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_start")),
-    error = function(e) NA
-  )
-  time_start <- as.POSIXct(
-    x = time_start / 1000,
-    origin = "1970-01-01",
-    tz = "GMT"
-  )
+  time_start <- ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_start"))
+
+  if (is.null(time_start)) {
+    time_start <- NA
+  } else {
+    time_start <- as.POSIXct(
+      x = time_start / 1000,
+      origin = "1970-01-01",
+      tz = "GMT"
+    )
+  }
 
   # Getting time_end
-  if (isTRUE(time_end)) {
-    time_end <- tryCatch(
-      expr = ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_end")),
-      error = function(e) rep(NA, length(time_start))
-    )
+  time_end <- ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_end"))
+  if (is.null(time_end)) {
+    time_end <- NULL
+  } else {
     time_end <- as.POSIXct(
       x = time_end / 1000,
       origin = "1970-01-01",
       tz = "GMT"
     )
-  } else {
-    time_end <- NULL
   }
+
+  # Getting ID
   image_id <- x$aggregate_array("system:id")$getInfo()
   if (is.null(image_id)) {
-    image_id <- rep("no_id", length(time_start))
+    image_id <- rep("no_id", x$size()$getInfo())
   }
+  if (length(image_id) == 0) {
+    image_id <- rep("no_id", x$size()$getInfo())
+  }
+
+  # Create data.frame
   if (is.null(time_end)) {
-    data.frame(id = image_id, time_start = time_start)
+    data.frame(
+      id = image_id,
+      time_start = time_start,
+      stringsAsFactors = FALSE
+    )
   } else {
-    data.frame(id = image_id, time_start = time_start, time_end = time_end)
+    data.frame(
+      id = image_id,
+      time_start = time_start,
+      time_end = time_end,
+      stringsAsFactors = FALSE
+    )
   }
 }

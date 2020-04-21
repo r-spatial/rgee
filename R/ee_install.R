@@ -322,6 +322,7 @@ ee_earthengine_upgrade <- function(method = c(
     pip = pip,
     ...
   )
+  invisible(TRUE)
 }
 
 #' Detect the Operating System type of the system

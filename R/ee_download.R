@@ -873,7 +873,6 @@ ee_drive_to_local <- function(task,
       )
     }
     filenames_local
-    #read_filenames(filenames_local, fileformat, quiet = quiet)
   }
 }
 
@@ -1047,7 +1046,6 @@ ee_gcs_to_local <- function(task,
         )
       }
     }
-    # read_filenames(filenames_local, fileformat, quiet = quiet)
     filenames_local
   }
 }
