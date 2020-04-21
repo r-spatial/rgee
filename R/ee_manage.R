@@ -23,7 +23,7 @@
 #' @importFrom utils write.csv read.csv
 #' @details
 #' If the argument `del_properties` is 'ee_rmv_all_prp',
-#' \link[rgee]{ee_manage_delete_properties} will delete all
+#' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
 #' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
