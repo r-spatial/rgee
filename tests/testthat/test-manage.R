@@ -115,7 +115,7 @@ test_that("ee_manage_create - error message", {
 )
 
 test_that("ee_manage_quota", {
-  ee_manage_quota()
+  expect_type(ee_manage_quota(), "character")
   }
 )
 
@@ -142,5 +142,8 @@ test_that("ee_manage_asset_access", {
 })
 
 test_that("ee_manage_asset_size", {
-ee_manage_asset_size(path_asset = 'MODIS/006/MOD09GA/2012_03_09')
+expect_type(
+  ee_manage_asset_size(path_asset = 'MODIS/006/MOD09GA/2012_03_09'),
+  "double"
+)
 })

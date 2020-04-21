@@ -90,24 +90,26 @@ test_that("ee_as_stars - simple ", {
 
 
 test_that("ee to drive to local - gcs", {
+  try(ee_manage_delete(asset_id), silent = TRUE)
   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
   # 2. Pass from gcs to asset
   stars_x <- read_stars(tif)
-  st_crs(stars_x) <- 4326
   ee_gcs_to_image(
     x = stars_x,
     gs_uri = gs_uri,
     asset_id = asset_id
   )
+  ee_monitoring()
   ee_image <- ee$Image(asset_id)
   expect_s3_class(ee_image,'ee.image.Image')
+  try(ee_manage_delete(asset_id), silent = TRUE)
   ee_image_02 <- stars_as_ee(
     x = stars_x,
     assetId = asset_id,
     bucket = "rgee_dev"
   )
   expect_s3_class(ee_image_02,'ee.image.Image')
-
+  try(ee_manage_delete(asset_id), silent = TRUE)
   ee_image_03 <- stars_as_ee(
     x = stars_x,
     assetId = asset_id,
@@ -290,9 +292,10 @@ test_that("ee_image_local error 9", {
 test_that("ee_image_info", {
   # World SRTM
   srtm <- ee$Image("CGIAR/SRTM90_V4")
-  ee_image_info(srtm)
+  srtm_list <- ee_image_info(srtm)
   # Landast8
   l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-  ee_image_info(l8,getsize = FALSE)
-
+  l8_list <- ee_image_info(l8,getsize = FALSE)
+  expect_type(srtm_list, "list")
+  expect_type(l8_list, "list")
 })

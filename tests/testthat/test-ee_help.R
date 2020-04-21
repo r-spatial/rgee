@@ -25,7 +25,8 @@ test_that("complex query ee_help + browser - py function", {
 })
 
 test_that("eequery_scope null", {
-  ee_help(ee$Image(0))
+  ret <- ee_help(ee$Image(0))
+  expect_true(ret)
 })
 
 

@@ -451,7 +451,7 @@ stars_as_ee <- function(x,
   )
 
   if (isTRUE(monitoring)) {
-    try(ee_monitoring())
+    ee_monitoring()
     ee$Image(assetId)
   } else {
     assetId
@@ -771,7 +771,7 @@ ee_image_local <- function(image,
     }
     img_task$start()
 
-    try(ee_monitoring(task = img_task, quiet = quiet))
+    ee_monitoring(task = img_task, quiet = quiet)
 
     # From Google Drive to local
     if (isFALSE(quiet)) {
@@ -825,7 +825,7 @@ ee_image_local <- function(image,
     }
     img_task$start()
 
-    try(ee_monitoring(task = img_task, quiet = quiet))
+    ee_monitoring(task = img_task, quiet = quiet)
 
     # From Google Cloud Storage to local
     cat('Moving image from GCS to Local ... Please wait  \n')

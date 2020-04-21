@@ -201,7 +201,8 @@ ee_as_sf <- function(x,
     }
 
     table_task$start()
-    try(ee_monitoring(task = table_task, quiet = quiet))
+    ee_monitoring(task = table_task, quiet = quiet)
+
     if (table_task$status()$state != "COMPLETED") {
       stop(table_task$status()$error_message)
     }
@@ -242,7 +243,7 @@ ee_as_sf <- function(x,
 
     if (!quiet) {
       cat(
-        "\n- download parameters (Google Drive)\n",
+        "\n- download parameters (Google Cloud Storage)\n",
         "Table ID    :", table_id, "\n",
         "Google user :", ee_user$email, "\n",
         "Folder name :", container, "\n",
