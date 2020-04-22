@@ -4,33 +4,45 @@
 \alias{ee_drive_to_local}
 \title{Move results from Google Drive to a local directory}
 \usage{
-ee_drive_to_local(task, filename, overwrite = FALSE, st = TRUE,
-  quiet = FALSE)
+ee_drive_to_local(
+  task,
+  dsn,
+  overwrite = TRUE,
+  consider = interactive(),
+  quiet = FALSE
+)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Character. Output filename. If missing, a temporary
-file is created.}
+\item{dsn}{Character. Output filename. If missing, a temporary
+file will be assigned.}
 
 \item{overwrite}{A boolean argument which indicates indicating
-whether "filename" should be overwritten.}
+whether "filename" should be overwritten. By default TRUE.}
 
-\item{st}{logical. By default it is TRUE, returning a sf (stars)
-object for EE tables (images). If FALSE, the output filename is returned.}
+\item{consider}{Interactive. See details.}
 
 \item{quiet}{logical. Suppress info message}
 }
 \value{
-An sf, stars or character depending on the retunclass argument.
+An sf, stars, character or a list object depending on the \code{consider}
+argument.
 }
 \description{
-Move results of an EE saved in Google Drive to a local directory.
+Move results of an EE task saved in Google Drive to a local directory.
 }
 \details{
 The task argument needs a status as task "COMPLETED" to work, since the
-parameters necessary to locate the file into google drive are obtained
+parameters necessary to identify EE objects into google drive are obtained
 from ee$batch$Export$*$toDrive(...)$start()$status().
+
+\code{consider} argument is necessary since Google Drive permits users to
+create files with the same name. \code{consider} uses an interactive R
+session by default to help users identify just the files that they want to
+download. Additionally, the options "last" and "all" are implemented. "last"
+will download just the last file saved in Google Drive while with "all" all
+files will be downloaded.
 }
 \examples{
 \dontrun{
@@ -84,7 +96,8 @@ task_img <- ee_image_to_drive(
   image = mean_l5_Amarakaeri,
   folder = "Amarakaeri",
   fileFormat = "GEO_TIFF",
-  fileNamePrefix = "my_image"
+  region = ee_ROI$geometry(),
+  fileNamePrefix = paste0("my_image", Sys.time())
 )
 
 task_img$start()
@@ -92,6 +105,5 @@ ee_monitoring(task_img)
 
 # Move results from Drive to local
 img <- ee_drive_to_local(task = task_img)
-plot(img)
 }
 }

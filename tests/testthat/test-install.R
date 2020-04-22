@@ -1,13 +1,5 @@
 context("rgee: ee_install test")
 
-test_that("ee_install_drivers() error",{
-  expect_error(ee_install_ChromeDriver())
-})
-
-test_that("ee_install_drivers()",{
-  expect_true(ee_install_ChromeDriver(77))
-})
-
 ### Instalation module
 test_that("ee_create_pyenv ",{
   result <- ee_create_pyenv('earthengine_test')
@@ -24,30 +16,34 @@ test_that("ee_set_pyenv",{
   fmsg <- ee_set_pyenv(
     python_path = python_envs[1],
     python_env = 'earthengine_test',
-    install = TRUE,
+    install = FALSE,
     confirm = FALSE)
   expect_true(fmsg)
 })
 
-# test_that("ee_install_rgee_python_packages",{
-#   fmsg <- ee_install_python_packages()
-#   expect_true(fmsg)
-# })
+test_that("ee_install_rgee_python_packages",{
+  fmsg <- ee_install_python_packages()
+  expect_true(fmsg)
+})
 
-os_type <- switch(Sys.info()[["sysname"]],
-                  Windows = {
-                    "windows"
-                  },
-                  Linux = {
-                    "linux"
-                  },
-                  Darwin = {
-                    "macos"
-                  }
-)
-if (os_type == "linux" | os_type == "macos") {
-  reticulate::virtualenv_remove('earthengine_test',
-                                confirm = FALSE)
-} else {
-  reticulate::conda_remove('earthengine_test')
-}
+test_that("ee_earthengine_upgrade",{
+  fmsg <- ee_earthengine_upgrade()
+  expect_true(fmsg)
+})
+# os_type <- switch(Sys.info()[["sysname"]],
+#                   Windows = {
+#                     "windows"
+#                   },
+#                   Linux = {
+#                     "linux"
+#                   },
+#                   Darwin = {
+#                     "macos"
+#                   }
+# )
+# if (os_type == "linux" | os_type == "macos") {
+#   reticulate::virtualenv_remove('earthengine_test',
+#                                 confirm = FALSE)
+# } else {
+#   reticulate::conda_remove('earthengine_test')
+# }

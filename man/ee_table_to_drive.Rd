@@ -4,9 +4,15 @@
 \alias{ee_table_to_drive}
 \title{Creates a task to export a FeatureCollection to Google Drive.}
 \usage{
-ee_table_to_drive(collection, description = "myExportTableTask",
-  folder = NULL, fileNamePrefix = NULL, fileFormat = NULL,
-  selectors = NULL)
+ee_table_to_drive(
+  collection,
+  description = "myExportTableTask",
+  folder = NULL,
+  fileNamePrefix = NULL,
+  timePrefix = TRUE,
+  fileFormat = NULL,
+  selectors = NULL
+)
 }
 \arguments{
 \item{collection}{The feature collection to be exported.}
@@ -18,6 +24,8 @@ account to export into. Defaults to the root of the drive.}
 
 \item{fileNamePrefix}{The Google Drive filename for the
 export. Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{fileFormat}{The output format: "CSV" (default), "GeoJSON",
 "KML", "KMZ", "SHP", or "TFRecord".}
@@ -62,18 +70,16 @@ ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   sf_as_ee()
 
 amk_fc <- ee$FeatureCollection(
-  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+  list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 )
 
 task_vector <- ee_table_to_drive(
   collection = amk_fc,
-  folder = "Amarakaeri",
   fileFormat = "GEO_JSON",
   fileNamePrefix = "geom_Amarakaeri"
 )
 task_vector$start()
 ee_monitoring(task_vector) # optional
-amk_geom <- ee_drive_to_local(task = task_vector)
-plot(amk_geom$geometry, border = "red", lwd = 10)
+ee_drive_to_local(task = task_vector)
 }
 }

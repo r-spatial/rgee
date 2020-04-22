@@ -1,7 +1,7 @@
 #' Interface to check Python and non-R rgee dependencies
 #'
-#' R functions for checking sanity of Python Selenium Chromedriver, Third-Party
-#' Python packages and credentials
+#' R functions for checking sanity of Third-Party Python
+#' packages and credentials.
 #' @name ee_check-tools
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate py_available py_module_available
@@ -9,12 +9,14 @@
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_check()
+#' ee_check_python()
+#' ee_check_rgee_python_packages()
+#' ee_check_credentials()
+#' ee_check() # put it all together
 #' @export
 ee_check <- function() {
   ee_check_python()
   ee_check_rgee_python_packages()
-  ee_check_drivers()
   ee_check_credentials()
 }
 
@@ -46,65 +48,75 @@ ee_check_python <- function(quiet = FALSE) {
 
 #' @rdname ee_check-tools
 #' @export
-ee_check_rgee_python_packages <- function() {
+ee_check_rgee_python_packages <- function(quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_check_utils_exist.py",
     package = "rgee"
   )
   ee_check_utils_exist <- ee_source_python(oauth_func_path)
-
-  cli::cat_line(
-    "\n",
-    crayon::blue(
-      cli::symbol$circle_filled,
-      " Python Third-Party Libraries used in rgee: \n"
+  if (isFALSE(quiet)) {
+    cli::cat_line(
+      "\n",
+      crayon::blue(
+        cli::symbol$circle_filled,
+        " Python Third-Party Libraries used in rgee: \n"
+      )
     )
-  )
+  }
   # ee
   version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == ee_version()) {
-      cli::cat_line(
-        crayon::green(cli::symbol$tick, "[Ok]"),
-        crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
-        crayon::green(version_ee)
-      )
+      if (isFALSE(quiet)) {
+        cli::cat_line(
+          crayon::green(cli::symbol$tick, "[Ok]"),
+          crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
+          crayon::green(version_ee)
+        )
+      }
     } else {
       ee_message <- sprintf(
-        "The Earth Engine Python API (version %s) is %s%s%s%s%s(%s)%s%s",
+        "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s",
+        "The Earth Engine Python API",
         version_ee,
         "installed correctly in the system but rgee was built ",
         "using the version ",
         ee_version(),
         ". To avoid possible issues, we ",
-        "highly recommend install version used by rgee ",
+        "highly recommend install the version used by rgee ",
         ee_version(),
-        ", you could use ee_install_python_packages() to achieve it. ",
-        "If the installation is successful, restart to see changes."
+        ", you might use:\n >>> ee_install_python_packages() \n",
+        " >>> pip install earthengine-api==",ee_version(),
+        "\n >>> conda install earthengine-api==",ee_version(),
+        "\nIf the installation is successful, restart to see changes."
       )
       warning(ee_message)
     }
   } else {
-    cli::cat_line(
-      crayon::red(cli::symbol$tick, "[X]"),
-      crayon::red(" Not installed"),
-      crayon::red(
-        cli::symbol$check,
-        "Python Earth Engine API",
-        "(earthengine-api)"
+    if (isFALSE(quiet)) {
+      cli::cat_line(
+        crayon::red(cli::symbol$tick, "[X]"),
+        crayon::red(" Not installed"),
+        crayon::red(
+          cli::symbol$check,
+          "Python Earth Engine API",
+          "(earthengine-api)"
+        )
       )
-    )
+    }
   }
-  ee_check_py_package("oauth2client")
-  ee_check_py_package("requests")
-  ee_check_py_package("selenium")
-  ee_check_py_package("bs4")
-  ee_check_py_package("requests_toolbelt")
-  ee_check_py_package("requests")
+  if (isFALSE(quiet)) {
+    ee_check_py_package("pyasn1")
+    ee_check_py_package("urllib3")
+    ee_check_py_package("setuptools")
+    ee_check_py_package("oauth2client")
+    ee_check_py_package("numpy")
+    cat("\n")
+  }
 }
 
 #' @rdname ee_check-tools
-#' @export
+#' @noRd
 ee_check_drivers <- function() {
   display_in_browser <- FALSE
   oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
@@ -117,19 +129,6 @@ ee_check_drivers <- function() {
     "\n", crayon::blue(cli::symbol$circle_filled),
     crayon::blue("  Selenium drivers: \n")
   )
-  if (condition) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick, "[Ok]"),
-      crayon::blue(cli::symbol$check, "Chromedriver \n")
-    )
-  } else {
-    cli::cat_line(crayon::yellow(
-      cli::symbol$circle_cross,
-      "chromedriver not available in their system.",
-      "rgee::ee_upload(bucket=NULL) will not work."
-    ))
-    message("Try rgee::ee_install_ChromeDriver() to fixed.\n")
-  }
 }
 
 #' @rdname ee_check-tools

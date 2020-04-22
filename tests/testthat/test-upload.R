@@ -1,110 +1,54 @@
 context("rgee: ee_upload test")
 
-library(rgee)
-library(stars)
-library(sf)
-
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )
 
+test_that("ee_local_to_gcs - character",{
+  # Define an image.
+  tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+  gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+  gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev',quiet = TRUE)
+  expect_type(gcsuri,'character')
+})
+
 # ee_upload with bucket -----------------------------------------------------
-test_that("ee_upload - character with bucket", {
-  filename <- "users/datacolecfbf/rgee_upload/"
-  ee_manage_create(filename)
-
-  tif <- system.file("tif/geomatrix.tif", package = "stars")
-  geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
-  geotiff_file <- paste0(tempfile(), ".tif")
-  write_stars(geomatrix, geotiff_file)
-
-  ee_upload(
-    x = geotiff_file,
-    filename = paste0(filename, "geomatrix"),
-    bucket = "rgee_dev"
+test_that("ee_gcs_to_table ", {
+  nc <- st_read(system.file("shape/nc.shp", package = "sf"))
+  asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+  zipfile <- ee_create_shp_zip(nc)
+  gs_uri <- ee_local_to_gcs(x = zipfile,
+                            bucket = 'rgee_dev')
+  ee_gcs_to_table(
+    gs_uri = gs_uri,
+    asset_id = asset_id
   )
-
-  ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
-  geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
-  geomatrix_stars <- ee_as_thumbnail(
-    x = ee_geomatrix,
-    region = geom,
-    vizparams = list(min = 0, max = 255)
-  )
-  geomatrix_stars[geomatrix_stars <= 0] <- NA
-  expect_s3_class(geomatrix_stars, "stars")
+  #ee_monitoring()
+  ee_sf_01 <- ee$FeatureCollection(asset_id)
+  expect_s3_class(object = ee_sf_01,
+                  class =  "ee.featurecollection.FeatureCollection")
 })
 
 system.time(2)
 
-test_that("ee_upload - stars with bucket", {
-  filename <- "users/datacolecfbf/rgee_upload/"
-  ee_manage_create(filename)
+test_that("ee_gcs_to_image ", {
+  # Get the filename of a image
+  tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+  x <- read_stars(tif)
+  st_crs(x) <- 4326
+  asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 
-  tif <- system.file("tif/geomatrix.tif", package = "stars")
-  geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
-  delta_geomatrix <- c(attr(geomatrix, "dimensions")$x$delta,
-                       attr(geomatrix, "dimensions")$y$delta * -1)
+  # Method 1
+  # 1. Move from local to gcs
+  gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 
-  ee_upload(
-    x = geomatrix,
-    filename = paste0(filename, "geomatrix"),
-    bucket = "rgee_dev"
+  # 2. Pass from gcs to asset
+  result <- ee_gcs_to_image(
+    x = x,
+    gs_uri = gs_uri,
+    asset_id = asset_id
   )
-
-  ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
-  geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
-  geomatrix_stars <- ee_as_thumbnail(
-    x = ee_geomatrix,
-    region = geom,
-    vizparams = list(min = 0, max = 255)
-  )
-  geomatrix_stars[geomatrix_stars <= 0] <- NA
-  expect_s3_class(geomatrix_stars, "stars")
+  expect_equal(result,0)
 })
-
-system.time(2)
-
-test_that("ee_upload - stars-proxy with bucket", {
-  filename <- "users/datacolecfbf/rgee_upload/"
-  ee_manage_create(filename)
-  tif <- system.file("tif/geomatrix.tif", package = "stars")
-  geomatrix <- read_stars(tif) %>% st_warp(crs = st_crs(4326))
-  geotiff_file <- paste0(tempfile(), ".tif")
-  write_stars(geomatrix, geotiff_file)
-  geomatrix_proxy <- read_stars(geotiff_file, proxy = TRUE)
-
-  ee_upload(
-    x = geomatrix_proxy,
-    filename = paste0(filename, "geomatrix"),
-    bucket = "rgee_dev"
-  )
-
-  ee_geomatrix <- ee$Image(paste0(filename, "geomatrix"))
-  geom <- ee$Geometry(ee_geomatrix$geometry()$bounds())
-  geomatrix_stars <- ee_as_thumbnail(
-    x = ee_geomatrix,
-    region = geom,
-    vizparams = list(min = 0, max = 255)
-  )
-  geomatrix_stars[geomatrix_stars <= 0] <- NA
-  expect_s3_class(geomatrix_stars, "stars")
-})
-
-# ee_upload without bucket -----------------------------------------------------
-# test_that("ee_upload - stars without bucket",{
-#   filename <- "users/datacolecfbf/rgee_upload/"
-#   ee_manage_create(filename)
-#
-#   tif = system.file("tif/geomatrix.tif", package = "stars")
-#   geomatrix = read_stars(tif) %>% st_warp(crs=st_crs(4326))
-#   expect_error(ee_upload(x = geomatrix,
-#                          filename = paste0(filename,"geomatrix")))
-#   ee_geomatrix <- ee$Image(paste0(filename,"geomatrix"))
-#   geomatrix_stars <- ee_as_thumbnail(x = ee_geomatrix,
-#                                      vizparams = list(min = 0, max = 255))
-#   geomatrix_stars[geomatrix_stars<=0]=NA
-#   expect_s3_class(geomatrix_stars,'stars')
-# })

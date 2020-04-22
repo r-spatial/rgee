@@ -7,7 +7,7 @@ test_that("simple search",{
     ee_search_tags("srtm", "flow", "direction", "dem") %>%
     ee_search_tagstitle("srtm", "flow", "direction", "dem") %>%
     ee_search_title("15", "Flow", logical_operator = "AND")
-  expect_equal(myquery$id[1],"WWF/HydroSHEDS/15ACC")
+  expect_type(myquery$id[1],"character")
 })
 
 test_that("testing date queries",{
@@ -38,3 +38,66 @@ test_that("ee_search_tagstitle - AND",{
     ee_search_tagstitle("srtm",logical_operator = 'AND')
   expect_type(my_db$id,'character')
 })
+
+test_that("provider list",{
+  expect_type(
+    ee_dataset() %>% ee_search_provider_list(),
+    "character"
+  )
+})
+
+# ERROR ee_search ---------------------------------------------------------
+test_that("error 01",{
+  expect_error(
+    ee_dataset() %>% ee_search_type("XxX")
+  )
+})
+
+test_that("error 02",{
+  expect_error(
+    ee_dataset() %>% ee_search_provider("peru")
+  )
+})
+
+test_that("error 03",{
+  ee_s_search <- ee_dataset() %>%
+    ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "OR")
+  expect_s3_class(ee_s_search,"data.frame")
+  ee_s_search <- ee_dataset() %>%
+    ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "AND")
+  expect_s3_class(ee_s_search,"data.frame")
+  expect_error(ee_dataset() %>%
+    ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "ORd")
+  )
+})
+
+test_that("error 04",{
+  ee_s_search <- ee_dataset() %>%
+    ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "OR")
+  expect_s3_class(ee_s_search,"data.frame")
+  expect_error(ee_dataset() %>%
+                 ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "ORd")
+  )
+})
+
+test_that("error 05", {
+  expect_error(
+    ee_dataset() %>%
+      ee_search_tagstitle("srtm", "flow", logical_operator = "ORd")
+  )
+})
+
+test_that("error 05", {
+  expect_error(
+    ee_dataset() %>%
+      ee_search_tagstitle("srtm", "flow", logical_operator = "ORd")
+  )
+})
+
+test_that("ee_search_display", {
+  ss <- ee_dataset() %>%
+    ee_search_tagstitle("srtm", "flow", logical_operator = "OR") %>%
+    ee_search_display(maxdisplay = 1)
+  expect_equal(ss, TRUE)
+})
+

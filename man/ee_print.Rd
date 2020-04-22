@@ -9,44 +9,72 @@
 \alias{ee_print.ee.imagecollection.ImageCollection}
 \title{Print and return metadata about Spatial Earth Engine Objects}
 \usage{
-ee_print(eeobject, clean = FALSE, max_display = 0)
+ee_print(eeobject, ...)
 
-\method{ee_print}{ee.geometry.Geometry}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.geometry.Geometry}(eeobject, ..., clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.feature.Feature}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.feature.Feature}(eeobject, ..., clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject,
-  clean = FALSE, max_display = 0)
+\method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject, ..., f_index = 0, clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.image.Image}(eeobject, clean = FALSE,
-  max_display = 0)
+\method{ee_print}{ee.image.Image}(eeobject, ..., img_band, clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject,
-  clean = FALSE, max_display = 0)
+\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, ..., img_index = 0, img_band, clean = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.}
 
-\item{clean}{Logical. If it is TRUE the cache will be cleaned.}
+\item{...}{ignored}
 
-\item{max_display}{Set the max number of properties to display.}
+\item{clean}{Logical. If TRUE, the cache will be cleaned.}
+
+\item{quiet}{logical. Suppress info message}
+
+\item{f_index}{Numeric. Index of the \code{ee$FeatureCollection} to fetch.
+Relevant just for \code{ee$FeatureCollection} objects.}
+
+\item{img_band}{Character. Band name of the \code{ee$Image} to fetch.
+Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
+
+\item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
+Relevant just for \code{ee$ImageCollection} objects.}
 }
 \description{
-Print and return metadata about Spatial Earth Engine Objects. By default
-ee_print will create a table printing all the available metadata.
+Print and return metadata about Spatial Earth Engine Objects.
 }
 \examples{
+\dontrun{
 library(rgee)
-
-ee_reattach() # reattach ee as a reserved word
+ee_reattach()
 ee_Initialize()
 
-eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
+# Geometry
+geom <- ee$Geometry$Rectangle(-10,-10,10,10)
+Map$addLayer(geom)
+ee_print(geom)
+
+# Feature
+feature <- ee$Feature(geom, list(rgee = "ee_print", data = TRUE))
+ee_print(feature)
+
+# FeatureCollection
+featurecollection <- ee$FeatureCollection(feature)
+ee_print(featurecollection)
+
+# Image
+srtm <- ee$Image("CGIAR/SRTM90_V4")
+ee_print(srtm)
+
+srtm_clip <- ee$Image("CGIAR/SRTM90_V4")$clip(geom)
+srtm_metadata <- ee_print(srtm_clip)
+srtm_metadata$img_bands_names
+
+# ImageCollection
+object <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee$Filter()$eq("WRS_PATH", 44))$
   filter(ee$Filter()$eq("WRS_ROW", 34))$
-  filterDate("2014-03-01", "2014-08-01")
-ee_print(eeobject, max_display = 0)
+  filterDate("2014-03-01", "2014-08-01")$
+  aside(ee_print)
+}
 }

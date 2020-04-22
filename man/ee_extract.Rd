@@ -2,33 +2,36 @@
 % Please edit documentation in R/ee_extract.R
 \name{ee_extract}
 \alias{ee_extract}
-\title{Extract values from Earth Engine Images or ImageCollections objects}
+\title{Extract values from EE Images or ImageCollections objects}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, id = NULL,
-  ...)
+ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = FALSE, ...)
 }
 \arguments{
-\item{x}{ee$Image or ee$ImageCollection.}
+\item{x}{EE Image or ImageCollection.}
 
-\item{y}{ee$Geometry, ee$Feature, ee$FeatureCollection or sf objects.}
+\item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.}
 
-\item{fun}{ee$Reducer object. Function to summarize the values. See details.}
+\item{fun}{ee$Reducer object. Function to summarize the values. The function
+should take a single numeric vector as argument and return a single value.
+See details.}
 
-\item{scale}{A nominal scale in meters of the projection to work in.}
+\item{scale}{A nominal scale in meters of the Image projection to work in.
+By default 1000.}
 
-\item{id}{Character. Name of the column to be used as a geometry index.}
+\item{sf}{Logical. Should the extracted values be added to the data.frame of
+the sf object y? This only applies if y is a sf object.}
 
 \item{...}{reduceRegions additional parameters. See
-reticulate::ee_help(ee$Image()$reduceRegions) for more details.}
+ee_help(ee$Image()$reduceRegions) for more details.}
 }
 \description{
-Extract values from a Image or ImageCollection spatial object
-at the locations of a geometry object. You can use ee.Geometries,
-ee.Features, ee.FeatureCollection and sf objects.
+Extract values from a \code{ee$Image} or \code{ImageCollection} at the
+locations of a geometry object. You can use \code{ee$Geometry$*},
+\code{ee$Feature}, \code{ee$FeatureCollection} and sf objects. This function
+try to mimics how \link[raster]{extract} currently works.
 }
 \details{
-The fun arguments just admit Reducer objects that return one value.
-These are:
+In Google Earth Engine the reducer functions that return one value are:
 \itemize{
 \item  \strong{allNonZero}: Returns a Reducer that returns 1 if all of its
 inputs are non-zero, 0 otherwise. \cr
@@ -85,28 +88,37 @@ library(sf)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
-# get monthly precipitation from terraclimate
+# Define a Image or ImageCollection: Terraclimate
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01", "2001-01-01")$
+  filterDate("2001-01-01", "2002-01-01")$
   map(function(x) x$select("pr"))
 
-# extract values with polygons
-nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) \%>\%
-  st_transform(4326)
-ee_nc_rain <- ee_extract(
-  x = terraclimate, y = nc, fun = ee$Reducer$max(),
-  id = "FIPS"
+# Define a geometry
+nc <- st_read(
+  dsn = system.file("shape/nc.shp", package = "sf"),
+  stringsAsFactors = FALSE,
+  quiet = TRUE
 )
-ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
-plot(ee_nc_rain["X200006"],
+
+# Extract values
+ee_nc_rain <- ee_extract(
+  x = terraclimate,
+  y = nc,
+  scale = 250,
+  fun = ee$Reducer$max(),
+  sf = TRUE
+)
+
+# Spatial plot
+plot(ee_nc_rain["X200106"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
+dev.off()
 
-## plot time series
+# Temporal plot
 ee_nc <- ee_nc_rain
-st_geometry(ee_nc) <- NULL
-time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200001:200012)])
+time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200101:200112)])
 main <- sprintf("2001 Precipitation - \%s", ee_nc$NAME[1])
 plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
 points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)

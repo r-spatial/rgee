@@ -4,9 +4,15 @@
 \alias{ee_table_to_gcs}
 \title{Creates a task to export a FeatureCollection to Google Cloud Storage.}
 \usage{
-ee_table_to_gcs(collection, description = "myExportTableTask",
-  bucket = NULL, fileNamePrefix = NULL, fileFormat = NULL,
-  selectors = NULL)
+ee_table_to_gcs(
+  collection,
+  description = "myExportTableTask",
+  bucket = NULL,
+  fileNamePrefix = NULL,
+  timePrefix = TRUE,
+  fileFormat = NULL,
+  selectors = NULL
+)
 }
 \arguments{
 \item{collection}{The feature collection to be exported.}
@@ -17,6 +23,8 @@ ee_table_to_gcs(collection, description = "myExportTableTask",
 
 \item{fileNamePrefix}{Cloud Storage object name prefix
 for the export. Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{fileFormat}{The output format: "CSV" (default),
 "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".}
@@ -60,7 +68,7 @@ ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   sf_as_ee()
 
 amk_fc <- ee$FeatureCollection(
-  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
+  list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
 )
 
 task_vector <- ee_table_to_gcs(

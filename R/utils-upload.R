@@ -1,360 +1,450 @@
-#' Is x a vector or a raster?
-#' @noRd
-image_or_vector <- function(x) {
-  isvector <- try(st_read(x), silent = T)
-  if (any(class(isvector) %in% "try-error")) {
-    israster <- try(read_stars(x), silent = T)
-    if (any(class(israster) %in% "try-error")) {
-      return(NULL)
-    }
-    return("stars")
-  }
-  return("sf")
-}
-
-#' Pass a foreign Image format to GEOTIFF
-#' @param gee_asset_file filename in google earth engine asset
-#' @noRd
-ee_raster_to_tif <- function(x) {
-  # is_a_tif <- mapply(grepl, x ,MoreArgs = list(pattern = "\\.tif$"))
-  tif <- grepl(pattern = "\\.tif$", x)
-  if (tif) {
-    return(x)
-  } else {
-    if (!requireNamespace("raster", quietly = TRUE)) {
-      stop("The image (", x, ") is not a GEOTIFF file, The raster package",
-        " is required to fix it internally.",
-        call. = FALSE
-      )
-    } else {
-      tif_file <- tempfile()
-      newtif <- paste0(tif_file, ".tif")
-      raster::writeRaster(raster::raster(x), newtif)
-      return(newtif)
-    }
-  }
-}
-
-#' Pass a foreign vector format to ESRI shapefile
-#' @param gee_asset_file filename in google earth engine asset
-#' @noRd
-ee_vector_to_shapefile <- function(x) {
-  # is_a_tif <- mapply(grepl, x ,MoreArgs = list(pattern = "\\.shp$"))
-  shp <- grepl(pattern = "\\.shp$", x)
-  if (shp) {
-    return(x)
-  } else {
-    shp_file <- tempfile()
-    newshp <- paste0(shp_file, ".shp")
-    write_sf(st_read(x), newshp)
-    return(newshp)
-  }
-}
-
-#' Create a zip file from a ESRI shapefile
-#' @param x .shp fullname
-#' @param SHP_EXTENSIONS are suffix: c("dbf", "prj", "shp", "shx")
-#' @noRd
-create_shp_zip <- function(x, SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
-  temp_dir <- tempdir()
-  shp_basename <- gsub("\\.shp$", "", x)
-  shp_filenames <- sprintf("%s.%s", shp_basename, SHP_EXTENSIONS)
-  zipname <- sprintf("%s.zip", shp_basename)
-  zip(zipfile = zipname, files = shp_filenames, flags = "-j")
-  temp_zip <- sprintf("%s/%s", temp_dir, basename(zipname))
-  if (getwd() != dirname(zipname)) {
-    file.copy(from = zipname, to = temp_zip, overwrite = TRUE)
-    file.remove(zipname)
-  }
-  return(temp_zip)
-}
-
 #' Upload local files to google cloud storage
 #'
-#' Upload images or tables into google cloud storage for EE asset ingestion
-#' tasks.
+#' Upload images or tables into Google Cloud Storage
+#' for EE asset ingestion tasks.
 #'
-#' @param x filename (character), sf or stars object.
-#' @param bucket bucketname you are uploading to
-#' @param selenium_params List. Optional parameters when bucket is NULL.
-#' Parameters for setting selenium. See details.
-#' @param clean Logical; Whether is TRUE cache will cleaned, see Details.
-#' @param reinit Logical; run ee_Initialize(gcs=TRUE) before start to upload
+#' @param x Character. filename.
+#' @param bucket bucket name you are uploading to
 #' @param quiet Logical. Suppress info message.
-#' @importFrom getPass getPass
-#' @details
-#' It is necessary, for uploading process, get authorization to read & write
-#' into a Google Cloud Storage (GCS) bucket. Earth Engine provides a provisional
-#' for free space into GCS through gs://earthengine-uploads/. If the bucket
-#' argument is absent, this function will use Selenium driver for getting access
-#' to the URI mentioned bellow. The process for getting access to
-#' gs://earthengine-uploads/ was written entirely in Python and is as follow:
-#' \itemize{
-#'  \item{1. }{Connecting to https://code.earthengine.google.com/
-#'  through selenium.}
-#'  \item{2. }{Download all the cookies and saved in a request object.}
-#'  \item{3. }{Get the URL for ingest the data  temporarily.}
-#'  \item{4. }{Create the request headers.}
-#'  \item{5. }{Upload the x argument to GCS via POST request.}
+#' @return Character which represents the full name of the
+#' object in the GCS bucket specified.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' ee_reattach()
+#'
+#' # Initialize a specific Earth Engine account and
+#' # Google Cloud Storage credentials
+#' ee_Initialize(
+#'   email = "data.colec.fbf@gmail.com",
+#'   gcs = TRUE
+#' )
+#'
+#' # Define an image.
+#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 #' }
-#' @importFrom rgdal showWKT
-#' @return Character indicating the full name of the x argument inside
-#' gs://earthengine-uploads/
 #' @export
-ee_upload_file_to_gcs <- function(x,
-                                  bucket = NULL,
-                                  selenium_params = getOption(
-                                    "rgee.selenium.params"
-                                  ),
-                                  clean = FALSE,
-                                  reinit = FALSE,
-                                  quiet = FALSE) {
-  if (selenium_params$check_driver) {
-    check_warning <- tryCatch(
-      expr = ee_check_drivers(),
-      warning = function(w) w
+ee_local_to_gcs <- function(x,
+                            bucket = NULL,
+                            quiet = FALSE) {
+  if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+    stop(
+      "The googleCloudStorageR package is required to use ",
+      "rgee::ee_download_gcs",
+      call. = FALSE
     )
-
-    if (is(check_warning, "warning")) {
-      stop(
-        "'chromedriver' executable needs to be in the path: ",
-        rgee::ee_get_earthengine_path(),
-        ".The appropriate version of chromedriver depends on your GoogleChrome",
-        "version. \n\n>>> Figure out GoogleChrome version of their system  on:",
-        "chrome://settings/help\n >>> After that choose a stable version of",
-        "chromedriver on:",
-        "https://sites.google.com/a/chromium.org/chromedriver/downloads \n\n",
-        "Once you are sure of the version of Google Chrome and chromedriver ",
-        "of their system,\ntry rgee::ee_install_drivers(version=...). ",
-        "For instance, if you are using Google Chrome v76.x might use ",
-        "rgee::ee_install_drivers(version='76.0.3809.126') to fix the error"
-      )
-    }
-  }
-
-  if (image_or_vector(x) == "sf") {
-    x %>%
-      ee_vector_to_shapefile() %>%
-      create_shp_zip() -> x
-    x_type <- "shapefile"
   } else {
-    x <- ee_raster_to_tif(x)
-    x_type <- "tif"
-  }
-
-  if (is.null(bucket)) {
-    oauth_func_path <- system.file("python/ee_selenium_functions.py",
-      package = "rgee"
-    )
-    ee_selenium_functions <- ee_source_python(oauth_func_path)
-
-    tempdir_gee <- tempdir()
-    session_temp <- sprintf("%s/rgee_session_by_selenium.Rdata", tempdir_gee)
-
-    # Geeting cookies from https://code.earthengine.google.com/
-    if (file.exists(session_temp) && clean) {
-      session <- ee_selenium_functions$load_py_object(session_temp)
-    } else {
-      if (!quiet) {
-        cat(sprintf("GMAIL ACCOUNT: %s\n", selenium_params$email))
-      }
-      if (nchar(selenium_params$email_password) > 4) {
-        password <- selenium_params$email_password
-      } else {
-        password <- getPass("GMAIL PASSWORD:")
-      }
-      if (!quiet) {
-        if (!selenium_params$showpassword) {
-          cat(
-            "GMAIL PASSWORD:",
-            paste(rep("*", nchar(password)), collapse = ""),
-            "\n"
-          )
-        } else {
-          cat("GMAIL PASSWORD:", password, "\n")
-        }
-      }
-      if (!quiet) cat("Acquiring uploading permissions ... please wait\n")
-      ee_path <- path.expand("~/.config/earthengine")
-      session <- ee_selenium_functions$ee_get_google_auth_session_py(
-        username = selenium_params$email,
-        password = password,
-        dirname = ee_path
-      )
-      cookies_names <- names(ee_py_to_r(session$cookies$get_dict()))
-      if (!quiet) {
-        cat(
-          sprintf(
-            "cookies catched: [%s]\n",
-            paste0(cookies_names, collapse = ", ")
-          )
-        )
-      }
-      if (length(cookies_names) > 7) {
-        ee_selenium_functions$save_py_object(session, session_temp)
-      } else {
-        warnings("The number of cookies is suspiciously low.")
-      }
+    if (is.null(bucket)) {
+      stop('The argument bucket was not defined')
     }
-    expected_cookies_name <- c(
-      "APISID", "CONSENT", "HSID", "NID", "SACSID",
-      "SAPISID", "SID", "SIDCC", "SSID"
-    )
-    # Geting URL ingestion
-    upload_url <- tryCatch(expr = {
-      upload_url <- ee_py_to_r(
-        ee_selenium_functions$ee_get_upload_url_py(session)
+    ee_user <- ee_exist_credentials()
+    if (is.na(ee_user$gcs_cre)) {
+      stop(
+        "Google Cloud Storage credentials were not loaded.",
+        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        " to fix it"
       )
-      count <- 1
-      while (is.null(upload_url) & count < 5) {
-        upload_url <- ee_py_to_r(
-          ee_selenium_functions$ee_get_upload_url_py(session)
+    }
+    count <- 1
+    googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth"))
+    if (isFALSE(quiet)) {
+      files_gcs <- try(
+        googleCloudStorageR::gcs_upload(file = x,
+                                        bucket = bucket,
+                                        name = basename(x)),
+        silent = TRUE
+      )
+      while (any(class(files_gcs) %in% "try-error") & count < 5) {
+        files_gcs <- try(
+          googleCloudStorageR::gcs_upload(file = x,
+                                          bucket = bucket,
+                                          name = basename(x)),
+          silent = TRUE
         )
         count <- count + 1
       }
-      if (is.null(upload_url)) {
-        stop(
-          "Maybe due slow internet connection or a wrong google account ",
-          "password. Expected cookies names need similar to this: \n [",
-          paste0(expected_cookies_name, collapse = ", "), "]"
-        )
-      } else {
-        if (nchar(upload_url) > 500) {
-          stop(
-            "Maybe due slow internet connection or a wrong google account ",
-            "password. Expected cookies names need similar to this: \n [",
-            paste0(expected_cookies_name, collapse = ", "), "]"
-          )
-        }
-      }
-      upload_url
-    }, error = function(e) {
-      message(
-        "Error: Cleaning cache ... , was not possible get the URL to upload",
-        " the data, run rgee::ee_upload_file_to_gcs again."
-      )
-      file.remove(session_temp)
-    })
-
-    if (!quiet) cat(sprintf("Uploading %s to gs://earthengine-uploads/ \n", x))
-    gcs_uri <- ee_selenium_functions$ee_file_to_gcs_py(
-      session, x, x_type,
-      upload_url
-    )
-    return(gcs_uri)
-  } else {
-    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-      stop(
-        "The googleCloudStorageR package is required to use ",
-        "rgee::ee_download_gcs",
-        call. = FALSE
-      )
     } else {
-      if (reinit) {
-        ee_path <- path.expand("~/.config/earthengine")
-        user <- read.table(
-          file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
-          header = TRUE
-        )[["user"]]
-        ee_Initialize(email = user, gcs = TRUE)
+      files_gcs <- try(suppressMessages(
+        googleCloudStorageR::gcs_upload(file = x,
+                                        bucket = bucket,
+                                        name = basename(x))
+      ), silent = TRUE)
+      while (any(class(files_gcs) %in% "try-error") & count < 5) {
+        files_gcs <- try(suppressMessages(
+          googleCloudStorageR::gcs_upload(file = x,
+                                          bucket = bucket,
+                                          name = basename(x))
+        ), silent = TRUE)
+        count <- count + 1
       }
-
-      googleCloudStorageR::gcs_global_bucket(bucket = bucket)
-      googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth")) # init?
-      googleCloudStorageR::gcs_upload(x, name = basename(x))
-      gcs_uri <- sprintf("gs://%s/%s", bucket, basename(x))
-      return(gcs_uri)
     }
+    sprintf("gs://%s/%s", bucket, basename(x))
   }
 }
 
-#' Pass a file of gcs to ee asset
-#' @noRd
-ee_gcs_to_asset <- function(x,
+#' Move a zipped shapefile from GCS to EE asset
+#'
+#' Pass a zipped shapefile of gcs to Earth Engine Asset
+#'
+#' @param gs_uri Character. It represents the full name of an
+#' zipped shapefile in a GCS bucket.
+#' @param asset_id Character. What to call the file once uploaded
+#' to the Earth Engine Asset
+#' @param quiet Logical. Suppress info message.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(sf)
+#' ee_Initialize(gcs = TRUE)
+#'
+#' # Create sf object
+#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
+#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#'
+#' # Method 1
+#' # 1. Pass the sf to a zip file
+#' zipfile <- ee_create_shp_zip(nc)
+#'
+#' # 2. From local to gcs
+#' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#'
+#' # 3. Pass the sf to a zip file
+#' ee_gcs_to_table(
+#'   gs_uri = gs_uri,
+#'   asset_id = asset_id
+#' )
+#'
+#' # OPTIONAL: Monitoring progress
+#' ee_monitoring()
+#'
+#' # OPTIONAL: Display results
+#' ee_sf_01 <- ee$FeatureCollection(asset_id)
+#' Map$centerObject(ee_sf_01)
+#' Map$addLayer(ee_sf_01)
+#'
+#' # Method 2
+#' ee_sf_02 <- sf_as_ee(x = nc,
+#'                      assetId = asset_id,
+#'                      bucket = "rgee_dev",
+#'                      via = 'gcs')
+#' Map$centerObject(ee_sf_02)
+#' Map$addLayer(ee_sf_02)
+#' }
+#' @export
+ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
+  if (isFALSE(quiet)) {
+    cat(
+      blue('Uploading'),
+      green(gs_uri),
+      blue('to'),
+      green(asset_id),
+      blue('... please wait\n')
+    )
+  }
+  system(
+    command = sprintf(
+      "earthengine upload table --asset_id %s '%s'",
+      asset_id, gs_uri
+      ),
+    ignore.stdout = TRUE,
+    ignore.stderr = TRUE
+  )
+}
+
+#' Move a GeoTIFF image from GCS to EE asset
+#'
+#' Pass a GeoTIFF image of gcs to Earth Engine Asset
+#'
+#' @param x stars object.
+#' @param gs_uri Character. It represents the full name of the
+#' GeoTIFF file in a GCS bucket.
+#' @param asset_id Character. What to call the file once uploaded
+#' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
+#' @param properties List. Set of parameters to be set up as properties
+#' of the EE object.
+#' @param start_time Character. Sets the start time property to a number
+#' or date.
+#' @param end_time Character. Sets the end time property to a number
+#' or date.
+#' @param pyramiding_policy The pyramid reduction policy to use.
+#' @param quiet Logical. Suppress info message.
+#' @importFrom rgdal showWKT
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(stars)
+#' ee_Initialize(gcs = TRUE)
+#'
+#' # Get the filename of a image
+#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' x <- read_stars(tif)
+#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+#'
+#' # Method 1
+#' # 1. Move from local to gcs
+#' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#'
+#' # 2. Pass from gcs to asset
+#' ee_gcs_to_image(
+#'   x = x,
+#'   gs_uri = gs_uri,
+#'   asset_id = asset_id
+#' )
+#'
+#' # OPTIONAL: Monitoring progress
+#' ee_monitoring()
+#'
+#' # OPTIONAL: Display results
+#' ee_stars_01 <- ee$Image(asset_id)
+#' Map$centerObject(ee_stars_01)
+#' Map$addLayer(ee_stars_01)
+#'
+#' # Method 2
+#' ee_sf_02 <- stars_as_ee(x = x,
+#'                         assetId = asset_id,
+#'                         bucket = "rgee_dev")
+#' Map$centerObject(ee_sf_02)
+#' Map$addLayer(ee_sf_02)
+#' }
+#' @export
+ee_gcs_to_image <- function(x,
                             gs_uri,
-                            filename,
-                            type = "table",
+                            asset_id,
                             properties = NULL,
                             start_time = "1970-01-01",
                             end_time = "1970-01-01",
-                            pyramiding_policy = "MEAN") {
-  oauth_func_path <- system.file(
-    "python/ee_selenium_functions.py",
-    package = "rgee"
-  )
-  ee_selenium_functions <- ee_source_python(oauth_func_path)
+                            pyramiding_policy = 'MEAN',
+                            quiet = FALSE) {
   tempdir_gee <- tempdir()
 
-  if (type == "image") {
-    # Creating affine_transform params
-    affine_transform <- attr(x, "dimensions")
-    shear <- x %>%
-      attr("dimensions") %>%
-      attr("raster")
-    nbands <- (affine_transform$band$to - affine_transform$band$from) + 1L
-    if (length(nbands) == 0) nbands <- 1
-    band_names <- affine_transform$band$values
-    if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
-    name <- sprintf("projects/earthengine-legacy/assets/%s", filename)
+  # Load python module
+  oauth_func_path <- system.file(
+    "python/ee_utils.py",
+    package = "rgee"
+  )
+  ee_utils <- ee_source_python(oauth_func_path)
 
-    # Creating tileset
-    tilesets <- list(
-      crs = showWKT(st_crs(x)$proj4string),
-      sources = list(
-        list(
-          uris = gs_uri,
-          affine_transform = list(
-            scale_x = affine_transform$x$delta,
-            shear_x = shear$affine[1],
-            translate_x = affine_transform$x$offset,
-            shear_y = shear$affine[2],
-            scale_y = affine_transform$y$delta,
-            translate_y = affine_transform$y$offset
-          )
+  # Creating affine_transform params
+  affine_transform <- attr(x, "dimensions")
+  shear <- x %>%
+    attr("dimensions") %>%
+    attr("raster")
+  nbands <- (affine_transform$band$to - affine_transform$band$from) + 1L
+  if (length(nbands) == 0) nbands <- 1
+  band_names <- affine_transform$band$values
+  if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
+  name <- sprintf("projects/earthengine-legacy/assets/%s", asset_id)
+
+
+  if (is.na(st_crs(x)$proj4string)) {
+    stop("x needs previously defined a coordinate reference system")
+  }
+
+  # Creating tileset
+  tilesets <- list(
+    crs = showWKT(st_crs(x)$proj4string),
+    sources = list(
+      list(
+        uris = gs_uri,
+        affine_transform = list(
+          scale_x = affine_transform$x$delta,
+          shear_x = shear$affine[1],
+          translate_x = affine_transform$x$offset,
+          shear_y = shear$affine[2],
+          scale_y = affine_transform$y$delta,
+          translate_y = affine_transform$y$offset
         )
       )
     )
+  )
 
-    # from R date to JS timestamp: time_start + time_end
-    if (!is.null(start_time)) {
-      time_start <- rdate_to_eedate(start_time, eeobject = FALSE)
+  # from R date to JS timestamp: time_start + time_end
+  time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
+  time_end <- rdate_to_eedate(end_time, timestamp = TRUE)
+
+  # Adding bands
+  bands <- list()
+  for (index in seq_len(length(band_names))) {
+    bands[[index]] <- list(
+      id = band_names[index],
+      tileset_band_index = as.integer((index - 1))
+    )
+  }
+
+  # Putting all together
+  manifest <- list(
+    name = name,
+    tilesets = list(tilesets),
+    bands = bands,
+    pyramiding_policy = pyramiding_policy,
+    properties = properties,
+    start_time = list(seconds = time_start / 1000),
+    end_time = list(seconds = time_end / 1000)
+  )
+
+  if (is.null(properties)) manifest[["properties"]] <- NULL
+  json_path <- sprintf("%s/manifest.json", tempdir_gee)
+  ee_utils$ee_create_json_py(
+    towrite = json_path,
+    manifest = manifest
+  )
+
+  if (isFALSE(quiet)) {
+    cat(
+      blue('Uploading'),
+      green(gs_uri),
+      blue('to'),
+      green(asset_id),
+      blue('... please wait\n')
+    )
+  }
+
+  system(
+    command = sprintf("earthengine upload image --manifest '%s'", json_path),
+    ignore.stdout = TRUE,
+    ignore.stderr = TRUE
+  )
+}
+
+
+#' Create a zip file from a sf object
+#'
+#' @param x sf object
+#' @param filename data source name
+#' @param SHP_EXTENSIONS file extension of the files to save
+#' into the zip file. By default: "dbf", "prj", "shp", "shx".
+#' @importFrom utils zip
+#' @importFrom sf write_sf
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(sf)
+#' ee_Initialize(gcs = TRUE)
+#'
+#' # Create sf object
+#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
+#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#'
+#' # Method 1
+#' # 1. Pass the sf to a zip file
+#' zipfile <- ee_create_shp_zip(nc)
+#'
+#' # 2. From local to gcs
+#' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#'
+#' # 3. Pass the sf to a zip file
+#' ee_gcs_to_table(
+#'   gs_uri = gs_uri,
+#'   asset_id = asset_id
+#' )
+#'
+#' # OPTIONAL: Monitoring progress
+#' ee_monitoring()
+#'
+#' # OPTIONAL: Display results
+#' ee_sf_01 <- ee$FeatureCollection(asset_id)
+#' Map$centerObject(ee_sf_01)
+#' Map$addLayer(ee_sf_01)
+#'
+#' # Method 2
+#' ee_sf_02 <- sf_as_ee(x = nc,
+#'                      assetId = asset_id,
+#'                      bucket = "rgee_dev")
+#' Map$centerObject(ee_sf_02)
+#' Map$addLayer(ee_sf_02)
+#' }
+#' @export
+ee_create_shp_zip <- function(x,
+                           filename,
+                           SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
+  if (missing(filename)) {
+    filename <- sprintf("%s%s",tempfile(),'.shp')
+  }
+  write_sf(obj = x, dsn = filename)
+  shp_basename <- gsub("\\.shp$", "", filename)
+  shp_filenames <- sprintf("%s.%s", shp_basename, SHP_EXTENSIONS)
+  zipname <- sprintf("%s.zip", shp_basename)
+  zip(zipfile = zipname, files = shp_filenames, flags = "-j -q")
+  zipname
+}
+
+#' From sf object to Earth Engine FeatureCollection
+#' @importFrom sf st_geometry
+#' @noRd
+ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
+  # Load python module
+  oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
+  sf_as_ee <- ee_source_python(oauth_func_path)
+  fc <- list()
+  for (index in seq_len(nrow(sf))) {
+    feature <- sf[index,]
+    sfc_feature <- st_geometry(feature)
+    py_geometry <- geojson_json(sfc_feature,type = 'skip')
+    wkt_type <- class(sfc_feature)[1] # wkt type identifier
+    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                         sfc_class = wkt_type,
+                                         opt_proj = proj,
+                                         opt_geodesic = geodesic,
+                                         opt_evenOdd = evenOdd)
+    if (isFALSE(ee_geometry)) {
+      stop("rgee does not support the upload of GEOMETRYCOLLECTION",
+           " (sfg object).")
     }
+    st_geometry(feature) <- NULL
+    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
+  }
+  ee$FeatureCollection(fc)
+}
 
-    if (!is.null(end_time)) {
-      time_end <- rdate_to_eedate(end_time, eeobject = FALSE)
+#' Pass a character, sfg, sfc to sf
+#' @noRd
+ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
+  if (any(class(x) %in% 'sf')) {
+    x
+  } else if (any(class(x) %in% 'sfg')) {
+    if (is.null(proj)) {
+      proj <- 4326
     }
-
-    # Adding bands
-    bands <- list()
-    for (b in seq_len(length(band_names))) {
-      bands[[b]] <- list(
-        id = band_names[b],
-        tileset_band_index = as.integer((b - 1))
+    st_sf(
+      index = 1,
+      geometry = st_sfc(
+        x,
+        crs = 4326,
+        check_ring_dir = check_ring_dir
       )
+    )
+  } else {
+    result <- tryCatch(
+      expr = st_sf(index = 1,
+                   geometry = x,
+                   check_ring_dir = check_ring_dir),
+      error = function(e) st_read(dsn = x,
+                                  stringsAsFactors =  FALSE,
+                                  check_ring_dir = check_ring_dir,
+                                  quiet = quiet)
+    )
+    if (ncol(result) == 1) {
+      result$index <- seq_len(nrow(result))
     }
+    result
+  }
+}
 
-    # Putting all together
-    manifest <- list(
-      name = name,
-      tilesets = list(tilesets),
-      bands = bands,
-      pyramiding_policy = pyramiding_policy,
-      properties = properties,
-      start_time = list(seconds = time_start / 1000),
-      end_time = list(seconds = time_end / 1000)
+#' Pass a character or stars object to stars-proxy
+#' @noRd
+ee_as_proxystars <- function(x, temp_dir = tempdir()) {
+  if (is.character(x)) {
+    read_stars(x, proxy = TRUE)
+  } else {
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    ee_description <- paste0("ee_as_stars_task_", time_format)
+    tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
+    write_stars(x, tiff_filename)
+    tryCatch(
+      expr = read_stars(tiff_filename, proxy = TRUE),
+      error = function(e) stop('x argument not defined properly.')
     )
-
-    if (length(properties) == 0) manifest[["properties"]] <- NULL
-    json_path <- sprintf("%s/manifest.json", tempdir_gee)
-    ee_selenium_functions$ee_create_json_py(
-      towrite = json_path,
-      manifest = manifest
-    )
-    system(sprintf("earthengine upload image --manifest '%s'", json_path))
-  } else if (type == "table") {
-    system(sprintf(
-      "earthengine upload table --asset_id %s '%s'",
-      filename, gs_uri
-    ))
   }
 }

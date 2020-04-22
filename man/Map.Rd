@@ -3,9 +3,9 @@
 \docType{data}
 \name{Map}
 \alias{Map}
-\title{Module to display Earth Engine (EE) spatial
-objects}
-\format{An object of class environment with the
+\title{Module to display Earth Engine (EE) spatial objects}
+\format{
+An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
@@ -32,27 +32,32 @@ is provided, it uses 1 by default.
 \itemize{
 \item \strong{zoom:} The zoom level, from 1 to 24.
 }
-\item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+\item \strong{centerObject(eeObject, zoom = NULL,
+maxError = ee$ErrorMargin(1))}: Centers the
 map view on a given object. If no zoom level is provided, it will
 be predicted according the bounds of the Earth Engine object specified.
 \itemize{
 \item \strong{eeObject:} EE object.\cr
 \item \strong{zoom:} The zoom level, from 1 to 24.
+\item \strong{maxError:} 	Max error when input
+image must be reprojected to an explicitly
+requested result projection or geodesic state.
 }
-}}
+}
+}
 \usage{
 Map
 }
 \description{
 Create interactive visualizations of spatial EE objects
 (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
-through \code{\link[mapview]{mapview}}.
+through \link[=mapview]{mapview}.
 }
 \details{
 \code{Map} takes advantage of
 \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 getMapId} for fetch and return both a mapid and a token suitable
-to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
+to use in a \link[=mapview]{mapview}  object. To achieve desirable
 visualization effect, it will depend on the type of spatial EE object . For
 Image objects, you can provide visualization parameters to
 Map$addLayer() by using the argument visParams. The
@@ -81,9 +86,9 @@ and 1.0 is fully opaque) \tab  number \cr
 
 If you add an Image to the map without any additional
 parameters, by default \code{Map$addLayer()} assigns the first three bands to red,
-green and blue bands, respectively. The default stretch is based on the
-min-max range.  For Geometry, Feature and/or FeatureCollection. The available
-visParams are:
+green, and blue bands, respectively. The default stretch is based on the
+min-max range.  For Geometry, Feature, and/or FeatureCollection. The
+available visParams are:
 \itemize{
 \item \strong{color}: A hex string in the format RRGGBB specifying the
 color to use for drawing the features. By default 000000.

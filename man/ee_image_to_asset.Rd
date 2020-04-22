@@ -4,10 +4,18 @@
 \alias{ee_image_to_asset}
 \title{Creates a task to export an EE Image to an EE Asset.}
 \usage{
-ee_image_to_asset(image, description = "myExportImageTask",
-  assetId = NULL, pyramidingPolicy = NULL, dimensions = NULL,
-  region = NULL, scale = NULL, crs = NULL, crsTransform = NULL,
-  maxPixels = NULL)
+ee_image_to_asset(
+  image,
+  description = "myExportImageTask",
+  assetId = NULL,
+  pyramidingPolicy = NULL,
+  dimensions = NULL,
+  region = NULL,
+  scale = NULL,
+  crs = NULL,
+  crsTransform = NULL,
+  maxPixels = NULL
+)
 }
 \arguments{
 \item{image}{The image to be exported.}
@@ -106,7 +114,8 @@ assetid <- paste0(ee_get_assethome(), '/l5_Amarakaeri')
 task_img <- ee_image_to_asset(
   image = mean_l5_Amarakaeri,
   assetId = assetid,
-  scale = 500
+  scale = 500,
+  region = ee_ROI$geometry()
 )
 
 task_img$start()

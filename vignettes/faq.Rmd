@@ -14,5 +14,3 @@ Here you can find possible **solutions for common `rgee` problems**. We will add
 ### Installation problem
 
 ### Python Configuration
-
-### Selenium Configuration

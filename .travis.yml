@@ -9,9 +9,6 @@ cache:
 - ccache
 r_github_packages:
 - r-lib/covr
-- r-spatial/sf
-- r-spatial/stars
-- r-spatial/sf
 - tidyverse/dplyr
 addons:
   apt:
@@ -39,7 +36,6 @@ env:
   global:
   - R_BUILD_ARGS=" --no-manual "
   - R_CHECK_ARGS=" --no-manual --as-cran --no-multiarch --no-examples"
-
 before_install:
 - sudo apt-get update
 - R -q -e 'if (!requireNamespace("remotes")) install.packages("remotes")'
@@ -48,28 +44,23 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_bba51a8df4d6_key -iv $encrypted_bba51a8df4d6_iv -in tests/credentials/secret.tar.enc -out /home/travis/secret.tar -d
 - tar -xvf /home/travis/secret.tar -C /home/travis/
 - R -q -e 'tic::before_install()'
-install:
-- sudo apt-get install python3-venv
-- sudo -H pip3 install --upgrade pip
-- sudo -H pip3 install setuptools
-- sudo -H pip3 install virtualenv
-- sudo -H pip3 install earthengine-api
-- sudo -H pip3 install coveralls
-- sudo -H pip3 install pyasn1==0.4.8
-- sudo -H pip3 install oauth2client
-- sudo -H pip3 install selenium
-- sudo -H pip3 install bs4
-- sudo -H pip3 install numpy
-- sudo -H pip3 install requests_toolbelt
-- python3 -V
-- pip3 freeze
-- google-chrome --version
-- R -q -e 'tic::install()'
 script:
+  - sudo apt-get install python3-venv
+  - sudo -H pip3 install --upgrade pip
+  - sudo -H pip3 install setuptools
+  - sudo -H pip3 install virtualenv
+  - sudo -H pip3 install pyasn1==0.4.8
+  - sudo -H pip3 install urllib3==1.25.8
+  - sudo -H pip3 install earthengine-api
+  - sudo -H pip3 install coveralls
+  - sudo -H pip3 install oauth2client
+  - sudo -H pip3 install numpy
   - R CMD build . $R_BUILD_ARGS
-  - R CMD check *tar.gz $R_CHECK_ARGS
+  - R -q -e 'library(reticulate);py_config()'
+  - earthengine -h
+  - travis_wait 30 R CMD check *tar.gz $R_CHECK_ARGS
 after_success:
-- R -q -e 'covr::codecov(quiet = FALSE)'
+- travis_wait 30 R -q -e 'covr::codecov(quiet = FALSE)'
 before_deploy: R -q -e 'tic::before_deploy()'
 deploy:
   provider: script

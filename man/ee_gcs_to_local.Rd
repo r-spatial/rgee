@@ -4,19 +4,16 @@
 \alias{ee_gcs_to_local}
 \title{Move results from Google Cloud Storage to a local directory}
 \usage{
-ee_gcs_to_local(task, filename, overwrite = FALSE,
-  GCS_AUTH_FILE = getOption("rgee.gcs.auth"), quiet = TRUE)
+ee_gcs_to_local(task, dsn, overwrite = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
 
-\item{filename}{Output filename.}
+\item{dsn}{Character. Output filename. If missing, a temporary
+file will be assigned.}
 
-\item{overwrite}{A boolean indicating whether "filename" should
+\item{overwrite}{Logical. A boolean indicating whether the file should
 be overwritten.}
-
-\item{GCS_AUTH_FILE}{Authentication json file you have downloaded from
-your Google Cloud Project}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -25,11 +22,6 @@ Move results of an EE task saved in Google Cloud Storage to a local
 directory.
 }
 \details{
-The best way to use \code{rgee::ee_download_gcs} is save the Google Cloud
-Project JSON file into \code{ee_get_earthengine_path()} with the name
-GCS_AUTH_FILE.json. It is necessary in order to attain that rgee can
-read the credentials automatically.
-
 The task argument needs "COMPLETED" task state to work, since the parameters
 necessaries to locate the file into google cloud storage are obtained from
 ee$batch$Export$*$toCloudStorage(...)$start()$status().
@@ -86,7 +78,8 @@ task_img <- ee_image_to_gcs(
     image = mean_l5_Amarakaeri,
     bucket = "rgee_dev",
     fileFormat = "GEO_TIFF",
-    fileNamePrefix = "my_image"
+    region = ee_ROI$geometry(),
+    fileNamePrefix = paste0("my_image", Sys.time())
 )
 
 task_img$start()
@@ -94,6 +87,5 @@ ee_monitoring(task_img)
 
 # Move results from Drive to local
 img <- ee_gcs_to_local(task = task_img)
-plot(img)
 }
 }

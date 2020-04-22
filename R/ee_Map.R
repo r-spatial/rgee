@@ -1,9 +1,8 @@
-#' Module to display Earth Engine (EE) spatial
-#' objects
+#' Module to display Earth Engine (EE) spatial objects
 #'
 #' Create interactive visualizations of spatial EE objects
 #' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
-#' through \code{\link[mapview]{mapview}}.
+#' through \link[=mapview]{mapview}.
 #' @importFrom jsonlite parse_json
 #' @format An object of class environment with the
 #' following functions:
@@ -32,21 +31,24 @@
 #'   \itemize{
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
 #'   }
-#'   \item \strong{ee_centerObject(eeObject, zoom = NULL)}: Centers the
+#'   \item \strong{centerObject(eeObject, zoom = NULL,
+#'    maxError = ee$ErrorMargin(1))}: Centers the
 #'   map view on a given object. If no zoom level is provided, it will
 #'   be predicted according the bounds of the Earth Engine object specified.
 #'   \itemize{
 #'     \item \strong{eeObject:} EE object.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
+#'     \item \strong{maxError:} 	Max error when input
+#'     image must be reprojected to an explicitly
+#'     requested result projection or geodesic state.
 #'   }
 #' }
 #'
 #' @details
-#'
 #' `Map` takes advantage of
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 #' getMapId} for fetch and return both a mapid and a token suitable
-#' to use in a \code{\link[mapview]{mapview}} object. To achieve desirable
+#' to use in a \link[=mapview]{mapview}  object. To achieve desirable
 #' visualization effect, it will depend on the type of spatial EE object . For
 #' Image objects, you can provide visualization parameters to
 #' Map$addLayer() by using the argument visParams. The
@@ -75,9 +77,9 @@
 #'
 #' If you add an Image to the map without any additional
 #' parameters, by default `Map$addLayer()` assigns the first three bands to red,
-#' green and blue bands, respectively. The default stretch is based on the
-#' min-max range.  For Geometry, Feature and/or FeatureCollection. The available
-#' visParams are:
+#' green, and blue bands, respectively. The default stretch is based on the
+#' min-max range.  For Geometry, Feature, and/or FeatureCollection. The
+#' available visParams are:
 #' \itemize{
 #'  \item \strong{color}: A hex string in the format RRGGBB specifying the
 #'  color to use for drawing the features. By default 000000.
@@ -160,7 +162,7 @@ ee_setZoom <- function(zoom) {
 #'
 #' Centers the map view at the given coordinates
 #' with the given zoom level. If no zoom level is
-#' provided, it uses 1.
+#' specified, it uses 1.
 #'
 #' https://developers.google.com/earth-engine/api_docs#map.setcenter
 #' @noRd
@@ -175,17 +177,23 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' Center a mapview using an EE object
 #'
 #' Centers the map view on a given object. If no zoom
-#' level is provided, it will predicted according the
-#' bounds of the Earth Engine object specified.
+#' level is specified, it will be predicted according to the
+#' bounds of the specified Earth Engine object.
 #'
 #' https://developers.google.com/earth-engine/api_docs#map.centerobject
 #' @noRd
-ee_centerObject <- function(eeObject, zoom = NULL) {
+ee_centerObject <- function(eeObject,
+                            zoom = NULL,
+                            maxError = ee$ErrorMargin(1)) {
+  if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
+    message("NOTE: Center got from the first element.")
+    eeObject <- ee$Feature(eeObject$first())
+  }
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
         geometry()$
-        centroid()$
+        centroid(maxError)$
         getInfo() %>%
         '[['('coordinates') %>%
         ee_py_to_r(),
@@ -197,10 +205,17 @@ ee_centerObject <- function(eeObject, zoom = NULL) {
         c(0, 0)
       }
     )
+    if (is.null(center)) {
+      message(
+        "The centroid coordinate was not possible",
+        " to estimate, assigning: c(0,0)"
+      )
+      center <- c(0, 0)
+    }
   } else if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
     center <- tryCatch(
       expr = eeObject$
-        centroid()$
+        centroid(maxError)$
         coordinates()$
         getInfo() %>%
         ee_py_to_r(),
@@ -217,7 +232,7 @@ ee_centerObject <- function(eeObject, zoom = NULL) {
   }
 
   if (is.null(zoom)) {
-    zoom <- ee_getZoom(eeObject)
+    zoom <- ee_getZoom(eeObject, maxError = maxError)
   }
   Map$setCenter(lon = center[1], lat = center[2], zoom = zoom)
 }
@@ -226,11 +241,11 @@ ee_centerObject <- function(eeObject, zoom = NULL) {
 #' https://developers.google.com/earth-engine/api_docs#map.addlaye
 #' @noRd
 ee_addLayer <- function(eeObject,
-                        visParams,
+                        visParams = NULL,
                         name = NULL,
                         shown = TRUE,
                         opacity = 1) {
-  if (missing(visParams)) {
+  if (is.null(visParams)) {
     visParams <- list()
   }
 
@@ -432,6 +447,12 @@ ee_get_spatial_objects <- function(type = "all") {
       "ee.image.Image"
     )
   }
+  if (type == "justfeature") {
+    ee_spatial_object <- c(
+      "ee.feature.Feature",
+      "ee.featurecollection.FeatureCollection"
+    )
+  }
   if (type == "Simple") {
     ee_spatial_object <- c(
       "ee.geometry.Geometry",
@@ -452,12 +473,12 @@ ee_get_spatial_objects <- function(type = "all") {
   return(ee_spatial_object)
 }
 
-#' Estimate the zoom level for a given bounds
+#' Estimates the zoom level for a given bounds
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
-ee_getZoom <- function(eeObject) {
-  bounds <- ee_get_boundary(eeObject)
+ee_getZoom <- function(eeObject, maxError = ee$ErrorMargin(1)) {
+  bounds <- ee_get_boundary(eeObject, maxError)
 
   WORLD_DIM <- list(height = 256, width = 256)
   ZOOM_MAX <- 18
@@ -486,11 +507,11 @@ ee_getZoom <- function(eeObject) {
 #' Get boundary of a Earth Engine Object
 #' @importFrom sf st_polygon st_bbox
 #' @noRd
-ee_get_boundary <- function(eeObject) {
+ee_get_boundary <- function(eeObject, maxError) {
   if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
     eeObject <- ee$Feature(eeObject)
   }
-  eeObject$geometry()$bounds()$getInfo() %>%
+  eeObject$geometry()$bounds(maxError)$getInfo() %>%
     '[['('coordinates') %>%
     ee_py_to_r() %>%
     unlist() %>%

@@ -27,11 +27,11 @@ ee_create_pyenv <- function(python_env) {
 #' This function enables callers to check which versions
 #' of Python will be discovered on a system.
 #'
-#' @param use_py_discover_config Logical. If True
-#' will use \code{\link[reticulate]{py_discover_config}} to find
+#' @param use_py_discover_config Logical. If TRUE
+#' will use \code{\link{reticulate}} to find
 #' versions of Python in the system.  Otherwise, will use
-#' \code{\link[reticulate]{conda_list}} for Window OS and
-#' \code{\link[reticulate]{virtualenv_list}} for Unix system.
+#' \link[=reticulate]{conda_list} for Window OS and
+#' \link[=reticulate]{virtualenv_list} for Unix system.
 #' @importFrom reticulate py_discover_config conda_list
 #' @examples
 #' \dontrun{
@@ -83,7 +83,6 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 
 #' Set the Python environment to be used on rgee
 #'
-#'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
 #' @param python_env The name of, or path to, a Python virtual environment.
 #' @param install if TRUE, rgee will save the Python interpreter path and
@@ -107,9 +106,10 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' }
 #' @export
 ee_set_pyenv <- function(python_path,
-                         python_env,
+                         python_env = NULL,
                          install = FALSE,
                          confirm = interactive()) {
+  ee_clean_pyenv()
   if (isTRUE(install)) {
     home <- Sys.getenv("HOME")
     renv <- file.path(home, ".Renviron")
@@ -132,14 +132,17 @@ ee_set_pyenv <- function(python_path,
         break()
       }
       lines[ii] <- line
-      ii = ii + 1
+      ii <- ii + 1
     }
 
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
     ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
-    ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
-    system_vars <- c(lines, ret_python, ret_python_env)
-
+    if (is.null(python_env)) {
+      system_vars <- c(lines, ret_python)
+    } else {
+      ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
+      system_vars <- c(lines, ret_python, ret_python_env)
+    }
     writeLines(system_vars, con)
     close(con)
 
@@ -147,7 +150,7 @@ ee_set_pyenv <- function(python_path,
     # if (restart_session && hasFun("restartSession")) {
     #   restartSession()
     # }
-    if (confirm) {
+    if (isTRUE(confirm)) {
       title <- paste0(
         "rgee needs to restart R session to see changes.\n",
         "Do you want to continues?"
@@ -164,7 +167,9 @@ ee_set_pyenv <- function(python_path,
             "in future sessions, run this function",
             " with `install = TRUE`.")
     Sys.setenv(RETICULATE_PYTHON = python_path)
-    Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+    if (!is.null(python_env)) {
+      Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+    }
   }
   invisible(TRUE)
 }
@@ -192,8 +197,8 @@ ee_set_pyenv <- function(python_path,
 #' Conda repositories.
 #' @param conda_python_version the Python version installed in the
 #' created conda environment. Python 3.7 is installed by default.
-#' @param ... other arguments passed to [reticulate::conda_install()] or
-#' [reticulate::virtualenv_install()].
+#' @param ... other arguments passed to \link[=reticulate]{conda_install} or
+#' \link[=reticulate]{virtualenv_install}.
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
@@ -218,14 +223,11 @@ ee_install_python_packages <- function(method = c(
                                        conda = "auto",
                                        ee_version = NULL,
                                        envname = NULL,
-                                       pip = FALSE,
+                                       pip = TRUE,
                                        conda_python_version = "3.7",
                                        quiet = FALSE,
                                        ...) {
-  rgee_packages <- c(
-    "selenium", "bs4", "pysmartDL",
-    "requests_toolbelt", "oauth2client"
-  )
+  rgee_packages <- "oauth2client"
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
     stop(
@@ -234,20 +236,17 @@ ee_install_python_packages <- function(method = c(
     )
   }
 
+  # get the version of the earthengine-api
   if (is.null(ee_version)) {
     ee_version <- ee_version()
   }
+  ee_version <- paste0("earthengine-api==", ee_version)
 
   # verify Python version
   ee_check_python(quiet = quiet)
 
   method <- match.arg(method)
   rgee_packages <- unique(rgee_packages)
-  if (ee_version == "latest") {
-    ee_version <- "earthengine-api"
-  } else {
-    ee_version <- paste0("earthengine-api==", ee_version)
-  }
 
   py_install(
     packages = c(ee_version, rgee_packages),
@@ -268,45 +267,62 @@ ee_install_python_packages <- function(method = c(
   invisible(TRUE)
 }
 
-
-#' Install ChromeDriver in the system
+#' Upgrade the Earth Engine Python API
 #'
-#' @param ChromeDriverVersion Google Chrome version of the system.
+#' This function upgrade the Earth Engine Python API (earthengine-api)
+#' to the latest version.
+#'
+#' @param method Installation method. By default, "auto" automatically
+#' finds a method that will work in the local environment. Change the
+#' default to force a specific installation method. Note that the
+#' "virtualenv" method is not available on Windows (as this isn't
+#' supported by rgee). Note also that since this command runs
+#' without privilege the "system" method is available only on Windows.
+#' @param conda Path to conda executable (or "auto" to find conda
+#' using the PATH and other conventional install locations).
+#' @param envname Name of Python environment, or full path, which Python
+#' packages are to be installed.
+#' @param pip Logical. Use pip for package installation? This
+#' is only relevant when Conda environments are used, as
+#' otherwise packages will be installed from the
+#' Conda repositories.
+#' @param conda_python_version the Python version installed in the
+#' created conda environment. Python 3.7 is installed by default.
+#' @param ... other arguments passed to \link[=reticulate]{conda_install}  or
+#' \link[=reticulate]{virtualenv_install}.
+#' @param quiet logical. Suppress info message
+#' @importFrom reticulate source_python py_install
+#' @details It is neccessary restart R to observe change when
+#' installing Python packages. rgee only is compatible with Python
+#' version 3.5 >=.
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_install_ChromeDriver()
+#' ee_earthengine_upgrade()
 #' }
-#' @seealso \code{\link[rgee]{ee_upload}}
 #' @export
-ee_install_ChromeDriver <- function(ChromeDriverVersion) {
-  if (missing(ChromeDriverVersion)) {
-    stop(
-      "The ChromeDriverVersion argument was not defined.",
-      " Find the appropriate version of Google Chrome visiting:\n",
-      "- chrome://settings/help \n",
-      "- After, according to your Chrome version, run, for e.g, rgee::ee_install_drivers(77)"
-    )
-  }
-
-  oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
-  ee_check_utils <- ee_source_python(oauth_func_path)
-  directory <- path.expand("~/.config/earthengine/")
-
-  os_type <- ee_detect_os()
-
-  chromedriver_version <- ee_check_utils$download_chromedriver(
-    directory = directory,
-    operating_system = os_type,
-    version = substr(as.character(ChromeDriverVersion), 1, 2)
+ee_earthengine_upgrade <- function(method = c(
+                                      "auto",
+                                      "virtualenv",
+                                      "conda"
+                                   ),
+                                   conda = "auto",
+                                   envname = NULL,
+                                   pip = TRUE,
+                                   conda_python_version = "3.7",
+                                   quiet = FALSE,
+                                   ...) {
+  ee_version <- "earthengine-api"
+  py_install(
+    packages = ee_version,
+    envname = envname,
+    method = method,
+    conda = conda,
+    python_version = conda_python_version,
+    pip = pip,
+    ...
   )
-  cat(
-    "Selenium ChromeDriver v",
-    ee_py_to_r(chromedriver_version),
-    "saved in",
-    directory
-  )
-  return(invisible(TRUE))
+  invisible(TRUE)
 }
 
 #' Detect the Operating System type of the system
@@ -334,3 +350,4 @@ ee_virtualenv_list <- function() {
             virtualenv_root(),
             virtualenv_list()))
 }
+

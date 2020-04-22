@@ -4,56 +4,49 @@
 \alias{ee_as_thumbnail}
 \title{Create a stars object based on an EE thumbnail image}
 \usage{
-ee_as_thumbnail(x, region, dimensions, vizparams = NULL,
-  geodesic = NULL, evenOdd = NULL, quiet = FALSE)
+ee_as_thumbnail(
+  image,
+  region,
+  dimensions,
+  vizparams = NULL,
+  raster = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
-\item{x}{EE Image object}
+\item{image}{EE Image object to be converted into a stars object.}
 
-\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
-CRS needs to be the same that the x argument otherwise it will be
-forced. If it is not specified image bounds will be taken.}
+\item{region}{EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
+the region to export.The CRS needs to be the same as the \code{x} argument,
+otherwise, it will be forced.}
 
-\item{dimensions}{A number or pair of numbers in format XY.}
+\item{dimensions}{Numeric vector of length 2. Thumbnail dimensions in pixel
+units. If a single integer is provided, it defines the size of the
+image's larger aspect dimension and scales the smaller dimension
+proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
 
-\item{vizparams}{A list that contains the visualization parameters.}
+\item{vizparams}{A list that contains the visualization parameters.
+See details.}
 
-\item{geodesic}{Whether line segments of region should be interpreted as
-spherical geodesics. If FALSE, indicates that line segments should be
-interpreted as planar lines in the specified CRS. If it is not specified in
-the geometry (region argument) defaults to TRUE if the CRS is geographic
-(including the default EPSG:4326), or to FALSE if the CRS is projected.}
-
-\item{evenOdd}{If TRUE, polygon interiors will be determined by
-the even/odd rule, where a point is inside if it crosses an odd
-number of edges to reach a point at infinity. Otherwise polygons
-use the left- inside rule, where interiors are on the left side
-of the shell's edges when walking the vertices in the given order.
-If unspecified in the geometry (region argument) defaults to TRUE.}
+\item{raster}{Logical. Should the thumbnail image be saved as a
+raster object?}
 
 \item{quiet}{logical; suppress info messages.}
 }
 \value{
-An \link[sf]{sf} object
+An stars or Raster object depending on the \code{raster} argument.
 }
 \description{
-Download EE thumbnail images and read them as stars objects.
-This function is a wrapper around \code{ee$Image()$getThumbURL()}.
+Wrapper function to create a stars object with projection from a
+\href{developers.google.com/earth-engine/image_visualization#thumbnail-images
+}{EE thumbnail image}.
 }
 \details{
-The argument dimensions will define the stars object parameters
-"from" & "to". It must be a single numeric value or a two-element vector.
-If not defined, 256 is taken by default as the dimension of x
-(from 1 to 256), and y scales down proportionally. Huge images
-might cause plodding connections. See
-\href{https://developers.google.com/earth-engine/client_server}{Client vs
-Server} for more details.
-
-The vizparams set up the number of bands up. In \code{ee_as_thumbnail} just is
-possible export only one (G) or three-band (RGB) images. Additional
-parameters can be passed on to control color, intensity, the maximum and
-minimum values, etc. The below table provides all the parameters that
-admit \code{ee_as_thumbnail}.
+\code{vizparams} set up the details of the thumbnail image. With
+\code{ee_as_thumbnail} only is possible export one-band (G) or three-band
+(RGB) images. Several parameters can be passed on to control color,
+intensity, the maximum and minimum values, etc. The table below provides
+all the parameters that admit \code{ee_as_thumbnail}.
 
 \tabular{lll}{
 \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
@@ -75,9 +68,6 @@ number or list of three numbers, one for each band \cr
 (0.0 is fully transparent and 1.0 is fully opaque) \tab
 number \cr
 }
-
-Use \code{ee$Image()$geometry()$projection()$crs()$getInfo()} for
-getting the CRS of an Earth Engine Image.
 }
 \examples{
 \dontrun{
@@ -92,22 +82,22 @@ dem_palette <- c(
   "#F4C84E", "#D59F3C", "#A36D2D", "#C6A889", "#FFFFFF"
 )
 
-# DEM data -SRTM v4.0
+## DEM data -SRTM v4.0
 image <- ee$Image("CGIAR/SRTM90_V4")
-region <- nc \%>\%
-  st_bbox() \%>\%
-  st_as_sfc() \%>\%
-  st_set_crs(4326) \%>\%
-  sf_as_ee() \%>\%
-  ee$FeatureCollection$geometry()
+world_region <- ee$Geometry$Rectangle(
+  coords = c(-180,-60,180,60),
+  proj = "EPSG:4326",
+  geodesic = FALSE
+)
 
-## world
+## world - elevation
 world_dem <- ee_as_thumbnail(
-  x = image,
+  image = image,
+  region = world_region,
   dimensions = 1024,
-  geodesic = FALSE,
   vizparams = list(min = 0, max = 5000)
 )
+
 world_dem[world_dem <= 0] <- NA
 world_dem <- world_dem * 5000
 plot(
@@ -116,21 +106,28 @@ plot(
 )
 
 ## Arequipa-Peru
+arequipa_region <- nc \%>\%
+  sf_as_ee() \%>\%
+  ee$FeatureCollection$geometry()
+
 arequipa_dem <- ee_as_thumbnail(
-  x = image,
+  image = image,
+  region = arequipa_region$buffer(1000)$bounds(),
   dimensions = 512,
-  region = region,
   vizparams = list(min = 0, max = 5000)
 )
+
 arequipa_dem <- arequipa_dem * 5000
 plot(
   x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
   reset = FALSE, main = "SRTM - Arequipa"
 )
+
 suppressWarnings(plot(
   x = nc, col = NA, border = "black", add = TRUE,
   lwd = 1.5
 ))
+dev.off()
 
 ## LANDSAT 8
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -140,18 +137,12 @@ Map$addLayer(img, list(min = 0, max = 5000, gamma = 1.5))
 
 ## Teton Wilderness
 l8_img <- ee_as_thumbnail(
-  x = img,
+  image = img,
+  region = img$geometry()$bounds(),
   dimensions = 1024,
-  vizparams = list(
-    min = 0,
-    max = 5000,
-    gamma = 1.5
-  )
+  vizparams = list(min = 0, max = 5000, gamma = 1.5),
+  raster = TRUE
 )
-dev.off()
-l8_img \%>\%
-  as("Raster") \%>\%
-  `names<-`(c("R", "G", "B")) \%>\%
-  plotRGB(stretch = "lin")
+plotRGB(l8_img, stretch = "lin")
 }
 }

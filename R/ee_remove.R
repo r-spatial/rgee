@@ -8,11 +8,11 @@
 #' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`).
 #' The directory (all user credentials) to delete.
 #' @param quiet Logical (optional). Suppress info messages.
-#' @examples {
+#' @examples
 #' \dontrun{
+#' library(rgee)
 #' ee_remove_credentials()
 #' ee_remove_credentials('data.colec.fbf@gmail.com')
-#' }
 #' }
 #' @export
 ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
@@ -43,38 +43,12 @@ ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
   invisible(TRUE)
 }
 
-
-#' Delete chromedriver
-#'
-#' @param quiet Logical (optional). Suppress info messages.
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_remove_ChromeDriver()
-#' }
-#' @export
-ee_remove_ChromeDriver <- function(quiet = FALSE) {
-  ee_path <- path.expand("~/.config/earthengine/")
-  gecko_driver_linux <- sprintf("%s/chromedriver", ee_path)
-  gecko_driver_win <- sprintf("%s/chromedriver.exe", ee_path)
-  if (file.exists(gecko_driver_win)) file.remove(gecko_driver_win)
-  if (file.exists(gecko_driver_linux)) file.remove(gecko_driver_linux)
-  condition_exist <- file.exists(gecko_driver_linux) |
-    file.exists(gecko_driver_win)
-  if (!quiet & condition_exist) {
-    cat(sprintf("GoogleDrive driver in %s has been removed.\n", ee_path))
-  } else {
-    cat("The file chromedriver does not exist.\n")
-  }
-  invisible(TRUE)
-}
-
 #' Remove reticulate system variables from .Renviron
 #'
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_remove_driver()
+#' ee_clean_pyenv()
 #' }
 #' @export
 ee_clean_pyenv <- function() {
@@ -97,6 +71,7 @@ ee_clean_pyenv <- function() {
       lines[ii] <- line
       ii <- ii + 1
     }
+    close(con)
 
     # Remove system variables
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV

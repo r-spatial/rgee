@@ -7,7 +7,7 @@
 ee_users()
 }
 \description{
-Display Earth Engine, Google Drive and Google Cloud Storage Credentials as
+Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 a table.
 }
 \examples{

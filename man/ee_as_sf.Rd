@@ -4,26 +4,41 @@
 \alias{ee_as_sf}
 \title{Convert an EE table in a sf object}
 \usage{
-ee_as_sf(x, via = "getInfo", container = "rgee_backup",
-  selectors = NULL, monitoring = TRUE, quiet = FALSE)
+ee_as_sf(
+  x,
+  dsn,
+  overwrite = TRUE,
+  via = "getInfo",
+  maxFeatures = 5000,
+  container = "rgee_backup",
+  selectors = NULL,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{x}{EE table to be converted into a sf object.}
 
-\item{via}{Method to download the image. Three methods
-are implemented 'getInfo', 'drive' and 'gcs'. See details.}
+\item{dsn}{Character. Output filename; in case \code{dsn} is missing
+\code{ee_as_sf} will create a temporary file.}
 
-\item{container}{Relevant when the "via" argument is
-defined as "drive" or "gcs". It is the name of a unique
-folder ('drive') or bucket ('gcs') to export into.}
+\item{overwrite}{Logical. Delete data source \code{dsn} before attempting
+to write?.}
+
+\item{via}{Character. Method to fetch data about the object. Multiple
+options supported. See details.}
+
+\item{maxFeatures}{Numeric. The maximum allowed number of features to
+export  (ignore if \code{via} is not set as "getInfo"). The task will fail
+if the exported region covers more features in the specified projection.
+Defaults to 5000.}
+
+\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
+to be exported into (ignore if \code{via} is not defined as "drive" or
+"gcs").}
 
 \item{selectors}{The list of properties to include in
 the output, as a list of strings or a comma-separated
 string. By default, all properties are included.}
-
-\item{monitoring}{Relevant when the "via" argument is
-defined as 'drive' or 'gcs'. If is FALSE, ee_as_sf
-will wait until finishing the task.}
 
 \item{quiet}{logical. Suppress info message}
 }
@@ -34,15 +49,19 @@ An sf object.
 Convert an EE table in a sf object
 }
 \details{
-The process to pass a ee$FeatureCollection, ee$Feature or ee$Geometry to
-your local env could be carried out by three different strategies. The
-first one ('getInfo') use the getInfo method, which fetch and return
-information about Earth Engine objects, the advantage of use this is
-a direct and fast download. However, there is a limit of 5000 features
-that can be transferred by request which makes it unsatisfactory for
-large collections. The second ('drive') and third ('gcs') method are
-suitable for large images since it use Google Drive and Google Cloud
-Storage as a intermediate container.
+\code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
+\code{ee$Feature} and \code{ee$Geometry} by three different options:
+"getInfo", "drive", and "gcs". When "getInfo" is set in the \code{via}
+argument, \code{ee_as_sf} will make an REST call to retrieve
+all the known information about the object. The advantage of use
+"getInfo" is a direct and faster download. However, there is a limitation of
+5000 features by request which makes it not recommendable for large
+collections. Instead of "getInfo", the options: "drive" and "gcs" are
+suitable for large collections since they use an intermediate container,
+which may be Google Drive and Google Cloud Storage respectively. For getting
+more information about exporting data take a look at the
+\href{https://developers.google.com/earth-engine/exporting}{Google Earth
+Engine Guide - Export data}.
 }
 \examples{
 \dontrun{
@@ -64,7 +83,7 @@ roi <- ee$Geometry$Polygon(list(
 
 # TIGER: US Census Blocks Dataset
 blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
-subset <- blocks$filterBounds(roi)$limit(2)
+subset <- blocks$filterBounds(roi)
 sf_subset <- ee_as_sf(x = subset)
 plot(sf_subset)
 
@@ -72,6 +91,8 @@ plot(sf_subset)
 region <- ee$Geometry$Rectangle(-119.224, 34.669, -99.536, 50.064)
 ee_help(ee$FeatureCollection$randomPoints)
 ee_randomPoints <- ee$FeatureCollection$randomPoints(region, 100)
+
+# Download via GetInfo
 sf_randomPoints <- ee_as_sf(ee_randomPoints)
 plot(sf_randomPoints)
 
@@ -83,7 +104,7 @@ sf_randomPoints_drive <- ee_as_sf(
 
 # Download via GCS
 sf_randomPoints_gcs <- ee_as_sf(
-  x = ee_randomPoints,
+  x = subset,
   via = 'gcs',
   container = 'rgee_dev'
 )

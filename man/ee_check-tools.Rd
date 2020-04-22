@@ -5,7 +5,6 @@
 \alias{ee_check}
 \alias{ee_check_python}
 \alias{ee_check_rgee_python_packages}
-\alias{ee_check_drivers}
 \alias{ee_check_credentials}
 \title{Interface to check Python and non-R rgee dependencies}
 \usage{
@@ -13,9 +12,7 @@ ee_check()
 
 ee_check_python(quiet = FALSE)
 
-ee_check_rgee_python_packages()
-
-ee_check_drivers()
+ee_check_rgee_python_packages(quiet = FALSE)
 
 ee_check_credentials()
 }
@@ -23,11 +20,14 @@ ee_check_credentials()
 \item{quiet}{logical. Suppress info message}
 }
 \description{
-R functions for checking sanity of Python Selenium Chromedriver, Third-Party
-Python packages and credentials
+R functions for checking sanity of Third-Party Python
+packages and credentials.
 }
 \examples{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
-ee_check()
+ee_check_python()
+ee_check_rgee_python_packages()
+ee_check_credentials()
+ee_check() # put it all together
 }

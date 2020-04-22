@@ -16,14 +16,14 @@
 #' @param editor Character vector. Define editor users in the IAM Policy.
 #' @param viewer Character vector. Define viewer users in the IAM Policy.
 #' @param all_users_can_read Logical. All users can see the asset element.
-#' @param cache Logical. Whether is TRUE, the task report will be saved
+#' @param cache Logical. If TRUE, the task report will be saved
 #' in the /temp directory and used when the function .
 #' @param quiet Logical. Suppress info message.
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv
 #' @details
 #' If the argument `del_properties` is 'ee_rmv_all_prp',
-#' \link[rgee]{ee_manage_delete_properties} will delete all
+#' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
 #' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
@@ -71,7 +71,8 @@
 #'   add_properties = list(message = "hello-world", language = "R")
 #' )
 #'
-#' test_ic <- ee$ImageCollection("users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved")
+#' ic_id <- "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+#' test_ic <- ee$ImageCollection(ic_id)
 #' test_ic$getInfo()
 #'
 #' # 6. Delete properties
@@ -206,8 +207,7 @@ ee_manage_quota <- function() {
   quota <- ee_py_to_r(ee_quota$quota(ID))
   total_msg <- ee_humansize(as.numeric(quota[1]))
   used_msg <- ee_humansize(as.numeric(quota[2]))
-  cat(sprintf(" Total Quota: %s
- Used Quota: %s", total_msg, used_msg))
+  cat(sprintf(" Total Quota: %s \n Used Quota: %s", total_msg, used_msg))
   invisible(quota)
 }
 
@@ -419,7 +419,8 @@ ee_verify_filename <- function(path_asset, strict = TRUE) {
   if (is.null(response) & strict) {
     message <- c(
       "%s is not a valid destination.",
-      " Make sure a correct full path is provided (e.g. either users/user/nameofcollection",
+      " Make sure a correct full path is provided",
+      " (e.g. either users/user/nameofcollection",
       " or projects/myproject/myfolder/newcollection).")
     stop(sprintf(message, path_asset))
   }

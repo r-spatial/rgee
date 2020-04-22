@@ -1,17 +1,17 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.2.0
+Version: 0.3.16
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
              role = c("aut", "cre"),
              email = "csaybar@gmail.com",
              comment = c(ORCID = "0000-0003-2745-9535")),
-      person(given = "Gabriel",
-             family = "Carrasco",
-             role = c("ctb"),
-             email = "gabriel.carrasco@upch.pe",
-             comment = c(ORCID = "0000-0002-6945-0419")),
+      person(given = "Wu",
+             family = "Qiusheng",
+	     role = c("ctb"),
+	     email = "giswqs@gmail.com",
+	     comment = c(ORCID = "0000-0001-5437-4073")),
       person(given = "Roy",
              family = "Yali",
              role = c("ctb"),
@@ -22,6 +22,11 @@ Authors@R:
              role = c("ctb"),
              email = "antony.barja8@gmail.com",
              comment = c(ORCID = "0000-0001-5921-2858")),
+      person(given = "Gabriel",
+             family = "Carrasco",
+             role = c("ctb"),
+             email = "gabriel.carrasco@upch.pe",
+             comment = c(ORCID = "0000-0002-6945-0419")),
       person(given = "MariaElena",
              family = "Adauto",
              role = c("ctb"),
@@ -32,17 +37,19 @@ License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
+RoxygenNote: 7.1.0
 Depends:
-    R (>= 3.4.0),
-    methods    
+    R (>= 3.4.0)
 Imports:
     reticulate (>= 1.13),
-    stars (>= 0.3),
+    stars,
+    raster,
+    sf,
+    methods,
     rstudioapi (>= 0.7),
     dplyr,
+    digest,
     rgdal,
-    sf,
     magrittr,
     leaflet (>= 2.0.2),
     mapview,
@@ -62,7 +69,6 @@ Suggests:
     googledrive (>= 1.0.0),
     googleCloudStorageR (>= 0.5.1),
     geojsonlint,
-    raster,
     lwgeom
 URL: https://github.com/csaybar/rgee
 BugReports: https://github.com/csaybar/rgee/issues

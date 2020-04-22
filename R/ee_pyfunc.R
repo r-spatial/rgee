@@ -40,4 +40,3 @@
 #' ee_newic$mean()$getInfo()$type
 #' @export
 ee_pyfunc <- py_func
-

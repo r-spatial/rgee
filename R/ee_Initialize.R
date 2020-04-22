@@ -1,8 +1,8 @@
 #' Authenticate and Initialize Earth Engine
 #'
-#' Authorize rgee to manage Earth Engine resource, Google
-#' Drive and Google Cloud Storage. The \code{ee_initialize()} via
-#' web-browser asked to sign in to your Google account and
+#' Authorize rgee to manage Earth Engine resources, Google
+#' Drive, and Google Cloud Storage. The \code{ee_initialize()} via
+#' web-browser will ask to sign in to your Google account and
 #' allows you to grant permission to manage resources. This function is
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
@@ -10,39 +10,41 @@
 #' name is used as a folder inside the path `rgee::ee_get_earthengine_path()`.
 #' This enable a multi-user support allowing to target a specific
 #' Google identity.
-#' @param drive Logical (optional). If TRUE the drive credential
+#' @param drive Logical (optional). If TRUE, the drive credential
 #' will be cached in the path `rgee::ee_get_earthengine_path()`.
-#' @param gcs logical. If TRUE the Google Cloud Storage
+#' @param gcs logical. If TRUE, the Google Cloud Storage
 #' credential will be cached in the path `rgee::ee_get_earthengine_path()`.
 #' @param quiet logical. Suppress info messages.
 #' @importFrom utils read.table browseURL write.table packageVersion
-#' @importFrom reticulate import_from_path import
+#' @importFrom reticulate import_from_path import install_miniconda py_available
 #' @importFrom getPass getPass
+#' @importFrom cli symbol rule
+#' @importFrom crayon blue green black red bold white
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
-#' googlecloudStorageR respectively. By default, rgee does not need to them,
-#' these are just necessary for export and import tasks.
-#' All the user credentials are saved in directory
+#' googlecloudStorageR, respectively. By default, rgee does not require
+#' them, these are only necessary for exporting and importing tasks.
+#' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specified the
 #' the email argument all user credentials will be saved in a subdirectory
-#' called ndef.
+#' called \code{ndef}.
 #' @seealso remove credential function: \cr
 #' \link[rgee]{ee_remove_credentials}
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
-#' #ee_user_info()
 #'
 #' # Simple init
 #' ee_Initialize()
 #'
 #' # Advanced init
-#' expr <- ee_Initialize(
+#' ee_Initialize(
 #'   email = "data.colec.fbf@gmail.com",
 #'   drive = TRUE,
 #'   gcs = TRUE
 #' )
+#'
 #' ee_user_info()
 #'
 #' @export
@@ -50,6 +52,23 @@ ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           quiet = FALSE) {
+  if (isFALSE(py_available(initialize = TRUE))) {
+    init_message <- paste0(
+      "No available Python version found in your system",
+      ". Would you like to install Miniconda?",
+      collapse = ""
+    )
+    switch(
+      EXPR = menu(
+        choices = c('yes','no'),
+        title = init_message
+      ) + 1,
+      stop('rgee needs a Python environment in the system\n'),
+      install_miniconda(),
+      stop('rgee needs a Python environment in the system\n')
+    )
+    return(0)
+  }
   if (exists('ee')) {
     if (is.null(ee$computedobject)) {
       stop('rgee does not found the Earth Engine Python API.',
@@ -61,13 +80,16 @@ ee_Initialize <- function(email = NULL,
   }
 
   if (!quiet) {
+    ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
+    ee_utils <- ee_source_python(ee_current_version)
     message(text_col(
-      cli::rule(
-        left = crayon::bold("rgee", packageVersion("rgee")),
-        right = paste0("earthengine-api ", ee_version())
+      rule(
+        left = bold("rgee", packageVersion("rgee")),
+        right = paste0("earthengine-api ", ee_utils$ee_getversion())
       )
     ))
   }
+
   # 1. simple checking
   if (is.null(email)) {
     email <- "ndef"
@@ -76,15 +98,15 @@ ee_Initialize <- function(email = NULL,
   if (isFALSE(quiet)) {
     if (email == "ndef") {
       cat(
-        "", crayon::green(cli::symbol$tick),
-        crayon::blue("email:"),
-        crayon::green("not_defined\n")
+        "", green(symbol$tick),
+        blue("email:"),
+        green("not_defined\n")
       )
     } else {
       cat(
-        "", crayon::green(cli::symbol$tick),
-        crayon::blue("email:"),
-        crayon::green(email), "\n"
+        "", green(symbol$tick),
+        blue("email:"),
+        green(email), "\n"
       )
     }
   }
@@ -103,18 +125,18 @@ ee_Initialize <- function(email = NULL,
     if (!quiet) {
       cat(
         "",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("Google Drive credentials:")
+        green(symbol$tick),
+        blue("Google Drive credentials:")
       )
     }
     drive_credentials <- ee_create_credentials_drive(email)
     if (!quiet) {
       cat(
         "\r",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("Google Drive credentials:"),
+        green(symbol$tick),
+        blue("Google Drive credentials:"),
         # drive_credentials,
-        crayon::green(" FOUND\n")
+        green(" FOUND\n")
       )
     }
   }
@@ -123,29 +145,23 @@ ee_Initialize <- function(email = NULL,
     if (!quiet) {
       cat(
         "",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("GCS credentials:")
+        green(symbol$tick),
+        blue("GCS credentials:")
       )
     }
     gcs_credentials <- ee_create_credentials_gcs(email)
     if (!quiet) {
       cat(
         "\r",
-        crayon::green(cli::symbol$tick),
-        crayon::blue("GCS credentials:"),
+        green(symbol$tick),
+        blue("GCS credentials:"),
         # gcs_credentials,
-        crayon::green(" FOUND\n")
+        green(" FOUND\n")
       )
     }
   }
   ## rgee session file
   options(rgee.gcs.auth = gcs_credentials)
-  options(rgee.selenium.params = list(
-    email = email,
-    email_password = Sys.getenv("PASSWORD_GMAIL"),
-    showpassword = FALSE,
-    check_driver = FALSE
-  ))
   options(rgee.manage.setIamPolicy = list(bindings = list(
     list(
       role = "roles/owner",
@@ -162,8 +178,8 @@ ee_Initialize <- function(email = NULL,
   )))
   if (!quiet) {
     cat(
-      "", crayon::green(cli::symbol$tick),
-      crayon::blue("Initializing Google Earth Engine:")
+      "", green(symbol$tick),
+      blue("Initializing Google Earth Engine:")
     )
   }
 
@@ -173,9 +189,9 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     cat(
       "\r",
-      crayon::green(cli::symbol$tick),
-      crayon::blue("Initializing Google Earth Engine:"),
-      crayon::green(" DONE!\n")
+      green(symbol$tick),
+      blue("Initializing Google Earth Engine:"),
+      green(" DONE!\n")
     )
   }
 
@@ -191,38 +207,41 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     cat(
       "\r",
-      crayon::green(cli::symbol$tick),
-      crayon::blue("Earth Engine user:"),
-      crayon::green(crayon::bold(ee_user)),
+      green(symbol$tick),
+      blue("Earth Engine user:"),
+      green(bold(ee_user)),
       "\n"
     )
     message(text_col(
-      cli::rule(
-        #right = paste0("Welcome back ",crayon::bold(ee_user))
+      rule(
+        #right = paste0("Welcome back ",bold(ee_user))
       )
     ))
   }
+  # ee_check_rgee_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
 
 #' Authorize rgee to view and manage your Earth Engine account.
 #' This is a three-step function:
 #' \itemize {
-#' \item First get the full path name of the EE credentials
+#' \item First get the full path name of the Earth Engine credentials
 #' considering the email address.
 #' \item Second, use the file.copy function to set up the
 #' "credentials" file, so that the Earth Engine Python API can read it.
 #' \item Finally, if the file.copy fails at copy it, the credentials
 #' will download from Internet, you will be directed to a web browser.
-#' Just sign in to your Google account to be granted rgee
+#' Sign in to your Google account to be granted rgee
 #' permission to operate on your behalf with Google Earth Engine.
 #' These user credentials are cached in a folder below your
 #' home directory, `rgee::ee_get_earthengine_path()`, from
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-#'
 ee_create_credentials_earthengine <- function(email_clean) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+
   # first step
   ee_path <- path.expand("~/.config/earthengine")
   main_ee_credential <- sprintf("%s/credentials", ee_path)
@@ -233,26 +252,27 @@ ee_create_credentials_earthengine <- function(email_clean) {
   )
   # second step
   path_condition <- file.exists(user_ee_credential)
-  if (path_condition) {
+  if (isTRUE(path_condition)) {
     path_condition <- file.copy(
       from = user_ee_credential,
       to = main_ee_credential,
       overwrite = TRUE
     )
-  }
-  # third step
-  if (!path_condition) {
-    earthengine_auth <- ee$oauth$get_authorization_url()
+  } else {
+    oauth_codes <- ee_py_to_r(utils_py$create_codes())
+    code_verifier <- oauth_codes[[1]]
+    code_challenge <- oauth_codes[[2]]
+    earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
     browseURL(earthengine_auth)
     auth_code <- getPass("Enter Earth Engine Authentication: ")
-    token <- ee$oauth$request_token(auth_code)
+    token <- ee$oauth$request_token(auth_code, code_verifier)
     credential <- sprintf('{"refresh_token":"%s"}', token)
     write(credential, main_ee_credential)
     write(credential, user_ee_credential)
   }
 }
 
-#' Create credentials Google Drive
+#' Create credentials - Google Drive
 #' @noRd
 ee_create_credentials_drive <- function(email) {
   if (!requireNamespace("googledrive", quietly = TRUE)) {
@@ -349,7 +369,7 @@ ee_create_credentials_gcs <- function(email) {
 
 #' Display credentials of all users as a table
 #'
-#' Display Earth Engine, Google Drive and Google Cloud Storage Credentials as
+#' Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 #' a table.
 #' @examples
 #' \dontrun{
@@ -378,17 +398,16 @@ ee_users <- function() {
   title[1] <- add_extra_space(name = title[1],
                               space = max_char - nchar(title[1]))
 
-  cat("",crayon::bold(paste0(title, collapse = wsc)),"\n")
+  cat("",bold(paste0(title, collapse = wsc)),"\n")
   users <- add_extra_space(ee_path, add_space)
   for (user in users) {
     create_table(user,wsc)
   }
+  invisible(TRUE)
 }
 
-#' Display credentials info of initialized user
+#' Display credentials and general info of the initialized user
 #'
-#' Display credentials info of initialized user
-#' a table.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -401,30 +420,55 @@ ee_user_info <- function() {
   user_session <- ee_get_earthengine_path()
   user_session_list <- list.files(user_session,full.names = TRUE)
   user <- ee$data$getAssetRoots()[[1]]$id
+
+  cat(rule(right = bold(paste0("Earth Engine user info"))))
+  # python version
+  py_used <- py_discover_config()$python
+  cat(blue$bold("\nReticulate python version:"))
+  cat("\n - ", py_used)
+
   # asset home
   asset_home <- ee_remove_project_chr(user)
-  cat(crayon::blue('Earth Engine Asset Home:'),
-      crayon::green(asset_home), '\n')
+  cat(blue$bold('\nEarth Engine Asset Home:'))
+  cat("\n - ", asset_home)
 
   # credentials directory path
-  cat(crayon::blue('Credentials Directory Path:'),
-      crayon::green(user_session), '\n')
+  cat(blue$bold('\nCredentials Directory Path:'))
+  cat("\n - ", user_session)
 
   # google drive
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
-  cat(crayon::blue('Google Drive Credentials:'),
-      crayon::green(basename(gd)), '\n')
+  cat(blue$bold('\nGoogle Drive Credentials:'))
+  cat("\n - ", basename(gd))
+  email_drive <- sub("[^_]+_(.*)@.*", "\\1", basename(gd))
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
-  cat(crayon::blue('Google Cloud Storage Credentials:'),
-      crayon::green(basename(gcs)), '\n')
+  cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
+  cat("\n - ",basename(gcs))
+
+  cat("\n", rule())
+
+  ee_user <- ee_exist_credentials()
+  if (isFALSE(grepl(email_drive, ee_user$email))) {
+    message(
+      "\nNOTE: Google Drive credential does not match with your Google",
+      " Earth Engine credentials. All functions which depend on Google",
+      " Drive will not work (e.g. ee_image_to_drive)."
+    )
+  }
+
+  ee_check_rgee_python_packages(quiet = TRUE)
+  invisible(TRUE)
 }
 
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
 #' @noRd
-ee_sessioninfo <- function(email = NULL, user = NULL, drive_cre = NULL, gcs_cre = NULL) {
+ee_sessioninfo <- function(email = NULL,
+                           user = NULL,
+                           drive_cre = NULL,
+                           gcs_cre = NULL) {
   sessioninfo <- sprintf(
     "%s/rgee_sessioninfo.txt",
     path.expand("~/.config/earthengine")
@@ -433,7 +477,7 @@ ee_sessioninfo <- function(email = NULL, user = NULL, drive_cre = NULL, gcs_cre 
     email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
     stringsAsFactors = FALSE
   )
-  write.table(df, sessioninfo, row.names = F)
+  write.table(df, sessioninfo, row.names = FALSE)
 }
 
 
@@ -467,7 +511,7 @@ ee_get_earthengine_path <- function() {
 ee_source_python <- function(oauth_func_path) {
   module_name <- gsub("\\.py$", "", basename(oauth_func_path))
   module_path <- dirname(oauth_func_path)
-  import_from_path(module_name, path = module_path, convert = F)
+  import_from_path(module_name, path = module_path, convert = FALSE)
 }
 
 #' function obtained from tidyverse
@@ -482,7 +526,7 @@ text_col <- function(x) {
     return(x)
   }
   theme <- rstudioapi::getThemeInfo()
-  if (isTRUE(theme$dark)) crayon::white(x) else crayon::black(x)
+  if (isTRUE(theme$dark)) white(x) else black(x)
 }
 
 #' Earth Engine API version
@@ -491,7 +535,7 @@ text_col <- function(x) {
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
-  "0.1.215"
+  "0.1.218"
 }
 
 
@@ -522,23 +566,23 @@ create_table <- function(user, wsc) {
 
   #google drive
   if (any(grepl("@gmail.com",credentials))) {
-    gmail_symbol <- crayon::green(cli::symbol$tick)
+    gmail_symbol <- green(symbol$tick)
   } else {
-    gmail_symbol <- crayon::red(cli::symbol$cross)
+    gmail_symbol <- red(symbol$cross)
   }
 
   #GCS
   if (any(grepl(".json",credentials))) {
-    gcs_symbol <- crayon::green(cli::symbol$tick)
+    gcs_symbol <- green(symbol$tick)
   } else {
-    gcs_symbol <- crayon::red(cli::symbol$cross)
+    gcs_symbol <- red(symbol$cross)
   }
 
   #Earth Engine
   if (any(grepl("credentials",credentials))) {
-    ee_symbol <- crayon::green(cli::symbol$tick)
+    ee_symbol <- green(symbol$tick)
   } else {
-    ee_symbol <- crayon::red(cli::symbol$cross)
+    ee_symbol <- red(symbol$cross)
   }
 
   cat("\n",

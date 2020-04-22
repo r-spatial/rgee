@@ -4,11 +4,24 @@
 \alias{ee_image_to_gcs}
 \title{Creates a task to export an EE Image to Google Cloud Storage.}
 \usage{
-ee_image_to_gcs(image, description = "myExportImageTask",
-  bucket = NULL, fileNamePrefix = NULL, dimensions = NULL,
-  region = NULL, scale = NULL, crs = NULL, crsTransform = NULL,
-  maxPixels = NULL, shardSize = NULL, fileDimensions = NULL,
-  skipEmptyTiles = NULL, fileFormat = NULL, formatOptions = NULL)
+ee_image_to_gcs(
+  image,
+  description = "myExportImageTask",
+  bucket = NULL,
+  fileNamePrefix = NULL,
+  timePrefix = TRUE,
+  dimensions = NULL,
+  region = NULL,
+  scale = NULL,
+  crs = NULL,
+  crsTransform = NULL,
+  maxPixels = NULL,
+  shardSize = NULL,
+  fileDimensions = NULL,
+  skipEmptyTiles = NULL,
+  fileFormat = NULL,
+  formatOptions = NULL
+)
 }
 \arguments{
 \item{image}{The image to be exported.}
@@ -19,6 +32,8 @@ ee_image_to_gcs(image, description = "myExportImageTask",
 
 \item{fileNamePrefix}{Cloud Storage object name prefix for the export.
 Defaults to the name of the task.}
+
+\item{timePrefix}{Add current date and time as a prefix to files to export.}
 
 \item{dimensions}{The dimensions of the exported image. Takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT"
@@ -53,8 +68,8 @@ number to indicate a square shape, or a list of two dimensions to
 indicate (width,height). Note that the image will still be clipped to
 the overall image dimensions. Must be a multiple of shardSize.}
 
-\item{skipEmptyTiles}{If true, skip writing empty (i.e. fully-masked)
-image tiles. Defaults to false.}
+\item{skipEmptyTiles}{If TRUE, skip writing empty (i.e. fully-masked)
+image tiles. Defaults to FALSE.}
 
 \item{fileFormat}{The string file format to which the image is exported.
 Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
@@ -121,17 +136,18 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 
 # Move results from Earth Engine to Drive
 task_img <- ee_image_to_gcs(
-    image = mean_l5_Amarakaeri,
-    bucket = "rgee_dev",
-    fileFormat = "GEO_TIFF",
-    fileNamePrefix = "my_image"
+  image = mean_l5_Amarakaeri,
+  bucket = "rgee_dev",
+  fileFormat = "GEO_TIFF",
+  region = ee_ROI$geometry(),
+  fileNamePrefix = "my_image"
 )
 
 task_img$start()
 ee_monitoring(task_img)
 
 # Move results from Drive to local
-img <- ee_gcs_to_local(task = task_img)
+ee_gcs_to_local(task = task_img)
 plot(img)
 }
 }
