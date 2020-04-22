@@ -19,3 +19,6 @@
 ^vignettes$
 ^vignettes$
 ^\.github$
+^\.ccache$
+^clang-.*
+^gfortran.*
