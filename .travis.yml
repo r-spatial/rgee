@@ -18,7 +18,6 @@ addons:
     - dpkg
     - libprotobuf-dev
     - protobuf-compiler
-    - libv8-3.14-dev
     - libjq-dev
     - libudunits2-dev
     - libproj-dev

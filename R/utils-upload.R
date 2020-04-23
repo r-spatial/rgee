@@ -37,7 +37,7 @@ ee_local_to_gcs <- function(x,
     )
   } else {
     if (is.null(bucket)) {
-      stop('The argument bucket was not defined')
+      stop("Cloud Storage bucket was not defined")
     }
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$gcs_cre)) {
@@ -437,14 +437,22 @@ ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
 ee_as_proxystars <- function(x, temp_dir = tempdir()) {
   if (is.character(x)) {
     read_stars(x, proxy = TRUE)
-  } else {
+  } else if (is(x,"stars")) {
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
     write_stars(x, tiff_filename)
-    tryCatch(
-      expr = read_stars(tiff_filename, proxy = TRUE),
-      error = function(e) stop('x argument not defined properly.')
-    )
+    read_stars(tiff_filename, proxy = TRUE)
+  } else if (is(x,"Raster")) {
+    if (!requireNamespace("raster", quietly = TRUE)) {
+      stop("package raster required, please install it first")
+    }
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    ee_description <- paste0("ee_as_stars_task_", time_format)
+    tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
+    raster::writeRaster(x, tiff_filename)
+    read_stars(tiff_filename, proxy = TRUE)
+  } else {
+    stop('x argument not defined properly.')
   }
 }

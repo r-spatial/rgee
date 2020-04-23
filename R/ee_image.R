@@ -35,7 +35,6 @@
 #' Earth Engine Guide - Export data}.
 #' @return A character object which represents the filename of the image.
 #' @importFrom jsonlite parse_json
-#' @importFrom raster raster stack
 #' @importFrom sf st_transform st_coordinates st_make_grid st_as_text st_set_crs
 #' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' st_get_dimension_values
@@ -356,6 +355,9 @@ ee_image_as_raster  <- function(image,
                                 maxPixels = 1e9,
                                 container = "rgee_backup",
                                 quiet = FALSE) {
+  if (!requireNamespace("raster", quietly = TRUE)) {
+    stop("package raster required, please install it first")
+  }
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -371,7 +373,7 @@ ee_image_as_raster  <- function(image,
             " not build Raster objects for large images.")
     img_files$file
   } else {
-    img_raster <- stack(img_files$file)
+    img_raster <- raster::stack(img_files$file)
     names(img_raster) <- img_files$band_names
     img_raster
   }
@@ -443,7 +445,6 @@ stars_as_ee <- function(x,
     bucket = bucket,
     quiet = quiet
   )
-
   ee_gcs_to_image(
     x = x,
     gs_uri = gcs_filename,

@@ -6,6 +6,8 @@
 #' @param quiet logical. Suppress info message
 #' @importFrom reticulate py_available py_module_available
 #' py_discover_config source_python
+#' @importFrom crayon yellow
+#' @importFrom cli cat_line
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
@@ -27,10 +29,10 @@ ee_check_python <- function(quiet = FALSE) {
   if (python_test) {
     py_version <- as.numeric(py_discover_config()$version)
     if (!quiet) {
-      cli::cat_line(
-        crayon::blue(cli::symbol$circle_filled),
-        crayon::blue("  Python version found: "),
-        crayon::green(
+      cat_line(
+        blue(symbol$circle_filled),
+        blue("  Python version found: "),
+        green(
           py_discover_config()$python,
           sprintf("v%s", py_version)
         )
@@ -49,15 +51,15 @@ ee_check_python <- function(quiet = FALSE) {
 #' @rdname ee_check-tools
 #' @export
 ee_check_rgee_python_packages <- function(quiet = FALSE) {
-  oauth_func_path <- system.file("python/ee_check_utils_exist.py",
+  oauth_func_path <- system.file("python/ee_check.py",
     package = "rgee"
   )
   ee_check_utils_exist <- ee_source_python(oauth_func_path)
   if (isFALSE(quiet)) {
-    cli::cat_line(
+    cat_line(
       "\n",
-      crayon::blue(
-        cli::symbol$circle_filled,
+      blue(
+        symbol$circle_filled,
         " Python Third-Party Libraries used in rgee: \n"
       )
     )
@@ -68,10 +70,10 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
   if (ee_cond) {
     if (version_ee == ee_version()) {
       if (isFALSE(quiet)) {
-        cli::cat_line(
-          crayon::green(cli::symbol$tick, "[Ok]"),
-          crayon::blue(cli::symbol$check, "Python Earth Engine API version "),
-          crayon::green(version_ee)
+        cat_line(
+          green(symbol$tick, "[Ok]"),
+          blue(symbol$check, "Python Earth Engine API version "),
+          green(version_ee)
         )
       }
     } else {
@@ -94,11 +96,11 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
     }
   } else {
     if (isFALSE(quiet)) {
-      cli::cat_line(
-        crayon::red(cli::symbol$tick, "[X]"),
-        crayon::red(" Not installed"),
-        crayon::red(
-          cli::symbol$check,
+      cat_line(
+        red(symbol$tick, "[X]"),
+        red(" Not installed"),
+        red(
+          symbol$check,
           "Python Earth Engine API",
           "(earthengine-api)"
         )
@@ -116,22 +118,6 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
 }
 
 #' @rdname ee_check-tools
-#' @noRd
-ee_check_drivers <- function() {
-  display_in_browser <- FALSE
-  oauth_func_path <- system.file("python/ee_check_utils.py", package = "rgee")
-  ee_check_utils <- ee_source_python(oauth_func_path)
-  driverdir <- path.expand("~/.config/earthengine")
-  condition <- ee_py_to_r(
-    ee_check_utils$ee_check_drivers_py(driverdir, display_in_browser)
-  )
-  cli::cat_line(
-    "\n", crayon::blue(cli::symbol$circle_filled),
-    crayon::blue("  Selenium drivers: \n")
-  )
-}
-
-#' @rdname ee_check-tools
 #' @export
 ee_check_credentials <- function() {
   driverdir <- path.expand("~/.config/earthengine")
@@ -142,15 +128,15 @@ ee_check_credentials <- function() {
   ex_drive_cred <- file.exists(drive_credentials)
   ex_gcs_cred <- file.exists(drive_credentials)
 
-  cli::cat_line(
-    crayon::blue(cli::symbol$circle_filled),
-    crayon::blue("  Credentials neccesaries for rgee: \n")
+  cat_line(
+    blue(symbol$circle_filled),
+    blue("  Credentials neccesaries for rgee: \n")
   )
 
   if (ex_ee_cred) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick, "[Ok]"),
-      crayon::blue(cli::symbol$check, "Earth Engine Credentials found.")
+    cat_line(
+      green(symbol$tick, "[Ok]"),
+      blue(symbol$check, "Earth Engine Credentials found.")
     )
   } else {
     stop(
@@ -160,14 +146,14 @@ ee_check_credentials <- function() {
   }
 
   if (ex_drive_cred) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick, "[Ok]"),
-      crayon::blue(cli::symbol$check, "Google Drive credentials found.")
+    cat_line(
+      green(symbol$tick, "[Ok]"),
+      blue(symbol$check, "Google Drive credentials found.")
     )
   } else {
-    cli::cat_line(
-      crayon::yellow(
-        cli::symbol$circle_cross,
+    cat_line(
+      yellow(
+        symbol$circle_cross,
         "Does not exist Google Drive credentials in their",
         "system. rgee::ee_download_drive() will not work."
       )
@@ -176,18 +162,18 @@ ee_check_credentials <- function() {
   }
 
   if (ex_gcs_cred) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick, "[Ok]"),
-      crayon::blue(
-        cli::symbol$check,
+    cat_line(
+      green(symbol$tick, "[Ok]"),
+      blue(
+        symbol$check,
         "Google Cloud Storage ",
         "credentials found."
       )
     )
   } else {
-    cli::cat_line(
-      crayon::yellow(
-        cli::symbol$circle_cross,
+    cat_line(
+      yellow(
+        symbol$circle_cross,
         "Does not exist Google Cloud Storage credentials in their system.",
         'rgee::ee_download_gcs() and rgee::ee_upload(bucket=" ... ") will',
         "not work."
@@ -201,7 +187,7 @@ ee_check_credentials <- function() {
 #' @param rgee_package package name to install
 #' @noRd
 ee_check_py_package <- function(rgee_package) {
-  oauth_func_path <- system.file("python/ee_check_utils_exist.py",
+  oauth_func_path <- system.file("python/ee_check.py",
     package = "rgee"
   )
   check_py_package <- ee_source_python(oauth_func_path)
@@ -216,10 +202,10 @@ ee_check_py_package <- function(rgee_package) {
   rgeepackage_is_TRUE <- isTRUE(version_rgeepackage)
 
   if (rgeepackage_is_text) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick),
-      crayon::green(" [Ok] "),
-      crayon::blue(
+    cat_line(
+      green(symbol$tick),
+      green(" [Ok] "),
+      blue(
         rgee_package, "v",
         version_rgeepackage
       )
@@ -227,16 +213,16 @@ ee_check_py_package <- function(rgee_package) {
   }
 
   if (rgeepackage_is_TRUE) {
-    cli::cat_line(
-      crayon::green(cli::symbol$tick),
-      crayon::green(" [Ok] "),
-      crayon::blue(rgee_package)
+    cat_line(
+      green(symbol$tick),
+      green(" [Ok] "),
+      blue(rgee_package)
     )
   }
 
   if (isFALSE(version_rgeepackage)) {
     stop(
-      crayon::bold(rgee_package),
+      bold(rgee_package),
       " has not been found in this Python version, try as follow for fixed: \n",
       sprintf(
         "- rgee::ee_install_python_package('%s', conda = FALSE) \n",

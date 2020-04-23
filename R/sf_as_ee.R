@@ -123,6 +123,7 @@ sf_as_ee <- function(x,
                      geodesic = NULL,
                      quiet = FALSE,
                      ...) {
+
   # Read geometry
   eex <- ee_st_read(
     x = x,
@@ -193,6 +194,9 @@ sf_as_ee <- function(x,
       assetId
     }
   } else if (via == "gcs_to_asset") {
+    if (is.null(bucket)) {
+      stop("Cloud Storage bucket was not defined")
+    }
     shp_dir <- sprintf("%s.shp", tempfile())
     geozip_dir <- ee_create_shp_zip(eex, shp_dir)
     gcs_filename <- ee_local_to_gcs(

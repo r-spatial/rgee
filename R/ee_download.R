@@ -276,6 +276,9 @@ ee_image_to_gcs <- function(image,
                             skipEmptyTiles = NULL,
                             fileFormat = NULL,
                             formatOptions = NULL) {
+  if (is.null(bucket)) {
+    stop("Cloud Storage bucket was not defined")
+  }
   timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
@@ -580,6 +583,10 @@ ee_table_to_gcs <- function(collection,
                             timePrefix = TRUE,
                             fileFormat = NULL,
                             selectors = NULL) {
+  if (is.null(bucket)) {
+    stop("Cloud Storage bucket was not defined")
+  }
+
   timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {

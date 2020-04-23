@@ -79,15 +79,26 @@ ee_Initialize <- function(email = NULL,
          ' Run rgee::ee_reattach() before continuing.')
   }
 
+  ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
+  ee_utils <- ee_source_python(ee_current_version)
+  earthengine_version <- ee_py_to_r(ee_utils$ee_getversion())
+
   if (!quiet) {
-    ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
-    ee_utils <- ee_source_python(ee_current_version)
     message(text_col(
       rule(
         left = bold("rgee", packageVersion("rgee")),
-        right = paste0("earthengine-api ", ee_utils$ee_getversion())
+        right = paste0("earthengine-api ", earthengine_version)
       )
     ))
+  }
+
+  # is earthengine-api greater than 0.1.215?
+  if (as.numeric(gsub("\\.","",earthengine_version)) > 01215) {
+    stop(
+      "Update local installations to v0.1.215 or greater. ",
+      "Earlier versions are not compatible with recent ",
+      "changes to the Earth Engine backend."
+    )
   }
 
   # 1. simple checking

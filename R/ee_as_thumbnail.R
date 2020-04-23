@@ -52,7 +52,6 @@
 #' @importFrom methods as
 #' @importFrom sf st_crs<-
 #' @importFrom reticulate py_to_r
-#' @importFrom jpeg readJPEG
 #' @importFrom dplyr slice
 #' @importFrom utils download.file zip str
 #' @importFrom png readPNG
@@ -135,7 +134,9 @@
 #' @export
 ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                             raster = FALSE, quiet = FALSE) {
-
+  if (!requireNamespace("raster", quietly = TRUE)) {
+    stop("package raster required, please install it first")
+  }
   # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
     stop("image argument is not an ee$image$Image")
