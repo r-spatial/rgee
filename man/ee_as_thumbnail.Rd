@@ -107,6 +107,8 @@ plot(
 
 ## Arequipa-Peru
 arequipa_region <- nc \%>\%
+  st_bbox() \%>\%
+  st_as_sfc() \%>\%
   sf_as_ee() \%>\%
   ee$FeatureCollection$geometry()
 

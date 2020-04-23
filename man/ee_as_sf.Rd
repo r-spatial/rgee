@@ -8,6 +8,7 @@ ee_as_sf(
   x,
   dsn,
   overwrite = TRUE,
+  crs = NULL,
   via = "getInfo",
   maxFeatures = 5000,
   container = "rgee_backup",
@@ -23,6 +24,10 @@ ee_as_sf(
 
 \item{overwrite}{Logical. Delete data source \code{dsn} before attempting
 to write?.}
+
+\item{crs}{integer or character; coordinate reference system
+for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
+the first element.}
 
 \item{via}{Character. Method to fetch data about the object. Multiple
 options supported. See details.}

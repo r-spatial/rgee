@@ -3,6 +3,9 @@
 #' @param x EE table to be converted into a sf object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
 #' \code{ee_as_sf} will create a temporary file.
+#' @param crs integer or character; coordinate reference system
+#' for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
+#' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
 #' export  (ignore if \code{via} is not set as "getInfo"). The task will fail
 #' if the exported region covers more features in the specified projection.
@@ -87,6 +90,7 @@
 ee_as_sf <- function(x,
                      dsn,
                      overwrite = TRUE,
+                     crs = NULL,
                      via = "getInfo",
                      maxFeatures = 5000,
                      container = "rgee_backup",
@@ -111,9 +115,7 @@ ee_as_sf <- function(x,
 
   # Geometry or Feature --> FeatureCollection
   x_fc <- ee$FeatureCollection(x)
-  ## OBS: we assume that all the featurecollection have the same crs
-  ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
-  ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
+
   if (via == "getInfo") {
     fc_size <- 5000
     if (maxFeatures > 5000) {
@@ -261,6 +263,12 @@ ee_as_sf <- function(x,
   } else {
     stop("via argument invalid.")
   }
+
+  if (is.null(crs)) {
+    ## OBS: we assume that all the featurecollection have the same crs
+    ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
+    ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
+  }
   suppressWarnings(st_crs(local_sf) <- ft_proj)
   local_sf
 }
@@ -269,7 +277,16 @@ ee_as_sf <- function(x,
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
 ee_fc_to_sf_getInfo <- function(x_fc, dsn, overwrite = TRUE) {
-  x_list <- x_fc$getInfo()
+  x_list <- tryCatch(
+    expr = x_fc$getInfo(),
+    error = function(e) {
+        stop(
+          "Export too large. Specified more than 5000",
+          " features. Specify higher maxFeatures value if you",
+          " intend to export a large area via getInfo."
+        )
+    }
+  )
   class(x_list) <- "geo_list"
   x_sf <- geojson_sf(x_list, stringsAsFactors = FALSE)
   if (missing(dsn)) {

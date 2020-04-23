@@ -47,6 +47,7 @@ Imports:
     stars,
     leaflet (>= 2.0.2),
     mapview,
+    magrittr,
     geojsonio,
     getPass,
     crayon,
@@ -54,12 +55,16 @@ Imports:
 Suggests:
     googledrive (>= 1.0.0),
     googleCloudStorageR (>= 0.5.1),
+    rstudioapi (>= 0.7),
+    jsonlite,
     raster,
+    digest,
     spelling,
     testthat,
     covr,
     knitr,
-    rmarkdown
+    rmarkdown,
+    png
 URL: https://github.com/csaybar/rgee
 BugReports: https://github.com/csaybar/rgee/issues
 VignetteBuilder: knitr

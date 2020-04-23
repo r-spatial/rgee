@@ -77,8 +77,10 @@ ee_help <- function(eeobject, browser = FALSE) {
   fileConn <- file(temp_file)
 
   # Are you in Rstudio?
-
-  if (rstudioapi::isAvailable() & isFALSE(browser)) {
+  if (.Platform$GUI == "RStudio" & isFALSE(browser)) {
+    if (!requireNamespace("rstudioapi", quietly = TRUE)) {
+      stop("package rstudioapi required, please install it first")
+    }
     writeLines(
       text = c(
         ee_html_head_rstudio(doc_to_display$qualified_name),

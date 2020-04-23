@@ -7,7 +7,8 @@
 ee_table_to_asset(
   collection,
   description = "myExportTableTask",
-  assetId = NULL
+  assetId = NULL,
+  overwrite = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,9 @@ ee_table_to_asset(
 
 \item{assetId}{The destination asset ID. **kwargs: Holds other
 keyword arguments that may have been deprecated.}
+
+\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
+it exists.}
 }
 \value{
 An unstarted Task that exports the table to Earth Engine Asset.

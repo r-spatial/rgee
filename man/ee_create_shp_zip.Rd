@@ -25,7 +25,7 @@ ee_Initialize(gcs = TRUE)
 
 # Create sf object
 nc <- st_read(system.file("shape/nc.shp", package="sf"))
-asset_id <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
+assetId <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
 
 # Method 1
 # 1. Pass the sf to a zip file
@@ -37,20 +37,20 @@ gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 # 3. Pass the sf to a zip file
 ee_gcs_to_table(
   gs_uri = gs_uri,
-  asset_id = asset_id
+  assetId = assetId
 )
 
 # OPTIONAL: Monitoring progress
 ee_monitoring()
 
 # OPTIONAL: Display results
-ee_sf_01 <- ee$FeatureCollection(asset_id)
+ee_sf_01 <- ee$FeatureCollection(assetId)
 Map$centerObject(ee_sf_01)
 Map$addLayer(ee_sf_01)
 
 # Method 2
 ee_sf_02 <- sf_as_ee(x = nc,
-                     assetId = asset_id,
+                     assetId = assetId,
                      bucket = "rgee_dev")
 Map$centerObject(ee_sf_02)
 Map$addLayer(ee_sf_02)

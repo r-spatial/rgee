@@ -52,9 +52,7 @@
 #' @importFrom methods as
 #' @importFrom sf st_crs<-
 #' @importFrom reticulate py_to_r
-#' @importFrom dplyr slice
 #' @importFrom utils download.file zip str
-#' @importFrom png readPNG
 #' @examples
 #' \dontrun{
 #' library(raster)
@@ -93,6 +91,8 @@
 #'
 #' ## Arequipa-Peru
 #' arequipa_region <- nc %>%
+#'   st_bbox() %>%
+#'   st_as_sfc() %>%
 #'   sf_as_ee() %>%
 #'   ee$FeatureCollection$geometry()
 #'
@@ -136,6 +136,12 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                             raster = FALSE, quiet = FALSE) {
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
+  }
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+  if (!requireNamespace("png", quietly = TRUE)) {
+    stop("package png required, please install it first")
   }
   # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
@@ -181,7 +187,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
 
   # Getting image ID if it is exist
   image_id <- tryCatch(
-    expr = parse_json(image$id()$serialize())$
+    expr = jsonlite::parse_json(image$id()$serialize())$
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "thumbnail"
   )
@@ -190,7 +196,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
   ## is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
   ## is_evenodd?
-  query_params <- unlist(parse_json(region$serialize())$scope)
+  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
   is_evenodd <- as.logical(
     query_params[grepl("evenOdd", names(query_params))]
   )
@@ -229,7 +235,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
   # Reading the png image
   z <- tempfile()
   download.file(thumbnail_url, z, mode = "wb", quiet = TRUE)
-  raw_image <- readPNG(z)
+  raw_image <- png::readPNG(z)
 
   # matrix to array
   if (length(dim(raw_image)) == 2) {
@@ -257,12 +263,11 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                         MoreArgs = list(mtx = raw_image)
     )
     add <- function(x) Reduce(c, x)
+
     stars_png %>%
       add() %>%
-      merge() %>%
-      slice("X3", 1) %>%
+      merge()  %>%
       st_set_dimensions(names = c("x", "y", "band")) -> stars_png
-
 
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- init_offset[1]
@@ -287,8 +292,6 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
       thumbnail_raster
     }
   } else if (bands == 1) {
-    # Image band name
-    band_name <- image$bandNames()$getInfo()
     # Create a stars object for single band image
     stars_png <- mapply(read_png_as_stars,
                         bands,
@@ -296,11 +299,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                         SIMPLIFY = FALSE,
                         MoreArgs = list(mtx = raw_image)
     )[[1]]
-
-    stars_png <- st_set_dimensions(
-      .x = stars_png,
-      names = c("x", "y", "bands")
-    ) %>% st_set_dimensions(which = 3, values = band_name)
+    stars_png <- st_set_dimensions(.x = stars_png, names = c("x", "y"))
 
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- init_offset[1]
@@ -311,14 +310,12 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
     st_crs(stars_png) <- ee_crs
     if (isFALSE(raster)) {
       thumbnail_stars <- stars_png %>%
-        split("bands") %>%
         as("Raster") %>%
         st_as_stars()
       names(thumbnail_stars) <- image_id
       thumbnail_stars
     } else {
       thumbnail_raster <- stars_png %>%
-        split("bands") %>%
         as("Raster")
       names(thumbnail_raster) <- image_id
       thumbnail_raster
@@ -337,6 +334,7 @@ read_png_as_stars <- function(x, band_name, mtx) {
   array_x <- array(NA, dim = c(dim_x[1], dim_x[2], 1))
   array_x[, , 1] <- rotate_x
   stars_object <- st_as_stars(array_x)
+  stars_object <- stars_object[, , , 1, drop = TRUE]
   names(stars_object) <- band_name
   stars_object
 }

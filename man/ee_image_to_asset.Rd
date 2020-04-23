@@ -8,6 +8,7 @@ ee_image_to_asset(
   image,
   description = "myExportImageTask",
   assetId = NULL,
+  overwrite = FALSE,
   pyramidingPolicy = NULL,
   dimensions = NULL,
   region = NULL,
@@ -23,6 +24,9 @@ ee_image_to_asset(
 \item{description}{Human-readable name of the task.}
 
 \item{assetId}{The destination asset ID.}
+
+\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
+it exists.}
 
 \item{pyramidingPolicy}{The pyramiding policy to apply to each band
 in the image, a dictionary keyed by band name. Values must be one

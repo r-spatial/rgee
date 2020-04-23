@@ -34,7 +34,6 @@
 #' a look at the \href{developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A character object which represents the filename of the image.
-#' @importFrom jsonlite parse_json
 #' @importFrom sf st_transform st_coordinates st_make_grid st_as_text st_set_crs
 #' @importFrom stars st_set_dimensions st_mosaic st_dimensions
 #' st_get_dimension_values
@@ -384,6 +383,8 @@ ee_image_as_raster  <- function(image,
 #' @param x Character, RasterLayer, RasterStack, RasterBrick, stars or
 #' stars-proxy object to be converted into an ee$Image.
 #' @param assetId Character. Destination asset ID for the uploaded file.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #' @param bucket Character. Name of the GCS bucket.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
@@ -400,7 +401,7 @@ ee_image_as_raster  <- function(image,
 #' # Get the filename of a image
 #' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 #' x <- read_stars(tif)
-#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 #'
 #' # Method 1
 #' # 1. Move from local to gcs
@@ -410,21 +411,21 @@ ee_image_as_raster  <- function(image,
 #' ee_gcs_to_image(
 #'   x = x,
 #'   gs_uri = gs_uri,
-#'   asset_id = asset_id
+#'   assetId = assetId
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
 #' ee_monitoring()
 #'
 #' # OPTIONAL: Display results
-#' ee_stars_01 <- ee$Image(asset_id)
+#' ee_stars_01 <- ee$Image(assetId)
 #' Map$centerObject(ee_stars_01)
 #' Map$addLayer(ee_stars_01)
 #'
 #' # Method 2
 #' ee_stars_02 <- stars_as_ee(
 #'   x = x,
-#'   assetId = asset_id,
+#'   assetId = assetId,
 #'   bucket = "rgee_dev"
 #' )
 #' Map$centerObject(ee_stars_02)
@@ -433,6 +434,7 @@ ee_image_as_raster  <- function(image,
 #' @export
 stars_as_ee <- function(x,
                         assetId,
+                        overwrite = FALSE,
                         monitoring = TRUE,
                         bucket = NULL,
                         quiet = FALSE) {
@@ -445,10 +447,12 @@ stars_as_ee <- function(x,
     bucket = bucket,
     quiet = quiet
   )
+
   ee_gcs_to_image(
     x = x,
     gs_uri = gcs_filename,
-    asset_id = assetId
+    overwrite = overwrite,
+    assetId = assetId
   )
 
   if (isTRUE(monitoring)) {
@@ -477,6 +481,9 @@ ee_image_local <- function(image,
                            maxPixels = 1e9,
                            container = "rgee_backup",
                            quiet = FALSE) {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
   # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
     dsn <- paste0(tempfile(),".tif")
@@ -504,7 +511,7 @@ ee_image_local <- function(image,
 
   # Getting image ID if it is exist
   image_id <- tryCatch(
-    expr = parse_json(image$id()$serialize())$
+    expr = jsonlite::parse_json(image$id()$serialize())$
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "noid_image"
   )
@@ -525,7 +532,7 @@ ee_image_local <- function(image,
   #is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
-  query_params <- unlist(parse_json(region$serialize())$scope)
+  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
   is_evenodd <- as.logical(
     query_params[grepl("evenOdd", names(query_params))]
   )

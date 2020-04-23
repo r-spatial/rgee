@@ -84,16 +84,16 @@ ee_Initialize <- function(email = NULL,
   earthengine_version <- ee_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
-    message(text_col(
+    cat(
       rule(
         left = bold("rgee", packageVersion("rgee")),
         right = paste0("earthengine-api ", earthengine_version)
-      )
-    ))
+      ), "\n"
+    )
   }
 
   # is earthengine-api greater than 0.1.215?
-  if (as.numeric(gsub("\\.","",earthengine_version)) > 01215) {
+  if (as.numeric(gsub("\\.","",earthengine_version)) < 01215) {
     stop(
       "Update local installations to v0.1.215 or greater. ",
       "Earlier versions are not compatible with recent ",
@@ -216,18 +216,9 @@ ee_Initialize <- function(email = NULL,
   )
 
   if (!quiet) {
-    cat(
-      "\r",
-      green(symbol$tick),
-      blue("Earth Engine user:"),
-      green(bold(ee_user)),
-      "\n"
-    )
-    message(text_col(
-      rule(
-        #right = paste0("Welcome back ",bold(ee_user))
-      )
-    ))
+    cat("\r", green(symbol$tick), blue("Earth Engine user:"),
+        green(bold(ee_user)), "\n")
+    cat(rule(), "\n")
   }
   # ee_check_rgee_python_packages(quiet = TRUE)
   invisible(TRUE)
@@ -414,6 +405,7 @@ ee_users <- function() {
   for (user in users) {
     create_table(user,wsc)
   }
+  cat("\n")
   invisible(TRUE)
 }
 
@@ -523,21 +515,6 @@ ee_source_python <- function(oauth_func_path) {
   module_name <- gsub("\\.py$", "", basename(oauth_func_path))
   module_path <- dirname(oauth_func_path)
   import_from_path(module_name, path = module_path, convert = FALSE)
-}
-
-#' function obtained from tidyverse
-#' https://github.com/tidyverse/tidyverse
-#' @noRd
-text_col <- function(x) {
-  # If RStudio not available, messages already printed in black
-  if (!rstudioapi::isAvailable()) {
-    return(x)
-  }
-  if (!rstudioapi::hasFun("getThemeInfo")) {
-    return(x)
-  }
-  theme <- rstudioapi::getThemeInfo()
-  if (isTRUE(theme$dark)) white(x) else black(x)
 }
 
 #' Earth Engine API version

@@ -3,7 +3,6 @@
 #' Create interactive visualizations of spatial EE objects
 #' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
 #' through \link[=mapview]{mapview}.
-#' @importFrom jsonlite parse_json
 #' @format An object of class environment with the
 #' following functions:
 #' \itemize{
@@ -245,6 +244,10 @@ ee_addLayer <- function(eeObject,
                         name = NULL,
                         shown = TRUE,
                         opacity = 1) {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+
   if (is.null(visParams)) {
     visParams <- list()
   }
@@ -290,7 +293,7 @@ ee_addLayer <- function(eeObject,
 
   if (is.null(name)) {
     name <- tryCatch(
-      expr = parse_json(eeObject$id()$serialize())$
+      expr = jsonlite::parse_json(eeObject$id()$serialize())$
         scope[[1]][[2]][["arguments"]][["id"]],
       error = function(e) "untitled"
     )

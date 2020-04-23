@@ -11,7 +11,6 @@
 #' @return A Python function that calls the R function `f` with the same
 #' signature.
 #' @param f An R function
-#' @importFrom reticulate py_func
 #' @examples
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
@@ -39,4 +38,4 @@
 #' )
 #' ee_newic$mean()$getInfo()$type
 #' @export
-ee_pyfunc <- py_func
+ee_pyfunc <- reticulate::py_func

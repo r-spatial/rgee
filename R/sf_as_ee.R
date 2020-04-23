@@ -206,7 +206,7 @@ sf_as_ee <- function(x,
     )
     ee_gcs_to_table(
       gs_uri = gcs_filename,
-      asset_id = assetId
+      assetId = assetId
     )
     if (isTRUE(monitoring)) {
       ee_monitoring()
