@@ -84,7 +84,7 @@ a wrapper around rgee::ee$Initialize()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -218,28 +218,51 @@ called <code>ndef</code>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
-<span class='co'>#ee_user_info()</span>
 
 <span class='co'># Simple init</span>
-<span class='fu'>ee_Initialize</span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.10</span><span> ───────────────────────────────────────────────────────────────────────── earthengine-api 0.1.217 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Python version:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/ee/bin/python3</span><span> 
-#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></div><div class='input'>
+<span class='fu'>ee_Initialize</span>()</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Detected Python configuration:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python:         /usr/bin/python</span>
+#&gt; <span class='error'>libpython:      /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib</span>
+#&gt; <span class='error'>pythonhome:     /System/Library/Frameworks/Python.framework/Versions/2.7:/System/Library/Frameworks/Python.framework/Versions/2.7</span>
+#&gt; <span class='error'>version:        2.7.16 (default, Feb 29 2020, 01:55:37)  [GCC 4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.29.20) (-macos10.15-objc-</span>
+#&gt; <span class='error'>numpy:          /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy</span>
+#&gt; <span class='error'>numpy_version:  1.8.0</span>
+#&gt; <span class='error'>ee:             [NOT FOUND]</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python versions found: </span>
+#&gt; <span class='error'> /usr/local/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python</span>
+#&gt; <span class='error'> /usr/local/bin/python</span>
+#&gt; <span class='error'></span></div><div class='input'>
 <span class='co'># Advanced init</span>
-<span class='no'>expr</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_Initialize</span>(
+<span class='fu'>ee_Initialize</span>(
   <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"data.colec.fbf@gmail.com"</span>,
   <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>── </span><span style='font-weight: bold;'>rgee 0.3.10</span><span> ───────────────────────────────────────────────────────────────────────── earthengine-api 0.1.217 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Python version:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/ee/bin/python3</span><span> 
-#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>data.colec.fbf@gmail.com</span><span> 
-#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Google Drive credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>GCS credentials:</span><span> </span><span style='color: #00BB00;'> FOUND
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></div><div class='input'><span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()</div><div class='output co'>#&gt; </span><span style='color: #0000BB;'>Earth Engine Asset Home:</span><span> </span><span style='color: #00BB00;'>users/datacolecfbf</span><span> 
-#&gt; </span><span style='color: #0000BB;'>Credentials Directory Path:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.config/earthengine/data.colec.fbf/</span><span> 
-#&gt; </span><span style='color: #0000BB;'>Google Drive Credentials:</span><span> </span><span style='color: #00BB00;'>cd26ed5dc626f11802a652e81d02762e_data.colec.fbf@gmail.com</span><span> 
-#&gt; </span><span style='color: #0000BB;'>Google Cloud Storage Credentials:</span><span> </span><span style='color: #00BB00;'>GCS_AUTH_FILE.json</span><span> </div><div class='input'>
-</div></span></pre>
+)</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Detected Python configuration:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python:         /usr/bin/python</span>
+#&gt; <span class='error'>libpython:      /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib</span>
+#&gt; <span class='error'>pythonhome:     /System/Library/Frameworks/Python.framework/Versions/2.7:/System/Library/Frameworks/Python.framework/Versions/2.7</span>
+#&gt; <span class='error'>version:        2.7.16 (default, Feb 29 2020, 01:55:37)  [GCC 4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.29.20) (-macos10.15-objc-</span>
+#&gt; <span class='error'>numpy:          /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy</span>
+#&gt; <span class='error'>numpy_version:  1.8.0</span>
+#&gt; <span class='error'>ee:             [NOT FOUND]</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python versions found: </span>
+#&gt; <span class='error'> /usr/local/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python</span>
+#&gt; <span class='error'> /usr/local/bin/python</span>
+#&gt; <span class='error'></span></div><div class='input'>
+<span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error in ee_get_earthengine_path(): rgee_sessioninfo.txt does not exist, run rgee::ee_Initialize() to fixed.</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,7 +278,7 @@ called <code>ndef</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

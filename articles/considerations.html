@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -123,45 +123,44 @@
 
     
     
+<pre><code>#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): ImportError: No module named ee
+#&gt; 
+#&gt; Detailed traceback: 
+#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</code></pre>
 <p><code>rgee</code> is extremely similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> in all the aspects, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
 <p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue happens when the <strong>map</strong> method is used under the next two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="no">ee</span>$<span class="fu">Initialize</span>()
-<span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">10</span>)
-<span class="no">mylist</span>$<span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>))
-<span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Detailed traceback: </span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/apifunction.py", line 205, in &lt;lambda&gt;</span>
-<span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 67, in call</span>
-<span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span>
-<span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span>
-<span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/__init__.py", line 242, in _Promote</span>
-<span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create</span>
-<span class="co">#&gt;     return CustomFunction(signature, func)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span>
-<span class="co">#&gt;     self._body = body(*variables)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
-<span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></pre></body></html></div>
-<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
+<span class="co">#&gt; Error: package or namespace load failed for 'rgee':</span>
+<span class="co">#&gt;  .onLoad failed in loadNamespace() for 'rgee', details:</span>
+<span class="co">#&gt;   call: py_module_import(module, convert = convert)</span>
+<span class="co">#&gt;   error: ImportError: No module named ee</span>
 <span class="no">ee</span>$<span class="fu">Initialize</span>()
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
+<span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">10</span>)
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
+<span class="no">mylist</span>$<span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>))
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'mylist' not found</span></pre></body></html></div>
+<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
+<span class="co">#&gt; Error: package or namespace load failed for 'rgee':</span>
+<span class="co">#&gt;  .onLoad failed in loadNamespace() for 'rgee', details:</span>
+<span class="co">#&gt;   call: py_module_import(module, convert = convert)</span>
+<span class="co">#&gt;   error: ImportError: No module named ee</span>
+<span class="no">ee</span>$<span class="fu">Initialize</span>()
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">mynewlist</span> <span class="kw">=</span> <span class="no">mylist</span>$<span class="fu">map</span>(
   <span class="fu"><a href="../reference/ee_pyfunc.html">ee_pyfunc</a></span>(
     <span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>)
   )
 )
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'mylist' not found</span>
 <span class="no">mynewlist</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11</span></pre></body></html></div>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'mynewlist' not found</span></pre></body></html></div>
 </div>
 <div id="do-not-forget-the-l" class="section level3">
 <h3 class="hasAnchor">
@@ -169,24 +168,33 @@
 </h3>
 <p>By default, when you define a number in R it will produce a <strong>double precision</strong> value. This does not happen in Python because, by default it will create a <strong>int</strong> value.</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="bu">type</span>(<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; &lt;class 'int'&gt;</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="bu">type</span>(<span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; &lt;type 'int'&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="fl">1</span>)
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="fl">1</span>)
 <span class="co">#&gt; [1] "numeric"</span></pre></body></html></div>
 <p>But, why is this a big deal?. Let’s explain with an example:</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb5-1" data-line-number="1">and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">and_bitwise.getInfo()</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; 32</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'ee' is not defined</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; </span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Detailed traceback: </span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>and_bitwise.getInfo()</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'and_bitwise' is not defined</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Detailed traceback: </span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100</span>) <span class="co">#caution: silent error</span>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100</span>) <span class="co">#caution: silent error</span>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt; [1] 32</span></pre></body></html></div>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'and_bitwise' not found</span></pre></body></html></div>
 <p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or just employ the function <code>as.integer</code>. Please always pay attention to these minutiae to develop clean <code>rgee</code> scripts. The <strong>correct code</strong> in R would be:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt; [1] 32</span></pre></body></html></div>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'and_bitwise' not found</span></pre></body></html></div>
 </div>
 <div id="be-careful-with-eedate" class="section level3">
 <h3 class="hasAnchor">
@@ -194,27 +202,33 @@
 </h3>
 <p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremely insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX epoch</a>.</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb8-1" data-line-number="1">my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">my_date.getInfo()</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; {'type': 'Date', 'value': 631152000000}</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'ee' is not defined</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt; </span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; Detailed traceback: </span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>my_date.getInfo()</span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'my_date' is not defined</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; </span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; Detailed traceback: </span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">my_date</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="st">'1990-01-01'</span>)
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">my_date</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="st">'1990-01-01'</span>)
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">my_date</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt; $type</span>
-<span class="co">#&gt; [1] "Date"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -208192512</span></pre></body></html></div>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'my_date' not found</span></pre></body></html></div>
 <p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and it should not be a trouble if treated with care. <code>rgee</code> implement two functions to deal with Earth Engine dates: <code>eedate_to_rdate</code> and <code>rdate_to_eedate</code>.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># Era5 dataset</span>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co"># Era5 dataset</span>
 <span class="no">era_img</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu">ImageCollection</span>(<span class="st">"ECMWF/ERA5/DAILY"</span>)$
   <span class="fu">filterDate</span>(<span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span>)$
   <span class="fu">first</span>()
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 
 <span class="co"># Extracting init date</span>
 <span class="no">ee_date</span> <span class="kw">&lt;-</span> <span class="no">era_img</span>$<span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'era_img' not found</span>
 <span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(<span class="kw">ee_date</span> <span class="kw">=</span> <span class="no">ee_date</span>)
-<span class="co">#&gt; [1] "2019-01-01 GMT"</span></pre></body></html></div>
+<span class="co">#&gt; Error in eedate_to_rdate(ee_date = ee_date): could not find function "eedate_to_rdate"</span></pre></body></html></div>
 </div>
   </div>
 
@@ -231,7 +245,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

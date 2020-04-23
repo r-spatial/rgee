@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -217,27 +217,30 @@ to be exported into (ignored if <code>via</code> is not defined as "drive" or
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical. Suppress info message</p></td>
+      <td><p>Logical. Suppress info message</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A character object</p>
+    <p>A character object which represents the filename of the image.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>ee_image_to_local</code> supports the download of <code>ee$Image</code>
 by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the <code>via</code> argument, <code>ee_image_as_character</code> will make an
+is set in the <code>via</code> argument, <code>ee_image_to_local</code> will make an
 REST call to retrieve all the known information about the object. The
 advantage of use "getInfo" is a direct and faster download. However, there
 is a limitation of 262144 pixels by request which makes it not recommendable
 for large images. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large collections since they use an intermediate container.
-They use Google Drive and Google Cloud Storage respectively. For getting
-more information about exporting data take a look at the
-<a href='https://developers.google.com/earth-engine/exporting'>Google Earth
-Engine Guide - Export data</a>.</p>
+are suitable for large collections since they use an intermediate web store
+service. Before to use any of this options, it is necessary previously
+install the R packages
+<a href='cran.r-project.org/web/packages/googledrive/index.html'>googledrive</a>
+and <a href='cran.r-project.org/web/packages/googleCloudStorageR/index.html'>
+googleCloudStorageR</a>. For getting more information about exporting data take
+a look at the <a href='developers.google.com/earth-engine/exporting'>Google
+Earth Engine Guide - Export data</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -276,14 +279,14 @@ Engine Guide - Export data</a>.</p>
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>
 )
 
-<span class='co'>## drive - Method 02</span>
+<span class='co'>## drive - Option 02</span>
 <span class='no'>img_02</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_image_to_local</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
   <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>geometry</span>,
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"drive"</span>
 )
 
-<span class='co'>## gcs - Method 03</span>
+<span class='co'>## gcs - Option 03</span>
 <span class='no'>img_03</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_image_to_local</span>(
   <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
   <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>geometry</span>,
@@ -316,7 +319,7 @@ Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

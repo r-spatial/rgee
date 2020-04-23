@@ -37,16 +37,19 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_drive_to_local.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_earthengine_upgrade.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_extract.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_asset_image.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_asset_table.html</loc>
+    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_image.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_local.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_table.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_get_assethome.html</loc>
@@ -145,6 +148,9 @@
     <loc>http://csaybar.github.io/rgee/reference/eedate_to_rdate.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/local_as_image.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/pipe.html</loc>
   </url>
   <url>
@@ -158,9 +164,6 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/sf_as_ee.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/stars_as_ee.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/articles/considerations.html</loc>

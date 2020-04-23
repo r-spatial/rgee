@@ -81,7 +81,7 @@ EE thumbnail image." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -168,7 +168,7 @@ EE thumbnail image." />
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(
-  <span class='no'>x</span>,
+  <span class='no'>image</span>,
   <span class='no'>region</span>,
   <span class='no'>dimensions</span>,
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -180,7 +180,7 @@ EE thumbnail image." />
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
+      <th>image</th>
       <td><p>EE Image object to be converted into a stars object.</p></td>
     </tr>
     <tr>
@@ -214,7 +214,7 @@ raster object?</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An stars object</p>
+    <p>An stars or Raster object depending on the <code>raster</code> argument.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>vizparams</code> set up the details of the thumbnail image. With
@@ -263,7 +263,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 
 <span class='co'>## world - elevation</span>
 <span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>,
+  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>image</span>,
   <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>world_region</span>,
   <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
@@ -280,13 +280,12 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 <span class='no'>arequipa_region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span> <span class='kw'>%&gt;%</span>
   <span class='fu'>st_bbox</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>st_as_sfc</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>() <span class='kw'>%&gt;%</span>
   <span class='no'>ee</span>$<span class='no'>FeatureCollection</span>$<span class='fu'>geometry</span>()
 
 <span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>arequipa_region</span>,
+  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>image</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>arequipa_region</span>$<span class='fu'><a href='https://rdrr.io/pkg/raster/man/buffer.html'>buffer</a></span>(<span class='fl'>1000</span>)$<span class='fu'>bounds</span>(),
   <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>512</span>,
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
 )
@@ -311,7 +310,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 
 <span class='co'>## Teton Wilderness</span>
 <span class='no'>l8_img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>img</span>,
+  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
   <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>img</span>$<span class='fu'>geometry</span>()$<span class='fu'>bounds</span>(),
   <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>),
@@ -334,7 +333,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

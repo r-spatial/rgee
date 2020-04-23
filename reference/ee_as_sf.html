@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -168,6 +168,7 @@
   <span class='no'>x</span>,
   <span class='no'>dsn</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>crs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>,
   <span class='kw'>maxFeatures</span> <span class='kw'>=</span> <span class='fl'>5000</span>,
   <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
@@ -193,6 +194,12 @@
 to write?.</p></td>
     </tr>
     <tr>
+      <th>crs</th>
+      <td><p>integer or character; coordinate reference system
+for the EE table. If is NULL, <code>ee_as_sf</code> will take the CRS of
+the first element.</p></td>
+    </tr>
+    <tr>
       <th>via</th>
       <td><p>Character. Method to fetch data about the object. Multiple
 options supported. See details.</p></td>
@@ -200,14 +207,14 @@ options supported. See details.</p></td>
     <tr>
       <th>maxFeatures</th>
       <td><p>Numeric. The maximum allowed number of features to
-export  (ignored if <code>via</code> is not set as "getInfo"). The task will fail
+export  (ignore if <code>via</code> is not set as "getInfo"). The task will fail
 if the exported region covers more features in the specified projection.
 Defaults to 5000.</p></td>
     </tr>
     <tr>
       <th>container</th>
       <td><p>Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignored if <code>via</code> is not defined as "drive" or
+to be exported into (ignore if <code>via</code> is not defined as "drive" or
 "gcs").</p></td>
     </tr>
     <tr>
@@ -302,7 +309,7 @@ Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

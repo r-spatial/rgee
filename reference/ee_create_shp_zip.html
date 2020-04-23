@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -193,7 +193,7 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
 
 <span class='co'># Create sf object</span>
 <span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
-<span class='no'>asset_id</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
+<span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
 
 <span class='co'># Method 1</span>
 <span class='co'># 1. Pass the sf to a zip file</span>
@@ -203,22 +203,22 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
 <span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_local_to_gcs.html'>ee_local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>zipfile</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
 
 <span class='co'># 3. Pass the sf to a zip file</span>
-<span class='fu'><a href='ee_gcs_to_asset_table.html'>ee_gcs_to_asset_table</a></span>(
+<span class='fu'><a href='ee_gcs_to_table.html'>ee_gcs_to_table</a></span>(
   <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
-  <span class='kw'>asset_id</span> <span class='kw'>=</span> <span class='no'>asset_id</span>
+  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>
 )
 
 <span class='co'># OPTIONAL: Monitoring progress</span>
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
 
 <span class='co'># OPTIONAL: Display results</span>
-<span class='no'>ee_sf_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>asset_id</span>)
+<span class='no'>ee_sf_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>assetId</span>)
 <span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_01</span>)
 <span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_01</span>)
 
 <span class='co'># Method 2</span>
 <span class='no'>ee_sf_02</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>,
-                     <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>asset_id</span>,
+                     <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
                      <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>)
 <span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_02</span>)
 <span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_02</span>)
@@ -238,7 +238,7 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

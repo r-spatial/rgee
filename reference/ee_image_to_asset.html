@@ -81,7 +81,7 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -170,6 +170,7 @@ This function is a wrapper around <code>ee$batch$Export$image$toAsset(...)</code
   <span class='no'>image</span>,
   <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportImageTask"</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>pyramidingPolicy</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -193,6 +194,11 @@ This function is a wrapper around <code>ee$batch$Export$image$toAsset(...)</code
     <tr>
       <th>assetId</th>
       <td><p>The destination asset ID.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Logical. If TRUE, the assetId will be overwritten if
+it exists.</p></td>
     </tr>
     <tr>
       <th>pyramidingPolicy</th>
@@ -323,7 +329,7 @@ as 'crs_transform'.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

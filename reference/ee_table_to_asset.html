@@ -81,7 +81,7 @@ This function is a wrapper around ee$batch$Export$table$toAsset(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -169,7 +169,8 @@ This function is a wrapper around <code>ee$batch$Export$table$toAsset(...)</code
     <pre class="usage"><span class='fu'>ee_table_to_asset</span>(
   <span class='no'>collection</span>,
   <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportTableTask"</span>,
-  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -187,6 +188,11 @@ This function is a wrapper around <code>ee$batch$Export$table$toAsset(...)</code
       <th>assetId</th>
       <td><p>The destination asset ID. **kwargs: Holds other
 keyword arguments that may have been deprecated.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>Logical. If TRUE, the assetId will be overwritten if
+it exists.</p></td>
     </tr>
     </table>
 
@@ -250,7 +256,7 @@ keyword arguments that may have been deprecated.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

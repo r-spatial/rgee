@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -182,7 +182,9 @@
 
 <span class='fu'>ee_search_tagstitle</span>(<span class='no'>ee_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_search_title_list</span>(<span class='no'>ee_dataset</span>)</pre>
+<span class='fu'>ee_search_title_list</span>(<span class='no'>ee_dataset</span>)
+
+<span class='fu'>ee_search_display</span>(<span class='no'>ee_dataset</span>, <span class='kw'>maxdisplay</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,6 +229,10 @@ ee_search_provider_list()</p></td>
 and rgee::ee_search_title. 'AND' represents inclusiveness between tags in
 searching and 'OR' exclusiveness.</p></td>
     </tr>
+    <tr>
+      <th>maxdisplay</th>
+      <td><p>Numeric. Maximum number of tabs to display in their browser</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -236,19 +242,31 @@ searching and 'OR' exclusiveness.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='message'>── <span style='font-weight: bold;'>rgee 0.3.10</span><span> ───────────────────────────────────────────────────────────────────────── earthengine-api 0.1.217 ──</span></div><div class='output co'>#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Python version:</span><span> </span><span style='color: #00BB00;'>/home/aybarpc01/.virtualenvs/ee/bin/python3</span><span> 
-#&gt;  </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>email:</span><span> </span><span style='color: #00BB00;'>not_defined
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Initializing Google Earth Engine:</span><span> </span><span style='color: #00BB00;'> DONE!
-#&gt; </span><span> </span><span style='color: #00BB00;'>✓</span><span> </span><span style='color: #0000BB;'>Earth Engine user:</span><span> </span><span style='color: #00BB00;font-weight: bold;'>users/datacolecfbf</span><span> </div><div class='output co'>#&gt; <span class='message'>───────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></div><div class='input'>
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span></div><div class='output co'>#&gt; <span class='error'>Error in py_module_import(module, convert = convert): ImportError: No module named ee</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>Detected Python configuration:</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python:         /usr/bin/python</span>
+#&gt; <span class='error'>libpython:      /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib</span>
+#&gt; <span class='error'>pythonhome:     /System/Library/Frameworks/Python.framework/Versions/2.7:/System/Library/Frameworks/Python.framework/Versions/2.7</span>
+#&gt; <span class='error'>version:        2.7.16 (default, Feb 29 2020, 01:55:37)  [GCC 4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.29.20) (-macos10.15-objc-</span>
+#&gt; <span class='error'>numpy:          /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy</span>
+#&gt; <span class='error'>numpy_version:  1.8.0</span>
+#&gt; <span class='error'>ee:             [NOT FOUND]</span>
+#&gt; <span class='error'></span>
+#&gt; <span class='error'>python versions found: </span>
+#&gt; <span class='error'> /usr/local/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python3</span>
+#&gt; <span class='error'> /usr/bin/python</span>
+#&gt; <span class='error'> /usr/local/bin/python</span>
+#&gt; <span class='error'></span></div><div class='input'>
 <span class='co'># ee_search_provider_list()</span>
 <span class='co'># ee_search_title_list()</span>
 <span class='no'>myquery</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_dataset</span>() <span class='kw'>%&gt;%</span>
   <span class='fu'>ee_search_type</span>(<span class='st'>"Image"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>ee_search_provider</span>(<span class='st'>"WWF"</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>ee_search_tags</span>(<span class='st'>"srtm"</span>, <span class='st'>"flow"</span>, <span class='st'>"direction"</span>, <span class='st'>"dem"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>ee_search_title</span>(<span class='st'>"15"</span>, <span class='st'>"Flow"</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"AND"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>myquery</span>$<span class='no'>id</span>)</div><div class='output co'>#&gt; [1] "WWF/HydroSHEDS/15ACC"</div></span></pre>
+  <span class='fu'>ee_search_title</span>(<span class='st'>"15"</span>, <span class='st'>"Flow"</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"AND"</span>)</div><div class='output co'>#&gt; Downloading(Upgrading) the Earth Engine catalog ... please wait</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file '/Users/runner/.config/earthengine/ee_dataset.csv': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(file, ifelse(append, "a", "w")): cannot open the connection</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>myquery</span>$<span class='no'>id</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(myquery$id): object 'myquery' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -264,7 +282,7 @@ searching and 'OR' exclusiveness.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

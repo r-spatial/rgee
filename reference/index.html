@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -247,27 +247,33 @@ in the system</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_earthengine_upgrade.html">ee_earthengine_upgrade()</a></code> </p>
+        </td>
+        <td><p>Upgrade the Earth Engine Python API</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_extract.html">ee_extract()</a></code> </p>
         </td>
         <td><p>Extract values from EE Images or ImageCollections objects</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_gcs_to_asset_image.html">ee_gcs_to_asset_image()</a></code> </p>
+          <p><code><a href="ee_gcs_to_image.html">ee_gcs_to_image()</a></code> </p>
         </td>
         <td><p>Move a GeoTIFF image from GCS to EE asset</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_gcs_to_asset_table.html">ee_gcs_to_asset_table()</a></code> </p>
-        </td>
-        <td><p>Move a zipped shapefile from GCS to EE asset</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_gcs_to_local.html">ee_gcs_to_local()</a></code> </p>
         </td>
         <td><p>Move results from Google Cloud Storage to a local directory</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_gcs_to_table.html">ee_gcs_to_table()</a></code> </p>
+        </td>
+        <td><p>Move a zipped shapefile from GCS to EE asset</p></td>
       </tr><tr>
         
         <td>
@@ -409,7 +415,7 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_search-tools.html">ee_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> </p>
+          <p><code><a href="ee_search-tools.html">ee_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> <code><a href="ee_search-tools.html">ee_search_display()</a></code> </p>
         </td>
         <td><p>Interface to search into the Earth Engine Data Catalog</p></td>
       </tr><tr>
@@ -441,7 +447,7 @@ in the system</p></td>
         <td>
           <p><code><a href="ee_user_info.html">ee_user_info()</a></code> </p>
         </td>
-        <td><p>Display credentials info of initialized user</p></td>
+        <td><p>Display credentials and general info of the initialized user</p></td>
       </tr><tr>
         
         <td>
@@ -463,6 +469,12 @@ in the system</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="local_as_image.html">stars_as_ee()</a></code> <code><a href="local_as_image.html">raster_as_ee()</a></code> <code><a href="local_as_image.html">ee_local_image_as_ee()</a></code> </p>
+        </td>
+        <td><p>Convert a local image into an EE Image</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="plus-mapview-mapview-method.html">`+`(<i>&lt;mapview&gt;</i>,<i>&lt;mapview&gt;</i>)</a></code> </p>
         </td>
         <td><p>mapview + mapview; adds data from the second map to the first</p></td>
@@ -478,12 +490,6 @@ in the system</p></td>
           <p><code><a href="sf_as_ee.html">sf_as_ee()</a></code> </p>
         </td>
         <td><p>Convert an sf object to an EE object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="stars_as_ee.html">stars_as_ee()</a></code> </p>
-        </td>
-        <td><p>Convert an stars object to an EE object</p></td>
       </tr>
     </tbody>
     </table>
@@ -503,7 +509,7 @@ in the system</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
