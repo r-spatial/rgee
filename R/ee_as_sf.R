@@ -173,7 +173,7 @@ ee_as_sf <- function(x,
 
     # Getting table ID if it is exist
     table_id <- tryCatch(
-      expr = parse_json(x$serialize())$
+      expr = jsonlite::parse_json(x$serialize())$
         scope[[1]][[2]][["arguments"]][["tableId"]],
       error = function(e) "no_tableid"
     )
@@ -223,7 +223,7 @@ ee_as_sf <- function(x,
 
     # Getting table ID if it is exist
     table_id <- tryCatch(
-      expr = parse_json(x$serialize())$
+      expr = jsonlite::parse_json(x$serialize())$
         scope[[1]][[2]][["arguments"]][["tableId"]],
       error = function(e) "no_id"
     )

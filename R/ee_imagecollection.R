@@ -168,7 +168,7 @@ ee_geometry_message <- function(region) {
   #is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
-  query_params <- unlist(parse_json(region$serialize())$scope)
+  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
   is_evenodd <- as.logical(
     query_params[grepl("evenOdd", names(query_params))]
   )
