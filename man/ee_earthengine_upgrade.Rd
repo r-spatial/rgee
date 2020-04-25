@@ -38,8 +38,10 @@ created conda environment. Python 3.7 is installed by default.}
 
 \item{quiet}{logical. Suppress info message}
 
-\item{...}{other arguments passed to \link[=reticulate]{conda_install}  or
-\link[=reticulate]{virtualenv_install}.}
+\item{...}{other arguments passed to
+\code{reticulate::\link[reticulate:conda_install]{conda_install}}
+or
+\code{reticulate::\link[reticulate:virtualenv_install]{virtualenv_install}}.}
 }
 \description{
 This function upgrade the Earth Engine Python API (earthengine-api)

@@ -51,15 +51,16 @@ Map
 \description{
 Create interactive visualizations of spatial EE objects
 (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
-through \link[=mapview]{mapview}.
+through
+\code{mapview::\link[mapview:mapview]{mapview}}.
 }
 \details{
 \code{Map} takes advantage of
 \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 getMapId} for fetch and return both a mapid and a token suitable
-to use in a \link[=mapview]{mapview}  object. To achieve desirable
-visualization effect, it will depend on the type of spatial EE object . For
-Image objects, you can provide visualization parameters to
+to use in a \code{mapview::\link[mapview:mapview]{mapview}} object. To
+achieve desirable visualization effect, it will depend on the type of spatial
+EE object . For Image objects, you can provide visualization parameters to
 Map$addLayer() by using the argument visParams. The
 \href{https://developers.google.com/earth-engine/image_visualization}{
 parameters} available are:
