@@ -66,6 +66,23 @@ jobs:
           close(fileConn)
         shell: Rscript {0}
 
+      - name: Load credentials
+      - run: |
+
+      - run: |
+          ee_dirname <- path.expand("~/.config/earthengine")
+          ee_dirname_demo <- sprintf("%s/data.colec.fbf/", ee_dirname)
+          dir.create(path = ee_dirname, recursive = TRUE, showWarnings = FALSE)
+          dir.create(path = ee_dirname_demo, recursive = TRUE, showWarnings = FALSE)
+
+          ## GOOGLE EARTH ENGINE
+          key <- Sys.getenv("EE_CREDENTIALS")
+          json_key <- toJSON(list(refresh_token = key))
+          ee_dirname <- path.expand("~/.config/earthengine")
+          write(json_key, sprintf("%s/credentials", ee_dirname))
+          write(json_key, sprintf("%s/credentials", ee_dirname_demo))
+      - shell: Rscript {0}
+
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
