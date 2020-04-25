@@ -423,6 +423,7 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
 #' @noRd
 ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
   if (any(class(x) %in% 'sf')) {
+    x$geometry <- st_sfc(x$geometry, check_ring_dir = check_ring_dir)
     x
   } else if (any(class(x) %in% 'sfg')) {
     if (is.null(proj)) {

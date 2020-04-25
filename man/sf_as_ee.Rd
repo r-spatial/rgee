@@ -12,7 +12,7 @@ sf_as_ee(
   monitoring = TRUE,
   check_ring_dir = FALSE,
   evenOdd = TRUE,
-  proj = NULL,
+  proj = 4326,
   geodesic = NULL,
   quiet = FALSE,
   ...
@@ -43,10 +43,8 @@ Otherwise polygons use the left-inside rule, where interiors are on the
 left side of the shell's edges when walking the vertices in the given order.
 If unspecified, defaults to TRUE.}
 
-\item{proj}{Character. An optional projection specification, either as a CRS
-ID code or as a WKT string. If specified, overrides any CRS found in
-the GeoJSON parameter. If unspecified and the GeoJSON does not
-declare a CRS, defaults to "EPSG:4326" (x=longitude, y=latitude).}
+\item{proj}{Integer or character. coordinate reference system for the EE
+object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
 
 \item{geodesic}{Logical. Ignored if \code{x} is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
