@@ -34,44 +34,7 @@ RUN apt-get update \
     tk-dev \
     unixodbc-dev \
   && install2.r --error \
-      RColorBrewer \
-    RandomFields \
-    RNetCDF \
-    classInt \
-    deldir \
-    gstat \
-    hdf5r \
-    lidR \
-    lwgeom \
-    mapdata \
-    maptools \
-    mapview \
-    ncdf4 \
-    proj4 \
-    raster \
-    rgdal \
-    rgeos \
-    rlas \
-    sf \
-    sp \
-    spacetime \
-    spatstat \
-    spatialreg \
-    spdep \
-    geoR \
-    geosphere \
-    reticulate \
-    stars \
-    leaflet \
-    mapview \
-    geojsonio \
-    getPass \
-    crayon	\
-    cli \
-    googledrive \
-    googleCloudStorageR \
-    geojsonlint \
-    lwgeom \
+    RColorBrewer \
     cptcity \
     rnaturalearth \
     gganimate
