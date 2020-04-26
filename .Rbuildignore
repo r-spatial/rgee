@@ -1,6 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^examples$
 ^README.Rmd
 ^CODE_OF_CONDUCT.md
 ^CONTRIBUTING.md
