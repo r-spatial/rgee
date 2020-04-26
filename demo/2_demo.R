@@ -3,6 +3,7 @@
 
 # Spatial R packages ---------------------------------------------------------------
 library(rgee)
+library(raster)
 library(sf)
 library(cptcity)
 library(mapview)
@@ -21,18 +22,17 @@ ee_Ecuador <- world_map %>%
   st_geometry() %>%
   sf_as_ee(check_ring_dir = TRUE)
 
-
 # 2. Search into the Earth Engine Data Catalog ----------------------------
 ee_dataset() %>%
   ee_search_type("ImageCollection") %>%
-  ee_search_tagstitle("landsat", "toa", "l8", logical_operator = "AND") %>%
-  "["(1, "id") -> l8_name
-
+  ee_search_tagstitle("landsat", "toa", "l8", logical_operator = "AND") ->
+  l8_name
+ee_search_display(l8_name, maxdisplay = 1)
+l8_name <- l8_name$id[1]
 # 3. Call the EE ImageCollection ------------------------------------------
 ic_l8 <- ee$ImageCollection(l8_name)$
   filterBounds(ee_Ecuador)$
   filterDate("2015-01-01", "2017-12-31")
-
 
 # 4. Add NDVI band (FLOAT) into the ImageCollection -----------------------
 addNDVI <- function(image) {
@@ -40,22 +40,21 @@ addNDVI <- function(image) {
   return(image$addBands(ndvi))
 }
 
-
 # 5. Quality mosaic vs Simple mean ----------------------------------------
 vizparams <- list(max = 0.3, bands = c("B4", "B3", "B2"))
 
 ic_l8_mean <- ic_l8$map(addNDVI)$mean()$clip(ee_Ecuador)
 ic_l8_mosaic <- ic_l8$map(addNDVI)$qualityMosaic("NDVI")$clip(ee_Ecuador)
 
-ee_Map$centerObject(ee_Ecuador)
-ee_Map$addLayer(ic_l8_mean,vizparams,"mean") +
-  ee_Map$addLayer(ic_l8_mosaic,vizparams,"quality")
+Map$centerObject(ee_Ecuador)
+Map$addLayer(ic_l8_mean,vizparams,"mean") +
+Map$addLayer(ic_l8_mosaic,vizparams,"quality")
 
 # 6. Fast Download (< 5mb) ----------------------------------------------
 #    Download EE thumbnail images and read them as stars objects
-ee_Ecuador_bounds <- ee$Geometry(ee_Ecuador$bounds())
+ee_Ecuador_bounds <- ee_Ecuador$geometry()$bounds()
 ecuador_stars <- ee_as_thumbnail(
-  x = ic_l8_mosaic,
+  image = ic_l8_mosaic,
   region = ee_Ecuador_bounds,
   vizparams = vizparams
 )
@@ -68,18 +67,14 @@ image_to_download <- ic_l8_mosaic$
   select(c("B4", "B3", "B2"))$
   reproject(crs = "EPSG:4326", scale = 2500)
 
-# Passing from Earth Engine to Google Drive
-task_img <- ee$batch$Export$image$toDrive(
+# Passing from Earth Engine to Local
+task_img <- ee_image_as_raster(
   image = image_to_download,
-  folder = "ecuador_mosaic",
-  fileFormat = "GEOTIFF",
-  fileNamePrefix = "ecuador_mosaic"
+  region = ee_Ecuador_bounds,
+  via = "drive",
+  container = "ecuador_mosaic",
+  dsn = "/home/aybarpc01/ecuador_mosaic.tif"
 )
-# ee_manage_cancel_all_running_taks()
-task_img$start()
-ee_monitoring() # Monitoring task progress (Optional)
 
-# Passing from Google Drive to Hard disk
-ecuador_stars <- ee_download_drive(task_img)
-plot(ecuador_stars)
-image(ecuador_stars, rgb = c(1, 2, 3))
+plot(task_img)
+plotRGB(task_img, stretch = "hist")
