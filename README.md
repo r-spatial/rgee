@@ -1,1004 +1,246 @@
-[![R build status](https://github.com/csaybar/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/csaybar/rgee/actions)
-[![Project Status: Active – The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![codecov](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
-
-
-# Google Earth Engine for R
-<a href="http://csaybar.github.io/rgee"><img src="https://raw.githubusercontent.com/csaybar/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="6" width="12%"></a>
-
-`rgee` is a binding package for calling [Google Earth Engine
-API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the [earthengine-api 0.1.217](https://pypi.org/project/earthengine-api/0.1.217/). **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-
-### More than 250+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/README.html)
-
-<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/idw_interpolation.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_03_idw_interpolation.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/spectral_unmixing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_04_spectral_unmixing.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_05_sentinel2.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/canny_edge_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_06_canny_edge_detector.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/cumulative_cost_mapping.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_07_cumulative_cost_mapping.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/zero_crossing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_08_zero_crossing.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/hillshade.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_09_hillshade.png" height="100" hspace="5"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/styled_layer_descriptors.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_10_styled_layer_descriptors.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/terrain_visualization.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_11_terrain_visualization.png" height="100" hspace="5"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_counties.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_12_us_census_counties.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_13_global_power_plant_database.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Water/jrc_metadata.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_15_jrc_metadata.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
-
-
-
-## What is Google Earth Engine?
-
-[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R\!**. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
-
-**Earth Engine Javascript API**:
-
-``` javascript
-image = ee.Image('CGIAR/SRTM90_V4')
-print(image.bandNames())
-#> 'elevation'
-```
-
-**Earth Engine Python API**:
-
-``` python
-import ee
-ee.Initialize()
-image = ee.Image('CGIAR/SRTM90_V4')
-image.bandNames().getInfo()
-#> [u'elevation']
-```
-
-**rgee:**
-
-``` r
-library(rgee)
-ee_Initialize()
-
-# Python Style
-image <- ee$Image('CGIAR/SRTM90_V4')
-image$bandNames()$getInfo()
-#> [1] "elevation"
-
-# Or use Pipes instead!!
-image <- ee$Image('CGIAR/SRTM90_V4') %>%
-  ee$Image$bandNames() %>% 
-  ee$List$getInfo()
-#> [1] "elevation"
-```
-
-**Quite similar, isn’t it?**. However, there are additional smaller changes that you must consider when you use Google Earth Engine with R. Please check the [consideration section](https://csaybar.github.io/rgee/articles/considerations.html) before start coding\!
-
-## Installation
-
-Install the `rgee` package from GitHub is quite simple, you just have to run in your R console as follows:
-
-``` r
-remotes::install_github("csaybar/rgee")
-```
-
-**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
-
-#### Docker image
-    
-    docker pull csaybar/rgee
-    docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
-
-After that, in your preferred browser, run:
-
-    127.0.0.1:8787
-
-## Requirements
-
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with a installation module, use it to quickly set up the external dependencies of `rgee`:
-
-```r
-library(rgee)
-
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
-ee_Initialize()
-
-# 2. Create a Python environment, e.g. ee.
-ee_create_pyenv(python_env = "ee")
-
-# 3. Find all Python environments  in the system.
-ee_discover_pyenvs()
-
-# 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g
-ee_set_pyenv(
-  python_path = '/home/MY_USER_HERE/.virtualenvs/ee/bin/python',
-  python_env = 'ee'
-)
-
-# 5. Install Python package dependencies
-ee_install_python_packages()
-
-# 6. Initialize rgee again!
-ee_Initialize()
-```
-
-Additionally, use the functions below, as many times as you want, for checking user info, check sanity of credentials and  Python packages, and remove credentials.
-
-```r
-ee_check() # Check non-R dependencies
-ee_user_info() # Display credentials information
-ee_users() # Display credentials information of all users
-ee_remove_credentials() # Remove credentials of a specific user
-ee_clean_pyenv() # Remove reticulate system variables
-```
-
-Also, consider checking the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
-
-
-## Package Conventions
-
-  - All `rgee` functions have the prefix ee\_. Auto-completion is
-    your friend :).
-  - Full access to the Earth Engine API with the prefix
-    [**ee$…:**](https://developers.google.com/earth-engine/).
-  - Authenticate and Initialize the Earth Engine R API with
-    [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html), you just will need to do it once by session!.
-  - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does
-    not require its use.
-  - Wrap your R function using `ee_pyfunc` before passing them to the
-    Earth Engine Web REST API. This is not compulsory, but it will help
-    reduce possible [bugs](https://csaybar.github.io/rgee/articles/considerations.html#the-map-message-error) :bug:.
-
-## Quick Demo
-
-### 1. Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
-
-Authenticate and Initialize the Earth Engine R API.
-
-``` r
-library(rgee)
-ee_Initialize()
-#ee_reattach() # reattach ee as a reserve word
-```
-
-Adds a band containing image date as years since 1991.
-
-``` r
-createTimeBand <-function(img) {
-  year <- ee$Date(img$get('system:time_start'))$get('year')$subtract(1991L)
-  ee$Image(year)$byte()$addBands(img)
-}
-```
-
-Map the time band creation helper over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS).
-
-``` r
-collection = ee$
-  ImageCollection('NOAA/DMSP-OLS/NIGHTTIME_LIGHTS')$
-  select('stable_lights')$
-  map(createTimeBand)
-```
-
-Compute a linear fit over the series of values at each pixel, visualizing the y-intercept in green, and positive/negative slopes as red/blue.
-
-``` r
-col_reduce <- collection$reduce(ee$Reducer$linearFit())
-col_reduce <- col_reduce$addBands(
-  col_reduce$select('scale'))
-ee_print(col_reduce)
-```
-
-Create a interactive visualization\! 
-
-``` r
-Map$setCenter(9.08203, 47.39835, 3)
-Map$addLayer(
-  eeObject = col_reduce,
-  visParams = list(
-    bands = c("scale", "offset", "scale"),
-    min = 0,
-    max = c(0.18, 20, -0.18)
-  ),
-  name = "stable lights trend"
-)
-
-```
-
-![rgee\_01](https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png)
-
-### 2. Extract precipitation values
-
-Load `sf` and authenticate and initialize the Earth Engine R API.
-
-``` r
-library(rgee)
-library(sf)
-ee_Initialize()
-# ee_reattach() # reattach ee as a reserve word
-```
-
-Read the `nc` shapefile.
-
-``` r
-nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
-  st_transform(4326) # Transform coordinates
-```
-
-Map each image from 2001 to extract the monthly precipitation (Pr) from the [Terraclimate
-dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE)
-
-``` r
-terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01", "2001-01-01")$
-  map(ee_pyfunc(function(x) x$select("pr")))
-```
-
-Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
-similar to `raster::extract` you just need to define: the
-ImageCollection object (x), the geometry (y), and a function to
-summarize the values (fun).
-
-``` r
-ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), id = "FIPS")
-colnames(ee_nc_rain) <- c("FIPS", month.abb)
-head(ee_nc_rain)
-```
-
-<table class="table" style="margin-left: auto; margin-right: auto;">
-
-<thead>
-
-<tr>
-
-<th style="text-align:left;">
-
-FIPS
-
-</th>
-
-<th style="text-align:right;">
-
-Jan
-
-</th>
-
-<th style="text-align:right;">
-
-Feb
-
-</th>
-
-<th style="text-align:right;">
-
-Mar
-
-</th>
-
-<th style="text-align:right;">
-
-Apr
-
-</th>
-
-<th style="text-align:right;">
-
-May
-
-</th>
-
-<th style="text-align:right;">
-
-Jun
-
-</th>
-
-<th style="text-align:right;">
-
-Jul
-
-</th>
-
-<th style="text-align:right;">
-
-Aug
-
-</th>
-
-<th style="text-align:right;">
-
-Sep
-
-</th>
-
-<th style="text-align:right;">
-
-Oct
-
-</th>
-
-<th style="text-align:right;">
-
-Nov
-
-</th>
-
-<th style="text-align:right;">
-
-Dec
-
-</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-37009
-
-</td>
-
-<td style="text-align:right;">
-
-93
-
-</td>
-
-<td style="text-align:right;">
-
-68
-
-</td>
-
-<td style="text-align:right;">
-
-106
-
-</td>
-
-<td style="text-align:right;">
-
-168
-
-</td>
-
-<td style="text-align:right;">
-
-73
-
-</td>
-
-<td style="text-align:right;">
-
-97
-
-</td>
-
-<td style="text-align:right;">
-
-117
-
-</td>
-
-<td style="text-align:right;">
-
-107
-
-</td>
-
-<td style="text-align:right;">
-
-166
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-89
-
-</td>
-
-<td style="text-align:right;">
-
-56
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-37005
-
-</td>
-
-<td style="text-align:right;">
-
-85
-
-</td>
-
-<td style="text-align:right;">
-
-64
-
-</td>
-
-<td style="text-align:right;">
-
-99
-
-</td>
-
-<td style="text-align:right;">
-
-165
-
-</td>
-
-<td style="text-align:right;">
-
-66
-
-</td>
-
-<td style="text-align:right;">
-
-96
-
-</td>
-
-<td style="text-align:right;">
-
-107
-
-</td>
-
-<td style="text-align:right;">
-
-106
-
-</td>
-
-<td style="text-align:right;">
-
-163
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-83
-
-</td>
-
-<td style="text-align:right;">
-
-53
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-37171
-
-</td>
-
-<td style="text-align:right;">
-
-95
-
-</td>
-
-<td style="text-align:right;">
-
-54
-
-</td>
-
-<td style="text-align:right;">
-
-87
-
-</td>
-
-<td style="text-align:right;">
-
-143
-
-</td>
-
-<td style="text-align:right;">
-
-59
-
-</td>
-
-<td style="text-align:right;">
-
-114
-
-</td>
-
-<td style="text-align:right;">
-
-101
-
-</td>
-
-<td style="text-align:right;">
-
-119
-
-</td>
-
-<td style="text-align:right;">
-
-162
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:right;">
-
-67
-
-</td>
-
-<td style="text-align:right;">
-
-48
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-37053
-
-</td>
-
-<td style="text-align:right;">
-
-122
-
-</td>
-
-<td style="text-align:right;">
-
-50
-
-</td>
-
-<td style="text-align:right;">
-
-67
-
-</td>
-
-<td style="text-align:right;">
-
-118
-
-</td>
-
-<td style="text-align:right;">
-
-135
-
-</td>
-
-<td style="text-align:right;">
-
-183
-
-</td>
-
-<td style="text-align:right;">
-
-142
-
-</td>
-
-<td style="text-align:right;">
-
-213
-
-</td>
-
-<td style="text-align:right;">
-
-174
-
-</td>
-
-<td style="text-align:right;">
-
-7
-
-</td>
-
-<td style="text-align:right;">
-
-72
-
-</td>
-
-<td style="text-align:right;">
-
-49
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-37131
-
-</td>
-
-<td style="text-align:right;">
-
-115
-
-</td>
-
-<td style="text-align:right;">
-
-49
-
-</td>
-
-<td style="text-align:right;">
-
-63
-
-</td>
-
-<td style="text-align:right;">
-
-108
-
-</td>
-
-<td style="text-align:right;">
-
-115
-
-</td>
-
-<td style="text-align:right;">
-
-163
-
-</td>
-
-<td style="text-align:right;">
-
-152
-
-</td>
-
-<td style="text-align:right;">
-
-195
-
-</td>
-
-<td style="text-align:right;">
-
-132
-
-</td>
-
-<td style="text-align:right;">
-
-0
-
-</td>
-
-<td style="text-align:right;">
-
-57
-
-</td>
-
-<td style="text-align:right;">
-
-44
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-37091
-
-</td>
-
-<td style="text-align:right;">
-
-122
-
-</td>
-
-<td style="text-align:right;">
-
-43
-
-</td>
-
-<td style="text-align:right;">
-
-64
-
-</td>
-
-<td style="text-align:right;">
-
-109
-
-</td>
-
-<td style="text-align:right;">
-
-121
-
-</td>
-
-<td style="text-align:right;">
-
-169
-
-</td>
-
-<td style="text-align:right;">
-
-146
-
-</td>
-
-<td style="text-align:right;">
-
-200
-
-</td>
-
-<td style="text-align:right;">
-
-143
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-57
-
-</td>
-
-<td style="text-align:right;">
-
-43
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-Create a simple plot\!
-
-``` r
-ee_nc_rain <- merge(nc, ee_nc_rain, by = "FIPS")
-plot(ee_nc_rain["Jan"], main = "2001 Jan Precipitation - Terraclimate", reset = FALSE)
-```
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/16768318/71566261-1c8e8600-2aae-11ea-9f02-71b16f05c9d0.png">
-</p>
-  
-### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
-
-
-Load sf and authenticate and initialize the Earth Engine R API.
-
-``` r
-library(rgee)
-library(sf)
-ee_Initialize()
-# ee_reattach() # reattach ee as a reserve word
-```
-
-Define the regional bounds of animation frames and a mask to clip the NDVI data by.
-
-``` r
-mask <- system.file("shp/arequipa.shp", package = "rgee") %>% 
-  st_read(quiet = TRUE) %>% 
-  sf_as_ee()
-region <- mask$geometry()$bounds()
-```
-
-Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection`
-and select the NDVI band.
-
-``` r
-col <- ee$ImageCollection('MODIS/006/MOD13A2')$select('NDVI')
-```
-
-Group images by composite date
-
-``` r
-col <- col$map(function(img) {
-  doy <- ee$Date(img$get('system:time_start'))$getRelative('day', 'year')
-  img$set('doy', doy)
-})
-distinctDOY <- col$filterDate('2013-01-01', '2014-01-01')
-```
-
-Define a filter that identifies which images from the complete collection match the DOY
-from the distinct DOY collection.
-
-``` r
-filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy');
-```
-
-Define and Apply the join; convert the resulting FeatureCollection to an ImageCollection.
-
-``` r
-join <- ee$Join$saveAll('doy_matches')
-joinCol <- ee$ImageCollection(join$apply(distinctDOY, col, filter))
-```
-
-Apply median reduction among matching DOY collections.
-
-``` r
-comp <- joinCol$map(function(img) {
-  doyCol = ee$ImageCollection$fromImages(
-    img$get('doy_matches')
-  )
-  doyCol$reduce(ee$Reducer$median())
-})
-```
-
-Define RGB visualization parameters.
-
-``` r
-visParams = list(
-  min = 0.0,
-  max = 9000.0,
-  bands = "NDVI_median",
-  palette = c(
-    'FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718', '74A901',
-    '66A000', '529400', '3E8601', '207401', '056201', '004C00', '023B01',
-    '012E01', '011D01', '011301'
-    )
-)
-```
-
-Create RGB visualization images for use as animation frames.
-
-```r
-rgbVis <- comp$map(function(img) {
-  do.call(img$visualize, visParams) %>% 
-    ee$Image$clip(mask)
-})
-```
-
-Define GIF visualization parameters.
-
-```r
-gifParams <- list(
-  region = region,
-  dimensions = 600,
-  crs = 'EPSG:3857',
-  framesPerSecond = 10
-)
-```
-
-Render the GIF animation in the console.
-
-```r
-print(rgbVis$getVideoThumbURL(gifParams))
-browseURL(rgbVis$getVideoThumbURL(gifParams))
-```
-
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif">
-</p>
-
-## How does rgee work?
-
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the query (in JSON) is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://csaybar.github.io/rgee/reference/sf_as_ee.html)([download](https://csaybar.github.io/rgee/reference/ee_as_sf.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://csaybar.github.io/rgee/reference/ee_manage-tools.html) interface.
-
-![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
-
-## Code of Conduct
-
-Please note that the `rgee` project is released with a [Contributor Code
-of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
-
-## Contributing Guide
-
-👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
-
-## Share the love <3️
-
-Think **rgee** is useful? Let others discover it, by telling them in
-per on, via Twitter or a blog post.
-
-Using **rgee** for a paper you are writing? Consider citing it
-
-``` r
-citation("rgee")
-#> 
-#> WORKING ON THIS :)
-``` 
-
-## Credits :bow:
-
-Most of the `rgee` functionalities were based in the following third-party R/Python packages:
-
-  - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
-  - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
-  - **[geeadd - Samapriya Roy](https://github.com/samapriya/gee_asset_manager_addon)**
-  - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee)**
-  - **[geetools - Rodrigo E. Principe](https://github.com/gee-community/gee_tools)**
-  - **[landsat-extract-gee - Loïc Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
-  - **[earthEngineGrabR - JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
-  - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf)**
-  - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars)**
-  - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes)**
-
-#### Readme template obtained from [dbparser](https://github.com/Dainanahan/dbparser)
+# rgee-examples
+
+A collection of **250+** examples for using Google Earth Engine with R. 
+
+## 1. Description
+
+This repository is a collection of **250+** R script examples. The majority of theses examples were adapted from adapting the repos [qgis-earthengine-examples](https://github.com/giswqs/qgis-earthengine-examples) and [earthengine-py-notebooks](https://github.com/giswqs/earthengine-py-notebooks) from Python to R. Recognition for organizing and develop these amazing examples should always be given to Professor [Qiusheng Wu](https://wetlands.io).
+
+## 2. Examples
+
+The Table of Contents below mimics the structure of the Google Earth Engine [API Documentation](https://developers.google.com/earth-engine). I strongly encourage you to check out the API Documentation if you need an in-depth explanation of each R example. Please note that the list below does not include all the R examples contained in this repository. You are welcome to explore the repository and find more examples to suit your needs.
+
+### [Get Started](https://github.com/csaybar/rgee/tree/master/examples/GetStarted)
+
+* [Hello world!](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/01_hello_world.R)
+* [Adding data to Map](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/02_simple_mapdisplay.R)
+* [Finding images](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/03_finding_images.R)
+* [Band math](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/04_band_math.R)
+* [Mapping (what to do instead of a for-loop)](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/05_map_function.R)
+* [Reducing](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/06_reducing.R)
+* [Image statistics](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/07_image_statistics.R)
+* [Masking](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/08_masking.R)
+* [A complete example](https://github.com/csaybar/rgee/blob/master/examples//GetStarted/09_a_complete_example.R)
+
+### [Machine Learning](https://github.com/csaybar/rgee/tree/master/examples/MachineLearning)
+
+* Supervised Classification Algorithms
+  * [Classification and Regression Trees (CART)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/cart_classifier.R) 
+  * [Support Vector Machine (SVM)](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/svm_classifier.R) 
+  * [Confusion Matrix](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/confusion_matrix.R)
+* Unsupervised Classification Algorithms
+  * [KMeans Clustering](https://github.com/csaybar/rgee/blob/master/examples//MachineLearning/clustering.R)
+
+### [Image](https://github.com/csaybar/rgee/blob/master/examples/image)
+
+* [Image Overview](https://github.com/csaybar/rgee/blob/master/examples/image/image_overview.R)
+* [Image Visualization](https://github.com/csaybar/rgee/blob/master/examples/image/image_vis.R)
+* [Image information and metadata](https://github.com/csaybar/rgee/blob/master/examples/image/image_metadata.R)
+* [Mathematical operations](https://github.com/csaybar/rgee/blob/master/examples/image/band_math.R)
+* [Relational, conditional and Boolean operations](https://github.com/csaybar/rgee/blob/master/examples/image/conditional_operations.R)
+* [Convolutions](https://github.com/csaybar/rgee/blob/master/examples/image/convolutions.R)
+* [Morphological Operations](https://github.com/csaybar/rgee/blob/master/examples/image/morphological_operations.R)
+* [Gradients](https://github.com/csaybar/rgee/blob/master/examples/image/gradients.R)
+* [Edge detection](https://github.com/csaybar/rgee/blob/master/examples/image/edge_detection.R)
+* [Spectral transformations](https://github.com/csaybar/rgee/blob/master/examples/image/spectral_unmixing.R)
+* [Texture](https://github.com/csaybar/rgee/blob/master/examples/image/texture.R)
+* [Object-based methods](https://github.com/csaybar/rgee/blob/master/examples/image/object_based.R)
+* [Cumulative Cost Mapping](https://github.com/csaybar/rgee/blob/master/examples/image/cumulative_cost_mapping.R)
+* [Registering Images](https://github.com/csaybar/rgee/blob/master/examples/image/image_displacement.R)
+* Miscellaneous
+  * [Band statistics (min, max, mean, std)](https://github.com/csaybar/rgee/blob/master/examples/Image/band_stats.R)
+  * [Image statistics by band](https://github.com/csaybar/rgee/blob/master/examples/image/image_stats_by_band.R)
+  * [Extract value to points](https://github.com/csaybar/rgee/blob/master/examples/image/extract_value_to_points.R) 
+  * [Rename bands](https://github.com/csaybar/rgee/blob/master/examples/image/rename_bands.R) 
+  * [Clipping](https://github.com/csaybar/rgee/blob/master/examples/image/clipping.R) 
+  * [Find image by path and row](https://github.com/csaybar/rgee/blob/master/examples/image/find_image_by_path_row.R)
+  * [Get image resolution](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_resolution.R) 
+  * [Get image extent](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_extent.R) 
+  * [Set image properties](https://github.com/csaybar/rgee/blob/master/examples/image/set_image_properties.R) 
+  * [Select bands](https://github.com/csaybar/rgee/blob/master/examples/image/select_bands.R) 
+  * [Convert bands to ImageCollection](https://github.com/csaybar/rgee/blob/master/examples/image/convert_bands_to_image_collection.R) 
+  * [Reclassify](https://github.com/csaybar/rgee/blob/master/examples/image/reclassify.R)   
+  * [Composite bands](https://github.com/csaybar/rgee/blob/master/examples/image/composite_bands.R) 
+  * [Image smoothing](https://github.com/csaybar/rgee/blob/master/examples/image/image_smoothing.R) 
+  * [Download image](https://github.com/csaybar/rgee/blob/master/examples/image/download.R) 
+  * [Cell statistics](https://github.com/csaybar/rgee/blob/master/examples/image/cell_statistics.R) 
+  * [Image patch area](https://github.com/csaybar/rgee/blob/master/examples/image/image_patch_area.R) 
+  * [Get image id](https://github.com/csaybar/rgee/blob/master/examples/image/get_image_id.R) 
+  * [Get band name and type](https://github.com/csaybar/rgee/blob/master/examples/image/get_band_name_and_type.R) 
+  * [Filtering by calendar range](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_calendar_range.R) 
+
+### [ImageCollection](https://github.com/csaybar/rgee/tree/master/examples/ImageCollection)
+
+* [ImageCollection Overview](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/overview.R)
+* [ImageCollection Information and Metadata](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/metadata.R)
+* [Filtering an ImageCollection](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/filtering_collection.R)
+* [Mapping over an ImageCollection](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/map_function.R)
+* [Reducing an ImageCollection](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/reducing_collection.R)
+* [Compositing and Mosaicking](https://github.com/csaybar/rgee/blob/master/examples//ImageCollection/mosaicking.R)
+* Miscellaneous
+  * [Get image centroid](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/get_image_centroid.R) 
+  * [Convert ImageCollection to Image](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/convert_imagecollection_to_image.R) 
+  * [Sort by cloud and date](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/sort_by_cloud_and_date.R) 
+  * [Filtering by metadata](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_metadata.R) 
+  * [Filtering by band names](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/filtering_by_band_names.R) 
+  * [Select image by index](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/select_image_by_index.R) 
+  * [Creating monthly imagery](https://github.com/csaybar/rgee/blob/master/examples/ImageCollection/creating_monthly_imagery.R)
+
+### [Geometry, Feature, FeatureCollection](https://github.com/csaybar/rgee/tree/master/examples/FeatureCollection)
+
+* [Geometry Overview](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/creating_feature.R)
+* [Geodesic vs. Planar Geometries](https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R)
+* [Geometry Visualization and Information](https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R)
+* [Geometric Operations](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/geometric_operations.R)
+* [Feature Overview](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/creating_feature.R)
+* [FeatureCollection Overview](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/from_polygons.R)
+* [Feature and FeatureCollection Visualization](https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_feature_collection.R)
+* [FeatureCollection Information and Metadata](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/metadata_aggregation.R)
+* [Filtering a FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/filtering_feature_collection.R)
+* [Mapping over a FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/map_function.R)
+* [Reducing a FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/reducing_feature_collection.R)
+* [Vector to Raster Interpolation](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/idw_interpolation.R)
+* Miscellaneous
+  * [Add new attribute](https://github.com/csaybar/rgee/blob/master/examples//FeatureCollection/add_new_attribute.R) 
+  * [Add area column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_area_column.R) 
+  * [Add random value column](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/add_random_value_column.R) 
+  * [Single column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics.R) 
+  * [Multiple column statistics](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_multiple.R) 
+  * [Simplify polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/simplify_polygons.R) 
+  * [Column statistics by group](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/column_statistics_by_group.R) 
+  * [Select by location](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_location.R) 
+  * [Select by attributes](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_attributes.R) 
+  * [Select by strings](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_by_strings.R) 
+  * [Vector symbology](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/vector_symbology.R) 
+  * [Merge FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/merge_feature_collections.R) 
+  * [Search by buffer distance](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R) 
+  * [Select columns](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/select_columns.R) 
+  * [Mimimum bounding geometry](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/minimum_bounding_geometry.R) 
+  * [Clipping polygons](https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/clipping.R)
+
+### [Reducer](https://github.com/csaybar/rgee/tree/master/examples/Reducer)
+
+* [Reducer Overview](https://github.com/csaybar/rgee/blob/master/examples//Reducer/min_max_reducer.R)
+* [ImageCollection Reductions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/median_reducer.R)
+* [Image Reductions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/image_reductions.R)
+* [Statistics of an Image Region](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_of_an_image_region.R)
+* [Statistics of Image Regions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_of_image_regions.R)
+* [Statistics of Image Neighborhoods](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_of_image_neighborhoods.R)
+* [Statistics of FeatureCollection Columns](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_of_columns.R)
+* [Raster to Vector Conversion](https://github.com/csaybar/rgee/blob/master/examples//Reducer/convert_raster_to_vector.R)
+* [Vector to Raster Conversion](https://github.com/csaybar/rgee/blob/master/examples//Reducer/convert_vector_to_raster.R)
+* Grouped Reductions and Zonal Statistics
+  * [Statistics by group](https://github.com/csaybar/rgee/blob/master/examples//Reducer/stats_by_group.R) 
+  * [Zonal Statistics](https://github.com/csaybar/rgee/blob/master/examples//Reducer/zonal_statistics.R)
+  * [Weighted Reductions](https://github.com/csaybar/rgee/blob/master/examples//Reducer/weighted_reductions.R)
+  * [Linear Regression](https://github.com/csaybar/rgee/blob/master/examples//Reducer/linear_regression.R)
+
+### [Join](https://github.com/csaybar/rgee/tree/master/examples/Join)
+
+* [Simple Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/simple_joins.R)
+* [Inverted Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/inverted_joins.R)
+* [Inner Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/inner_joins.R)
+* [Save-All Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/save_all_joins.R)
+* [Save-Best Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/save_best_joins.R)
+* [Spatial Joins](https://github.com/csaybar/rgee/blob/master/examples//Join/spatial_joins.R)
+
+### [Array](https://github.com/csaybar/rgee/tree/master/examples/Array)
+
+* [Arrays and Array Images](https://github.com/csaybar/rgee/blob/master/examples//Array/array_images.R)
+* [Array Transformations](https://github.com/csaybar/rgee/blob/master/examples//Array/array_transformations.R)
+* [Eigen Analysis](https://github.com/csaybar/rgee/blob/master/examples//Array/eigen_analysis.R)
+* [Array Sorting and Reducing](https://github.com/csaybar/rgee/blob/master/examples//Array/array_sorting.R)
+
+### [Specialized Algorithms](https://github.com/csaybar/rgee/tree/master/examples/Algorithms)
+
+* Landsat Algorithms
+  * [Radiance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_radiance.R) 
+  * [Surface Reflectance](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_surface_reflectance.R) 
+  * [Simple cloud score](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_cloud_score.R) 
+  * [Simple composite](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/landsat_simple_composite.R)
+* [Sentinel-1 Algorithms](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/sentinel-1_filtering.R)
+* Resampling and Reducing Resolution
+  * [Resampling](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/resampling.R) 
+  * [Reducing Resolution](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/reduce_resolution.R)
+  * [Linear fit](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/ntl_linear_fit.R)
+* Pattern recognition
+  * [Center-pivot Irrigation Detector](https://github.com/csaybar/rgee/blob/master/examples//Algorithms/center_pivot_irrigation_detector.R)
+
+### [Asset Management](https://github.com/csaybar/rgee/tree/master/examples/AssetManagement)
+
+* [Exporting Image](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_raster.R)
+* [Exporting ImageCollection](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_ImageCollection.R)
+* [Exporting Vector](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_vector.R)
+* [Exporting FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_FeatureCollection.R)
+* [Exporting Table](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_table.R)
+* [Exporting TimeSeries](https://github.com/csaybar/rgee/blob/master/examples//AssetManagement/export_TimeSeries.R)
+
+### [How Earth Engine Works](https://github.com/csaybar/rgee/tree/master/examples/HowEarthEngineWorks)
+
+* [Client vs. Server](https://github.com/csaybar/rgee/blob/master/examples//HowEarthEngineWorks/ClientVsServer.R)
+* [Deferred Execution](https://github.com/csaybar/rgee/blob/master/examples//HowEarthEngineWorks/DeferredExecution.R)
+* [Projections](https://github.com/csaybar/rgee/blob/master/examples//HowEarthEngineWorks/Projections.R)
+
+### [Filter](https://github.com/csaybar/rgee/tree/master/examples/Filter)
+
+* [Filter to metadata equal to the given value](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_eq.R)
+* [Filter to metadata not equal to the given value](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_neq.R)
+* [Filter on metadata contained in a list](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_in_list.R)
+* [Filter on metadata that cotains a certain string](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_string_contains.R)
+* [Filter on metadata that starts with a certain string](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_string_starts_with.R)
+* [Filter on metadata that ends with a certain string](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_string_ends_with.R)
+* [Filter on metadata that falls within a specified range](https://github.com/csaybar/rgee/blob/master/examples/Filter/filter_range_contains.R)
+
+### [Visualization](https://github.com/csaybar/rgee/tree/master/examples/Visualization)
+
+* [RGB composite](https://github.com/csaybar/rgee/blob/master/examples//Visualization/image_rgb_composite.R)
+* [Color palettes](https://github.com/csaybar/rgee/blob/master/examples//Visualization/image_color_palettes.R)
+* [Color ramp](https://github.com/csaybar/rgee/blob/master/examples//Visualization/image_color_ramp.R)
+* [Hillshade](https://github.com/csaybar/rgee/blob/master/examples//Visualization/hillshade.R)
+* [Image stretch](https://github.com/csaybar/rgee/blob/master/examples//Visualization/image_stretch.R)
+* [Image thumbnail](https://github.com/csaybar/rgee/blob/master/examples//Visualization/image_thumbanil.R)
+* [Rendering categorical maps](https://github.com/csaybar/rgee/blob/master/examples//Visualization/rendering_categorical_maps.R)
+* [Styled layer descriptors](https://github.com/csaybar/rgee/blob/master/examples//Visualization/styled_layer_descriptors.R)
+* [Terrain visualization](https://github.com/csaybar/rgee/blob/master/examples//Visualization/terrain_visualization.R)
+* [Visualizing FeatureCollection](https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_feature_collection.R)
+* [Visualizing Geometry](https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R)
+* [NLCD Land Cover](https://github.com/csaybar/rgee/blob/master/examples//Visualization/nlcd_land_cover.R)
+* [US Counties](https://github.com/csaybar/rgee/blob/master/examples//Visualization/us_counties.R)
+* Miscellaneous
+  * [NDVI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) 
+  * [NDWI symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/ndvi_symbology.R) 
+  * [Landsat symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/landsat_symbology.R) 
+  * [NWI wetlands symbology](https://github.com/csaybar/rgee/blob/master/examples/Visualization/nwi_wetlands_symbology.R) 
+  * [Color by attribute](https://github.com/csaybar/rgee/blob/master/examples/Visualization/color_by_attribute.R) 
+  * [Random color visualizer](https://github.com/csaybar/rgee/blob/master/examples/Visualization/random_color_visualizer.R)
+
+### [Datasets](https://github.com/csaybar/rgee/tree/master/examples/Datasets)
+
+* [Terrain](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Terrain)
+* [Water](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Water)
+* [Vector datasets catalog](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors)
+* [Large Scale International Boundary Polygons (LSIB)](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/international_boundary.R)
+* [TIGER: US 2018 Census Counties](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_counties.R)
+* [TIGER: US 2018 Census States](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_states.R)
+* [TIGER: US 2016 Census Roads](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_roads.R)
+* [TIGER: US 2010 Census Blocks](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_blocks.R)
+* [TIGER: US Census 2010 Census Tracts + Demographic Profile 1 aggregate statistics](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_tracts.R)
+* [TIGER: US Census 2010 5-digit ZIP Code Tabulation Areas](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_zip_code.R)
+* [GLIMS: Global Land Ice Measurements from Space](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/global_land_ice_measurements.R)
+* [USGS Watershed Boundary Datasets](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/usgs_watershed_boundary.R)
+* [USA EPA Ecoregions](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_epa_ecoregions.R)
+* [RESOLVE Ecoregions](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/resolve_ecoregions.R)
+* [World Database on Protected Areas (WDPA)](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/world_database_on_protected_areas.R)
+* [WRI Global Power Plant Database](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/global_power_plant_database.R)
+* [Landsat WRS-2 grid](https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/landsat_wrs2_grid.R)
+
+### [Tutorials](https://github.com/csaybar/rgee/tree/master/examples/Tutorials)
+
+* [Global Surface Water](https://github.com/csaybar/rgee/blob/master/examples/Tutorials/GlobalSurfaceWater)
+* [Keiko tips](https://github.com/csaybar/rgee/tree/master/examples/Tutorials/Keiko)
+
+### [RGEE examples](https://github.com/csaybar/rgee/tree/master/examples/rgee)
+
+##### COMING SOON!
+
+---
