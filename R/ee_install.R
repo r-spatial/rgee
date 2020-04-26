@@ -237,7 +237,8 @@ ee_set_pyenv <- function(python_path,
 #' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to \link[=reticulate]{conda_install} or
 #' \link[=reticulate]{virtualenv_install}.
-#' @param quiet logical. Suppress info message
+#' @param confirm Logical. Confirm if restart R when the 'install'
+#' argument is TRUE.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
@@ -263,7 +264,7 @@ ee_install_python_packages <- function(method = c(
                                        envname = NULL,
                                        pip = TRUE,
                                        conda_python_version = "3.7",
-                                       quiet = FALSE,
+                                       confirm = interactive(),
                                        ...) {
   rgee_packages <- "oauth2client"
   # verify 64-bit
@@ -281,7 +282,7 @@ ee_install_python_packages <- function(method = c(
   ee_version <- paste0("earthengine-api==", ee_version)
 
   # verify Python version
-  ee_check_python(quiet = quiet)
+  ee_check_python(quiet = TRUE)
 
   method <- match.arg(method)
   rgee_packages <- unique(rgee_packages)
@@ -302,6 +303,18 @@ ee_install_python_packages <- function(method = c(
   # if (restart_session && hasFun("restartSession")) {
   #   restartSession()
   # }
+  if (isTRUE(confirm)) {
+    title <- paste0(
+      "rgee needs to restart R session to see changes.\n",
+      "Do you want to continues?"
+    )
+    response <- menu(c("yes", "no"), title = title)
+  } else {
+    response <- confirm
+  }
+  switch(response + 1,
+         cat("Restart R session to see changes.\n"),
+         quit("no"))
   invisible(TRUE)
 }
 
@@ -328,7 +341,8 @@ ee_install_python_packages <- function(method = c(
 #' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to \link[=reticulate]{conda_install}  or
 #' \link[=reticulate]{virtualenv_install}.
-#' @param quiet logical. Suppress info message
+#' @param confirm Logical. Confirm if restart R when the 'install'
+#' argument is TRUE.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
@@ -348,7 +362,7 @@ ee_earthengine_upgrade <- function(method = c(
                                    envname = NULL,
                                    pip = TRUE,
                                    conda_python_version = "3.7",
-                                   quiet = FALSE,
+                                   confirm = interactive(),
                                    ...) {
   ee_version <- "earthengine-api"
   py_install(
@@ -360,6 +374,22 @@ ee_earthengine_upgrade <- function(method = c(
     pip = pip,
     ...
   )
+  # restartSession does not work properly
+  # if (restart_session && hasFun("restartSession")) {
+  #   restartSession()
+  # }
+  if (isTRUE(confirm)) {
+    title <- paste0(
+      "rgee needs to restart R session to see changes.\n",
+      "Do you want to continues?"
+    )
+    response <- menu(c("yes", "no"), title = title)
+  } else {
+    response <- confirm
+  }
+  switch(response + 1,
+         cat("Restart R session to see changes.\n"),
+         quit("no"))
   invisible(TRUE)
 }
 

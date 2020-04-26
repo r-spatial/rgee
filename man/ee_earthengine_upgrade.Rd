@@ -10,7 +10,7 @@ ee_earthengine_upgrade(
   envname = NULL,
   pip = TRUE,
   conda_python_version = "3.7",
-  quiet = FALSE,
+  confirm = interactive(),
   ...
 )
 }
@@ -36,7 +36,8 @@ Conda repositories.}
 \item{conda_python_version}{the Python version installed in the
 created conda environment. Python 3.7 is installed by default.}
 
-\item{quiet}{logical. Suppress info message}
+\item{confirm}{Logical. Confirm if restart R when the 'install'
+argument is TRUE.}
 
 \item{...}{other arguments passed to \link[=reticulate]{conda_install}  or
 \link[=reticulate]{virtualenv_install}.}
