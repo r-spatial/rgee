@@ -84,7 +84,11 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' Set the Python environment to be used on rgee
 #'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
-#' @param python_env The name of, or path to, a Python virtual environment.
+#' @param python_env The name of, or path to, a Python virtual environment. If
+#' not defined will estimate from the path.
+#' @param automatic_pyenv Logical. Search automatically in the python_path the
+#' python_env. Ignore when the \code{python_env} argument is not NULL. By
+#' default TRUE.
 #' @param install if TRUE, rgee will save the Python interpreter path and
 #' the virtual environment name in the \code{.Renviron} file
 #' for use in future sessions. Defaults to FALSE.
@@ -107,18 +111,52 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' @export
 ee_set_pyenv <- function(python_path,
                          python_env = NULL,
+                         automatic_pyenv = TRUE,
                          install = FALSE,
                          confirm = interactive()) {
   ee_clean_pyenv()
+  # Trying to get the env from the python_path
+  if (is.null(python_env) & automatic_pyenv) {
+    if (grepl("\\.virtualenvs/", python_path)) {
+      python_env <- gsub(".*\\.virtualenvs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    } else if (grepl("\\.conda.envs", python_path)) {
+      python_path <- normalizePath(python_path, "/")
+      python_env <- gsub(".*\\.conda\\/envs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    } else if (grepl("r-miniconda.envs", python_path)) {
+      python_path <- normalizePath(python_path, "/")
+      python_env <- gsub(".*\\/r-miniconda\\/envs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    }
+
+    if (is.null(python_env)) {
+      message("python_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
+    } else {
+      message(
+        "Establishing the python virtual environment (python_env) as ",
+        python_env, "."
+      )
+    }
+  }
+
+
   if (isTRUE(install)) {
     home <- Sys.getenv("HOME")
     renv <- file.path(home, ".Renviron")
 
-    if(file.exists(renv)){
+    if (file.exists(renv)) {
       # Backup original .Renviron before doing anything else here.
       file.copy(renv, file.path(home, ".Renviron_backup"))
     }
-    if(!file.exists(renv)){
+
+    if (!file.exists(renv)) {
       file.create(renv)
     }
 
