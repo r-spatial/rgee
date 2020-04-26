@@ -35,29 +35,29 @@ jobs:
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
 
     steps:
-      - name: Checkout code
+      - name: CHECKOUT CODE
         uses: actions/checkout@v2
 
-      - name: Setup python
+      - name: SETUP PYTHON
         uses: actions/setup-python@v1
         with:
           python-version: 3.6
 
-      - name: Setup R
+      - name: SETUP R
         uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: Setup pandoc
+      - name: SETUP PANDOC
         uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies [Linux and macOS]
+      - name: QUERY DEPENDECIES [Linux and macOS]
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: RETICULATE_PYTHON setting
+      - name: RETICULATE_PYTHON SETTING
         run: |
           reticulate_dir <- path.expand("~/.Renviron")
           fileConn <- file(reticulate_dir)
@@ -66,37 +66,12 @@ jobs:
           close(fileConn)
         shell: Rscript {0}
 
-      - name: Load credentials
-      - run: |
+      - name: DECRYPT rgee SECRETS
+        run: ./.github/decrypt_secret.sh
+        env:
+          RGEE_SECRET_PASSPHRASE: ${{ secrets.RGEE_SECRET_PASSPHRASE }}
 
-      - run: |
-          ee_dirname <- path.expand("~/.config/earthengine")
-          ee_dirname_demo <- sprintf("%s/data.colec.fbf/", ee_dirname)
-          dir.create(path = ee_dirname, recursive = TRUE, showWarnings = FALSE)
-          dir.create(path = ee_dirname_demo, recursive = TRUE, showWarnings = FALSE)
-
-          ## GOOGLE EARTH ENGINE
-          key <- Sys.getenv("EE_CREDENTIALS")
-          json_key <- toJSON(list(refresh_token = key))
-          ee_dirname <- path.expand("~/.config/earthengine")
-          write(json_key, sprintf("%s/credentials", ee_dirname))
-          write(json_key, sprintf("%s/credentials", ee_dirname_demo))
-      - shell: Rscript {0}
-
-      - name: Install Python dependencies
-        run: |
-          pip install --upgrade pip
-          pip install setuptools earthengine-api numpy virtualenv
-
-      - name: Cache R packages [LINUX and macOS]
-        if: runner.os != 'Windows'
-        uses: actions/cache@v1
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
-
-      - name: Install system dependencies [LINUX]
+      - name: INSTALL SYSTEM DEPENDENCIES [LINUX]
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -110,7 +85,7 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
-      - name: Brew and macOS config
+      - name: INSTALL SYSTEM DEPENDENCIES [macOS]
         if: runner.os == 'macOS'
         run: |
           brew install udunits
@@ -126,26 +101,43 @@ jobs:
           options(configure.args = config_args, repos = r)
           EOT
 
-      - name: Install dependencies
+      - name: INSTALL PYTHON DEPENDENCIES
         run: |
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
+          pip install --upgrade pip
+          pip install setuptools earthengine-api numpy virtualenv
 
+      - name: CACHE R PACKAGES [LINUX and macOS]
+        if: runner.os != 'Windows'
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
-      - name: Install rgdal with configure [macOS]
+      - name: PREBUILD TESTING
+        run: |
+          earthengine -h
+          echo -e "import ee\nee.Initialize()\nprint(ee.Image(0).getInfo())" | python
+
+      - name: INSTALL sf and rgdal WITH CONFIGURE [macOS]
         if: runner.os == 'macOS'
         run: |
           install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
         shell: Rscript {0}
 
-      - name: Check
+      - name: INSTALL dependencies and rcmdcheck
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+
+      - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: Upload check results
+      - name: UPLOAD CHECK RESULTS
         if: failure()
         uses: actions/upload-artifact@master
         with:
