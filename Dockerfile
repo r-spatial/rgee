@@ -6,52 +6,27 @@ MAINTAINER "Cesar Aybar" csaybar@gmail.com
 ENV DISPLAY=:99
 
 # R
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-    libv8-3.14-dev \
-    lbzip2 \
-    libfftw3-dev \
-    libgdal-dev \
-    libgeos-dev \
-    libgsl0-dev \
-    libgl1-mesa-dev \
-    libglu1-mesa-dev \
-    libhdf4-alt-dev \
-    libhdf5-dev \
-    libjq-dev \
-    liblwgeom-dev \
-    libpq-dev \
-    libproj-dev \
-    libprotobuf-dev \
-    libnetcdf-dev \
-    libsqlite3-dev \
-    libssl-dev \
-    libudunits2-dev \
-    netcdf-bin \
-    postgis \
-    protobuf-compiler \
-    sqlite3 \
-    tk-dev \
-    unixodbc-dev \
-  && install2.r --error \
-    RColorBrewer \
-    cptcity \
-    rnaturalearth \
-    gganimate
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
 
-RUN apt-get install -y \
-		python3-pip \
-		python3-dev	
+RUN apt install -y libudunits2-dev libgdal-dev libgeos-dev libproj-dev \
+                libv8-3.14-dev libjq-dev libnetcdf-dev libjson-c-dev \
+                libprotobuf-dev protobuf-compiler unixodbc-dev liblwgeom-dev \
+                libssl-dev
+
+RUN apt-get install -y python3-pip python3-dev
 
 RUN  pip3 install pyasn1 --upgrade
 
 RUN pip3 install coveralls \
-    oauth2client \        
-    numpy \    
-    earthengine-api \    
+    oauth2client \
+    numpy \
+    earthengine-api \
     virtualenv
 
-RUN  R -e 'devtools::install_github("csaybar/rgee")'
+RUN  Rscript -e "remotes::install_github('rstudio/reticulate')"
+RUN  Rscript -e "remotes::install_github('csaybar/rgee')"
 
 RUN  mkdir -p /home/rgee/.config/earthengine/ && \
      echo 'RETICULATE_PYTHON=/usr/bin/python3' > /home/rgee/.Renviron
