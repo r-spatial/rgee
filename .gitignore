@@ -5,5 +5,4 @@
 .httr-oauth
 inst/doc
 docs/
-
 inst/python/__pycache__/

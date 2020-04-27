@@ -6,3 +6,4 @@
 ^LICENSE.md
 ^vignettes$
 ^\.github$
+^codecov\.yml$
