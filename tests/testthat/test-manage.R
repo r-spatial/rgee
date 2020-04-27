@@ -1,5 +1,5 @@
 context("rgee: ee_manage test")
-ee_Initialize()
+ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
 
 try(ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/'))
 

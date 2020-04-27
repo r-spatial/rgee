@@ -974,8 +974,7 @@ of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to a
 👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
 
 ## Share the love <3️
-
-Think **rgee** is useful? Let others discover it, by telling them in
+hink **rgee** is useful? Let others discover it, by telling them in
 per on, via Twitter or a blog post.
 
 Using **rgee** for a paper you are writing? Consider citing it

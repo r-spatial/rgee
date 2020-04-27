@@ -1,3 +1,10 @@
+# rgee 0.4
+- travis and appveyor replaced by github-actions.
+- docker folder deleted and saved in docker branch.
+- examples folder deleted and saved in examples branch.
+- Changes in installation module.
+- Readme and documentation upgrade.
+- new test added.
 # rgee 0.3.16
 - New test added.
 - minor bugs solved

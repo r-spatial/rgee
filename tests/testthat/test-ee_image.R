@@ -4,11 +4,7 @@ library(rgee)
 library(raster)
 library(stars)
 ee_reattach()
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
 
 # Define data -------------------------------------------------------------
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -87,6 +83,7 @@ test_that("ee_as_stars - simple ", {
   # Equal value but some problems in the bounds
   expect_equal(getInfo, drive, tolerance = 0.1)
 })
+
 
 
 test_that("ee to drive to local - gcs", {

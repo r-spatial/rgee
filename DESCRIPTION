@@ -58,6 +58,7 @@ Suggests:
     rstudioapi (>= 0.7),
     jsonlite,
     raster,
+    rgdal,
     digest,
     spelling,
     testthat,
