@@ -17,16 +17,16 @@ test_that("ee_local_to_gcs - character",{
 # ee_upload with bucket -----------------------------------------------------
 test_that("ee_gcs_to_table ", {
   nc <- st_read(system.file("shape/nc.shp", package = "sf"))
-  asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+  assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
   zipfile <- ee_create_shp_zip(nc)
   gs_uri <- ee_local_to_gcs(x = zipfile,
                             bucket = 'rgee_dev')
   ee_gcs_to_table(
     gs_uri = gs_uri,
-    asset_id = asset_id
+    assetId = assetId
   )
   #ee_monitoring()
-  ee_sf_01 <- ee$FeatureCollection(asset_id)
+  ee_sf_01 <- ee$FeatureCollection(assetId)
   expect_s3_class(object = ee_sf_01,
                   class =  "ee.featurecollection.FeatureCollection")
 })
@@ -38,7 +38,7 @@ test_that("ee_gcs_to_image ", {
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   x <- read_stars(tif)
   st_crs(x) <- 4326
-  asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+  assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 
   # Method 1
   # 1. Move from local to gcs
@@ -48,7 +48,7 @@ test_that("ee_gcs_to_image ", {
   result <- ee_gcs_to_image(
     x = x,
     gs_uri = gs_uri,
-    asset_id = asset_id
+    assetId = assetId
   )
   expect_equal(result,0)
 })

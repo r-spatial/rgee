@@ -7,6 +7,7 @@
 ee_set_pyenv(
   python_path,
   python_env = NULL,
+  automatic_pyenv = TRUE,
   install = FALSE,
   confirm = interactive()
 )
@@ -14,7 +15,12 @@ ee_set_pyenv(
 \arguments{
 \item{python_path}{The path to a Python interpreter, to be used with rgee.}
 
-\item{python_env}{The name of, or path to, a Python virtual environment.}
+\item{python_env}{The name of, or path to, a Python virtual environment. If
+not defined will estimate from the path.}
+
+\item{automatic_pyenv}{Logical. Search automatically in the python_path the
+python_env. Ignore when the \code{python_env} argument is not NULL. By
+default TRUE.}
 
 \item{install}{if TRUE, rgee will save the Python interpreter path and
 the virtual environment name in the \code{.Renviron} file

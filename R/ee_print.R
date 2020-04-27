@@ -16,7 +16,6 @@
 #' @importFrom sf st_crs
 #' @importFrom crayon bold blue
 #' @importFrom cli rule
-#' @importFrom digest digest
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -53,6 +52,9 @@
 #' }
 #' @export
 ee_print <- function(eeobject, ...) {
+  if (!requireNamespace("digest", quietly = TRUE)) {
+    stop("package digest required, please install it first")
+  }
   UseMethod("ee_print")
 }
 
@@ -463,6 +465,6 @@ ee_hash <- function(eeobject, ...) {
     x =  eeobject$serialize() ,
     ignore.case = TRUE
   ) %>%
-    digest(algo = "md5") %>%
+    digest::digest(algo = "md5") %>%
     paste(..., sep = "_")
 }

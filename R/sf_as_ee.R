@@ -9,10 +9,8 @@
 #' @param assetId Character. Destination asset ID for the uploaded file. Ignore
 #' if \code{via} argument is "getInfo".
 #' @param check_ring_dir Logical. See \link[sf]{st_read} for details.
-#' @param proj Character. An optional projection specification, either as a CRS
-#' ID code or as a WKT string. If specified, overrides any CRS found in
-#' the GeoJSON parameter. If unspecified and the GeoJSON does not
-#' declare a CRS, defaults to "EPSG:4326" (x=longitude, y=latitude).
+#' @param proj Integer or character. coordinate reference system for the EE
+#' object, defaults to "EPSG:4326" (x=longitude, y=latitude).
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
 #' Whether line segments should be interpreted as spherical geodesics. If
 #' FALSE, indicates that line segments should be interpreted as planar lines
@@ -119,10 +117,11 @@ sf_as_ee <- function(x,
                      monitoring = TRUE,
                      check_ring_dir = FALSE,
                      evenOdd = TRUE,
-                     proj = NULL,
+                     proj = 4326,
                      geodesic = NULL,
                      quiet = FALSE,
                      ...) {
+
   # Read geometry
   eex <- ee_st_read(
     x = x,
@@ -138,18 +137,19 @@ sf_as_ee <- function(x,
     is_geodesic <- geodesic
   }
 
-  # proj
-  if (is.null(proj)) {
-    eex_proj <- paste0('EPSG:',st_crs(eex)$epsg)
-  } else {
-    eex_proj <- paste0('EPSG:',proj)
-  }
+
   if (is.na(st_crs(eex)$epsg)) {
     stop(
       "The x EPSG needs to be defined, use sf::st_set_crs to",
       " set, replace or retrieve."
     )
   }
+
+  # Transform x according to proj argument
+  eex_proj <- st_crs(proj)$epsg
+  eex <- st_transform(eex, eex_proj)
+  eex_proj <- sprintf("EPSG:%s", st_crs(eex)$epsg)
+
   if (via == "getInfo") {
     # sf to geojson
     ee_sf_to_fc(
@@ -193,6 +193,9 @@ sf_as_ee <- function(x,
       assetId
     }
   } else if (via == "gcs_to_asset") {
+    if (is.null(bucket)) {
+      stop("Cloud Storage bucket was not defined")
+    }
     shp_dir <- sprintf("%s.shp", tempfile())
     geozip_dir <- ee_create_shp_zip(eex, shp_dir)
     gcs_filename <- ee_local_to_gcs(
@@ -202,7 +205,7 @@ sf_as_ee <- function(x,
     )
     ee_gcs_to_table(
       gs_uri = gcs_filename,
-      asset_id = assetId
+      assetId = assetId
     )
     if (isTRUE(monitoring)) {
       ee_monitoring()

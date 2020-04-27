@@ -7,7 +7,8 @@
 ee_gcs_to_image(
   x,
   gs_uri,
-  asset_id,
+  assetId,
+  overwrite = FALSE,
   properties = NULL,
   start_time = "1970-01-01",
   end_time = "1970-01-01",
@@ -21,8 +22,11 @@ ee_gcs_to_image(
 \item{gs_uri}{Character. It represents the full name of the
 GeoTIFF file in a GCS bucket.}
 
-\item{asset_id}{Character. What to call the file once uploaded
+\item{assetId}{Character. What to call the file once uploaded
 to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.}
+
+\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
+it exists.}
 
 \item{properties}{List. Set of parameters to be set up as properties
 of the EE object.}
@@ -49,7 +53,7 @@ ee_Initialize(gcs = TRUE)
 # Get the filename of a image
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 x <- read_stars(tif)
-asset_id <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
+assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
 
 # Method 1
 # 1. Move from local to gcs
@@ -59,20 +63,20 @@ gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 ee_gcs_to_image(
   x = x,
   gs_uri = gs_uri,
-  asset_id = asset_id
+  assetId = assetId
 )
 
 # OPTIONAL: Monitoring progress
 ee_monitoring()
 
 # OPTIONAL: Display results
-ee_stars_01 <- ee$Image(asset_id)
+ee_stars_01 <- ee$Image(assetId)
 Map$centerObject(ee_stars_01)
 Map$addLayer(ee_stars_01)
 
 # Method 2
 ee_sf_02 <- stars_as_ee(x = x,
-                        assetId = asset_id,
+                        assetId = assetId,
                         bucket = "rgee_dev")
 Map$centerObject(ee_sf_02)
 Map$addLayer(ee_sf_02)

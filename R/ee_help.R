@@ -15,7 +15,7 @@
 #' @export
 ee_help <- function(eeobject, browser = FALSE) {
   #obs : simple earth engine objects like ee$Number will return NULL
-  eequery_scope <- try(expr = unlist(parse_json(eeobject$serialize())$scope),
+  eequery_scope <- try(expr = unlist(jsonlite::parse_json(eeobject$serialize())$scope),
                        silent = TRUE)
   # If eeobject is an Earth Engine object get the last function
   if (class(eequery_scope) != 'try-error' & !is.null(eequery_scope)) {
@@ -77,8 +77,10 @@ ee_help <- function(eeobject, browser = FALSE) {
   fileConn <- file(temp_file)
 
   # Are you in Rstudio?
-
-  if (rstudioapi::isAvailable() & isFALSE(browser)) {
+  if (.Platform$GUI == "RStudio" & isFALSE(browser)) {
+    if (!requireNamespace("rstudioapi", quietly = TRUE)) {
+      stop("package rstudioapi required, please install it first")
+    }
     writeLines(
       text = c(
         ee_html_head_rstudio(doc_to_display$qualified_name),

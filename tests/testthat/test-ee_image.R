@@ -4,11 +4,7 @@ library(rgee)
 library(raster)
 library(stars)
 ee_reattach()
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
 
 # Define data -------------------------------------------------------------
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -23,7 +19,7 @@ geometry <- ee$Geometry$Rectangle(
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 stars_x <- read_stars(tif)
 starsproxy_x <- read_stars(tif, proxy = TRUE)
-asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 image_srtm <- ee$Image("CGIAR/SRTM90_V4")
 
 # getInfo geometry ---------------------------------------------------
@@ -89,35 +85,36 @@ test_that("ee_as_stars - simple ", {
 })
 
 
-test_that("ee to drive to local - gcs", {
-  try(ee_manage_delete(asset_id), silent = TRUE)
-  gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
-  # 2. Pass from gcs to asset
-  stars_x <- read_stars(tif)
-  ee_gcs_to_image(
-    x = stars_x,
-    gs_uri = gs_uri,
-    asset_id = asset_id
-  )
-  ee_monitoring()
-  ee_image <- ee$Image(asset_id)
-  expect_s3_class(ee_image,'ee.image.Image')
-  try(ee_manage_delete(asset_id), silent = TRUE)
-  ee_image_02 <- stars_as_ee(
-    x = stars_x,
-    assetId = asset_id,
-    bucket = "rgee_dev"
-  )
-  expect_s3_class(ee_image_02,'ee.image.Image')
-  try(ee_manage_delete(asset_id), silent = TRUE)
-  ee_image_03 <- stars_as_ee(
-    x = stars_x,
-    assetId = asset_id,
-    bucket = "rgee_dev",
-    monitoring = FALSE
-  )
-  expect_type(ee_image_03,'character')
-})
+
+# test_that("ee to drive to local - gcs", {
+#   try(ee_manage_delete(assetId), silent = TRUE)
+#   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#   # 2. Pass from gcs to asset
+#   stars_x <- read_stars(tif)
+#   ee_gcs_to_image(
+#     x = stars_x,
+#     gs_uri = gs_uri,
+#     assetId = assetId
+#   )
+#   ee_monitoring()
+#   ee_image <- ee$Image(assetId)
+#   expect_s3_class(ee_image,'ee.image.Image')
+#   try(ee_manage_delete(assetId), silent = TRUE)
+#   ee_image_02 <- stars_as_ee(
+#     x = stars_x,
+#     assetId = assetId,
+#     bucket = "rgee_dev"
+#   )
+#   expect_s3_class(ee_image_02,'ee.image.Image')
+#   try(ee_manage_delete(assetId), silent = TRUE)
+#   ee_image_03 <- stars_as_ee(
+#     x = stars_x,
+#     assetId = assetId,
+#     bucket = "rgee_dev",
+#     monitoring = FALSE
+#   )
+#   expect_type(ee_image_03,'character')
+# })
 
 test_that("ee_image_to_local", {
   img_01 <- ee_image_to_local(

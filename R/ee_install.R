@@ -84,7 +84,11 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' Set the Python environment to be used on rgee
 #'
 #' @param python_path The path to a Python interpreter, to be used with rgee.
-#' @param python_env The name of, or path to, a Python virtual environment.
+#' @param python_env The name of, or path to, a Python virtual environment. If
+#' not defined will estimate from the path.
+#' @param automatic_pyenv Logical. Search automatically in the python_path the
+#' python_env. Ignore when the \code{python_env} argument is not NULL. By
+#' default TRUE.
 #' @param install if TRUE, rgee will save the Python interpreter path and
 #' the virtual environment name in the \code{.Renviron} file
 #' for use in future sessions. Defaults to FALSE.
@@ -107,18 +111,52 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' @export
 ee_set_pyenv <- function(python_path,
                          python_env = NULL,
+                         automatic_pyenv = TRUE,
                          install = FALSE,
                          confirm = interactive()) {
   ee_clean_pyenv()
+  # Trying to get the env from the python_path
+  if (is.null(python_env) & automatic_pyenv) {
+    if (grepl("\\.virtualenvs/", python_path)) {
+      python_env <- gsub(".*\\.virtualenvs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    } else if (grepl("\\.conda.envs", python_path)) {
+      python_path <- normalizePath(python_path, "/")
+      python_env <- gsub(".*\\.conda\\/envs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    } else if (grepl("r-miniconda.envs", python_path)) {
+      python_path <- normalizePath(python_path, "/")
+      python_env <- gsub(".*\\/r-miniconda\\/envs\\/(.*)", "\\1", python_path) %>%
+        strsplit("/") %>%
+        "[["(1) %>%
+        "["(1)
+    }
+
+    if (is.null(python_env)) {
+      message("python_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
+    } else {
+      message(
+        "Establishing the python virtual environment (python_env) as ",
+        python_env, "."
+      )
+    }
+  }
+
+
   if (isTRUE(install)) {
     home <- Sys.getenv("HOME")
     renv <- file.path(home, ".Renviron")
 
-    if(file.exists(renv)){
+    if (file.exists(renv)) {
       # Backup original .Renviron before doing anything else here.
       file.copy(renv, file.path(home, ".Renviron_backup"))
     }
-    if(!file.exists(renv)){
+
+    if (!file.exists(renv)) {
       file.create(renv)
     }
 
@@ -199,7 +237,8 @@ ee_set_pyenv <- function(python_path,
 #' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to \link[=reticulate]{conda_install} or
 #' \link[=reticulate]{virtualenv_install}.
-#' @param quiet logical. Suppress info message
+#' @param confirm Logical. Confirm if restart R when the 'install'
+#' argument is TRUE.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
@@ -225,7 +264,7 @@ ee_install_python_packages <- function(method = c(
                                        envname = NULL,
                                        pip = TRUE,
                                        conda_python_version = "3.7",
-                                       quiet = FALSE,
+                                       confirm = interactive(),
                                        ...) {
   rgee_packages <- "oauth2client"
   # verify 64-bit
@@ -243,7 +282,7 @@ ee_install_python_packages <- function(method = c(
   ee_version <- paste0("earthengine-api==", ee_version)
 
   # verify Python version
-  ee_check_python(quiet = quiet)
+  ee_check_python(quiet = TRUE)
 
   method <- match.arg(method)
   rgee_packages <- unique(rgee_packages)
@@ -264,6 +303,18 @@ ee_install_python_packages <- function(method = c(
   # if (restart_session && hasFun("restartSession")) {
   #   restartSession()
   # }
+  if (isTRUE(confirm)) {
+    title <- paste0(
+      "rgee needs to restart R session to see changes.\n",
+      "Do you want to continues?"
+    )
+    response <- menu(c("yes", "no"), title = title)
+  } else {
+    response <- confirm
+  }
+  switch(response + 1,
+         cat("Restart R session to see changes.\n"),
+         quit("no"))
   invisible(TRUE)
 }
 
@@ -290,7 +341,8 @@ ee_install_python_packages <- function(method = c(
 #' created conda environment. Python 3.7 is installed by default.
 #' @param ... other arguments passed to \link[=reticulate]{conda_install}  or
 #' \link[=reticulate]{virtualenv_install}.
-#' @param quiet logical. Suppress info message
+#' @param confirm Logical. Confirm if restart R when the 'install'
+#' argument is TRUE.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
@@ -310,7 +362,7 @@ ee_earthengine_upgrade <- function(method = c(
                                    envname = NULL,
                                    pip = TRUE,
                                    conda_python_version = "3.7",
-                                   quiet = FALSE,
+                                   confirm = interactive(),
                                    ...) {
   ee_version <- "earthengine-api"
   py_install(
@@ -322,6 +374,22 @@ ee_earthengine_upgrade <- function(method = c(
     pip = pip,
     ...
   )
+  # restartSession does not work properly
+  # if (restart_session && hasFun("restartSession")) {
+  #   restartSession()
+  # }
+  if (isTRUE(confirm)) {
+    title <- paste0(
+      "rgee needs to restart R session to see changes.\n",
+      "Do you want to continues?"
+    )
+    response <- menu(c("yes", "no"), title = title)
+  } else {
+    response <- confirm
+  }
+  switch(response + 1,
+         cat("Restart R session to see changes.\n"),
+         quit("no"))
   invisible(TRUE)
 }
 

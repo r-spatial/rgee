@@ -7,13 +7,28 @@
 \alias{ee_local_image_as_ee}
 \title{Convert a local image into an EE Image}
 \usage{
-stars_as_ee(x, assetId, monitoring = TRUE, bucket = NULL, quiet = FALSE)
+stars_as_ee(
+  x,
+  assetId,
+  overwrite = FALSE,
+  monitoring = TRUE,
+  bucket = NULL,
+  quiet = FALSE
+)
 
-raster_as_ee(x, assetId, monitoring = TRUE, bucket = NULL, quiet = FALSE)
+raster_as_ee(
+  x,
+  assetId,
+  overwrite = FALSE,
+  monitoring = TRUE,
+  bucket = NULL,
+  quiet = FALSE
+)
 
 ee_local_image_as_ee(
   x,
   assetId,
+  overwrite = FALSE,
   monitoring = TRUE,
   bucket = NULL,
   quiet = FALSE
@@ -24,6 +39,9 @@ ee_local_image_as_ee(
 stars-proxy object to be converted into an ee$Image.}
 
 \item{assetId}{Character. Destination asset ID for the uploaded file.}
+
+\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
+it exists.}
 
 \item{monitoring}{Logical. If TRUE the exportation task will be monitored.}
 
@@ -46,7 +64,7 @@ ee_Initialize(gcs = TRUE)
 # Get the filename of a image
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 x <- read_stars(tif)
-asset_id <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
+assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
 
 # Method 1
 # 1. Move from local to gcs
@@ -56,21 +74,21 @@ gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 ee_gcs_to_image(
   x = x,
   gs_uri = gs_uri,
-  asset_id = asset_id
+  assetId = assetId
 )
 
 # OPTIONAL: Monitoring progress
 ee_monitoring()
 
 # OPTIONAL: Display results
-ee_stars_01 <- ee$Image(asset_id)
+ee_stars_01 <- ee$Image(assetId)
 Map$centerObject(ee_stars_01)
 Map$addLayer(ee_stars_01)
 
 # Method 2
 ee_stars_02 <- stars_as_ee(
   x = x,
-  assetId = asset_id,
+  assetId = assetId,
   bucket = "rgee_dev"
 )
 Map$centerObject(ee_stars_02)

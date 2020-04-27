@@ -276,6 +276,9 @@ ee_image_to_gcs <- function(image,
                             skipEmptyTiles = NULL,
                             fileFormat = NULL,
                             formatOptions = NULL) {
+  if (is.null(bucket)) {
+    stop("Cloud Storage bucket was not defined")
+  }
   timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
@@ -312,6 +315,8 @@ ee_image_to_gcs <- function(image,
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
 #' @param assetId The destination asset ID.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #' @param pyramidingPolicy The pyramiding policy to apply to each band
 #' in the image, a dictionary keyed by band name. Values must be one
 #' of: "mean", "sample", "min", "max", or "mode". Defaults to "mean".
@@ -405,6 +410,7 @@ ee_image_to_gcs <- function(image,
 ee_image_to_asset <- function(image,
                               description = "myExportImageTask",
                               assetId = NULL,
+                              overwrite = FALSE,
                               pyramidingPolicy = NULL,
                               dimensions = NULL,
                               region = NULL,
@@ -412,6 +418,14 @@ ee_image_to_asset <- function(image,
                               crs = NULL,
                               crsTransform = NULL,
                               maxPixels = NULL) {
+
+  if (isTRUE(overwrite)) {
+    try(
+      expr = ee_manage_delete(assetId, quiet = TRUE),
+      silent = TRUE
+    )
+  }
+
   ee$batch$Export$image$toAsset(
     image = image,
     description = description,
@@ -580,6 +594,10 @@ ee_table_to_gcs <- function(collection,
                             timePrefix = TRUE,
                             fileFormat = NULL,
                             selectors = NULL) {
+  if (is.null(bucket)) {
+    stop("Cloud Storage bucket was not defined")
+  }
+
   timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
@@ -607,6 +625,8 @@ ee_table_to_gcs <- function(collection,
 #' @param description Human-readable name of the task.
 #' @param assetId The destination asset ID. **kwargs: Holds other
 #' keyword arguments that may have been deprecated.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #'
 #' @return An unstarted Task that exports the table to Earth Engine Asset.
 #' @examples
@@ -653,7 +673,16 @@ ee_table_to_gcs <- function(collection,
 #' @export
 ee_table_to_asset <- function(collection,
                               description = "myExportTableTask",
-                              assetId = NULL) {
+                              assetId = NULL,
+                              overwrite = FALSE) {
+
+  if (isTRUE(overwrite)) {
+    try(
+      expr = ee_manage_delete(assetId, quiet = TRUE),
+      silent = TRUE
+    )
+  }
+
   ee$batch$Export$table$toAsset(
     collection = collection,
     description = description,

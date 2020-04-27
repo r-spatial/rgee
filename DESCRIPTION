@@ -1,6 +1,6 @@
 Package: rgee
 Title: R bindings for calling the Earth Engine API
-Version: 0.3.16
+Version: 0.4.0
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -9,9 +9,9 @@ Authors@R:
              comment = c(ORCID = "0000-0003-2745-9535")),
       person(given = "Wu",
              family = "Qiusheng",
-	     role = c("ctb"),
-	     email = "giswqs@gmail.com",
-	     comment = c(ORCID = "0000-0001-5437-4073")),
+	           role = c("ctb"),
+	           email = "giswqs@gmail.com",
+	           comment = c(ORCID = "0000-0001-5437-4073")),
       person(given = "Roy",
              family = "Yali",
              role = c("ctb"),
@@ -41,35 +41,31 @@ RoxygenNote: 7.1.0
 Depends:
     R (>= 3.4.0)
 Imports:
-    reticulate (>= 1.13),
-    stars,
-    raster,
-    sf,
     methods,
-    rstudioapi (>= 0.7),
-    dplyr,
-    digest,
-    rgdal,
-    magrittr,
+    reticulate (>= 1.13),
+    sf,
+    stars,
     leaflet (>= 2.0.2),
     mapview,
+    magrittr,
     geojsonio,
-    jsonlite,
     getPass,
     crayon,
-    cli,
-    png,
-    jpeg
+    cli
 Suggests:
+    googledrive (>= 1.0.0),
+    googleCloudStorageR (>= 0.5.1),
+    rstudioapi (>= 0.7),
+    jsonlite,
+    raster,
+    rgdal,
+    digest,
     spelling,
-    testthat (>= 2.1.0),
+    testthat,
     covr,
     knitr,
     rmarkdown,
-    googledrive (>= 1.0.0),
-    googleCloudStorageR (>= 0.5.1),
-    geojsonlint,
-    lwgeom
+    png
 URL: https://github.com/csaybar/rgee
 BugReports: https://github.com/csaybar/rgee/issues
 VignetteBuilder: knitr

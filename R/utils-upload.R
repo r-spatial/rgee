@@ -37,7 +37,7 @@ ee_local_to_gcs <- function(x,
     )
   } else {
     if (is.null(bucket)) {
-      stop('The argument bucket was not defined')
+      stop("Cloud Storage bucket was not defined")
     }
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user$gcs_cre)) {
@@ -90,8 +90,10 @@ ee_local_to_gcs <- function(x,
 #'
 #' @param gs_uri Character. It represents the full name of an
 #' zipped shapefile in a GCS bucket.
-#' @param asset_id Character. What to call the file once uploaded
+#' @param assetId Character. What to call the file once uploaded
 #' to the Earth Engine Asset
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #' @param quiet Logical. Suppress info message.
 #' @examples
 #' \dontrun{
@@ -101,7 +103,7 @@ ee_local_to_gcs <- function(x,
 #'
 #' # Create sf object
 #' nc <- st_read(system.file("shape/nc.shp", package="sf"))
-#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
 #'
 #' # Method 1
 #' # 1. Pass the sf to a zip file
@@ -113,40 +115,51 @@ ee_local_to_gcs <- function(x,
 #' # 3. Pass the sf to a zip file
 #' ee_gcs_to_table(
 #'   gs_uri = gs_uri,
-#'   asset_id = asset_id
+#'   assetId = assetId
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
 #' ee_monitoring()
 #'
 #' # OPTIONAL: Display results
-#' ee_sf_01 <- ee$FeatureCollection(asset_id)
+#' ee_sf_01 <- ee$FeatureCollection(assetId)
 #' Map$centerObject(ee_sf_01)
 #' Map$addLayer(ee_sf_01)
 #'
 #' # Method 2
 #' ee_sf_02 <- sf_as_ee(x = nc,
-#'                      assetId = asset_id,
+#'                      assetId = assetId,
 #'                      bucket = "rgee_dev",
 #'                      via = 'gcs')
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
+ee_gcs_to_table <- function(gs_uri,
+                            assetId,
+                            overwrite = FALSE,
+                            quiet = FALSE) {
   if (isFALSE(quiet)) {
     cat(
       blue('Uploading'),
       green(gs_uri),
       blue('to'),
-      green(asset_id),
+      green(assetId),
       blue('... please wait\n')
     )
   }
+
+  if (isTRUE(overwrite)) {
+    try(
+      expr = ee_manage_delete(assetId, quiet = TRUE),
+      silent = TRUE
+    )
+  }
+
   system(
     command = sprintf(
-      "earthengine upload table --asset_id %s '%s'",
-      asset_id, gs_uri
+      "earthengine upload table --assetId %s '%s'",
+      assetId, gs_uri
       ),
     ignore.stdout = TRUE,
     ignore.stderr = TRUE
@@ -160,8 +173,10 @@ ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' @param x stars object.
 #' @param gs_uri Character. It represents the full name of the
 #' GeoTIFF file in a GCS bucket.
-#' @param asset_id Character. What to call the file once uploaded
+#' @param assetId Character. What to call the file once uploaded
 #' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #' @param properties List. Set of parameters to be set up as properties
 #' of the EE object.
 #' @param start_time Character. Sets the start time property to a number
@@ -170,7 +185,6 @@ ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' or date.
 #' @param pyramiding_policy The pyramid reduction policy to use.
 #' @param quiet Logical. Suppress info message.
-#' @importFrom rgdal showWKT
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -180,7 +194,7 @@ ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' # Get the filename of a image
 #' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 #' x <- read_stars(tif)
-#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 #'
 #' # Method 1
 #' # 1. Move from local to gcs
@@ -190,20 +204,20 @@ ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' ee_gcs_to_image(
 #'   x = x,
 #'   gs_uri = gs_uri,
-#'   asset_id = asset_id
+#'   assetId = assetId
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
 #' ee_monitoring()
 #'
 #' # OPTIONAL: Display results
-#' ee_stars_01 <- ee$Image(asset_id)
+#' ee_stars_01 <- ee$Image(assetId)
 #' Map$centerObject(ee_stars_01)
 #' Map$addLayer(ee_stars_01)
 #'
 #' # Method 2
 #' ee_sf_02 <- stars_as_ee(x = x,
-#'                         assetId = asset_id,
+#'                         assetId = assetId,
 #'                         bucket = "rgee_dev")
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
@@ -211,7 +225,8 @@ ee_gcs_to_table <- function(gs_uri, asset_id, quiet = FALSE) {
 #' @export
 ee_gcs_to_image <- function(x,
                             gs_uri,
-                            asset_id,
+                            assetId,
+                            overwrite = FALSE,
                             properties = NULL,
                             start_time = "1970-01-01",
                             end_time = "1970-01-01",
@@ -235,16 +250,15 @@ ee_gcs_to_image <- function(x,
   if (length(nbands) == 0) nbands <- 1
   band_names <- affine_transform$band$values
   if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
-  name <- sprintf("projects/earthengine-legacy/assets/%s", asset_id)
+  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
 
-
-  if (is.na(st_crs(x)$proj4string)) {
-    stop("x needs previously defined a coordinate reference system")
+  if (is.na(st_crs(x)$wkt)) {
+    stop("x does not have a CRS defined first")
   }
 
   # Creating tileset
   tilesets <- list(
-    crs = showWKT(st_crs(x)$proj4string),
+    crs = st_crs(x)$wkt,
     sources = list(
       list(
         uris = gs_uri,
@@ -296,8 +310,15 @@ ee_gcs_to_image <- function(x,
       blue('Uploading'),
       green(gs_uri),
       blue('to'),
-      green(asset_id),
+      green(assetId),
       blue('... please wait\n')
+    )
+  }
+
+  if (isTRUE(overwrite)) {
+    try(
+      expr = ee_manage_delete(assetId, quiet = TRUE),
+      silent = TRUE
     )
   }
 
@@ -325,7 +346,7 @@ ee_gcs_to_image <- function(x,
 #'
 #' # Create sf object
 #' nc <- st_read(system.file("shape/nc.shp", package="sf"))
-#' asset_id <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
 #'
 #' # Method 1
 #' # 1. Pass the sf to a zip file
@@ -337,20 +358,20 @@ ee_gcs_to_image <- function(x,
 #' # 3. Pass the sf to a zip file
 #' ee_gcs_to_table(
 #'   gs_uri = gs_uri,
-#'   asset_id = asset_id
+#'   assetId = assetId
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
 #' ee_monitoring()
 #'
 #' # OPTIONAL: Display results
-#' ee_sf_01 <- ee$FeatureCollection(asset_id)
+#' ee_sf_01 <- ee$FeatureCollection(assetId)
 #' Map$centerObject(ee_sf_01)
 #' Map$addLayer(ee_sf_01)
 #'
 #' # Method 2
 #' ee_sf_02 <- sf_as_ee(x = nc,
-#'                      assetId = asset_id,
+#'                      assetId = assetId,
 #'                      bucket = "rgee_dev")
 #' Map$centerObject(ee_sf_02)
 #' Map$addLayer(ee_sf_02)
@@ -402,6 +423,7 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
 #' @noRd
 ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
   if (any(class(x) %in% 'sf')) {
+    x$geometry <- st_sfc(x$geometry, check_ring_dir = check_ring_dir)
     x
   } else if (any(class(x) %in% 'sfg')) {
     if (is.null(proj)) {
@@ -437,14 +459,22 @@ ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
 ee_as_proxystars <- function(x, temp_dir = tempdir()) {
   if (is.character(x)) {
     read_stars(x, proxy = TRUE)
-  } else {
+  } else if (is(x,"stars")) {
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
     write_stars(x, tiff_filename)
-    tryCatch(
-      expr = read_stars(tiff_filename, proxy = TRUE),
-      error = function(e) stop('x argument not defined properly.')
-    )
+    read_stars(tiff_filename, proxy = TRUE)
+  } else if (is(x,"Raster")) {
+    if (!requireNamespace("raster", quietly = TRUE)) {
+      stop("package raster required, please install it first")
+    }
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    ee_description <- paste0("ee_as_stars_task_", time_format)
+    tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
+    raster::writeRaster(x, tiff_filename)
+    read_stars(tiff_filename, proxy = TRUE)
+  } else {
+    stop('x argument not defined properly.')
   }
 }
