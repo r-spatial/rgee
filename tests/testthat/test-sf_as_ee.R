@@ -1,8 +1,6 @@
 context("rgee: sf_as_ee test")
 
-ee_Initialize(email = 'data.colec.fbf@gmail.com',
-             drive = TRUE,
-             gcs = TRUE)
+ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
 
 filename <- system.file("external/lux.shp", package = "raster")
 nc <- system.file("shape/nc.shp", package = "sf")
@@ -21,16 +19,18 @@ test_that("sf_as_ee.character", {
 
 test_that("sf_as_ee.sf", {
   p <- raster::shapefile(filename) %>%
-    sf::st_as_sf() %>%
-    sf_as_ee(check_ring_dir = TRUE)
+    sf::st_as_sf()
+  suppressWarnings(st_crs(p) <- 4326)
+  p <- sf_as_ee(p, check_ring_dir = TRUE)
   expect_is(p, "ee.featurecollection.FeatureCollection")
 })
 
 test_that("sf_as_ee.sfc", {
   p <- raster::shapefile(filename) %>%
     sf::st_as_sf() %>%
-    sf::st_geometry() %>%
-    sf_as_ee(check_ring_dir = TRUE)
+    sf::st_geometry()
+  suppressWarnings(st_crs(p) <- 4326)
+  p <- sf_as_ee(p, check_ring_dir = TRUE)
   expect_is(p$geometry(), "ee.geometry.Geometry")
 })
 
