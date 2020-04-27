@@ -226,6 +226,7 @@ Load `sf` and authenticate and initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
+library(dplyr)
 library(sf)
 ee_Initialize()
 # ee_reattach() # reattach ee as a reserve word
