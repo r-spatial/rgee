@@ -14,7 +14,7 @@
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
 #' Whether line segments should be interpreted as spherical geodesics. If
 #' FALSE, indicates that line segments should be interpreted as planar lines
-#' in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
+#' in the specified CRS. If sabsent, defaults to TRUE if the CRS is geographic
 #' (including the default EPSG:4326), or to FALSE if the CRS is projected.
 #' @param evenOdd Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 #' polygon interiors will be determined by the even/odd rule, where a point
@@ -24,6 +24,8 @@
 #' If unspecified, defaults to TRUE.
 #' @param bucket Character. Name of the bucket (GCS) to save intermediate files
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
+#' @param overwrite A boolean argument which indicates indicating
+#' whether "filename" should be overwritten. By default TRUE.
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
@@ -68,7 +70,6 @@
 #' # 1. Handling geometry parameters
 #' # Simple
 #' ee_x <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-#'   st_transform(4326) %>%
 #'   sf_as_ee()
 #'
 #' Map$centerObject(eeObject = ee_x)
@@ -96,24 +97,28 @@
 #' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')
 #' eex <- sf_as_ee(
 #'   x = toy_poly,
+#'   overwrite = TRUE,
 #'   assetId = assetId,
-#'   via = 'toasset')
+#'   via = 'getInfo_to_asset')
 #'
 #' # 3. Upload large geometries to EE asset
 #' ee_Initialize(gcs = TRUE)
 #' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
 #' eex <- sf_as_ee(
 #'   x = toy_poly,
+#'   overwrite = TRUE,
 #'   assetId = assetId,
 #'   bucket = 'rgee_dev',
 #'   monitoring = FALSE,
-#'   via = 'gcs')
+#'   via = 'gcs_to_asset'
+#' )
 #' }
 #' @export
 sf_as_ee <- function(x,
                      via = 'getInfo',
                      assetId = NULL,
                      bucket = NULL,
+                     overwrite = TRUE,
                      monitoring = TRUE,
                      check_ring_dir = FALSE,
                      evenOdd = TRUE,
@@ -182,6 +187,7 @@ sf_as_ee <- function(x,
     # geojson to assset
     ee_task <- ee_table_to_asset(
       collection = sf_fc,
+      overwrite = overwrite,
       description = ee_description,
       assetId = assetId
     )
@@ -205,6 +211,7 @@ sf_as_ee <- function(x,
     )
     ee_gcs_to_table(
       gs_uri = gcs_filename,
+      overwrite = overwrite,
       assetId = assetId
     )
     if (isTRUE(monitoring)) {

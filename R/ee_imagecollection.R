@@ -87,6 +87,15 @@ ee_imagecollection_to_local <- function(ic,
                                         maxPixels = 1e9,
                                         container = "rgee_backup",
                                         quiet = FALSE) {
+  # is image an ee.image.Image?
+  if (!any(class(ic) %in% "ee.imagecollection.ImageCollection")) {
+    stop("ic argument is not an ee$imagecollection$ImageCollection")
+  }
+  # is region an ee.geometry.Geometry?
+  if (!any(class(region) %in% "ee.geometry.Geometry")) {
+    stop("region argument is not an ee$geometry$Geometry")
+  }
+
   ic_names <- NULL
   ic_count <- ic$size()$getInfo()
 

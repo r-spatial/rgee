@@ -9,6 +9,7 @@ sf_as_ee(
   via = "getInfo",
   assetId = NULL,
   bucket = NULL,
+  overwrite = TRUE,
   monitoring = TRUE,
   check_ring_dir = FALSE,
   evenOdd = TRUE,
@@ -30,6 +31,9 @@ if \code{via} argument is "getInfo".}
 \item{bucket}{Character. Name of the bucket (GCS) to save intermediate files
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
+\item{overwrite}{A boolean argument which indicates indicating
+whether "filename" should be overwritten. By default TRUE.}
+
 \item{monitoring}{Logical. Ignore if via is not set as
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
@@ -49,7 +53,7 @@ object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
 \item{geodesic}{Logical. Ignored if \code{x} is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
 FALSE, indicates that line segments should be interpreted as planar lines
-in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
+in the specified CRS. If sabsent, defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.}
 
 \item{quiet}{Logical. Suppress info message.}
@@ -101,7 +105,6 @@ ee_Initialize()
 # 1. Handling geometry parameters
 # Simple
 ee_x <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
-  st_transform(4326) \%>\%
   sf_as_ee()
 
 Map$centerObject(eeObject = ee_x)
@@ -129,17 +132,20 @@ print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_py_to_r())# TRUE
 assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')
 eex <- sf_as_ee(
   x = toy_poly,
+  overwrite = TRUE,
   assetId = assetId,
-  via = 'toasset')
+  via = 'getInfo_to_asset')
 
 # 3. Upload large geometries to EE asset
 ee_Initialize(gcs = TRUE)
 assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
 eex <- sf_as_ee(
   x = toy_poly,
+  overwrite = TRUE,
   assetId = assetId,
   bucket = 'rgee_dev',
   monitoring = FALSE,
-  via = 'gcs')
+  via = 'gcs_to_asset'
+)
 }
 }

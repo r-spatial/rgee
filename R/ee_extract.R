@@ -17,6 +17,10 @@
 #' @param ... reduceRegions additional parameters. See
 #' ee_help(ee$Image()$reduceRegions) for more details.
 #' @importFrom sf st_geometry st_geometry<- st_drop_geometry
+#' @return A data.frame or a sf object depending on the sf argument. The
+#' columns with the extracted values will get their column name from the
+#' image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
+#' will use \code{system:index} instead.
 #' @details
 #' In Google Earth Engine the reducer functions that return one value are:
 #' \itemize{

@@ -10,6 +10,9 @@
 #' Relevant just for \code{ee$FeatureCollection} objects.
 #' @param img_band Character. Band name of the \code{ee$Image} to fetch.
 #' Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.
+#' @param compression_ratio Numeric. Measurement of the relative reduction
+#' in size of data representation produced by a data compression algorithm
+#' (ignored if eeobject is not a Image or ImageCollection). By default is 20.
 #' @param clean Logical. If TRUE, the cache will be cleaned.
 #' @param quiet logical. Suppress info message
 #' @param ... ignored
@@ -244,6 +247,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ..., f_ind
 ee_print.ee.image.Image <- function(eeobject,
                                     ...,
                                     img_band,
+                                    compression_ratio = 20,
                                     clean = FALSE,
                                     quiet = FALSE) {
   # 1. Fetch and Return bandname about ee$Image
@@ -255,21 +259,22 @@ ee_print.ee.image.Image <- function(eeobject,
 
   # 1. Search if Image metadata exist in the /tempdir
   past_eeobject <- NULL
-  metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject, img_band))
+  eeobject_hash <- ee_hash(eeobject, img_band, compression_ratio)
+  metadata_file <- sprintf("%s/%s", tempdir(), eeobject_hash)
   if (file.exists(metadata_file) && !clean) {
     suppressWarnings(
       try(load(metadata_file), silent = TRUE) # it will load the past_eeobject
     )
   }
 
-  if (!identical(past_eeobject, ee_hash(eeobject, img_band))) {
+  if (!identical(past_eeobject, eeobject_hash)) {
     # 3. Fetch and Return metadata about an EE image band
     selected_img <- eeobject$select(img_band)
     band_info <- selected_img$getInfo()
     band_properties <- band_info$properties
     band_metadata <- band_info$bands[[1]]
 
-    is_EPSG <- grepl("EPSG:", "", band_metadata$crs)
+    is_EPSG <- grepl("EPSG:", band_metadata$crs)
     if (is_EPSG) {
       band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
     } else {
@@ -283,7 +288,11 @@ ee_print.ee.image.Image <- function(eeobject,
       band_metadata <- band_info$bands[[1]]
       band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
     }
-    band_metadata_geom <- ee_image_info(image = selected_img, quiet = TRUE)
+    band_metadata_geom <- ee_image_info(
+      image = selected_img,
+      compression_ratio =  compression_ratio,
+      quiet = TRUE
+    )
     band_metadata_nominal_scale <- selected_img %>%
       ee$Image$projection() %>%
       ee$Projection$nominalScale() %>%
@@ -310,7 +319,7 @@ ee_print.ee.image.Image <- function(eeobject,
       band_size = band_metadata_geom$image_size
     )
     # 4. Save ee_metadata in /tmpdir
-    past_eeobject <- ee_hash(eeobject, img_band)
+    past_eeobject <- ee_hash(eeobject, img_band, compression_ratio)
     suppressWarnings(
       try(save(ee_metadata, past_eeobject, file = metadata_file),silent = TRUE)
     )
@@ -346,6 +355,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
                                                         ...,
                                                         img_index = 0,
                                                         img_band,
+                                                        compression_ratio = 20,
                                                         clean = FALSE,
                                                         quiet = FALSE) {
   # 1. Select a specific EE Image by EE IC index.
@@ -359,7 +369,8 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
 
   # 3. Search if Image metadata exist in the /tempdir
   past_eeobject <- NULL
-  metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject, img_index, img_band))
+  eeobject_hash <- ee_hash(eeobject, img_index, img_band, compression_ratio)
+  metadata_file <- sprintf("%s/%s", tempdir(), eeobject_hash)
 
   ## If metadata_file exist in /tempdir use it
   if (file.exists(metadata_file) && !clean) {
@@ -370,14 +381,20 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
 
   ## If the query haven't been called before, it will create the metadata
   ## dataset, otherwise load from /temdir
-  if (!identical(past_eeobject, ee_hash(eeobject, img_index, img_band))) {
+  if (!identical(past_eeobject, eeobject_hash)) {
     # 4. Fetch and Return ee$ImageCollection metadata
     ic_properties <- eeobject$propertyNames()$getInfo()
     ic_n_properties <- length(ic_properties)
     ic_n_img <- eeobject$size()$getInfo()
 
     # 3. Fetch and Return ee$Image metadata
-    ee_mtd_img <- ee_print(img, img_band = img_band, quiet = TRUE, clean = TRUE)
+    ee_mtd_img <- ee_print(
+      eeobject = img,
+      img_band = img_band,
+      compression_ratio = compression_ratio,
+      quiet = TRUE,
+      clean = TRUE
+    )
 
     ee_metadata <- list(
       name = "ImageCollection",
@@ -406,7 +423,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
       band_size = ee_mtd_img$band_size
     )
     # 4. Save ee_metadata in /tmpdir
-    past_eeobject <- ee_hash(eeobject, img_index, img_band)
+    past_eeobject <- ee_hash(eeobject, img_index, img_band, compression_ratio)
     suppressWarnings(
       try(save(ee_metadata, past_eeobject, file = metadata_file),silent = TRUE)
     )
@@ -442,7 +459,6 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
   }
   invisible(ee_metadata)
 }
-
 
 #' @export
 print.ee.computedobject.ComputedObject <-

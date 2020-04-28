@@ -17,9 +17,24 @@ ee_print(eeobject, ...)
 
 \method{ee_print}{ee.featurecollection.FeatureCollection}(eeobject, ..., f_index = 0, clean = FALSE, quiet = FALSE)
 
-\method{ee_print}{ee.image.Image}(eeobject, ..., img_band, clean = FALSE, quiet = FALSE)
+\method{ee_print}{ee.image.Image}(
+  eeobject,
+  ...,
+  img_band,
+  compression_ratio = 20,
+  clean = FALSE,
+  quiet = FALSE
+)
 
-\method{ee_print}{ee.imagecollection.ImageCollection}(eeobject, ..., img_index = 0, img_band, clean = FALSE, quiet = FALSE)
+\method{ee_print}{ee.imagecollection.ImageCollection}(
+  eeobject,
+  ...,
+  img_index = 0,
+  img_band,
+  compression_ratio = 20,
+  clean = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{eeobject}{Earth Engine Object. Available for: Geometry, Feature,
@@ -36,6 +51,10 @@ Relevant just for \code{ee$FeatureCollection} objects.}
 
 \item{img_band}{Character. Band name of the \code{ee$Image} to fetch.
 Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
+
+\item{compression_ratio}{Numeric. Measurement of the relative reduction
+in size of data representation produced by a data compression algorithm
+(ignored if eeobject is not a Image or ImageCollection). By default is 20.}
 
 \item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
 Relevant just for \code{ee$ImageCollection} objects.}
