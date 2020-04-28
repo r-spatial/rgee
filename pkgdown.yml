@@ -5,5 +5,8 @@ articles:
   considerations: considerations.html
   faq: faq.html
   setup: setup.html
-last_built: 2020-04-28T17:58Z
+last_built: 2020-04-28T18:13Z
+urls:
+  reference: http://csaybar.github.io/rgee/reference
+  article: http://csaybar.github.io/rgee/articles
 
