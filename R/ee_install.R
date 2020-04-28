@@ -422,5 +422,3 @@ ee_virtualenv_list <- function() {
             virtualenv_root(),
             virtualenv_list()))
 }
-
-ee_as

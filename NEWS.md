@@ -1,3 +1,7 @@
+# rgee 0.4.1
+- ee_extract bug fixed now sf arg works for Earth Engine tables.
+- ee_create_pyenv now return a Python Path
+- doc upgrade
 # rgee 0.4
 - travis and appveyor replaced by github-actions.
 - docker folder deleted and saved in docker branch.
