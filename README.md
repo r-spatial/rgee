@@ -119,21 +119,18 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-ee_create_pyenv(python_env = "ee")
+pyenv <- ee_create_pyenv(python_env = "ee")
 
-# 3. Find all Python environments  in the system.
-ee_discover_pyenvs()
-[1] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/earthengine_test/bin/python" 
-[2] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/ee/bin/python"               
-[3] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/r-reticulate/bin/python"  
+# Find others Python environments in the system.
+# ee_discover_pyenvs()
 
-# 4. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_set_pyenv(python_path = "/home/CHANGE_BY_YOUR_USER/.virtualenvs/ee/bin/python")
+# 3. Set a Python environment (e.g. ee) and restart R to see changes.
+ee_set_pyenv(pyenv)
 
-# 5. Install Python package dependencies and restart R to see changes.
+# 4. Install Python package dependencies and restart R to see changes.
 ee_install_python_packages()
 
-# 6. Initialize rgee again!
+# 5. Initialize rgee again!
 ee_Initialize()
 ```
 
