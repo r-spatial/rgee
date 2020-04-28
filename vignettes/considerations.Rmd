@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 import ee
 ```
 
-`rgee` is extremely similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) in all the aspects, with the exception of **three** particular cases. Each of these are explained in-depth below.
+`rgee` is extremely similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/), with the exception of **three** particular cases. Each of these are explained in-depth below.
 
 ### 1) The **map** message error:
 
@@ -61,6 +61,7 @@ But, why is this a big deal?. Let’s explain with an example:
 
 **Python**
 ```{python}
+ee.Initialize()
 and_bitwise = ee.Number(32).bitwiseAnd(100)
 and_bitwise.getInfo()
 ```
@@ -71,7 +72,7 @@ and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
 and_bitwise$getInfo()
 ```
 
-Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integers in R is quite simple, you just need to add the letter **L** to the end of the specific number or just employ the function `as.integer`. Please always pay attention to these minutiae to develop clean `rgee` scripts. The **correct code** in R would be:
+Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integers in R is quite simple, you just need to add the letter **L** to the end of the specific number or just employ the function `as.integer`. The **correct code** in R would be:
 
 ```{r}
 and_bitwise = ee$Number(32L)$bitwiseAnd(100L)
@@ -104,5 +105,6 @@ era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
 
 # Extracting init date
 ee_date <- era_img$get('system:time_start')
-eedate_to_rdate(ee_date = ee_date)
+ee_date$getInfo() # Silent error
+eedate_to_rdate(ee_date = ee_date, timestamp = TRUE)
 ```

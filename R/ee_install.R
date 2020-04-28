@@ -423,3 +423,4 @@ ee_virtualenv_list <- function() {
             virtualenv_list()))
 }
 
+ee_as
