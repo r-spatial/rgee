@@ -83,7 +83,7 @@ try to mimics how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@ try to mimics how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract<
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>EE Image or ImageCollection.</p></td>
+      <td><p>ee$Image or ee$ImageCollection with a single band.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -188,6 +188,12 @@ ee_help(ee$Image()$reduceRegions) for more details.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data.frame or a sf object depending on the sf argument. The
+columns with the extracted values will get their column name from the
+image metadata property <code>RGEE_NAME</code>. If is not defined <code>ee_extract</code>
+will use <code>system:index</code> instead.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>In Google Earth Engine the reducer functions that return one value are:</p><ul>
@@ -241,7 +247,8 @@ of its inputs.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</span></div><div class='input'>
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span></div><div class='output co'>#&gt; <span class='error'>Error in py_module_import(module, convert = convert): ImportError: No module named ee</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
 #&gt; <span class='error'></span>
@@ -264,7 +271,11 @@ of its inputs.</p></li>
 <span class='co'># Define a Image or ImageCollection: Terraclimate</span>
 <span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span>)$
-  <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>))</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
+  <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>){
+    <span class='no'>date</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='no'>x</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"system:time_start"</span>))$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='st'>'YYYY_MM_dd'</span>)
+    <span class='no'>name</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>String</span>$<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Terraclimate_pp_"</span>, <span class='no'>date</span>)
+    <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>)$<span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='no'>name</span>)
+  })</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
 #&gt; <span class='error'></span>
 #&gt; <span class='error'>Detected Python configuration:</span>
 #&gt; <span class='error'></span>
@@ -294,7 +305,7 @@ of its inputs.</p></li>
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>,
   <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>,
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>250</span>,
-  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(),
+  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(),
   <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</div><div class='output co'>#&gt; <span class='error'>Error in py_module_import(module, convert = convert): ImportError: No module named ee</span>
 #&gt; <span class='error'></span>
@@ -302,13 +313,13 @@ of its inputs.</p></li>
 #&gt; <span class='error'>  File "/Users/runner/runners/2.169.1/work/_temp/Library/rgee/python/ee_extract.py", line 3, in &lt;module&gt;</span>
 #&gt; <span class='error'>    import ee</span></div><div class='input'>
 <span class='co'># Spatial plot</span>
-<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>ee_nc_rain</span>[<span class='st'>"X200106"</span>],
+<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(
+  <span class='no'>ee_nc_rain</span>[<span class='st'>"Terraclimate_pp_2001_01_01"</span>],
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in plot(ee_nc_rain["X200106"], main = "2001 Jan Precipitation - Terraclimate",     reset = FALSE): object 'ee_nc_rain' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
-#&gt;           1 </div><div class='input'>
-<span class='co'># Temporal plot</span>
-<span class='no'>ee_nc</span> <span class='kw'>&lt;-</span> <span class='no'>ee_nc_rain</span></div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'ee_nc_rain' not found</span></div><div class='input'><span class='no'>time_serie</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='no'>ee_nc</span>[<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"X%s"</span>, <span class='fl'>200101</span>:<span class='fl'>200112</span>)])</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'ee_nc' not found</span></div><div class='input'><span class='no'>main</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"2001 Precipitation - %s"</span>, <span class='no'>ee_nc</span>$<span class='no'>NAME</span>[<span class='fl'>1</span>])</div><div class='output co'>#&gt; <span class='error'>Error in sprintf("2001 Precipitation - %s", ee_nc$NAME[1]): object 'ee_nc' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(<span class='no'>time_serie</span>, <span class='kw'>ylab</span> <span class='kw'>=</span> <span class='st'>"pp (mm/month)"</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"l"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='no'>main</span>)</div><div class='output co'>#&gt; <span class='error'>Error in plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5,     main = main): object 'time_serie' not found</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/points.html'>points</a></span>(<span class='no'>time_serie</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>1.5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in points(time_serie, pch = 20, lwd = 1.5, cex = 1.5): object 'time_serie' not found</span></div></pre>
+)</div><div class='output co'>#&gt; <span class='error'>Error in plot(ee_nc_rain["Terraclimate_pp_2001_01_01"], main = "2001 Jan Precipitation - Terraclimate",     reset = FALSE): object 'ee_nc_rain' not found</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
+#&gt;           1 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

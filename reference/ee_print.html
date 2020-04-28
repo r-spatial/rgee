@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -158,10 +158,25 @@
 <span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>, <span class='kw'>f_index</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># S3 method for ee.image.Image</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>, <span class='no'>img_band</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_print</span>(
+  <span class='no'>eeobject</span>,
+  <span class='no'>...</span>,
+  <span class='no'>img_band</span>,
+  <span class='kw'>compression_ratio</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
 
 <span class='co'># S3 method for ee.imagecollection.ImageCollection</span>
-<span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>, <span class='kw'>img_index</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>img_band</span>, <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+<span class='fu'>ee_print</span>(
+  <span class='no'>eeobject</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>img_index</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='no'>img_band</span>,
+  <span class='kw'>compression_ratio</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+  <span class='kw'>clean</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -192,6 +207,12 @@ Relevant just for <code>ee$FeatureCollection</code> objects.</p></td>
       <th>img_band</th>
       <td><p>Character. Band name of the <code>ee$Image</code> to fetch.
 Relevant just for <code>ee$ImageCollection</code> and <code>ee$Image</code> objects.</p></td>
+    </tr>
+    <tr>
+      <th>compression_ratio</th>
+      <td><p>Numeric. Measurement of the relative reduction
+in size of data representation produced by a data compression algorithm
+(ignored if eeobject is not a Image or ImageCollection). By default is 20.</p></td>
     </tr>
     <tr>
       <th>img_index</th>

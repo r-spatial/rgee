@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -105,14 +105,32 @@
 
     
     
-<p>Here you can find possible <strong>solutions for common <code>rgee</code> problems</strong>. We will add to this page as soon as additional problems are reported. If these solutions does not work for you, or you have a different problem, signal it at: <a href="https://github.com/csaybar/rgee/issues" class="uri">https://github.com/csaybar/rgee/issues</a></p>
+<p>Here you can find possible <strong>solutions for common <code>rgee</code> problems</strong>. We will add to this page as soon as additional problems are reported. If these solutions do not work for you, or you have a different problem, signal it at: <a href="https://github.com/csaybar/rgee/issues" class="uri">https://github.com/csaybar/rgee/issues</a></p>
 <div id="installation-problem" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation-problem" class="anchor"></a>Installation problem</h3>
+<div id="ee_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="section level4">
+<h4 class="hasAnchor">
+<a href="#ee_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="anchor"></a>ee_create_pyenv take by default a Python 2 version (ERROR: rgee just run under Python 3.5 &gt;=)</h4>
+<p>It is a common scenario mostly for Windows users that have a lot of Python Envs setting on PATH. For solve this problem, take into account the follows steps:</p>
+<div class="sourceCode" id="cb1"><html><body><pre class="r">  <span class="co"># 1. Find manually the Python Env that you want to use, for instance:</span>
+  <span class="no">myPythonPath</span> <span class="kw">&lt;-</span> <span class="st">"C:/Python36/ArcGISx6410.4/python.exe"</span>
+
+  <span class="co"># 2. Set the RETICULATE PYTHON PATH (restart R to see changes).</span>
+  <span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">myPythonPath</span>)
+
+  <span class="co"># 3. Create a Python environment, e.g. ee.</span>
+  <span class="no">myPythonEnv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
+
+  <span class="co"># 4. Set the RETICULATE_PYTHON and RETICULATE_PYTHON_ENV (restart R to see changes).</span>
+  <span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">myPythonEnv</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+
+  <span class="co"># 5. Install Python package dependencies (restart R to see changes).</span>
+  <span class="fu"><a href="../reference/ee_install_python_packages.html">ee_install_python_packages</a></span>()
+
+  <span class="co"># 6. Initialize rgee again!</span>
+  <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></body></html></div>
 </div>
-<div id="python-configuration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#python-configuration" class="anchor"></a>Python Configuration</h3>
 </div>
   </div>
 

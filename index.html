@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -169,29 +169,26 @@ R
 <h2 class="hasAnchor">
 <a href="#requirements" class="anchor"></a>Requirements</h2>
 <p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in your system. <code>rgee</code> counts with an installation module which helps you to deal with the external dependencies of <code>rgee</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="r">library(rgee)
+<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
-ee_Initialize()
+<span class="co"># 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda</span>
+<span class="co"># will be installed by default.</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
 
-# 2. Create a Python environment, e.g. ee.
-ee_create_pyenv(python_env = "ee")
+<span class="co"># 2. Create a Python environment, e.g. ee.</span>
+<span class="no">pyenv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
 
-# 3. Find all Python environments  in the system.
-ee_discover_pyenvs()
-[1] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/earthengine_test/bin/python" 
-[2] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/ee/bin/python"               
-[3] "/home/CHANGE_BY_YOUR_USER/.virtualenvs/r-reticulate/bin/python"  
+<span class="co"># Find others Python environments in the system.</span>
+<span class="co"># ee_discover_pyenvs()</span>
 
-# 4. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_set_pyenv(python_path = "/home/CHANGE_BY_YOUR_USER/.virtualenvs/ee/bin/python")
+<span class="co"># 3. Set a Python environment (e.g. ee) and restart R to see changes.</span>
+<span class="fu"><a href="reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">pyenv</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
-# 5. Install Python package dependencies and restart R to see changes.
-ee_install_python_packages()
+<span class="co"># 4. Install Python package dependencies and restart R to see changes.</span>
+<span class="fu"><a href="reference/ee_install_python_packages.html">ee_install_python_packages</a></span>()
 
-# 6. Initialize rgee again!
-ee_Initialize()</pre></div>
+<span class="co"># 5. Initialize rgee again!</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></div>
 <p>Additionally, you might use the functions below for checking users and credentials, and install/upgrade Python packages.</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/ee_check-tools.html">ee_check</a></span>() <span class="co"># Check non-R dependencies</span>
 <span class="fu"><a href="reference/ee_user_info.html">ee_user_info</a></span>() <span class="co"># Display credentials information</span>

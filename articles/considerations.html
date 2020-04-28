@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@
 #&gt; 
 #&gt; Detailed traceback: 
 #&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</code></pre>
-<p><code>rgee</code> is extremely similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> in all the aspects, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
+<p><code>rgee</code> is extremely similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a>, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
@@ -157,22 +157,27 @@
 <span class="co">#&gt; [1] "numeric"</span></pre></body></html></div>
 <p>But, why is this a big deal?. Let’s explain with an example:</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>ee.Initialize()</span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'ee' is not defined</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; </span></span>
 <span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt; Detailed traceback: </span></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>and_bitwise.getInfo()</span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'and_bitwise' is not defined</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'ee' is not defined</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; </span></span>
 <span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; Detailed traceback: </span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span></code></pre></div>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>and_bitwise.getInfo()</span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): NameError: name 'and_bitwise' is not defined</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; </span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; Detailed traceback: </span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;   File "&lt;string&gt;", line 1, in &lt;module&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100</span>) <span class="co">#caution: silent error</span>
 <span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
 <span class="co">#&gt; Error in eval(expr, envir, enclos): object 'and_bitwise' not found</span></pre></body></html></div>
-<p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or just employ the function <code>as.integer</code>. Please always pay attention to these minutiae to develop clean <code>rgee</code> scripts. The <strong>correct code</strong> in R would be:</p>
+<p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or just employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
 <span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee' not found</span>
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
@@ -209,8 +214,10 @@
 <span class="co"># Extracting init date</span>
 <span class="no">ee_date</span> <span class="kw">&lt;-</span> <span class="no">era_img</span>$<span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)
 <span class="co">#&gt; Error in eval(expr, envir, enclos): object 'era_img' not found</span>
-<span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(<span class="kw">ee_date</span> <span class="kw">=</span> <span class="no">ee_date</span>)
-<span class="co">#&gt; Error in eedate_to_rdate(ee_date = ee_date): could not find function "eedate_to_rdate"</span></pre></body></html></div>
+<span class="no">ee_date</span>$<span class="fu">getInfo</span>() <span class="co"># Silent error</span>
+<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'ee_date' not found</span>
+<span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(<span class="kw">ee_date</span> <span class="kw">=</span> <span class="no">ee_date</span>, <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="co">#&gt; Error in eedate_to_rdate(ee_date = ee_date, timestamp = TRUE): could not find function "eedate_to_rdate"</span></pre></body></html></div>
 </div>
   </div>
 

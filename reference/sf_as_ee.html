@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -151,6 +151,7 @@
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>check_ring_dir</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>evenOdd</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -183,6 +184,11 @@ if <code>via</code> argument is "getInfo".</p></td>
 (ignore if <code>via</code> is not defined as "gcs_to_asset").</p></td>
     </tr>
     <tr>
+      <th>overwrite</th>
+      <td><p>A boolean argument which indicates indicating
+whether "filename" should be overwritten. By default TRUE.</p></td>
+    </tr>
+    <tr>
       <th>monitoring</th>
       <td><p>Logical. Ignore if via is not set as
 <code>getInfo_to_asset</code> or <code>gcs_to_asset</code>. If TRUE the exportation task
@@ -211,7 +217,7 @@ object, defaults to "EPSG:4326" (x=longitude, y=latitude).</p></td>
       <td><p>Logical. Ignored if <code>x</code> is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
 FALSE, indicates that line segments should be interpreted as planar lines
-in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
+in the specified CRS. If sabsent, defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.</p></td>
     </tr>
     <tr>
@@ -266,7 +272,6 @@ it is an expensive operation.</p>
 <span class='co'># 1. Handling geometry parameters</span>
 <span class='co'># Simple</span>
 <span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'>sf_as_ee</span>()
 
 <span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>ee_x</span>)
@@ -294,18 +299,21 @@ it is an expensive operation.</p>
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(), <span class='st'>'toy_poly'</span>)
 <span class='no'>eex</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>toy_poly</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'toasset'</span>)
+  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'getInfo_to_asset'</span>)
 
 <span class='co'># 3. Upload large geometries to EE asset</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(), <span class='st'>'toy_poly_gcs'</span>)
 <span class='no'>eex</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>toy_poly</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
   <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>,
   <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'gcs'</span>)
+  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'gcs_to_asset'</span>
+)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

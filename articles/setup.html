@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -111,36 +111,32 @@
 <li><span style="color:#b52b09"><b> Python &gt; v3.5 </b></span></li>
 <li><span style="color:#b52b09"><b> EarthEngine Python API </b></span></li>
 </ul>
-<p>The activation of <strong>Earth Engine accounts</strong> depends on each users, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a <strong>Python environment</strong> in your system, run <code><a href="../reference/ee_Initialize.html">ee_Initialize()</a></code> to display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda). We highly recommend use virtual environment to use <code>rgee</code>, you can create one using <code>ee_create_pyenv</code>. Finally, the <code><a href="../reference/ee_install_python_packages.html">ee_install_python_packages()</a></code> function is provided as a convenient way to install all Python packages needed in <code>rgee</code>, even though it is not mandatory. You can count on with your own custom installation. This would be also allowed. All the step described are summarised below:</p>
+<p>The activation of <strong>Earth Engine accounts</strong> depends on each users, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a <strong>Python environment</strong> in your system, run <code><a href="../reference/ee_Initialize.html">ee_Initialize()</a></code> to display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda). We highly recommend use an virtual environment to use <code>rgee</code>, you can create one using <code>ee_create_pyenv</code>. Finally, the <code><a href="../reference/ee_install_python_packages.html">ee_install_python_packages()</a></code> function is provided as a convenient way to install all Python packages needed in <code>rgee</code>, even though it is not mandatory. You can count on with your own custom installation. This would be also allowed. All the step described are summarised below:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="co"># Recommended way to install external rgee dependencies </span>
 
 <span class="co"># 1. Initialize rgee with ee_Initialize(). If there is no any</span>
 <span class="co">#    Python environment, miniconda will be installed by default.</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>() <span class="co"># Probably you get an error do not worry!</span>
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()
 
 <span class="co"># 2. Create a Python environment, e.g. ee.</span>
-<span class="fu"><a href="../reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="kw">env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
+<span class="no">pyenv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
 
-<span class="co"># 3. Find all Python environments  in the system.</span>
-<span class="fu"><a href="../reference/ee_discover_pyenvs.html">ee_discover_pyenvs</a></span>()
+<span class="co"># Find others Python environments in the system.</span>
+<span class="co"># ee_discover_pyenvs()</span>
 
-<span class="co"># 4. Set a Python environment (e.g. ee) and restart R to see changes. e.g</span>
-<span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(
-  <span class="kw">python_path</span> <span class="kw">=</span> <span class="st">'/home/MY_USER_HERE/.virtualenvs/ee/bin/python'</span>,
-  <span class="kw">python_env</span> <span class="kw">=</span> <span class="st">'ee'</span>,
-  <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>
-)
+<span class="co"># 3. Set a Python environment (e.g. ee) and restart R to see changes.</span>
+<span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">pyenv</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
-<span class="co"># 5. Install Python package dependencies</span>
+<span class="co"># 4. Install Python package dependencies and restart R to see changes.</span>
 <span class="fu"><a href="../reference/ee_install_python_packages.html">ee_install_python_packages</a></span>()
 
-<span class="co"># 6. Initialize rgee again!</span>
+<span class="co"># 5. Initialize rgee again!</span>
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></body></html></div>
-<p>The second group of dependencies also called <span style="color:#ebcd26"><b>I/O dependencies</b></span> unlock <code>rgee</code> import &amp; export functions. This dependencies are not mandatory. However, many of the rgee I/O functionality depend on it. The dependencies that comprised this group are shown below:</p>
+<p>The second group of dependencies also called <span style="color:#857e04"><b>I/O dependencies</b></span> unlock <code>rgee</code> import &amp; export functions. This dependencies are not mandatory. However, many of the rgee I/O functionality depend on it. The dependencies that comprised this group are shown below:</p>
 <ul>
-<li><span style="color:#ebcd26"><strong>Google Cloud Storage credentials</strong></span></li>
-<li><span style="color:#ebcd26"><strong>Google Drive credentials</strong></span></li>
+<li><span style="color:#857e04"><strong>Google Cloud Storage credentials</strong></span></li>
+<li><span style="color:#857e04"><strong>Google Drive credentials</strong></span></li>
 </ul>
 <div id="import-and-export-spatial-data-using-rgee" class="section level3">
 <h3 class="hasAnchor">
@@ -150,11 +146,11 @@
 <li>
 <strong>ee_as_sf</strong>: Useful to download ee<span class="math inline">\(Geometry, ee\)</span>Feature and ee$FeatureCollection.</li>
 <li>
-<strong>ee_as_stars</strong>: Convert ee$Image to stars object.</li>
+<strong>ee_as_</strong>*: Convert ee$Image to stars and raster object.</li>
 <li>
-<strong>ee_as_thumbnail</strong>: Create a stars object based on a thumbnail image.</li>
+<strong>ee_as_thumbnail</strong>: Create a raster or stars object based on a thumbnail image.</li>
 </ul>
-<p>These functions through the argument <strong><code>via</code></strong> will permit you to <strong>change the download method</strong>. Thre are three methods to download in rgee: the <code>getinfo</code> which incrust the spatial object in the request, the <code>drive</code> options which use Google Drive (GD) as an container, and finally <code>gcs</code> which use Google Cloud Storage (GCS). <code>rgee</code> to deal with <strong>GD</strong> and <strong>GCS</strong> use the R package <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> respectively, so you will need to do the installation before.</p>
+<p>These functions through the argument <strong><code>via</code></strong> will permit you to <strong>change the download method</strong>. There are three methods to download an EE object in rgee: the <code>getInfo</code> which seeks the spatial object in the response, the <code>drive</code> options which use Google Drive (GD) as an container, and finally <code>gcs</code> which use Google Cloud Storage (GCS). <code>rgee</code> to deal with <strong>GD</strong> and <strong>GCS</strong> use the R package <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> respectively, so you will need to do the installation before.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># please try as follow</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</pre></body></html></div>
@@ -165,6 +161,8 @@
 <strong>sf_as_ee</strong>: Convert a sfg, sfc or sf object to ee$FeatureCollection.</li>
 <li>
 <strong>stars_as_ee</strong>: Convert an stars object to ee$Image.</li>
+<li>
+<strong>raster_as_ee</strong>: Convert an raster object to ee$Image.</li>
 </ul>
 </div>
 <div id="authorization-and-authentication" class="section level3">
@@ -206,7 +204,7 @@
 <li>
 <code><a href="../reference/ee_check-tools.html">ee_check_credentials()</a></code> - Google Drive and GCS credentials</li>
 <li>
-<code><a href="../reference/ee_check-tools.html">ee_check_rgee_python_packages()</a></code> - R/Python packages</li>
+<code><a href="../reference/ee_check-tools.html">ee_check_rgee_python_packages()</a></code> - Python packages</li>
 </ul>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check</a></span>()</pre></body></html></div>
