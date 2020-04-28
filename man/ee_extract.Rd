@@ -7,7 +7,7 @@
 ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = FALSE, ...)
 }
 \arguments{
-\item{x}{EE Image or ImageCollection.}
+\item{x}{ee$Image or ee$ImageCollection with a single band.}
 
 \item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.}
 
@@ -23,6 +23,12 @@ the sf object y? This only applies if y is a sf object.}
 
 \item{...}{reduceRegions additional parameters. See
 ee_help(ee$Image()$reduceRegions) for more details.}
+}
+\value{
+A data.frame or a sf object depending on the sf argument. The
+columns with the extracted values will get their column name from the
+image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
+will use \code{system:index} instead.
 }
 \description{
 Extract values from a \code{ee$Image} or \code{ImageCollection} at the
@@ -82,6 +88,7 @@ of its inputs.
 }
 }
 \examples{
+
 library(rgee)
 library(sf)
 
@@ -91,7 +98,11 @@ ee_Initialize()
 # Define a Image or ImageCollection: Terraclimate
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2001-01-01", "2002-01-01")$
-  map(function(x) x$select("pr"))
+  map(function(x){
+    date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+    name <- ee$String$cat("Terraclimate_pp_", date)
+    x$select("pr")$set("RGEE_NAME", name)
+  })
 
 # Define a geometry
 nc <- st_read(
@@ -105,21 +116,16 @@ ee_nc_rain <- ee_extract(
   x = terraclimate,
   y = nc,
   scale = 250,
-  fun = ee$Reducer$max(),
+  fun = ee$Reducer$mean(),
   sf = TRUE
 )
 
 # Spatial plot
-plot(ee_nc_rain["X200106"],
+plot(
+  ee_nc_rain["Terraclimate_pp_2001_01_01"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
-dev.off()
 
-# Temporal plot
-ee_nc <- ee_nc_rain
-time_serie <- as.numeric(ee_nc[1, sprintf("X\%s", 200101:200112)])
-main <- sprintf("2001 Precipitation - \%s", ee_nc$NAME[1])
-plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
-points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)
+dev.off()
 }

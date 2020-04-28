@@ -5,7 +5,7 @@
 #' \code{ee$Feature}, \code{ee$FeatureCollection} and sf objects. This function
 #' try to mimics how \link[raster]{extract} currently works.
 #'
-#' @param x EE Image or ImageCollection.
+#' @param x ee$Image or ee$ImageCollection with a single band.
 #' @param y ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.
 #' @param fun ee$Reducer object. Function to summarize the values. The function
 #' should take a single numeric vector as argument and return a single value.
@@ -72,6 +72,7 @@
 #' of its inputs.
 #' }
 #' @examples
+#'
 #' library(rgee)
 #' library(sf)
 #'
@@ -81,7 +82,11 @@
 #' # Define a Image or ImageCollection: Terraclimate
 #' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
 #'   filterDate("2001-01-01", "2002-01-01")$
-#'   map(function(x) x$select("pr"))
+#'   map(function(x){
+#'     date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+#'     name <- ee$String$cat("Terraclimate_pp_", date)
+#'     x$select("pr")$set("RGEE_NAME", name)
+#'   })
 #'
 #' # Define a geometry
 #' nc <- st_read(
@@ -95,23 +100,18 @@
 #'   x = terraclimate,
 #'   y = nc,
 #'   scale = 250,
-#'   fun = ee$Reducer$max(),
+#'   fun = ee$Reducer$mean(),
 #'   sf = TRUE
 #' )
 #'
 #' # Spatial plot
-#' plot(ee_nc_rain["X200106"],
+#' plot(
+#'   ee_nc_rain["Terraclimate_pp_2001_01_01"],
 #'   main = "2001 Jan Precipitation - Terraclimate",
 #'   reset = FALSE
 #' )
-#' dev.off()
 #'
-#' # Temporal plot
-#' ee_nc <- ee_nc_rain
-#' time_serie <- as.numeric(ee_nc[1, sprintf("X%s", 200101:200112)])
-#' main <- sprintf("2001 Precipitation - %s", ee_nc$NAME[1])
-#' plot(time_serie, ylab = "pp (mm/month)", type = "l", lwd = 1.5, main = main)
-#' points(time_serie, pch = 20, lwd = 1.5, cex = 1.5)
+#' dev.off()
 #' @export
 ee_extract <- function(x,
                        y,
@@ -119,27 +119,87 @@ ee_extract <- function(x,
                        scale = 1000,
                        sf = FALSE,
                        ...) {
+  # spatial classes
+  sf_classes <- c("sf", "sfc", "sfg")
+  sp_objects <- ee_get_spatial_objects('Table')
+
+  # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)
-  if (any(c("sf", "sfc", "sfg") %in% class(y))) {
-    sf_y <- y
-    y <- sf_as_ee(y)
+
+  # Is y a Spatial object?
+  if (!any(class(y) %in% c(sp_objects, sf_classes))) {
+    stop("y is not a Earth Engine table or a sf object.")
   }
 
-  # Set the index image as a property in the FeatureCollection
-  y <- ee$FeatureCollection(y)$map(
-    function(x) x$set("ee_ID", x$get("system:index"))
-  )
+  # Is x a Image or ImageCollection?
+  if (!any(class(x) %in% ee_get_spatial_objects("i+ic"))) {
+    stop("x is neither an ee$Image nor ee$ImageCollection")
+  }
+
+
+  # Is a complex ImageCollection?
+  if (any(class(x) %in% "ee.imagecollection.ImageCollection")) {
+    band_names <- x$first()$bandNames()$getInfo()
+    if (length(band_names) > 1) {
+      stop("ee_extract does not support ee$ImageCollection with",
+           " multiple bands"," \nEntered: ",band_names,"\nExpected: ",
+           band_names[1])
+    }
+  }
+
+  # Force to x to be a ImageCollection
+  x <- ee$ImageCollection(x)
+
+  # RGEE_NAME exist?
+  if (is.null(x$first()$get("RGEE_NAME")$getInfo())) {
+    exist_rgee_name <- TRUE
+  } else {
+    exist_rgee_name <- FALSE
+  }
+
+  # If y is a sf object convert into a ee$FeatureCollection object
+  if (any(sf_classes %in% class(y))) {
+    sf_y <- y
+    ee_y <- sf_as_ee(y)
+  }
+
+  # If y is a ee$FeatureCollection object and sf is TRUE convert it to an
+  # sf object
+  if (any(ee_get_spatial_objects('Table') %in%  class(y))) {
+    ee_y <- ee$FeatureCollection(y)
+    if (isTRUE(sf)) {
+      sf_y <- ee_as_sf(y)
+    }
+  }
+
+  #set ee_ID for identify rows in the data.frame
+  ee_y <- ee_y$map(function(f) f$set("ee_ID", f$get("system:index")))
+
+  # Get the funname
   fun_name <- gsub("Reducer.", "", fun$getInfo()["type"])
 
-  # Handling the images
-  triplets <- ee$ImageCollection(x)$map(function(image) {
-    image$reduceRegions(
-      collection = y,
-      reducer = fun,
-      scale = scale
-    )$map(function(f) f$set("imageId", image$id()))
-  })$flatten()
+  # triplets save info about the value, the row_id (ee_ID) and
+  # col_id (imageId)
+  if (exist_rgee_name) {
+    triplets <- x$map(function(image) {
+      image$reduceRegions(
+        collection = ee_y,
+        reducer = fun,
+        scale = scale
+      )$map(function(f) f$set("imageId", image$get("system:index")))
+    })$flatten()
+  } else {
+    triplets <- x$map(function(image) {
+      image$reduceRegions(
+        collection = ee_y,
+        reducer = fun,
+        scale = scale
+      )$map(function(f) f$set("imageId", image$get("RGEE_NAME")))
+    })$flatten()
+  }
+
+  # From ee$Dict format to a table
   table <- extract_py$
     table_format(triplets, "ee_ID", "imageId", fun_name)$
     map(function(feature) {
@@ -166,14 +226,3 @@ ee_extract <- function(x,
   }
   table_sf
 }
-
-
-#' Convert a character if it is a factor
-#' @noRd
-# ee_isfactor_to_character <- function(x){
-#   if (is(x,"factor")) {
-#     as.character(x)
-#   } else {
-#     x
-#   }
-# }
