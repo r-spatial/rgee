@@ -4,7 +4,4 @@
 .Ruserdata
 .httr-oauth
 inst/doc
-docs/
-pkgdown/
 inst/python/__pycache__/
-_pkgdown.yml

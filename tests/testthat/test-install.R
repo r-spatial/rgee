@@ -3,7 +3,7 @@ context("rgee: ee_install test")
 ### Instalation module
 test_that("ee_create_pyenv ",{
   result <- ee_create_pyenv('earthengine_test')
-  expect_true(result)
+  expect_type(result,"character")
 })
 
 test_that("ee_discover_pyenvs",{
