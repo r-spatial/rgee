@@ -13,12 +13,16 @@
 #' }
 #' @export
 ee_create_pyenv <- function(python_env) {
+
+  #Check is Python is greather than 3.5
+  ee_check_python(quiet = TRUE)
+
   if (is_windows()) {
-    conda_create(python_env)
+    pyenv_path <- conda_create(python_env)
   } else {
-    virtualenv_create(python_env)
+    pyenv_path <- virtualenv_create(python_env)
   }
-  invisible(TRUE)
+  pyenv_path
 }
 
 #' Discover all the Python environments available

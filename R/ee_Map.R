@@ -437,6 +437,10 @@ ee_get_spatial_objects <- function(type = "all") {
       "ee.featurecollection.FeatureCollection"
     )
   }
+  if (type == "i+ic") {
+    ee_spatial_object <- c(
+      "ee.image.Image", "ee.imagecollection.ImageCollection")
+  }
   if (type == "Image") {
     ee_spatial_object <- "ee.image.Image"
   }
