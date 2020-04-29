@@ -13,21 +13,20 @@ bibliography: paper.bib
 # Summary
 
 Google Earth Engine (GEE) [@gorelick2017google] is a cloud-based platform specifically
-designed for reproducible planetary-scale environmental data analysis. Currently, GEE
+designed for reproducible planetary-scale environmental data analysis. Currently,GEE
 is made up of 3 components. The data catalog which is continuously updated and permits 
-to users the access to a dataset of over 40 years of satellite imagery and vector
-data for the whole world. The Google’s geocomputational infrastructure which use different 
-data distribution models depending on the spatial task to perform, reducing mostly the time
-execution of spatial non-recursively procedures. Finally, the Web REST API and two client 
-libraries (in JavaScript and Python) which permits users to interact with GEE servers without
-the necessity of understand the complex system architecture and data distributions models 
-behind GEE. At the present day, the client libraries count with more than 800 functions with 
-the possibility of chaining operations.
-
+to users the access to a dataset of over 40 years of satellite imagery for the whole world. 
+The Google’s geocomputational infrastructure which use different data distribution models 
+depending on the spatial task to perform, reducing mostly the time execution of spatial
+non-recursively procedures. Finally, the Web REST API and two client libraries (in JavaScript and Python) 
+which permits users to interact with GEE servers without the necessity of understand the complex system architecture and data distributions models behind GEE. At the present day, the client libraries count with more than 800 functions with the possibility of chaining operations.
 
 This paper introduce **rgee**, a new Earth Engine client library. The goal of
 **rgee** is to allows users to leverage the strengths of the R spatial ecosystem
-and Google Earth Engine in the same worflow. 
+and Google Earth Engine in the same worflow. **rgee** import all the existing functionality
+of the API and added functions in the high.
+
+
 The API of `rgee` is created taken into account the expertissness
 
 At different to the Javascript or Python client `rgee` is not a native Earth Engine API.
@@ -55,11 +54,32 @@ spatial objects. Additionally, you could easily manage EEA through the ee_manage
 
 ## Multiple users
 ## Extraction of time series
-## Easy visualization
-## rgee asset Manage Interface
-## Metadata display
 
-# A short example
+```r
+library(rgee)
+library(sf)
+
+ee_Initialize()
+
+# Define a Image or ImageCollection e.g. Terraclimate
+# Mean composite
+terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
+  filterDate("2001-01-01", "2002-01-01")$
+  map(function(x) x$select("pr"))$
+  mean()$rename("pp_mean") 
+
+# Define a geometry
+nc <- st_read(system.file("shape/nc.shp", package = "sf"))
+
+# Extract the average areal rainfall
+ee_nc_rain <- ee_extract(terraclimate, nc, sf = TRUE)
+```
+
+## Easy visualization
+
+## rgee asset Manage Interface
+
+## Metadata display
 
 # Availability
 
