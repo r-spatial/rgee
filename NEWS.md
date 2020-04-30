@@ -32,7 +32,7 @@
 - ee_Initialize now does not display Python version used (use ee_user_info instead).
 # rgee 0.3.10
 - ee_imagecollection_to_local local added.
-- ee_as_stars changed by ee_image_as_stars.
+- ee_as_stars changed by ee_as_stars.
 - ee_image_stars and ee_image_to_local added
 - ee_extract new argument added "sf = FALSE".
 - ee_as_thumbnail arguments modified.

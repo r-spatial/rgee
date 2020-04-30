@@ -33,7 +33,7 @@ test_that("ee_gcs_to_table ", {
 
 system.time(2)
 
-test_that("ee_gcs_to_image ", {
+test_that("gcs_to_ee_image ", {
   # Get the filename of a image
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   x <- read_stars(tif)
@@ -45,7 +45,7 @@ test_that("ee_gcs_to_image ", {
   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 
   # 2. Pass from gcs to asset
-  result <- ee_gcs_to_image(
+  result <- gcs_to_ee_image(
     x = x,
     gs_uri = gs_uri,
     assetId = assetId

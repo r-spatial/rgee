@@ -201,7 +201,7 @@ ee_gcs_to_table <- function(gs_uri,
 #' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
-#' ee_gcs_to_image(
+#' gcs_to_ee_image(
 #'   x = x,
 #'   gs_uri = gs_uri,
 #'   assetId = assetId
@@ -223,7 +223,7 @@ ee_gcs_to_table <- function(gs_uri,
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-ee_gcs_to_image <- function(x,
+gcs_to_ee_image <- function(x,
                             gs_uri,
                             assetId,
                             overwrite = FALSE,

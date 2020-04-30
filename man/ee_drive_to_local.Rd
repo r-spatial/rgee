@@ -26,8 +26,7 @@ whether "filename" should be overwritten. By default TRUE.}
 \item{quiet}{logical. Suppress info message}
 }
 \value{
-An sf, stars, character or a list object depending on the \code{consider}
-argument.
+filename character vector.
 }
 \description{
 Move results of an EE task saved in Google Drive to a local directory.

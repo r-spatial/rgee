@@ -279,8 +279,8 @@ ee_print.ee.image.Image <- function(eeobject,
       band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
     } else {
       message(
-        band_metadata$crs, " is not a valid PROJ.4 CRS string",
-        ". Reprojecting to EPSG:4326 ...."
+        "ee_print only support EPSG codes. Reprojecting ",
+        "to EPSG:4326 ...."
       )
       selected_img <- selected_img$reproject(crs = "EPSG:4326")
       band_info <- selected_img$reproject(crs = "EPSG:4326")$getInfo()

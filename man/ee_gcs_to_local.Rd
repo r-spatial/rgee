@@ -17,6 +17,9 @@ be overwritten.}
 
 \item{quiet}{Logical. Suppress info message}
 }
+\value{
+filename character vector.
+}
 \description{
 Move results of an EE task saved in Google Cloud Storage to a local
 directory.

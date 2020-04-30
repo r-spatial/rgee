@@ -713,9 +713,7 @@ ee_table_to_asset <- function(collection,
 #' download. Additionally, the options "last" and "all" are implemented. "last"
 #' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
-#' @return
-#' An sf, stars, character or a list object depending on the \code{consider}
-#' argument.
+#' @return filename character vector.
 #' @importFrom stars read_stars
 #' @importFrom utils menu
 #' @examples
@@ -921,6 +919,8 @@ ee_drive_to_local <- function(task,
 #' The task argument needs "COMPLETED" task state to work, since the parameters
 #' necessaries to locate the file into google cloud storage are obtained from
 #' ee$batch$Export$*$toCloudStorage(...)$start()$status().
+#'
+#' @return filename character vector.
 #'
 #' @examples
 #' \dontrun{

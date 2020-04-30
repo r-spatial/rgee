@@ -28,7 +28,7 @@ test_that('Geometry consideration for "getInfo"', {
   test_image_01 <- ee$Image(0)$add(1)
 
   # test01: base case
-  img_01 <- ee_image_as_raster(image = test_image_01, region = rect_01,
+  img_01 <- ee_as_raster(image = test_image_01, region = rect_01,
                                quiet = TRUE)
   expect_equal(extent(img_01), extent(-3,3,-3,3))
 
@@ -38,7 +38,7 @@ test_that('Geometry consideration for "getInfo"', {
     crs = "EPSG:4326",
     scale = round(nominalscale)
   )
-  img_02 <- ee_image_as_raster(image = test_image_02, region = rect_01,
+  img_02 <- ee_as_raster(image = test_image_02, region = rect_01,
                                quiet = TRUE)
   expect_equal(dim(img_02), c(8, 8, 1))
 })
@@ -55,7 +55,7 @@ test_that("ee_as_proxystars ", {
 
 test_that("ee_as_stars - simple ", {
   #getinfo
-  img_stars_01 <- ee_image_as_stars(
+  img_stars_01 <- ee_as_stars(
     image = img,
     region = geometry,
     via = "getInfo"
@@ -63,14 +63,14 @@ test_that("ee_as_stars - simple ", {
   expect_s3_class(img_stars_01,'stars')
 
   #drive
-  img_stars_02 <- ee_image_as_stars(
+  img_stars_02 <- ee_as_stars(
     image = img,
     region = geometry,
     via = "drive"
   )
   expect_s3_class(img_stars_02, 'stars')
 
-  img_raster_03 <- ee_image_as_raster(
+  img_raster_03 <- ee_as_raster(
     image = img,
     region = geometry,
     via = "gcs",
@@ -91,7 +91,7 @@ test_that("ee_as_stars - simple ", {
 #   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
 #   # 2. Pass from gcs to asset
 #   stars_x <- read_stars(tif)
-#   ee_gcs_to_image(
+#   gcs_to_ee_image(
 #     x = stars_x,
 #     gs_uri = gs_uri,
 #     assetId = assetId
@@ -140,8 +140,8 @@ test_that("ee_image_to_local", {
   )
 })
 
-test_that("ee_image_as_raster", {
-  img_01 <- ee_image_as_raster(
+test_that("ee_as_raster", {
+  img_01 <- ee_as_raster(
     image = image_srtm,
     region = geometry,
     scale = 10,
@@ -259,7 +259,7 @@ test_that("ee_image_local error 7", {
 
 test_that("ee_image_local error 8", {
   expect_error(
-  ee_image_as_raster(
+  ee_as_raster(
     image = image_srtm,
     region = geometry,
     scale = 20000,
@@ -273,7 +273,7 @@ test_that("ee_image_local error 9", {
   GEOtransform[[2]] <- 10
   GEOtransform[[4]] <- 10
   expect_error(
-    ee_image_as_raster(
+    ee_as_raster(
       image = image_srtm$reproject(crs = "EPSG:4326",
                                    crsTransform = GEOtransform),
       region = geometry,
