@@ -1,3 +1,8 @@
+# rgee 0.4.2
+- ee_image_to_local and ee_local_image_as_ee removed.
+- ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.
+- ee_gcs_to_image renamed to gcs_to_ee_image.
+- minor bug in ee_print solved.
 # rgee 0.4.1
 - ee_extract bug fixed now sf arg works for Earth Engine tables.
 - ee_create_pyenv now return a Python Path
