@@ -517,16 +517,6 @@ ee_source_python <- function(oauth_func_path) {
   import_from_path(module_name, path = module_path, convert = FALSE)
 }
 
-#' Earth Engine API version
-#'
-#' This function returns the Earth Engine Python API
-#' version with which rgee was built.
-#' @export
-ee_version <- function() {
-  "0.1.219"
-}
-
-
 #' Function used in ee_user
 #'
 #' Add extra space to usernames to form a nice table

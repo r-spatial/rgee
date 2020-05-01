@@ -780,6 +780,7 @@ ee_image_local <- function(image,
 #' in size of data representation produced by a data compression algorithm
 #' (ignored if \code{getsize} is FALSE). By default is 20
 #' @param quiet Logical. Suppress info message
+#' @importFrom sf st_transform
 #' @return A list of parameters
 #' @examples
 #' \dontrun{

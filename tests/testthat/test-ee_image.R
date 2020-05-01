@@ -116,30 +116,6 @@ test_that("ee_as_stars - simple ", {
 #   expect_type(ee_image_03,'character')
 # })
 
-test_that("ee_image_to_local", {
-  img_01 <- ee_image_to_local(
-    image = image_srtm,
-    region = geometry,
-    scale = 250,
-    via = "getInfo"
-  )
-
-  img_02 <- ee_image_to_local(
-    image = image_srtm,
-    region = geometry,
-    scale = 250,
-    via = "drive"
-  )
-
-  expect_equal(dim(raster(img_02)), dim(raster(img_01)))
-  expect_equal(extent(raster(img_02)), extent(raster(img_01)))
-  expect_equal(
-    mean(getValues(raster(img_02))),
-    mean(getValues(raster(img_01))),
-    tolerance = 0.1
-  )
-})
-
 test_that("ee_as_raster", {
   img_01 <- ee_as_raster(
     image = image_srtm,

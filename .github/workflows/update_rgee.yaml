@@ -1,6 +1,6 @@
 on:
   push:
-    branches: master
+    branches: dev
 
 name: pkgdown
 
@@ -16,7 +16,6 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages("rcpp")
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
