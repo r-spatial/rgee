@@ -50,7 +50,8 @@
 #'
 #' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom methods as
-#' @importFrom sf st_crs<-
+#' @importFrom sf st_crs<- st_coordinates st_as_text st_make_grid
+#' @importFrom stars st_get_dimension_values st_mosaic
 #' @importFrom reticulate py_to_r
 #' @importFrom utils download.file zip str
 #' @examples

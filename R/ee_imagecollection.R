@@ -148,7 +148,8 @@ ee_imagecollection_to_local <- function(ic,
     if (isFALSE(quiet)) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-    ee_image_to_local(
+
+    ee_image_local(
       image = image,
       region = region,
       dsn = ic_names[r_index],

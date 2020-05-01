@@ -1,5 +1,7 @@
 context("rgee: ee_download test")
 library(rgee)
+library(sf)
+
 ee_Initialize(
   email = "data.colec.fbf@gmail.com",
   drive = TRUE,

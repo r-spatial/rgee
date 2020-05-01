@@ -523,7 +523,7 @@ ee_source_python <- function(oauth_func_path) {
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
-  "0.1.219"
+  "0.1.220"
 }
 
 

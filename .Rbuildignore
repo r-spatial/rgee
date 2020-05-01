@@ -7,3 +7,4 @@
 ^vignettes$
 ^\.github$
 ^codecov\.yml$
+^_pkgdown\.yml$
