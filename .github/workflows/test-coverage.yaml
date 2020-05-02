@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - dev
+      - master
   pull_request:
     branches:
-      - dev
+      - master
 
 name: test-coverage
 
@@ -13,30 +13,101 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
-
-      - uses: r-lib/actions/setup-r@master
-
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: '3.6.1'
       - uses: r-lib/actions/setup-pandoc@master
 
-      - name: Query dependencies
+      - name: SETUP PYTHON
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.6
+
+      - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: Cache R packages
+      - name: RETICULATE_PYTHON SETTING
+        run: |
+          reticulate_dir <- path.expand("~/.Renviron")
+          fileConn <- file(reticulate_dir)
+          pyPATH <- Sys.getenv("pythonLocation")
+          writeLines(sprintf('RETICULATE_PYTHON="%s"', pyPATH), fileConn)
+          close(fileConn)
+        shell: Rscript {0}
+
+      - name: DECRYPT rgee SECRETS
+        run: ./.github/decrypt_secret.sh
+        env:
+          RGEE_SECRET_PASSPHRASE: ${{ secrets.RGEE_SECRET_PASSPHRASE }}
+
+      - name: INSTALL SYSTEM DEPENDENCIES [macOS]
+        if: runner.os == 'macOS'
+        env:
+          RHUB_PLATFORM: osx-x86_64-clang
+        run: |
+          brew install udunits
+          brew install gdal
+          cat <<EOT >> .Renviron
+          PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
+          PROJ_LIB=/usr/local/opt/proj/share/proj/
+          EOT
+          cat <<EOT >> .Rprofile
+          config_args <- c("sf" = "--with-proj-lib=/usr/local/lib/", "rgdal" = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+          r <- getOption("repos")
+          r["CRAN"] <- "https://cran.rstudio.com"
+          options(configure.args = config_args, repos = r)
+          EOT
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
+
+      - name: INSTALL PYTHON DEPENDENCIES
+        run: |
+          pip install --upgrade pip
+          pip install setuptools oauth2client earthengine-api numpy virtualenv
+
+      - name: CACHE R PACKAGES
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
           key: macOS-r-3.6-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: macOS-r-3.6-
 
-      - name: Install dependencies
+      - name: INSTALL R TEST PACKAGES
         run: |
-          install.packages(c("remotes"))
+          install.packages(c("remotes", "Rcpp"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr", force = TRUE)
+          remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: PREBUILD TESTING
+        run: |
+          earthengine -h
+
+      - name: INSTALL rgdal WITH CONFIGURE
+        run: |
+          install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+        shell: Rscript {0}
+
+      - name: CHECK
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: UPLOAD CHECK RESULTS
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: macOS-r-3.6-results
+          path: check
 
       - name: Test coverage
         run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}")

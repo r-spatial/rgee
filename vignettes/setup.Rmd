@@ -1,6 +1,5 @@
 ---
 title: "Setup and Details"
-output: rmarkdown::html_vignette
 ---
 
 ```{r, include = FALSE}

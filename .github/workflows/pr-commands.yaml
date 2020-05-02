@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/pr-fetch@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_TOKEN }}
       - uses: r-lib/actions/setup-r@master
       - name: Install dependencies
         run: Rscript -e 'install.packages(c("remotes", "roxygen2"))' -e 'remotes::install_deps(dependencies = TRUE)'
@@ -23,7 +23,7 @@ jobs:
           git commit -m 'Document'
       - uses: r-lib/actions/pr-push@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_TOKEN }}
   style:
     if: startsWith(github.event.comment.body, '/style')
     name: style
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/pr-fetch@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_TOKEN }}
       - uses: r-lib/actions/setup-r@master
       - name: Install dependencies
         run: Rscript -e 'install.packages("styler")'
@@ -44,7 +44,7 @@ jobs:
           git commit -m 'Style'
       - uses: r-lib/actions/pr-push@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GH_TOKEN }}
   # A mock job just to ensure we have a successful build status
   finish:
     runs-on: ubuntu-latest
