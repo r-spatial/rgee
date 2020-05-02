@@ -1,0 +1,10 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README.Rmd
+^CODE_OF_CONDUCT.md
+^CONTRIBUTING.md
+^LICENSE.md
+^vignettes$
+^\.github$
+^codecov\.yml$
+^_pkgdown\.yml$
