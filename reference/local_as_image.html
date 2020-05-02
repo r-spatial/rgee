@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -164,25 +164,7 @@
     <p>Convert a local image into an EE Image</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stars_as_ee</span>(
-  <span class='no'>x</span>,
-  <span class='no'>assetId</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
-
-<span class='fu'>raster_as_ee</span>(
-  <span class='no'>x</span>,
-  <span class='no'>assetId</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
-
-<span class='fu'>ee_local_image_as_ee</span>(
+    <pre class="usage"><span class='fu'>raster_as_ee</span>(
   <span class='no'>x</span>,
   <span class='no'>assetId</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -196,8 +178,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>Character, RasterLayer, RasterStack, RasterBrick, stars or
-stars-proxy object to be converted into an ee$Image.</p></td>
+      <td><p>RasterLayer, RasterStack or RasterBrick object to be converted into
+an ee$Image.</p></td>
     </tr>
     <tr>
       <th>assetId</th>
@@ -242,7 +224,7 @@ it exists.</p></td>
 <span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_local_to_gcs.html'>ee_local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>tif</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
 
 <span class='co'># 2. Pass from gcs to asset</span>
-<span class='fu'><a href='ee_gcs_to_image.html'>ee_gcs_to_image</a></span>(
+<span class='fu'><a href='gcs_to_ee_image.html'>gcs_to_ee_image</a></span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
   <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>
@@ -252,18 +234,18 @@ it exists.</p></td>
 <span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
 
 <span class='co'># OPTIONAL: Display results</span>
-<span class='no'>ee_stars_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>assetId</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_stars_01</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_stars_01</span>)
+<span class='no'>ee_raster_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>assetId</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_raster_01</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_raster_01</span>)
 
 <span class='co'># Method 2</span>
-<span class='no'>ee_stars_02</span> <span class='kw'>&lt;-</span> <span class='fu'>stars_as_ee</span>(
+<span class='no'>ee_raster_02</span> <span class='kw'>&lt;-</span> <span class='fu'>raster_as_ee</span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
   <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
   <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>
 )
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_stars_02</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_stars_02</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_raster_02</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_raster_02</span>)
 }</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -270,7 +270,7 @@ Engine Guide - Export data</a>.</p>
 <span class='no'>blocks</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"TIGER/2010/Blocks"</span>)
 <span class='no'>subset</span> <span class='kw'>&lt;-</span> <span class='no'>blocks</span>$<span class='fu'>filterBounds</span>(<span class='no'>roi</span>)
 <span class='no'>sf_subset</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>subset</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_subset</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sf_subset</span>)
 
 <span class='co'># Create Random points in Earth Engine</span>
 <span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(-<span class='fl'>119.224</span>, <span class='fl'>34.669</span>, -<span class='fl'>99.536</span>, <span class='fl'>50.064</span>)
@@ -279,7 +279,7 @@ Engine Guide - Export data</a>.</p>
 
 <span class='co'># Download via GetInfo</span>
 <span class='no'>sf_randomPoints</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(<span class='no'>ee_randomPoints</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sf_randomPoints</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>sf_randomPoints</span>)
 
 <span class='co'># Download via drive</span>
 <span class='no'>sf_randomPoints_drive</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(

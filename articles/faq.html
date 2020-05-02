@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -135,7 +135,7 @@
   <span class="no">myPythonPath</span> <span class="kw">&lt;-</span> <span class="st">"C:/Python36/ArcGISx6410.4/python.exe"</span>
 
   <span class="co"># 2. Set the RETICULATE PYTHON PATH (restart R to see changes).</span>
-  <span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">myPythonPath</span>)
+  <span class="fu"><a href="../reference/ee_set_pyenv.html">ee_set_pyenv</a></span>(<span class="no">myPythonPath</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
   <span class="co"># 3. Create a Python environment, e.g. ee.</span>
   <span class="no">myPythonEnv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ee_create_pyenv.html">ee_create_pyenv</a></span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)

@@ -10,7 +10,13 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_Initialize.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_as_raster.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_as_sf.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_as_stars.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_as_thumbnail.html</loc>
@@ -43,9 +49,6 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_extract.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_image.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_local.html</loc>
   </url>
   <url>
@@ -67,12 +70,6 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_help.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_as_raster.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_as_stars.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_image_info.html</loc>
   </url>
   <url>
@@ -83,9 +80,6 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_image_to_gcs.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_to_local.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
@@ -148,6 +142,9 @@
     <loc>http://csaybar.github.io/rgee/reference/eedate_to_rdate.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/gcs_to_ee_image.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/local_as_image.html</loc>
   </url>
   <url>
@@ -164,6 +161,9 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/sf_as_ee.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/stars_as_ee.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/articles/considerations.html</loc>
