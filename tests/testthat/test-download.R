@@ -369,6 +369,7 @@ test_that("GEOJSON_VECTOR_GCS",{
 # ASSET
 test_that("table to asset",{
   assetid <- paste0(ee_get_assethome(), '/l5_Amarakaeri')
+  try(ee_manage_delete(assetid), silent = TRUE)
   task_vector <- ee_table_to_asset(
     collection = fc_test,
     assetId = assetid

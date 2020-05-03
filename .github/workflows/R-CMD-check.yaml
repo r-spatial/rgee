@@ -18,14 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          #- {os: windows-latest, r: '3.6'}
-          #- {os: macOS-latest, r: '3.6'}
-          #- {os: macOS-latest, r: 'devel'}
-          #- {os: ubuntu-16.04, r: '3.2', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.3', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.4', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.5', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-latest, r: '3.6'}
+          - {os: windows-latest, r: '3.6', platform: windows-x86_64}
+          - {os: macOS-latest, r: '3.6', platform: osx-x86_64-clang}
+          - {os: ubuntu-latest, r: '3.5', platform: linux-x86_64-ubuntu-gcc}
+          - {os: ubuntu-latest, r: '3.6', platform: linux-x86_64-ubuntu-gcc}
+          - {os: ubuntu-latest, r: '4.0', platform: linux-x86_64-ubuntu-gcc}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -51,7 +48,7 @@ jobs:
       - name: SETUP PANDOC
         uses: r-lib/actions/setup-pandoc@master
 
-      - name: QUERY DEPENDECIES [Linux and macOS]
+      - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
@@ -71,15 +68,17 @@ jobs:
         env:
           RGEE_SECRET_PASSPHRASE: ${{ secrets.RGEE_SECRET_PASSPHRASE }}
 
+
       - name: INSTALL SYSTEM DEPENDENCIES [LINUX]
         if: runner.os == 'Linux'
         env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+          RHUB_PLATFORM: ${{ matrix.config.platform }}
         run: |
           sudo apt update
           sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
           sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev \
           libv8-3.14-dev libjq-dev libnetcdf-dev libjson-c-dev
+
 
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
@@ -87,6 +86,8 @@ jobs:
 
       - name: INSTALL SYSTEM DEPENDENCIES [macOS]
         if: runner.os == 'macOS'
+        env:
+          RHUB_PLATFORM: ${{ matrix.config.platform }}
         run: |
           brew install udunits
           brew install gdal
@@ -100,6 +101,9 @@ jobs:
           r["CRAN"] <- "https://cran.rstudio.com"
           options(configure.args = config_args, repos = r)
           EOT
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
 
       - name: INSTALL PYTHON DEPENDENCIES
         run: |
@@ -117,9 +121,8 @@ jobs:
       - name: PREBUILD TESTING
         run: |
           earthengine -h
-          echo -e "import ee\nee.Initialize()\nprint(ee.Image(0).getInfo())" | python
 
-      - name: INSTALL sf and rgdal WITH CONFIGURE [macOS]
+      - name: INSTALL sfrgdal WITH CONFIGURE [macOS]
         if: runner.os == 'macOS'
         run: |
           install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
@@ -134,7 +137,7 @@ jobs:
       - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples","--no-tests"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: UPLOAD CHECK RESULTS
@@ -143,7 +146,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-
-      - name: Test coverage
-        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}")
-        shell: Rscript {0}

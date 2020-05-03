@@ -53,7 +53,7 @@ object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
 \item{geodesic}{Logical. Ignored if \code{x} is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
 FALSE, indicates that line segments should be interpreted as planar lines
-in the specified CRS. If sabsent, defaults to TRUE if the CRS is geographic
+in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.}
 
 \item{quiet}{Logical. Suppress info message.}

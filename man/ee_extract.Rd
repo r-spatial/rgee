@@ -28,7 +28,7 @@ ee_help(ee$Image()$reduceRegions) for more details.}
 A data.frame or a sf object depending on the sf argument. The
 columns with the extracted values will get their column name from the
 image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
-will use \code{system:index} instead.
+will use the band name instead.
 }
 \description{
 Extract values from a \code{ee$Image} or \code{ImageCollection} at the
@@ -88,7 +88,7 @@ of its inputs.
 }
 }
 \examples{
-
+\dontrun{
 library(rgee)
 library(sf)
 
@@ -126,6 +126,5 @@ plot(
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
-
-dev.off()
+}
 }
