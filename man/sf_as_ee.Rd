@@ -81,9 +81,9 @@ vs Server} documentation for more details. The second method implemented is
 that the result will be saved in your Earth Engine Asset. For dealing
 with very large spatial objects, it is preferable to use the third option
 'gcs_to_asset'. This option firstly save the sf object as a  *.shp file
-in the /temp directory . Secondly, using the function \code{ee_local_to_gcs}
+in the /temp directory . Secondly, using the function \code{local_to_gcs}
 will move the shapefile from local to Google Cloud Storage. Finally, using
-the function \code{ee_gcs_to_table} the ESRI shapefile will be loaded
+the function \code{gcs_to_ee_table} the ESRI shapefile will be loaded
 to the Earth Engine Asset.
 See \href{https://developers.google.com/earth-engine/importing}{Importing
 table data} documentation for more details.

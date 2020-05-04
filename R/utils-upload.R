@@ -23,10 +23,10 @@
 #'
 #' # Define an image.
 #' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-#' ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' local_to_gcs(x = tif, bucket = 'rgee_dev')
 #' }
 #' @export
-ee_local_to_gcs <- function(x,
+local_to_gcs <- function(x,
                             bucket = NULL,
                             quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
@@ -110,10 +110,10 @@ ee_local_to_gcs <- function(x,
 #' zipfile <- ee_create_shp_zip(nc)
 #'
 #' # 2. From local to gcs
-#' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#' gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 #'
 #' # 3. Pass the sf to a zip file
-#' ee_gcs_to_table(
+#' gcs_to_ee_table(
 #'   gs_uri = gs_uri,
 #'   assetId = assetId
 #' )
@@ -135,7 +135,7 @@ ee_local_to_gcs <- function(x,
 #' Map$addLayer(ee_sf_02)
 #' }
 #' @export
-ee_gcs_to_table <- function(gs_uri,
+gcs_to_ee_table <- function(gs_uri,
                             assetId,
                             overwrite = FALSE,
                             quiet = FALSE) {
@@ -164,6 +164,7 @@ ee_gcs_to_table <- function(gs_uri,
     ignore.stdout = TRUE,
     ignore.stderr = TRUE
   )
+  assetId
 }
 
 #' Move a GeoTIFF image from GCS to EE asset
@@ -198,7 +199,7 @@ ee_gcs_to_table <- function(gs_uri,
 #'
 #' # Method 1
 #' # 1. Move from local to gcs
-#' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
 #' gcs_to_ee_image(
@@ -327,6 +328,7 @@ gcs_to_ee_image <- function(x,
     ignore.stdout = TRUE,
     ignore.stderr = TRUE
   )
+  assetId
 }
 
 
@@ -353,10 +355,10 @@ gcs_to_ee_image <- function(x,
 #' zipfile <- ee_create_shp_zip(nc)
 #'
 #' # 2. From local to gcs
-#' gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#' gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 #'
 #' # 3. Pass the sf to a zip file
-#' ee_gcs_to_table(
+#' gcs_to_ee_table(
 #'   gs_uri = gs_uri,
 #'   assetId = assetId
 #' )

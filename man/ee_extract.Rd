@@ -28,7 +28,8 @@ ee_help(ee$Image()$reduceRegions) for more details.}
 A data.frame or a sf object depending on the sf argument. The
 columns with the extracted values will get their column name from the
 image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
-will use the band name instead.
+will use the band name for \code{ee$Images} and the \code{system:index}
+property for \code{ee$ImageCollections}.
 }
 \description{
 Extract values from a \code{ee$Image} or \code{ImageCollection} at the

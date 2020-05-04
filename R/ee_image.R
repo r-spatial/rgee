@@ -280,7 +280,7 @@ ee_as_raster  <- function(image,
 #'
 #' # Method 1
 #' # 1. Move from local to gcs
-#' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
 #' gcs_to_ee_image(
@@ -317,7 +317,7 @@ stars_as_ee <- function(x,
   ee_temp <- tempdir()
 
   stars_proxy <- ee_as_proxystars(x, temp_dir = ee_temp)
-  gcs_filename <- ee_local_to_gcs(
+  gcs_filename <- local_to_gcs(
     x = stars_proxy[[1]],
     bucket = bucket,
     quiet = quiet
@@ -366,7 +366,7 @@ stars_as_ee <- function(x,
 #'
 #' # Method 1
 #' # 1. Move from local to gcs
-#' gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 #'
 #' # 2. Pass from gcs to asset
 #' gcs_to_ee_image(

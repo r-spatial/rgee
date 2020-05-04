@@ -88,7 +88,7 @@ test_that("ee_as_stars - simple ", {
 
 # test_that("ee to drive to local - gcs", {
 #   try(ee_manage_delete(assetId), silent = TRUE)
-#   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#   gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 #   # 2. Pass from gcs to asset
 #   stars_x <- read_stars(tif)
 #   gcs_to_ee_image(
