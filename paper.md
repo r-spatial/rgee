@@ -14,24 +14,24 @@ authors:
     affiliation: 1
   - name: Justin Braaten
     orcid: 0000-0003-2745-9535
-    affiliation: 1
-  - name: Qiusheng Wu
     affiliation: 2
+  - name: Qiusheng Wu
+    affiliation: 3
     orcid: 0000-0001-5437-4073
   - name: Roy Yali
     affiliation: 4
     orcid: 0000-0003-4542-3755
   - name: Lesly Bautista
-    affiliation: 3
+    affiliation: 4
     orcid: 0000-0003-3523-8687
 affiliations:
-  - name: Department of Geoinformatics – Z_GIS, University of Salzburg
+  - name: Department of Geoinformatics – Z_GIS, University of Salzburg, Austria
     index: 1
+  - name: College of Earth, Ocean, and Atmospheric Sciences, Oregon State University, Corvallis, OR 97331, USA
+    index: 2
   - name: Department of Geography, University of Tennessee, Knoxville, TN 37996, USA
-    index: 2    
-  - name: National University of San Marcos. Lima, Lima, PE
     index: 3
-  - name: Pontifical Catholic University of Peru. Lima, Lima, PE
+  - name: Universidad Nacional Mayor de San Marcos, Lima, Lima 15081, Peru
     index: 4
 ---
 
@@ -114,7 +114,7 @@ ee_nc_rain <- ee_extract(terraclimate, nc, sf = TRUE)
 plot(ee_nc_rain["pp_mean"])
 ```
 
-![](rgee_paper_01.png){ width=60% }
+![Average areal rainfall from the North Carolina state. The highest (lowest) rainfall values are in yellow (blue)](rgee_paper_01.png){ width=70% }
 
 
 ## Asset Manage Interface
@@ -142,13 +142,13 @@ ee_manage_copy(
 library(rgee)
 
 ee_Initialize()
-srtm <- ee$Image("CGIAR/SRTM90_V4")
-ee_print(srtm)
+l8 <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+ee_print(l8)
 ```
-![ee.Image metadata](rgee_paper_02.png)
+![ee.Image metadata for a Landsat 8 Image](rgee_paper_02.png)
 
 # Availability
 
-`rgee` is open source software made available under the Apache 2.0 license. It can be installed through CRAN (------) using: install.packages("------"). `rgee` can also be installed from its GitHub repository using the remotes package: remotes::install_github("-------"). A serie of examples of use of `rgee` are available [here](https://csaybar.github.io/rgee-examples/README.html).
+`rgee` is open source software made available under the Apache 2.0 license. It can be installed through CRAN (------) using: install.packages("------"). `rgee` can also be installed from its GitHub repository using the remotes package: remotes::install_github("-------"). A serie of examples about the use of `rgee` are available [here](https://csaybar.github.io/rgee-examples/README.html).
 
 # References
