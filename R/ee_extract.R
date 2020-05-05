@@ -141,9 +141,13 @@ ee_extract <- function(x,
   if (x_type == "ImageCollection") {
     band_names <- x$first()$bandNames()$getInfo()
     if (length(band_names) > 1) {
-      stop("ee_extract does not support ee$ImageCollection with",
-           " multiple bands"," \nEntered: ",band_names,"\nExpected: ",
-           band_names[1])
+      stop(
+        "ee_extract does not support ee$ImageCollection with",
+        " multiple bands"," \nEntered: ",
+        paste0(band_names,collapse = " "),
+        "\nExpected: ",
+        band_names[1]
+      )
     }
   } else {
     band_names <- x$bandNames()$getInfo()
