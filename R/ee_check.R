@@ -87,7 +87,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
         ". To avoid possible issues, we ",
         "highly recommend install the version used by rgee ",
         ee_version(),
-        ", you might use:\n >>> ee_install_python_packages() \n",
+        ", you might use:\n >>> ee_earthengine_upgrade() \n",
         " >>> pip install earthengine-api==",ee_version(),
         "\n >>> conda install earthengine-api==",ee_version(),
         "\nIf the installation is successful, restart to see changes."

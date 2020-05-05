@@ -30,7 +30,7 @@ ee_manage_move(path_asset, final_path, quiet = FALSE)
 
 ee_manage_set_properties(path_asset, add_properties)
 
-ee_manage_delete_properties(path_asset, del_properties = "ee_rmv_all_prp")
+ee_manage_delete_properties(path_asset, del_properties = "ALL")
 
 ee_manage_asset_access(
   path_asset,
@@ -77,7 +77,7 @@ in the /temp directory and used when the function .}
 R functions for managing the Earth Engine Asset
 }
 \details{
-If the argument \code{del_properties} is 'ee_rmv_all_prp',
+If the argument \code{del_properties} is 'ALL',
 \link[=rgee]{ee_manage_delete_properties} will delete all
 the properties.
 }
