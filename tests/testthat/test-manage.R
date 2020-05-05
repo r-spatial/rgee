@@ -19,11 +19,10 @@ test_that("ee_manage_create", {
   expect_true(msg)
 })
 
+
 test_that("ee_manage_assetlist", {
   data_01 <- ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
   expect_s3_class(data_01,'data.frame')
-  data_02 <- ee_manage_assetlist()
-  expect_s3_class(data_02,'data.frame')
 })
 
 test_that("ee_manage_move", {
