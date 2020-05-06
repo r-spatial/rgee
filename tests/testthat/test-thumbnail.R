@@ -4,7 +4,14 @@ library(raster)
 library(rgee)
 library(sf)
 
-ee_Initialize(email = 'data.colec.fbf@gmail.com')
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 ### 1. Data
 dem_palette <- c(

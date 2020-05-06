@@ -1,5 +1,14 @@
 context("rgee: ee_help test")
 
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 # clean TRUE
 test_that("simple ee_help - py class", {
   return_message <- ee$Image %>% ee_help()

@@ -1,5 +1,14 @@
 context("rgee: ee_print test")
 
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 # clean TRUE
 test_that("simple ee_print test - ImageCollection", {
   eeobject <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$

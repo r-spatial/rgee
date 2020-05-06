@@ -12,6 +12,7 @@
 #' signature.
 #' @param f An R function
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
@@ -37,5 +38,6 @@
 #'   )
 #' )
 #' ee_newic$mean()$getInfo()$type
+#' }
 #' @export
 ee_pyfunc <- reticulate::py_func

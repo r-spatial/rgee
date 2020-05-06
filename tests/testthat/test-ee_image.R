@@ -3,8 +3,15 @@ context("rgee: sf_as_stars test")
 library(rgee)
 library(raster)
 library(stars)
-ee_reattach()
-ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
+
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 # Define data -------------------------------------------------------------
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$

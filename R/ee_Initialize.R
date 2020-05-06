@@ -32,6 +32,7 @@
 #' @seealso remove credential function: \cr
 #' \link[rgee]{ee_remove_credentials}
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #'
@@ -46,7 +47,7 @@
 #' )
 #'
 #' ee_user_info()
-#'
+#' }
 #' @export
 ee_Initialize <- function(email = NULL,
                           drive = FALSE,

@@ -1,4 +1,14 @@
 context("rgee: ee_extract test")
+
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 filename <- system.file("external/lux.shp", package="raster")
 
 # data --------------------------------------------------------------------

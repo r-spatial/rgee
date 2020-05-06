@@ -2,11 +2,14 @@ context("rgee: ee_download test")
 library(rgee)
 library(sf)
 
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 drive_folder <- 'rgee_backup'
 gcs_bucket <- 'rgee_dev'

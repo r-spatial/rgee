@@ -19,6 +19,7 @@
 #' @name ee_search-tools
 #' @return a data.frame.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -32,6 +33,7 @@
 #'   ee_search_tags("srtm", "flow", "direction", "dem") %>%
 #'   ee_search_title("15", "Flow", logical_operator = "AND")
 #' print(myquery$id)
+#' }
 #' @export
 ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
   ee_date <- Sys.Date()

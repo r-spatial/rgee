@@ -10,11 +10,13 @@
 #' @return \code{rdate_to_eedate} will return a numeric timestamp or
 #' an EE Date depending on the \code{timestamp} argument.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
 #' rdate_to_eedate('2000-01-01')
 #' rdate_to_eedate(315532800000) # float number
+#' }
 #' @export
 rdate_to_eedate <- function(date, timestamp = FALSE) {
   condition <- any(class(date) %in% c('Date', 'character', 'POSIXt', 'POSIXct'))
@@ -48,12 +50,14 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #' @return \code{eedate_to_rdate} will return a numeric timestamp or
 #' an POSIXct object depending on the \code{timestamp} argument.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
 #' eeDate <- ee$Date$fromYMD(2010,1,1)
 #' eedate_to_rdate(eeDate,timestamp = TRUE) # good
 #' eeDate$getInfo()$value # bad
+#' }
 #' @export
 eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py",
@@ -81,6 +85,7 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' @return An List object with the id, time_start and time_end
 #' (if \code{time_end} argument is TRUE) of the image.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
@@ -88,6 +93,7 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' ee_get_img_date(l8)
 #' srtm <- ee$Image('CGIAR/SRTM90_V4')
 #' ee_get_img_date(srtm, time_end = TRUE)
+#' }
 #' @export
 ee_get_img_date <- function(x, time_end = FALSE) {
   time_start <- tryCatch(

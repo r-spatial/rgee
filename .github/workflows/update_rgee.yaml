@@ -1,6 +1,6 @@
 on:
   push:
-    branches: testing
+    branches: testing_x
 
 name: Update rgee
 jobs:

@@ -9,12 +9,14 @@
 #' @importFrom crayon yellow
 #' @importFrom cli cat_line
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_check_python()
 #' ee_check_rgee_python_packages()
 #' ee_check_credentials()
 #' ee_check() # put it all together
+#' }
 #' @export
 ee_check <- function() {
   ee_check_python()

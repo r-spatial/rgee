@@ -24,10 +24,12 @@ R functions for checking sanity of Third-Party Python
 packages and credentials.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_check_python()
 ee_check_rgee_python_packages()
 ee_check_credentials()
 ee_check() # put it all together
+}
 }
