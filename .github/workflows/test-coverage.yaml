@@ -1,17 +1,10 @@
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - master
-  pull_request:
-    branches:
-      - master
-=======
       - testing
   pull_request:
     branches:
       - testing
->>>>>>> master
 
 name: test-coverage
 
@@ -97,6 +90,10 @@ jobs:
       - name: PREBUILD TESTING
         run: |
           earthengine -h
+          ls $HOME/.config/earthengine/
+          ls $HOME/.config/earthengine/
+          ls $HOME/.config/earthengine/data.colec.fbf
+
 
       - name: INSTALL rgdal WITH CONFIGURE
         run: |
@@ -106,11 +103,7 @@ jobs:
       - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-<<<<<<< HEAD
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "warning", check_dir = "check")
-=======
-        run: rcmdcheck::rcmdcheck(args = c("--as-cran"), error_on = "warning", check_dir = "check")
->>>>>>> master
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: UPLOAD CHECK RESULTS

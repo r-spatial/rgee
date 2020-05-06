@@ -1,7 +1,6 @@
 on:
   push:
-<<<<<<< HEAD
-    branches: testing
+    branches: testing_x
 
 name: Update rgee
 jobs:
@@ -40,17 +39,3 @@ jobs:
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples","--no-tests"), error_on = "warning", check_dir = "check")
-
-=======
-    branches: testing_x
-
-name: Update rgee
-jobs:
-  update-rgee:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: 3.6
->>>>>>> master
