@@ -1,13 +1,11 @@
 context("rgee: ee_check test")
 
-if (isFALSE(exists('ee'))) {
-  ee_reattach()
-  ee_Initialize(
-    email = 'data.colec.fbf@gmail.com',
-    drive = TRUE,
-    gcs = TRUE
-  )
-}
+ee_reattach()
+ee_Initialize(
+  email = 'data.colec.fbf@gmail.com',
+  drive = TRUE,
+  gcs = TRUE
+)
 
 test_that("simple ee_check ",{
   expect_true(ee_check_python())

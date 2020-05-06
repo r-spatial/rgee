@@ -10,7 +10,7 @@ if (isFALSE(exists('ee'))) {
 }
 
 test_that("simple search",{
-  myquery <- ee_dataset(quiet = TRUE) %>%
+  myquery <- ee_dataset(upgrade = TRUE) %>%
     ee_search_type("Image")  %>%
     ee_search_provider("WWF") %>%
     ee_search_tags("srtm", "flow", "direction", "dem") %>%

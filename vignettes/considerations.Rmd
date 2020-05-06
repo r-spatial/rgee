@@ -1,5 +1,16 @@
 ---
 title: "Considerations"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Considerations}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r, include = FALSE}
@@ -21,16 +32,35 @@ import ee
 
 `rgee` may show an error message when valid requests to the Earth Engine server are made. This issue happens when the **map** method is used under the next two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
 
-```{r}
+```{r eval=FALSE}
 library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(10)
 mylist$map(function(x) ee$Number(x)$add(1))
+#> Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.
+#> 
+#> Detailed traceback: 
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/apifunction.py", line 205, in <lambda>
+#>     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 67, in call
+#>     return self.apply(self.nameArgs(args, kwargs))
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 80, in apply
+#>     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs
+#>     promoted_args[name] = Function._promoter(args[name], spec['type'])
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/__init__.py", line 242, in _Promote
+#>     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create
+#>     return CustomFunction(signature, func)
+#>   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__
+#>     self._body = body(*variables)
+#>   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function
+#>     raise RuntimeError(res[kErrorKey])
 ```
 
 The code before is perfectly valid but `rgee` will produce an error. This could be solved by adding the function **ee_pyfunc** to the code. Let's see:
 
-```{r}
+```{r eval=FALSE}
 library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(0,10)
@@ -40,6 +70,7 @@ mynewlist = mylist$map(
   )
 )
 mynewlist$getInfo()
+#>  [1]  1  2  3  4  5  6  7  8  9 10 11
 ```
 
 ### 2) Do not forget the **L**
@@ -47,35 +78,40 @@ mynewlist$getInfo()
 By default, when you define a number in R it will produce a **double precision** value. This does not happen in Python because, by default it will create a **int** value.
 
 **Python**
-```{python}
+```{python eval=FALSE}
 type(1)
+#> <class 'int'>
 ```
 
 **R**
-```{r}
+```{r eval=FALSE}
 class(1)
+#> [1] "numeric"
 ```
 
 But, why is this a big deal?. Let’s explain with an example:
 
 **Python**
-```{python}
+```{python eval=FALSE}
 ee.Initialize()
 and_bitwise = ee.Number(32).bitwiseAnd(100)
 and_bitwise.getInfo()
+#> 32
 ```
 
 **R**
-```{r}
+```{r eval=FALSE}
 and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
 and_bitwise$getInfo()
+#> [1] 32
 ```
 
 Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integers in R is quite simple, you just need to add the letter **L** to the end of the specific number or just employ the function `as.integer`. The **correct code** in R would be:
 
-```{r}
+```{r eval=FALSE}
 and_bitwise = ee$Number(32L)$bitwiseAnd(100L)
 and_bitwise$getInfo()
+#> [1] 32
 ```
 
 ### 3) Be careful with **ee$Date**
@@ -83,20 +119,26 @@ and_bitwise$getInfo()
 This problem also appears due to differences between the design of R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremely insufficient to deal with [Google Earth Engine timestamp](https://developers.google.com/earth-engine/glossary) which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **Python**
-```{python}
+```{python eval=FALSE}
 my_date = ee.Date('1990-01-01')
 my_date.getInfo()
+#> {'type': 'Date', 'value': 631152000000}
 ```
 
 **R**
-```{r}
+```{r eval=FALSE}
 my_date <- ee$Date('1990-01-01')
 my_date$getInfo()
+#> $type
+#> [1] "Date"
+#> 
+#> $value
+#> [1] -208192512
 ```
 
 The problems with `ee$Date` just appear in the last mile (Python to R or vice-versa, `reticulate`), and it should not be a trouble if treated with care. `rgee` implement two functions to deal with Earth Engine dates: `eedate_to_rdate` and `rdate_to_eedate`.
 
-```{r}
+```{r eval=FALSE}
 # Era5 dataset
 era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
   filterDate("2019-01-01", "2019-12-31")$
@@ -105,5 +147,7 @@ era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
 # Extracting init date
 ee_date <- era_img$get('system:time_start')
 ee_date$getInfo() # Silent error
+#> [1] 112573440
 eedate_to_rdate(ee_date = ee_date, timestamp = TRUE)
+#> [1] 1.546301e+12
 ```
