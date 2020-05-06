@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - testing
   pull_request:
     branches:
-      - master
+      - testing
 
 name: R-CMD-check
 
@@ -51,6 +51,8 @@ jobs:
       - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
         run: |
           install.packages('remotes')
+          install.packages('pillar') # winbug
+          install.packages('vctrs')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
@@ -137,7 +139,11 @@ jobs:
       - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
+<<<<<<< HEAD
         run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples","--no-tests"), error_on = "warning", check_dir = "check")
+=======
+        run: rcmdcheck::rcmdcheck(args = c("--as-cran","--no-tests"), error_on = "warning", check_dir = "check")
+>>>>>>> master
         shell: Rscript {0}
 
       - name: UPLOAD CHECK RESULTS

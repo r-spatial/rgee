@@ -4,12 +4,14 @@ library(raster)
 
 # Initialize a specific Earth Engine account and load
 # either Google Drive or Google Cloud Storage credentials
-ee_reattach()
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 # Dataset
 # ---------------------------

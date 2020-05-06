@@ -1,5 +1,14 @@
 context("rgee: ee_install test")
 
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 ### Instalation module
 test_that("ee_create_pyenv ",{
   result <- ee_create_pyenv('earthengine_test')

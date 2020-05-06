@@ -1,10 +1,13 @@
 context("rgee: ee_as_sf test")
 
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 # Load and filter watersheds from a data table.
 sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$

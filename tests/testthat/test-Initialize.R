@@ -1,5 +1,14 @@
 context("rgee: ee_Initialize() test")
 
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 test_that("get_authorization_url is working well?",{
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- rgee:::ee_source_python(oauth_func_path)

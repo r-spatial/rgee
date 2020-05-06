@@ -24,6 +24,7 @@ just to maintain the rgee functions name's style. All recognition
 for this function must always be given to \pkg{reticulate}.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
@@ -49,6 +50,7 @@ ee_newic <- ee_ic$map(
   )
 )
 ee_newic$mean()$getInfo()$type
+}
 }
 \author{
 Yuan Tang and J.J. Allaire

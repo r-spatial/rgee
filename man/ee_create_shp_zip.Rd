@@ -32,10 +32,10 @@ assetId <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
 zipfile <- ee_create_shp_zip(nc)
 
 # 2. From local to gcs
-gs_uri <- ee_local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 
 # 3. Pass the sf to a zip file
-ee_gcs_to_table(
+gcs_to_ee_table(
   gs_uri = gs_uri,
   assetId = assetId
 )

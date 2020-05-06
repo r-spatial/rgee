@@ -1,29 +1,37 @@
 context("rgee: ee_manage test")
-ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
+
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 try(ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/'))
 
 test_that("ee_manage_create", {
-  ee_manage_create(path_asset = 'users/datacolecfbf/rgee')
-  ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_folder',
-                   asset_type = 'Folder')
-
+  ee_manage_create(
+    path_asset = 'users/datacolecfbf/rgee/rgee_folder',
+    asset_type = 'Folder'
+  )
   ee_manage_copy(
     path_asset = 'users/datacolecfbf/rgee/rgee_folder',
     final_path = 'users/datacolecfbf/rgee/rgee_folder1'
   )
-
-  msg <- ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
-                          asset_type = 'ImageCollection')
+  msg <- ee_manage_create(
+    path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+    asset_type = 'ImageCollection'
+  )
   expect_error(ee_manage_create(path_asset = 'users/pinkipie/rgee/rgee_ic'))
   expect_true(msg)
 })
 
+
 test_that("ee_manage_assetlist", {
   data_01 <- ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
   expect_s3_class(data_01,'data.frame')
-  data_02 <- ee_manage_assetlist()
-  expect_s3_class(data_02,'data.frame')
 })
 
 test_that("ee_manage_move", {
@@ -146,4 +154,42 @@ expect_type(
   ee_manage_asset_size(path_asset = 'MODIS/006/MOD09GA/2012_03_09'),
   "double"
 )
+})
+
+
+test_that("ee_manage_create - extra", {
+  ic_name <- 'users/datacolecfbf/rgee/cs/cs/rgee_folder'
+  ic <- ee_manage_create(
+    path_asset = ic_name,
+    asset_type = 'ImageCollection'
+  )
+  ic <- ee_manage_create(
+    path_asset = ic_name,
+    asset_type = 'ImageCollection'
+  )
+  ic <- ee$ImageCollection(ic_name)$getInfo()
+  expect_type(ic, "list")
+})
+
+
+test_that("ee_manage_copy - ImageCollection", {
+  lesly_ic_in <- "users/datacolecfbf/rgee/lesly_ic"
+  lesly_ic_out <- "users/datacolecfbf/rgee/lesly/lesly_ic"
+  ee_manage_create(lesly_ic_in, "ImageCollection")
+  exp_01 <- ee_manage_copy(
+    path_asset = lesly_ic_in,
+    final_path = lesly_ic_out
+  )
+  expect_true(exp_01)
+})
+
+test_that("ee_manage_move - Folder", {
+  lesly_f_in <- "users/datacolecfbf/rgee/lesly_folder/"
+  lesly_f_out <- "users/datacolecfbf/rgee/lesly/lesly_folder/"
+  ee_manage_create(lesly_f_in)
+  exp_02 <- ee_manage_move(
+    path_asset = lesly_f_in,
+    final_path = lesly_f_out
+  )
+  expect_true(exp_02)
 })

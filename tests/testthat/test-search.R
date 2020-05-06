@@ -1,7 +1,16 @@
 context("rgee: test-search test")
 
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 test_that("simple search",{
-  myquery <- ee_dataset() %>%
+  myquery <- ee_dataset(quiet = TRUE) %>%
     ee_search_type("Image")  %>%
     ee_search_provider("WWF") %>%
     ee_search_tags("srtm", "flow", "direction", "dem") %>%

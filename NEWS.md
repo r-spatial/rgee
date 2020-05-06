@@ -1,3 +1,7 @@
+# rgee 0.4.3
+- ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for `ee$Images` and the `system:index` property for `ee$ImageCollections`. Various bugs fixed.
+- ee_manage upgrade. documentation enhanced.
+- I/O module upgrade.
 # rgee 0.4.2
 - ee_image_to_local and ee_local_image_as_ee removed.
 - ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.

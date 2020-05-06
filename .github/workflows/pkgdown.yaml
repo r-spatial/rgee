@@ -1,6 +1,10 @@
 on:
   push:
+<<<<<<< HEAD
     branches: master
+=======
+    branches: testing
+>>>>>>> master
 name: pkgdown
 
 jobs:
@@ -31,7 +35,7 @@ jobs:
         run: |
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_dev("pkgdown")
+          remotes::install_dev("pkgdown", force = TRUE)
         shell: Rscript {0}
 
       - name: Install package

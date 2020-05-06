@@ -3,8 +3,15 @@ context("rgee: sf_as_stars test")
 library(rgee)
 library(raster)
 library(stars)
-ee_reattach()
-ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
+
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 # Define data -------------------------------------------------------------
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -88,7 +95,7 @@ test_that("ee_as_stars - simple ", {
 
 # test_that("ee to drive to local - gcs", {
 #   try(ee_manage_delete(assetId), silent = TRUE)
-#   gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+#   gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 #   # 2. Pass from gcs to asset
 #   stars_x <- read_stars(tif)
 #   gcs_to_ee_image(

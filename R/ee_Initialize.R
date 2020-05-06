@@ -32,6 +32,7 @@
 #' @seealso remove credential function: \cr
 #' \link[rgee]{ee_remove_credentials}
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #'
@@ -46,7 +47,7 @@
 #' )
 #'
 #' ee_user_info()
-#'
+#' }
 #' @export
 ee_Initialize <- function(email = NULL,
                           drive = FALSE,
@@ -453,14 +454,13 @@ ee_user_info <- function() {
   cat("\n", rule())
 
   ee_user <- ee_exist_credentials()
-  if (isFALSE(grepl(email_drive, ee_user$email))) {
+  if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
     message(
       "\nNOTE: Google Drive credential does not match with your Google",
       " Earth Engine credentials. All functions which depend on Google",
       " Drive will not work (e.g. ee_image_to_drive)."
     )
   }
-
   ee_check_rgee_python_packages(quiet = TRUE)
   invisible(TRUE)
 }

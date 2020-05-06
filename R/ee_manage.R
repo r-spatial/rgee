@@ -22,7 +22,7 @@
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv
 #' @details
-#' If the argument `del_properties` is 'ee_rmv_all_prp',
+#' If the argument `del_properties` is 'ALL',
 #' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
 #' @author Samapriya Roy, adapted to R by csaybar.
@@ -94,51 +94,81 @@
 #' }
 #' @export
 ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
-
   # Is the same EE user?
   ee_path <- path.expand("~/.config/earthengine")
   user <- read.table(file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
                      header = TRUE,
                      stringsAsFactors = FALSE)
-  # Select first and second folder (lazzy)
+
+  # Get the user path from path_asset
   folders <- strsplit(path_asset,"/")[[1]][1:2]
   path_asset_root_folder <- sprintf("%s/%s",folders[1],folders[2])
 
+  # path_asset is identical to the path from ee_get_assethome()?
   if (!identical(path_asset_root_folder, user$user)) {
     stop('The root folder "',path_asset_root_folder,'" is invalid')
   }
 
+  # Fix typos in path_asset
   path_asset <- ee_verify_filename(path_asset, strict = FALSE)
   asset_path_exist <- is.null(ee$data$getInfo(path_asset))
+
   if (asset_path_exist) {
     if (asset_type == "Folder") {
       new_path <- path_asset
+      # repeat (do-while) is necessary for dealing nested folder
       repeat {
+        # It is possible create an asset folder?
         nested_folder <- try(
           ee$data$createAsset(
             list(type = ee$data$ASSET_TYPE_FOLDER),
-            new_path),silent = TRUE
+            new_path), silent = TRUE
         )
-        if (class(nested_folder) == 'try-error') {
+        #  If nested_folder class is "try-error", try the dirname of path_asset.
+        #            path_asset                            new_path
+        #   users/datacolecfbf/cs/cs/rgee   --->  users/datacolecfbf/cs/rgee
+        if (class(nested_folder) == "try-error") {
           new_path <- dirname(new_path)
         } else {
-          if (identical(new_path,path_asset)) {
+          if (!quiet) cat("GEE asset:", new_path, "created\n")
+          # If new_path == path_asset break repeat
+          if (identical(new_path, path_asset)) {
             break
           }
+          #            path_asset                            new_path
+          # users/datacolecfbf/cs/cs/rgee   <---  users/datacolecfbf/cs/rgee
           new_path <- path_asset
         }
       }
     } else if (asset_type == "ImageCollection") {
-      ee$data$createAsset(
-        value = list(type = ee$data$ASSET_TYPE_IMAGE_COLL),
-        opt_path = path_asset
+      # Attempt to create a ImageCollection
+      create_ic_asset <- try(
+        expr = ee$data$createAsset(
+          value = list(type = ee$data$ASSET_TYPE_IMAGE_COLL),
+          opt_path = path_asset
+        ), silent = TRUE
       )
+      # If the Folder where the ImageCollection
+      # will be saved does not exist create it
+      if (class(create_ic_asset) == "try-error") {
+        dir_path <- dirname(path_asset)
+        # Creating the folder
+        ee_manage_create(
+          path_asset = dir_path,
+          asset_type = "Folder",
+          quiet = quiet
+        )
+        # Creating the ImageCollection
+        ee_manage_create(
+          path_asset = path_asset,
+          asset_type = "ImageCollection",
+          quiet = quiet
+        )
+      }
     } else {
       stop("Invalid asset_type parameter")
     }
-    if (!quiet) cat("GEE asset:", path_asset, "created\n")
-  }
-  else {
+  } else {
     if (!quiet) cat("GEE asset:", path_asset, "already exists\n")
   }
   invisible(TRUE)
@@ -148,15 +178,20 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_delete <- function(path_asset, quiet = FALSE) {
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   response <- ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
+
+  # If is a nested Folder or an ImageCollection,
+  # firstly remove upper elements
   if (response$type %in% ee_manage_handle_names()) {
     list_files <- ee$data$getList(list(id = path_asset))
     items <- unlist(lapply(list_files, "[[", "id")) %>%
       ee_remove_project_chr()
     mapply(ee_manage_delete, items)
   }
+  # Remove the empty folder or ImageCollection
   ee$data$deleteAsset(path_asset)
   if (!quiet) cat("EE object deleted:", path_asset, "\n")
   invisible(TRUE)
@@ -166,20 +201,20 @@ ee_manage_delete <- function(path_asset, quiet = FALSE) {
 #' @export
 ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
   if (missing(path_asset)) {
-    path_asset <- ee$data$getAssetRoots()[[1]]$id %>%
-      ee_remove_project_chr()
+    stop("path_asset was not specified")
   }
-
-  # Getting EE asset info: path + type
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
   response <- ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
+
+  # Get the ID and CLASS from all the elements of path_asset
   list_files <- ee$data$getList(list(id = path_asset))
   ids <- unlist(lapply(list_files, "[[", "id")) %>%
     ee_remove_project_chr()
   type <- unlist(lapply(list_files, "[[", "type"))
 
-  # Creating data.frame
+  # Handle results and present it in a df
   df_path <- data.frame(
     ID = ids,
     TYPE = type,
@@ -214,33 +249,68 @@ ee_manage_quota <- function() {
 #' @name ee_manage-tools
 #' @export
 ee_manage_copy <- function(path_asset, final_path, quiet = FALSE) {
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+  # Fix typos in final_path
   final_path <- ee_verify_filename(final_path, strict = FALSE)
+
+  # Is a EE active asset, a Folder or ImageCollection?
   header <- ee$data$getInfo(path_asset)[["type"]]
-  eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection")
+  eeasset_objects <- c("Image", "Table", "FeatureCollection")
 
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
+    # Images and Tables
     ee$data$copyAsset(path_asset, final_path)
     if (!quiet) cat("Done\n")
-  } else if (header %in% ee_manage_handle_names("Folder")) {
+  } else if (header %in% ee_manage_handle_names("ImageCollection")) {
+    # List all the images inside the ImageCollection
     to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
       lapply("[[", "id") %>%
       unlist() %>%
       ee_remove_project_chr()
+
+    # Create an empty ImageCollection
     ee_manage_create(
       path_asset = final_path,
-      asset_type = "Folder"
+      asset_type = "ImageCollection"
     )
+
     if (!quiet) {
       cat(
         "Copying a total of", length(to_copy_list),
         " elements ..... please wait\n"
       )
     }
+
+    # Copy each Image to the empty ImageCollection
     folder_destination <- sprintf("%s/%s", final_path, basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
-      cat(to_copy_list)
-      cat(folder_destination)
+      ee$data$copyAsset(to_copy_list[z], folder_destination[z])
+    }
+    if (!quiet) cat("Done\n")
+  } else if (header %in% ee_manage_handle_names("Folder")) {
+    # List all the elements inside the Folder
+    to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
+      lapply("[[", "id") %>%
+      unlist() %>%
+      ee_remove_project_chr()
+
+    # Create an empty Folder
+    ee_manage_create(
+      path_asset = final_path,
+      asset_type = "Folder"
+    )
+
+    if (!quiet) {
+      cat(
+        "Copying a total of", length(to_copy_list),
+        " elements ..... please wait\n"
+      )
+    }
+
+    # Copy each asset active to the empty Folder
+    folder_destination <- sprintf("%s/%s", final_path, basename(to_copy_list))
+    for (z in seq_along(to_copy_list)) {
       ee$data$copyAsset(to_copy_list[z], folder_destination[z])
     }
     if (!quiet) cat("Done\n")
@@ -253,42 +323,69 @@ ee_manage_copy <- function(path_asset, final_path, quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+  # Fix typos in final_path
   final_path <- ee_verify_filename(final_path, strict = FALSE)
+
+  # Is a Folder or ImageCollection?
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "Table", "FeatureCollection")
+
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
     ee$data$renameAsset(path_asset, final_path)
     if (!quiet) cat("Done\n")
-  } else if (header %in% ee_manage_handle_names()) {
-    header_finalpath <- ee$data$getInfo(final_path)[["type"]]
-    if (is.null(header_finalpath)) {
-      if (header  %in%  ee_manage_handle_names('ImageCollection')) {
-        ee_manage_create(dirname(final_path), quiet = quiet)
-        ee_manage_create(final_path,'ImageCollection', quiet = quiet)
-      } else {
-        ee_manage_create(final_path, quiet = quiet)
-      }
-    }
+  } else if (header %in% ee_manage_handle_names("ImageCollection")) {
+    # List all the images inside the ImageCollection
     to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
       lapply("[[", "id") %>%
       unlist() %>%
       ee_remove_project_chr()
+    # Create an empty ImageCollection
+    ee_manage_create(
+      path_asset = final_path,
+      asset_type = "ImageCollection"
+    )
+
     if (!quiet) {
       cat(
-        "Moving a total of", length(to_copy_list),
-        " elements ..... please wait ...\n"
+        "Copying a total of", length(to_copy_list),
+        " elements ..... please wait\n"
       )
     }
+
+    # Copy each Image to the empty ImageCollection
     folder_destination <- sprintf("%s/%s", final_path, basename(to_copy_list))
     for (z in seq_along(to_copy_list)) {
-      cat("Moving:", to_copy_list, " --> ", folder_destination, "\n")
-      ee$data$renameAsset(
-        sourceId = to_copy_list[z],
-        destinationId = folder_destination[z]
-      )
+      ee$data$renameAsset(to_copy_list[z], folder_destination[z])
     }
     ee_manage_delete(path_asset, quiet = quiet)
+    if (!quiet) cat("Done\n")
+
+  } else if (header %in% ee_manage_handle_names("Folder")) {
+    # List all the elements inside the Folder
+    to_copy_list <- ee$data$getList(params = list(id = path_asset)) %>%
+      lapply("[[", "id") %>%
+      unlist() %>%
+      ee_remove_project_chr()
+    # Create an empty Folder
+    ee_manage_create(
+      path_asset = final_path,
+      asset_type = "Folder"
+    )
+
+    if (!quiet) {
+      cat(
+        "Copying a total of", length(to_copy_list),
+        " elements ..... please wait\n"
+      )
+    }
+
+    # Copy each asset active to the empty Folder
+    folder_destination <- sprintf("%s/%s", final_path, basename(to_copy_list))
+    for (z in seq_along(to_copy_list)) {
+      ee$data$renameAsset(to_copy_list[z], folder_destination[z])
+    }
     if (!quiet) cat("Done\n")
   } else {
     stop("Unsupported EE asset object")
@@ -299,9 +396,13 @@ ee_manage_move <- function(path_asset, final_path, quiet = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_set_properties <- function(path_asset, add_properties) {
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+
+  # Is a Folder?
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
+
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
     ee$data$setAssetProperties(path_asset, add_properties)
   } else {
@@ -313,12 +414,16 @@ ee_manage_set_properties <- function(path_asset, add_properties) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_delete_properties <- function(path_asset,
-                                        del_properties = "ee_rmv_all_prp") {
+                                        del_properties = "ALL") {
+  # path_asset exist?
   path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+
+  # Is a Folder?
   header <- ee$data$getInfo(path_asset)[["type"]]
   eeasset_objects <- c("Image", "ImageCollection", "FeatureCollection", "Table")
+
   if (header %in% ee_manage_handle_names(eeasset_objects)) {
-    if ("ee_rmv_all_prp" %in%  del_properties) {
+    if ("ALL" %in%  del_properties) {
       properties_todelete <- names(ee$data$getAsset(path_asset)$properties)
     } else {
       properties_todelete <- del_properties
@@ -335,10 +440,10 @@ ee_manage_delete_properties <- function(path_asset,
 #' @name ee_manage-tools
 #' @export
 ee_manage_asset_access <- function(path_asset,
-                                    editor = NULL,
-                                    viewer = NULL,
-                                    all_users_can_read = TRUE,
-                                    quiet = FALSE) {
+                                   editor = NULL,
+                                   viewer = NULL,
+                                   all_users_can_read = TRUE,
+                                   quiet = FALSE) {
   bindings_template <- getOption('rgee.manage.setIamPolicy')
   bindings_template$bindings[[2]]$members <- paste0('user:', editor)
   if (isTRUE(all_users_can_read)) {
@@ -346,17 +451,30 @@ ee_manage_asset_access <- function(path_asset,
   } else {
     bindings_template$bindings[[3]]$members <- paste0('user:', viewer)
   }
-  ee$data$setIamPolicy(path_asset, bindings_template)
+
+  # Error arise when users use ee_Initialize without email argument. Unfortunately,
+  # email argument needs to be in the form of ee_Initialize(email = "xxx@gmail.com")
+  # if it is not realize the code will not work. Enhance in future versions of rgee.
+  tryCatch(
+    expr = ee$data$setIamPolicy(path_asset, bindings_template),
+    error =  function(e) stop(
+    "Please run again ee_Initialize specifying",
+    " the full address of your email",
+    " (e.g. ee_Initialize(email = data.colec.fbf@gmail.com))"
+    )
+  )
   invisible(TRUE)
 }
 
 #' @name ee_manage-tools
 #' @export
 ee_manage_task <- function(cache = FALSE) {
+  ee_temp <- tempdir()
+  # Load the ee_manage python module
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_manage_py <- ee_source_python(oauth_func_path)
-  ee_temp <- tempdir()
   manage_task_file <- sprintf("%s/ee_manage_task_file.csv", ee_temp)
+
   if (!isTRUE(cache)) {
     py_names <- c(
       "tid", "tstate", "tdesc", "ttype", "tcreate",
@@ -392,15 +510,18 @@ ee_manage_task <- function(cache = FALSE) {
 #' @name ee_manage-tools
 #' @export
 ee_manage_cancel_all_running_task <- function() {
+  # Retrieves a list of RUNNING and READY tasks.
   all_task <- ee$data$getTaskList()
-  running_task <- which(unlist(lapply(all_task, "[[", "state")) == "RUNNING")
-  running <- all_task[running_task]
-  if (length(running) == 0){
-    message("There are not any tasks running")
+  all_task_state <- unlist(lapply(all_task, "[[", "state"))
+  running_ready_tasks <- all_task_state  %in%  c("RUNNING" , "READY")
+
+  if (any(running_ready_tasks)) {
+    stop("There are no tasks running")
   } else {
+    running <- all_task[which(running_ready_tasks)]
     for (z in seq_along(running)) {
       ee$data$cancelTask(running[[z]][["id"]])
-      }
+    }
   }
   invisible(TRUE)
 }

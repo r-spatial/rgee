@@ -20,7 +20,8 @@
 #' @return A data.frame or a sf object depending on the sf argument. The
 #' columns with the extracted values will get their column name from the
 #' image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
-#' will use \code{system:index} instead.
+#' will use the band name for \code{ee$Images} and the \code{system:index}
+#' property for \code{ee$ImageCollections}.
 #' @details
 #' In Google Earth Engine the reducer functions that return one value are:
 #' \itemize{
@@ -72,7 +73,7 @@
 #' of its inputs.
 #' }
 #' @examples
-#'
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #'
@@ -110,8 +111,7 @@
 #'   main = "2001 Jan Precipitation - Terraclimate",
 #'   reset = FALSE
 #' )
-#'
-#' dev.off()
+#' }
 #' @export
 ee_extract <- function(x,
                        y,
@@ -122,7 +122,7 @@ ee_extract <- function(x,
   # spatial classes
   sf_classes <- c("sf", "sfc", "sfg")
   sp_objects <- ee_get_spatial_objects('Table')
-
+  x_type <- x$name()
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)
@@ -137,25 +137,32 @@ ee_extract <- function(x,
     stop("x is neither an ee$Image nor ee$ImageCollection")
   }
 
-
   # Is a complex ImageCollection?
-  if (any(class(x) %in% "ee.imagecollection.ImageCollection")) {
+  if (x_type == "ImageCollection") {
     band_names <- x$first()$bandNames()$getInfo()
     if (length(band_names) > 1) {
-      stop("ee_extract does not support ee$ImageCollection with",
-           " multiple bands"," \nEntered: ",band_names,"\nExpected: ",
-           band_names[1])
+      stop(
+        "ee_extract does not support ee$ImageCollection with",
+        " multiple bands"," \nEntered: ",
+        paste0(band_names,collapse = " "),
+        "\nExpected: ",
+        band_names[1]
+      )
     }
+  } else {
+    band_names <- x$bandNames()$getInfo()
+    img_to_ic <- function(index) x$select(ee$String(x$bandNames()$get(index)))
+    # Force to x to be a ImageCollection
+    x <- ee$ImageCollection$fromImages(lapply(seq_along(band_names) - 1 , img_to_ic))
   }
-
-  # Force to x to be a ImageCollection
-  x <- ee$ImageCollection(x)
 
   # RGEE_NAME exist?
   if (is.null(x$first()$get("RGEE_NAME")$getInfo())) {
-    exist_rgee_name <- TRUE
-  } else {
-    exist_rgee_name <- FALSE
+    if (x_type == "ImageCollection") {
+      x <- x$map(function(img) img$set("RGEE_NAME", img$get("system:index")))
+    } else {
+      x <- x$map(function(img) img$set("RGEE_NAME", ee$String(img$bandNames())))
+    }
   }
 
   # If y is a sf object convert into a ee$FeatureCollection object
@@ -181,23 +188,13 @@ ee_extract <- function(x,
 
   # triplets save info about the value, the row_id (ee_ID) and
   # col_id (imageId)
-  if (exist_rgee_name) {
-    triplets <- x$map(function(image) {
-      image$reduceRegions(
-        collection = ee_y,
-        reducer = fun,
-        scale = scale
-      )$map(function(f) f$set("imageId", image$get("system:index")))
-    })$flatten()
-  } else {
-    triplets <- x$map(function(image) {
-      image$reduceRegions(
-        collection = ee_y,
-        reducer = fun,
-        scale = scale
-      )$map(function(f) f$set("imageId", image$get("RGEE_NAME")))
-    })$flatten()
-  }
+  triplets <- x$map(function(image) {
+    image$reduceRegions(
+      collection = ee_y,
+      reducer = fun,
+      scale = scale
+    )$map(function(f) f$set("imageId", image$get("RGEE_NAME")))
+  })$flatten()
 
   # From ee$Dict format to a table
   table <- extract_py$

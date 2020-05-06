@@ -26,6 +26,7 @@ Get the date of a EE Image
 getting more information.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach()
 ee_Initialize()
@@ -33,4 +34,5 @@ l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
 ee_get_img_date(l8)
 srtm <- ee$Image('CGIAR/SRTM90_V4')
 ee_get_img_date(srtm, time_end = TRUE)
+}
 }

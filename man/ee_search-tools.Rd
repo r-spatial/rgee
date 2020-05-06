@@ -69,6 +69,7 @@ a data.frame.
 R functions for searching in Earth Engine's public data archive.
 }
 \examples{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
@@ -82,4 +83,5 @@ myquery <- ee_dataset() \%>\%
   ee_search_tags("srtm", "flow", "direction", "dem") \%>\%
   ee_search_title("15", "Flow", logical_operator = "AND")
 print(myquery$id)
+}
 }

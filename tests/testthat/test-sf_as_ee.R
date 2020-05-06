@@ -1,6 +1,13 @@
 context("rgee: sf_as_ee test")
 
-ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
 filename <- system.file("external/lux.shp", package = "raster")
 nc <- system.file("shape/nc.shp", package = "sf")

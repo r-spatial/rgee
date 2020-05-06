@@ -38,6 +38,7 @@ the email argument all user credentials will be saved in a subdirectory
 called \code{ndef}.
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 
@@ -52,7 +53,7 @@ ee_Initialize(
 )
 
 ee_user_info()
-
+}
 }
 \seealso{
 remove credential function: \cr

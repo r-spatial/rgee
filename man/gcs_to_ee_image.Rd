@@ -57,7 +57,7 @@ assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
 
 # Method 1
 # 1. Move from local to gcs
-gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 
 # 2. Pass from gcs to asset
 gcs_to_ee_image(

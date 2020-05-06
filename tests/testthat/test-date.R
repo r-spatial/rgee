@@ -1,6 +1,14 @@
 context("rgee: ee_date test")
-ee_reattach()
-ee_Initialize(email = 'data.colec.fbf@gmail.com', drive = TRUE, gcs = TRUE)
+
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
+
 
 test_that("rdate_to_eedate I", {
   eedate <- rdate_to_eedate('2000-01-01')

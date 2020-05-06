@@ -1,27 +1,30 @@
 context("rgee: ee_upload test")
 
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+if (isFALSE(exists('ee'))) {
+  ee_reattach()
+  ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+}
 
-test_that("ee_local_to_gcs - character",{
+test_that("local_to_gcs - character",{
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-  gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
-  gcsuri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev',quiet = TRUE)
+  gcsuri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
+  gcsuri <- local_to_gcs(x = tif, bucket = 'rgee_dev',quiet = TRUE)
   expect_type(gcsuri,'character')
 })
 
 # ee_upload with bucket -----------------------------------------------------
-test_that("ee_gcs_to_table ", {
+test_that("gcs_to_ee_table ", {
   nc <- st_read(system.file("shape/nc.shp", package = "sf"))
   assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
   zipfile <- ee_create_shp_zip(nc)
-  gs_uri <- ee_local_to_gcs(x = zipfile,
+  gs_uri <- local_to_gcs(x = zipfile,
                             bucket = 'rgee_dev')
-  ee_gcs_to_table(
+  gcs_to_ee_table(
     gs_uri = gs_uri,
     assetId = assetId
   )
@@ -31,7 +34,6 @@ test_that("ee_gcs_to_table ", {
                   class =  "ee.featurecollection.FeatureCollection")
 })
 
-system.time(2)
 
 test_that("gcs_to_ee_image ", {
   # Get the filename of a image
@@ -42,13 +44,14 @@ test_that("gcs_to_ee_image ", {
 
   # Method 1
   # 1. Move from local to gcs
-  gs_uri <- ee_local_to_gcs(x = tif, bucket = 'rgee_dev')
+  gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 
   # 2. Pass from gcs to asset
   result <- gcs_to_ee_image(
     x = x,
+    overwrite = TRUE,
     gs_uri = gs_uri,
     assetId = assetId
   )
-  expect_equal(result,0)
+  expect_equal(result,"users/datacolecfbf/stars_l7")
 })

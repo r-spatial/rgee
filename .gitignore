@@ -5,3 +5,5 @@
 .httr-oauth
 inst/doc
 inst/python/__pycache__/
+docs
+pkgdown
