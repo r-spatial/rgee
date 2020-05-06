@@ -31,7 +31,6 @@ test_that("gcs_to_ee_table ", {
                   class =  "ee.featurecollection.FeatureCollection")
 })
 
-system.time(2)
 
 test_that("gcs_to_ee_image ", {
   # Get the filename of a image
@@ -47,8 +46,9 @@ test_that("gcs_to_ee_image ", {
   # 2. Pass from gcs to asset
   result <- gcs_to_ee_image(
     x = x,
+    overwrite = TRUE,
     gs_uri = gs_uri,
     assetId = assetId
   )
-  expect_equal(result,0)
+  expect_equal(result,"users/datacolecfbf/stars_l7")
 })
