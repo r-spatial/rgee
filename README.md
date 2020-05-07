@@ -1,9 +1,9 @@
 [![R build status](https://github.com/csaybar/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/csaybar/rgee/actions)
+![updated](https://github.com/csaybar/rgee/workflows/updated/badge.svg?branch=master)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![codecov](https://codecov.io/gh/csaybar/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/csaybar/rgee)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
@@ -225,7 +225,6 @@ Load `sf` and authenticate and initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
-library(dplyr)
 library(sf)
 ee_Initialize()
 # ee_reattach() # reattach ee as a reserve word
