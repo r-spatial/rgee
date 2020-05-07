@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -158,114 +158,173 @@
       <small>Source: <a href='https://github.com/csaybar/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-043" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.3">
+<a href="#rgee-043" class="anchor"></a>rgee 0.4.3</h1>
+<ul>
+<li>ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for <code>ee$Images</code> and the <code>system:index</code> property for <code>ee$ImageCollections</code>. Various bugs fixed.</li>
+<li>ee_manage upgrade. documentation enhanced.</li>
+<li>I/O module upgrade.</li>
+</ul>
+</div>
     <div id="rgee-042" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.2">
 <a href="#rgee-042" class="anchor"></a>rgee 0.4.2</h1>
 <ul>
-<li><p>ee_image_to_local and ee_local_image_as_ee removed.</p></li>
-<li><p>ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.</p></li>
-<li><p>ee_gcs_to_image renamed to gcs_to_ee_image.</p></li>
-<li>
-<p>minor bug in ee_print solved.</p>
-<h1 id="rgee-041" class="page-header" data-toc-text="0.4.2">rgee 0.4.1</h1>
+<li>ee_image_to_local and ee_local_image_as_ee removed.</li>
+<li>ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.</li>
+<li>ee_gcs_to_image renamed to gcs_to_ee_image.</li>
+<li>minor bug in ee_print solved.</li>
+</ul>
+</div>
+    <div id="rgee-041" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.1">
+<a href="#rgee-041" class="anchor"></a>rgee 0.4.1</h1>
+<ul>
+<li>ee_extract bug fixed now sf arg works for Earth Engine tables.</li>
+<li>ee_create_pyenv now return a Python Path</li>
+<li>doc upgrade</li>
+</ul>
+</div>
+    <div id="rgee-04" class="section level1">
+<h1 class="page-header" data-toc-text="0.4">
+<a href="#rgee-04" class="anchor"></a>rgee 0.4</h1>
+<ul>
+<li>travis and appveyor replaced by github-actions.</li>
+<li>docker folder deleted and saved in docker branch.</li>
+<li>examples folder deleted and saved in examples branch.</li>
+<li>Changes in installation module.</li>
+<li>Readme and documentation upgrade.</li>
+<li>new test added.</li>
+</ul>
+</div>
+    <div id="rgee-0316" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.16">
+<a href="#rgee-0316" class="anchor"></a>rgee 0.3.16</h1>
+<ul>
+<li>New test added.</li>
+<li>minor bugs solved</li>
+</ul>
+</div>
+    <div id="rgee-0315" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.15">
+<a href="#rgee-0315" class="anchor"></a>rgee 0.3.15</h1>
+<ul>
+<li>git action button added.</li>
+<li>minor bugs solved</li>
+</ul>
+</div>
+    <div id="rgee-0314" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.14">
+<a href="#rgee-0314" class="anchor"></a>rgee 0.3.14</h1>
+<ul>
+<li>ee_image module upgrade: new tests, new doc, and several bugs fixed.</li>
+<li>functions ee_gcs_to_asset_* renamed to ee_gcs_to_*</li>
+</ul>
+</div>
+    <div id="rgee-0313" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.13">
+<a href="#rgee-0313" class="anchor"></a>rgee 0.3.13</h1>
+<ul>
+<li>new function inside the ee_search interface: <code>ee_datacatalog_display</code>
 </li>
-<li><p>ee_extract bug fixed now sf arg works for Earth Engine tables.</p></li>
-<li><p>ee_create_pyenv now return a Python Path</p></li>
+<li>sf_as_ee doc upgrade.</li>
 <li>
-<p>doc upgrade</p>
-<h1 id="rgee-04" class="page-header" data-toc-text="0.4.2">rgee 0.4</h1>
-</li>
-<li><p>travis and appveyor replaced by github-actions.</p></li>
-<li><p>docker folder deleted and saved in docker branch.</p></li>
-<li><p>examples folder deleted and saved in examples branch.</p></li>
-<li><p>Changes in installation module.</p></li>
-<li><p>Readme and documentation upgrade.</p></li>
-<li>
-<p>new test added.</p>
-<h1 id="rgee-0316" class="page-header" data-toc-text="0.4.2">rgee 0.3.16</h1>
-</li>
-<li><p>New test added.</p></li>
-<li>
-<p>minor bugs solved</p>
-<h1 id="rgee-0315" class="page-header" data-toc-text="0.4.2">rgee 0.3.15</h1>
-</li>
-<li><p>git action button added.</p></li>
-<li>
-<p>minor bugs solved</p>
-<h1 id="rgee-0314" class="page-header" data-toc-text="0.4.2">rgee 0.3.14</h1>
-</li>
-<li><p>ee_image module upgrade: new tests, new doc, and several bugs fixed.</p></li>
-<li>
-<p>functions ee_gcs_to_asset_* renamed to ee_gcs_to_*</p>
-<h1 id="rgee-0313" class="page-header" data-toc-text="0.4.2">rgee 0.3.13</h1>
-</li>
-<li><p>new function inside the ee_search interface: <code>ee_datacatalog_display</code></p></li>
-<li><p>sf_as_ee doc upgrade.</p></li>
-<li>
-<p><code>ee_Image_to_local</code>: now region arg must be a ee<span class="math inline"><em>G</em><em>e</em><em>o</em><em>m</em><em>e</em><em>t</em><em>r</em><em>y</em></span>Rectangle only when via = “getInfo” is used. It is will affect also to download of <code>ee$ImageCollections</code>.</p>
-<h1 id="rgee-0312" class="page-header" data-toc-text="0.4.2">rgee 0.3.12</h1>
-</li>
-<li><p>Minor changes in ee_Initialize and ee_install-</p></li>
-<li>
-<p>ee_version passed from 0.1.127 to 0.1.128.</p>
-<h1 id="rgee-0311" class="page-header" data-toc-text="0.4.2">rgee 0.3.11</h1>
-</li>
-<li><p>sf_as_ee now permits their use not just in polygons.</p></li>
-<li><p>ee_as_thumbnail bug: it does not work in one-band images (fixed).</p></li>
-<li><p>ee_user_info new display.</p></li>
-<li>
-<p>ee_Initialize now does not display Python version used (use ee_user_info instead).</p>
-<h1 id="rgee-0310" class="page-header" data-toc-text="0.4.2">rgee 0.3.10</h1>
-</li>
-<li><p>ee_imagecollection_to_local local added.</p></li>
-<li><p>ee_as_stars changed by ee_as_stars.</p></li>
-<li><p>ee_image_stars and ee_image_to_local added</p></li>
-<li><p>ee_extract new argument added “sf = FALSE”.</p></li>
-<li><p>ee_as_thumbnail arguments modified.</p></li>
-<li><p>ee_print new display.</p></li>
-<li><p>ee_help bug fixed.</p></li>
-<li>
-<p>ee_fix_offset function added to support image downloads by getInfo.</p>
-<h1 id="rgee-039" class="page-header" data-toc-text="0.4.2">rgee 0.3.9</h1>
-</li>
-<li><p>ee_date functions upgraded</p></li>
-<li><p>Documentation enhanced</p></li>
-<li>
-<p>Several bug fixed</p>
-<h1 id="rgee-038" class="page-header" data-toc-text="0.4.2">rgee 0.3.8</h1>
-</li>
-<li><p>ee_as_sf support the download of large tables</p></li>
-<li>
-<p>Several bug fixed</p>
-<h1 id="rgee-036" class="page-header" data-toc-text="0.4.2">rgee 0.3.6</h1>
-</li>
-<li>
-<p>bugs in ee_as_thumbnail and ee_as_stars were fixed.</p>
-<h1 id="rgee-035" class="page-header" data-toc-text="0.4.2">rgee 0.3.5</h1>
-</li>
-<li><p>ee_help display enhanced.</p></li>
-<li><p>ee_Initialize() now display reticulate Python version.</p></li>
-<li>
-<p>Several bug fixed.</p>
-<h1 id="rgee-034" class="page-header" data-toc-text="0.4.2">rgee 0.3.4</h1>
-</li>
-<li>
-<p>Several bugs fixed</p>
-<h1 id="rgee-033" class="page-header" data-toc-text="0.4.2">rgee 0.3.3</h1>
-</li>
-<li>
-<p>Several bugs fixed</p>
-<h1 id="rgee-030" class="page-header" data-toc-text="0.4.2">rgee 0.3.0</h1>
-</li>
-<li><p>changed ee_map from Map.</p></li>
-<li><p>New friendly-user installation module implemented.</p></li>
-<li><p>ee_download and ee_upload were deprecated</p></li>
-<li><p>selenium functionality deprecated</p></li>
-<li><p>ee_as_sf and sf_as_ee now support gcs and drive</p></li>
-<li><p>ee_as_stars and stars_as_ee functions created.</p></li>
-<li><p>rgee support geometry with different CRS.</p></li>
-<li><p>arguments evenOdd, Geodesic, and proj implemented in several functions.</p></li>
-<li><p>ee_help permit you display Earth Engine documentation.</p></li>
+<code>ee_Image_to_local</code>: now region arg must be a ee<span class="math inline"><em>G</em><em>e</em><em>o</em><em>m</em><em>e</em><em>t</em><em>r</em><em>y</em></span>Rectangle only when via = “getInfo” is used. It is will affect also to download of <code>ee$ImageCollections</code>.</li>
+</ul>
+</div>
+    <div id="rgee-0312" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.12">
+<a href="#rgee-0312" class="anchor"></a>rgee 0.3.12</h1>
+<ul>
+<li>Minor changes in ee_Initialize and ee_install-</li>
+<li>ee_version passed from 0.1.127 to 0.1.128.</li>
+</ul>
+</div>
+    <div id="rgee-0311" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.11">
+<a href="#rgee-0311" class="anchor"></a>rgee 0.3.11</h1>
+<ul>
+<li>sf_as_ee now permits their use not just in polygons.</li>
+<li>ee_as_thumbnail bug: it does not work in one-band images (fixed).</li>
+<li>ee_user_info new display.</li>
+<li>ee_Initialize now does not display Python version used (use ee_user_info instead).</li>
+</ul>
+</div>
+    <div id="rgee-0310" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.10">
+<a href="#rgee-0310" class="anchor"></a>rgee 0.3.10</h1>
+<ul>
+<li>ee_imagecollection_to_local local added.</li>
+<li>ee_as_stars changed by ee_as_stars.</li>
+<li>ee_image_stars and ee_image_to_local added</li>
+<li>ee_extract new argument added “sf = FALSE”.</li>
+<li>ee_as_thumbnail arguments modified.</li>
+<li>ee_print new display.</li>
+<li>ee_help bug fixed.</li>
+<li>ee_fix_offset function added to support image downloads by getInfo.</li>
+</ul>
+</div>
+    <div id="rgee-039" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.9">
+<a href="#rgee-039" class="anchor"></a>rgee 0.3.9</h1>
+<ul>
+<li>ee_date functions upgraded</li>
+<li>Documentation enhanced</li>
+<li>Several bug fixed</li>
+</ul>
+</div>
+    <div id="rgee-038" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.8">
+<a href="#rgee-038" class="anchor"></a>rgee 0.3.8</h1>
+<ul>
+<li>ee_as_sf support the download of large tables</li>
+<li>Several bug fixed</li>
+</ul>
+</div>
+    <div id="rgee-036" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.6">
+<a href="#rgee-036" class="anchor"></a>rgee 0.3.6</h1>
+<ul>
+<li>bugs in ee_as_thumbnail and ee_as_stars were fixed.</li>
+</ul>
+</div>
+    <div id="rgee-035" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.5">
+<a href="#rgee-035" class="anchor"></a>rgee 0.3.5</h1>
+<ul>
+<li>ee_help display enhanced.</li>
+<li>ee_Initialize() now display reticulate Python version.</li>
+<li>Several bug fixed.</li>
+</ul>
+</div>
+    <div id="rgee-034" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.4">
+<a href="#rgee-034" class="anchor"></a>rgee 0.3.4</h1>
+<ul>
+<li>Several bugs fixed</li>
+</ul>
+</div>
+    <div id="rgee-033" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.3">
+<a href="#rgee-033" class="anchor"></a>rgee 0.3.3</h1>
+<ul>
+<li>Several bugs fixed</li>
+</ul>
+</div>
+    <div id="rgee-030" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#rgee-030" class="anchor"></a>rgee 0.3.0</h1>
+<ul>
+<li>changed ee_map from Map.</li>
+<li>New friendly-user installation module implemented.</li>
+<li>ee_download and ee_upload were deprecated</li>
+<li>selenium functionality deprecated</li>
+<li>ee_as_sf and sf_as_ee now support gcs and drive</li>
+<li>ee_as_stars and stars_as_ee functions created.</li>
+<li>rgee support geometry with different CRS.</li>
+<li>arguments evenOdd, Geodesic, and proj implemented in several functions.</li>
+<li>ee_help permit you display Earth Engine documentation.</li>
 </ul>
 </div>
     <div id="rgee-020" class="section level1">
@@ -345,7 +404,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

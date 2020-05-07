@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -235,7 +235,7 @@ object, defaults to "EPSG:4326" (x=longitude, y=latitude).</p></td>
       <td><p>Logical. Ignored if <code>x</code> is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
 FALSE, indicates that line segments should be interpreted as planar lines
-in the specified CRS. If sabsent, defaults to TRUE if the CRS is geographic
+in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 (including the default EPSG:4326), or to FALSE if the CRS is projected.</p></td>
     </tr>
     <tr>
@@ -267,9 +267,9 @@ vs Server</a> documentation for more details. The second method implemented is
 that the result will be saved in your Earth Engine Asset. For dealing
 with very large spatial objects, it is preferable to use the third option
 'gcs_to_asset'. This option firstly save the sf object as a  *.shp file
-in the /temp directory . Secondly, using the function <code>ee_local_to_gcs</code>
+in the /temp directory . Secondly, using the function <code>local_to_gcs</code>
 will move the shapefile from local to Google Cloud Storage. Finally, using
-the function <code>ee_gcs_to_table</code> the ESRI shapefile will be loaded
+the function <code>gcs_to_ee_table</code> the ESRI shapefile will be loaded
 to the Earth Engine Asset.
 See <a href='https://developers.google.com/earth-engine/importing'>Importing
 table data</a> documentation for more details.</p>
@@ -280,7 +280,7 @@ outer, and clockwise for inner (hole) ones. By default this is FALSE because
 it is an expensive operation.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 
@@ -332,7 +332,7 @@ it is an expensive operation.</p>
   <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'gcs_to_asset'</span>
 )
-}</div></pre>
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -348,7 +348,7 @@ it is an expensive operation.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

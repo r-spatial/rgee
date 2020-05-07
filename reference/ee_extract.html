@@ -83,7 +83,7 @@ try to mimics how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -211,7 +211,8 @@ ee_help(ee$Image()$reduceRegions) for more details.</p></td>
     <p>A data.frame or a sf object depending on the sf argument. The
 columns with the extracted values will get their column name from the
 image metadata property <code>RGEE_NAME</code>. If is not defined <code>ee_extract</code>
-will use <code>system:index</code> instead.</p>
+will use the band name for <code>ee$Images</code> and the <code>system:index</code>
+property for <code>ee$ImageCollections</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>In Google Earth Engine the reducer functions that return one value are:</p><ul>
@@ -265,27 +266,13 @@ of its inputs.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: package ‘sf’ was built under R version 3.6.2</span></div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0</span></div><div class='input'>
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span></div><div class='output co'>#&gt; <span class='error'>Error in py_module_import(module, convert = convert): ImportError: No module named ee</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detected Python configuration:</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>python:         /usr/bin/python</span>
-#&gt; <span class='error'>libpython:      /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib</span>
-#&gt; <span class='error'>pythonhome:     /System/Library/Frameworks/Python.framework/Versions/2.7:/System/Library/Frameworks/Python.framework/Versions/2.7</span>
-#&gt; <span class='error'>version:        2.7.16 (default, Feb 29 2020, 01:55:37)  [GCC 4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.29.20) (-macos10.15-objc-</span>
-#&gt; <span class='error'>numpy:          /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy</span>
-#&gt; <span class='error'>numpy_version:  1.8.0</span>
-#&gt; <span class='error'>ee:             [NOT FOUND]</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>python versions found: </span>
-#&gt; <span class='error'> /usr/local/bin/python3</span>
-#&gt; <span class='error'> /usr/bin/python3</span>
-#&gt; <span class='error'> /usr/bin/python</span>
-#&gt; <span class='error'> /usr/local/bin/python</span>
-#&gt; <span class='error'></span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
 <span class='co'># Define a Image or ImageCollection: Terraclimate</span>
 <span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
   <span class='fu'>filterDate</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span>)$
@@ -293,24 +280,8 @@ of its inputs.</p></li>
     <span class='no'>date</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='no'>x</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"system:time_start"</span>))$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='st'>'YYYY_MM_dd'</span>)
     <span class='no'>name</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>String</span>$<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Terraclimate_pp_"</span>, <span class='no'>date</span>)
     <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>)$<span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='no'>name</span>)
-  })</div><div class='output co'>#&gt; <span class='error'>Error: Python module ee was not found.</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detected Python configuration:</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>python:         /usr/bin/python</span>
-#&gt; <span class='error'>libpython:      /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/config/libpython2.7.dylib</span>
-#&gt; <span class='error'>pythonhome:     /System/Library/Frameworks/Python.framework/Versions/2.7:/System/Library/Frameworks/Python.framework/Versions/2.7</span>
-#&gt; <span class='error'>version:        2.7.16 (default, Feb 29 2020, 01:55:37)  [GCC 4.2.1 Compatible Apple LLVM 11.0.3 (clang-1103.0.29.20) (-macos10.15-objc-</span>
-#&gt; <span class='error'>numpy:          /System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/numpy</span>
-#&gt; <span class='error'>numpy_version:  1.8.0</span>
-#&gt; <span class='error'>ee:             [NOT FOUND]</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>python versions found: </span>
-#&gt; <span class='error'> /usr/local/bin/python3</span>
-#&gt; <span class='error'> /usr/bin/python3</span>
-#&gt; <span class='error'> /usr/bin/python</span>
-#&gt; <span class='error'> /usr/local/bin/python</span>
-#&gt; <span class='error'></span></div><div class='input'>
+  })
+
 <span class='co'># Define a geometry</span>
 <span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(
   <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>),
@@ -325,19 +296,15 @@ of its inputs.</p></li>
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>250</span>,
   <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(),
   <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in py_module_import(module, convert = convert): ImportError: No module named ee</span>
-#&gt; <span class='error'></span>
-#&gt; <span class='error'>Detailed traceback: </span>
-#&gt; <span class='error'>  File "/Users/runner/runners/2.169.1/work/_temp/Library/rgee/python/ee_extract.py", line 3, in &lt;module&gt;</span>
-#&gt; <span class='error'>    import ee</span></div><div class='input'>
+)
+
 <span class='co'># Spatial plot</span>
 <span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(
   <span class='no'>ee_nc_rain</span>[<span class='st'>"Terraclimate_pp_2001_01_01"</span>],
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in plot(ee_nc_rain["Terraclimate_pp_2001_01_01"], main = "2001 Jan Precipitation - Terraclimate",     reset = FALSE): object 'ee_nc_rain' not found</span></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()</div><div class='output co'>#&gt; null device 
-#&gt;           1 </div></pre>
+)
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -353,7 +320,7 @@ of its inputs.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
