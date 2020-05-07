@@ -1,4 +1,3 @@
-
 git <- function(..., echo_cmd = TRUE, echo = TRUE, error_on_status = TRUE) {
   processx::run("git", c(...), echo_cmd = echo_cmd, echo = echo,
                 error_on_status = error_on_status)
@@ -98,7 +97,7 @@ updated_ee_README <- function() {
 
 update_rgee <- function(pkg = ".",
                         commit_message = construct_commit_message(pkg),
-                        branch = "testing", remote = "origin") {
+                        branch = "master", remote = "origin") {
   dest_dir <- fs::dir_create(fs::file_temp())
   on.exit(fs::dir_delete(dest_dir))
   git("remote", "set-branches", remote, branch)
