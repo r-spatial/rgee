@@ -94,3 +94,10 @@ jobs:
 
       - name: UPGRADE RGEE
         run: Rscript ./.github/updated.R
+
+      - name: UPLOAD CHECK RESULTS
+        if: failure()
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check

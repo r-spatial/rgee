@@ -8,5 +8,7 @@
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^docs$
-^vignettes$
 ^pkgdown$
+^vignettes\considerations.Rmd
+^vignettes\setup.Rmd
+^vignettes\faq.Rmd

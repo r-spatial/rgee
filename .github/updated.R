@@ -65,7 +65,7 @@ github_push <- function(dir, commit_message, remote, branch) {
 updated_ee_version <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
-
+  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
   fileConn <- file("R/ee_version.R")
   writeLines(
     text = c(
@@ -75,7 +75,7 @@ updated_ee_version <- function() {
       "#' version with which rgee was built.",
       "#' @export",
       "ee_version <- function() {",
-      sprintf(" '%s'", ee_utils_py$ee_getversion()),
+      sprintf(" '%s'", py_version),
       "}"),
     con = fileConn
   )
@@ -85,12 +85,13 @@ updated_ee_version <- function() {
 updated_ee_README <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
+  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
 
   readme = readLines("README.md",-1)
   readme[18] = sprintf(
     "[earthengine-api %s](https://pypi.org/project/earthengine-api/%s/).",
-    ee_utils_py$ee_getversion(),
-    ee_utils_py$ee_getversion()
+    py_version,
+    py_version
   )
   writeLines(readme,"README.md")
 }
@@ -107,14 +108,18 @@ update_rgee <- function(pkg = ".",
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
+  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
 
-  if (!ee_utils_py$ee_getversion() == rgee::ee_version()) {
+  message("rgee version: ", rgee::ee_version())
+  message("earthengine-api version: ", py_version)
+
+  if (isFALSE(py_version == rgee::ee_version())) {
     updated_ee_version()
     updated_ee_README()
+    github_push(dest_dir, commit_message, remote, branch)
     rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
   }
-  github_push(dest_dir, commit_message, remote, branch)
-  invisible()
+  invisible(TRUE)
 }
 
 update_rgee()
