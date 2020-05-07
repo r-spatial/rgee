@@ -1,3 +1,17 @@
+---
+title: "NEWS"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{NEWS}
+  %\VignetteEncoding{UTF-8}
+---
+
 # rgee 0.4.3
 - ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for `ee$Images` and the `system:index` property for `ee$ImageCollections`. Various bugs fixed.
 - ee_manage upgrade. documentation enhanced.
@@ -73,7 +87,7 @@
 
 # rgee 0.3.5
 - ee_help display enhanced.
-- ee_Initialize() now display reticulate Python version.
+- ee_Initialize now display reticulate Python version.
 - Several bug fixed.
 
 # rgee 0.3.4
@@ -97,9 +111,9 @@
 - Several bugs fixed.
 - A collection of 300+ examples for using Google Earth Engine in [R](https://github.com/csaybar/rgee-examples).
 - Functions added:
-  - [**non-R**]() installation module added
-  - [**ee_pyfunc: **]():Wrap an R function in a Python function with the same signature.
-  - [**ee_remove_\*: **]() Delete credentials and selenium drivers.
+  - **non-R** installation module added
+  - **ee_pyfunc:** Wrap an R function in a Python function with the same signature.
+  - **ee_remove_\*:** Delete credentials and selenium drivers.
   
 # rgee 0.1.0
 - Documentation improved.
@@ -107,17 +121,17 @@
 - py_help: Generate compressible documentation in an html format.
 - Unit testing in both Python and R.
 - Functions added:
-  - [**ee$...:**]() Complete access to the Earth Engine API from within R.
-  - [**ee_Initialize:**]() Multi-user support for Initialize Earth Engine, a wrapper around `ee$Initialize`.
-  - [**ee_install:**]() Interface for installing Selenium drivers and Python packages effortlessly.
-  - [**ee_check:**]() Interface for dependencies checking.
-  - [**ee_manage:**]() Manage EE assets and tasks recursively.
-  - [**ee_map:**]() Display EE spatial objects using [mapview](https://r-spatial.github.io/mapview/).
-  - [**ee_print:**]() Print EE metadata.
-  - [**ee_upload:**]() Upload ESRI shapefiles or GeoTIFF files to Earth Engine.
-  - [**ee_download:**]() Download EE spatial objects.
-  - [**ee_as_sf**]() & [**sf_as_ee:**]() Convert EE tables (Feature Collection) to sf and vice-versa.
-  - [**ee_as_thumbnail:**]() Create a stars object based on an EE thumbnail image.
-  - [**ee_extract:**]() Extract values for EE ImageCollections, similarly to [raster::extract]().
-  - [**ee_search:**]() Search among the Earth Engine Data Catalog.
-  - [**ee_help:**]() Display the Earth Engine documentation.
+  - **ee$...:** Complete access to the Earth Engine API from within R.
+  - **ee_Initialize:** Multi-user support for Initialize Earth Engine, a wrapper around `ee$Initialize`.
+  - **ee_install:** Interface for installing Selenium drivers and Python packages effortlessly.
+  - **ee_check:** Interface for dependencies checking.
+  - **ee_manage:** Manage EE assets and tasks recursively.
+  - **ee_map:** Display EE spatial objects using [mapview](https://r-spatial.github.io/mapview/).
+  - **ee_print:** Print EE metadata.
+  - **ee_upload:** Upload ESRI shapefiles or GeoTIFF files to Earth Engine.
+  - **ee_download:** Download EE spatial objects.
+  - **ee_as_sf** & **sf_as_ee:** Convert EE tables (Feature Collection) to sf and vice-versa.
+  - **ee_as_thumbnail:** Create a stars object based on an EE thumbnail image.
+  - **ee_extract:** Extract values for EE ImageCollections, similarly to [raster::extract].
+  - **ee_search:** Search among the Earth Engine Data Catalog.
+  - **ee_help:** Display the Earth Engine documentation.

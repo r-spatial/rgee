@@ -66,7 +66,9 @@ updated_ee_version <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
   py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
-  fileConn <- file("R/ee_version.R")
+  file_path <- sprintf("%s/R/ee_version.R",Sys.getenv("GITHUB_WORKSPACE"))
+  message(file_path)
+  fileConn <- file(file_path)
   writeLines(
     text = c(
       "#' Earth Engine API version",
@@ -86,19 +88,20 @@ updated_ee_README <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
   py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
-
-  readme = readLines("README.md",-1)
+  file_path <- sprintf("%s/README.md",Sys.getenv("GITHUB_WORKSPACE"))
+  message(file_path)
+  readme = readLines(file_path,-1)
   readme[18] = sprintf(
     "[earthengine-api %s](https://pypi.org/project/earthengine-api/%s/).",
     py_version,
     py_version
   )
-  writeLines(readme,"README.md")
+  writeLines(readme, file_path)
 }
 
 update_rgee <- function(pkg = ".",
                         commit_message = construct_commit_message(pkg),
-                        branch = "master", remote = "origin") {
+                        branch = "testing", remote = "origin") {
   dest_dir <- fs::dir_create(fs::file_temp())
   on.exit(fs::dir_delete(dest_dir))
   git("remote", "set-branches", remote, branch)
@@ -117,7 +120,7 @@ update_rgee <- function(pkg = ".",
     updated_ee_version()
     updated_ee_README()
     github_push(dest_dir, commit_message, remote, branch)
-    rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+    #rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
   }
   invisible(TRUE)
 }
