@@ -2,15 +2,18 @@
 - ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for `ee$Images` and the `system:index` property for `ee$ImageCollections`. Various bugs fixed.
 - ee_manage upgrade. documentation enhanced.
 - I/O module upgrade.
+
 # rgee 0.4.2
 - ee_image_to_local and ee_local_image_as_ee removed.
 - ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.
 - ee_gcs_to_image renamed to gcs_to_ee_image.
 - minor bug in ee_print solved.
+
 # rgee 0.4.1
 - ee_extract bug fixed now sf arg works for Earth Engine tables.
 - ee_create_pyenv now return a Python Path
 - doc upgrade
+
 # rgee 0.4
 - travis and appveyor replaced by github-actions.
 - docker folder deleted and saved in docker branch.
@@ -18,27 +21,34 @@
 - Changes in installation module.
 - Readme and documentation upgrade.
 - new test added.
+
 # rgee 0.3.16
 - New test added.
 - minor bugs solved
+
 # rgee 0.3.15
 - git action button added.
 - minor bugs solved
+
 # rgee 0.3.14
 - ee_image module upgrade: new tests, new doc, and several bugs fixed.
 - functions ee_gcs_to_asset_* renamed to ee_gcs_to_*
+
 # rgee 0.3.13
 - new function inside the ee_search interface: `ee_datacatalog_display`
 - sf_as_ee doc upgrade.
 - `ee_Image_to_local`: now region arg must be a ee$Geometry$Rectangle only when via = "getInfo" is used. It is will affect also to download of `ee$ImageCollections`.
+
 # rgee 0.3.12
 - Minor changes in ee_Initialize and ee_install-
 - ee_version passed from 0.1.127 to 0.1.128.
+
 # rgee 0.3.11
 - sf_as_ee now permits their use not just in polygons.
 - ee_as_thumbnail bug: it does not work in one-band images (fixed).
 - ee_user_info new display.
 - ee_Initialize now does not display Python version used (use ee_user_info instead).
+
 # rgee 0.3.10
 - ee_imagecollection_to_local local added.
 - ee_as_stars changed by ee_as_stars.
@@ -48,23 +58,30 @@
 - ee_print new display.
 - ee_help bug fixed.
 - ee_fix_offset function added to support image downloads by getInfo.
+
 # rgee 0.3.9
 - ee_date functions upgraded
 - Documentation enhanced
 - Several bug fixed
+
 # rgee 0.3.8
 - ee_as_sf support the download of large tables
 - Several bug fixed
+
 # rgee 0.3.6
 - bugs in ee_as_thumbnail and ee_as_stars were fixed.
+
 # rgee 0.3.5
 - ee_help display enhanced.
 - ee_Initialize() now display reticulate Python version.
 - Several bug fixed.
+
 # rgee 0.3.4
 - Several bugs fixed
+
 # rgee 0.3.3
 - Several bugs fixed
+
 # rgee 0.3.0
 - changed ee_map from Map.
 - New friendly-user installation module implemented.

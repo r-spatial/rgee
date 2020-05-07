@@ -81,11 +81,6 @@ jobs:
           sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev \
           libv8-3.14-dev libjq-dev libnetcdf-dev libjson-c-dev
 
-
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
-
       - name: INSTALL SYSTEM DEPENDENCIES [macOS]
         if: runner.os == 'macOS'
         env:
@@ -103,9 +98,6 @@ jobs:
           r["CRAN"] <- "https://cran.rstudio.com"
           options(configure.args = config_args, repos = r)
           EOT
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
 
       - name: INSTALL PYTHON DEPENDENCIES
         run: |

@@ -1,38 +1,16 @@
----
-title: "Considerations"
-output:
-  html_document:
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-    toc_depth: 2
-vignette: >
-  %\VignetteIndexEntry{Considerations}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  eval = TRUE,
-  error = TRUE,
-  comment = "#>"
-)
-```
-
-```{python echo=FALSE}
-import ee
-```
-
-`rgee` is extremely similar to the [Earth Engine Python API](https://pypi.org/project/earthengine-api/), with the exception of **three** particular cases. Each of these are explained in-depth below.
+`rgee` is extremely similar to the [Earth Engine Python
+API](https://pypi.org/project/earthengine-api/), with the exception of
+**three** particular cases. Each of these are explained in-depth below.
 
 ### 1) The **map** message error:
 
-`rgee` may show an error message when valid requests to the Earth Engine server are made. This issue happens when the **map** method is used under the next two scenarios: (1) users employing a reticulate version lower than < 1.14 (please update it!); and (2) if you are leading with **ee$List** objects. For instance:
+`rgee` may show an error message when valid requests to the Earth Engine
+server are made. This issue happens when the **map** method is used
+under the next two scenarios: (1) users employing a reticulate version
+lower than &lt; 1.14 (please update it!); and (2) if you are leading
+with **ee$List** objects. For instance:
 
-```{r eval=FALSE}
+``` r
 library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(10)
@@ -58,9 +36,11 @@ mylist$map(function(x) ee$Number(x)$add(1))
 #>     raise RuntimeError(res[kErrorKey])
 ```
 
-The code before is perfectly valid but `rgee` will produce an error. This could be solved by adding the function **ee_pyfunc** to the code. Let's see:
+The code before is perfectly valid but `rgee` will produce an error.
+This could be solved by adding the function **ee\_pyfunc** to the code.
+Let’s see:
 
-```{r eval=FALSE}
+``` r
 library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(0,10)
@@ -75,16 +55,20 @@ mynewlist$getInfo()
 
 ### 2) Do not forget the **L**
 
-By default, when you define a number in R it will produce a **double precision** value. This does not happen in Python because, by default it will create a **int** value.
+By default, when you define a number in R it will produce a **double
+precision** value. This does not happen in Python because, by default it
+will create a **int** value.
 
 **Python**
-```{python eval=FALSE}
+
+``` python
 type(1)
 #> <class 'int'>
 ```
 
 **R**
-```{r eval=FALSE}
+
+``` r
 class(1)
 #> [1] "numeric"
 ```
@@ -92,7 +76,8 @@ class(1)
 But, why is this a big deal?. Let’s explain with an example:
 
 **Python**
-```{python eval=FALSE}
+
+``` python
 ee.Initialize()
 and_bitwise = ee.Number(32).bitwiseAnd(100)
 and_bitwise.getInfo()
@@ -100,15 +85,20 @@ and_bitwise.getInfo()
 ```
 
 **R**
-```{r eval=FALSE}
+
+``` r
 and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
 and_bitwise$getInfo()
 #> [1] 32
 ```
 
-Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only **integer values**. The creation of integers in R is quite simple, you just need to add the letter **L** to the end of the specific number or just employ the function `as.integer`. The **correct code** in R would be:
+Users need to take into consideration that most of the arguments of the
+Earth Engine methods are strict to admit only **integer values**. The
+creation of integers in R is quite simple, you just need to add the
+letter **L** to the end of the specific number or just employ the
+function `as.integer`. The **correct code** in R would be:
 
-```{r eval=FALSE}
+``` r
 and_bitwise = ee$Number(32L)$bitwiseAnd(100L)
 and_bitwise$getInfo()
 #> [1] 32
@@ -116,17 +106,25 @@ and_bitwise$getInfo()
 
 ### 3) Be careful with **ee$Date**
 
-This problem also appears due to differences between the design of R and Python as programming languages. Currently, R’s only integer data type is a 32 bit signed integer. Such integers can only count up to about 2 billion. This range is extremely insufficient to deal with [Google Earth Engine timestamp](https://developers.google.com/earth-engine/glossary) which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
+This problem also appears due to differences between the design of R and
+Python as programming languages. Currently, R’s only integer data type
+is a 32 bit signed integer. Such integers can only count up to about 2
+billion. This range is extremely insufficient to deal with [Google Earth
+Engine timestamp](https://developers.google.com/earth-engine/glossary)
+which is saved in milliseconds since the [UNIX
+epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **Python**
-```{python eval=FALSE}
+
+``` python
 my_date = ee.Date('1990-01-01')
 my_date.getInfo()
 #> {'type': 'Date', 'value': 631152000000}
 ```
 
 **R**
-```{r eval=FALSE}
+
+``` r
 my_date <- ee$Date('1990-01-01')
 my_date$getInfo()
 #> $type
@@ -136,9 +134,12 @@ my_date$getInfo()
 #> [1] -208192512
 ```
 
-The problems with `ee$Date` just appear in the last mile (Python to R or vice-versa, `reticulate`), and it should not be a trouble if treated with care. `rgee` implement two functions to deal with Earth Engine dates: `eedate_to_rdate` and `rdate_to_eedate`.
+The problems with `ee$Date` just appear in the last mile (Python to R or
+vice-versa, `reticulate`), and it should not be a trouble if treated
+with care. `rgee` implement two functions to deal with Earth Engine
+dates: `eedate_to_rdate` and `rdate_to_eedate`.
 
-```{r eval=FALSE}
+``` r
 # Era5 dataset
 era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
   filterDate("2019-01-01", "2019-12-31")$

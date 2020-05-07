@@ -48,6 +48,7 @@ local_to_gcs <- function(x,
       )
     }
     count <- 1
+
     googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth"))
     if (isFALSE(quiet)) {
       files_gcs <- try(

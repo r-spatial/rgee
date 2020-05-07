@@ -60,9 +60,6 @@ jobs:
           r["CRAN"] <- "https://cran.rstudio.com"
           options(configure.args = config_args, repos = r)
           EOT
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
 
       - name: INSTALL PYTHON DEPENDENCIES
         run: |

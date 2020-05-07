@@ -1,6 +1,18 @@
 context("rgee: test-search test")
 
-if (isFALSE(exists('ee'))) {
+ee_path <- path.expand("~/.config/earthengine")
+sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
+
+user <- tryCatch(
+  expr = read.table(sessioninfo,header = TRUE,stringsAsFactors = FALSE),
+  error = function(e) ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+)
+
+if (anyNA(user)) {
   ee_reattach()
   ee_Initialize(
     email = 'data.colec.fbf@gmail.com',
@@ -9,8 +21,14 @@ if (isFALSE(exists('ee'))) {
   )
 }
 
+db <- paste0(
+  "https://raw.githubusercontent.com/csaybar/Earth-Engine-Datasets-List/",
+  "10c09b65e93d156c297628f035bf372b101867d3/eed-2020-03-30.csv",
+  collapse = ""
+)
+
 test_that("simple search",{
-  myquery <- ee_dataset(upgrade = TRUE) %>%
+  myquery <- ee_dataset(path_dataset = db, upgrade = TRUE) %>%
     ee_search_type("Image")  %>%
     ee_search_provider("WWF") %>%
     ee_search_tags("srtm", "flow", "direction", "dem") %>%
@@ -32,10 +50,6 @@ test_that("testing date queries",{
   expect_equal(mean(as.numeric(extract_year)),10)
 })
 
-test_that("Update dataset",{
-  my_db <- ee_dataset(upgrade = TRUE)
-  expect_type(my_db$id,'character')
-})
 
 test_that("Get title",{
   tl <- ee_search_title_list(ee_dataset())

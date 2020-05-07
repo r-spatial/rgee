@@ -16,6 +16,7 @@
 #' searching and 'OR' exclusiveness.
 #' @param upgrade Logical. If the dataset needs to be upgraded.
 #' @param maxdisplay Numeric. Maximum number of tabs to display in their browser
+#' @param path_dataset Path of the dataset. By default it will loaded automatically.
 #' @name ee_search-tools
 #' @return a data.frame.
 #' @examples
@@ -35,23 +36,26 @@
 #' print(myquery$id)
 #' }
 #' @export
-ee_dataset <- function(quiet = FALSE, upgrade = FALSE) {
-  ee_date <- find_eedataset()
-  ee_dataset_file <- sprintf("%s/ee_dataset.csv",
-                             path.expand("~/.config/earthengine"))
+ee_dataset <- function(quiet = FALSE, upgrade = FALSE, path_dataset = NULL) {
+  ee_dataset_file <- sprintf(
+    "%s/ee_dataset.csv",
+    path.expand("~/.config/earthengine")
+  )
   if (file.exists(ee_dataset_file) & !upgrade) {
     ee_dataset <- read.csv(ee_dataset_file, stringsAsFactors = FALSE)
   } else {
-    user_samapriya <- 'https://raw.githubusercontent.com/csaybar/'
-    ee_template <- "%sEarth-Engine-Datasets-List/master/%s"
-    ee_dataset <- read.csv(
-      file = sprintf(ee_template,user_samapriya, ee_date),
-      stringsAsFactors = FALSE
-    )
+    if (is.null(path_dataset)) {
+      user_samapriya <- "https://raw.githubusercontent.com/csaybar/"
+      ee_template <- "%sEarth-Engine-Datasets-List/master/%s"
+      ee_dataset_uri <- sprintf(ee_template, user_samapriya, find_eedataset())
+    } else {
+      ee_dataset_uri <- path_dataset
+    }
+    ee_dataset <- read.csv(ee_dataset_uri, stringsAsFactors = FALSE)
     if (!quiet) {
       cat("Downloading(Upgrading) the Earth Engine catalog ... please wait\n")
     }
-    write.csv(x = ee_dataset,file =  ee_dataset_file, row.names = FALSE)
+    write.csv(x = ee_dataset, file = ee_dataset_file, row.names = FALSE)
   }
   return(ee_dataset)
 }

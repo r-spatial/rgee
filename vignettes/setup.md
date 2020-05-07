@@ -1,0 +1,168 @@
+`rgee` has two types of dependencies. The first group called <span
+style="color:#b52b09">**strict dependencies**</span> that must be
+satisfied before the `rgee` installation. If this is not fulfilled
+**rgee just will not work**. The dependencies that comprised this group
+are:
+
+-   <span style="color:#b52b09"><b> Google account with Earth Engine
+    activated </b></span>
+-   <span style="color:#b52b09"><b> Python &gt; v3.5 </b></span>
+-   <span style="color:#b52b09"><b> EarthEngine Python API </b></span>
+
+The activation of **Earth Engine accounts** depends on each users, check
+the oficial website of [Google Earth
+Engine](https://earthengine.google.com/) for more details. If you do not
+count with a **Python environment** in your system, run
+`ee_Initialize()` to display an interactive menu to install
+[Miniconda](https://docs.conda.io/en/latest/miniconda.html) (a free
+minimal installer for conda). We highly recommend use an virtual
+environment to use `rgee`, you can create one using `ee_create_pyenv`.
+Finally, the `ee_install_python_packages()` function is provided as a
+convenient way to install all Python packages needed in `rgee`, even
+though it is not mandatory. You can count on with your own custom
+installation. This would be also allowed. All the step described are
+summarised below:
+
+``` r
+library(rgee)
+# Recommended way to install external rgee dependencies 
+
+# 1. Initialize rgee with ee_Initialize(). If there is no any
+#    Python environment, miniconda will be installed by default.
+ee_Initialize()
+
+# 2. Create a Python environment, e.g. ee.
+pyenv <- ee_create_pyenv(python_env = "ee")
+
+# Find others Python environments in the system.
+# ee_discover_pyenvs()
+
+# 3. Set a Python environment (e.g. ee) and restart R to see changes.
+ee_set_pyenv(pyenv, install = TRUE)
+
+# 4. Install Python package dependencies and restart R to see changes.
+ee_install_python_packages()
+
+# 5. Initialize rgee again!
+ee_Initialize()
+```
+
+The second group of dependencies also called <span
+style="color:#857e04"><b>I/O dependencies</b></span> unlock `rgee`
+import & export functions. This dependencies are not mandatory. However,
+many of the rgee I/O functionality depend on it. The dependencies that
+comprised this group are shown below:
+
+-   <span style="color:#857e04">**Google Cloud Storage
+    credentials**</span>
+-   <span style="color:#857e04">**Google Drive credentials**</span>
+
+### Import and Export Spatial Data using rgee
+
+The batch import/export involves difficulties for most GEE users. In
+`rgee`, we are aware of it and we created several functions to help
+users to download and upload spatial data. If you are trying to
+**download** data from GEE using `rgee` you will have three options:
+
+-   **ee\_as\_sf**: Useful to download
+    ee*G**e**o**m**e**t**r**y*, *e**e*Feature and ee$FeatureCollection.
+-   **ee\_as\_**\*: Convert ee$Image to stars and raster object.
+-   **ee\_as\_thumbnail**: Create a raster or stars object based on a
+    thumbnail image.
+
+These functions through the argument **`via`** will permit you to
+**change the download method**. There are three methods to download an
+EE object in rgee: the `getInfo` which seeks the spatial object in the
+response, the `drive` options which use Google Drive (GD) as an
+container, and finally `gcs` which use Google Cloud Storage (GCS).
+`rgee` to deal with **GD** and **GCS** use the R package
+[googledrive](https://googledrive.tidyverse.org/) and
+[googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/)
+respectively, so you will need to do the installation before.
+
+``` r
+# please try as follow
+install.packages('googledrive')
+install.packages('googleCloudStorageR')
+```
+
+**GD** is more friendly to novice Earth Engine users because the
+authentication process could be done without leaving R. However, if you
+are trying to move large amounts of data, it is preferable use Google
+Cloud Storage instead. It is important mentioning that, you will need to
+have your own Google Project with a credit card added to use GCS,
+charges will apply. See the
+[GCS\_AUTH\_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
+tutorial to create your own service account key. If you want to
+understand why this is necessary, please have a look [Mark
+Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
+tutorial.
+
+Batch **upload** is a harder process, in `rgee` we try to make it
+simple. If you want to upload files in a batch way, firstly you must
+**get authorization to read & write into a Google Cloud Storage (GCS)
+bucket**. `rgee` implement two functions to upload files:
+
+-   **sf\_as\_ee**: Convert a sfg, sfc or sf object to
+    ee$FeatureCollection.
+-   **stars\_as\_ee**: Convert an stars object to ee$Image.
+-   **raster\_as\_ee**: Convert an raster object to ee$Image.
+
+### Authorization and authentication
+
+`rgee` deal with three different Google API’s:
+
+-   Google Earth Engine
+-   Google Drive
+-   Google Cloud Storage
+
+To authenticate either Google Drive or Google Cloud Storage, you just
+need to run as follow:
+
+``` r
+library(rgee)
+#ee_reattach() # reattach ee as a reserve word
+
+# Initialize just Earth Engine
+ee_Initialize()
+ee_Initialize(email = 'csaybar@gmail.com') # Use the argument email is not mandatory
+
+# Initialize Earth Engine and GD
+ee_Initialize(email = 'csaybar@gmail.com', drive = TRUE)
+
+# Initialize Earth Engine and GCS
+ee_Initialize(email = 'csaybar@gmail.com', gcs = TRUE)
+
+# Initialize Earth Engine, GD and GCS
+ee_Initialize(email = 'csaybar@gmail.com', drive = TRUE, gcs = TRUE)
+```
+
+If the Google account is verified and the permission is granted, you
+will be directed to an authentication token. Copy this token and paste
+it in the emerging GUI. This process will be repeated for each API,
+except for [Google Cloud
+Storage](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
+see the link for details of how create a workflow that use GCS. If there
+is a successful outcome, all credentials are stored in:
+
+``` r
+ee_get_earthengine_path()
+```
+
+For the next sessions, there will not be need for any further
+authentication.
+
+### Checking
+
+The `ee_check()` function will help you for checking the sanity of
+`rgee` installation. Additionally, you can separately check the `rgee`
+dependencies with the following functions:
+
+-   `ee_check_python()` - Python version
+-   `ee_check_credentials()` - Google Drive and GCS credentials
+-   `ee_check_rgee_python_packages()` - Python packages
+
+``` r
+library(rgee)
+ee_check()
+```
