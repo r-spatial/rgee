@@ -97,12 +97,6 @@ jobs:
           install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
         shell: Rscript {0}
 
-      - name: CHECK
-        env:
-          _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
-        shell: Rscript {0}
-
       - name: UPLOAD CHECK RESULTS
         if: failure()
         uses: actions/upload-artifact@master
@@ -111,5 +105,5 @@ jobs:
           path: check
 
       - name: Test coverage
-        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}")
+        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}", path = "tests", clean = FALSE)
         shell: Rscript {0}
