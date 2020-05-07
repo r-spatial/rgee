@@ -1,6 +1,18 @@
 context("rgee: ee_Initialize() test")
 
-if (isFALSE(exists('ee'))) {
+ee_path <- path.expand("~/.config/earthengine")
+sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
+
+user <- tryCatch(
+  expr = read.table(sessioninfo,header = TRUE,stringsAsFactors = FALSE),
+  error = function(e) ee_Initialize(
+    email = 'data.colec.fbf@gmail.com',
+    drive = TRUE,
+    gcs = TRUE
+  )
+)
+
+if (anyNA(user)) {
   ee_reattach()
   ee_Initialize(
     email = 'data.colec.fbf@gmail.com',

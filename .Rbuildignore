@@ -4,7 +4,9 @@
 ^CODE_OF_CONDUCT.md
 ^CONTRIBUTING.md
 ^LICENSE.md
-^vignettes$
 ^\.github$
 ^codecov\.yml$
 ^_pkgdown\.yml$
+^docs$
+^vignettes$
+^pkgdown$
