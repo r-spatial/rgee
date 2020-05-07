@@ -111,6 +111,7 @@ update_rgee <- function(pkg = ".",
   if (!ee_utils_py$ee_getversion() == rgee::ee_version()) {
     updated_ee_version()
     updated_ee_README()
+    rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
   }
   github_push(dest_dir, commit_message, remote, branch)
   invisible()

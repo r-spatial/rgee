@@ -1,6 +1,9 @@
 on:
   schedule:
     - cron: "* 4 * * *"
+  push:
+    branches:
+      - master
 
 name: updated
 
@@ -90,4 +93,4 @@ jobs:
         shell: Rscript {0}
 
       - name: UPGRADE RGEE
-        run: Rscript ./.github/ee_update.R
+        run: Rscript ./.github/updated.R
