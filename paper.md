@@ -78,28 +78,31 @@ library(sf)
 
 ee_Initialize()
 
-# Region of interest
-roi <- ee$Geometry$Rectangle(-122.27, 37.86, -122.24, 37.89)
+# Define a Region of interest
+roi <- ee$Geometry$Point(-120.06227, 40.64189)$buffer(25000)
 
-# TIGER: US Census Blocks Dataset
-blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
+# Load TerrADat TerrestrialAIM Dataset
+blocks <- ee$FeatureCollection("BLM/AIM/v1/TerrADat/TerrestrialAIM")
 subset <- blocks$filterBounds(roi)
 
-# From Earth Engine to Local Env
+# Move an Earth Engine FeatureCollection to their local env
 sf_subset <- ee_as_sf(x = subset)
 
-# Creat a boxplot with ggplot2
-sf_subset[c("pop10")] %>% 
+# Create a boxplot with ggplot2
+gapPct <- c("_25_50" = "GapPct_25_50","_51_100"="GapPct_51_100",
+            "101_200" = "GapPct_101_200","200_>" = "GapPct_200_plus")
+
+sf_subset[gapPct] %>% 
   st_set_geometry(NULL) %>% 
   as_tibble() %>% 
-  rename(value = "pop10") %>% 
-  mutate(name = "pop10") %>% 
-  ggplot(aes(x = name, y = value)) +
-  geom_boxplot(fill='gray') +
-  xlab("") + ylab("number of housing units") +
+  rename(!!gapPct) %>% 
+  pivot_longer(seq_along(gapPct), names_to = "Range") %>% 
+  ggplot(aes(x = Range, y = value, fill = Range)) +
+  geom_boxplot() +
+  xlab("") + ylab("% of the plot's soil surface") +
   theme_minimal()
 ```
-![Boxplot of the total population for each US census block into a specific area](rgee_paper_00.png){ width=50% }
+![Boxplot of the percentage of the plot's soil surface covered by gaps between plant canopies](rgee_paper_00.png){ width=60% }
 
 
 ## Multiple users
@@ -140,6 +143,8 @@ Map$addLayer(
 )
 ```
 
+![Landsat 8 true color composite of San Francisco bay area, California, USA](rgee_paper_mapview.png){ width=60% }
+
 ## Extraction of time series
 
 `rgee` can extract values from `ee.Image` and `ee.ImageCollection` at the location of `ee.Geometry`, `ee.Feature`, `ee.FeatureCollection` and `sf` objects. If the geometry is a polygon, users can summarize the values considering a built-in Earth Engine reducer function. The code below explains how to extract the average areal rainfall for precipitation mean composite.
@@ -153,15 +158,23 @@ ee_Initialize()
 # Image or ImageCollection (mean composite)
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2001-01-01", "2002-01-01")$
-  map(function(x) x$select("pr"))$
-  mean()$rename("pp_mean") 
+  map(function(x) x$select("pr"))
 
 # Define a geometry
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))
 
 # Extract the average areal rainfall
-ee_nc_rain <- ee_extract(terraclimate, nc, sf = TRUE)
-plot(ee_nc_rain["pp_mean"])
+ee_nc_rain <- ee_extract(terraclimate, nc, sf = FALSE)
+colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
+ee_nc_rain$name <- nc$NAME
+
+ee_nc_rain %>%
+  pivot_longer(-name, names_to = "month", values_to = "pr") %>%
+  ggplot(aes(x = month, y = pr, group = name, color = pr)) +
+  geom_line(alpha = 0.4) +
+  xlab("Month") +
+  ylab("Precipitation (mm)") +
+  theme_minimal()
 ```
 
 ![Average areal rainfall from the North Carolina state. The highest (lowest) rainfall values are in yellow (blue)](rgee_paper_01.png){ width=70% }
