@@ -1,5 +1,5 @@
-`rgee` has two types of dependencies. The first group called <span
-style="color:#b52b09">**strict dependencies**</span> that must be
+`rgee` has two types of dependencies: **the strict one and the referred with I/O** . The <span
+style="color:#b52b09">**strict dependencies**</span> must be
 satisfied before the `rgee` installation. If this is not fulfilled
 **rgee just will not work**. The dependencies that comprised this group
 are:
@@ -20,7 +20,7 @@ environment to use `rgee`, you can create one using `ee_create_pyenv`.
 Finally, the `ee_install_python_packages()` function is provided as a
 convenient way to install all Python packages needed in `rgee`, even
 though it is not mandatory. You can count on with your own custom
-installation. This would be also allowed. All the step described are
+installation. This would be also allowed. All the step described before are
 summarised below:
 
 ``` r
@@ -47,7 +47,7 @@ ee_install_python_packages()
 ee_Initialize()
 ```
 
-The second group of dependencies also called <span
+The second group of dependencies called <span
 style="color:#857e04"><b>I/O dependencies</b></span> unlock `rgee`
 import & export functions. This dependencies are not mandatory. However,
 many of the rgee I/O functionality depend on it. The dependencies that
@@ -101,7 +101,7 @@ tutorial.
 Batch **upload** is a harder process, in `rgee` we try to make it
 simple. If you want to upload files in a batch way, firstly you must
 **get authorization to read & write into a Google Cloud Storage (GCS)
-bucket**. `rgee` implement two functions to upload files:
+bucket**. `rgee` implement three functions to upload files:
 
 -   **sf\_as\_ee**: Convert a sfg, sfc or sf object to
     ee$FeatureCollection.

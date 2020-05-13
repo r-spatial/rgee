@@ -400,7 +400,7 @@ citation("rgee")
 
 ## Credits :bow:
 
-Most of the `rgee` functionalities were based in the following third-party R/Python packages:
+We would like to offer an special thanks to [Justin Braaten](https://github.com/jdbcode) for his outstanding work with GEE, it has been a great inspiration throughout the development of rgee. Many of rgee ideas are not ours, so we would like to offer and special thank you to the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
