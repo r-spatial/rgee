@@ -12,39 +12,34 @@ authors:
   - name: Cesar Aybar
     orcid: 0000-0003-2745-9535
     affiliation: 1
-  - name: Justin Braaten
-    orcid: 0000-0003-2745-9535
-    affiliation: 2
   - name: Qiusheng Wu
-    affiliation: 3
+    affiliation: 2
     orcid: 0000-0001-5437-4073
   - name: Roy Yali
-    affiliation: 4
+    affiliation: 3
     orcid: 0000-0003-4542-3755
   - name: Lesly Bautista
-    affiliation: 4
+    affiliation: 3
     orcid: 0000-0003-3523-8687
 affiliations:
   - name: Department of Geoinformatics – Z_GIS, University of Salzburg, Austria
     index: 1
-  - name: College of Earth, Ocean, and Atmospheric Sciences, Oregon State University, Corvallis, OR 97331, USA
-    index: 2
   - name: Department of Geography, University of Tennessee, Knoxville, TN 37996, USA
-    index: 3
+    index: 2
   - name: Universidad Nacional Mayor de San Marcos, Lima, Lima 15081, Peru
-    index: 4
+    index: 3
 ---
 
 # Summary
-Google Earth Engine (GEE) [@gorelick2017google] is a cloud-based platform specifically designed for planetary-scale environmental data analysis. Currently, GEE is made up of 3 components. The data catalog which is continuously updated and permits users to access a dataset of over 40 years of satellite imagery for the whole world.  The Google’s geocomputational infrastructure highly optimized to reduce the time execution of spatial non-recursively procedures. Finally, the Web REST API and the two client libraries (in JavaScript and Python) permits users to interact with the server-side without the necessity to understand the complex system architecture and data distributions models behind GEE. Although the GEE functionality is powerful with more than 800 functions, and the possibility of chaining operations,  there are limitations to creating straightforward input/output pipelines, quality static visualization, metadata display, and efficient management of Earth Engine asset resources. This becomes a more challenging task outside the Python Earth Engine API [@markert2019cartoee].
+Google Earth Engine [@gorelick2017google] is a cloud-based platform designed for planetary-scale environmental data analysis. Its multi-petabyte data catalog and computation services are accessed via an Internet-accessible API. The API is exposed through JavaScript and Python client libraries. Google provides a browser-based IDE for the JavaScript API, and while convenient and useful for rapid data exploration and script development, it does not allow third-party package integration, relying solely on Google Maps and Google Charts for data visualization, and proprietary systems for metadata viewing and asset management. By contrast, the Python and Node.js distributions offer much flexibility for developers to integrate with third-party libraries, but without the structure of a dedicated IDE, casual users can be left directionless and daunted. A significant gap exists between these two offerings (Google-supported JavaScript IDE and base client libraries) where convenience and flexibility meet. We propose to fill this gap with an R package that wraps the Earth Engine Python API to provide R users with a familiar interface, rapid development features, and flexibility to analyze data using open-source, third-party packages.
 
-This paper introduces **rgee**, an Earth Engine client library for R. The goal of **rgee** is to allows users to leverage the strengths of the R spatial ecosystem and Google Earth Engine in the same workflow. All the classes and the existing functionality of the two Google's supported client libraries can be called through the dollar sign (`$`). `rgee` adds several new features such as (i) new I/O design, (ii) multiple user support, (iii) easily extraction of time series, (iv) asset manage interface, and (v) metadata display, also with `rgee` is possible the execution of Earth Engine Python code from within R which make the translation of large Python projects unnecessary.  
+rgee is an Earth Engine client library for R that allows users to leverage the strengths of the R spatial ecosystem and Google Earth Engine in the same workflow. All of the Earth Engine Python API classes, modules, and functions are made available through the reticulate package, which embeds a Python session within an R session, enabling seamless interoperability. Additionally, rgee adds several new features such as (i) new I/O design, (ii) multiple user support, (iii) Interactive map display,  (iv) easy extraction of time series, (iv) asset manage interface, and (v) metadata display, also with rgee is possible the execution of Earth Engine Python code from within R which make the translation of large Python projects unnecessary.
 
 # Features
 
 ## I/O Enhanced
 
-**rgee** implements several functions to support the download/upload of image and vector datasets (Table 1 and Table 2). For instance, to download images located on the server-side you might use either `ee_image_as_raster` or `ee_image_as_stars`. All the direct download functions (EE server-side to local) implemented in `rgee` have the option to download via using an intermediate container (Google Drive or Google Cloud Storage) or a REST call ("$getInfo"). Although the last option permits users a quick download, there is a limitation of 262144 pixels (for images) or 5000 elements (for featurecollections) by request which makes it not recommendable for large objects. The others implemented functions (Table 1) will permit you to create more customized download workflows, for instance, using `ee_image_to_drive` and `ee_drive_to_local` users could create scripts which save results in a `.TFRecord` rather than a `.GeoTIFF` format. The upload process follows the same logic. In **rgee** we implement `raster_as_ee`, `stars_as_ee` for upload images and `sf_as_ee` for vector data. Large uploads are just possible through a Google Cloud Storage account active. 
+`rgee` implements several functions to support download/upload of image and vector files (Table 1 and Table 2). For instance, to download images and save them in a local environment you might use either `ee_image_as_raster` or `ee_image_as_stars`. Both functions have the option to fetch data using an intermediate container (Google Drive or Google Cloud Storage) or through a REST call ("$getInfo"). Although the last option permits users a quick download, there is a limitation of 262144 pixels (for ee.Image) or 5000 elements (for ee.FeatureCollection) by request which makes it not recommendable for large objects. The others implemented functions (Table 1) create more customized download workflows. For instance, using `ee_image_to_drive` and `ee_drive_to_local` users could create scripts which save results in a `.TFRecord` rather than a `.GeoTIFF` format. 
 
 |         	|                   	|      FROM      	|       TO      	|       RETURN       	|
 |---------	|-------------------	|:--------------:	|:-------------:	|:------------------:	|
@@ -62,6 +57,8 @@ This paper introduces **rgee**, an Earth Engine client library for R. The goal o
 
 : Download functions provided by package rgee. \label{table:1}
 
+The upload process follows the same logic. In rgee we implement `raster_as_ee`, `stars_as_ee` for upload images and sf_as_ee for vector data. Large uploads are just possible with an active Google Cloud Storage account. The next example illustrate the benefit of the I/O module which permits a seamless integration between rgee and ggplot2 to display metadata.
+
 |         	|                 	|      FROM     	|       TO      	|            RETURN           	|
 |---------	|-----------------	|:-------------:	|:-------------:	|:---------------------------:	|
 | Image   	| gcs_to_ee_image 	| Cloud Storage 	|    EE asset   	|          EE Asset ID       	  |
@@ -73,9 +70,41 @@ This paper introduces **rgee**, an Earth Engine client library for R. The goal o
 
 : Upload functions provided by package rgee. \label{table:2}
 
+
+```r
+library(tidyverse)
+library(rgee)
+library(sf)
+
+ee_Initialize()
+
+# Region of interest
+roi <- ee$Geometry$Rectangle(-122.27, 37.86, -122.24, 37.89)
+
+# TIGER: US Census Blocks Dataset
+blocks <- ee$FeatureCollection("TIGER/2010/Blocks")
+subset <- blocks$filterBounds(roi)
+
+# From Earth Engine to Local Env
+sf_subset <- ee_as_sf(x = subset)
+
+# Creat a boxplot with ggplot2
+sf_subset[c("pop10")] %>% 
+  st_set_geometry(NULL) %>% 
+  as_tibble() %>% 
+  rename(value = "pop10") %>% 
+  mutate(name = "pop10") %>% 
+  ggplot(aes(x = name, y = value)) +
+  geom_boxplot(fill='gray') +
+  xlab("") + ylab("number of housing units") +
+  theme_minimal()
+```
+![Boxplot of the total population for each US census block into a specific area](rgee_paper_00.png){ width=50% }
+
+
 ## Multiple users
 
-`rgee` offers users the possibility to arrange multiple credentials (Google Earth Engine, Google Drive, and Google Cloud Storage) for multiple users through the function `ee_Initialize` (a wrapper around `ee$Initialize`). This function will permit set up users credentials quickly since they are all saved in the path: `~/.config/earthengine`. It is extremely useful to parallelize exporting and importing tasks from the client-side. For instance, if a group of researchers wants to analyze the deforestation, the code bellow will permit them to obtain results three-times faster:
+`rgee` implement the ee_Initialize function (a wrapper around ee$Initialize) which offers users the possibility to arrange multiple credentials (Google Earth Engine, Google Drive, and Google Cloud Storage) for multiple users. This feature open the possibility to distribute requests by accounts (in other words, parallelize in the client-side). For instance, if a research group want to analyze the deforestation the code bellow will permit them to obtain results three-times faster:
 
 ```r
 library(foreach)
@@ -85,9 +114,30 @@ google_account <- c("csaybar", "ryali93", "lbautista")
 
 foreach(account = google_account, .combine = "c") %dopar% {
   ee_Initialize(gmail)
-  ic_results <- temporal_deforestation(split = ...)
+  ic_results <- temporal_deforestation(split = google_account)
   ee_imagecollection_to_local(ic_results)
 } -> results
+```
+
+## Interactive Map Display
+rgee offers interactive map display through  "Map\$addLayer", an R function which mimics the mapping module of the Earth Engine code editor. Map\$addLayer takes advantage of the `getMapId` Earth Engine method to fetch and return a ID dictionary which is used to create layer into a mapview [@appelhans2016mapview] object. Users can provide visualization parameters to the Map\$addLayer function by using the argument visParams, as we can see here:
+
+```r
+library(rgee)
+ee$Initialize()
+
+# Load an ee.Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+
+# Centers the map view
+Map$centerObject(image)
+
+# Display the ee.Image
+Map$addLayer(
+  eeObject = image, 
+  visParams = list(bands = c("B4", "B3", "B2"), max = 10000), 
+  name = "SF"
+)
 ```
 
 ## Extraction of time series
@@ -119,7 +169,7 @@ plot(ee_nc_rain["pp_mean"])
 
 ## Asset Manage Interface
 
-`rgee` inspired in previous works [@samapriya_roy_2020_3772053] implement an interface to batch actions on assets which extend capabilities of the existing GEE data module (ee.data.\*). The interface is composed for a series of functions, and users can identify them by the prefix ee_manage_\*. Between the actions that the Asset Manage Interface enables we have: creation and elimination of folders, moving and copy assets, set and delete properties, handle the access control lists, and to manage or cancel tasks. For example, users could move a Landsat 8 image to their personal EE asset as follow:
+`rgee` implement an interface to batch actions on assets which extend capabilities of the existing GEE data module (ee.data.\*). The interface is composed for a series of functions, and users can identify them by the prefix ee_manage_\*. Between the actions that the Asset Manage Interface enables we have: creation and elimination of folders, moving and copy assets, set and delete properties, handle the access control lists, and to manage or cancel tasks. For example, users could move a Landsat 8 image to their personal EE asset as follow:
 
 ```r
 library(rgee)
