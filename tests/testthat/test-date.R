@@ -43,27 +43,27 @@ test_that("eedate_to_rdate II", {
   expect_equal(eedate, 1.48608e+12)
 })
 
-test_that("ee_get_img_date", {
+test_that("ee_get_date_img", {
   l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
-  l8_date <- ee_get_img_date(l8)
+  l8_date <- ee_get_date_img(l8)
   expect_equal(l8_date$image_id, "LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318")
   srtm <- ee$Image('CGIAR/SRTM90_V4')
-  srtm_date <- ee_get_img_date(srtm, time_end = TRUE)
+  srtm_date <- ee_get_date_img(srtm, time_end = TRUE)
   expect_equal(srtm_date$image_id, "CGIAR/SRTM90_V4")
 })
 
-test_that("ee_get_ic_date", {
+test_that("ee_get_date_ic", {
   mod11a2 <- ee$ImageCollection("MODIS/006/MOD11A2")$
     filter(ee$Filter$date('2001-01-01', '2001-03-31'))
-  modis_date_01 <- ee_get_ic_date(x = mod11a2)
-  modis_date_02 <- ee_get_ic_date(mod11a2,time_end = TRUE)
+  modis_date_01 <- ee_get_date_ic(x = mod11a2)
+  modis_date_02 <- ee_get_date_ic(mod11a2,time_end = TRUE)
   expect_s3_class(modis_date_01, "data.frame")
   expect_s3_class(modis_date_02, "data.frame")
 })
 
-test_that("ee_get_ic_date", {
+test_that("ee_get_date_ic", {
   ee_img <- ee$Image(0)
-  expect_equal(ee_get_img_date(ee_img)[["image_id"]], "no_id")
+  expect_equal(ee_get_date_img(ee_img)[["image_id"]], "no_id")
   ee_ic <- ee$ImageCollection(c(ee_img, ee_img))
-  expect_type(ee_get_ic_date(x = ee_ic)[["id"]], "character")
+  expect_type(ee_get_date_ic(x = ee_ic)[["id"]], "character")
 })

@@ -40,6 +40,6 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
   filterBounds(nc)
 
-ee_get_ic_date(ee_s2)
+ee_get_date_ic(ee_s2)
 }
 }

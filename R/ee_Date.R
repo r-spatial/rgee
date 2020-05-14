@@ -94,9 +94,9 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' ee_Initialize()
 #'
 #' l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
-#' ee_get_img_date(l8)
+#' ee_get_date_img(l8)
 #' srtm <- ee$Image('CGIAR/SRTM90_V4')
-#' ee_get_img_date(srtm, time_end = TRUE)
+#' ee_get_date_img(srtm, time_end = TRUE)
 #' }
 #' @export
 ee_get_date_img <- function(x, time_end = FALSE) {
@@ -151,7 +151,7 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #'   filterDate("2016-01-01", "2016-01-31")$
 #'   filterBounds(nc)
 #'
-#' ee_get_ic_date(ee_s2)
+#' ee_get_date_ic(ee_s2)
 #' }
 #' @export
 ee_get_date_ic <- function(x, time_end = FALSE) {

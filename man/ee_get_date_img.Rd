@@ -33,8 +33,8 @@ ee_reattach()
 ee_Initialize()
 
 l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
-ee_get_img_date(l8)
+ee_get_date_img(l8)
 srtm <- ee$Image('CGIAR/SRTM90_V4')
-ee_get_img_date(srtm, time_end = TRUE)
+ee_get_date_img(srtm, time_end = TRUE)
 }
 }
