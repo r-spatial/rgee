@@ -59,8 +59,10 @@
 #' library(raster)
 #' library(stars)
 #' library(rgee)
+#'
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
+#'
 #' nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))
 #' dem_palette <- c(
 #'   "#008435", "#1CAC17", "#48D00C", "#B3E34B", "#F4E467",
@@ -85,6 +87,7 @@
 #'
 #' world_dem[world_dem <= 0] <- NA
 #' world_dem <- world_dem * 5000
+#'
 #' plot(
 #'   x = world_dem, col = dem_palette, breaks = "equal",
 #'   reset = FALSE, main = "SRTM - World"
@@ -105,6 +108,7 @@
 #' )
 #'
 #' arequipa_dem <- arequipa_dem * 5000
+#'
 #' plot(
 #'   x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
 #'   reset = FALSE, main = "SRTM - Arequipa"
@@ -130,6 +134,7 @@
 #'   vizparams = list(min = 0, max = 5000, gamma = 1.5),
 #'   raster = TRUE
 #' )
+#'
 #' plotRGB(l8_img, stretch = "lin")
 #' }
 #' @export

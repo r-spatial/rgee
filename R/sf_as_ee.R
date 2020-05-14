@@ -90,8 +90,8 @@
 #' pt <- ee$Geometry$Point(c(1.5, 1.5))
 #'
 #' # Check insideness with a contains operator.
-#' print(holePoly$geometry()$contains(pt)$getInfo() %>% ee_py_to_r())   # FALSE
-#' print(evenOddPoly$geometry()$contains(pt)$getInfo() %>% ee_py_to_r())# TRUE
+#' print(holePoly$geometry()$contains(pt)$getInfo() %>% ee_utils_py_to_r())   # FALSE
+#' print(evenOddPoly$geometry()$contains(pt)$getInfo() %>% ee_utils_py_to_r())# TRUE
 #'
 #' # 2. Upload small geometries to EE asset
 #' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')
@@ -203,7 +203,7 @@ sf_as_ee <- function(x,
       stop("Cloud Storage bucket was not defined")
     }
     shp_dir <- sprintf("%s.shp", tempfile())
-    geozip_dir <- ee_create_shp_zip(eex, shp_dir)
+    geozip_dir <- ee_utils_shp_to_zip(eex, shp_dir)
     gcs_filename <- local_to_gcs(
       x = geozip_dir,
       bucket = bucket,

@@ -51,7 +51,7 @@ library(sf)
 
 ee_users()
 ee_reattach() # reattach ee as a reserved word
-ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+ee_Initialize(drive = TRUE)
 
 # Define study area (local -> earth engine)
 # Communal Reserve Amarakaeri - Peru
@@ -61,6 +61,7 @@ ROI <- c(rlist$xmin, rlist$ymin,
          rlist$xmax, rlist$ymax,
          rlist$xmin, rlist$ymax,
          rlist$xmin, rlist$ymin)
+
 ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon() \%>\%

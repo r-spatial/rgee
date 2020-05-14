@@ -65,6 +65,7 @@ Print and return metadata about Spatial Earth Engine Objects.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach()
 ee_Initialize()
 

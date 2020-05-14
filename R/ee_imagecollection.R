@@ -37,14 +37,8 @@
 #' library(rgee)
 #' library(raster)
 #'
-#' # Initialize a specific Earth Engine account and load
-#' # either Google Drive or Google Cloud Storage credentials
 #' ee_reattach()
-#' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
-#'   drive = TRUE,
-#'   gcs = TRUE
-#' )
+#' ee_Initialize(drive = TRUE, gcs = TRUE)
 #'
 #' # USDA example
 #' loc <- ee$Geometry$Point(-99.2222, 46.7816)
@@ -91,6 +85,7 @@ ee_imagecollection_to_local <- function(ic,
   if (!any(class(ic) %in% "ee.imagecollection.ImageCollection")) {
     stop("ic argument is not an ee$imagecollection$ImageCollection")
   }
+
   # is region an ee.geometry.Geometry?
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
@@ -174,7 +169,7 @@ ee_geometry_message <- function(region) {
   sf_region <- ee_as_sf(x = region)$geometry
   region_crs <- st_crs(sf_region)$epsg
 
-  ### Metadata getting from region and image
+  ### Metadata ----
   #is geodesic?
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
@@ -185,8 +180,9 @@ ee_geometry_message <- function(region) {
   if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
     is_evenodd <- TRUE
   }
+  ### ------------
 
-  #### geom message to display
+  # geom message to display
   cat(
     '- region parameters\n',
     'WKT      :', st_as_text(sf_region), "\n",

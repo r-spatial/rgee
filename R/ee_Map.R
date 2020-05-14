@@ -89,6 +89,7 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
@@ -103,6 +104,7 @@
 #'   ),
 #'   name = "Geometry-Arequipa"
 #' )
+#'
 #' # Case 2: Feature
 #' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
 #'   first()
@@ -188,6 +190,7 @@ ee_centerObject <- function(eeObject,
     message("NOTE: Center got from the first element.")
     eeObject <- ee$Feature(eeObject$first())
   }
+
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
     center <- tryCatch(
       expr = eeObject$
@@ -195,7 +198,7 @@ ee_centerObject <- function(eeObject,
         centroid(maxError)$
         getInfo() %>%
         '[['('coordinates') %>%
-        ee_py_to_r(),
+        ee_utils_py_to_r(),
       error = function(e) {
         message(
           "The centroid coordinate was not possible",
@@ -204,6 +207,7 @@ ee_centerObject <- function(eeObject,
         c(0, 0)
       }
     )
+
     if (is.null(center)) {
       message(
         "The centroid coordinate was not possible",
@@ -217,7 +221,7 @@ ee_centerObject <- function(eeObject,
         centroid(maxError)$
         coordinates()$
         getInfo() %>%
-        ee_py_to_r(),
+        ee_utils_py_to_r(),
       error = function(e) {
         message(
           "The centroid coordinate was not possible",
@@ -343,7 +347,7 @@ if (!isGeneric("+")) {
 #'
 #' @author Adapted from
 #' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim code}.
+#' tim-salabim}  code.
 #' @param e1 a mapview map to which e2 should be added.
 #' @param e2 a mapview map from which the objects should be added to e1.
 #' @examples
@@ -481,6 +485,7 @@ ee_get_spatial_objects <- function(type = "all") {
 }
 
 #' Estimates the zoom level for a given bounds
+#' Adapted from Python to R
 #' https://github.com/fitoprincipe/ipygee/
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
@@ -520,7 +525,7 @@ ee_get_boundary <- function(eeObject, maxError) {
   }
   eeObject$geometry()$bounds(maxError)$getInfo() %>%
     '[['('coordinates') %>%
-    ee_py_to_r() %>%
+    ee_utils_py_to_r() %>%
     unlist() %>%
     matrix(ncol = 2, byrow = TRUE) %>%
     list() %>%

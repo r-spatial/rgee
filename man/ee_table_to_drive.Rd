@@ -51,7 +51,7 @@ library(sf)
 
 ee_users()
 ee_reattach() # reattach ee as a reserved word
-ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+ee_Initialize(drive = TRUE)
 
 
 # Define study area (local -> earth engine)

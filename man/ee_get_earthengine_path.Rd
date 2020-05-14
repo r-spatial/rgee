@@ -2,10 +2,10 @@
 % Please edit documentation in R/ee_Initialize.R
 \name{ee_get_earthengine_path}
 \alias{ee_get_earthengine_path}
-\title{Get the path where the credentials are stored by rgee}
+\title{Get the path where the credentials are stored}
 \usage{
 ee_get_earthengine_path()
 }
 \description{
-Get the path where the credentials are stored by rgee
+Get the path where the credentials are stored
 }

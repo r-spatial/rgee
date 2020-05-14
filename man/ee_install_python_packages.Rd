@@ -57,12 +57,27 @@ version 3.5 >=.
 }
 \examples{
 \dontrun{
-library(rgee)
-ee_create_pyenv('ee')
-ee_discover_pyenvs()
-ee_set_pyenv(
-  python_path = ".../ee/bin/python",
-  python_env = 'ee')
+#' library(rgee)
+
+### Install rgee by steps
+
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+# will be installed by default.
+ee_Initialize()
+
+# 2. Create a Python environment, e.g. ee.
+pyenv <- ee_install_create_pyenv(python_env = "ee")
+
+# Find others Python environments in the system.
+ee_install_discover_pyenvs()
+
+# 3. Set a Python environment (e.g. ee) and restart R to see changes.
+ee_install_set_pyenv(pyenv, install = TRUE)
+
+# 4. Install Python package dependencies and restart R to see changes.
 ee_install_python_packages()
+
+# 5. Initialize rgee again!
+ee_Initialize()
 }
 }

@@ -16,7 +16,7 @@ count with a **Python environment** in your system, run
 `ee_Initialize()` to display an interactive menu to install
 [Miniconda](https://docs.conda.io/en/latest/miniconda.html) (a free
 minimal installer for conda). We highly recommend use an virtual
-environment to use `rgee`, you can create one using `ee_create_pyenv`.
+environment to use `rgee`, you can create one using `ee_install_create_pyenv`.
 Finally, the `ee_install_python_packages()` function is provided as a
 convenient way to install all Python packages needed in `rgee`, even
 though it is not mandatory. You can count on with your own custom
@@ -32,13 +32,13 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(python_env = "ee")
 
 # Find others Python environments in the system.
-# ee_discover_pyenvs()
+# ee_install_discover_pyenvs()
 
 # 3. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_set_pyenv(pyenv, install = TRUE)
+ee_install_set_pyenv(pyenv, install = TRUE)
 
 # 4. Install Python package dependencies and restart R to see changes.
 ee_install_python_packages()

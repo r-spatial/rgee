@@ -52,8 +52,10 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach()
 #' ee_Initialize()
+#'
 #' eeDate <- ee$Date$fromYMD(2010,1,1)
 #' eedate_to_rdate(eeDate,timestamp = TRUE) # good
 #' eeDate$getInfo()$value # bad
@@ -64,7 +66,7 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
                                  package = "rgee")
   ee_utils <- ee_source_python(oauth_func_path)
   date_numeric <- ee_utils$eedate_to_rdate(ee$Date(ee_date)) %>%
-    ee_py_to_r()
+    ee_utils_py_to_r()
   if (isTRUE(timestamp)) {
     date_numeric
   } else {
@@ -87,15 +89,17 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach()
 #' ee_Initialize()
+#'
 #' l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
 #' ee_get_img_date(l8)
 #' srtm <- ee$Image('CGIAR/SRTM90_V4')
 #' ee_get_img_date(srtm, time_end = TRUE)
 #' }
 #' @export
-ee_get_img_date <- function(x, time_end = FALSE) {
+ee_get_date_img <- function(x, time_end = FALSE) {
   time_start <- tryCatch(
     expr = eedate_to_rdate(x$get("system:time_start")),
     error = function(e) NA
@@ -150,13 +154,13 @@ ee_get_img_date <- function(x, time_end = FALSE) {
 #' ee_get_ic_date(ee_s2)
 #' }
 #' @export
-ee_get_ic_date <- function(x, time_end = FALSE) {
+ee_get_date_ic <- function(x, time_end = FALSE) {
   # Call Python module
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils <- ee_source_python(oauth_func_path)
 
   # Fetch the time_start of each Image
-  time_start <- ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_start"))
+  time_start <- ee_utils_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_start"))
 
   if (is.null(time_start)) {
     time_start <- NA
@@ -169,7 +173,7 @@ ee_get_ic_date <- function(x, time_end = FALSE) {
   }
 
   # Getting time_end
-  time_end <- ee_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_end"))
+  time_end <- ee_utils_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_end"))
   if (is.null(time_end)) {
     time_end <- NULL
   } else {

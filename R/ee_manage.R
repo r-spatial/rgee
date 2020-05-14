@@ -25,10 +25,11 @@
 #' If the argument `del_properties` is 'ALL',
 #' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
-#' @author Samapriya Roy, adapted to R by csaybar.
+#' @author Samapriya Roy, adapted to R and enhanced by csaybar.
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_Initialize()
 #' ee_user_info()
 #'
@@ -124,7 +125,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
             list(type = ee$data$ASSET_TYPE_FOLDER),
             new_path), silent = TRUE
         )
-        #  If nested_folder class is "try-error", try the dirname of path_asset.
+        #  If nested_folder class is "try-error", try the path_asset dirname.
         #            path_asset                            new_path
         #   users/datacolecfbf/cs/cs/rgee   --->  users/datacolecfbf/cs/rgee
         if (class(nested_folder) == "try-error") {
@@ -239,7 +240,7 @@ ee_manage_quota <- function() {
   ee_quota <- ee_source_python(oauth_func_path)
   ID <- ee$data$getAssetRoots()[[1]]$id %>%
     ee_remove_project_chr()
-  quota <- ee_py_to_r(ee_quota$quota(ID))
+  quota <- ee_utils_py_to_r(ee_quota$quota(ID))
   total_msg <- ee_humansize(as.numeric(quota[1]))
   used_msg <- ee_humansize(as.numeric(quota[2]))
   cat(sprintf(" Total Quota: %s \n Used Quota: %s", total_msg, used_msg))
@@ -484,7 +485,7 @@ ee_manage_task <- function(cache = FALSE) {
       "ID", "State", "DestinationPath", "Type", "Start",
       "DeltaToCreate(s)", "DeltaToCompletedTask(s)", "ErrorMessage"
     )
-    status <- ee_py_to_r(ee_manage_py$genreport())
+    status <- ee_utils_py_to_r(ee_manage_py$genreport())
     if (length(status) == 0) {
       message("No recent task to report")
       df_order <- data.frame(message = "No recent task to report")
@@ -568,6 +569,7 @@ ee_humansize <- function(x, suffixes = c("B", "KB", "MB", "GB", "TB", "PB")) {
 
 #' Remove EE projects info
 #' @param x Character (path_asset)
+#' @noRd
 ee_remove_project_chr <- function(x) {
   new_x <- gsub("projects/earthengine/legacy/assets/", "", x)
   gsub("projects/earthengine-legacy/assets/", "", new_x)

@@ -40,14 +40,14 @@ called \code{ndef}.
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 
-# Simple init
+ee_reattach() # reattach ee as a reserved word
+# Simple init - load just Earth Engine credentials
 ee_Initialize()
 
-# Advanced init
+# Advanced init - load full credentials
 ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
+  email = "your_email@gmail.com",
   drive = TRUE,
   gcs = TRUE
 )

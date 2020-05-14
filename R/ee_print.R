@@ -22,6 +22,7 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach()
 #' ee_Initialize()
 #'

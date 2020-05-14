@@ -6,7 +6,7 @@
 \alias{ee_check_python}
 \alias{ee_check_rgee_python_packages}
 \alias{ee_check_credentials}
-\title{Interface to check Python and non-R rgee dependencies}
+\title{Interface to check Python and non-R dependencies}
 \usage{
 ee_check()
 
@@ -26,7 +26,9 @@ packages and credentials.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach() # reattach ee as a reserved word
+
 ee_check_python()
 ee_check_rgee_python_packages()
 ee_check_credentials()

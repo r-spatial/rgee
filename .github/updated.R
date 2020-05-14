@@ -65,7 +65,7 @@ github_push <- function(dir, commit_message, remote, branch) {
 updated_ee_version <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
-  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
+  py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
   file_path <- sprintf("%s/R/ee_version.R",Sys.getenv("GITHUB_WORKSPACE"))
   message(file_path)
   fileConn <- file(file_path)
@@ -87,7 +87,7 @@ updated_ee_version <- function() {
 updated_ee_README <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
-  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
+  py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
   file_path <- sprintf("%s/README.md",Sys.getenv("GITHUB_WORKSPACE"))
   message(file_path)
   readme = readLines(file_path,-1)
@@ -111,7 +111,7 @@ update_rgee <- function(pkg = ".",
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
-  py_version <- rgee::ee_py_to_r(ee_utils_py$ee_getversion())
+  py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
 
   message("rgee version: ", rgee::ee_version())
   message("earthengine-api version: ", py_version)

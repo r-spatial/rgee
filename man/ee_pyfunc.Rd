@@ -26,6 +26,7 @@ for this function must always be given to \pkg{reticulate}.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
@@ -38,6 +39,7 @@ ee_NewList <- ee_SimpleList$map(
     }
   )
 )
+
 ee_NewList$getInfo()
 
 # Earth Engine ImageCollection

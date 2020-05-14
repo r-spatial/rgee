@@ -204,7 +204,7 @@ ee_extract <- function(x,
   })
 
   # Extracting data and passing to sf
-  table_geojson <- ee_py_to_r(table$getInfo())
+  table_geojson <- ee_utils_py_to_r(table$getInfo())
   class(table_geojson) <- "geo_list"
   table_sf <- geojson_sf(table_geojson)
   st_geometry(table_sf) <- NULL

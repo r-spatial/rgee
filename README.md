@@ -121,13 +121,13 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(python_env = "ee")
 
 # Find others Python environments in the system.
-# ee_discover_pyenvs()
+# ee_install_discover_pyenvs()
 
 # 3. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_set_pyenv(pyenv, install = TRUE)
+ee_install_set_pyenv(pyenv, install = TRUE)
 
 # 4. Install Python package dependencies and restart R to see changes.
 ee_install_python_packages()

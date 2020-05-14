@@ -17,6 +17,7 @@
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param quiet Logical. Suppress info message
+#'
 #' @details
 #' \code{ee_as_stars} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
@@ -39,14 +40,8 @@
 #' \dontrun{
 #' library(rgee)
 #'
-#' # Initialize a specific Earth Engine account and load
-#' # either Google Drive or Google Cloud Storage credentials
 #' ee_reattach()
-#' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
-#'   drive = TRUE,
-#'   gcs = TRUE
-#' )
+#' ee_Initialize(drive = TRUE, gcs = TRUE)
 #' ee_user_info()
 #'
 #' # Define an image.
@@ -164,14 +159,8 @@ ee_as_stars <- function(image,
 #' \dontrun{
 #' library(rgee)
 #'
-#' # Initialize a specific Earth Engine account and load
-#' # either Google Drive or Google Cloud Storage credentials
 #' ee_reattach()
-#' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
-#'   drive = TRUE,
-#'   gcs = TRUE
-#' )
+#' ee_Initialize(drive = TRUE, gcs = TRUE)
 #' ee_user_info()
 #'
 #' # Define an image.
@@ -234,6 +223,7 @@ ee_as_raster  <- function(image,
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
+
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -244,6 +234,7 @@ ee_as_raster  <- function(image,
     container = container,
     quiet = quiet
   )
+
   if (length(img_files$file) > 1) {
     message("NOTE: To avoid memory excess problems, ee_as_raster will",
             " not build Raster objects for large images.")
@@ -408,18 +399,22 @@ ee_image_local <- function(image,
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("package jsonlite required, please install it first")
   }
+
   # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
     dsn <- paste0(tempfile(),".tif")
   }
+
   # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
     stop("x argument is not an ee$image$Image")
   }
+
   # is region an ee.geometry.Geometry?
   if (!any(class(region) %in% "ee.geometry.Geometry")) {
     stop("region argument is not an ee$geometry$Geometry")
   }
+
   # Default projection on an Image
   prj_image <- image$projection()$getInfo()
   img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
@@ -450,7 +445,7 @@ ee_image_local <- function(image,
   # Relevant for either drive or gcs.
   ee_user <- ee_exist_credentials()
 
-  ### Metadata getting from region and image
+  ### Metadata ---
   # Band names
   band_names <- image$bandNames()$getInfo()
   #is geodesic?
@@ -592,12 +587,14 @@ ee_image_local <- function(image,
       }
       index <- r_index - 1
       feature <- ee$Feature(region_features$get(index))$geometry()
+
       # Extracts a rectangular region of pixels from an image
       # into a 2D array per (return a Feature)
       ee_image_array <- image$sampleRectangle(
         region = feature,
         defaultValue = 0
       )
+
       # Extract pixel values band by band
       band_results <- list()
       for (index in seq_along(band_names)) {
@@ -608,6 +605,7 @@ ee_image_local <- function(image,
           ncol_array <- length(band_results[[band]][[1]])
         }
       }
+
       # Passing from an array to a stars object
       # Create array from a list
       image_array <- array(
@@ -624,11 +622,13 @@ ee_image_local <- function(image,
 
       ## Configure metadata of the local image and geotransform
       sf_region_batch <- ee_as_sf(feature)
+
       # Fix the init_x and init_y of each image
       init_offset <- ee_fix_offset(
         img_transform = prj_image$transform,
         sf_region =  sf_region_batch
       )
+
       xTranslation_fixed <- init_offset[1]
       yTranslation_fixed <- init_offset[4]
       attr_dim$x$offset <- xTranslation_fixed
@@ -658,6 +658,7 @@ ee_image_local <- function(image,
       if (!is.null(st_get_dimension_values(mosaic,"bands"))) {
         st_set_dimensions(mosaic, 3, values = band_names)
       }
+
       # Save results in dsn
       write_stars(mosaic, dsn)
     }
@@ -670,6 +671,7 @@ ee_image_local <- function(image,
         " to fix it."
       )
     }
+
     # region parameter display
     if (!quiet) {
       cat(
@@ -680,6 +682,7 @@ ee_image_local <- function(image,
         'evenOdd  :', is_evenodd, "\n"
       )
     }
+
     # From Google Earth Engine to Google Drive
     img_task <- ee_image_to_drive(
       image = image,
@@ -691,6 +694,7 @@ ee_image_local <- function(image,
       maxPixels = maxPixels,
       fileNamePrefix = file_name
     )
+
     # download parameter display
     if (!quiet) {
       cat(
@@ -724,6 +728,7 @@ ee_image_local <- function(image,
         " to fix it."
       )
     }
+
     # region parameter display
     if (!quiet) {
       cat(
@@ -734,6 +739,7 @@ ee_image_local <- function(image,
         'evenOdd  :', is_evenodd, "\n"
       )
     }
+
     # From Earth Engine to Google Cloud Storage
     img_task <- ee_image_to_gcs(
       image = image,
@@ -745,6 +751,7 @@ ee_image_local <- function(image,
       scale = scale,
       fileNamePrefix = file_name
     )
+
     # download parameter display
     if (!quiet) {
       cat(
@@ -785,6 +792,7 @@ ee_image_local <- function(image,
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach()
 #' ee_Initialize()
 #'
@@ -823,7 +831,6 @@ ee_image_info <- function(image,
     cat('Image Cols       :', y_npixel,'\n')
     cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
   }
-
 
   if (isFALSE(getsize)) {
     invisible(

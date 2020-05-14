@@ -52,7 +52,7 @@
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+#' ee_Initialize(drive = TRUE)
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -204,7 +204,7 @@ ee_image_to_drive <- function(image,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+#' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -351,7 +351,7 @@ ee_image_to_gcs <- function(image,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf')
+#' ee_Initialize()
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -469,7 +469,7 @@ ee_image_to_asset <- function(image,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+#' ee_Initialize(drive = TRUE)
 #'
 #'
 #' # Define study area (local -> earth engine)
@@ -554,7 +554,7 @@ ee_table_to_drive <- function(collection,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+#' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -637,7 +637,7 @@ ee_table_to_gcs <- function(collection,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf')
+#' ee_Initialize()
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -724,7 +724,7 @@ ee_table_to_asset <- function(collection,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',drive = TRUE)
+#' ee_Initialize(drive = TRUE)
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru
@@ -734,6 +734,7 @@ ee_table_to_asset <- function(collection,
 #'          rlist$xmax, rlist$ymax,
 #'          rlist$xmin, rlist$ymax,
 #'          rlist$xmin, rlist$ymin)
+#'
 #' ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
 #'   list() %>%
 #'   st_polygon() %>%
@@ -930,7 +931,7 @@ ee_drive_to_local <- function(task,
 #'
 #' ee_users()
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+#' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)
 #' # Communal Reserve Amarakaeri - Peru

@@ -34,14 +34,14 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #'
-#' # Simple init
+#' ee_reattach() # reattach ee as a reserved word
+#' # Simple init - load just Earth Engine credentials
 #' ee_Initialize()
 #'
-#' # Advanced init
+#' # Advanced init - load full credentials
 #' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
+#'   email = "your_email@gmail.com",
 #'   drive = TRUE,
 #'   gcs = TRUE
 #' )
@@ -82,7 +82,7 @@ ee_Initialize <- function(email = NULL,
 
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils <- ee_source_python(ee_current_version)
-  earthengine_version <- ee_py_to_r(ee_utils$ee_getversion())
+  earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
     cat(
@@ -262,7 +262,7 @@ ee_create_credentials_earthengine <- function(email_clean) {
       overwrite = TRUE
     )
   } else {
-    oauth_codes <- ee_py_to_r(utils_py$create_codes())
+    oauth_codes <- ee_utils_py_to_r(utils_py$create_codes())
     code_verifier <- oauth_codes[[1]]
     code_challenge <- oauth_codes[[2]]
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
@@ -484,7 +484,7 @@ ee_sessioninfo <- function(email = NULL,
 }
 
 
-#' Get the path where the credentials are stored by rgee
+#' Get the path where the credentials are stored
 #' @export
 ee_get_earthengine_path <- function() {
   ee_path <- path.expand("~/.config/earthengine")
@@ -577,6 +577,7 @@ create_table <- function(user, wsc) {
 #' Get the Asset home name
 #' @examples
 #' \dontrun{
+#' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
 #' ee_get_assethome()

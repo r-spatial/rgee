@@ -68,14 +68,8 @@ Earth Engine Guide - Export data}.
 \dontrun{
 library(rgee)
 
-# Initialize a specific Earth Engine account and load
-# either Google Drive or Google Cloud Storage credentials
 ee_reattach()
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+ee_Initialize(drive = TRUE, gcs = TRUE)
 ee_user_info()
 
 # Define an image.

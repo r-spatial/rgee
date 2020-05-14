@@ -50,7 +50,7 @@ library(sf)
 
 ee_users()
 ee_reattach() # reattach ee as a reserved word
-ee_Initialize(email = 'data.colec.fbf',gcs = TRUE)
+ee_Initialize(gcs = TRUE)
 
 # Define study area (local -> earth engine)
 # Communal Reserve Amarakaeri - Peru

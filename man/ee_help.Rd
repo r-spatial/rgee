@@ -16,8 +16,11 @@ Documentation for Earth Engine Objects
 }
 \examples{
 \dontrun{
-ee_Initialize()
+library(rgee)
+
 ee_reattach()
+ee_Initialize()
+
 ee$Image()$geometry()$centroid \%>\% ee_help()
 ee$Image()$geometry() \%>\% ee_help()
 ee$Geometry$Rectangle(c(-110.8, 44.6, -110.6, 44.7)) \%>\% ee_help()

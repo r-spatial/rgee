@@ -32,8 +32,10 @@ backend to obtain the date and convert it in float before to export to R.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach()
 ee_Initialize()
+
 eeDate <- ee$Date$fromYMD(2010,1,1)
 eedate_to_rdate(eeDate,timestamp = TRUE) # good
 eeDate$getInfo()$value # bad

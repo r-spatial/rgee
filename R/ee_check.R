@@ -1,4 +1,4 @@
-#' Interface to check Python and non-R rgee dependencies
+#' Interface to check Python and non-R dependencies
 #'
 #' R functions for checking sanity of Third-Party Python
 #' packages and credentials.
@@ -11,7 +11,9 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach() # reattach ee as a reserved word
+#'
 #' ee_check_python()
 #' ee_check_rgee_python_packages()
 #' ee_check_credentials()
@@ -67,7 +69,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
     )
   }
   # ee
-  version_ee <- ee_py_to_r(ee_check_utils_exist$ee_check_py_ee())
+  version_ee <- ee_utils_py_to_r(ee_check_utils_exist$ee_check_py_ee())
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == ee_version()) {
@@ -80,7 +82,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
       }
     } else {
       ee_message <- sprintf(
-        "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s",
+        "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s%s%s",
         "The Earth Engine Python API",
         version_ee,
         "installed correctly in the system but rgee was built ",
@@ -91,8 +93,10 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
         ee_version(),
         ", you might use:\n >>> ee_earthengine_upgrade() \n",
         " >>> pip install earthengine-api==",ee_version(),
-        "\n >>> conda install earthengine-api==",ee_version(),
-        "\nIf the installation is successful, restart to see changes."
+        " (Linux and Mac0S)\n >>> conda install earthengine-api==",ee_version(),
+        " (Windows)\nIf the installation is successful, restart to see changes.",
+        " Another option is to use the dev version of rgee: ",
+        "\n >>> remotes::install_github('csaybar/rgee')"
       )
       warning(ee_message)
     }
@@ -193,7 +197,7 @@ ee_check_py_package <- function(rgee_package) {
     package = "rgee"
   )
   check_py_package <- ee_source_python(oauth_func_path)
-  version_rgeepackage <- ee_py_to_r(
+  version_rgeepackage <- ee_utils_py_to_r(
     eval(
       parse(
         text = sprintf("check_py_package$ee_check_py_%s()", rgee_package)

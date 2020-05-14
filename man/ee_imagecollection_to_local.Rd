@@ -66,14 +66,8 @@ Engine Guide - Export data}.
 library(rgee)
 library(raster)
 
-# Initialize a specific Earth Engine account and load
-# either Google Drive or Google Cloud Storage credentials
 ee_reattach()
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+ee_Initialize(drive = TRUE, gcs = TRUE)
 
 # USDA example
 loc <- ee$Geometry$Point(-99.2222, 46.7816)

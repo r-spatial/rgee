@@ -1,18 +1,34 @@
 #' Create an isolated Python virtual environment to be used in rgee
 #' @param python_env The name of, or path to, a Python virtual environment.
 #' @importFrom reticulate conda_create virtualenv_create
+#' @return Character. The dirpath of the virtual environment created.
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_create_pyenv('ee')
-#' ee_discover_pyenvs()
-#' ee_set_pyenv(
-#'   python_path = ".../ee/bin/python",
-#'   python_env = 'ee')
+#' #' library(rgee)
+#'
+#' ### Install rgee by steps
+#'
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+#' # will be installed by default.
+#' ee_Initialize()
+#'
+#' # 2. Create a Python environment, e.g. ee.
+#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#'
+#' # Find others Python environments in the system.
+#' # ee_install_discover_pyenvs()
+#'
+#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
+#' ee_install_set_pyenv(pyenv, install = TRUE)
+#'
+#' # 4. Install Python package dependencies and restart R to see changes.
 #' ee_install_python_packages()
+#'
+#' # 5. Initialize rgee again!
+#' ee_Initialize()
 #' }
 #' @export
-ee_create_pyenv <- function(python_env) {
+ee_install_create_pyenv <- function(python_env) {
 
   #Check is Python is greather than 3.5
   ee_check_python(quiet = TRUE)
@@ -37,18 +53,34 @@ ee_create_pyenv <- function(python_env) {
 #' \link[=reticulate]{conda_list} for Window OS and
 #' \link[=reticulate]{virtualenv_list} for Unix system.
 #' @importFrom reticulate py_discover_config conda_list
+#' @return Python configuration object (reticulate).
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_create_pyenv('ee')
-#' ee_discover_pyenvs()
-#' ee_set_pyenv(
-#'   python_path = ".../ee/bin/python",
-#'   python_env = 'ee')
+#' #' library(rgee)
+#'
+#' ### Install rgee by steps
+#'
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+#' # will be installed by default.
+#' ee_Initialize()
+#'
+#' # 2. Create a Python environment, e.g. ee.
+#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#'
+#' # Find others Python environments in the system.
+#' ee_install_discover_pyenvs()
+#'
+#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
+#' ee_install_set_pyenv(pyenv, install = TRUE)
+#'
+#' # 4. Install Python package dependencies and restart R to see changes.
 #' ee_install_python_packages()
+#'
+#' # 5. Initialize rgee again!
+#' ee_Initialize()
 #' }
 #' @export
-ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
+ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
   if (is_windows()) {
     if (isTRUE(use_py_discover_config)) {
       ret_info <- py_discover_config()
@@ -101,19 +133,34 @@ ee_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #'
 #' @importFrom utils menu
 #' @details It is necessary to restart R to observe change when setting a
-#' different Python version. ee_set_pyenv will ask you to restart R.
+#' different Python version. ee_install_set_pyenv will ask you to restart R.
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_create_pyenv('ee')
-#' ee_discover_pyenvs()
-#' ee_set_pyenv(
-#'   python_path = ".../ee/bin/python",
-#'   python_env = 'ee')
+#' #' library(rgee)
+#'
+#' ### Install rgee by steps
+#'
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+#' # will be installed by default.
+#' ee_Initialize()
+#'
+#' # 2. Create a Python environment, e.g. ee.
+#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#'
+#' # Find others Python environments in the system.
+#' ee_install_discover_pyenvs()
+#'
+#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
+#' ee_install_set_pyenv(pyenv, install = TRUE)
+#'
+#' # 4. Install Python package dependencies and restart R to see changes.
 #' ee_install_python_packages()
+#'
+#' # 5. Initialize rgee again!
+#' ee_Initialize()
 #' }
 #' @export
-ee_set_pyenv <- function(python_path,
+ee_install_set_pyenv <- function(python_path,
                          python_env = NULL,
                          automatic_pyenv = TRUE,
                          install = FALSE,
@@ -139,7 +186,6 @@ ee_set_pyenv <- function(python_path,
         "[["(1) %>%
         "["(1)
     }
-
     if (is.null(python_env)) {
       message("python_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
     } else {
@@ -249,13 +295,28 @@ ee_set_pyenv <- function(python_path,
 #' version 3.5 >=.
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_create_pyenv('ee')
-#' ee_discover_pyenvs()
-#' ee_set_pyenv(
-#'   python_path = ".../ee/bin/python",
-#'   python_env = 'ee')
+#' #' library(rgee)
+#'
+#' ### Install rgee by steps
+#'
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
+#' # will be installed by default.
+#' ee_Initialize()
+#'
+#' # 2. Create a Python environment, e.g. ee.
+#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#'
+#' # Find others Python environments in the system.
+#' ee_install_discover_pyenvs()
+#'
+#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
+#' ee_install_set_pyenv(pyenv, install = TRUE)
+#'
+#' # 4. Install Python package dependencies and restart R to see changes.
 #' ee_install_python_packages()
+#'
+#' # 5. Initialize rgee again!
+#' ee_Initialize()
 #' }
 #' @export
 ee_install_python_packages <- function(method = c(
@@ -270,7 +331,7 @@ ee_install_python_packages <- function(method = c(
                                        conda_python_version = "3.7",
                                        confirm = interactive(),
                                        ...) {
-  rgee_packages <- "oauth2client"
+  rgee_packages <- c("pyasn1", "oauth2client", "numpy")
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
     stop(
@@ -316,9 +377,11 @@ ee_install_python_packages <- function(method = c(
   } else {
     response <- confirm
   }
+
   switch(response + 1,
          cat("Restart R session to see changes.\n"),
          quit("no"))
+
   invisible(TRUE)
 }
 
@@ -391,9 +454,11 @@ ee_earthengine_upgrade <- function(method = c(
   } else {
     response <- confirm
   }
+
   switch(response + 1,
          cat("Restart R session to see changes.\n"),
          quit("no"))
+
   invisible(TRUE)
 }
 

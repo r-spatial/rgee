@@ -64,5 +64,5 @@ m4
 \author{
 Adapted from
 \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-tim-salabim code}.
+tim-salabim}  code.
 }

@@ -100,6 +100,7 @@ default 3.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
@@ -114,6 +115,7 @@ m1 <- Map$addLayer(
   ),
   name = "Geometry-Arequipa"
 )
+
 # Case 2: Feature
 eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
   first()

@@ -5,17 +5,18 @@
 #' successfully at least once  `ee_Initialize(...)`. However, if you run
 #' `ee_Initialize(...)` with the same email argument the new credentials
 #' will be overwritten.
-#' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`).
-#' The directory (all user credentials) to delete.
+#' @param email Character. Earth Engine user (e.g. `data.colec.fbf`).
 #' @param quiet Logical (optional). Suppress info messages.
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_remove_credentials()
-#' ee_remove_credentials('data.colec.fbf@gmail.com')
+#'
+#' ee_clean_credentials()
+#' ee_clean_credentials('data.colec.fbf@gmail.com')
+#'
 #' }
 #' @export
-ee_remove_credentials <- function(email='not_defined', quiet=FALSE) {
+ee_clean_credentials <- function(email='not_defined', quiet=FALSE) {
   ee_path <- path.expand("~/.config/earthengine")
   email_clean <- gsub("@gmail.com", "", email)
   if (email == 'not_defined') {

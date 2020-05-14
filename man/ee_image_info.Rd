@@ -28,6 +28,7 @@ Earth Engine Image.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach()
 ee_Initialize()
 

@@ -11,6 +11,7 @@ Get the Asset home name
 }
 \examples{
 \dontrun{
+library(rgee)
 ee_reattach()
 ee_Initialize()
 ee_get_assethome()
