@@ -27,6 +27,10 @@ jobs:
           key: macOS-r-3.6-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: macOS-r-3.6-
 
+      - name: INSTALL SYSTEM DEPENDENCIES [MAC0S]
+        run: |
+          brew install freetype
+
       - name: Install dependencies
         run: |
           install.packages("remotes")
