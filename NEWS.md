@@ -13,7 +13,20 @@ vignette: >
 ---
 # rgee 0.5.0
 - **Initial CRAN release**
-- 
+- GitHub actions supports Windows, Linux and MacOS
+- `rgee` group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, 
+`ee_install_earthengine_upgrade`, `ee_install_python_packages`, `ee_install_set_pyenv` into 
+the  ee_install_* module.
+- Fixed an issue in `ee_install_python_packages` due changes to lastest `reticulate` version (1.1.5)
+- `ee_search_display` function added.
+- Several typos fixed in all the documentation
+- Minor changes in `ee_as_sf` to support ee$FeatureCollections without elements.
+- `data.colec.fbf` eliminated from all the examples.
+- `rgee` now pass all `goodpractice` checks.
+- `ee_get_img_date` and `ee_get_ic_date` are now `ee_get_date_img` and `ee_get_date_ic`.
+- New group of functions `ee_utils.R` added. `ee_pyfunc` is now `ee_utils_pyfunc`.
+- `Readme.R` new examples.
+
 
 # rgee 0.4.3
 - ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for `ee$Images` and the `system:index` property for `ee$ImageCollections`. Various bugs fixed.

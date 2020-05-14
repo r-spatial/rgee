@@ -10,7 +10,7 @@ ee_install_create_pyenv(py_env = "rgee")
 \item{py_env}{The name of, or path to, a Python virtual environment.}
 }
 \value{
-Character. The dirpath of the virtual environment created.
+Character. The path of the virtual environment created.
 }
 \description{
 Create an isolated Python virtual environment to be used in rgee
