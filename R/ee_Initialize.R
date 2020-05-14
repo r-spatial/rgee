@@ -30,7 +30,7 @@
 #' the email argument all user credentials will be saved in a subdirectory
 #' called \code{ndef}.
 #' @seealso remove credential function: \cr
-#' \link[rgee]{ee_remove_credentials}
+#' \link[rgee]{ee_clean_credentials}
 #' @examples
 #' \dontrun{
 #' library(rgee)

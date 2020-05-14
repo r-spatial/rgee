@@ -40,7 +40,7 @@ different Python version. ee_install_set_pyenv will ask you to restart R.
 \dontrun{
 #' library(rgee)
 
-### Install rgee by steps
+### rgee installation
 
 # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 # will be installed by default.

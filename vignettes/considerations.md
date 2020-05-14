@@ -45,7 +45,7 @@ library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(0,10)
 mynewlist = mylist$map(
-  ee_pyfunc(
+  ee_utils_pyfunc(
     function(x) ee$Number(x)$add(1)   
   )
 )

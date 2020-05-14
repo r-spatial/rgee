@@ -1,4 +1,4 @@
-context("rgee: ee_remove_credentials test")
+context("rgee: ee_clean_credentials test")
 
 ee_path <- path.expand("~/.config/earthengine")
 sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
@@ -21,12 +21,12 @@ if (anyNA(user)) {
   )
 }
 
-test_that("ee_remove_credentials",{
-  result_True <- ee_remove_credentials('test')
+test_that("ee_clean_credentials",{
+  result_True <- ee_clean_credentials('test')
   expect_true(result_True)
 })
 
-test_that("ee_remove_credentials not-defined",{
+test_that("ee_clean_credentials not-defined",{
   result_True <- ee_clean_pyenv()
   expect_true(result_True)
 })

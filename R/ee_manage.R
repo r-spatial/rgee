@@ -25,15 +25,16 @@
 #' If the argument `del_properties` is 'ALL',
 #' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
-#' @author Samapriya Roy, adapted to R and enhanced by csaybar.
+#' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
 #' \dontrun{
+#'
 #' library(rgee)
 #'
 #' ee_Initialize()
 #' ee_user_info()
 #'
-#' # Change google account to be able to reproduce
+#' # Change datacolecfbf by your EE user to be able to reproduce
 #'
 #' # 1. Create a folder or Image Collection
 #' # Change path asset according to your specific user
@@ -150,7 +151,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
         ), silent = TRUE
       )
       # If the Folder where the ImageCollection
-      # will be saved does not exist create it
+      # will be saved does not exist, create it!
       if (class(create_ic_asset) == "try-error") {
         dir_path <- dirname(path_asset)
         # Creating the folder

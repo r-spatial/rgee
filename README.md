@@ -20,26 +20,24 @@ Additionally, several functions have been implemented to make simple the connect
 
 ### More than 250+ examples using Google Earth Engine with R are available [here](https://csaybar.github.io/rgee-examples/README.html)
 
-<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/FeatureCollection/idw_interpolation.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_03_idw_interpolation.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/spectral_unmixing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_04_spectral_unmixing.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_05_sentinel2.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/canny_edge_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_06_canny_edge_detector.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/cumulative_cost_mapping.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_07_cumulative_cost_mapping.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/image/zero_crossing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_08_zero_crossing.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/hillshade.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_09_hillshade.png" height="100" hspace="5"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/styled_layer_descriptors.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_10_styled_layer_descriptors.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/terrain_visualization.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_11_terrain_visualization.png" height="100" hspace="5"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/us_census_counties.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_12_us_census_counties.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_13_global_power_plant_database.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Datasets/Water/jrc_metadata.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_15_jrc_metadata.png" height="100"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
-<a href="https://github.com/csaybar/rgee/blob/master/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
-
-
+<a href="https://github.com/csaybar/rgee/blob/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/FeatureCollection/idw_interpolation.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_03_idw_interpolation.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/image/spectral_unmixing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_04_spectral_unmixing.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_05_sentinel2.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/image/canny_edge_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_06_canny_edge_detector.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/image/cumulative_cost_mapping.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_07_cumulative_cost_mapping.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/image/zero_crossing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_08_zero_crossing.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples//Visualization/hillshade.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_09_hillshade.png" height="100" hspace="5"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Visualization/styled_layer_descriptors.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_10_styled_layer_descriptors.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Visualization/terrain_visualization.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_11_terrain_visualization.png" height="100" hspace="5"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Datasets/Vectors/us_census_counties.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_12_us_census_counties.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_13_global_power_plant_database.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Datasets/Water/jrc_metadata.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_15_jrc_metadata.png" height="100"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
+<a href="https://github.com/csaybar/rgee/blob/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
 
 ## What is Google Earth Engine?
 
@@ -47,7 +45,7 @@ Additionally, several functions have been implemented to make simple the connect
 
 <table>
 <tr>
-<th> Javascript </th>
+<th> JS (Code Editor) </th>
 <th> Python </th>
 <th> R </th>
 </tr>
@@ -111,7 +109,7 @@ After that, in your preferred browser, run:
 
 ## Requirements
 
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with an installation module which helps you to deal with the external dependencies of `rgee`:
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with an installation module (ee_install_*) which helps you to deal with the external dependencies of `rgee`:
 
 ```r
 library(rgee)
@@ -136,14 +134,13 @@ ee_install_python_packages()
 ee_Initialize()
 ```
 
-Additionally, you might use the functions below for checking users and credentials, and install/upgrade Python packages.
+Additionally, you might use the functions below for checking the status of rgee, delete credentials, and install (or upgrade) Python packages.
+
 ```r
 ee_check() # Check non-R dependencies
-ee_user_info() # Display credentials information
-ee_users() # Display credentials information of all users
-ee_remove_credentials() # Remove credentials of a specific user
+ee_clean_credentials() # Remove credentials of a specific user
 ee_clean_pyenv() # Remove reticulate system variables
-ee_earthengine_upgrade() # wrapper for pip install earthengine-api --upgrade
+ee_install_earthengine_upgrade() # wrapper for pip install earthengine-api --upgrade
 ```
 
 Also, consider looking at the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
@@ -158,7 +155,7 @@ Also, consider looking at the [setup section](https://csaybar.github.io/rgee/art
     [**ee\_Initialize:**](https://csaybar.github.io/rgee/reference/ee_Initialize.html), you just will need to do it once by session!.
   - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does
     not require its use.
-  - Wrap your R function using `ee_pyfunc` before passing them to the
+  - Wrap your R function using `ee_utils_pyfunc` before passing them to the
     Earth Engine Web REST API. This is not compulsory, but it will help
     reduce possible [bugs](https://csaybar.github.io/rgee/articles/considerations.html#the-map-message-error) :bug:.
 
@@ -243,7 +240,7 @@ dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCO
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2000-01-01", "2001-01-01")$
-  map(ee_pyfunc(function(x) x$select("pr")))
+  map(ee_utils_pyfunc(function(x) x$select("pr")))
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
@@ -384,9 +381,9 @@ of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to a
 
 ## Contributing Guide
 
-👍🎉 First off, thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
+👍� Thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
 
-## Share the love <3
+## Share the love  ❤️
 Think **rgee** is useful? Let others discover it, by telling them in
 per on, via Twitter or a blog post.
 
@@ -400,7 +397,7 @@ citation("rgee")
 
 ## Credits :bow:
 
-We would like to offer an special thanks to [Justin Braaten](https://github.com/jdbcode) for his outstanding work with GEE, it has been a great inspiration throughout the development of rgee. Many of rgee ideas are not ours, so we would like to offer and special thank you to the following third-party R/Python packages for contributing indirectly to the develop of rgee:
+First off, we would like to offer an *spe*cial thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the develop oft **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**

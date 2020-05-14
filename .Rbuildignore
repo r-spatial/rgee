@@ -12,3 +12,4 @@
 ^vignettes\considerations.Rmd
 ^vignettes\setup.Rmd
 ^vignettes\faq.Rmd
+^revdep$

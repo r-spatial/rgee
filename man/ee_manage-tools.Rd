@@ -83,12 +83,13 @@ the properties.
 }
 \examples{
 \dontrun{
+
 library(rgee)
 
 ee_Initialize()
 ee_user_info()
 
-# Change google account to be able to reproduce
+# Change datacolecfbf by your EE user to be able to reproduce
 
 # 1. Create a folder or Image Collection
 # Change path asset according to your specific user
@@ -150,5 +151,5 @@ ee_manage_delete("users/datacolecfbf/rgee/")
 }
 }
 \author{
-Samapriya Roy, adapted to R and enhanced by csaybar.
+Samapriya Roy, adapted to R by csaybar.
 }

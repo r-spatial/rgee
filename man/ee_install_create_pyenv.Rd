@@ -4,7 +4,7 @@
 \alias{ee_install_create_pyenv}
 \title{Create an isolated Python virtual environment to be used in rgee}
 \usage{
-ee_install_create_pyenv(python_env)
+ee_install_create_pyenv(python_env = "rgee")
 }
 \arguments{
 \item{python_env}{The name of, or path to, a Python virtual environment.}
@@ -19,7 +19,7 @@ Create an isolated Python virtual environment to be used in rgee
 \dontrun{
 #' library(rgee)
 
-### Install rgee by steps
+### rgee installation
 
 # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 # will be installed by default.

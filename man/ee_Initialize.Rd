@@ -57,5 +57,5 @@ ee_user_info()
 }
 \seealso{
 remove credential function: \cr
-\link[rgee]{ee_remove_credentials}
+\link[rgee]{ee_clean_credentials}
 }

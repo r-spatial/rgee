@@ -25,7 +25,7 @@ vignette: >
 
 # rgee 0.4.1
 - ee_extract bug fixed now sf arg works for Earth Engine tables.
-- ee_create_pyenv now return a Python Path
+- ee_install_create_pyenv now return a Python Path
 - doc upgrade
 
 # rgee 0.4
@@ -112,7 +112,7 @@ vignette: >
 - A collection of 300+ examples for using Google Earth Engine in [R](https://github.com/csaybar/rgee-examples).
 - Functions added:
   - **non-R** installation module added
-  - **ee_pyfunc:** Wrap an R function in a Python function with the same signature.
+  - **ee_utils_pyfunc:** Wrap an R function in a Python function with the same signature.
   - **ee_remove_\*:** Delete credentials and selenium drivers.
   
 # rgee 0.1.0

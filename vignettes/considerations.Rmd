@@ -41,14 +41,14 @@ mylist$map(function(x) ee$Number(x)$add(1))
 #>     raise RuntimeError(res[kErrorKey])
 ```
 
-The code before is perfectly valid but `rgee` will produce an error. This could be solved by adding the function **ee_pyfunc** to the code. Let's see:
+The code before is perfectly valid but `rgee` will produce an error. This could be solved by adding the function **ee_utils_pyfunc** to the code. Let's see:
 
 ```{r eval=FALSE}
 library(rgee)
 ee$Initialize()
 mylist = ee$List$sequence(0,10)
 mynewlist = mylist$map(
-  ee_pyfunc(
+  ee_utils_pyfunc(
     function(x) ee$Number(x)$add(1)   
   )
 )

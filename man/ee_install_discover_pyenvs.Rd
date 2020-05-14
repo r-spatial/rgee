@@ -25,7 +25,7 @@ of Python will be discovered on a system.
 \dontrun{
 #' library(rgee)
 
-### Install rgee by steps
+### rgee installation
 
 # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 # will be installed by default.
