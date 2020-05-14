@@ -140,7 +140,7 @@ Additionally, you might use the functions below for checking the status of rgee,
 ee_check() # Check non-R dependencies
 ee_clean_credentials() # Remove credentials of a specific user
 ee_clean_pyenv() # Remove reticulate system variables
-ee_install_earthengine_upgrade() # wrapper for pip install earthengine-api --upgrade
+ee_install_earthengine_upgrade() # it's a wrapper around py_install("earthengine-api")
 ```
 
 Also, consider looking at the [setup section](https://csaybar.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
@@ -221,11 +221,12 @@ Map$addLayer(
 Load `sf` and authenticate and initialize the Earth Engine R API.
 
 ``` r
+library(tidyverse)
 library(rgee)
-library(dplyr)
 library(sf)
-ee_Initialize()
+
 # ee_reattach() # reattach ee as a reserve word
+ee_Initialize()
 ```
 
 Read the `nc` shapefile.
@@ -240,23 +241,36 @@ dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCO
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2000-01-01", "2001-01-01")$
-  map(ee_utils_pyfunc(function(x) x$select("pr")))
+  map(function(x) x$select("pr"))
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
-similar to `raster::extract` you just need to define: the
+similar to `raster::extract`, you just need to define: the
 ImageCollection object (x), the geometry (y), and a function to
 summarize the values (fun).
 
 ``` r
-ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), sf = TRUE)
-ee_nc_rain %>% 
-  select(starts_with("X2000")) %>% 
-  plot(max.plot = 12)
+ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), sf = FALSE)
+colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
+ee_nc_rain$name <- nc$NAME
 ```
 
+Use ggplot2 to generate a beautiful static plot!
+
+``` r
+ee_nc_rain %>%
+  pivot_longer(-name, names_to = "month", values_to = "pr") %>%
+  ggplot(aes(x = month, y = pr, group = name, color = pr)) +
+  geom_line(alpha = 0.4) +
+  xlab("Month") +
+  ylab("Precipitation (mm)") +
+  theme_minimal()
+```
+
+
+
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/16768318/80371094-f360e500-8856-11ea-9aa9-7072ae88052a.png">
+  <img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png">
 </p>
   
 ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
@@ -397,7 +411,7 @@ citation("rgee")
 
 ## Credits :bow:
 
-First off, we would like to offer an *spe*cial thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the develop oft **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
+First off, we would like to offer an **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
