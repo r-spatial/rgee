@@ -51,7 +51,8 @@ test_that("sf - drive",{
 })
 
 test_that("sf - gcs",{
-  mysheds <- ee_as_sf(ee$Feature(sheds$first()),via = "gcs",container = "rgee_dev")
+  mysheds <- ee_as_sf(ee$Feature(sheds$first()),via = "gcs",
+                      container = "rgee_dev")
   expect_s3_class(mysheds,"sf")
 })
 

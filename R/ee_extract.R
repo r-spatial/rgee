@@ -153,7 +153,9 @@ ee_extract <- function(x,
     band_names <- x$bandNames()$getInfo()
     img_to_ic <- function(index) x$select(ee$String(x$bandNames()$get(index)))
     # Force to x to be a ImageCollection
-    x <- ee$ImageCollection$fromImages(lapply(seq_along(band_names) - 1 , img_to_ic))
+    x <- ee$ImageCollection$fromImages(
+      lapply(seq_along(band_names) - 1 , img_to_ic)
+    )
   }
 
   # RGEE_NAME exist?

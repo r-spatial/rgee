@@ -18,8 +18,10 @@
 #' @export
 ee_help <- function(eeobject, browser = FALSE) {
   #obs : simple earth engine objects like ee$Number will return NULL
-  eequery_scope <- try(expr = unlist(jsonlite::parse_json(eeobject$serialize())$scope),
-                       silent = TRUE)
+  eequery_scope <- try(
+    expr = unlist(jsonlite::parse_json(eeobject$serialize())$scope),
+    silent = TRUE
+  )
   # If eeobject is an Earth Engine object get the last function
   if (class(eequery_scope) != 'try-error' & !is.null(eequery_scope)) {
     search_funnames <- grepl("functionName", names(eequery_scope))

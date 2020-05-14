@@ -143,7 +143,7 @@ ee_as_sf <- function(x,
     if (fc_size > 5000) {
       sf_list <- list()
       for (r_index in seq_len(nbatch)) {
-        index = r_index - 1
+        index <- r_index - 1
         cat(
           sprintf(
             "Getting data from the patch: %s/%s",

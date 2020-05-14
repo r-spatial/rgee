@@ -119,7 +119,7 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(py_env = "ee")
 
 # Find others Python environments in the system.
 # ee_install_discover_pyenvs()

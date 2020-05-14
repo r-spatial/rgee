@@ -16,7 +16,8 @@
 #' searching and 'OR' exclusiveness.
 #' @param upgrade Logical. If the dataset needs to be upgraded.
 #' @param maxdisplay Numeric. Maximum number of tabs to display in their browser
-#' @param path_dataset Path of the dataset. By default it will loaded automatically.
+#' @param path_dataset Path of the dataset. By default it will loaded
+#' automatically.
 #' @name ee_search-tools
 #' @return a data.frame.
 #' @examples
@@ -36,26 +37,35 @@
 #'   ee_search_display()
 #' }
 #' @export
-ee_search_dataset <- function(quiet = FALSE, upgrade = FALSE, path_dataset = NULL) {
+ee_search_dataset <- function(quiet = FALSE,
+                              upgrade = FALSE,
+                              path_dataset = NULL) {
   ee_search_dataset_file <- sprintf(
     "%s/ee_search_dataset.csv",
     path.expand("~/.config/earthengine")
   )
   if (file.exists(ee_search_dataset_file) & !upgrade) {
-    ee_search_dataset <- read.csv(ee_search_dataset_file, stringsAsFactors = FALSE)
+    ee_search_dataset <- read.csv(ee_search_dataset_file,
+                                  stringsAsFactors = FALSE)
   } else {
     if (is.null(path_dataset)) {
       user_samapriya <- "https://raw.githubusercontent.com/csaybar/"
       ee_template <- "%sEarth-Engine-Datasets-List/master/%s"
-      ee_search_dataset_uri <- sprintf(ee_template, user_samapriya, find_eedataset())
+      ee_search_dataset_uri <- sprintf(ee_template, user_samapriya,
+                                       find_eedataset())
     } else {
       ee_search_dataset_uri <- path_dataset
     }
-    ee_search_dataset <- read.csv(ee_search_dataset_uri, stringsAsFactors = FALSE)
+    ee_search_dataset <- read.csv(ee_search_dataset_uri,
+                                  stringsAsFactors = FALSE)
     if (!quiet) {
       cat("Downloading(Upgrading) the Earth Engine catalog ... please wait\n")
     }
-    write.csv(x = ee_search_dataset, file = ee_search_dataset_file, row.names = FALSE)
+    write.csv(
+      x = ee_search_dataset,
+      file = ee_search_dataset_file,
+      row.names = FALSE
+    )
   }
   return(ee_search_dataset)
 }
@@ -106,7 +116,8 @@ ee_search_type <- function(ee_search_dataset, type) {
 #' @export
 ee_search_provider <- function(ee_search_dataset, provider) {
   if (provider %in% unique(ee_search_dataset$provider)) {
-    ee_search_dataset_q <- ee_search_dataset[ee_search_dataset$provider %in% provider, ]
+    condition <- ee_search_dataset$provider %in% provider
+    ee_search_dataset_q <- ee_search_dataset[condition,]
     rownames(ee_search_dataset_q) <- NULL
     return(ee_search_dataset_q)
   } else {
@@ -157,7 +168,8 @@ ee_search_title <- function(ee_search_dataset, ..., logical_operator = "OR") {
 
 #' @name ee_search-tools
 #' @export
-ee_search_tagstitle <- function(ee_search_dataset, ..., logical_operator = "OR") {
+ee_search_tagstitle <- function(ee_search_dataset, ...,
+                                logical_operator = "OR") {
   tags <- tolower(c(...))
   ee_title <- tolower(ee_search_dataset$title)
   ee_tags <- tolower(ee_search_dataset$tags)

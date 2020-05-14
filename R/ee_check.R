@@ -94,8 +94,8 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
         ", you might use:\n >>> ee_install_earthengine_upgrade() \n",
         " >>> pip install earthengine-api==",ee_version(),
         " (Linux and Mac0S)\n >>> conda install earthengine-api==",ee_version(),
-        " (Windows)\nIf the installation is successful, restart to see changes.",
-        " Another option is to use the dev version of rgee: ",
+        " (Windows)\nIf the installation is successful, restart to see",
+        " changes. Another option is to use the dev version of rgee: ",
         "\n >>> remotes::install_github('csaybar/rgee')"
       )
       warning(ee_message)

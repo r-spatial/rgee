@@ -64,7 +64,10 @@ ee_print <- function(eeobject, ...) {
 
 #' @name ee_print
 #' @export
-ee_print.ee.geometry.Geometry <- function(eeobject, ..., clean = FALSE, quiet = FALSE) {
+ee_print.ee.geometry.Geometry <- function(eeobject,
+                                          ...,
+                                          clean = FALSE,
+                                          quiet = FALSE) {
   # 1. Search if Geometry metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -114,7 +117,10 @@ ee_print.ee.geometry.Geometry <- function(eeobject, ..., clean = FALSE, quiet = 
 
 #' @name ee_print
 #' @export
-ee_print.ee.feature.Feature <- function(eeobject, ...,  clean = FALSE, quiet = FALSE) {
+ee_print.ee.feature.Feature <- function(eeobject,
+                                        ...,
+                                        clean = FALSE,
+                                        quiet = FALSE) {
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -170,7 +176,11 @@ ee_print.ee.feature.Feature <- function(eeobject, ...,  clean = FALSE, quiet = F
 
 #' @name ee_print
 #' @export
-ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ..., f_index = 0, clean = FALSE, quiet = FALSE) {
+ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
+                                                            ...,
+                                                            f_index = 0,
+                                                            clean = FALSE,
+                                                            quiet = FALSE) {
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject, f_index))
@@ -233,7 +243,8 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject, ..., f_ind
     cat(blue$bold("\nFeature Metadata:"))
     cat("\n - Number of Properties       :", ee_metadata$f_properties_length)
 
-    cat(blue$bold(sprintf("\nGeometry Metadata (f_index = %s):", ee_metadata$fc_feature_index)))
+    cat(blue$bold(sprintf("\nGeometry Metadata (f_index = %s):",
+                          ee_metadata$fc_feature_index)))
     cat("\n - EPSG (SRID)                :", ee_metadata$geom_epsg)
     cat("\n - proj4string                :", ee_metadata$geom_proj4string)
     cat("\n - Geotransform               :", ee_metadata$geom_geotransform)
@@ -335,7 +346,8 @@ ee_print.ee.image.Image <- function(eeobject,
     cat("\n - Number of Properties       :", ee_metadata$img_properties_length)
     cat("\n - Number of Pixels*          :", ee_metadata$img_pixel)
     cat("\n - Approximate size*          :", ee_humansize(ee_metadata$img_size))
-    cat(blue$bold(sprintf("\nBand Metadata (img_band = %s):", ee_metadata$band_name)))
+    cat(blue$bold(sprintf("\nBand Metadata (img_band = %s):",
+                          ee_metadata$band_name)))
     cat("\n - EPSG (SRID)                :", ee_metadata$band_epsg)
     cat("\n - proj4string                :", ee_metadata$band_proj4string)
     cat("\n - Geotransform               :", ee_metadata$band_geotransform)
@@ -343,9 +355,14 @@ ee_print.ee.image.Image <- function(eeobject,
     cat("\n - Dimensions                 :", ee_metadata$band_dimensions)
     cat("\n - Number of Pixels           :", ee_metadata$band_pixel)
     cat("\n - Data type                  :", ee_metadata$band_datatype)
-    cat("\n - Approximate size           :", ee_humansize(ee_metadata$band_size))
+    cat("\n - Approximate size           :",
+        ee_humansize(ee_metadata$band_size))
     cat("\n", rule())
-    cat("\n", "NOTE: (*) Properties calculated considering a constant geotransform and data type.")
+    cat(
+      "\n",
+      "NOTE: (*) Properties calculated considering a ",
+      "constant geotransform and data type."
+    )
   }
   invisible(ee_metadata)
 }
@@ -439,14 +456,16 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     cat("\n - Number of Pixels*          :", ee_metadata$ic_pixel)
     cat("\n - Approximate size*          :", ee_humansize(ee_metadata$ic_size))
 
-    cat(blue$bold(sprintf("\nImage Metadata (img_index = %s):", ee_metadata$ic_image_index)))
+    cat(blue$bold(sprintf("\nImage Metadata (img_index = %s):",
+                          ee_metadata$ic_image_index)))
     cat("\n - Number of Bands            :", ee_metadata$img_nbands)
     cat("\n - Bands names                :", ee_metadata$img_bands_names)
     cat("\n - Number of Properties       :", ee_metadata$img_properties_length)
     cat("\n - Number of Pixels*          :", ee_metadata$img_pixel)
     cat("\n - Approximate size*          :", ee_humansize(ee_metadata$img_size))
 
-    cat(blue$bold(sprintf("\nBand Metadata (img_band = '%s'):", ee_metadata$band_name)))
+    cat(blue$bold(sprintf("\nBand Metadata (img_band = '%s'):",
+                          ee_metadata$band_name)))
     cat("\n - EPSG (SRID)                :", ee_metadata$band_epsg)
     cat("\n - proj4string                :", ee_metadata$band_proj4string)
     cat("\n - Geotransform               :", ee_metadata$band_geotransform)
@@ -454,9 +473,14 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     cat("\n - Dimensions                 :", ee_metadata$band_dimensions)
     cat("\n - Number of Pixels           :", ee_metadata$band_pixel)
     cat("\n - Data type                  :", ee_metadata$band_datatype)
-    cat("\n - Approximate size           :", ee_humansize(ee_metadata$band_size))
+    cat("\n - Approximate size           :",
+        ee_humansize(ee_metadata$band_size))
     cat("\n", rule())
-    cat("\n", "NOTE: (*) Properties calculated considering a constant geotransform and data type.")
+    cat(
+      "\n",
+      "NOTE: (*) Properties calculated considering a constant ",
+      "geotransform and data type."
+    )
   }
   invisible(ee_metadata)
 }

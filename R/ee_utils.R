@@ -60,7 +60,8 @@ ee_utils_py_to_r <- function(x) {
 #' @export
 ee_utils_shp_to_zip <- function(x,
                                 filename,
-                                SHP_EXTENSIONS = c("dbf", "prj", "shp", "shx")) {
+                                SHP_EXTENSIONS = c("dbf", "prj", "shp",
+                                                   "shx")) {
   if (missing(filename)) {
     filename <- sprintf("%s%s",tempfile(),'.shp')
   }

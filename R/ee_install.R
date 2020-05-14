@@ -1,19 +1,19 @@
 #' Create an isolated Python virtual environment to be used in rgee
-#' @param python_env The name of, or path to, a Python virtual environment.
+#' @param py_env The name of, or path to, a Python virtual environment.
 #' @importFrom reticulate conda_create virtualenv_create
-#' @return Character. The dirpath of the virtual environment created.
+#' @return Character. The path of the virtual environment created.
 #' @examples
 #' \dontrun{
 #' #' library(rgee)
 #'
 #' ### rgee installation
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-#' # will be installed by default.
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
+#' # environment, miniconda will be installed by default.
 #' ee_Initialize()
 #'
 #' # 2. Create a Python environment, e.g. ee.
-#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
 #' # Find others Python environments in the system.
 #' # ee_install_discover_pyenvs()
@@ -28,15 +28,15 @@
 #' ee_Initialize()
 #' }
 #' @export
-ee_install_create_pyenv <- function(python_env = "rgee") {
+ee_install_create_pyenv <- function(py_env = "rgee") {
 
   #Check is Python is greather than 3.5
   ee_check_python(quiet = TRUE)
 
   if (is_windows()) {
-    pyenv_path <- conda_create(python_env)
+    pyenv_path <- conda_create(py_env)
   } else {
-    pyenv_path <- virtualenv_create(python_env)
+    pyenv_path <- virtualenv_create(py_env)
   }
   pyenv_path
 }
@@ -60,12 +60,12 @@ ee_install_create_pyenv <- function(python_env = "rgee") {
 #'
 #' ### rgee installation
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-#' # will be installed by default.
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
+#' # environment, miniconda will be installed by default.
 #' ee_Initialize()
 #'
 #' # 2. Create a Python environment, e.g. ee.
-#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
 #' # Find others Python environments in the system.
 #' ee_install_discover_pyenvs()
@@ -119,11 +119,11 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 
 #' Set the Python environment to be used on rgee
 #'
-#' @param python_path The path to a Python interpreter, to be used with rgee.
-#' @param python_env The name of, or path to, a Python virtual environment. If
+#' @param py_path The path to a Python interpreter, to be used with rgee.
+#' @param py_env The name of, or path to, a Python virtual environment. If
 #' not defined will estimate from the path.
-#' @param automatic_pyenv Logical. Search automatically in the python_path the
-#' python_env. Ignore when the \code{python_env} argument is not NULL. By
+#' @param automatic_pyenv Logical. Search automatically in the py_path the
+#' py_env. Ignore when the \code{py_env} argument is not NULL. By
 #' default TRUE.
 #' @param install if TRUE, rgee will save the Python interpreter path and
 #' the virtual environment name in the \code{.Renviron} file
@@ -140,12 +140,12 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #'
 #' ### rgee installation
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-#' # will be installed by default.
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
+#' # environment, miniconda will be installed by default.
 #' ee_Initialize()
 #'
 #' # 2. Create a Python environment, e.g. ee.
-#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
 #' # Find others Python environments in the system.
 #' ee_install_discover_pyenvs()
@@ -160,38 +160,38 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' ee_Initialize()
 #' }
 #' @export
-ee_install_set_pyenv <- function(python_path,
-                         python_env = NULL,
+ee_install_set_pyenv <- function(py_path,
+                         py_env = NULL,
                          automatic_pyenv = TRUE,
                          install = FALSE,
                          confirm = interactive()) {
   ee_clean_pyenv()
-  # Trying to get the env from the python_path
-  if (is.null(python_env) & automatic_pyenv) {
-    if (grepl("\\.virtualenvs/", python_path)) {
-      python_env <- gsub(".*\\.virtualenvs\\/(.*)", "\\1", python_path) %>%
+  # Trying to get the env from the py_path
+  if (is.null(py_env) & automatic_pyenv) {
+    if (grepl("\\.virtualenvs/", py_path)) {
+      py_env <- gsub(".*\\.virtualenvs\\/(.*)", "\\1", py_path) %>%
         strsplit("/") %>%
         "[["(1) %>%
         "["(1)
-    } else if (grepl("\\.conda.envs", python_path)) {
-      python_path <- normalizePath(python_path, "/")
-      python_env <- gsub(".*\\.conda\\/envs\\/(.*)", "\\1", python_path) %>%
+    } else if (grepl("\\.conda.envs", py_path)) {
+      py_path <- normalizePath(py_path, "/")
+      py_env <- gsub(".*\\.conda\\/envs\\/(.*)", "\\1", py_path) %>%
         strsplit("/") %>%
         "[["(1) %>%
         "["(1)
-    } else if (grepl("r-miniconda.envs", python_path)) {
-      python_path <- normalizePath(python_path, "/")
-      python_env <- gsub(".*\\/r-miniconda\\/envs\\/(.*)", "\\1", python_path) %>%
+    } else if (grepl("r-miniconda.envs", py_path)) {
+      py_path <- normalizePath(py_path, "/")
+      py_env <- gsub(".*\\/r-miniconda\\/envs\\/(.*)", "\\1", py_path) %>%
         strsplit("/") %>%
         "[["(1) %>%
         "["(1)
     }
-    if (is.null(python_env)) {
-      message("python_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
+    if (is.null(py_env)) {
+      message("py_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
     } else {
       message(
-        "Establishing the python virtual environment (python_env) as ",
-        python_env, "."
+        "Establishing the python virtual environment (py_env) as ",
+        py_env, "."
       )
     }
   }
@@ -224,11 +224,11 @@ ee_install_set_pyenv <- function(python_path,
     }
 
     # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
-    ret_python <- sprintf('RETICULATE_PYTHON="%s"', python_path)
-    if (is.null(python_env)) {
+    ret_python <- sprintf('RETICULATE_PYTHON="%s"', py_path)
+    if (is.null(py_env)) {
       system_vars <- c(lines, ret_python)
     } else {
-      ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',python_env)
+      ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',py_env)
       system_vars <- c(lines, ret_python, ret_python_env)
     }
     writeLines(system_vars, con)
@@ -254,9 +254,9 @@ ee_install_set_pyenv <- function(python_path,
     message("To install this Python environment for use ",
             "in future sessions, run this function",
             " with `install = TRUE`.")
-    Sys.setenv(RETICULATE_PYTHON = python_path)
-    if (!is.null(python_env)) {
-      Sys.setenv(RETICULATE_PYTHON_ENV = python_env)
+    Sys.setenv(RETICULATE_PYTHON = py_path)
+    if (!is.null(py_env)) {
+      Sys.setenv(RETICULATE_PYTHON_ENV = py_env)
     }
   }
   invisible(TRUE)
@@ -315,12 +315,12 @@ ee_install_set_pyenv <- function(python_path,
 #'
 #' ### rgee installation
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-#' # will be installed by default.
+#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
+#' # environment, miniconda will be installed by default.
 #' ee_Initialize()
 #'
 #' # 2. Create a Python environment, e.g. ee.
-#' pyenv <- ee_install_create_pyenv(python_env = "ee")
+#' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
 #' # Find others Python environments in the system.
 #' ee_install_discover_pyenvs()
@@ -438,15 +438,15 @@ ee_install_python_packages <- function(method = c(
 #' }
 #' @export
 ee_install_earthengine_upgrade <- function(method = c(
-                                      "auto",
-                                      "virtualenv",
-                                      "conda"
-                                   ),
-                                   conda = "auto",
-                                   pip = FALSE,
-                                   python_version = NULL,
-                                   confirm = interactive(),
-                                   ...) {
+                                             "auto",
+                                             "virtualenv",
+                                             "conda"
+                                           ),
+                                           conda = "auto",
+                                           pip = FALSE,
+                                           python_version = NULL,
+                                           confirm = interactive(),
+                                           ...) {
   ee_version <- "earthengine-api"
   py_install(
     packages = ee_version,

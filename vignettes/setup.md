@@ -32,7 +32,7 @@ library(rgee)
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(py_env = "ee")
 
 # Find others Python environments in the system.
 # ee_install_discover_pyenvs()
@@ -71,7 +71,7 @@ users to download and upload spatial data. If you are trying to
 These functions through the argument **`via`** will permit you to
 **change the download method**. There are three methods to download an
 EE object: The first one (`getInfo`) fetch and return spatial objects directly,
-the `drive` method use Google Drive (GD) as an intermidiate
+the `drive` method use Google Drive (GD) as an intermediate
 container, and finally `gcs` which use Google Cloud Storage (GCS).
 `rgee` to deal with **GD** and **GCS** use the R package
 [googledrive](https://googledrive.tidyverse.org/) and

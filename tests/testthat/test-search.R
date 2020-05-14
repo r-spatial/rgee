@@ -99,7 +99,8 @@ test_that("error 04",{
     ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "OR")
   expect_s3_class(ee_s_search,"data.frame")
   expect_error(ee_search_dataset() %>%
-                 ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "ORd")
+                 ee_search_title("srtm", "flow", "direction", "dem",
+                                 logical_operator = "ORd")
   )
 })
 

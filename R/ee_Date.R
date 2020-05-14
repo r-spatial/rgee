@@ -160,7 +160,9 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
   ee_utils <- ee_source_python(oauth_func_path)
 
   # Fetch the time_start of each Image
-  time_start <- ee_utils_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_start"))
+  time_start <- ee_utils_py_to_r(
+    ee_utils$eedate_to_rdate_ic(x, "system:time_start")
+  )
 
   if (is.null(time_start)) {
     time_start <- NA
@@ -173,7 +175,10 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
   }
 
   # Getting time_end
-  time_end <- ee_utils_py_to_r(ee_utils$eedate_to_rdate_ic(x, "system:time_end"))
+  time_end <- ee_utils_py_to_r(
+    ee_utils$eedate_to_rdate_ic(x, "system:time_end")
+  )
+
   if (is.null(time_end)) {
     time_end <- NULL
   } else {

@@ -454,9 +454,10 @@ ee_manage_asset_access <- function(path_asset,
     bindings_template$bindings[[3]]$members <- paste0('user:', viewer)
   }
 
-  # Error arise when users use ee_Initialize without email argument. Unfortunately,
-  # email argument needs to be in the form of ee_Initialize(email = "xxx@gmail.com")
-  # if it is not realize the code will not work. Enhance in future versions of rgee.
+  # Error arise when users use ee_Initialize without email argument.
+  # Unfortunately, email argument needs to be in the form of
+  # ee_Initialize(email = "xxx@gmail.com") if it is not realize the
+  # code will not work. Enhance in future versions of rgee.
   tryCatch(
     expr = ee$data$setIamPolicy(path_asset, bindings_template),
     error =  function(e) stop(

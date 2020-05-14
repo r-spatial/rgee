@@ -125,8 +125,8 @@ evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
 pt <- ee$Geometry$Point(c(1.5, 1.5))
 
 # Check insideness with a contains operator.
-print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())   # FALSE
-print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())# TRUE
+print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
+print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
 
 # 2. Upload small geometries to EE asset
 assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')

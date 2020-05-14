@@ -52,7 +52,7 @@ test_that('Geometry consideration for "getInfo"', {
   expect_equal(extent(img_01), extent(-3,3,-3,3))
 
   # test02: even a small increase will add a new pixel
-  nominalscale = test_image_01$projection()$nominalScale()$getInfo()
+  nominalscale <- test_image_01$projection()$nominalScale()$getInfo()
   test_image_02 <- test_image_01$reproject(
     crs = "EPSG:4326",
     scale = round(nominalscale)

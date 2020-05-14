@@ -4,10 +4,10 @@
 \alias{ee_install_create_pyenv}
 \title{Create an isolated Python virtual environment to be used in rgee}
 \usage{
-ee_install_create_pyenv(python_env = "rgee")
+ee_install_create_pyenv(py_env = "rgee")
 }
 \arguments{
-\item{python_env}{The name of, or path to, a Python virtual environment.}
+\item{py_env}{The name of, or path to, a Python virtual environment.}
 }
 \value{
 Character. The dirpath of the virtual environment created.
@@ -21,12 +21,12 @@ Create an isolated Python virtual environment to be used in rgee
 
 ### rgee installation
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python
+# environment, miniconda will be installed by default.
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(py_env = "ee")
 
 # Find others Python environments in the system.
 # ee_install_discover_pyenvs()

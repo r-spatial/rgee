@@ -5,21 +5,21 @@
 \title{Set the Python environment to be used on rgee}
 \usage{
 ee_install_set_pyenv(
-  python_path,
-  python_env = NULL,
+  py_path,
+  py_env = NULL,
   automatic_pyenv = TRUE,
   install = FALSE,
   confirm = interactive()
 )
 }
 \arguments{
-\item{python_path}{The path to a Python interpreter, to be used with rgee.}
+\item{py_path}{The path to a Python interpreter, to be used with rgee.}
 
-\item{python_env}{The name of, or path to, a Python virtual environment. If
+\item{py_env}{The name of, or path to, a Python virtual environment. If
 not defined will estimate from the path.}
 
-\item{automatic_pyenv}{Logical. Search automatically in the python_path the
-python_env. Ignore when the \code{python_env} argument is not NULL. By
+\item{automatic_pyenv}{Logical. Search automatically in the py_path the
+py_env. Ignore when the \code{py_env} argument is not NULL. By
 default TRUE.}
 
 \item{install}{if TRUE, rgee will save the Python interpreter path and
@@ -42,12 +42,12 @@ different Python version. ee_install_set_pyenv will ask you to restart R.
 
 ### rgee installation
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python
+# environment, miniconda will be installed by default.
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(py_env = "ee")
 
 # Find others Python environments in the system.
 ee_install_discover_pyenvs()

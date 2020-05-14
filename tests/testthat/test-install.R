@@ -35,8 +35,8 @@ test_that("ee_install_discover_pyenvs",{
 test_that("ee_install_set_pyenv",{
   python_envs <- ee_install_discover_pyenvs()
   fmsg <- ee_install_set_pyenv(
-    python_path = python_envs[1],
-    python_env = 'earthengine_test',
+    py_path = python_envs[1],
+    py_env = 'earthengine_test',
     install = FALSE,
     confirm = FALSE)
   expect_true(fmsg)

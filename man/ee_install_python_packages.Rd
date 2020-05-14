@@ -73,12 +73,12 @@ following locations:
 
 ### rgee installation
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
+# 1. Initialize rgee with ee_Initialize(). If there is no any Python
+# environment, miniconda will be installed by default.
 ee_Initialize()
 
 # 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(python_env = "ee")
+pyenv <- ee_install_create_pyenv(py_env = "ee")
 
 # Find others Python environments in the system.
 ee_install_discover_pyenvs()
