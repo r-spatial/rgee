@@ -123,7 +123,7 @@
 
     
     
-<p><code>rgee</code> is very similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a>, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
+<p><code>rgee</code> and the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> share the same classes, functions and methods. Therefore is expected that works identical for all user requests. However, different in the language design of R and Python causes <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
@@ -151,7 +151,7 @@
 <span class="co">#&gt;     self._body = body(*variables)</span>
 <span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
 <span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></pre></body></html></div>
-<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_utils_pyfunc</strong> to the code. Let’s see:</p>
+<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit users wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="no">ee</span>$<span class="fu">Initialize</span>()
 <span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
@@ -184,7 +184,7 @@
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100</span>) <span class="co">#caution: silent error</span>
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
 <span class="co">#&gt; [1] 32</span></pre></body></html></div>
-<p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or just employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
+<p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
 <span class="co">#&gt; [1] 32</span></pre></body></html></div>

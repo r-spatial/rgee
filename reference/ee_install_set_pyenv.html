@@ -165,8 +165,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_set_pyenv</span>(
-  <span class='no'>python_path</span>,
-  <span class='kw'>python_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>py_path</span>,
+  <span class='kw'>py_env</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>automatic_pyenv</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>install</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>confirm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()
@@ -176,18 +176,18 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>python_path</th>
+      <th>py_path</th>
       <td><p>The path to a Python interpreter, to be used with rgee.</p></td>
     </tr>
     <tr>
-      <th>python_env</th>
+      <th>py_env</th>
       <td><p>The name of, or path to, a Python virtual environment. If
 not defined will estimate from the path.</p></td>
     </tr>
     <tr>
       <th>automatic_pyenv</th>
-      <td><p>Logical. Search automatically in the python_path the
-python_env. Ignore when the <code>python_env</code> argument is not NULL. By
+      <td><p>Logical. Search automatically in the py_path the
+py_env. Ignore when the <code>py_env</code> argument is not NULL. By
 default TRUE.</p></td>
     </tr>
     <tr>
@@ -214,12 +214,12 @@ different Python version. ee_install_set_pyenv will ask you to restart R.</p>
 
 <span class='co'>### rgee installation</span>
 
-<span class='co'># 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda</span>
-<span class='co'># will be installed by default.</span>
+<span class='co'># 1. Initialize rgee with ee_Initialize(). If there is no any Python</span>
+<span class='co'># environment, miniconda will be installed by default.</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># 2. Create a Python environment, e.g. ee.</span>
-<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
+<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>py_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
 
 <span class='co'># Find others Python environments in the system.</span>
 <span class='fu'><a href='ee_install_discover_pyenvs.html'>ee_install_discover_pyenvs</a></span>()

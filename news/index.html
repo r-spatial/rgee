@@ -158,6 +158,30 @@
       <small>Source: <a href='https://github.com/csaybar/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-050" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.0">
+<a href="#rgee-050" class="anchor"></a>rgee 0.5.0</h1>
+<ul>
+<li><strong>Initial CRAN release</strong></li>
+<li>GitHub actions supports Windows, Linux and MacOS</li>
+<li>
+<code>rgee</code> group functions: <code>ee_install_create_pyenv</code>, <code>ee_install_discover_pyenvs</code>, <code>ee_install_earthengine_upgrade</code>, <code>ee_install_python_packages</code>, <code>ee_install_set_pyenv</code> into the ee_install_* module.</li>
+<li>Fixed an issue in <code>ee_install_python_packages</code> due changes to lastest <code>reticulate</code> version (1.1.5)</li>
+<li>
+<code>ee_search_display</code> function added.</li>
+<li>Several typos fixed in all the documentation</li>
+<li>Minor changes in <code>ee_as_sf</code> to support ee$FeatureCollections without elements.</li>
+<li>
+<code>data.colec.fbf</code> eliminated from all the examples.</li>
+<li>
+<code>rgee</code> now pass all <code>goodpractice</code> checks.</li>
+<li>
+<code>ee_get_img_date</code> and <code>ee_get_ic_date</code> are now <code>ee_get_date_img</code> and <code>ee_get_date_ic</code>.</li>
+<li>New group of functions <code>ee_utils.R</code> added. <code>ee_pyfunc</code> is now <code>ee_utils_pyfunc</code>.</li>
+<li>
+<code>Readme.R</code> new examples.</li>
+</ul>
+</div>
     <div id="rgee-043" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.3">
 <a href="#rgee-043" class="anchor"></a>rgee 0.4.3</h1>
@@ -338,7 +362,7 @@
 <li>
 <strong>non-R</strong> installation module added</li>
 <li>
-<strong>ee_utils_pyfunc:</strong> Wrap an R function in a Python function with the same signature.</li>
+<strong>ee_pyfunc:</strong> Wrap an R function in a Python function with the same signature.</li>
 <li>
 <strong>ee_remove_*:</strong> Delete credentials and selenium drivers.</li>
 </ul>

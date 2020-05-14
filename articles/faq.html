@@ -127,9 +127,9 @@
 <div id="installation-problem" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installation-problem" class="anchor"></a>Installation problem</h3>
-<div id="ee_install_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="section level4">
+<div id="ee_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="section level4">
 <h4 class="hasAnchor">
-<a href="#ee_install_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="anchor"></a>ee_install_create_pyenv take by default a Python 2 version (ERROR: rgee just run under Python 3.5 &gt;=)</h4>
+<a href="#ee_create_pyenv-take-by-default-a-python-2-version-error-rgee-just-run-under-python-3-5" class="anchor"></a>ee_create_pyenv take by default a Python 2 version (ERROR: rgee just run under Python 3.5 &gt;=)</h4>
 <p>It is a common scenario mostly for Windows users that have a lot of Python Envs setting on PATH. For solve this problem, take into account the follows steps:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r">  <span class="co"># 1. Find manually the Python Env that you want to use, for instance:</span>
   <span class="no">myPythonPath</span> <span class="kw">&lt;-</span> <span class="st">"C:/Python36/ArcGISx6410.4/python.exe"</span>
@@ -138,7 +138,7 @@
   <span class="fu"><a href="../reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span>(<span class="no">myPythonPath</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
 
   <span class="co"># 3. Create a Python environment, e.g. ee.</span>
-  <span class="no">myPythonEnv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ee_install_create_pyenv.html">ee_install_create_pyenv</a></span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
+  <span class="no">myPythonEnv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ee_install_create_pyenv.html">ee_install_create_pyenv</a></span>(<span class="kw">py_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
 
   <span class="co"># 4. Set the RETICULATE_PYTHON and RETICULATE_PYTHON_ENV (restart R to see changes).</span>
   <span class="fu"><a href="../reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span>(<span class="no">myPythonEnv</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)

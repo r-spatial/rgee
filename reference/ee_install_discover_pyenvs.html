@@ -194,12 +194,12 @@ virtualenv_list for Unix system.</p></td>
 
 <span class='co'>### rgee installation</span>
 
-<span class='co'># 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda</span>
-<span class='co'># will be installed by default.</span>
+<span class='co'># 1. Initialize rgee with ee_Initialize(). If there is no any Python</span>
+<span class='co'># environment, miniconda will be installed by default.</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># 2. Create a Python environment, e.g. ee.</span>
-<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
+<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>py_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
 
 <span class='co'># Find others Python environments in the system.</span>
 <span class='fu'>ee_install_discover_pyenvs</span>()
