@@ -11,15 +11,21 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Here you can find possible **solutions for common `rgee` problems**. We will add to this page as soon as additional problems are reported. If these solutions do not work for you, or you have a different problem, signal it at: https://github.com/csaybar/rgee/issues
+Here you can find possible **solutions for common `rgee` problems**. We
+will add to this page as soon as additional problems are reported. If
+these solutions do not work for you, or you have a different problem,
+signal it at:
+<a href="https://github.com/csaybar/rgee/issues" class="uri">https://github.com/csaybar/rgee/issues</a>
 
 ### Installation problem
 
-#### ee_install_create_pyenv take by default a Python 2 version (ERROR: rgee just run under Python 3.5 >=)
+#### ee\_create\_pyenv take by default a Python 2 version (ERROR: rgee just run under Python 3.5 &gt;=)
 
-It is a common scenario mostly for Windows users that have a lot of Python Envs setting on PATH. For solve this problem, take into account the follows steps:
+It is a common scenario mostly for Windows users that have a lot of
+Python Envs setting on PATH. For solve this problem, take into account
+the follows steps:
 
-```{r eval=FALSE}
+``` r
   # 1. Find manually the Python Env that you want to use, for instance:
   myPythonPath <- "C:/Python36/ArcGISx6410.4/python.exe"
   
@@ -37,4 +43,4 @@ It is a common scenario mostly for Windows users that have a lot of Python Envs 
   
   # 6. Initialize rgee again!
   ee_Initialize()
-```  
+```

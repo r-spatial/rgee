@@ -6,10 +6,10 @@ are:
 
 -   <span style="color:#b52b09"><b> Google account with Earth Engine
     activated </b></span>
--   <span style="color:#b52b09"><b> Python &gt; v3.5 </b></span>
--   <span style="color:#b52b09"><b> EarthEngine Python API </b></span>
+-   <span style="color:#b52b09"><b> Python >= v3.5 </b></span>
+-   <span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span>
 
-The activation of **Earth Engine accounts** depends on each users, check
+The activation of **Earth Engine accounts** depends on each user, check
 the oficial website of [Google Earth
 Engine](https://earthengine.google.com/) for more details. If you do not
 count with a **Python environment** in your system, run
@@ -47,8 +47,7 @@ ee_install_python_packages()
 ee_Initialize()
 ```
 
-The second group of dependencies called <span
-style="color:#857e04"><b>I/O dependencies</b></span> unlock `rgee`
+By the other hand, the  <span style="color:#857e04"><b>I/O dependencies</b></span> unlock `rgee`
 import & export functions. This dependencies are not mandatory. However,
 many of the rgee I/O functionality depend on it. The dependencies that
 comprised this group are shown below:
@@ -62,23 +61,22 @@ comprised this group are shown below:
 The batch import/export involves difficulties for most GEE users. In
 `rgee`, we are aware of it and we created several functions to help
 users to download and upload spatial data. If you are trying to
-**download** data from GEE using `rgee` you will have three options:
+**download** data from Earth Engine you will have three options:
 
--   **ee\_as\_sf**: Useful to download
-    ee*G**e**o**m**e**t**r**y*, *e**e*Feature and ee$FeatureCollection.
--   **ee\_as\_**\*: Convert ee$Image to stars and raster object.
+-   **ee\_as\_sf**: Useful to download ee\$Geometry, ee\$Feature and ee\$FeatureCollection.
+-   **ee\_as\_stars** or **ee\_as\_raster**: Convert ee$Image to stars and raster object.
 -   **ee\_as\_thumbnail**: Create a raster or stars object based on a
     thumbnail image.
 
 These functions through the argument **`via`** will permit you to
 **change the download method**. There are three methods to download an
-EE object in rgee: the `getInfo` which seeks the spatial object in the
-response, the `drive` options which use Google Drive (GD) as an
+EE object: The first one (`getInfo`) fetch and return spatial objects directly,
+the `drive` method use Google Drive (GD) as an intermidiate
 container, and finally `gcs` which use Google Cloud Storage (GCS).
 `rgee` to deal with **GD** and **GCS** use the R package
 [googledrive](https://googledrive.tidyverse.org/) and
 [googleCloudStorageR](http://code.markedmondson.me/googleCloudStorageR/)
-respectively, so you will need to do the installation before.
+respectively, so you will need to install it before.
 
 ``` r
 # please try as follow
@@ -88,11 +86,9 @@ install.packages('googleCloudStorageR')
 
 **GD** is more friendly to novice Earth Engine users because the
 authentication process could be done without leaving R. However, if you
-are trying to move large amounts of data, it is preferable use Google
-Cloud Storage instead. It is important mentioning that, you will need to
-have your own Google Project with a credit card added to use GCS,
-charges will apply. See the
-[GCS\_AUTH\_FILE](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
+are trying to move large amounts of data, is preferable use **GCS** instead. For using GCS, you will
+need to have your own Google Project with a credit card added to the GCS service, charges will apply. See the
+[GCS\_AUTH\_FILE](https://github.com/csaybar/GCS_AUTH_FILE.json)
 tutorial to create your own service account key. If you want to
 understand why this is necessary, please have a look [Mark
 Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
@@ -101,14 +97,13 @@ tutorial.
 Batch **upload** is a harder process, in `rgee` we try to make it
 simple. If you want to upload files in a batch way, firstly you must
 **get authorization to read & write into a Google Cloud Storage (GCS)
-bucket**. `rgee` implement three functions to upload files:
+bucket**. `rgee` implement three functions:
 
--   **sf\_as\_ee**: Convert a sfg, sfc or sf object to
-    ee$FeatureCollection.
--   **stars\_as\_ee**: Convert an stars object to ee$Image.
--   **raster\_as\_ee**: Convert an raster object to ee$Image.
+-   **sf\_as\_ee**: Convert a sfg, sfc or sf object to an ee$FeatureCollection.
+-   **stars\_as\_ee**: Convert an stars object to an ee$Image.
+-   **raster\_as\_ee**: Convert an raster object to an ee$Image.
 
-### Authorization and authentication
+### Authentication
 
 `rgee` deal with three different Google API’s:
 
@@ -139,28 +134,22 @@ ee_Initialize(email = 'csaybar@gmail.com', drive = TRUE, gcs = TRUE)
 
 If the Google account is verified and the permission is granted, you
 will be directed to an authentication token. Copy this token and paste
-it in the emerging GUI. This process will be repeated for each API,
-except for [Google Cloud
-Storage](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
-see the link for details of how create a workflow that use GCS. If there
-is a successful outcome, all credentials are stored in:
+it in the emerging GUI. Unlike Earth Engine and GD, GCS need to set up its credential manually ([link1](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) and [link2](https://github.com/csaybar/GCS_AUTH_FILE.json)). In all cases, the credentials always will be stored in: 
 
 ``` r
 ee_get_earthengine_path()
 ```
-
-For the next sessions, there will not be need for any further
-authentication.
+Remember you only have to authorize once, for next sessions it will not be necessary.
 
 ### Checking
 
-The `ee_check()` function will help you for checking the sanity of
-`rgee` installation. Additionally, you can separately check the `rgee`
-dependencies with the following functions:
+The `ee_check()` function will help you for checking the sanity of your 
+`rgee` installation and dependencies. 
 
 -   `ee_check_python()` - Python version
 -   `ee_check_credentials()` - Google Drive and GCS credentials
 -   `ee_check_rgee_python_packages()` - Python packages
+
 
 ``` r
 library(rgee)

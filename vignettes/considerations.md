@@ -1,6 +1,8 @@
-`rgee` is extremely similar to the [Earth Engine Python
-API](https://pypi.org/project/earthengine-api/), with the exception of
-**three** particular cases. Each of these are explained in-depth below.
+`rgee` and the [Earth Engine Python
+API](https://pypi.org/project/earthengine-api/) share the same classes, functions
+and methods. Therefore is expected that works identical for all user requests. 
+However, different in the language design of R and Python causes **three** 
+particular cases. Each of these are explained in-depth below.
 
 ### 1) The **map** message error:
 
@@ -37,8 +39,8 @@ mylist$map(function(x) ee$Number(x)$add(1))
 ```
 
 The code before is perfectly valid but `rgee` will produce an error.
-This could be solved by adding the function **ee\_pyfunc** to the code.
-Let’s see:
+This problem should be easily solved by adding the function **ee_utils_pyfunc**.
+It will permit users wrap R functions before to send it to `reticulate`. Let’s see:
 
 ``` r
 library(rgee)
@@ -95,7 +97,7 @@ and_bitwise$getInfo()
 Users need to take into consideration that most of the arguments of the
 Earth Engine methods are strict to admit only **integer values**. The
 creation of integers in R is quite simple, you just need to add the
-letter **L** to the end of the specific number or just employ the
+letter **L** to the end of the specific number or employ the
 function `as.integer`. The **correct code** in R would be:
 
 ``` r
