@@ -22,19 +22,19 @@ if (anyNA(user)) {
 }
 
 ### Instalation module
-test_that("ee_create_pyenv ",{
-  result <- ee_create_pyenv('earthengine_test')
+test_that("ee_install_create_pyenv ",{
+  result <- ee_install_create_pyenv('earthengine_test')
   expect_type(result,"character")
 })
 
-test_that("ee_discover_pyenvs",{
-  python_envs <- ee_discover_pyenvs()
+test_that("ee_install_discover_pyenvs",{
+  python_envs <- ee_install_discover_pyenvs()
   expect_equal(class(python_envs), 'character')
 })
 
-test_that("ee_set_pyenv",{
-  python_envs <- ee_discover_pyenvs()
-  fmsg <- ee_set_pyenv(
+test_that("ee_install_set_pyenv",{
+  python_envs <- ee_install_discover_pyenvs()
+  fmsg <- ee_install_set_pyenv(
     python_path = python_envs[1],
     python_env = 'earthengine_test',
     install = FALSE,
@@ -47,7 +47,7 @@ test_that("ee_set_pyenv",{
 #   expect_true(fmsg)
 # })
 #
-# test_that("ee_earthengine_upgrade",{
-#   fmsg <- ee_earthengine_upgrade()
+# test_that("ee_install_earthengine_upgrade",{
+#   fmsg <- ee_install_earthengine_upgrade()
 #   expect_true(fmsg)
 # })

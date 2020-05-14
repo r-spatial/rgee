@@ -33,7 +33,7 @@ test_that("local_to_gcs - character",{
 test_that("gcs_to_ee_table ", {
   nc <- st_read(system.file("shape/nc.shp", package = "sf"))
   assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
-  zipfile <- ee_create_shp_zip(nc)
+  zipfile <- ee_utils_shp_to_zip(nc)
   gs_uri <- local_to_gcs(x = zipfile,
                             bucket = 'rgee_dev')
   gcs_to_ee_table(

@@ -24,7 +24,7 @@ if (anyNA(user)) {
 test_that("get_authorization_url is working well?",{
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- rgee:::ee_source_python(oauth_func_path)
-  code_challenge <- ee_py_to_r(utils_py$create_codes())
+  code_challenge <- ee_utils_py_to_r(utils_py$create_codes())
   ee_url <- ee$oauth$get_authorization_url(code_challenge[[2]])
   expect_type(ee_url,'character')
 })

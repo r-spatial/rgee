@@ -28,7 +28,7 @@ db <- paste0(
 )
 
 test_that("simple search",{
-  myquery <- ee_dataset(path_dataset = db, upgrade = TRUE) %>%
+  myquery <- ee_search_dataset(path_dataset = db, upgrade = TRUE) %>%
     ee_search_type("Image")  %>%
     ee_search_provider("WWF") %>%
     ee_search_tags("srtm", "flow", "direction", "dem") %>%
@@ -38,7 +38,7 @@ test_that("simple search",{
 })
 
 test_that("testing date queries",{
-  myquery <- ee_dataset() %>%
+  myquery <- ee_search_dataset() %>%
     ee_search_type("Image")  %>%
     ee_search_startdate('2010-01-01') %>%
     ee_search_enddate('2010-12-31')
@@ -52,19 +52,19 @@ test_that("testing date queries",{
 
 
 test_that("Get title",{
-  tl <- ee_search_title_list(ee_dataset())
+  tl <- ee_search_title_list(ee_search_dataset())
   expect_type(tl,'character')
 })
 
 test_that("ee_search_tagstitle - AND",{
-  my_db <- ee_dataset() %>%
+  my_db <- ee_search_dataset() %>%
     ee_search_tagstitle("srtm",logical_operator = 'AND')
   expect_type(my_db$id,'character')
 })
 
 test_that("provider list",{
   expect_type(
-    ee_dataset() %>% ee_search_provider_list(),
+    ee_search_dataset() %>% ee_search_provider_list(),
     "character"
   )
 })
@@ -72,53 +72,53 @@ test_that("provider list",{
 # ERROR ee_search ---------------------------------------------------------
 test_that("error 01",{
   expect_error(
-    ee_dataset() %>% ee_search_type("XxX")
+    ee_search_dataset() %>% ee_search_type("XxX")
   )
 })
 
 test_that("error 02",{
   expect_error(
-    ee_dataset() %>% ee_search_provider("peru")
+    ee_search_dataset() %>% ee_search_provider("peru")
   )
 })
 
 test_that("error 03",{
-  ee_s_search <- ee_dataset() %>%
+  ee_s_search <- ee_search_dataset() %>%
     ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "OR")
   expect_s3_class(ee_s_search,"data.frame")
-  ee_s_search <- ee_dataset() %>%
+  ee_s_search <- ee_search_dataset() %>%
     ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "AND")
   expect_s3_class(ee_s_search,"data.frame")
-  expect_error(ee_dataset() %>%
+  expect_error(ee_search_dataset() %>%
     ee_search_tags("srtm", "flow", "direction", "dem", logical_operator = "ORd")
   )
 })
 
 test_that("error 04",{
-  ee_s_search <- ee_dataset() %>%
+  ee_s_search <- ee_search_dataset() %>%
     ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "OR")
   expect_s3_class(ee_s_search,"data.frame")
-  expect_error(ee_dataset() %>%
+  expect_error(ee_search_dataset() %>%
                  ee_search_title("srtm", "flow", "direction", "dem", logical_operator = "ORd")
   )
 })
 
 test_that("error 05", {
   expect_error(
-    ee_dataset() %>%
+    ee_search_dataset() %>%
       ee_search_tagstitle("srtm", "flow", logical_operator = "ORd")
   )
 })
 
 test_that("error 05", {
   expect_error(
-    ee_dataset() %>%
+    ee_search_dataset() %>%
       ee_search_tagstitle("srtm", "flow", logical_operator = "ORd")
   )
 })
 
 test_that("ee_search_display", {
-  ss <- ee_dataset() %>%
+  ss <- ee_search_dataset() %>%
     ee_search_tagstitle("srtm", "flow", logical_operator = "OR") %>%
     ee_search_display(maxdisplay = 1)
   expect_equal(ss, TRUE)

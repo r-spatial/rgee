@@ -31,7 +31,7 @@ test_that("sf_as_ee.character", {
     centroid()$
     getInfo() %>%
     "[["("coordinates") %>%
-    ee_py_to_r() %>%
+    ee_utils_py_to_r() %>%
     mean()
   expect_equal(centroid, 27.93429, tolerance = 0.1)
 })
