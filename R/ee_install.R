@@ -6,7 +6,7 @@
 #' \dontrun{
 #' #' library(rgee)
 #'
-#' ### Install rgee by steps
+#' ### rgee installation
 #'
 #' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 #' # will be installed by default.
@@ -28,7 +28,7 @@
 #' ee_Initialize()
 #' }
 #' @export
-ee_install_create_pyenv <- function(python_env) {
+ee_install_create_pyenv <- function(python_env = "rgee") {
 
   #Check is Python is greather than 3.5
   ee_check_python(quiet = TRUE)
@@ -58,7 +58,7 @@ ee_install_create_pyenv <- function(python_env) {
 #' \dontrun{
 #' #' library(rgee)
 #'
-#' ### Install rgee by steps
+#' ### rgee installation
 #'
 #' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 #' # will be installed by default.
@@ -138,7 +138,7 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' \dontrun{
 #' #' library(rgee)
 #'
-#' ### Install rgee by steps
+#' ### rgee installation
 #'
 #' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 #' # will be installed by default.
@@ -264,40 +264,56 @@ ee_install_set_pyenv <- function(python_path,
 
 #' Install rgee Python packages dependencies
 #'
-#' Install the necessary Python packages to be used in rgee.
+#' Install the necessary Python packages to be used in rgee. This function is
+#' a wrapper around `reticulate::py_install()`.
+#'
+#' @author Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NȺ.
 #'
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
 #' default to force a specific installation method. Note that the
-#' "virtualenv" method is not available on Windows (as this isn't
-#' supported by rgee). Note also that since this command runs
-#' without privilege the "system" method is available only on Windows.
-#' @param conda Path to conda executable (or "auto" to find conda
-#' using the PATH and other conventional install locations).
+#' "virtualenv" method is not available on Windows.
+#' @param conda The path to a conda executable. Use "auto" to allow
+#' reticulate to automatically find an appropriate conda binary. See
+#' **Finding Conda** for more details.
 #' @param ee_version earthengine-api version to install. When
 #' this argument is NULL (the default), the version with which
 #' rgee was built will be installed.
-#' @param envname Name of Python environment, or full path, which Python
-#' packages are to be installed.
+#' @param python_version The requested Python version. Ignored when
+#'  attempting to install with a Python virtual environment.
 #' @param pip Logical. Use pip for package installation? This
 #' is only relevant when Conda environments are used, as
 #' otherwise packages will be installed from the
 #' Conda repositories.
-#' @param conda_python_version the Python version installed in the
-#' created conda environment. Python 3.7 is installed by default.
-#' @param ... other arguments passed to \link[=reticulate]{conda_install} or
-#' \link[=reticulate]{virtualenv_install}.
 #' @param confirm Logical. Confirm if restart R when the 'install'
 #' argument is TRUE.
+#' @param ... Additional arguments passed to \link[=reticulate]{conda_install}
+#' or \link[=reticulate]{virtualenv_install}.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
-#' version 3.5 >=.
+#' version 3.5 >=. On Linux and OS X the "virtualenv" method will
+#' be used by default ("conda" will be used if virtualenv isn't available). On
+#' Windows, the "conda" method is always used.
+#'
+#' @seealso `reticulate::py_install()`
+#'
+#' @section Finding Conda:
+#'
+#' When `conda = "auto"`, `reticulate` will attempt to automatically find an
+#' Anaconda / Miniconda installation and use that. `reticulate` will search the
+#' following locations:
+#'
+#' 1. The location specified by the `reticulate.conda_binary` \R option;
+#' 2. The program `PATH`;
+#' 3. A set of pre-defined locations where Conda is typically installed.
+#'
 #' @examples
+#'
 #' \dontrun{
 #' #' library(rgee)
 #'
-#' ### Install rgee by steps
+#' ### rgee installation
 #'
 #' # 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
 #' # will be installed by default.
@@ -317,6 +333,7 @@ ee_install_set_pyenv <- function(python_path,
 #'
 #' # 5. Initialize rgee again!
 #' ee_Initialize()
+#'
 #' }
 #' @export
 ee_install_python_packages <- function(method = c(
@@ -326,9 +343,8 @@ ee_install_python_packages <- function(method = c(
                                        ),
                                        conda = "auto",
                                        ee_version = NULL,
-                                       envname = NULL,
-                                       pip = TRUE,
-                                       conda_python_version = "3.7",
+                                       python_version = NULL,
+                                       pip = FALSE,
                                        confirm = interactive(),
                                        ...) {
   rgee_packages <- c("pyasn1", "oauth2client", "numpy")
@@ -354,10 +370,9 @@ ee_install_python_packages <- function(method = c(
 
   py_install(
     packages = c(ee_version, rgee_packages),
-    envname = envname,
     method = method,
     conda = conda,
-    python_version = conda_python_version,
+    python_version = python_version,
     pip = pip,
     ...
   )
@@ -387,57 +402,57 @@ ee_install_python_packages <- function(method = c(
 
 #' Upgrade the Earth Engine Python API
 #'
-#' This function upgrade the Earth Engine Python API (earthengine-api)
-#' to the latest version.
+#' Upgrade the Earth Engine Python API (earthengine-api) to the latest
+#' version. This function is a wrapper around  `reticulate::py_install()`.
 #'
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
 #' default to force a specific installation method. Note that the
-#' "virtualenv" method is not available on Windows (as this isn't
-#' supported by rgee). Note also that since this command runs
-#' without privilege the "system" method is available only on Windows.
-#' @param conda Path to conda executable (or "auto" to find conda
-#' using the PATH and other conventional install locations).
-#' @param envname Name of Python environment, or full path, which Python
-#' packages are to be installed.
+#' "virtualenv" method is not available on Windows.
+#' @param conda The path to a conda executable. Use "auto" to allow
+#' reticulate to automatically find an appropriate conda binary. See
+#' **Finding Conda** for more details.
+#' @param python_version The requested Python version. Ignored when
+#'  attempting to install with a Python virtual environment.
 #' @param pip Logical. Use pip for package installation? This
 #' is only relevant when Conda environments are used, as
 #' otherwise packages will be installed from the
 #' Conda repositories.
-#' @param conda_python_version the Python version installed in the
-#' created conda environment. Python 3.7 is installed by default.
-#' @param ... other arguments passed to \link[=reticulate]{conda_install}  or
-#' \link[=reticulate]{virtualenv_install}.
 #' @param confirm Logical. Confirm if restart R when the 'install'
 #' argument is TRUE.
+#' @param ... Additional arguments passed to \link[=reticulate]{conda_install}
+#' or \link[=reticulate]{virtualenv_install}.
 #' @importFrom reticulate source_python py_install
 #' @details It is neccessary restart R to observe change when
 #' installing Python packages. rgee only is compatible with Python
-#' version 3.5 >=.
+#' version 3.5 >=. On Linux and OS X the "virtualenv" method will
+#' be used by default ("conda" will be used if virtualenv isn't available). On
+#' Windows, the "conda" method is always used.
+#'
+#' @seealso `reticulate::py_install()`
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_earthengine_upgrade()
+#' ee_install_earthengine_upgrade()
 #' }
 #' @export
-ee_earthengine_upgrade <- function(method = c(
+ee_install_earthengine_upgrade <- function(method = c(
                                       "auto",
                                       "virtualenv",
                                       "conda"
                                    ),
                                    conda = "auto",
-                                   envname = NULL,
-                                   pip = TRUE,
-                                   conda_python_version = "3.7",
+                                   pip = FALSE,
+                                   python_version = NULL,
                                    confirm = interactive(),
                                    ...) {
   ee_version <- "earthengine-api"
   py_install(
     packages = ee_version,
-    envname = envname,
     method = method,
     conda = conda,
-    python_version = conda_python_version,
+    python_version = python_version,
     pip = pip,
     ...
   )
