@@ -3,11 +3,11 @@
 #' @param x EE table to be converted into a sf object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
 #' \code{ee_as_sf} will create a temporary file.
-#' @param crs integer or character; coordinate reference system
+#' @param crs Integer or character. coordinate reference system
 #' for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
-#' export  (ignore if \code{via} is not set as "getInfo"). The task will fail
+#' export (ignore if \code{via} is not set as "getInfo"). The task will fail
 #' if the exported region covers more features in the specified projection.
 #' Defaults to 5000.
 #' @param overwrite Logical. Delete data source \code{dsn} before attempting
@@ -17,9 +17,9 @@
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignore if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param selectors The list of properties to include in
-#' the output, as a list of strings or a comma-separated
-#' string. By default, all properties are included.
+#' @param selectors The list of properties to include in the output, as a
+#' list of strings or a comma-separated string. By default, all properties are
+#' included.
 #' @param quiet logical. Suppress info message
 #' @importFrom geojsonio geojson_sf
 #' @importFrom utils tail
@@ -43,12 +43,9 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
 #' ee_reattach() # reattach ee as a reserved word
-#' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
-#'   drive = TRUE,
-#'   gcs = TRUE
-#' )
+#' ee_Initialize(drive = TRUE, gcs = TRUE)
 #'
 #' # Region of interest
 #' roi <- ee$Geometry$Polygon(list(
@@ -83,7 +80,7 @@
 #' sf_randomPoints_gcs <- ee_as_sf(
 #'   x = subset,
 #'   via = 'gcs',
-#'   container = 'rgee_dev'
+#'   container = 'rgee_dev' #GCS bucket name
 #' )
 #' }
 #' @export
@@ -128,7 +125,7 @@ ee_as_sf <- function(x,
           fc_size,
           " features (max: ",
           maxFeatures,
-          "). Specify higher maxFeatures value",
+          "). Specify a higher maxFeatures value",
           " if you intend to export a large area."
         )
       }
@@ -157,14 +154,15 @@ ee_as_sf <- function(x,
         x_fc_batch <- ee$FeatureCollection(x_eelist)
         sf_list[[r_index]] <- ee_fc_to_sf_getInfo(
           x_fc = x_fc_batch,
-          overwrite = overwrite
+          overwrite = overwrite,
+          maxFeatures = maxFeatures
         )
       }
       x_sf_mosaic <- do.call(rbind, sf_list)
       st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
       local_sf <- x_sf_mosaic
     } else {
-      local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, overwrite)
+      local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
     }
   } else if (via == "drive") {
     # Creating name for temporal file; just for either drive or gcs
@@ -264,26 +262,32 @@ ee_as_sf <- function(x,
     stop("via argument invalid.")
   }
 
-  if (is.null(crs)) {
-    ## OBS: we assume that all the featurecollection have the same crs
-    ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
-    ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
+  if (nrow(local_sf) == 0) {
+      return(local_sf)
+  } else {
+    if (is.null(crs)) {
+      ## OBS: we assume that all the featurecollection have the same crs
+      ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
+      ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
+    }
+    suppressWarnings(st_crs(local_sf) <- ft_proj)
+    return(local_sf)
   }
-  suppressWarnings(st_crs(local_sf) <- ft_proj)
-  local_sf
 }
 
 
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
-ee_fc_to_sf_getInfo <- function(x_fc, dsn, overwrite = TRUE) {
+ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
   x_list <- tryCatch(
     expr = x_fc$getInfo(),
     error = function(e) {
+        feature_len <- x_fc$size()$getInfo()
         stop(
-          "Export too large. Specified more than 5000",
-          " features. Specify higher maxFeatures value if you",
-          " intend to export a large area via getInfo."
+          "Specify higher maxFeatures value if you",
+          " intend to export a large area via getInfo.",
+          "\nEntered: ", feature_len,
+          "\nmaxFeatures: ", maxFeatures
         )
     }
   )

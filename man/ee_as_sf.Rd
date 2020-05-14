@@ -25,7 +25,7 @@ ee_as_sf(
 \item{overwrite}{Logical. Delete data source \code{dsn} before attempting
 to write?.}
 
-\item{crs}{integer or character; coordinate reference system
+\item{crs}{Integer or character. coordinate reference system
 for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
 the first element.}
 
@@ -33,7 +33,7 @@ the first element.}
 options supported. See details.}
 
 \item{maxFeatures}{Numeric. The maximum allowed number of features to
-export  (ignore if \code{via} is not set as "getInfo"). The task will fail
+export (ignore if \code{via} is not set as "getInfo"). The task will fail
 if the exported region covers more features in the specified projection.
 Defaults to 5000.}
 
@@ -41,9 +41,9 @@ Defaults to 5000.}
 to be exported into (ignore if \code{via} is not defined as "drive" or
 "gcs").}
 
-\item{selectors}{The list of properties to include in
-the output, as a list of strings or a comma-separated
-string. By default, all properties are included.}
+\item{selectors}{The list of properties to include in the output, as a
+list of strings or a comma-separated string. By default, all properties are
+included.}
 
 \item{quiet}{logical. Suppress info message}
 }
@@ -71,12 +71,9 @@ Engine Guide - Export data}.
 \examples{
 \dontrun{
 library(rgee)
+
 ee_reattach() # reattach ee as a reserved word
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+ee_Initialize(drive = TRUE, gcs = TRUE)
 
 # Region of interest
 roi <- ee$Geometry$Polygon(list(
@@ -111,7 +108,7 @@ sf_randomPoints_drive <- ee_as_sf(
 sf_randomPoints_gcs <- ee_as_sf(
   x = subset,
   via = 'gcs',
-  container = 'rgee_dev'
+  container = 'rgee_dev' #GCS bucket name
 )
 }
 }
