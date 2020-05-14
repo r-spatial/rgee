@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Interface to check Python and non-R rgee dependencies — ee_check-tools • rgee</title>
+<title>Interface to check Python and non-R dependencies — ee_check-tools • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Interface to check Python and non-R rgee dependencies — ee_check-tools" />
+<meta property="og:title" content="Interface to check Python and non-R dependencies — ee_check-tools" />
 <meta property="og:description" content="R functions for checking sanity of Third-Party Python
 packages and credentials." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
@@ -81,7 +81,7 @@ packages and credentials." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -156,7 +156,7 @@ packages and credentials." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Interface to check Python and non-R rgee dependencies</h1>
+    <h1>Interface to check Python and non-R dependencies</h1>
     <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_check.R'><code>R/ee_check.R</code></a></small>
     <div class="hidden name"><code>ee_check-tools.Rd</code></div>
     </div>
@@ -187,7 +187,9 @@ packages and credentials.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+
 <span class='fu'>ee_check_python</span>()
 <span class='fu'>ee_check_rgee_python_packages</span>()
 <span class='fu'>ee_check_credentials</span>()

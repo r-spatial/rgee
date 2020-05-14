@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -203,7 +203,7 @@ it exists.</p></td>
 
 <span class='co'># Method 1</span>
 <span class='co'># 1. Pass the sf to a zip file</span>
-<span class='no'>zipfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_create_shp_zip.html'>ee_create_shp_zip</a></span>(<span class='no'>nc</span>)
+<span class='no'>zipfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span>(<span class='no'>nc</span>)
 
 <span class='co'># 2. From local to gcs</span>
 <span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>zipfile</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)

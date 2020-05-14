@@ -81,7 +81,7 @@ EE thumbnail image." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -245,8 +245,10 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>raster</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+
 <span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
 <span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rgee"</span>))
 <span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
@@ -271,6 +273,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 
 <span class='no'>world_dem</span>[<span class='no'>world_dem</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
 <span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
+
 <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>world_dem</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - World"</span>
@@ -291,6 +294,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 )
 
 <span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
+
 <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
   <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>
@@ -316,6 +320,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
   <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>),
   <span class='kw'>raster</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
+
 <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plotRGB.html'>plotRGB</a></span>(<span class='no'>l8_img</span>, <span class='kw'>stretch</span> <span class='kw'>=</span> <span class='st'>"lin"</span>)
 }</pre>
   </div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -123,7 +123,7 @@
 
     
     
-<p><code>rgee</code> is extremely similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a>, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
+<p><code>rgee</code> is very similar to the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a>, with the exception of <strong>three</strong> particular cases. Each of these are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
@@ -151,12 +151,12 @@
 <span class="co">#&gt;     self._body = body(*variables)</span>
 <span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
 <span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></pre></body></html></div>
-<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_pyfunc</strong> to the code. Let’s see:</p>
+<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This could be solved by adding the function <strong>ee_utils_pyfunc</strong> to the code. Let’s see:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="no">ee</span>$<span class="fu">Initialize</span>()
 <span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
 <span class="no">mynewlist</span> <span class="kw">=</span> <span class="no">mylist</span>$<span class="fu">map</span>(
-  <span class="fu"><a href="../reference/ee_pyfunc.html">ee_pyfunc</a></span>(
+  <span class="fu"><a href="../reference/ee_utils_pyfunc.html">ee_utils_pyfunc</a></span>(
     <span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>)
   )
 )

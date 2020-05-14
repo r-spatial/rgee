@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove reticulate system variables from .Renviron — ee_clean_pyenv • rgee</title>
+<title>Wrap an R function in a Python function with the same signature. — ee_utils_pyfunc • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Remove reticulate system variables from .Renviron — ee_clean_pyenv" />
-<meta property="og:description" content="Remove reticulate system variables from .Renviron" />
+<meta property="og:title" content="Wrap an R function in a Python function with the same signature. — ee_utils_pyfunc" />
+<meta property="og:description" content="This function could wrap an R function in a Python
+function with the same signature. Note that the signature of the
+R function must not contain esoteric Python-incompatible constructs." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 
 
@@ -155,23 +157,67 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove reticulate system variables from .Renviron</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_clean.R'><code>R/ee_clean.R</code></a></small>
-    <div class="hidden name"><code>ee_clean_pyenv.Rd</code></div>
+    <h1>Wrap an R function in a Python function with the same signature.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_utils.R'><code>R/ee_utils.R</code></a></small>
+    <div class="hidden name"><code>ee_utils_pyfunc.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Remove reticulate system variables from .Renviron</p>
+    <p>This function could wrap an R function in a Python
+function with the same signature. Note that the signature of the
+R function must not contain esoteric Python-incompatible constructs.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_clean_pyenv</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_utils_pyfunc</span>(<span class='no'>f</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>f</th>
+      <td><p>An R function</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A Python function that calls the R function <code>f</code> with the same
+signature.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p><code><a href='https://rdrr.io/pkg/reticulate/man/py_func.html'>py_func</a></code> has been renamed to ee_utils_pyfunc
+just to maintain the rgee functions name's style. All recognition
+for this function must always be given to <span class="pkg">reticulate</span>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_clean_pyenv</span>()
+
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
+<span class='co'># Earth Engine List</span>
+<span class='no'>ee_SimpleList</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>List</span>$<span class='fu'><a href='https://rdrr.io/r/base/sequence.html'>sequence</a></span>(<span class='fl'>0</span>, <span class='fl'>12</span>)
+<span class='no'>ee_NewList</span> <span class='kw'>&lt;-</span> <span class='no'>ee_SimpleList</span>$<span class='fu'>map</span>(
+  <span class='fu'>ee_utils_pyfunc</span>(
+    <span class='kw'>function</span>(<span class='no'>x</span>) {
+      <span class='no'>ee</span>$<span class='fu'>Number</span>(<span class='no'>x</span>)$<span class='fu'>add</span>(<span class='no'>x</span>)
+    }
+  )
+)
+
+<span class='no'>ee_NewList</span>$<span class='fu'>getInfo</span>()
+
+<span class='co'># Earth Engine ImageCollection</span>
+<span class='no'>constant1</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='fl'>1</span>)
+<span class='no'>constant2</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='fl'>2</span>)
+<span class='no'>ee_ic</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>constant2</span>, <span class='no'>constant1</span>))
+<span class='no'>ee_newic</span> <span class='kw'>&lt;-</span> <span class='no'>ee_ic</span>$<span class='fu'>map</span>(
+  <span class='fu'>ee_utils_pyfunc</span>(
+    <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>x</span>)$<span class='fu'>add</span>(<span class='no'>x</span>)
+  )
+)
+<span class='no'>ee_newic</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>()$<span class='fu'>getInfo</span>()$<span class='no'>type</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

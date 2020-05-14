@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -218,7 +218,7 @@
         <td>
           <p><code><a href="ee_check-tools.html">ee_check()</a></code> <code><a href="ee_check-tools.html">ee_check_python()</a></code> <code><a href="ee_check-tools.html">ee_check_rgee_python_packages()</a></code> <code><a href="ee_check-tools.html">ee_check_credentials()</a></code> </p>
         </td>
-        <td><p>Interface to check Python and non-R rgee dependencies</p></td>
+        <td><p>Interface to check Python and non-R dependencies</p></td>
       </tr><tr>
         
         <td>
@@ -228,40 +228,21 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_clean_credentials.html">ee_clean_credentials()</a></code> </p>
+        </td>
+        <td><p>Delete Credentials</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_clean_pyenv.html">ee_clean_pyenv()</a></code> </p>
         </td>
         <td><p>Remove reticulate system variables from .Renviron</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_create_pyenv.html">ee_create_pyenv()</a></code> </p>
-        </td>
-        <td><p>Create an isolated Python virtual environment to be used in rgee</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_create_shp_zip.html">ee_create_shp_zip()</a></code> </p>
-        </td>
-        <td><p>Create a zip file from a sf object</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_discover_pyenvs.html">ee_discover_pyenvs()</a></code> </p>
-        </td>
-        <td><p>Discover all the Python environments available
-in the system</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_drive_to_local.html">ee_drive_to_local()</a></code> </p>
         </td>
         <td><p>Move results from Google Drive to a local directory</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_earthengine_upgrade.html">ee_earthengine_upgrade()</a></code> </p>
-        </td>
-        <td><p>Upgrade the Earth Engine Python API</p></td>
       </tr><tr>
         
         <td>
@@ -283,21 +264,21 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_get_earthengine_path.html">ee_get_earthengine_path()</a></code> </p>
-        </td>
-        <td><p>Get the path where the credentials are stored by rgee</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_get_ic_date.html">ee_get_ic_date()</a></code> </p>
+          <p><code><a href="ee_get_date_ic.html">ee_get_date_ic()</a></code> </p>
         </td>
         <td><p>Get the date of a EE ImageCollection</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_get_img_date.html">ee_get_img_date()</a></code> </p>
+          <p><code><a href="ee_get_date_img.html">ee_get_date_img()</a></code> </p>
         </td>
         <td><p>Get the date of a EE Image</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_get_earthengine_path.html">ee_get_earthengine_path()</a></code> </p>
+        </td>
+        <td><p>Get the path where the credentials are stored</p></td>
       </tr><tr>
         
         <td>
@@ -337,9 +318,34 @@ in the system</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="ee_install_create_pyenv.html">ee_install_create_pyenv()</a></code> </p>
+        </td>
+        <td><p>Create an isolated Python virtual environment to be used in rgee</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_install_discover_pyenvs.html">ee_install_discover_pyenvs()</a></code> </p>
+        </td>
+        <td><p>Discover all the Python environments available
+in the system</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_install_earthengine_upgrade.html">ee_install_earthengine_upgrade()</a></code> </p>
+        </td>
+        <td><p>Upgrade the Earth Engine Python API</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="ee_install_python_packages.html">ee_install_python_packages()</a></code> </p>
         </td>
         <td><p>Install rgee Python packages dependencies</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_install_set_pyenv.html">ee_install_set_pyenv()</a></code> </p>
+        </td>
+        <td><p>Set the Python environment to be used on rgee</p></td>
       </tr><tr>
         
         <td>
@@ -361,45 +367,15 @@ in the system</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_py_to_r.html">ee_py_to_r()</a></code> </p>
-        </td>
-        <td><p>Convert between Python and R objects</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_pyfunc.html">ee_pyfunc()</a></code> </p>
-        </td>
-        <td><p>Wrap an R function in a Python function with the same signature.</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ee_reattach.html">ee_reattach()</a></code> </p>
         </td>
         <td><p>Reattach ee as a reserved word</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_remove_credentials.html">ee_remove_credentials()</a></code> </p>
-        </td>
-        <td><p>Delete Credentials</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_remove_project_chr.html">ee_remove_project_chr()</a></code> </p>
-        </td>
-        <td><p>Remove EE projects info</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_search-tools.html">ee_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> <code><a href="ee_search-tools.html">ee_search_display()</a></code> </p>
+          <p><code><a href="ee_search-tools.html">ee_search_dataset()</a></code> <code><a href="ee_search-tools.html">ee_search_startdate()</a></code> <code><a href="ee_search-tools.html">ee_search_enddate()</a></code> <code><a href="ee_search-tools.html">ee_search_type()</a></code> <code><a href="ee_search-tools.html">ee_search_provider()</a></code> <code><a href="ee_search-tools.html">ee_search_provider_list()</a></code> <code><a href="ee_search-tools.html">ee_search_tags()</a></code> <code><a href="ee_search-tools.html">ee_search_title()</a></code> <code><a href="ee_search-tools.html">ee_search_tagstitle()</a></code> <code><a href="ee_search-tools.html">ee_search_title_list()</a></code> <code><a href="ee_search-tools.html">ee_search_display()</a></code> </p>
         </td>
         <td><p>Interface to search into the Earth Engine Data Catalog</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ee_set_pyenv.html">ee_set_pyenv()</a></code> </p>
-        </td>
-        <td><p>Set the Python environment to be used on rgee</p></td>
       </tr><tr>
         
         <td>
@@ -430,6 +406,24 @@ in the system</p></td>
           <p><code><a href="ee_users.html">ee_users()</a></code> </p>
         </td>
         <td><p>Display credentials of all users as a table</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_utils_py_to_r.html">ee_utils_py_to_r()</a></code> </p>
+        </td>
+        <td><p>Convert between Python and R objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_utils_pyfunc.html">ee_utils_pyfunc()</a></code> </p>
+        </td>
+        <td><p>Wrap an R function in a Python function with the same signature.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_utils_shp_to_zip.html">ee_utils_shp_to_zip()</a></code> </p>
+        </td>
+        <td><p>Create a zip file from a sf object</p></td>
       </tr><tr>
         
         <td>

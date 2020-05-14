@@ -28,22 +28,13 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_clean_container.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_clean_credentials.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_clean_pyenv.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_create_pyenv.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_create_shp_zip.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_discover_pyenvs.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_drive_to_local.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_earthengine_upgrade.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_extract.html</loc>
@@ -55,13 +46,13 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_get_assethome.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_get_date_ic.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_get_date_img.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_ic_date.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_img_date.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_help.html</loc>
@@ -82,7 +73,19 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
   </url>
   <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_install_create_pyenv.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_install_discover_pyenvs.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_install_earthengine_upgrade.html</loc>
+  </url>
+  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_install_python_packages.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_install_set_pyenv.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_manage-tools.html</loc>
@@ -94,25 +97,10 @@
     <loc>http://csaybar.github.io/rgee/reference/ee_print.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_py_to_r.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_pyfunc.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_reattach.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_remove_credentials.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_remove_project_chr.html</loc>
-  </url>
-  <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_search-tools.html</loc>
-  </url>
-  <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_set_pyenv.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_table_to_asset.html</loc>
@@ -128,6 +116,15 @@
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_users.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_utils_py_to_r.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_utils_pyfunc.html</loc>
+  </url>
+  <url>
+    <loc>http://csaybar.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc>
   </url>
   <url>
     <loc>http://csaybar.github.io/rgee/reference/ee_version.html</loc>

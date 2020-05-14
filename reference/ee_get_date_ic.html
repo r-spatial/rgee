@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove reticulate system variables from .Renviron — ee_clean_pyenv • rgee</title>
+<title>Get the date of a EE ImageCollection — ee_get_date_ic • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Remove reticulate system variables from .Renviron — ee_clean_pyenv" />
-<meta property="og:description" content="Remove reticulate system variables from .Renviron" />
+<meta property="og:title" content="Get the date of a EE ImageCollection — ee_get_date_ic" />
+<meta property="og:description" content="Get the date of a EE ImageCollection" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 
 
@@ -155,23 +155,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove reticulate system variables from .Renviron</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_clean.R'><code>R/ee_clean.R</code></a></small>
-    <div class="hidden name"><code>ee_clean_pyenv.Rd</code></div>
+    <h1>Get the date of a EE ImageCollection</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_Date.R'><code>R/ee_Date.R</code></a></small>
+    <div class="hidden name"><code>ee_get_date_ic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Remove reticulate system variables from .Renviron</p>
+    <p>Get the date of a EE ImageCollection</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_clean_pyenv</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_get_date_ic</span>(<span class='no'>x</span>, <span class='kw'>time_end</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>EE ImageCollection object</p></td>
+    </tr>
+    <tr>
+      <th>time_end</th>
+      <td><p>Logical. If TRUE, the system:time_end property will
+also be returned. See details.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A data.frame.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p><code>system:time_start</code> set the start period of data acquisition while
+<code>system:time_end</code> the end period. See the
+<a href='https://developers.google.com/earth-engine/glossary'>Earth
+Engine glossary</a> for more information.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_clean_pyenv</span>()
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+
+<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>()
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
+
+<span class='no'>ee_s2</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"COPERNICUS/S2"</span>)$
+  <span class='fu'>filterDate</span>(<span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span>)$
+  <span class='fu'>filterBounds</span>(<span class='no'>nc</span>)
+
+<span class='fu'>ee_get_ic_date</span>(<span class='no'>ee_s2</span>)
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

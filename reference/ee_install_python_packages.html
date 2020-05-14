@@ -47,7 +47,8 @@
 
 
 <meta property="og:title" content="Install rgee Python packages dependencies — ee_install_python_packages" />
-<meta property="og:description" content="Install the necessary Python packages to be used in rgee." />
+<meta property="og:description" content="Install the necessary Python packages to be used in rgee. This function is
+a wrapper around reticulate::py_install()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 
 
@@ -80,7 +81,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -161,16 +162,16 @@
     </div>
 
     <div class="ref-description">
-    <p>Install the necessary Python packages to be used in rgee.</p>
+    <p>Install the necessary Python packages to be used in rgee. This function is
+a wrapper around <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_python_packages</span>(
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>, <span class='st'>"conda"</span>),
   <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
   <span class='kw'>ee_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>envname</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>pip</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>conda_python_version</span> <span class='kw'>=</span> <span class='st'>"3.7"</span>,
+  <span class='kw'>python_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pip</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>confirm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
   <span class='no'>...</span>
 )</pre>
@@ -183,14 +184,13 @@
       <td><p>Installation method. By default, "auto" automatically
 finds a method that will work in the local environment. Change the
 default to force a specific installation method. Note that the
-"virtualenv" method is not available on Windows (as this isn't
-supported by rgee). Note also that since this command runs
-without privilege the "system" method is available only on Windows.</p></td>
+"virtualenv" method is not available on Windows.</p></td>
     </tr>
     <tr>
       <th>conda</th>
-      <td><p>Path to conda executable (or "auto" to find conda
-using the PATH and other conventional install locations).</p></td>
+      <td><p>The path to a conda executable. Use "auto" to allow
+reticulate to automatically find an appropriate conda binary. See
+<strong>Finding Conda</strong> for more details.</p></td>
     </tr>
     <tr>
       <th>ee_version</th>
@@ -199,9 +199,9 @@ this argument is NULL (the default), the version with which
 rgee was built will be installed.</p></td>
     </tr>
     <tr>
-      <th>envname</th>
-      <td><p>Name of Python environment, or full path, which Python
-packages are to be installed.</p></td>
+      <th>python_version</th>
+      <td><p>The requested Python version. Ignored when
+attempting to install with a Python virtual environment.</p></td>
     </tr>
     <tr>
       <th>pip</th>
@@ -211,19 +211,14 @@ otherwise packages will be installed from the
 Conda repositories.</p></td>
     </tr>
     <tr>
-      <th>conda_python_version</th>
-      <td><p>the Python version installed in the
-created conda environment. Python 3.7 is installed by default.</p></td>
-    </tr>
-    <tr>
       <th>confirm</th>
       <td><p>Logical. Confirm if restart R when the 'install'
 argument is TRUE.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>other arguments passed to conda_install or
-virtualenv_install.</p></td>
+      <td><p>Additional arguments passed to conda_install
+or virtualenv_install.</p></td>
     </tr>
     </table>
 
@@ -231,17 +226,52 @@ virtualenv_install.</p></td>
 
     <p>It is neccessary restart R to observe change when
 installing Python packages. rgee only is compatible with Python
-version 3.5 &gt;=.</p>
+version 3.5 &gt;=. On Linux and OS X the "virtualenv" method will
+be used by default ("conda" will be used if virtualenv isn't available). On
+Windows, the "conda" method is always used.</p>
+    <h2 class="hasAnchor" id="finding-conda"><a class="anchor" href="#finding-conda"></a>Finding Conda</h2>
+
+    
+
+
+<p>When <code>conda = "auto"</code>, <code>reticulate</code> will attempt to automatically find an
+Anaconda / Miniconda installation and use that. <code>reticulate</code> will search the
+following locations:</p><ol>
+<li><p>The location specified by the <code>reticulate.conda_binary</code> <span style="R">R</span> option;</p></li>
+<li><p>The program <code>PATH</code>;</p></li>
+<li><p>A set of pre-defined locations where Conda is typically installed.</p></li>
+</ol>
+
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_create_pyenv.html'>ee_create_pyenv</a></span>(<span class='st'>'ee'</span>)
-<span class='fu'><a href='ee_discover_pyenvs.html'>ee_discover_pyenvs</a></span>()
-<span class='fu'><a href='ee_set_pyenv.html'>ee_set_pyenv</a></span>(
-  <span class='kw'>python_path</span> <span class='kw'>=</span> <span class='st'>".../ee/bin/python"</span>,
-  <span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>'ee'</span>)
+    <pre class="examples">
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='co'>#' library(rgee)</span>
+
+<span class='co'>### rgee installation</span>
+
+<span class='co'># 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda</span>
+<span class='co'># will be installed by default.</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
+<span class='co'># 2. Create a Python environment, e.g. ee.</span>
+<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>python_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
+
+<span class='co'># Find others Python environments in the system.</span>
+<span class='fu'><a href='ee_install_discover_pyenvs.html'>ee_install_discover_pyenvs</a></span>()
+
+<span class='co'># 3. Set a Python environment (e.g. ee) and restart R to see changes.</span>
+<span class='fu'><a href='ee_install_set_pyenv.html'>ee_install_set_pyenv</a></span>(<span class='no'>pyenv</span>, <span class='kw'>install</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># 4. Install Python package dependencies and restart R to see changes.</span>
 <span class='fu'>ee_install_python_packages</span>()
+
+<span class='co'># 5. Initialize rgee again!</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
+
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

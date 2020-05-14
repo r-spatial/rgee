@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove reticulate system variables from .Renviron — ee_clean_pyenv • rgee</title>
+<title>Upgrade the Earth Engine Python API — ee_install_earthengine_upgrade • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Remove reticulate system variables from .Renviron — ee_clean_pyenv" />
-<meta property="og:description" content="Remove reticulate system variables from .Renviron" />
+<meta property="og:title" content="Upgrade the Earth Engine Python API — ee_install_earthengine_upgrade" />
+<meta property="og:description" content="Upgrade the Earth Engine Python API (earthengine-api) to the latest
+version. This function is a wrapper around  reticulate::py_install()." />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 
 
@@ -155,23 +156,80 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove reticulate system variables from .Renviron</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_clean.R'><code>R/ee_clean.R</code></a></small>
-    <div class="hidden name"><code>ee_clean_pyenv.Rd</code></div>
+    <h1>Upgrade the Earth Engine Python API</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
+    <div class="hidden name"><code>ee_install_earthengine_upgrade.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Remove reticulate system variables from .Renviron</p>
+    <p>Upgrade the Earth Engine Python API (earthengine-api) to the latest
+version. This function is a wrapper around  <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_clean_pyenv</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_install_earthengine_upgrade</span>(
+  <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"auto"</span>, <span class='st'>"virtualenv"</span>, <span class='st'>"conda"</span>),
+  <span class='kw'>conda</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>pip</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>python_version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>confirm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>(),
+  <span class='no'>...</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>method</th>
+      <td><p>Installation method. By default, "auto" automatically
+finds a method that will work in the local environment. Change the
+default to force a specific installation method. Note that the
+"virtualenv" method is not available on Windows.</p></td>
+    </tr>
+    <tr>
+      <th>conda</th>
+      <td><p>The path to a conda executable. Use "auto" to allow
+reticulate to automatically find an appropriate conda binary. See
+<strong>Finding Conda</strong> for more details.</p></td>
+    </tr>
+    <tr>
+      <th>pip</th>
+      <td><p>Logical. Use pip for package installation? This
+is only relevant when Conda environments are used, as
+otherwise packages will be installed from the
+Conda repositories.</p></td>
+    </tr>
+    <tr>
+      <th>python_version</th>
+      <td><p>The requested Python version. Ignored when
+attempting to install with a Python virtual environment.</p></td>
+    </tr>
+    <tr>
+      <th>confirm</th>
+      <td><p>Logical. Confirm if restart R when the 'install'
+argument is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Additional arguments passed to conda_install
+or virtualenv_install.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>It is neccessary restart R to observe change when
+installing Python packages. rgee only is compatible with Python
+version 3.5 &gt;=. On Linux and OS X the "virtualenv" method will
+be used by default ("conda" will be used if virtualenv isn't available). On
+Windows, the "conda" method is always used.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_clean_pyenv</span>()
+<span class='fu'>ee_install_earthengine_upgrade</span>()
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

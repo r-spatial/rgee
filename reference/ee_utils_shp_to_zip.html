@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Remove reticulate system variables from .Renviron — ee_clean_pyenv • rgee</title>
+<title>Create a zip file from a sf object — ee_utils_shp_to_zip • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Remove reticulate system variables from .Renviron — ee_clean_pyenv" />
-<meta property="og:description" content="Remove reticulate system variables from .Renviron" />
+<meta property="og:title" content="Create a zip file from a sf object — ee_utils_shp_to_zip" />
+<meta property="og:description" content="Create a zip file from a sf object" />
 <meta property="og:image" content="http://csaybar.github.io/rgee/logo.png" />
 
 
@@ -155,23 +155,77 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Remove reticulate system variables from .Renviron</h1>
-    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_clean.R'><code>R/ee_clean.R</code></a></small>
-    <div class="hidden name"><code>ee_clean_pyenv.Rd</code></div>
+    <h1>Create a zip file from a sf object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/csaybar/rgee/blob/master/R/ee_utils.R'><code>R/ee_utils.R</code></a></small>
+    <div class="hidden name"><code>ee_utils_shp_to_zip.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Remove reticulate system variables from .Renviron</p>
+    <p>Create a zip file from a sf object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_clean_pyenv</span>()</pre>
+    <pre class="usage"><span class='fu'>ee_utils_shp_to_zip</span>(
+  <span class='no'>x</span>,
+  <span class='no'>filename</span>,
+  <span class='kw'>SHP_EXTENSIONS</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"dbf"</span>, <span class='st'>"prj"</span>, <span class='st'>"shp"</span>, <span class='st'>"shx"</span>)
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>sf object</p></td>
+    </tr>
+    <tr>
+      <th>filename</th>
+      <td><p>data source name</p></td>
+    </tr>
+    <tr>
+      <th>SHP_EXTENSIONS</th>
+      <td><p>file extension of the files to save
+into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
+    </tr>
+    </table>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'>ee_clean_pyenv</span>()
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># Create sf object</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
+<span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
+
+<span class='co'># Method 1</span>
+<span class='co'># 1. Pass the sf to a zip file</span>
+<span class='no'>zipfile</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_utils_shp_to_zip</span>(<span class='no'>nc</span>)
+
+<span class='co'># 2. From local to gcs</span>
+<span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>zipfile</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
+
+<span class='co'># 3. Pass the sf to a zip file</span>
+<span class='fu'><a href='gcs_to_ee_table.html'>gcs_to_ee_table</a></span>(
+  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
+  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>
+)
+
+<span class='co'># OPTIONAL: Monitoring progress</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
+
+<span class='co'># OPTIONAL: Display results</span>
+<span class='no'>ee_sf_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>assetId</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_01</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_01</span>)
+
+<span class='co'># Method 2</span>
+<span class='no'>ee_sf_02</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>,
+                     <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
+                     <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_02</span>)
+<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_02</span>)
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

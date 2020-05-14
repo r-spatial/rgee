@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
       </span>
     </div>
 
@@ -310,8 +310,8 @@ it is an expensive operation.</p>
 <span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1.5</span>, <span class='fl'>1.5</span>))
 
 <span class='co'># Check insideness with a contains operator.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>holePoly</span>$<span class='fu'>geometry</span>()$<span class='fu'>contains</span>(<span class='no'>pt</span>)$<span class='fu'>getInfo</span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_py_to_r.html'>ee_py_to_r</a></span>())   <span class='co'># FALSE</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>evenOddPoly</span>$<span class='fu'>geometry</span>()$<span class='fu'>contains</span>(<span class='no'>pt</span>)$<span class='fu'>getInfo</span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_py_to_r.html'>ee_py_to_r</a></span>())<span class='co'># TRUE</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>holePoly</span>$<span class='fu'>geometry</span>()$<span class='fu'>contains</span>(<span class='no'>pt</span>)$<span class='fu'>getInfo</span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span>())   <span class='co'># FALSE</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>evenOddPoly</span>$<span class='fu'>geometry</span>()$<span class='fu'>contains</span>(<span class='no'>pt</span>)$<span class='fu'>getInfo</span>() <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span>())<span class='co'># TRUE</span>
 
 <span class='co'># 2. Upload small geometries to EE asset</span>
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(), <span class='st'>'toy_poly'</span>)
