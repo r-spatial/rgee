@@ -15,7 +15,7 @@ Here you can find possible **solutions for common `rgee` problems**. We
 will add to this page as soon as additional problems are reported. If
 these solutions do not work for you, or you have a different problem,
 signal it at:
-<a href="https://github.com/csaybar/rgee/issues" class="uri">https://github.com/csaybar/rgee/issues</a>
+<a href="https://github.com/r-spatial/rgee/issues" class="uri">https://github.com/r-spatial/rgee/issues</a>
 
 ### Installation problem
 

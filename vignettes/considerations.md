@@ -1,8 +1,5 @@
 `rgee` and the [Earth Engine Python
-API](https://pypi.org/project/earthengine-api/) share the same classes, functions
-and methods. Therefore is expected that works identical for all user requests. 
-However, different in the language design of R and Python causes **three** 
-particular cases. Each of these are explained in-depth below.
+API](https://pypi.org/project/earthengine-api/) share the same classes, functions, and methods. Therefore, is expected that works identical to all user requests. However, differences in the language design of R and Python might cause **three** bug-potential scenarios. Each of them are explained in-depth below.
 
 ### 1) The **map** message error:
 

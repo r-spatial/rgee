@@ -9,14 +9,14 @@ Authors@R:
              comment = c(ORCID = "0000-0003-2745-9535")),
       person(given = "Wu",
              family = "Qiusheng",
-	     role = c("ctb"),
-	     email = "giswqs@gmail.com",
-	     comment = c(ORCID = "0000-0001-5437-4073")),
+	           role = c("ctb"),
+	           email = "giswqs@gmail.com",
+	           comment = c(ORCID = "0000-0001-5437-4073")),
       person(given = "Lesly",
              family = "Bautista",
-	     role = c("ctb"),
-	     email = "leslyarcelly.213@gmail.com",
-	     comment = c(ORCID = "0000-0003-3523-8687")),
+	           role = c("ctb"),
+	           email = "leslyarcelly.213@gmail.com",
+	           comment = c(ORCID = "0000-0003-3523-8687")),
       person(given = "Roy",
              family = "Yali",
              role = c("ctb"),
@@ -72,7 +72,7 @@ Suggests:
     knitr,
     rmarkdown,
     png
-URL: https://github.com/csaybar/rgee
-BugReports: https://github.com/csaybar/rgee/issues
+URL: https://github.com/r-spatial/rgee
+BugReports: https://github.com/r-spatial/rgee/issues
 VignetteBuilder: knitr
 Language: en-US

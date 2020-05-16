@@ -6,11 +6,11 @@ First of all, thanks for considering contributing to rgee! 👍 It's people like
 
 rgee is an open source project, maintained by people who care. We are not directly funded to do so.
 
-[repo]: https://github.com/csaybar/rrgee
-[issues]: https://github.com/csaybar/rgee/issues
-[new_issue]: https://github.com/csaybar/rgee/issues/new
-[website]: https://csaybar.github.io/rgee
-[citation]: https://csaybar.github.io/rgee/authors.html
+[repo]: https://github.com/r-spatial/rgee
+[issues]: https://github.com/r-spatial/rgee/issues
+[new_issue]: https://github.com/r-spatial/rgee/issues/new
+[website]: https://r-spatial.github.io/rgee
+[citation]: https://r-spatial.github.io/rgee/authors.html
 [email]: csaybar@gmail.com
 
 ## Code of conduct

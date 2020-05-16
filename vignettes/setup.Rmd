@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-`rgee` has two types of dependencies: **the strict one and the referred with I/O** . The <span
+`rgee` has two types of dependencies: **the strict ones and the related with I/O** . The <span
 style="color:#b52b09">**strict dependencies**</span> must be
 satisfied before the `rgee` installation. If this is not fulfilled
 **rgee just will not work**. The dependencies that comprised this group
