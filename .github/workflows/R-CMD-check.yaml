@@ -19,10 +19,11 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: '3.6', platform: windows-x86_64}
+          - {os: windows-latest, r: 'devel', platform: windows-x86_64}
           - {os: macOS-latest, r: '3.6', platform: osx-x86_64-clang}
-          - {os: ubuntu-latest, r: '3.5', platform: linux-x86_64-ubuntu-gcc}
+          - {os: macOS-latest, r: 'devel', platform: osx-x86_64-clang}
           - {os: ubuntu-latest, r: '3.6', platform: linux-x86_64-ubuntu-gcc}
-          - {os: ubuntu-latest, r: '4.0', platform: linux-x86_64-ubuntu-gcc}
+          - {os: ubuntu-latest, r: 'devel', platform: linux-x86_64-ubuntu-gcc}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
