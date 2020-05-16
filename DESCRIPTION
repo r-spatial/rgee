@@ -44,7 +44,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.3.0)
 Imports:
     methods,
     reticulate (>= 1.15),
@@ -76,7 +76,9 @@ URL: https://github.com/r-spatial/rgee
 BugReports: https://github.com/r-spatial/rgee/issues
 VignetteBuilder: knitr
 Language: en-US
-NA
-NA
-NA
-      list(package = "earthengine-api", version = "0.1.221", pip = TRUE),
+Config/reticulate:
+  list(
+    packages = list(
+      list(package = "earthengine-api", pip = TRUE),
+    ) 
+  )

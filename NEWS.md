@@ -17,7 +17,7 @@ vignette: >
 - `rgee` group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, 
 `ee_install_earthengine_upgrade`, `ee_install_python_packages`, `ee_install_set_pyenv` into 
 the  ee_install_* module.
-- Fixed an issue in `ee_install_python_packages` due changes to lastest `reticulate` version (1.1.5)
+- Fixed an issue in `ee_install_python_packages` due changes to latest `reticulate` version (1.1.5)
 - `ee_search_display` function added.
 - Several typos fixed in all the documentation
 - Minor changes in `ee_as_sf` to support ee$FeatureCollections without elements.

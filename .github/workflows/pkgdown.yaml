@@ -30,6 +30,7 @@ jobs:
       - name: INSTALL SYSTEM DEPENDENCIES [MAC0S]
         run: |
           brew install freetype
+          brew install protobuf
 
       - name: Install dependencies
         run: |

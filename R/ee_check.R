@@ -83,9 +83,9 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
     } else {
       ee_message <- sprintf(
         "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s%s%s",
-        "The Earth Engine Python API",
+        "NOTE: The Earth Engine Python API",
         version_ee,
-        "installed correctly in the system but rgee was built ",
+        "installed correctly in the system but rgee was test ",
         "using the version ",
         ee_version(),
         ". To avoid possible issues, we ",
@@ -98,7 +98,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
         " changes. Another option is to use the dev version of rgee: ",
         "\n >>> remotes::install_github('r-spatial/rgee')"
       )
-      warning(ee_message)
+      message(ee_message)
     }
   } else {
     if (isFALSE(quiet)) {
