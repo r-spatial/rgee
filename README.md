@@ -17,11 +17,9 @@ API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the 
 [earthengine-api 0.1.221](https://pypi.org/project/earthengine-api/0.1.221/).
 **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-<p vspace="-10">
-<h4> More than 250+ examples using Google Earth Engine with R are available [here](http://csaybar.github.io/rgee-examples/) </h4>
-</p>
 
-<br>
+
+### More than 250+ examples using Google Earth Engine with R are available [here](http://csaybar.github.io/rgee-examples/)
 
 <a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
 <a href="https://github.com/r-spatial/rgee/blob/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
@@ -413,7 +411,7 @@ citation("rgee")
 
 ## Credits :bow:
 
-First off, we would like to offer an **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
+First off, we would like to offer an *special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**

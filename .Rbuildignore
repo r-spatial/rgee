@@ -13,3 +13,4 @@
 ^vignettes\setup.Rmd
 ^vignettes\faq.Rmd
 ^revdep$
+^inst\tests

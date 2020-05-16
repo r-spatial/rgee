@@ -98,5 +98,5 @@ ee_Initialize()
 \code{reticulate::py_install()}
 }
 \author{
-Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NȺ.
+Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NA.
 }

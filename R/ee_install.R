@@ -267,7 +267,7 @@ ee_install_set_pyenv <- function(py_path,
 #' Install the necessary Python packages to be used in rgee. This function is
 #' a wrapper around `reticulate::py_install()`.
 #'
-#' @author Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NȺ.
+#' @author Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NA.
 #'
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the

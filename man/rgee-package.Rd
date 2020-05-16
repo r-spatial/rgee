@@ -13,8 +13,8 @@ Provides bindings to the Google Earth Engine Python API and set tools for automa
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/csaybar/rgee}
-  \item Report bugs at \url{https://github.com/csaybar/rgee/issues}
+  \item \url{https://github.com/r-spatial/rgee}
+  \item Report bugs at \url{https://github.com/r-spatial/rgee/issues}
 }
 
 }
