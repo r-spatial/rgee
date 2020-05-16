@@ -19,11 +19,11 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: '3.6', platform: windows-x86_64}
-          - {os: windows-latest, r: 'devel', platform: windows-x86_64}
+          - {os: windows-latest, r: 'release', platform: windows-x86_64}
           - {os: macOS-latest, r: '3.6', platform: osx-x86_64-clang}
-          - {os: macOS-latest, r: 'devel', platform: osx-x86_64-clang}
+          - {os: macOS-latest, r: 'release', platform: osx-x86_64-clang}
           - {os: ubuntu-latest, r: '3.6', platform: linux-x86_64-ubuntu-gcc}
-          - {os: ubuntu-latest, r: 'devel', platform: linux-x86_64-ubuntu-gcc}
+          - {os: ubuntu-latest, r: 'release', platform: linux-x86_64-ubuntu-gcc}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -80,7 +80,8 @@ jobs:
           sudo apt update
           sudo add-apt-repository -y ppa:ubuntugis/ubuntugis-unstable
           sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev \
-          libv8-3.14-dev libjq-dev libnetcdf-dev libjson-c-dev libfontconfig1-dev
+          libv8-3.14-dev libjq-dev libnetcdf-dev libjson-c-dev libfontconfig1-dev \
+          libprotobuf-dev protobuf-compiler
 
       - name: INSTALL SYSTEM DEPENDENCIES [macOS]
         if: runner.os == 'macOS'
@@ -90,6 +91,7 @@ jobs:
           brew install udunits
           brew install freetype
           brew install gdal
+          brew install protobuf
           cat <<EOT >> .Renviron
           PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
           PROJ_LIB=/usr/local/opt/proj/share/proj/
@@ -133,7 +135,7 @@ jobs:
       - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran","--no-tests"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: UPLOAD CHECK RESULTS

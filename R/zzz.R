@@ -1,6 +1,7 @@
 .onLoad <- function(libname, pkgname) {
   # use superassignment to update global reference
   ee <<- reticulate::import("ee", delay_load = TRUE)
+  reticulate::configure_environment(pkgname)
 }
 
 .onAttach <- function(libname, pkgname) {

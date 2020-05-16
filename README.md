@@ -1,4 +1,5 @@
 [![R build status](https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/r-spatial/rgee/actions)
+[![updated](https://github.com/r-spatial/rgee/workflows/updated/badge.svg)](https://github.com/r-spatial/rgee/actions)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)

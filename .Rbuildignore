@@ -14,3 +14,4 @@
 ^vignettes\faq.Rmd
 ^revdep$
 ^inst\tests
+^revdep$
