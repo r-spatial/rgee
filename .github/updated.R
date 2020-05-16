@@ -1,3 +1,9 @@
+ee_source_python <- function(oauth_func_path) {
+  module_name <- gsub("\\.py$", "", basename(oauth_func_path))
+  module_path <- dirname(oauth_func_path)
+  import_from_path(module_name, path = module_path, convert = FALSE)
+}
+
 git <- function(..., echo_cmd = TRUE, echo = TRUE, error_on_status = TRUE) {
   processx::run("git", c(...), echo_cmd = echo_cmd, echo = echo,
                 error_on_status = error_on_status)
@@ -49,10 +55,10 @@ with_dir <- function(new, code) {
   force(code)
 }
 
-github_push <- function(dir, commit_message, remote, branch) {
+github_push <- function(dest_dir, commit_message, remote, branch) {
   force(commit_message)
   cli::rule("Commiting updated site", line = 1)
-  with_dir(dir, {
+  with_dir(dest_dir, {
     git("add", "-A", ".")
     git("commit", "--allow-empty", "-m", commit_message)
     cli::rule("Deploying to GitHub Pages", line = 1)
@@ -62,11 +68,11 @@ github_push <- function(dir, commit_message, remote, branch) {
 }
 
 
-updated_ee_version <- function() {
+updated_ee_version <- function(dest_dir) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
+  ee_utils_py <- ee_source_python(oauth_func_path)
   py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
-  file_path <- sprintf("%s/R/ee_version.R",Sys.getenv("GITHUB_WORKSPACE"))
+  file_path <- sprintf("%s/R/ee_version.R",dest_dir)
   message(file_path)
   fileConn <- file(file_path)
   writeLines(
@@ -84,11 +90,11 @@ updated_ee_version <- function() {
   close(fileConn)
 }
 
-updated_ee_README <- function() {
+updated_ee_README <- function(dest_dir) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
+  ee_utils_py <- ee_source_python(oauth_func_path)
   py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
-  file_path <- sprintf("%s/README.md",Sys.getenv("GITHUB_WORKSPACE"))
+  file_path <- sprintf("%s/README.md",dest_dir)
   message(file_path)
   readme = readLines(file_path,-1)
   readme[18] = sprintf(
@@ -101,7 +107,7 @@ updated_ee_README <- function() {
 
 update_rgee <- function(pkg = ".",
                         commit_message = construct_commit_message(pkg),
-                        branch = "testing", remote = "origin") {
+                        branch = "master", remote = "origin") {
   dest_dir <- fs::dir_create(fs::file_temp())
   on.exit(fs::dir_delete(dest_dir))
   git("remote", "set-branches", remote, branch)
@@ -110,16 +116,17 @@ update_rgee <- function(pkg = ".",
   on.exit(github_worktree_remove(dest_dir), add = TRUE)
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils_py <- rgee:::ee_source_python(oauth_func_path)
+  ee_utils_py <- ee_source_python(oauth_func_path)
   py_version <- rgee::ee_utils_py_to_r(ee_utils_py$ee_getversion())
 
   message("rgee version: ", rgee::ee_version())
   message("earthengine-api version: ", py_version)
 
   if (isFALSE(py_version == rgee::ee_version())) {
-    updated_ee_version()
-    updated_ee_README()
+    updated_ee_version(dest_dir)
+    updated_ee_README(dest_dir)
     github_push(dest_dir, commit_message, remote, branch)
+    git("fetch", remote, branch)
     #rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
   }
   invisible(TRUE)
