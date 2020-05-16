@@ -76,3 +76,7 @@ URL: https://github.com/r-spatial/rgee
 BugReports: https://github.com/r-spatial/rgee/issues
 VignetteBuilder: knitr
 Language: en-US
+NA
+NA
+NA
+      list(package = "earthengine-api", version = "0.1.221", pip = TRUE),
