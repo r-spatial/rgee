@@ -5,5 +5,8 @@ articles:
   considerations: considerations.html
   faq: faq.html
   setup: setup.html
-last_built: 2020-05-16T00:18Z
+last_built: 2020-05-16T01:29Z
+urls:
+  reference: http://r-spatial.github.io/rgee/reference
+  article: http://r-spatial.github.io/rgee/articles
 

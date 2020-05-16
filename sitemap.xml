@@ -1,174 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://csaybar.github.io/rgee/index.html</loc>
+    <loc>http://r-spatial.github.io/rgee/index.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/Map.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/Map.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_Initialize.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_as_raster.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_as_raster.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_as_sf.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_as_sf.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_as_stars.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_as_stars.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_as_thumbnail.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_as_thumbnail.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_check-tools.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_check-tools.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_clean_container.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_clean_container.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_clean_credentials.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_clean_credentials.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_clean_pyenv.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_clean_pyenv.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_drive_to_local.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_drive_to_local.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_extract.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_extract.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_gcs_to_local.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_gcs_to_local.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_assethome.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_get_assethome.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_date_ic.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_get_date_ic.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_date_img.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_get_date_img.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_help.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_help.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_info.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_image_info.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_to_asset.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_image_to_asset.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_to_drive.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_image_to_drive.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_image_to_gcs.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_image_to_gcs.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_install_create_pyenv.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_create_pyenv.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_install_discover_pyenvs.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_discover_pyenvs.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_install_earthengine_upgrade.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_earthengine_upgrade.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_install_python_packages.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_python_packages.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_install_set_pyenv.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_manage-tools.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_manage-tools.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_monitoring.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_monitoring.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_print.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_print.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_reattach.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_reattach.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_search-tools.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_search-tools.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_table_to_asset.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_table_to_asset.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_table_to_drive.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_table_to_drive.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_table_to_gcs.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_table_to_gcs.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_user_info.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_user_info.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_users.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_users.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_utils_py_to_r.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_py_to_r.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_utils_pyfunc.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_pyfunc.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/ee_version.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_version.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/eedate_to_rdate.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/eedate_to_rdate.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/gcs_to_ee_image.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/gcs_to_ee_image.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/gcs_to_ee_table.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/gcs_to_ee_table.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/local_as_image.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/local_as_image.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/local_to_gcs.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/pipe.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/plus-mapview-mapview-method.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/plus-mapview-mapview-method.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/rdate_to_eedate.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/rdate_to_eedate.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/rgee-package.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/rgee-package.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/sf_as_ee.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/sf_as_ee.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/reference/stars_as_ee.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/articles/considerations.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/considerations.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/articles/faq.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/faq.html</loc>
   </url>
   <url>
-    <loc>http://csaybar.github.io/rgee/articles/setup.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/setup.html</loc>
   </url>
 </urlset>
