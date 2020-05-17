@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Install rgee Python packages dependencies — ee_install_python_packages • rgee</title>
+<title>Install rgee Python packages dependencies (DEPRECATED) — ee_install_python_packages • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,11 @@
 
 
 
-<meta property="og:title" content="Install rgee Python packages dependencies — ee_install_python_packages" />
+<meta property="og:title" content="Install rgee Python packages dependencies (DEPRECATED) — ee_install_python_packages" />
 <meta property="og:description" content="Install the necessary Python packages to be used in rgee. This function is
-a wrapper around reticulate::py_install()." />
+a wrapper around reticulate::py_install(). Due to recent changes in
+reticulate it is no longer necessary. ee_install_python_packages and
+ee_install_earthengine_upgrade will be removed in rgee 0.5.3" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -156,14 +158,16 @@ a wrapper around reticulate::py_install()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Install rgee Python packages dependencies</h1>
+    <h1>Install rgee Python packages dependencies (DEPRECATED)</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
     <div class="hidden name"><code>ee_install_python_packages.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>Install the necessary Python packages to be used in rgee. This function is
-a wrapper around <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>.</p>
+a wrapper around <code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install()</a></code>. Due to recent changes in
+reticulate it is no longer necessary. ee_install_python_packages and
+ee_install_earthengine_upgrade will be removed in rgee 0.5.3</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_python_packages</span>(
