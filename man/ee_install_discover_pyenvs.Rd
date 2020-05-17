@@ -5,11 +5,11 @@
 \title{Discover all the Python environments available
 in the system}
 \usage{
-ee_install_discover_pyenvs(use_py_discover_config = FALSE)
+ee_install_discover_pyenvs(use_py_discover_config = TRUE)
 }
 \arguments{
 \item{use_py_discover_config}{Logical. If TRUE
-will use \code{\link{reticulate}} to find
+will use \link[=reticulate]{py_discover_config} to find
 versions of Python in the system.  Otherwise, will use
 \link[=reticulate]{conda_list} for Window OS and
 \link[=reticulate]{virtualenv_list} for Unix system.}
@@ -23,27 +23,21 @@ of Python will be discovered on a system.
 }
 \examples{
 \dontrun{
-#' library(rgee)
+library(rgee)
 
-### rgee installation
+### rgee setup. It is necessary just once, not mandatory
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python
-# environment, miniconda will be installed by default.
-ee_Initialize()
-
-# 2. Create a Python environment, e.g. ee.
+# 1. Create a Python environment, e.g. ee.
 pyenv <- ee_install_create_pyenv(py_env = "ee")
 
-# Find others Python environments in the system.
-ee_install_discover_pyenvs()
+# OPTIONAL: Find others Python path in the system.
+# ee_install_discover_pyenvs()
 
-# 3. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_install_set_pyenv(pyenv, install = TRUE)
+# 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON) to be used in
+# future sessions
+ee_install_set_pyenv(pyenv)
 
-# 4. Install Python package dependencies and restart R to see changes.
-ee_install_python_packages()
-
-# 5. Initialize rgee again!
+# 3. Now run ee_Initialize()
 ee_Initialize()
 }
 }

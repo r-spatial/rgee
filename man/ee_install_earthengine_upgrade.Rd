@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_earthengine_upgrade}
 \alias{ee_install_earthengine_upgrade}
-\title{Upgrade the Earth Engine Python API}
+\title{Upgrade the Earth Engine Python API (DEPRECATED)}
 \usage{
 ee_install_earthengine_upgrade(
   method = c("auto", "virtualenv", "conda"),
@@ -40,6 +40,9 @@ or \link[=reticulate]{virtualenv_install}.}
 \description{
 Upgrade the Earth Engine Python API (earthengine-api) to the latest
 version. This function is a wrapper around  \code{reticulate::py_install()}.
+Due to recent changes in reticulate it is no longer necessary.
+ee_install_python_packages and  ee_install_earthengine_upgrade will be
+removed in rgee 0.5.3
 }
 \details{
 It is neccessary restart R to observe change when

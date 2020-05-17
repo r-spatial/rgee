@@ -4,7 +4,7 @@
 \name{rgee-package}
 \alias{rgee}
 \alias{rgee-package}
-\title{rgee: R bindings for calling the Earth Engine API}
+\title{rgee: R Bindings for Calling the Earth Engine API}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 

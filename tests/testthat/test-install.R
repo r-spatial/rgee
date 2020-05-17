@@ -2,11 +2,14 @@ context("rgee: ee_install test")
 
 # Pre-checking ------------------------------------------------------
 # Google credentials were loaded in the system?
-skip_if_no_credentials <- function() {
-  ee_path <- path.expand("~/.config/earthengine")
-  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
-  if (isFALSE(file.exists(sessioninfo))) {
-    skip("google credentials were not found")
+skip_if_no_credentials <- function(user) {
+  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
+  credentials <- list.files(
+    path = ee_path,
+    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
+  )
+  if (length(credentials) != 3) {
+    skip("All google credentials were not found")
   }
 }
 
@@ -26,7 +29,7 @@ skip_if_no_pypkg <- function() {
 init_rgee <- function() {
   ee_reattach()
   tryCatch(
-    expr = ee$data$get_persistent_credentials()$client_id,
+    expr = ee$Image()$getInfo(),
     error = function(e) {
       ee_reattach()
       ee_Initialize(
@@ -38,10 +41,10 @@ init_rgee <- function() {
   )
 }
 
-skip_if_no_credentials()
+user <- "data.colec.fbf"
+skip_if_no_credentials(user)
 skip_if_no_pypkg()
 init_rgee()
-
 # -------------------------------------------------------------------------
 
 
@@ -58,20 +61,8 @@ test_that("ee_install_discover_pyenvs",{
 
 test_that("ee_install_set_pyenv",{
   python_envs <- ee_install_discover_pyenvs()
-  fmsg <- ee_install_set_pyenv(
-    py_path = python_envs[1],
-    py_env = 'earthengine_test',
-    install = FALSE,
-    confirm = FALSE)
+  fmsg <- ee_install_set_pyenv(py_path = python_envs[3])
   expect_true(fmsg)
 })
 
-# test_that("ee_install_rgee_python_packages",{
-#   fmsg <- ee_install_python_packages()
-#   expect_true(fmsg)
-# })
-#
-# test_that("ee_install_earthengine_upgrade",{
-#   fmsg <- ee_install_earthengine_upgrade()
-#   expect_true(fmsg)
-# })
+

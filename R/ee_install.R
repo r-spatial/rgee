@@ -4,27 +4,21 @@
 #' @return Character. The path of the virtual environment created.
 #' @examples
 #' \dontrun{
-#' #' library(rgee)
+#' library(rgee)
 #'
-#' ### rgee installation
+#' ## It is necessary just once, not mandatory
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
-#' # environment, miniconda will be installed by default.
-#' ee_Initialize()
-#'
-#' # 2. Create a Python environment, e.g. ee.
+#' # 1. Create a Python environment, e.g. ee.
 #' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
-#' # Find others Python environments in the system.
+#' # OPTIONAL: Find others Python path in the system.
 #' # ee_install_discover_pyenvs()
 #'
-#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
-#' ee_install_set_pyenv(pyenv, install = TRUE)
+#' # 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
+#' # to be used in future sessions
+#' ee_install_set_pyenv(pyenv)
 #'
-#' # 4. Install Python package dependencies and restart R to see changes.
-#' ee_install_python_packages()
-#'
-#' # 5. Initialize rgee again!
+#' # 3. Now run ee_Initialize()
 #' ee_Initialize()
 #' }
 #' @export
@@ -48,7 +42,7 @@ ee_install_create_pyenv <- function(py_env = "rgee") {
 #' of Python will be discovered on a system.
 #'
 #' @param use_py_discover_config Logical. If TRUE
-#' will use \code{\link{reticulate}} to find
+#' will use \link[=reticulate]{py_discover_config} to find
 #' versions of Python in the system.  Otherwise, will use
 #' \link[=reticulate]{conda_list} for Window OS and
 #' \link[=reticulate]{virtualenv_list} for Unix system.
@@ -56,33 +50,28 @@ ee_install_create_pyenv <- function(py_env = "rgee") {
 #' @return Python configuration object (reticulate).
 #' @examples
 #' \dontrun{
-#' #' library(rgee)
+#' library(rgee)
 #'
-#' ### rgee installation
+#' ## It is necessary just once, not mandatory
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
-#' # environment, miniconda will be installed by default.
-#' ee_Initialize()
-#'
-#' # 2. Create a Python environment, e.g. ee.
+#' # 1. Create a Python environment, e.g. ee.
 #' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
-#' # Find others Python environments in the system.
-#' ee_install_discover_pyenvs()
+#' # OPTIONAL: Find others Python path in the system.
+#' # ee_install_discover_pyenvs()
 #'
-#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
-#' ee_install_set_pyenv(pyenv, install = TRUE)
+#' # 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
+#' # to be used in future sessions
+#' ee_install_set_pyenv(pyenv)
 #'
-#' # 4. Install Python package dependencies and restart R to see changes.
-#' ee_install_python_packages()
-#'
-#' # 5. Initialize rgee again!
+#' # 3. Now run ee_Initialize()
 #' ee_Initialize()
 #' }
 #' @export
-ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
+ee_install_discover_pyenvs <- function(use_py_discover_config = TRUE) {
   if (is_windows()) {
     if (isTRUE(use_py_discover_config)) {
+      print(py_discover_config())
       ret_info <- py_discover_config()
       if (!is.null(ret_info$forced)) {
         cat(
@@ -93,12 +82,13 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
           "\n"
         )
       }
-      return(ret_info$python_versions)
+      invisible(ret_info$python_versions)
     } else {
-      return(conda_list()$python)
+      conda_list()$python
     }
   } else {
     if (isTRUE(use_py_discover_config)) {
+      print(py_discover_config())
       ret_info <- py_discover_config()
       if (!is.null(ret_info$forced)) {
         cat(
@@ -109,10 +99,9 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
           "\n"
         )
       }
-      return(ret_info$python_versions)
+      invisible(ret_info$python_versions)
     } else {
-      ret_info <- ee_virtualenv_list()
-      return(ret_info)
+      ee_virtualenv_list()
     }
   }
 }
@@ -120,152 +109,71 @@ ee_install_discover_pyenvs <- function(use_py_discover_config = FALSE) {
 #' Set the Python environment to be used on rgee
 #'
 #' @param py_path The path to a Python interpreter, to be used with rgee.
-#' @param py_env The name of, or path to, a Python virtual environment. If
-#' not defined will estimate from the path.
-#' @param automatic_pyenv Logical. Search automatically in the py_path the
-#' py_env. Ignore when the \code{py_env} argument is not NULL. By
-#' default TRUE.
-#' @param install if TRUE, rgee will save the Python interpreter path and
-#' the virtual environment name in the \code{.Renviron} file
-#' for use in future sessions. Defaults to FALSE.
-#' @param confirm Logical. Confirm if restart R when the 'install'
-#' argument is TRUE.
 #'
-#' @importFrom utils menu
-#' @details It is necessary to restart R to observe change when setting a
-#' different Python version. ee_install_set_pyenv will ask you to restart R.
 #' @examples
 #' \dontrun{
-#' #' library(rgee)
+#' library(rgee)
 #'
-#' ### rgee installation
+#' ## It is necessary just once, not mandatory
 #'
-#' # 1. Initialize rgee with ee_Initialize(). If there is no any Python
-#' # environment, miniconda will be installed by default.
-#' ee_Initialize()
-#'
-#' # 2. Create a Python environment, e.g. ee.
+#' # 1. Create a Python environment, e.g. ee.
 #' pyenv <- ee_install_create_pyenv(py_env = "ee")
 #'
-#' # Find others Python environments in the system.
-#' ee_install_discover_pyenvs()
+#' # OPTIONAL: Find others Python path in the system.
+#' # ee_install_discover_pyenvs()
 #'
-#' # 3. Set a Python environment (e.g. ee) and restart R to see changes.
-#' ee_install_set_pyenv(pyenv, install = TRUE)
+#' # 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
+#' # to be used in future sessions
+#' ee_install_set_pyenv(pyenv)
 #'
-#' # 4. Install Python package dependencies and restart R to see changes.
-#' ee_install_python_packages()
-#'
-#' # 5. Initialize rgee again!
+#' # 3. Now run ee_Initialize()
 #' ee_Initialize()
 #' }
 #' @export
-ee_install_set_pyenv <- function(py_path,
-                         py_env = NULL,
-                         automatic_pyenv = TRUE,
-                         install = FALSE,
-                         confirm = interactive()) {
+ee_install_set_pyenv <- function(py_path) {
   ee_clean_pyenv()
   # Trying to get the env from the py_path
-  if (is.null(py_env) & automatic_pyenv) {
-    if (grepl("\\.virtualenvs/", py_path)) {
-      py_env <- gsub(".*\\.virtualenvs\\/(.*)", "\\1", py_path) %>%
-        strsplit("/") %>%
-        "[["(1) %>%
-        "["(1)
-    } else if (grepl("\\.conda.envs", py_path)) {
-      py_path <- normalizePath(py_path, "/")
-      py_env <- gsub(".*\\.conda\\/envs\\/(.*)", "\\1", py_path) %>%
-        strsplit("/") %>%
-        "[["(1) %>%
-        "["(1)
-    } else if (grepl("r-miniconda.envs", py_path)) {
-      py_path <- normalizePath(py_path, "/")
-      py_env <- gsub(".*\\/r-miniconda\\/envs\\/(.*)", "\\1", py_path) %>%
-        strsplit("/") %>%
-        "[["(1) %>%
-        "["(1)
-    }
-    if (is.null(py_env)) {
-      message("py_env is NULL, RETICULATE_PYTHON_ENV will not be created.")
-    } else {
-      message(
-        "Establishing the python virtual environment (py_env) as ",
-        py_env, "."
-      )
-    }
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+
+  if (file.exists(renv)) {
+    # Backup original .Renviron before doing anything else here.
+    file.copy(renv, file.path(home, ".Renviron_backup"))
   }
 
-
-  if (isTRUE(install)) {
-    home <- Sys.getenv("HOME")
-    renv <- file.path(home, ".Renviron")
-
-    if (file.exists(renv)) {
-      # Backup original .Renviron before doing anything else here.
-      file.copy(renv, file.path(home, ".Renviron_backup"))
-    }
-
-    if (!file.exists(renv)) {
-      file.create(renv)
-    }
-
-    con  <- file(renv, open = "r+")
-    lines <- as.character()
-    ii <- 1
-
-    while (TRUE) {
-      line <- readLines(con, n = 1, warn = FALSE)
-      if (length(line) == 0) {
-        break()
-      }
-      lines[ii] <- line
-      ii <- ii + 1
-    }
-
-    # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
-    ret_python <- sprintf('RETICULATE_PYTHON="%s"', py_path)
-    if (is.null(py_env)) {
-      system_vars <- c(lines, ret_python)
-    } else {
-      ret_python_env <- sprintf('RETICULATE_PYTHON_ENV="%s"',py_env)
-      system_vars <- c(lines, ret_python, ret_python_env)
-    }
-    writeLines(system_vars, con)
-    close(con)
-
-    # restartSession does not work properly
-    # if (restart_session && hasFun("restartSession")) {
-    #   restartSession()
-    # }
-    if (isTRUE(confirm)) {
-      title <- paste0(
-        "rgee needs to restart R session to see changes.\n",
-        "Do you want to continues?"
-      )
-      response <- menu(c("yes", "no"), title = title)
-    } else {
-      response <- confirm
-    }
-    switch(response + 1,
-           cat("Restart R session to see changes.\n"),
-           quit("no"))
-  } else {
-    message("To install this Python environment for use ",
-            "in future sessions, run this function",
-            " with `install = TRUE`.")
-    Sys.setenv(RETICULATE_PYTHON = py_path)
-    if (!is.null(py_env)) {
-      Sys.setenv(RETICULATE_PYTHON_ENV = py_env)
-    }
+  if (!file.exists(renv)) {
+    file.create(renv)
   }
+
+  con  <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+
+  # Set EARTHENGINE_PYTHON in .Renviron
+  ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
+  system_vars <- c(lines, ret_python)
+
+  writeLines(system_vars, con)
+  close(con)
   invisible(TRUE)
 }
 
-#' Install rgee Python packages dependencies
+
+#' Install rgee Python packages dependencies (DEPRECATED)
 #'
 #' Install the necessary Python packages to be used in rgee. This function is
-#' a wrapper around `reticulate::py_install()`.
+#' a wrapper around `reticulate::py_install()`. Due to recent changes in
+#' reticulate it is no longer necessary. ee_install_python_packages and
+#' ee_install_earthengine_upgrade will be removed in rgee 0.5.3
 #'
 #' @author Kevin Ushey,  J.J. Allaire, Daniel Falbel, Jan Tilly, Marlin NA.
 #'
@@ -347,6 +255,13 @@ ee_install_python_packages <- function(method = c(
                                        pip = FALSE,
                                        confirm = interactive(),
                                        ...) {
+  .Deprecated(
+    msg = paste0(
+      "Due to recent changes in reticulate it is no longer necessary.",
+      " ee_install_python_packages and  ee_install_earthengine_upgrade",
+      " will be removed in rgee 0.5.3"
+    ),
+  )
   rgee_packages <- c("pyasn1", "oauth2client", "numpy")
   # verify 64-bit
   if (.Machine$sizeof.pointer != 8) {
@@ -400,10 +315,13 @@ ee_install_python_packages <- function(method = c(
   invisible(TRUE)
 }
 
-#' Upgrade the Earth Engine Python API
+#' Upgrade the Earth Engine Python API (DEPRECATED)
 #'
 #' Upgrade the Earth Engine Python API (earthengine-api) to the latest
 #' version. This function is a wrapper around  `reticulate::py_install()`.
+#' Due to recent changes in reticulate it is no longer necessary.
+#' ee_install_python_packages and  ee_install_earthengine_upgrade will be
+#' removed in rgee 0.5.3
 #'
 #' @param method Installation method. By default, "auto" automatically
 #' finds a method that will work in the local environment. Change the
@@ -447,6 +365,13 @@ ee_install_earthengine_upgrade <- function(method = c(
                                            python_version = NULL,
                                            confirm = interactive(),
                                            ...) {
+  .Deprecated(
+    msg = paste0(
+      "Due to recent changes in reticulate it is no longer necessary.",
+      " ee_install_python_packages and  ee_install_earthengine_upgrade",
+      " will be removed in rgee 0.5.3"
+    ),
+  )
   ee_version <- "earthengine-api"
   py_install(
     packages = ee_version,

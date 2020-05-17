@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - dev
   pull_request:
     branches:
-      - master
+      - dev
 
 name: test-coverage
 
@@ -117,5 +117,5 @@ jobs:
           path: check
 
       - name: Test coverage
-        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}", path = "tests", clean = FALSE)
+        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}", path = "tests", clean = TRUE, quiet = FALSE)
         shell: Rscript {0}

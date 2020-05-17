@@ -1,5 +1,5 @@
 Package: rgee
-Title: R bindings for calling the Earth Engine API
+Title: R Bindings for Calling the Earth Engine API
 Version: 0.5.0
 Authors@R: 
     c(person(given = "Cesar",
@@ -48,12 +48,12 @@ Depends:
 Imports:
     methods,
     reticulate (>= 1.15),
-    sf,
-    stars,
     leaflet (>= 2.0.2),
     mapview,
-    magrittr,
     geojsonio,
+    sf,
+    stars,
+    magrittr,
     getPass,
     crayon,
     cli
@@ -79,6 +79,6 @@ Language: en-US
 Config/reticulate:
   list(
     packages = list(
-      list(package = "earthengine-api", pip = TRUE),
+      list(package = "earthengine-api", pip = TRUE)
     ) 
   )

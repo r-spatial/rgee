@@ -2,14 +2,16 @@
 library(rgee)
 library(raster)
 
-
 # Pre-checking ------------------------------------------------------
 # Google credentials were loaded in the system?
-skip_if_no_credentials <- function() {
-  ee_path <- path.expand("~/.config/earthengine")
-  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
-  if (isFALSE(file.exists(sessioninfo))) {
-    skip("google credentials were not found")
+skip_if_no_credentials <- function(user) {
+  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
+  credentials <- list.files(
+    path = ee_path,
+    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
+  )
+  if (length(credentials) != 3) {
+    skip("All google credentials were not found")
   }
 }
 
@@ -29,7 +31,7 @@ skip_if_no_pypkg <- function() {
 init_rgee <- function() {
   ee_reattach()
   tryCatch(
-    expr = ee$data$get_persistent_credentials()$client_id,
+    expr = ee$Image()$getInfo(),
     error = function(e) {
       ee_reattach()
       ee_Initialize(
@@ -41,10 +43,10 @@ init_rgee <- function() {
   )
 }
 
-skip_if_no_credentials()
+user <- "data.colec.fbf"
+skip_if_no_credentials(user)
 skip_if_no_pypkg()
 init_rgee()
-
 # -------------------------------------------------------------------------
 
 

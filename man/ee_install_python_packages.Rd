@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_python_packages}
 \alias{ee_install_python_packages}
-\title{Install rgee Python packages dependencies}
+\title{Install rgee Python packages dependencies (DEPRECATED)}
 \usage{
 ee_install_python_packages(
   method = c("auto", "virtualenv", "conda"),
@@ -44,7 +44,9 @@ or \link[=reticulate]{virtualenv_install}.}
 }
 \description{
 Install the necessary Python packages to be used in rgee. This function is
-a wrapper around \code{reticulate::py_install()}.
+a wrapper around \code{reticulate::py_install()}. Due to recent changes in
+reticulate it is no longer necessary. ee_install_python_packages and
+ee_install_earthengine_upgrade will be removed in rgee 0.5.3
 }
 \details{
 It is neccessary restart R to observe change when

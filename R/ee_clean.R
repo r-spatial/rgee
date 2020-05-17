@@ -74,9 +74,8 @@ ee_clean_pyenv <- function() {
     }
     close(con)
 
-    # Remove system variables
-    # RETICULATE_PYTHON & RETICULATE_PYTHON_ENV
-    system_vars <- lines[!grepl("RETICULATE_PYTHON", lines)]
+    # Remove system variables EARTHENGINE_PYTHON
+    system_vars <- lines[!grepl("EARTHENGINE_PYTHON", lines)]
     fileConn <- file(renv)
     writeLines(system_vars, fileConn)
     close(fileConn)

@@ -148,11 +148,11 @@ update_rgee <- function(pkg = ".",
   message("earthengine-api version: ", py_version)
 
   if (isFALSE(py_version == rgee::ee_version())) {
-    updated_ee_version(dest_dir)
-    updated_ee_README(dest_dir)
+    # updated_ee_version(dest_dir)
+    # updated_ee_README(dest_dir)
     # updated_ee_DESCRIPTION(dest_dir)
-    github_push(dest_dir, commit_message, remote, branch)
-    git("fetch", remote, branch)
+    # github_push(dest_dir, commit_message, remote, branch)
+    # git("fetch", remote, branch)
     rcmdcheck::rcmdcheck(
       args = c("--no-manual", "--as-cran"),
       error_on = "warning",

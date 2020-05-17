@@ -29,10 +29,10 @@
 #' are suitable for large collections since they use an intermediate web store
 #' service. Before to use any of this options, it is necessary previously
 #' install the R packages
-#' \href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
-#' and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+#' \href{https://cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+#' and \href{https://cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
 #' googleCloudStorageR}. For getting more information about exporting data take
-#' a look at the \href{developers.google.com/earth-engine/exporting}{Google
+#' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
 #' @export
@@ -149,10 +149,10 @@ ee_as_stars <- function(image,
 #' are suitable for large collections since they use an intermediate web store
 #' service. Before to use any of this options, it is necessary previously
 #' install the R packages
-#' \href{cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
-#' and \href{cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+#' \href{https://cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
+#' and \href{https://cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
 #' googleCloudStorageR}. For getting more information about exporting data take
-#' a look at the \href{developers.google.com/earth-engine/exporting}{Google
+#' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
 #' @examples
