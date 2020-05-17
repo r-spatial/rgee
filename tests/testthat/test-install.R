@@ -61,20 +61,8 @@ test_that("ee_install_discover_pyenvs",{
 
 test_that("ee_install_set_pyenv",{
   python_envs <- ee_install_discover_pyenvs()
-  fmsg <- ee_install_set_pyenv(
-    py_path = python_envs[1],
-    py_env = 'earthengine_test',
-    install = FALSE,
-    confirm = FALSE)
+  fmsg <- ee_install_set_pyenv(py_path = python_envs[3])
   expect_true(fmsg)
 })
 
-# test_that("ee_install_rgee_python_packages",{
-#   fmsg <- ee_install_python_packages()
-#   expect_true(fmsg)
-# })
-#
-# test_that("ee_install_earthengine_upgrade",{
-#   fmsg <- ee_install_earthengine_upgrade()
-#   expect_true(fmsg)
-# })
+

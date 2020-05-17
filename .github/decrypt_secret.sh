@@ -13,5 +13,3 @@ gpg --quiet --batch --yes --decrypt --passphrase="$RGEE_SECRET_PASSPHRASE" \
 
 gpg --quiet --batch --yes --decrypt --passphrase="$RGEE_SECRET_PASSPHRASE" \
 --output $HOME/.config/earthengine/data.colec.fbf/credentials ./tests/credentials/credentials.gpg
-
-echo "NA, NA, NA" > $HOME/.config/earthengine/rgee_sessioninfo.txt 

@@ -4,61 +4,31 @@
 \alias{ee_install_set_pyenv}
 \title{Set the Python environment to be used on rgee}
 \usage{
-ee_install_set_pyenv(
-  py_path,
-  py_env = NULL,
-  automatic_pyenv = TRUE,
-  install = FALSE,
-  confirm = interactive()
-)
+ee_install_set_pyenv(py_path)
 }
 \arguments{
 \item{py_path}{The path to a Python interpreter, to be used with rgee.}
-
-\item{py_env}{The name of, or path to, a Python virtual environment. If
-not defined will estimate from the path.}
-
-\item{automatic_pyenv}{Logical. Search automatically in the py_path the
-py_env. Ignore when the \code{py_env} argument is not NULL. By
-default TRUE.}
-
-\item{install}{if TRUE, rgee will save the Python interpreter path and
-the virtual environment name in the \code{.Renviron} file
-for use in future sessions. Defaults to FALSE.}
-
-\item{confirm}{Logical. Confirm if restart R when the 'install'
-argument is TRUE.}
 }
 \description{
 Set the Python environment to be used on rgee
 }
-\details{
-It is necessary to restart R to observe change when setting a
-different Python version. ee_install_set_pyenv will ask you to restart R.
-}
 \examples{
 \dontrun{
-#' library(rgee)
+library(rgee)
 
-### rgee installation
+### rgee setup. It is necessary just once, not mandatory
 
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python
-# environment, miniconda will be installed by default.
-ee_Initialize()
-
-# 2. Create a Python environment, e.g. ee.
+# 1. Create a Python environment, e.g. ee.
 pyenv <- ee_install_create_pyenv(py_env = "ee")
 
-# Find others Python environments in the system.
-ee_install_discover_pyenvs()
+# OPTIONAL: Find others Python path in the system.
+# ee_install_discover_pyenvs()
 
-# 3. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_install_set_pyenv(pyenv, install = TRUE)
+# 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON) to be used in
+# future sessions
+ee_install_set_pyenv(pyenv)
 
-# 4. Install Python package dependencies and restart R to see changes.
-ee_install_python_packages()
-
-# 5. Initialize rgee again!
+# 3. Now run ee_Initialize()
 ee_Initialize()
 }
 }

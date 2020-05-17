@@ -98,7 +98,7 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("r-spatial/rgee")
 ```
 
-**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, it is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
+**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
 
 #### Docker image
     
@@ -109,40 +109,35 @@ After that, in your preferred browser, run:
 
     127.0.0.1:8787
 
-## Requirements
+## Recommended setup
 
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with an installation module (ee_install_*) which helps you to deal with the external dependencies of `rgee`:
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in your system. `rgee` counts with an installation module (ee_install_*) which helps to setup `rgee` (not mandatory):
 
 ```r
-library(rgee)
-
-# 1. Initialize rgee with ee_Initialize(). If there is no any Python environment, miniconda
-# will be installed by default.
-ee_Initialize()
-
-# 2. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(py_env = "ee")
-
-# Find others Python environments in the system.
-# ee_install_discover_pyenvs()
-
-# 3. Set a Python environment (e.g. ee) and restart R to see changes.
-ee_install_set_pyenv(pyenv, install = TRUE)
-
-# 4. Install Python package dependencies and restart R to see changes.
-ee_install_python_packages()
-
-# 5. Initialize rgee again!
-ee_Initialize()
+#' library(rgee)
+#'
+#' ## It is necessary just once, not mandatory
+#'
+#' # 1. Create a Python environment, e.g. ee.
+#' pyenv <- ee_install_create_pyenv(py_env = "ee")
+#'
+#' # OPTIONAL: Find others Python path in the system.
+#' # ee_install_discover_pyenvs()
+#'
+#' # 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
+#' # to be used in future sessions
+#' ee_install_set_pyenv(pyenv)
+#'
+#' # 3. Now run ee_Initialize()
+#' ee_Initialize()
 ```
 
-Additionally, you might use the functions below for checking the status of rgee, delete credentials, and install (or upgrade) Python packages.
+Additionally, you might use the functions below for checking the status of rgee and delete credentials.
 
 ```r
 ee_check() # Check non-R dependencies
 ee_clean_credentials() # Remove credentials of a specific user
 ee_clean_pyenv() # Remove reticulate system variables
-ee_install_earthengine_upgrade() # it's a wrapper around py_install("earthengine-api")
 ```
 
 Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
@@ -412,7 +407,7 @@ citation("rgee")
 
 ## Credits :bow:
 
-First off, we would like to offer an *special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
+First off, we would like to offer an *spe*cial thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
   - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
   - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**

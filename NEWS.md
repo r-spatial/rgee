@@ -14,10 +14,11 @@ vignette: >
 # rgee 0.5.0
 - **Initial CRAN release**
 - GitHub actions supports Windows, Linux and MacOS
-- `rgee` group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, 
-`ee_install_earthengine_upgrade`, `ee_install_python_packages`, `ee_install_set_pyenv` into 
+- `rgee` new group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, `ee_install_set_pyenv` into 
 the  ee_install_* module.
-- Fixed an issue in `ee_install_python_packages` due changes to latest `reticulate` version (1.1.5)
+- Due the changes in latest `reticulate` version (1.1.5), the functions `ee_install_earthengine_upgrade` and `ee_install_python_packages` were deprecated and both will remove in rgee 0.5.3.
+- Config/reticulate added to DESCRIPTION file
+- .onLoad IMPORTANT CHANGES: Now `rgee` set EARTHENGINE_PYTHON instead of RETICULATE_PYTHON directly and RETICULATE_PYTHON_ENV is no longer required. This change will permit users to avoid problems with other R packages that use Python in the backend (such as tensorflow or keras).
 - `ee_search_display` function added.
 - Several typos fixed in all the documentation
 - Minor changes in `ee_as_sf` to support ee$FeatureCollections without elements.
