@@ -186,23 +186,23 @@ R
 <div id="recommended-setup" class="section level2">
 <h2 class="hasAnchor">
 <a href="#recommended-setup" class="anchor"></a>Recommended setup</h2>
-<p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in your system. <code>rgee</code> counts with an installation module (ee_install_*) which helps to setup <code>rgee</code> (not mandatory):</p>
-<div class="sourceCode" id="cb7"><pre class="r">#' library(rgee)
-#'
-#' ## It is necessary just once, not mandatory
-#'
-#' # 1. Create a Python environment, e.g. ee.
-#' pyenv &lt;- ee_install_create_pyenv(py_env = "ee")
-#'
-#' # OPTIONAL: Find others Python path in the system.
-#' # ee_install_discover_pyenvs()
-#'
-#' # 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
-#' # to be used in future sessions
-#' ee_install_set_pyenv(pyenv)
-#'
-#' # 3. Now run ee_Initialize()
-#' ee_Initialize()</pre></div>
+<p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in their system. <code>rgee</code> counts with an installation module (ee_install_*) which helps to setup <code>rgee</code> (not mandatory):</p>
+<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
+
+<span class="co">## It is necessary just once, not mandatory</span>
+
+<span class="co"># 1. Create a Python environment, e.g. ee.</span>
+<span class="no">pyenv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_install_create_pyenv.html">ee_install_create_pyenv</a></span>(<span class="kw">py_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
+
+<span class="co"># OPTIONAL: Find others Python path in the system.</span>
+<span class="co"># ee_install_discover_pyenvs()</span>
+
+<span class="co"># 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)</span>
+<span class="co">#    to be used in future sessions</span>
+<span class="fu"><a href="reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span>(<span class="no">pyenv</span>)
+
+<span class="co"># 3. Now run ee_Initialize()!</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></div>
 <p>Additionally, you might use the functions below for checking the status of rgee and delete credentials.</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/ee_check-tools.html">ee_check</a></span>() <span class="co"># Check non-R dependencies</span>
 <span class="fu"><a href="reference/ee_clean_credentials.html">ee_clean_credentials</a></span>() <span class="co"># Remove credentials of a specific user</span>
@@ -382,7 +382,7 @@ R
 <h2 class="hasAnchor">
 <a href="#credits-" class="anchor"></a>Credits <span class="emoji" data-emoji="bow">🙇</span>
 </h2>
-<p>First off, we would like to offer an <em>spe</em>cial thanks** <span class="emoji" data-emoji="raised_hands">🙌</span> <span class="emoji" data-emoji="clap">👏</span> to <a href="https://github.com/jdbcode"><strong>Justin Braaten</strong></a> for his wise and helpful comments in the whole development of <strong>rgee</strong>. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:</p>
+<p>First off, we would like to offer an <strong>special thanks</strong> <span class="emoji" data-emoji="raised_hands">🙌</span> <span class="emoji" data-emoji="clap">👏</span> to <a href="https://github.com/jdbcode"><strong>Justin Braaten</strong></a> for his wise and helpful comments in the whole development of <strong>rgee</strong>. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:</p>
 <ul>
 <li><strong><a href="https://github.com/tracek/gee_asset_manager">gee_asset_manager - Lukasz Tracewski</a></strong></li>
 <li><strong><a href="https://github.com/samapriya/geeup">geeup - Samapriya Roy</a></strong></li>
