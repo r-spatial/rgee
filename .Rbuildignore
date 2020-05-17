@@ -1,8 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.md
-^CODE_OF_CONDUCT.md
 ^CONTRIBUTING.md
+^CODE_OF_CONDUCT.md
 ^LICENSE.md
 ^\.github$
 ^codecov\.yml$

@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - dev
   pull_request:
     branches:
-      - master
+      - dev
 
 name: R-CMD-check
 
@@ -65,12 +65,6 @@ jobs:
           writeLines(sprintf('RETICULATE_PYTHON="%s"', pyPATH), fileConn)
           close(fileConn)
         shell: Rscript {0}
-
-      - name: DECRYPT rgee SECRETS
-        run: ./.github/decrypt_secret.sh
-        env:
-          RGEE_SECRET_PASSPHRASE: ${{ secrets.RGEE_SECRET_PASSPHRASE }}
-
 
       - name: INSTALL SYSTEM DEPENDENCIES [LINUX]
         if: runner.os == 'Linux'
