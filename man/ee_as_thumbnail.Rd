@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_as_thumbnail.R
 \name{ee_as_thumbnail}
 \alias{ee_as_thumbnail}
-\title{Create a stars object based on an EE thumbnail image}
+\title{Create an R spatial gridded object from an EE thumbnail image}
 \usage{
 ee_as_thumbnail(
   image,
@@ -29,7 +29,7 @@ proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
 See details.}
 
 \item{raster}{Logical. Should the thumbnail image be saved as a
-raster object?}
+RasterStack object?}
 
 \item{quiet}{logical; suppress info messages.}
 }
@@ -37,9 +37,9 @@ raster object?}
 An stars or Raster object depending on the \code{raster} argument.
 }
 \description{
-Wrapper function to create a stars object with projection from a
-\href{developers.google.com/earth-engine/image_visualization#thumbnail-images
-}{EE thumbnail image}.
+Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
+RasterLayer R object from a
+\href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images}{EE thumbnail image}.
 }
 \details{
 \code{vizparams} set up the details of the thumbnail image. With

@@ -58,8 +58,8 @@ for large images. Instead of "getInfo", the options: "drive" and "gcs"
 are suitable for large collections since they use an intermediate web store
 service. Before to use any of this options, it is necessary previously
 install the R packages
-\href{https://cran.r-project.org/web/packages/googledrive/index.html}{googledrive}
-and \href{https://cran.r-project.org/web/packages/googleCloudStorageR/index.html}{
+\href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 googleCloudStorageR}. For getting more information about exporting data take
 a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.

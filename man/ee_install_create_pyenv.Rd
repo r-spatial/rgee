@@ -19,7 +19,7 @@ Create an isolated Python virtual environment to be used in rgee
 \dontrun{
 library(rgee)
 
-### rgee setup. It is necessary just once, not mandatory
+## It is necessary just once, not mandatory
 
 # 1. Create a Python environment, e.g. ee.
 pyenv <- ee_install_create_pyenv(py_env = "ee")
@@ -27,8 +27,8 @@ pyenv <- ee_install_create_pyenv(py_env = "ee")
 # OPTIONAL: Find others Python path in the system.
 # ee_install_discover_pyenvs()
 
-# 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON) to be used in
-# future sessions
+# 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
+# to be used in future sessions
 ee_install_set_pyenv(pyenv)
 
 # 3. Now run ee_Initialize()

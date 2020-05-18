@@ -12,7 +12,7 @@ ee_getLayerControlEntriesFromMap <- function(map) {
        useBytes = TRUE)
 }
 
-#' @author \href{https://github.com/tim-salabim}{tim-salabim}
+#' @author \href{https://github.com/tim-salabim}{Tim Salabim}
 #' @noRd
 ee_getCallEntryFromMap <- function(map, call) {
   grep(call, ee_getCallMethods(map), fixed = TRUE, useBytes = TRUE)
