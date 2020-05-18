@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a stars object based on an EE thumbnail image — ee_as_thumbnail • rgee</title>
+<title>Create an R spatial gridded object from an EE thumbnail image — ee_as_thumbnail • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Create a stars object based on an EE thumbnail image — ee_as_thumbnail" />
-<meta property="og:description" content="Wrapper function to create a stars object with projection from a
+<meta property="og:title" content="Create an R spatial gridded object from an EE thumbnail image — ee_as_thumbnail" />
+<meta property="og:description" content="Wrapper function around ee$Image$getThumbURL to create a stars or
+RasterLayer R object from a
 EE thumbnail image." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -156,15 +157,15 @@ EE thumbnail image." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a stars object based on an EE thumbnail image</h1>
+    <h1>Create an R spatial gridded object from an EE thumbnail image</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_as_thumbnail.R'><code>R/ee_as_thumbnail.R</code></a></small>
     <div class="hidden name"><code>ee_as_thumbnail.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Wrapper function to create a stars object with projection from a
-<a href='developers.google.com/earth-engine/image_visualization#thumbnail-images
-'>EE thumbnail image</a>.</p>
+    <p>Wrapper function around <code>ee$Image$getThumbURL</code> to create a stars or
+RasterLayer R object from a
+<a href='https://developers.google.com/earth-engine/image_visualization#thumbnail-images'>EE thumbnail image</a>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(
@@ -204,7 +205,7 @@ See details.</p></td>
     <tr>
       <th>raster</th>
       <td><p>Logical. Should the thumbnail image be saved as a
-raster object?</p></td>
+RasterStack object?</p></td>
     </tr>
     <tr>
       <th>quiet</th>

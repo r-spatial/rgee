@@ -192,7 +192,7 @@ virtualenv_list for Unix system.</p></td>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 
-<span class='co'>### rgee setup. It is necessary just once, not mandatory</span>
+<span class='co'>## It is necessary just once, not mandatory</span>
 
 <span class='co'># 1. Create a Python environment, e.g. ee.</span>
 <span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>py_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
@@ -200,8 +200,8 @@ virtualenv_list for Unix system.</p></td>
 <span class='co'># OPTIONAL: Find others Python path in the system.</span>
 <span class='co'># ee_install_discover_pyenvs()</span>
 
-<span class='co'># 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON) to be used in</span>
-<span class='co'># future sessions</span>
+<span class='co'># 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)</span>
+<span class='co'># to be used in future sessions</span>
 <span class='fu'><a href='ee_install_set_pyenv.html'>ee_install_set_pyenv</a></span>(<span class='no'>pyenv</span>)
 
 <span class='co'># 3. Now run ee_Initialize()</span>
