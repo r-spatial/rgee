@@ -14,6 +14,8 @@ Provides bindings to the Google Earth Engine Python API and set tools for automa
 Useful links:
 \itemize{
   \item \url{https://github.com/r-spatial/rgee}
+  \item \url{https://r-spatial.github.io/rgee/}
+  \item \url{https://github.com/google/earthengine-api}
   \item Report bugs at \url{https://github.com/r-spatial/rgee/issues}
 }
 

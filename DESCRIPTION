@@ -72,7 +72,7 @@ Suggests:
     knitr,
     rmarkdown,
     png
-URL: https://github.com/r-spatial/rgee
+URL: https://github.com/r-spatial/rgee, https://r-spatial.github.io/rgee/, https://github.com/google/earthengine-api
 BugReports: https://github.com/r-spatial/rgee/issues
 VignetteBuilder: knitr
 Language: en-US

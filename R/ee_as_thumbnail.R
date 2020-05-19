@@ -1,8 +1,8 @@
-#' Create a stars object based on an EE thumbnail image
+#' Create an R spatial gridded object from an EE thumbnail image
 #'
-#' Wrapper function to create a stars object with projection from a
-#' \href{developers.google.com/earth-engine/image_visualization#thumbnail-images
-#' }{EE thumbnail image}.
+#' Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
+#' RasterLayer R object from a
+#' \href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images}{EE thumbnail image}.
 #'
 #' @param image EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
@@ -15,7 +15,7 @@
 #' @param vizparams A list that contains the visualization parameters.
 #' See details.
 #' @param raster Logical. Should the thumbnail image be saved as a
-#' raster object?
+#' RasterStack object?
 #' @param quiet logical; suppress info messages.
 #' @details
 #'
