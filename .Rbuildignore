@@ -14,4 +14,5 @@
 ^vignettes\faq.Rmd
 ^revdep$
 ^inst\tests
+^paper
 ^revdep$
