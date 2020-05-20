@@ -53,23 +53,6 @@ ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           quiet = FALSE) {
-  # if (isFALSE(py_available(initialize = TRUE))) {
-  #   init_message <- paste0(
-  #     "No available Python version found in your system",
-  #     ". Would you like to install Miniconda?",
-  #     collapse = ""
-  #   )
-  #   switch(
-  #     EXPR = menu(
-  #       choices = c('yes','no'),
-  #       title = init_message
-  #     ) + 1,
-  #     stop('rgee needs a Python environment in the system\n'),
-  #     install_miniconda(),
-  #     stop('rgee needs a Python environment in the system\n')
-  #   )
-  #   return(0)
-  # }
   if (exists('ee')) {
     if (is.null(ee$computedobject)) {
       stop('rgee does not found the Earth Engine Python API.',
