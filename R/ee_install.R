@@ -44,19 +44,23 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   # Create a python environment
   rgee_path <- ee_install_create_pyenv(py_env = py_env)
 
-  # List Python Path in rgee
-  python_files <- list.files(
-    path = rgee_path,
-    pattern =  "python",
-    recursive = TRUE,
-    full.names = TRUE
-  )
-
   # Find the Python Path of the environment created
   if (is_windows()) {
-    py_path <- python_files[grepl("^python\\.exe$", basename(python_files))]
+    # In windows, conda_create return the Python executable (.../python.exe)
+    # rather than in linux and MacOS that return the path of the Environment
+    # (a folder!!). It is a little tricky, maybe it changes on future version of
+    # reticulate.
+    py_path <- rgee_path # py_path --> Python executable
+    rgee_path <- dirname(py_path) # rgee_path --> Env path
   } else {
-    py_path <- python_files[grepl("^python$", basename(python_files))]
+    # List Python Path in rgee
+    python_files <- list.files(
+      path = rgee_path,
+      pattern =  "python",
+      recursive = TRUE,
+      full.names = TRUE
+    )
+    py_path <- python_files[grepl("^python$", basename(python_files))][1]
   }
 
   # Stop if py_path is not found
@@ -68,7 +72,12 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   }
 
   # Create EARTHENGINE_PYTHON
-  message("Creating a new Environment Variable.\nEARTHENGINE_PYTHON: ",py_path)
+  message(
+    sprintf("The Environment Variable 'EARTHENGINE_PYTHON=%s' ", py_path),
+    "was set on the .Renviron file. Remember that you can remove it using",
+    " reticulate::ee_clean_pyenv()"
+  )
+
   ee_install_set_pyenv(py_path = py_path)
 
   # Install the Earth Engine API
@@ -85,7 +94,7 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
     # Restart to see changes
     if (isTRUE(confirm)) {
       title <- paste0(
-        "rgee needs to restart the R session to see changes.\n",
+        "rgee needs restart R to see changes.\n",
         "Do you want to continues?"
       )
       response <- menu(c("yes", "no"), title = title)
