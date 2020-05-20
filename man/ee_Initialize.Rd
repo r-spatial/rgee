@@ -15,10 +15,10 @@ Google identity.}
 \item{drive}{Logical (optional). If TRUE, the drive credential
 will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
-\item{gcs}{logical. If TRUE, the Google Cloud Storage
+\item{gcs}{Logical. If TRUE, the Google Cloud Storage
 credential will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
 
-\item{quiet}{logical. Suppress info messages.}
+\item{quiet}{Logical. Suppress info messages.}
 }
 \description{
 Authorize rgee to manage Earth Engine resources, Google
@@ -33,8 +33,8 @@ Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them, these are only necessary for exporting and importing tasks.
 All user credentials are saved in the directory
-\code{~/.config/earthengine/}, if a user does not specified the
-the email argument all user credentials will be saved in a subdirectory
+\code{~/.config/earthengine/}, if a user does not specify the email
+argument all user credentials will be saved in a subdirectory
 called \code{ndef}.
 }
 \examples{
@@ -42,10 +42,10 @@ called \code{ndef}.
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
-# Simple init - load just Earth Engine credentials
+# Simple init - Load just the Earth Engine credential
 ee_Initialize()
 
-# Advanced init - load full credentials
+# Advanced init - Load full credentials
 ee_Initialize(
   email = "your_email@gmail.com",
   drive = TRUE,

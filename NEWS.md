@@ -13,7 +13,7 @@ vignette: >
 ---
 # rgee 0.5.0
 - **Initial CRAN release**
-- rgee paper folder added.
+- rgee paper added.
 - GitHub actions supports Windows, Linux and MacOS.
 - `rgee` new group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, `ee_install_set_pyenv` into 
 the  ee_install_* module.

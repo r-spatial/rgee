@@ -7,10 +7,10 @@
 ee_get_date_ic(x, time_end = FALSE)
 }
 \arguments{
-\item{x}{EE ImageCollection object}
+\item{x}{ee$ImageCollection object}
 
-\item{time_end}{Logical. If TRUE, the system:time_end property will
-also be returned. See details.}
+\item{time_end}{Logical. If TRUE, the \code{system:time_end} property is
+also returned. See details.}
 }
 \value{
 A data.frame.
@@ -20,9 +20,9 @@ Get the date of a EE ImageCollection
 }
 \details{
 \code{system:time_start} set the start period of data acquisition while
-\code{system:time_end} the end period. See the
-\href{https://developers.google.com/earth-engine/glossary}{Earth
-Engine glossary} for more information.
+\code{system:time_end} does the same for the end period. See the
+\href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+for getting more information.
 }
 \examples{
 \dontrun{

@@ -1,11 +1,15 @@
 #' Interface to check Python and non-R dependencies
 #'
-#' R functions for checking sanity of Third-Party Python
-#' packages and credentials.
+#' R functions for checking Google credentials (Google Earth Engine,
+#' Google Drive and Google Cloud Storage) available in their system and the
+#' Python environment and the Third-Party Python Packages used by rgee.
+#'
 #' @name ee_check-tools
-#' @param quiet logical. Suppress info message
-#' @importFrom reticulate py_available py_module_available
-#' py_discover_config source_python
+#'
+#' @param quiet Logical. Suppress info message
+#'
+#' @importFrom reticulate py_available py_module_available py_discover_config
+#' source_python
 #' @importFrom crayon yellow
 #' @importFrom cli cat_line
 #' @examples
@@ -44,11 +48,11 @@ ee_check_python <- function(quiet = FALSE) {
     }
   } else {
     stop(
-      "Unable to find a Python version, you will need to fix it before ",
-      "installing rgee. More details through reticulate::py_available()"
+      "Unable to find a Python version, you will need to fix it before run ",
+      "rgee::ee_Initialize(). For more details run reticulate::py_available()"
     )
   }
-  if (py_version < 3.5) stop("rgee just run under Python 3.5 >=")
+  if (py_version < 3.5) stop("rgee needs Python 3.5 >=")
   return(invisible(TRUE))
 }
 
@@ -231,7 +235,7 @@ ee_check_py_package <- function(rgee_package) {
       bold(rgee_package),
       " has not been found in this Python version, try as follow for fixed: \n",
       sprintf(
-        "- rgee::ee_install_python_package('%s', conda = FALSE) \n",
+        "- reticulate::py_install('%s') \n",
         rgee_package
       ),
       "If the installation is successful, restart to see changes."

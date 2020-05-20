@@ -1,12 +1,13 @@
 #' Delete Credentials
 #'
 #' Delete all the credentials according to a specific user. The credentials
-#' are saved in the path `rgee::ee_get_earthengine_path()` after running
-#' successfully at least once  `ee_Initialize(...)`. However, if you run
-#' `ee_Initialize(...)` with the same email argument the new credentials
-#' will be overwritten.
+#' (Google Earth Engine, Google Drive and Google Cloud Storage) are created
+#' after running successfully `ee_Initialize(...)`. They are saved in
+#' the path `rgee::ee_get_earthengine_path()`.
+#'
 #' @param email Character. Earth Engine user (e.g. `data.colec.fbf`).
-#' @param quiet Logical (optional). Suppress info messages.
+#' @param quiet Logical. Suppress info messages.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -19,6 +20,7 @@
 ee_clean_credentials <- function(email='not_defined', quiet=FALSE) {
   ee_path <- path.expand("~/.config/earthengine")
   email_clean <- gsub("@gmail.com", "", email)
+
   if (email == 'not_defined') {
     email_clean <- 'ndef'
   }
@@ -44,7 +46,7 @@ ee_clean_credentials <- function(email='not_defined', quiet=FALSE) {
   invisible(TRUE)
 }
 
-#' Remove reticulate system variables from .Renviron
+#' Remove rgee system variables from .Renviron
 #'
 #' @examples
 #' \dontrun{

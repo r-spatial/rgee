@@ -8,7 +8,8 @@
 #' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
 #' EE date object. By default FALSE.
 #' @return \code{rdate_to_eedate} will return a numeric timestamp or
-#' an EE Date depending on the \code{timestamp} argument.
+#' an ee$Date depending on the \code{timestamp} argument.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -35,20 +36,23 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 
 #' Pass an Earth Engine date object to R
 #'
-#' @param ee_date EE date object (ee$Date)
+#' @param ee_date ee$date object (ee$Date)
 #' @param timestamp Logical. If TRUE, return the date in milliseconds
 #' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
 #' date as a POSIXct object. By default FALSE.
+#'
 #' @details
-#' \code{eedate_to_rdate} is essential to avoid potential errors which
-#' could appear when users call to retrieve the date. Currently,
+#' \code{eedate_to_rdate} is essential to avoid potential errors that
+#' might appear when users call to retrieve dates. Currently,
 #' R integer only support 32 bit signed, such integers can only
-#' count up to about 2 billion. This range is extremely insufficient to
-#' deal with Google Earth Engine date, which is represent by timestamp in
-#' milliseconds since the UNIX epoch. \code{eedate_to_rdate} use Python as a
-#' backend to obtain the date and convert it in float before to export to R.
+#' count up to about 2 billion. This range is extremely insufficient for dealing
+#' with Google Earth Engine date objects (ee$Date), which are represented
+#' by timestamps in milliseconds since the UNIX epoch. \code{eedate_to_rdate}
+#' use Python as a backend to obtain the date and convert it in float before
+#' exporting to R.
+#'
 #' @return \code{eedate_to_rdate} will return a numeric timestamp or
-#' an POSIXct object depending on the \code{timestamp} argument.
+#' a POSIXct object depending on the \code{timestamp} argument.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -76,16 +80,19 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 
 #' Get the date of a EE Image
 #'
-#' @param x EE Image or ImageCollection object
-#' @param time_end Logical. If TRUE, the system:time_end property will
-#' also be returned. See details.
+#' @param x ee$Image or ee$ImageCollection object
+#' @param time_end Logical. If TRUE, the \code{system:time_end} property is
+#' also returned. See details.
+#'
 #' @details
 #' \code{system:time_start} set the start period of data acquisition while
-#' \code{system:time_end} does the same for the end period. See this
-#' \href{https://developers.google.com/earth-engine/glossary}{link} for
-#' getting more information.
+#' \code{system:time_end} does the same for the end period. See the
+#' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+#' for getting more information.
+#'
 #' @return An List object with the id, time_start and time_end
 #' (if \code{time_end} argument is TRUE) of the image.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -126,15 +133,18 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 
 #' Get the date of a EE ImageCollection
 #'
-#' @param x EE ImageCollection object
-#' @param time_end Logical. If TRUE, the system:time_end property will
-#' also be returned. See details.
+#' @param x ee$ImageCollection object
+#' @param time_end Logical. If TRUE, the \code{system:time_end} property is
+#' also returned. See details.
+#'
 #' @details
 #' \code{system:time_start} set the start period of data acquisition while
-#' \code{system:time_end} the end period. See the
-#' \href{https://developers.google.com/earth-engine/glossary}{Earth
-#' Engine glossary} for more information.
+#' \code{system:time_end} does the same for the end period. See the
+#' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+#' for getting more information.
+#'
 #' @return A data.frame.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)

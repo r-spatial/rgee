@@ -36,7 +36,7 @@ affiliations:
 # Summary
 Google Earth Engine [@gorelick2017google] is a cloud computing platform designed for planetary-scale environmental data analysis. Its multi-petabyte data catalog and computation services are accessed via an Internet-accessible API. The API is exposed through JavaScript and Python client libraries. Google provides a browser-based IDE for the JavaScript API, and while convenient and useful for rapid data exploration and script development, it does not allow third-party package integration, relying solely on Google Maps and Google Charts for data visualization, and proprietary systems for metadata viewing and asset management. In contrast, the Python and Node.js distributions offer much flexibility for developers to integrate with third-party libraries. However, without the structure of a dedicated IDE, casual users can be left directionless and daunted. A significant gap exists between these two offerings (Google-supported JavaScript IDE and base client libraries) where convenience and flexibility meet. We propose to fill this gap with an R package that wraps the Earth Engine Python API to provide R users with a familiar interface, rapid development features, and flexibility to analyze data using open-source, third-party packages.
 
-rgee is an Earth Engine (EE) client library for R that allows users to leverage the strengths of the R spatial ecosystem and Google Earth Engine in the same workflow. All of the Earth Engine Python API classes, modules, and functions are made available through the reticulate package [@reticulate], which embeds a Python session within an R session, enabling seamless interoperability. Additionally, rgee adds several new features such as (i) new I/O design, (ii) multiple user support, (iii) interactive map display,  (iv) easy extraction of time series, (iv) asset manage interface, and (v) metadata display. In addition, rgee also makes it possible to execute Earth Engine Python code from within R, making the translation of large Python projects unnecessary.
+rgee is an Earth Engine (EE) client library for R that allows users to leverage the strengths of the R spatial ecosystem and Google Earth Engine in the same workflow. All of the Earth Engine Python API classes, modules, and functions are made available through the reticulate package [@reticulate], which embeds a Python session within an R session, enabling seamless interoperability. Additionally, rgee adds several new features such as (i) new I/O design, (ii) interactive map display,  (iii) easy extraction of time series, (iv) asset management interface, and (v) metadata display. In addition, rgee also makes it possible to execute Earth Engine Python code from within R, making the translation of large Python projects unnecessary.
 
 # Features
 
@@ -107,26 +107,6 @@ sf_subset[gapPct] %>%
   theme_minimal()
 ```
 ![Gaps percentage between plant canopies of different sizes in a place near to Carson City, Nevada, USA. \label{fig:AIM}](rgee_paper_00.png){ width=65% }
-
-
-## Authentication of multiple users
-
-rgee makes it easy to authenticate and initialize the EE API through `ee_Initialize` a function which uses a file folder system to arrange multiple credentials (Google Earth Engine, Google Drive, and Google Cloud Storage) for multiple users. One of the main advantages of this is the possibility to distribute requests by accounts (i.e., parallelize on the client-side). For instance, if a research group wants to analyze deforestation, the script shown below will allow them to obtain results three times faster.
-
-```r
-library(foreach)
-library(rgee)
-
-ee_users()
-ee_user_info()
-google_account <- c("csaybar", "ryali93", "lbautista")
-
-foreach(account = google_account, .combine = "c") %dopar% {
-  ee_Initialize(gmail)
-  ic_results <- deforestation_analysis(split_by = google_account)
-  ee_imagecollection_to_local(ic_results)
-} -> results
-```
 
 ## Interactive Map Display
 rgee offers interactive map display through  `Map\$addLayer`, an R function mimicking the mapping module of the Earth Engine JavaScript Code Editor. `Map\$addLayer` takes advantage of the `getMapId` EE method to fetch and return an ID dictionary being used to create layers in a mapview [@appelhans2016mapview] object. Users can specify visualization parameters to `Map\$addLayer` by using the visParams argument, as demostrated below:

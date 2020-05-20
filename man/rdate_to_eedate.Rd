@@ -15,7 +15,7 @@ EE date object. By default FALSE.}
 }
 \value{
 \code{rdate_to_eedate} will return a numeric timestamp or
-an EE Date depending on the \code{timestamp} argument.
+an ee$Date depending on the \code{timestamp} argument.
 }
 \description{
 Pass an R date object ("Date", "Numeric", "character", "POSIXt",

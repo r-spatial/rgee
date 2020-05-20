@@ -9,14 +9,13 @@ ee_clean_credentials(email = "not_defined", quiet = FALSE)
 \arguments{
 \item{email}{Character. Earth Engine user (e.g. \code{data.colec.fbf}).}
 
-\item{quiet}{Logical (optional). Suppress info messages.}
+\item{quiet}{Logical. Suppress info messages.}
 }
 \description{
 Delete all the credentials according to a specific user. The credentials
-are saved in the path \code{rgee::ee_get_earthengine_path()} after running
-successfully at least once  \code{ee_Initialize(...)}. However, if you run
-\code{ee_Initialize(...)} with the same email argument the new credentials
-will be overwritten.
+(Google Earth Engine, Google Drive and Google Cloud Storage) are created
+after running successfully \code{ee_Initialize(...)}. They are saved in
+the path \code{rgee::ee_get_earthengine_path()}.
 }
 \examples{
 \dontrun{

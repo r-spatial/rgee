@@ -10,36 +10,41 @@
 #' name is used as a folder inside the path `rgee::ee_get_earthengine_path()`.
 #' This enable a multi-user support allowing to target a specific
 #' Google identity.
+#'
 #' @param drive Logical (optional). If TRUE, the drive credential
 #' will be cached in the path `rgee::ee_get_earthengine_path()`.
-#' @param gcs logical. If TRUE, the Google Cloud Storage
+#' @param gcs Logical. If TRUE, the Google Cloud Storage
 #' credential will be cached in the path `rgee::ee_get_earthengine_path()`.
-#' @param quiet logical. Suppress info messages.
+#' @param quiet Logical. Suppress info messages.
+#'
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import install_miniconda py_available
 #' @importFrom getPass getPass
 #' @importFrom cli symbol rule
 #' @importFrom crayon blue green black red bold white
+#'
 #' @details
 #' \code{ee_Initialize(...)} can also manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
 #' googlecloudStorageR, respectively. By default, rgee does not require
 #' them, these are only necessary for exporting and importing tasks.
 #' All user credentials are saved in the directory
-#' \code{~/.config/earthengine/}, if a user does not specified the
-#' the email argument all user credentials will be saved in a subdirectory
+#' \code{~/.config/earthengine/}, if a user does not specify the email
+#' argument all user credentials will be saved in a subdirectory
 #' called \code{ndef}.
+#'
 #' @seealso remove credential function: \cr
 #' \link[rgee]{ee_clean_credentials}
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
-#' # Simple init - load just Earth Engine credentials
+#' # Simple init - Load just the Earth Engine credential
 #' ee_Initialize()
 #'
-#' # Advanced init - load full credentials
+#' # Advanced init - Load full credentials
 #' ee_Initialize(
 #'   email = "your_email@gmail.com",
 #'   drive = TRUE,
@@ -370,7 +375,7 @@ ee_create_credentials_gcs <- function(email) {
   invisible(gcs_credentials)
 }
 
-#' Display credentials of all users as a table
+#' Display the credentials of all users as a table
 #'
 #' Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 #' a table.
@@ -410,7 +415,7 @@ ee_users <- function() {
   invisible(TRUE)
 }
 
-#' Display credentials and general info of the initialized user
+#' Display the credentials and general info of the initialized user
 #'
 #' @examples
 #' \dontrun{

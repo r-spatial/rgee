@@ -7,10 +7,10 @@
 ee_get_date_img(x, time_end = FALSE)
 }
 \arguments{
-\item{x}{EE Image or ImageCollection object}
+\item{x}{ee$Image or ee$ImageCollection object}
 
-\item{time_end}{Logical. If TRUE, the system:time_end property will
-also be returned. See details.}
+\item{time_end}{Logical. If TRUE, the \code{system:time_end} property is
+also returned. See details.}
 }
 \value{
 An List object with the id, time_start and time_end
@@ -21,9 +21,9 @@ Get the date of a EE Image
 }
 \details{
 \code{system:time_start} set the start period of data acquisition while
-\code{system:time_end} does the same for the end period. See this
-\href{https://developers.google.com/earth-engine/glossary}{link} for
-getting more information.
+\code{system:time_end} does the same for the end period. See the
+\href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+for getting more information.
 }
 \examples{
 \dontrun{
