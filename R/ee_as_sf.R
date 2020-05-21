@@ -1,6 +1,6 @@
 #' Convert an EE table in a sf object
 #'
-#' @param x EE table to be converted into a sf object.
+#' @param x EE table (ee$FeatureCollection) to be converted into a sf object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
 #' \code{ee_as_sf} will create a temporary file.
 #' @param crs Integer or character. coordinate reference system
@@ -8,8 +8,7 @@
 #' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
 #' export (ignore if \code{via} is not set as "getInfo"). The task will fail
-#' if the exported region covers more features in the specified projection.
-#' Defaults to 5000.
+#' if the exported region covers more features. Defaults to 5000.
 #' @param overwrite Logical. Delete data source \code{dsn} before attempting
 #' to write?.
 #' @param via Character. Method to fetch data about the object. Multiple

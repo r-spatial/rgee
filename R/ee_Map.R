@@ -33,7 +33,7 @@
 #'   \item \strong{centerObject(eeObject, zoom = NULL,
 #'    maxError = ee$ErrorMargin(1))}: Centers the
 #'   map view on a given object. If no zoom level is provided, it will
-#'   be predicted according the bounds of the Earth Engine object specified.
+#'   be predicted according to the bounds of the Earth Engine object specified.
 #'   \itemize{
 #'     \item \strong{eeObject:} EE object.\cr
 #'     \item \strong{zoom:} The zoom level, from 1 to 24.
@@ -44,13 +44,12 @@
 #' }
 #'
 #' @details
-#' `Map` takes advantage of
+#' `Map` takes advantage of the
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
-#' getMapId} for fetch and return both a mapid and a token suitable
-#' to use in a \link[=mapview]{mapview}  object. To achieve desirable
-#' visualization effect, it will depend on the type of spatial EE object . For
-#' Image objects, you can provide visualization parameters to
-#' Map$addLayer() by using the argument visParams. The
+#' getMapId} EE method to fetch and return an ID dictionary beind used to create
+#' layers in a \link[=mapview]{mapview} object. Users can specify visualization
+#' parameters to Map\$addLayer by using the visParams argument. It will depend
+#' on the type of spatial EE object. For \code{ee$Image}, the
 #' \href{https://developers.google.com/earth-engine/image_visualization}{
 #' parameters} available are:
 #'
@@ -74,11 +73,12 @@
 #' and 1.0 is fully opaque) \tab  number \cr
 #' }
 #'
-#' If you add an Image to the map without any additional
-#' parameters, by default `Map$addLayer()` assigns the first three bands to red,
+#' If you add an \code{ee$Image} to the map without any additional parameters,
+#' by default `Map$addLayer()` assigns the first three bands to red,
 #' green, and blue bands, respectively. The default stretch is based on the
-#' min-max range.  For Geometry, Feature, and/or FeatureCollection. The
-#' available visParams are:
+#' min-max range. By the other hand, for \code{ee$Geometry}, \code{ee$Feature},
+#' and \code{ee$FeatureCollection}. The available parameters are:
+#'
 #' \itemize{
 #'  \item \strong{color}: A hex string in the format RRGGBB specifying the
 #'  color to use for drawing the features. By default 000000.

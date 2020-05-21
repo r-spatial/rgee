@@ -3,27 +3,31 @@
 #' Extract values from a \code{ee$Image} or \code{ImageCollection} at the
 #' locations of a geometry object. You can use \code{ee$Geometry$*},
 #' \code{ee$Feature}, \code{ee$FeatureCollection} and sf objects. This function
-#' try to mimics how \link[raster]{extract} currently works.
+#' mimicking how \link[raster]{extract} currently works.
 #'
 #' @param x ee$Image or ee$ImageCollection with a single band.
 #' @param y ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.
 #' @param fun ee$Reducer object. Function to summarize the values. The function
-#' should take a single numeric vector as argument and return a single value.
+#' must take a single numeric value as an argument and return a single value.
 #' See details.
 #' @param scale A nominal scale in meters of the Image projection to work in.
 #' By default 1000.
 #' @param sf Logical. Should the extracted values be added to the data.frame of
-#' the sf object y? This only applies if y is a sf object.
+#' the sf object y?
 #' @param ... reduceRegions additional parameters. See
-#' ee_help(ee$Image()$reduceRegions) for more details.
+#' \code{ee_help(ee$Image$reduceRegions)} for more details.
+#'
 #' @importFrom sf st_geometry st_geometry<- st_drop_geometry
-#' @return A data.frame or a sf object depending on the sf argument. The
-#' columns with the extracted values will get their column name from the
-#' image metadata property \code{RGEE_NAME}. If is not defined \code{ee_extract}
-#' will use the band name for \code{ee$Images} and the \code{system:index}
-#' property for \code{ee$ImageCollections}.
+#'
+#' @return A data.frame or an sf object depending on the sf argument. The
+#' columns with the extracted values receive their column name from the image
+#' metadata property \code{RGEE_NAME}. If it is not defined \code{ee_extract}
+#' use the band name (\code{ee$Image$name}) if \code{x} is an \code{ee$Image}
+#' and the \code{system:index} property if \code{x} is an
+#' \code{ee$ImageCollection}.
+#'
 #' @details
-#' In Google Earth Engine the reducer functions that return one value are:
+#' The reducer functions that return one value are:
 #' \itemize{
 #' \item  \strong{allNonZero}: Returns a Reducer that returns 1 if all of its
 #' inputs are non-zero, 0 otherwise. \cr

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-upload.R
 \name{gcs_to_ee_table}
 \alias{gcs_to_ee_table}
-\title{Move a zipped shapefile from GCS to EE asset}
+\title{Move a zipped shapefile from GCS to their EE Assets}
 \usage{
 gcs_to_ee_table(gs_uri, assetId, overwrite = FALSE, quiet = FALSE)
 }
@@ -11,7 +11,7 @@ gcs_to_ee_table(gs_uri, assetId, overwrite = FALSE, quiet = FALSE)
 zipped shapefile in a GCS bucket.}
 
 \item{assetId}{Character. What to call the file once uploaded
-to the Earth Engine Asset}
+to their Earth Engine Assets}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
 it exists.}
@@ -19,7 +19,7 @@ it exists.}
 \item{quiet}{Logical. Suppress info message.}
 }
 \description{
-Pass a zipped shapefile of gcs to Earth Engine Asset
+Move a zipped shapefile from GCS to their EE Assets
 }
 \examples{
 \dontrun{

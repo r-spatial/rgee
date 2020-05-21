@@ -12,7 +12,7 @@ ee_monitoring(task, eeTaskList = FALSE, quiet = FALSE)
 \item{eeTaskList}{Logical. If \code{TRUE}, all Earth Engine tasks will be
 listed.}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \description{
 Monitoring Earth Engine task progress

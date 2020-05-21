@@ -1,5 +1,7 @@
 #' Convert an Earth Engine (EE) image into a stars object
 #'
+#' Convert an ee$Image into a stars object
+#'
 #' @param image ee$Image to be converted into a stars object
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
@@ -7,7 +9,7 @@
 #' @param dsn Character. Output filename. If missing,
 #' \code{ee_as_stars} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
-#' to the native resolution of the image assset.
+#' to the native resolution of the image asset.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
@@ -21,14 +23,14 @@
 #' @details
 #' \code{ee_as_stars} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_as_stars} will make an
+#' is set in the \code{via} argument, \code{ee_as_stars} will make a
 #' REST call to retrieve all the known information about the object. The
-#' advantage of use "getInfo" is a direct and faster download. However, there
+#' advantage of using "getInfo" is performing a quick download. However, there
 #' is a limitation of 262144 pixels by request which makes it not recommendable
 #' for large images. Instead of "getInfo", the options: "drive" and "gcs"
 #' are suitable for large collections since they use an intermediate web store
-#' service. Before to use any of this options, it is necessary previously
-#' install the R packages
+#' service. Before using any of these options, it is necessary previously
+#' to install the R packages
 #' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 #' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' googleCloudStorageR}. For getting more information about exporting data take
@@ -121,6 +123,8 @@ ee_as_stars <- function(image,
 
 #' Convert an Earth Engine (EE) image into a raster object
 #'
+#' Convert an ee$Image into a raster object
+#'
 #' @param image ee$Image to be converted into a raster object
 #' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
 #' CRS needs to be the same that the x argument otherwise it will be
@@ -128,7 +132,7 @@ ee_as_stars <- function(image,
 #' @param dsn Character. Output filename. If missing,
 #' \code{ee_as_raster} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
-#' to the native resolution of the image assset.
+#' to the native resolution of the image asset.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
@@ -141,15 +145,15 @@ ee_as_stars <- function(image,
 #' @details
 #' \code{ee_as_raster} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_as_raster} will make an
+#' is set in the \code{via} argument, \code{ee_as_stars} will make a
 #' REST call to retrieve all the known information about the object. The
-#' advantage of use "getInfo" is a direct and faster download. However, there
+#' advantage of using "getInfo" is performing a quick download. However, there
 #' is a limitation of 262144 pixels by request which makes it not recommendable
 #' for large images. Instead of "getInfo", the options: "drive" and "gcs"
 #' are suitable for large collections since they use an intermediate web store
-#' service. Before to use any of this options, it is necessary previously
-#' install the R packages
-#' \href{https://CRAN.R-project.org/package=googledrive}{googledrive}
+#' service. Before using any of these options, it is necessary previously
+#' to install the R packages
+#' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 #' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' googleCloudStorageR}. For getting more information about exporting data take
 #' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
@@ -246,18 +250,22 @@ ee_as_raster  <- function(image,
   }
 }
 
-#' Convert a local image into an EE Image
+#' Convert a stars or stars-proxy object into an EE Image
+#'
+#' Convert a stars or stars-proxy object into an ee$Image.
 #'
 #' @param x stars or stars-proxy object to be converted into an ee$Image.
 #' @param assetId Character. Destination asset ID for the uploaded file.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
-#' it exists.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
+#'
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
+#'
 #' @return An ee$Image object
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -330,20 +338,23 @@ stars_as_ee <- function(x,
 }
 
 
-#' Convert a local image into an EE Image
+#' Convert a Raster* object into an EE Image
+#'
+#' Convert a Raster* object into an ee$Image.
 #'
 #' @param x RasterLayer, RasterStack or RasterBrick object to be converted into
 #' an ee$Image.
 #' @param assetId Character. Destination asset ID for the uploaded file.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
-#' it exists.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
+#'
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
+#'
 #' @return An ee$Image object
-#' @name local_as_image
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)

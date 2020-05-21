@@ -29,7 +29,7 @@ forced. If not specified, image bounds will be taken.}
 options supported. See details.}
 
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
-to the native resolution of the image assset.}
+to the native resolution of the image asset.}
 
 \item{maxPixels}{Numeric. The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
@@ -45,20 +45,20 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 A RasterStack object
 }
 \description{
-Convert an Earth Engine (EE) image into a raster object
+Convert an ee$Image into a raster object
 }
 \details{
 \code{ee_as_raster} supports the download of \code{ee$Image}
 by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the \code{via} argument, \code{ee_as_raster} will make an
+is set in the \code{via} argument, \code{ee_as_stars} will make a
 REST call to retrieve all the known information about the object. The
-advantage of use "getInfo" is a direct and faster download. However, there
+advantage of using "getInfo" is performing a quick download. However, there
 is a limitation of 262144 pixels by request which makes it not recommendable
 for large images. Instead of "getInfo", the options: "drive" and "gcs"
 are suitable for large collections since they use an intermediate web store
-service. Before to use any of this options, it is necessary previously
-install the R packages
-\href{https://CRAN.R-project.org/package=googledrive}{googledrive}
+service. Before using any of these options, it is necessary previously
+to install the R packages
+\href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 googleCloudStorageR}. For getting more information about exporting data take
 a look at the \href{https://developers.google.com/earth-engine/exporting}{Google

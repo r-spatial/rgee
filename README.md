@@ -16,7 +16,7 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the 
-[earthengine-api 0.1.221](https://pypi.org/project/earthengine-api/0.1.221/).
+[earthengine-api 0.1.222](https://pypi.org/project/earthengine-api/0.1.222/).
 **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 
