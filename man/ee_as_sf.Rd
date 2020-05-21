@@ -17,7 +17,7 @@ ee_as_sf(
 )
 }
 \arguments{
-\item{x}{EE table to be converted into a sf object.}
+\item{x}{EE table (ee$FeatureCollection) to be converted into a sf object.}
 
 \item{dsn}{Character. Output filename; in case \code{dsn} is missing
 \code{ee_as_sf} will create a temporary file.}
@@ -34,8 +34,7 @@ options supported. See details.}
 
 \item{maxFeatures}{Numeric. The maximum allowed number of features to
 export (ignore if \code{via} is not set as "getInfo"). The task will fail
-if the exported region covers more features in the specified projection.
-Defaults to 5000.}
+if the exported region covers more features. Defaults to 5000.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported into (ignore if \code{via} is not defined as "drive" or

@@ -13,10 +13,9 @@ vignette: >
 ---
 # rgee 0.5.0
 - **Initial CRAN release**
+- Several typos fixed.
 - rgee paper added.
-- GitHub actions supports Windows, Linux and MacOS.
-- `rgee` new group functions: `ee_install_create_pyenv`, `ee_install_discover_pyenvs`, `ee_install_set_pyenv` into 
-the  ee_install_* module.
+- GitHub actions for automated testing and build the website.
 - Due the changes in latest `reticulate` version (1.1.5), the functions `ee_install_earthengine_upgrade` and `ee_install_python_packages` were deprecated and both will remove in rgee 0.5.3.
 - Config/reticulate added to DESCRIPTION file.
 - .onLoad IMPORTANT CHANGES: Now `rgee` set EARTHENGINE_PYTHON instead of RETICULATE_PYTHON directly and RETICULATE_PYTHON_ENV is no longer required. This change will permit users to avoid problems with other R packages that use Python in the backend (such as tensorflow or keras).
@@ -26,8 +25,8 @@ the  ee_install_* module.
 - `data.colec.fbf` eliminated from all the examples.
 - `rgee` now pass all `goodpractice` checks.
 - `ee_get_img_date` and `ee_get_ic_date` are now `ee_get_date_img` and `ee_get_date_ic`.
-- New group of functions `ee_utils.R` added. `ee_pyfunc` is now `ee_utils_pyfunc`.
-- `Readme.R` new examples.
+- A new group of functions was created at `ee_utils.R`. `ee_pyfunc` is now `ee_utils_pyfunc`.
+- Added new examples in `README.R`.
 
 
 # rgee 0.4.3

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-upload.R
 \name{local_to_gcs}
 \alias{local_to_gcs}
-\title{Upload local files to google cloud storage}
+\title{Upload local files to Google Cloud Storage}
 \usage{
 local_to_gcs(x, bucket = NULL, quiet = FALSE)
 }
@@ -18,8 +18,7 @@ Character which represents the full name of the
 object in the GCS bucket specified.
 }
 \description{
-Upload images or tables into Google Cloud Storage
-for EE asset ingestion tasks.
+Upload images or tables to Google Cloud Storage
 }
 \examples{
 \dontrun{

@@ -3,7 +3,7 @@
 #' @param task List generated after an created an EE task.
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.
-#' @param quiet logical. Suppress info message
+#' @param quiet Logical. Suppress info message
 #'
 #' @export
 #' @examples

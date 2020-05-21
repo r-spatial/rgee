@@ -12,9 +12,10 @@
 #' Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.
 #' @param compression_ratio Numeric. Measurement of the relative reduction
 #' in size of data representation produced by a data compression algorithm
-#' (ignored if eeobject is not a Image or ImageCollection). By default is 20.
+#' (ignored if \code{eeobject} is not a Image or ImageCollection). By default
+#' is 20.
 #' @param clean Logical. If TRUE, the cache will be cleaned.
-#' @param quiet logical. Suppress info message
+#' @param quiet Logical. Suppress info message
 #' @param ... ignored
 #' @importFrom sf st_crs
 #' @importFrom crayon bold blue

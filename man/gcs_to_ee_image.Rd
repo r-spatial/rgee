@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-upload.R
 \name{gcs_to_ee_image}
 \alias{gcs_to_ee_image}
-\title{Move a GeoTIFF image from GCS to EE asset}
+\title{Move a GeoTIFF image from GCS to their EE assets}
 \usage{
 gcs_to_ee_image(
   x,
@@ -42,7 +42,7 @@ or date.}
 \item{quiet}{Logical. Suppress info message.}
 }
 \description{
-Pass a GeoTIFF image of gcs to Earth Engine Asset
+Move a GeoTIFF image from GCS to their EE assets
 }
 \examples{
 \dontrun{

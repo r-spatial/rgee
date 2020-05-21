@@ -1,7 +1,6 @@
-#' Upload local files to google cloud storage
+#' Upload local files to Google Cloud Storage
 #'
-#' Upload images or tables into Google Cloud Storage
-#' for EE asset ingestion tasks.
+#' Upload images or tables to Google Cloud Storage
 #'
 #' @param x Character. filename.
 #' @param bucket bucket name you are uploading to
@@ -85,14 +84,14 @@ local_to_gcs <- function(x,
   }
 }
 
-#' Move a zipped shapefile from GCS to EE asset
+#' Move a zipped shapefile from GCS to their EE Assets
 #'
-#' Pass a zipped shapefile of gcs to Earth Engine Asset
+#' Move a zipped shapefile from GCS to their EE Assets
 #'
 #' @param gs_uri Character. It represents the full name of an
 #' zipped shapefile in a GCS bucket.
 #' @param assetId Character. What to call the file once uploaded
-#' to the Earth Engine Asset
+#' to their Earth Engine Assets
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
 #' it exists.
 #' @param quiet Logical. Suppress info message.
@@ -168,9 +167,9 @@ gcs_to_ee_table <- function(gs_uri,
   assetId
 }
 
-#' Move a GeoTIFF image from GCS to EE asset
+#' Move a GeoTIFF image from GCS to their EE assets
 #'
-#' Pass a GeoTIFF image of gcs to Earth Engine Asset
+#' Move a GeoTIFF image from GCS to their EE assets
 #'
 #' @param x stars object.
 #' @param gs_uri Character. It represents the full name of the
