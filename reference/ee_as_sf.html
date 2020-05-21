@@ -181,7 +181,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>EE table to be converted into a sf object.</p></td>
+      <td><p>EE table (ee$FeatureCollection) to be converted into a sf object.</p></td>
     </tr>
     <tr>
       <th>dsn</th>
@@ -208,8 +208,7 @@ options supported. See details.</p></td>
       <th>maxFeatures</th>
       <td><p>Numeric. The maximum allowed number of features to
 export (ignore if <code>via</code> is not set as "getInfo"). The task will fail
-if the exported region covers more features in the specified projection.
-Defaults to 5000.</p></td>
+if the exported region covers more features. Defaults to 5000.</p></td>
     </tr>
     <tr>
       <th>container</th>

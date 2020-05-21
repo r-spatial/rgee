@@ -206,8 +206,8 @@ whether "filename" should be overwritten. By default TRUE.</p></td>
 
     <p>The task argument needs a status as task "COMPLETED" to work, since the
 parameters necessary to identify EE objects into google drive are obtained
-from ee$batch$Export$*$toDrive(...)$start()$status().</p>
-<p><code>consider</code> argument is necessary since Google Drive permits users to
+from <code>ee$batch$Export$*$toDrive(...)$start()$status()</code>.
+<code>consider</code> argument is necessary since Google Drive permits users to
 create files with the same name. <code>consider</code> uses an interactive R
 session by default to help users identify just the files that they want to
 download. Additionally, the options "last" and "all" are implemented. "last"

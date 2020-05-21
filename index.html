@@ -118,7 +118,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#google-earth-engine-for-r" class="anchor"></a>Google Earth Engine for R</h1></div>
 <p><a href="http://r-spatial.github.io/rgee"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="0" width="15%"></a></p>
-<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.221/">earthengine-api 0.1.221</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
+<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.222/">earthengine-api 0.1.222</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
 <div id="more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="section level3">
 <h3 class="hasAnchor">
 <a href="#more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="anchor"></a>More than 250+ examples using Google Earth Engine with R are available <a href="http://csaybar.github.io/rgee-examples/">here</a>
@@ -214,11 +214,10 @@ R
 <a href="#package-conventions" class="anchor"></a>Package Conventions</h2>
 <ul>
 <li>All <code>rgee</code> functions have the prefix ee_. Auto-completion is your friend :).</li>
-<li>Full access to the Earth Engine API with the prefix <a href="https://developers.google.com/earth-engine/"><strong>ee$…:</strong></a>.</li>
-<li>Authenticate and Initialize the Earth Engine R API with <a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html"><strong>ee_Initialize:</strong></a>, you just will need to do it once by session!.</li>
+<li>Full access to the Earth Engine API with the prefix <a href="https://developers.google.com/earth-engine/"><strong>ee$…</strong></a>.</li>
+<li>Authenticate and Initialize the Earth Engine R API with <a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html"><strong>ee_Initialize</strong></a>. It is necessary once by session!.</li>
 <li>
 <code>rgee</code> is “pipe-friendly”, we re-exports %&gt;%, but <code>rgee</code> does not require its use.</li>
-<li>Wrap your R function using <code>ee_utils_pyfunc</code> before passing them to the Earth Engine Web REST API. This is not compulsory, but it will help reduce possible <a href="https://r-spatial.github.io/rgee/articles/considerations.html#the-map-message-error">bugs</a> <span class="emoji" data-emoji="bug">🐛</span>.</li>
 </ul>
 </div>
 <div id="quick-demo" class="section level2">
@@ -262,7 +261,7 @@ R
 <div id="2-extract-precipitation-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#2-extract-precipitation-values" class="anchor"></a>2. Extract precipitation values</h3>
-<p>Load <code>sf</code> and authenticate and initialize the Earth Engine R API.</p>
+<p>Load <code>tidyverse</code> and <code>sf</code> and initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb14"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
@@ -293,7 +292,7 @@ R
 <div id="3-create-an-ndvi-animation-js-version" class="section level3">
 <h3 class="hasAnchor">
 <a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation">JS version</a>)</h3>
-<p>Load sf and authenticate and initialize the Earth Engine R API.</p>
+<p>Load <code>sf</code> and initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb19"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
@@ -313,7 +312,7 @@ R
 <span class="no">distinctDOY</span> <span class="kw">&lt;-</span> <span class="no">col</span>$<span class="fu">filterDate</span>(<span class="st">'2013-01-01'</span>, <span class="st">'2014-01-01'</span>)</pre></div>
 <p>Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.</p>
 <div class="sourceCode" id="cb23"><pre class="r"><span class="no">filter</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="no">Filter</span>$<span class="fu">equals</span>(<span class="kw">leftField</span> <span class="kw">=</span> <span class="st">'doy'</span>, <span class="kw">rightField</span> <span class="kw">=</span> <span class="st">'doy'</span>);</pre></div>
-<p>Define and Apply the join; convert the resulting FeatureCollection to an ImageCollection.</p>
+<p>Define a join; convert the resulting FeatureCollection to an ImageCollection.</p>
 <div class="sourceCode" id="cb24"><pre class="r"><span class="no">join</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="no">Join</span>$<span class="fu">saveAll</span>(<span class="st">'doy_matches'</span>)
 <span class="no">joinCol</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu">ImageCollection</span>(<span class="no">join</span>$<span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="no">distinctDOY</span>, <span class="no">col</span>, <span class="no">filter</span>))</pre></div>
 <p>Apply median reduction among matching DOY collections.</p>

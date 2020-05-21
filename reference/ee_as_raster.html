@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Convert an Earth Engine (EE) image into a raster object — ee_as_raster" />
-<meta property="og:description" content="Convert an Earth Engine (EE) image into a raster object" />
+<meta property="og:description" content="Convert an ee$Image into a raster object" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -161,7 +161,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Convert an Earth Engine (EE) image into a raster object</p>
+    <p>Convert an ee$Image into a raster object</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_raster</span>(
@@ -201,7 +201,7 @@ options supported. See details.</p></td>
     <tr>
       <th>scale</th>
       <td><p>Numeric. The resolution in meters per pixel. Defaults
-to the native resolution of the image assset.</p></td>
+to the native resolution of the image asset.</p></td>
     </tr>
     <tr>
       <th>maxPixels</th>
@@ -228,15 +228,15 @@ to be exported into (ignored if <code>via</code> is not defined as "drive" or
 
     <p><code>ee_as_raster</code> supports the download of <code>ee$Image</code>
 by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the <code>via</code> argument, <code>ee_as_raster</code> will make an
+is set in the <code>via</code> argument, <code>ee_as_stars</code> will make a
 REST call to retrieve all the known information about the object. The
-advantage of use "getInfo" is a direct and faster download. However, there
+advantage of using "getInfo" is performing a quick download. However, there
 is a limitation of 262144 pixels by request which makes it not recommendable
 for large images. Instead of "getInfo", the options: "drive" and "gcs"
 are suitable for large collections since they use an intermediate web store
-service. Before to use any of this options, it is necessary previously
-install the R packages
-<a href='https://CRAN.R-project.org/package=googledrive'>googledrive</a>
+service. Before using any of these options, it is necessary previously
+to install the R packages
+<a href=' https://CRAN.R-project.org/package=googledrive'>googledrive</a>
 and <a href='https://CRAN.R-project.org/package=googleCloudStorageR'>
 googleCloudStorageR</a>. For getting more information about exporting data take
 a look at the <a href='https://developers.google.com/earth-engine/exporting'>Google

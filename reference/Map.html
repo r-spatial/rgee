@@ -199,7 +199,7 @@ is provided, it uses 1 by default.</p><ul>
 <li><p><strong>centerObject(eeObject, zoom = NULL,
 maxError = ee$ErrorMargin(1))</strong>: Centers the
 map view on a given object. If no zoom level is provided, it will
-be predicted according the bounds of the Earth Engine object specified.</p><ul>
+be predicted according to the bounds of the Earth Engine object specified.</p><ul>
 <li><p><strong>eeObject:</strong> EE object.<br /></p></li>
 <li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
 <li><p><strong>maxError:</strong> 	Max error when input
@@ -210,13 +210,12 @@ requested result projection or geodesic state.</p></li>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>Map</code> takes advantage of
+    <p><code>Map</code> takes advantage of the
 <a href='https://developers.google.com/earth-engine/api_docs#ee.data.getmapid'>
-getMapId</a> for fetch and return both a mapid and a token suitable
-to use in a mapview  object. To achieve desirable
-visualization effect, it will depend on the type of spatial EE object . For
-Image objects, you can provide visualization parameters to
-Map$addLayer() by using the argument visParams. The
+getMapId</a> EE method to fetch and return an ID dictionary beind used to create
+layers in a mapview object. Users can specify visualization
+parameters to Map\$addLayer by using the visParams argument. It will depend
+on the type of spatial EE object. For <code>ee$Image</code>, the
 <a href='https://developers.google.com/earth-engine/image_visualization'>
 parameters</a> available are:</p>
 <table class='table'>
@@ -239,11 +238,12 @@ and 1.0 is fully opaque)</td><td>number</td></tr>
 </table>
 
 
-<p>If you add an Image to the map without any additional
-parameters, by default <code>Map$addLayer()</code> assigns the first three bands to red,
+<p>If you add an <code>ee$Image</code> to the map without any additional parameters,
+by default <code>Map$addLayer()</code> assigns the first three bands to red,
 green, and blue bands, respectively. The default stretch is based on the
-min-max range.  For Geometry, Feature, and/or FeatureCollection. The
-available visParams are:</p><ul>
+min-max range. By the other hand, for <code>ee$Geometry</code>, <code>ee$Feature</code>,
+and <code>ee$FeatureCollection</code>. The available parameters are:</p>
+<ul>
 <li><p><strong>color</strong>: A hex string in the format RRGGBB specifying the
 color to use for drawing the features. By default 000000.</p></li>
 <li><p><strong>pointRadius</strong>: The radius of the point markers. By default 3.</p></li>

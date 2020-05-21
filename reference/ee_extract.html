@@ -50,7 +50,7 @@
 <meta property="og:description" content="Extract values from a ee$Image or ImageCollection at the
 locations of a geometry object. You can use ee$Geometry$*,
 ee$Feature, ee$FeatureCollection and sf objects. This function
-try to mimics how extract currently works." />
+mimicking how extract currently works." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -167,7 +167,7 @@ try to mimics how extract currently works." />
     <p>Extract values from a <code>ee$Image</code> or <code>ImageCollection</code> at the
 locations of a geometry object. You can use <code>ee$Geometry$*</code>,
 <code>ee$Feature</code>, <code>ee$FeatureCollection</code> and sf objects. This function
-try to mimics how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
+mimicking how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
@@ -186,7 +186,7 @@ try to mimics how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract<
     <tr>
       <th>fun</th>
       <td><p>ee$Reducer object. Function to summarize the values. The function
-should take a single numeric vector as argument and return a single value.
+must take a single numeric value as an argument and return a single value.
 See details.</p></td>
     </tr>
     <tr>
@@ -197,25 +197,26 @@ By default 1000.</p></td>
     <tr>
       <th>sf</th>
       <td><p>Logical. Should the extracted values be added to the data.frame of
-the sf object y? This only applies if y is a sf object.</p></td>
+the sf object y?</p></td>
     </tr>
     <tr>
       <th>...</th>
       <td><p>reduceRegions additional parameters. See
-ee_help(ee$Image()$reduceRegions) for more details.</p></td>
+<code><a href='ee_help.html'>ee_help(ee$Image$reduceRegions)</a></code> for more details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame or a sf object depending on the sf argument. The
-columns with the extracted values will get their column name from the
-image metadata property <code>RGEE_NAME</code>. If is not defined <code>ee_extract</code>
-will use the band name for <code>ee$Images</code> and the <code>system:index</code>
-property for <code>ee$ImageCollections</code>.</p>
+    <p>A data.frame or an sf object depending on the sf argument. The
+columns with the extracted values receive their column name from the image
+metadata property <code>RGEE_NAME</code>. If it is not defined <code>ee_extract</code>
+use the band name (<code>ee$Image$name</code>) if <code>x</code> is an <code>ee$Image</code>
+and the <code>system:index</code> property if <code>x</code> is an
+<code>ee$ImageCollection</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In Google Earth Engine the reducer functions that return one value are:</p><ul>
+    <p>The reducer functions that return one value are:</p><ul>
 <li><p><strong>allNonZero</strong>: Returns a Reducer that returns 1 if all of its
 inputs are non-zero, 0 otherwise. <br /></p></li>
 <li><p><strong>anyNonZero</strong>: Returns a Reducer that returns 1 if any of its

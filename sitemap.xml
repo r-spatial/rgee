@@ -139,9 +139,6 @@
     <loc>http://r-spatial.github.io/rgee/reference/gcs_to_ee_table.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/reference/local_as_image.html</loc>
-  </url>
-  <url>
     <loc>http://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc>
   </url>
   <url>
@@ -149,6 +146,9 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/plus-mapview-mapview-method.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/raster_as_ee.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/rdate_to_eedate.html</loc>
