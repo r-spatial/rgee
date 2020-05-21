@@ -17,11 +17,12 @@ ee_check_rgee_python_packages(quiet = FALSE)
 ee_check_credentials()
 }
 \arguments{
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 }
 \description{
-R functions for checking sanity of Third-Party Python
-packages and credentials.
+R functions for checking Google credentials (Google Earth Engine,
+Google Drive and Google Cloud Storage) available in their system and the
+Python environment and the Third-Party Python Packages used by rgee.
 }
 \examples{
 \dontrun{

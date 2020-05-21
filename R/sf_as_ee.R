@@ -1,16 +1,18 @@
 #' Convert an sf object to an EE object
 #'
-#' @param x sf object to be converted into a EE object.
-#' @param via Method to download the image. Three methods are implemented
-#' 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.
+#' Convert an sf object to an ee$FeatureCollection
+#'
+#' @param x sf object to be converted into an ee$FeatureCollection.
+#' @param via Character. Upload method for sf objects. Three methods are
+#'  implemented 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.
 #' @param monitoring Logical. Ignore if via is not set as
 #' \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 #' will be monitored.
 #' @param assetId Character. Destination asset ID for the uploaded file. Ignore
 #' if \code{via} argument is "getInfo".
 #' @param check_ring_dir Logical. See \link[sf]{st_read} for details.
-#' @param proj Integer or character. coordinate reference system for the EE
-#' object, defaults to "EPSG:4326" (x=longitude, y=latitude).
+#' @param proj Integer or character. Coordinate Reference System (CRS) for the
+#' EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
 #' Whether line segments should be interpreted as spherical geodesics. If
 #' FALSE, indicates that line segments should be interpreted as planar lines
@@ -28,35 +30,38 @@
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param quiet Logical. Suppress info message.
 #' @param ... \link[sf]{st_read} arguments might be included.
+#'
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
+#'
 #' @return A ee$FeatureCollection object
+#'
 #' @details
 #' \code{sf_as_ee} supports the upload of \code{sf} objects by three different
 #' options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
 #' When "getInfo" is set in the \code{via} argument the sf object is
-#' transformed to GeoJSON using \link[geojsonio]{geojson_json} and then
+#' transformed to GeoJSON (using \link[geojsonio]{geojson_json}) and then
 #' encrusted in an HTTP request using the server-side objects that are
 #' implemented in the Earth Engine API (ee$Geometry). If the sf object is too
 #' large (~ >1Mb) it is likely to cause bottlenecks since it is a temporary
-#' file that is not saved in your Earth Engine Asset. See
+#' file that will save in the request message not in their EE Assets. See
 #' \href{https://developers.google.com/earth-engine/client_server}{Client
 #' vs Server} documentation for more details. The second method implemented is
 #' 'getInfo_to_asset'. It is similar to the previous one, with the difference
 #' that the result will be saved in your Earth Engine Asset. For dealing
-#' with very large spatial objects, it is preferable to use the third option
-#' 'gcs_to_asset'. This option firstly save the sf object as a  *.shp file
-#' in the /temp directory . Secondly, using the function \code{local_to_gcs}
+#' with very large spatial objects is preferable to use the third option
+#' 'gcs_to_asset'. This option firstly saves the sf object as a *.shp file
+#' in the /temp directory. Secondly, using the function \code{local_to_gcs}
 #' will move the shapefile from local to Google Cloud Storage. Finally, using
 #' the function \code{gcs_to_ee_table} the ESRI shapefile will be loaded
-#' to the Earth Engine Asset.
+#' to their EE Assets.
 #' See \href{https://developers.google.com/earth-engine/importing}{Importing
 #' table data} documentation for more details.
 #'
 #' Earth Engine is strict on polygon ring directions (outer ring
 #' counter-clockwise, and the inner one clockwise). If `check_ring_dir` is TRUE,
-#' it check every ring, and revert them if necessary, to counter clockwise for
-#' outer, and clockwise for inner (hole) ones. By default this is FALSE because
+#' it checks every ring, and revert them if necessary, to counter clockwise for
+#' outer, and clockwise for inner (hole) ones. By default, this is FALSE because
 #' it is an expensive operation.
 #'
 #' @examples

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_image.R
 \name{stars_as_ee}
 \alias{stars_as_ee}
-\title{Convert a local image into an EE Image}
+\title{Convert a stars or stars-proxy object into an EE Image}
 \usage{
 stars_as_ee(
   x,
@@ -18,8 +18,7 @@ stars_as_ee(
 
 \item{assetId}{Character. Destination asset ID for the uploaded file.}
 
-\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
-it exists.}
+\item{overwrite}{Logical. If TRUE, the assetId will be overwritten.}
 
 \item{monitoring}{Logical. If TRUE the exportation task will be monitored.}
 
@@ -31,7 +30,7 @@ it exists.}
 An ee$Image object
 }
 \description{
-Convert a local image into an EE Image
+Convert a stars or stars-proxy object into an ee$Image.
 }
 \examples{
 \dontrun{

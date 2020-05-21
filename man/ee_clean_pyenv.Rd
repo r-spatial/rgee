@@ -2,12 +2,12 @@
 % Please edit documentation in R/ee_clean.R
 \name{ee_clean_pyenv}
 \alias{ee_clean_pyenv}
-\title{Remove reticulate system variables from .Renviron}
+\title{Remove rgee system variables from .Renviron}
 \usage{
 ee_clean_pyenv()
 }
 \description{
-Remove reticulate system variables from .Renviron
+Remove rgee system variables from .Renviron
 }
 \examples{
 \dontrun{

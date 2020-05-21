@@ -44,7 +44,7 @@ FeatureCollection, Image or ImageCollection.}
 
 \item{clean}{Logical. If TRUE, the cache will be cleaned.}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{Logical. Suppress info message}
 
 \item{f_index}{Numeric. Index of the \code{ee$FeatureCollection} to fetch.
 Relevant just for \code{ee$FeatureCollection} objects.}
@@ -54,7 +54,8 @@ Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
 
 \item{compression_ratio}{Numeric. Measurement of the relative reduction
 in size of data representation produced by a data compression algorithm
-(ignored if eeobject is not a Image or ImageCollection). By default is 20.}
+(ignored if \code{eeobject} is not a Image or ImageCollection). By default
+is 20.}
 
 \item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
 Relevant just for \code{ee$ImageCollection} objects.}

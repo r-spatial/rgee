@@ -705,17 +705,19 @@ ee_table_to_asset <- function(collection,
 #' @details
 #' The task argument needs a status as task "COMPLETED" to work, since the
 #' parameters necessary to identify EE objects into google drive are obtained
-#' from ee$batch$Export$*$toDrive(...)$start()$status().
-#'
+#' from \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
 #' \code{consider} argument is necessary since Google Drive permits users to
 #' create files with the same name. \code{consider} uses an interactive R
 #' session by default to help users identify just the files that they want to
 #' download. Additionally, the options "last" and "all" are implemented. "last"
 #' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
+#'
 #' @return filename character vector.
+#'
 #' @importFrom stars read_stars
 #' @importFrom utils menu
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -919,7 +921,7 @@ ee_drive_to_local <- function(task,
 #'
 #' The task argument needs "COMPLETED" task state to work, since the parameters
 #' necessaries to locate the file into google cloud storage are obtained from
-#' ee$batch$Export$*$toCloudStorage(...)$start()$status().
+#' \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 #'
 #' @return filename character vector.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_Initialize.R
 \name{ee_users}
 \alias{ee_users}
-\title{Display credentials of all users as a table}
+\title{Display the credentials of all users as a table}
 \usage{
 ee_users()
 }

@@ -16,7 +16,7 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the 
-[earthengine-api 0.1.221](https://pypi.org/project/earthengine-api/0.1.221/).
+[earthengine-api 0.1.222](https://pypi.org/project/earthengine-api/0.1.222/).
 **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 
@@ -138,14 +138,10 @@ Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/a
   - All `rgee` functions have the prefix ee\_. Auto-completion is
     your friend :).
   - Full access to the Earth Engine API with the prefix
-    [**ee$…:**](https://developers.google.com/earth-engine/).
+    [**ee$…**](https://developers.google.com/earth-engine/).
   - Authenticate and Initialize the Earth Engine R API with
-    [**ee\_Initialize:**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html), you just will need to do it once by session!.
-  - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does
-    not require its use.
-  - Wrap your R function using `ee_utils_pyfunc` before passing them to the
-    Earth Engine Web REST API. This is not compulsory, but it will help
-    reduce possible [bugs](https://r-spatial.github.io/rgee/articles/considerations.html#the-map-message-error) :bug:.
+    [**ee\_Initialize**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html). It is necessary once by session!.
+  - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does not require its use.
 
 ## Quick Demo
 
@@ -206,7 +202,7 @@ Map$addLayer(
 
 ### 2. Extract precipitation values
 
-Load `sf` and authenticate and initialize the Earth Engine R API.
+Load `tidyverse` and `sf` and initialize the Earth Engine R API.
 
 ``` r
 library(tidyverse)
@@ -233,8 +229,7 @@ terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
-similar to `raster::extract`, you just need to define: the
-ImageCollection object (x), the geometry (y), and a function to
+similar to `raster::extract`, you just need to define: the ImageCollection object (x), the geometry (y), and a function to
 summarize the values (fun).
 
 ``` r
@@ -263,7 +258,7 @@ ee_nc_rain %>%
 ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
 
 
-Load sf and authenticate and initialize the Earth Engine R API.
+Load `sf` and initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
@@ -305,7 +300,7 @@ from the distinct DOY collection.
 filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy');
 ```
 
-Define and Apply the join; convert the resulting FeatureCollection to an ImageCollection.
+Define a join; convert the resulting FeatureCollection to an ImageCollection.
 
 ``` r
 join <- ee$Join$saveAll('doy_matches')

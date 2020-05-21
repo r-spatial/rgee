@@ -4,5 +4,5 @@
 #' version with which rgee was built.
 #' @export
 ee_version <- function() {
- '0.1.221'
+ '0.1.222'
 }

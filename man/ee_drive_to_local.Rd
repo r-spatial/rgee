@@ -34,8 +34,7 @@ Move results of an EE task saved in Google Drive to a local directory.
 \details{
 The task argument needs a status as task "COMPLETED" to work, since the
 parameters necessary to identify EE objects into google drive are obtained
-from ee$batch$Export$*$toDrive(...)$start()$status().
-
+from \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
 \code{consider} argument is necessary since Google Drive permits users to
 create files with the same name. \code{consider} uses an interactive R
 session by default to help users identify just the files that they want to

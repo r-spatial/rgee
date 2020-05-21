@@ -27,7 +27,7 @@ directory.
 \details{
 The task argument needs "COMPLETED" task state to work, since the parameters
 necessaries to locate the file into google cloud storage are obtained from
-ee$batch$Export$*$toCloudStorage(...)$start()$status().
+\code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 }
 \examples{
 \dontrun{
