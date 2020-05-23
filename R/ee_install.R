@@ -42,7 +42,14 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   }
 
   # Create a python environment
-  rgee_path <- ee_install_create_pyenv(py_env = py_env)
+  message(sprintf("1. Creating a Python Environment (%s)", py_env))
+  rgee_path <- tryCatch(
+    expr = ee_install_create_pyenv(py_env = py_env),
+    error = function(e) stop(
+      "An error occur when ee_install was creating the Python Environment. ",
+      "Run ee_clean_pyenv() and Restart the R session, before trying again."
+    )
+  )
 
   # Find the Python Path of the environment created
   if (is_windows()) {
@@ -73,18 +80,20 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
 
   # Create EARTHENGINE_PYTHON
   message(
-    sprintf("The Environment Variable 'EARTHENGINE_PYTHON=%s' ", py_path),
+    sprintf("2. The Environment Variable 'EARTHENGINE_PYTHON=%s' ", py_path),
     "was set on the .Renviron file. Remember that you can remove it using",
-    " reticulate::ee_clean_pyenv()"
+    " reticulate::ee_clean_pyenv()."
   )
 
   ee_install_set_pyenv(py_path = py_path)
 
   # Install the Earth Engine API
+  message("3. Installing the earthengine-api. Running ...")
+  message(sprintf("reticulate::py_install(packages = 'earthengine-api', envname = '%s')", rgee_path))
   tryCatch(
     expr = ee$computedobject,
     error = function(e) reticulate::py_install(
-      packages = "earthengine-api",
+      packages = c("earthengine-api", "numpy"),
       envname = rgee_path
     )
   )
