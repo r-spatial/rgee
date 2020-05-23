@@ -40,9 +40,12 @@
 ee_search_dataset <- function(quiet = FALSE,
                               upgrade = FALSE,
                               path_dataset = NULL) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- utils_py$ee_path()
   ee_search_dataset_file <- sprintf(
     "%s/ee_search_dataset.csv",
-    path.expand("~/.config/earthengine")
+    ee_path
   )
   if (file.exists(ee_search_dataset_file) & !upgrade) {
     ee_search_dataset <- read.csv(ee_search_dataset_file,

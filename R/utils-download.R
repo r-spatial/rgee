@@ -157,7 +157,9 @@ ee_sort_localfiles <- function(filenames, fileformat) {
 #' GCS or Google Drive Exist credentials?
 #' @noRd
 ee_exist_credentials <- function() {
-  ee_path <- path.expand("~/.config/earthengine")
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- utils_py$ee_path()
   read.table(
     file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
     header = TRUE,

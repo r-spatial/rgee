@@ -43,3 +43,7 @@ def create_codes():
 # Get current Earth Engine version
 def ee_getversion():
   return ee.__version__
+
+def ee_path():
+  cred_path = os.path.expanduser("~/.config/earthengine/")
+  return cred_path
