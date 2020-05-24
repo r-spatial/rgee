@@ -13,7 +13,8 @@ vignette: >
 ---
 
 # rgee 0.5.1
-- ee_install_* functions were deprecated and replaced by ee_install. ee_install create an isolated Python virtual environment with all rgee dependencies. ee_install can also be used to set the EARTHENGINE_PYTHON variable.
+- ee_install_* functions were deprecated and replaced by ee_install. ee_install create an isolated Python virtual environment with all rgee dependencies.
+- ee_install_set_pyenv can be used to set the EARTHENGINE_PYTHON variable.
 
 # rgee 0.5.0
 - **Initial CRAN release**

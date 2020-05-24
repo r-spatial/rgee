@@ -104,7 +104,7 @@ ee_as_sf <- function(x,
   # Load ee_Initialize() session; just for either drive or gcs
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- utils_py$ee_path()
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   ee_user <- read.table(
     file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
     header = TRUE,

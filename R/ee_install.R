@@ -1,9 +1,8 @@
 #' Create an isolated Python virtual environment with all rgee dependencies.
 #'
 #' @param py_env Character. The name, or full path, of the Python environment
-#' to be used by rgee. If it does not exist, a new Python environment will be
-#' created.
-#' @param confirm Logical. Confirm if restart R when the 'install'
+#' to be used by rgee.
+#' @param confirm Logical. Confirm before restarting R?.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -50,16 +49,16 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
     expr = ee_install_create_pyenv(py_env = py_env),
     error = function(e) stop(
       "An error occur when ee_install was creating the Python Environment. ",
-      "Run ee_clean_pyenv() and Restart the R session, before trying again."
+      "Run ee_clean_pyenv() and restart the R session, before trying again."
     )
   )
 
   # Find the Python Path of the environment created
   if (is_windows()) {
-    # In windows, conda_create return the Python executable (.../python.exe)
-    # rather than in linux and MacOS that return the path of the Environment
-    # (a folder!!). It is a little tricky, maybe it changes on future version of
-    # reticulate.
+    # conda_create returns the Python executable (.../python.exe)
+    # rather than in linux and MacOS that returns the path of the Environment
+    # (a folder!!). It is a little tricky, maybe it changes on future version
+    # of reticulate.
     py_path <- rgee_path # py_path --> Python executable
     rgee_path <- dirname(py_path) # rgee_path --> Env path
   } else {
@@ -120,40 +119,21 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
 }
 
 
-#' Create an isolated Python virtual environment to be used in rgee
-#' @param py_env The name of, or path to, a Python virtual environment.
-#' @importFrom reticulate conda_create virtualenv_create
-#' @return Character. The path of the virtual environment created.
-#' @noRd
-ee_install_create_pyenv <- function(py_env = "rgee") {
-  #Check is Python is greather than 3.5
-  ee_check_python(quiet = TRUE)
-  if (is_windows()) {
-    pyenv_path <- conda_create(py_env)
-  } else {
-    pyenv_path <- virtualenv_create(py_env)
-  }
-  pyenv_path
-}
-
-#' Delete an isolated Python virtual environment to be used in rgee
-#' @param py_env The name of, or path to, a Python virtual environment.
-#' @importFrom reticulate conda_remove virtualenv_remove
-#' @return Character. The path of the virtual environment created.
-#' @noRd
-ee_install_delete_pyenv <- function(py_env = "rgee") {
-  #Check is Python is greather than 3.5
-  ee_check_python(quiet = TRUE)
-  if (is_windows()) {
-    try(conda_remove(py_env), silent = TRUE)
-  } else {
-    try(virtualenv_remove(py_env, confirm = FALSE), silent = TRUE)
-  }
-}
-
-#' Set the Python environment to be used on rgee
+#' Set EARTHENGINE_PYTHON as an environment variable
 #'
-#' @param py_path The path to a Python interpreter, to be used with rgee.
+#' @param py_path The path to a Python interpreter, to be used by rgee.
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(reticulate)
+#' # windows?
+#' conda_list()
+#' # linux?
+#' virtualenv_list()
+#'
+#' ee_install_set_pyenv("../../rgee")
+#' }
 #' @export
 ee_install_set_pyenv <- function(py_path) {
   ee_clean_pyenv()
@@ -193,6 +173,36 @@ ee_install_set_pyenv <- function(py_path) {
 }
 
 
+#' Create an isolated Python virtual environment to be used in rgee
+#' @param py_env The name of, or path to, a Python virtual environment.
+#' @importFrom reticulate conda_create virtualenv_create
+#' @return Character. The path of the virtual environment created.
+#' @noRd
+ee_install_create_pyenv <- function(py_env = "rgee") {
+  #Check is Python is greather than 3.5
+  ee_check_python(quiet = TRUE)
+  if (is_windows()) {
+    pyenv_path <- conda_create(py_env)
+  } else {
+    pyenv_path <- virtualenv_create(py_env)
+  }
+  pyenv_path
+}
+
+#' Delete an isolated Python virtual environment to be used in rgee
+#' @param py_env The name of, or path to, a Python virtual environment.
+#' @importFrom reticulate conda_remove virtualenv_remove
+#' @return Character. The path of the virtual environment created.
+#' @noRd
+ee_install_delete_pyenv <- function(py_env = "rgee") {
+  #Check is Python is greather than 3.5
+  ee_check_python(quiet = TRUE)
+  if (is_windows()) {
+    try(conda_remove(py_env), silent = TRUE)
+  } else {
+    try(virtualenv_remove(py_env, confirm = FALSE), silent = TRUE)
+  }
+}
 
 #' Detect the Operating System type of the system
 #' @noRd

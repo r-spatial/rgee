@@ -45,8 +45,8 @@ user <- "data.colec.fbf"
 skip_if_no_credentials(user)
 skip_if_no_pypkg()
 init_rgee()
-# -------------------------------------------------------------------------
 
+# -------------------------------------------------------------------------
 test_that("simple ee_check ",{
   expect_true(ee_check_python())
   expect_null(ee_check_rgee_python_packages())
@@ -56,5 +56,6 @@ test_that("simple ee_check ",{
 test_that("ee_check ",{
   expect_null(ee_check())
 })
+
 
 

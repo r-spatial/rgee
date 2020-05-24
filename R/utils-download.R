@@ -159,7 +159,7 @@ ee_sort_localfiles <- function(filenames, fileformat) {
 ee_exist_credentials <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- utils_py$ee_path()
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   read.table(
     file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
     header = TRUE,

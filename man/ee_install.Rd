@@ -8,10 +8,9 @@ ee_install(py_env = "rgee", confirm = interactive())
 }
 \arguments{
 \item{py_env}{Character. The name, or full path, of the Python environment
-to be used by rgee. If it does not exist, a new Python environment will be
-created.}
+to be used by rgee.}
 
-\item{confirm}{Logical. Confirm if restart R when the 'install'}
+\item{confirm}{Logical. Confirm before restarting R?.}
 }
 \description{
 Create an isolated Python virtual environment with all rgee dependencies.

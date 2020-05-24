@@ -42,7 +42,7 @@ ee_search_dataset <- function(quiet = FALSE,
                               path_dataset = NULL) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- utils_py$ee_path()
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   ee_search_dataset_file <- sprintf(
     "%s/ee_search_dataset.csv",
     ee_path

@@ -20,7 +20,7 @@
 ee_clean_credentials <- function(email='not_defined', quiet=FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- utils_py$ee_path()
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   email_clean <- gsub("@gmail.com", "", email)
 
   if (email == 'not_defined') {
