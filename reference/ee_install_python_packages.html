@@ -83,7 +83,7 @@ ee_install_earthengine_upgrade will be removed in rgee 0.5.3" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -159,7 +159,7 @@ ee_install_earthengine_upgrade will be removed in rgee 0.5.3" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Install rgee Python packages dependencies (DEPRECATED)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Deprecated.R'><code>R/Deprecated.R</code></a></small>
     <div class="hidden name"><code>ee_install_python_packages.Rd</code></div>
     </div>
 
@@ -262,7 +262,7 @@ following locations:</p><ol>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># 2. Create a Python environment, e.g. ee.</span>
-<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_install_create_pyenv.html'>ee_install_create_pyenv</a></span>(<span class='kw'>py_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
+<span class='no'>pyenv</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_install_create_pyenv</span>(<span class='kw'>py_env</span> <span class='kw'>=</span> <span class='st'>"ee"</span>)
 
 <span class='co'># Find others Python environments in the system.</span>
 <span class='fu'><a href='ee_install_discover_pyenvs.html'>ee_install_discover_pyenvs</a></span>()

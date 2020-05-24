@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
       </span>
     </div>
 
@@ -183,27 +183,18 @@ R
 <div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="dv">127</span>.<span class="dv">0</span>.<span class="fl">0.1</span><span class="op">:</span><span class="dv">8787</span></span></code></pre></div>
 </div>
 </div>
-<div id="recommended-setup" class="section level2">
+<div id="setup" class="section level2">
 <h2 class="hasAnchor">
-<a href="#recommended-setup" class="anchor"></a>Recommended setup</h2>
-<p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in their system. <code>rgee</code> counts with an installation module (ee_install_*) which helps to setup <code>rgee</code> (not mandatory):</p>
+<a href="#setup" class="anchor"></a>setup</h2>
+<p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in their system. <code>rgee</code> counts with an installation function (ee_install) which helps to setup <code>rgee</code> correctly:</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 
-<span class="co">## It is necessary just once, not mandatory</span>
+<span class="co">## It is necessary just once</span>
+<span class="fu"><a href="reference/ee_install.html">ee_install</a></span>()
 
-<span class="co"># 1. Create a Python environment, e.g. ee.</span>
-<span class="no">pyenv</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_install_create_pyenv.html">ee_install_create_pyenv</a></span>(<span class="kw">py_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
-
-<span class="co"># OPTIONAL: Find others Python path in the system.</span>
-<span class="co"># ee_install_discover_pyenvs()</span>
-
-<span class="co"># 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)</span>
-<span class="co">#    to be used in future sessions</span>
-<span class="fu"><a href="reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span>(<span class="no">pyenv</span>)
-
-<span class="co"># 3. Now run ee_Initialize()!</span>
+<span class="co"># Initialize Earth Engine!</span>
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></div>
-<p>Additionally, you might use the functions below for checking the status of rgee and delete credentials.</p>
+<p>Additionally, you might use the functions below for checking the status of rgee dependencies and delete credentials.</p>
 <div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="reference/ee_check-tools.html">ee_check</a></span>() <span class="co"># Check non-R dependencies</span>
 <span class="fu"><a href="reference/ee_clean_credentials.html">ee_clean_credentials</a></span>() <span class="co"># Remove credentials of a specific user</span>
 <span class="fu"><a href="reference/ee_clean_pyenv.html">ee_clean_pyenv</a></span>() <span class="co"># Remove reticulate system variables</span></pre></div>
@@ -355,7 +346,7 @@ R
 <div id="how-does-rgee-work" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-does-rgee-work" class="anchor"></a>How does rgee work?</h2>
-<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece of code to Python. Once the Python code is obtained, the <code>Earth Engine Python API</code> transform the request to a <code>JSON</code> format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The <strong>response</strong> will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), <code>rgee</code> offers also functions to batch <a href="https://r-spatial.github.io/rgee/reference/sf_as_ee.html">upload</a>(<a href="https://r-spatial.github.io/rgee/reference/ee_as_sf.html">download</a>) spatial objects. Additionally, you could easily manage EEA through the <a href="https://r-spatial.github.io/rgee/reference/ee_manage-tools.html">ee_manage_*</a> interface.</p>
+<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece of code to Python. Once the Python code is obtained, the <code>Earth Engine Python API</code> transform the request to a <code>JSON</code> format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The <strong>response</strong> will follow the same path.</p>
 <p><img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt="workflow"></p>
 </div>
 <div id="code-of-conduct" class="section level2">
