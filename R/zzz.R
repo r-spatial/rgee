@@ -1,3 +1,8 @@
+.onAttach <- function(libname, pkgname) {
+  #packageStartupMessage(
+  options(rgee.print.option = "simply")
+}
+
 .onLoad <- function(libname, pkgname) {
   # Configure a Python environment
   reticulate::configure_environment(pkgname)
@@ -10,13 +15,9 @@
   ee <<- reticulate::import("ee", delay_load = TRUE)
 }
 
-.onAttach <- function(libname, pkgname) {
-  #packageStartupMessage(
-  options(rgee.print.option = "simply")
-}
 
 #' Reattach ee as a reserved word
 #' @export
 ee_reattach <- function() {
-  ee <<- reticulate::import("ee", delay_load = FALSE)
+  ee <<- reticulate::import("ee", delay_load = TRUE)
 }

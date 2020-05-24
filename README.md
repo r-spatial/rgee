@@ -109,30 +109,21 @@ After that, in your preferred browser, run:
 
     127.0.0.1:8787
 
-## Recommended setup
+## setup
 
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in their system. `rgee` counts with an installation module (ee_install_*) which helps to setup `rgee` (not mandatory):
+Prior to using `rgee` you will need to install a **Python version higher than 3.5** in their system. `rgee` counts with an installation function (ee_install) which helps to setup `rgee` correctly:
 
 ```r
 library(rgee)
 
-## It is necessary just once, not mandatory
+## It is necessary just once
+ee_install()
 
-# 1. Create a Python environment, e.g. ee.
-pyenv <- ee_install_create_pyenv(py_env = "ee")
-
-# OPTIONAL: Find others Python path in the system.
-# ee_install_discover_pyenvs()
-
-# 2. Set a Python path in .Renviron (EARTHENGINE_PYTHON)
-#    to be used in future sessions
-ee_install_set_pyenv(pyenv)
-
-# 3. Now run ee_Initialize()!
+# Initialize Earth Engine!
 ee_Initialize()
 ```
 
-Additionally, you might use the functions below for checking the status of rgee and delete credentials.
+Additionally, you might use the functions below for checking the status of rgee dependencies and delete credentials.
 
 ```r
 ee_check() # Check non-R dependencies
@@ -375,7 +366,7 @@ browseURL(rgbVis$getVideoThumbURL(gifParams))
 
 ## How does rgee work?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. If you are searching a way to interact with the Earth Engine Asset (EEA), `rgee` offers also functions to batch [upload](https://r-spatial.github.io/rgee/reference/sf_as_ee.html)([download](https://r-spatial.github.io/rgee/reference/ee_as_sf.html)) spatial objects. Additionally, you could easily manage EEA through the [ee\_manage\_\*](https://r-spatial.github.io/rgee/reference/ee_manage-tools.html) interface.
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. 
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 

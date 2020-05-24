@@ -130,7 +130,9 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
 #' @rdname ee_check-tools
 #' @export
 ee_check_credentials <- function() {
-  driverdir <- path.expand("~/.config/earthengine")
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  driverdir <- ee_utils_py_to_r(utils_py$ee_path())
   ee_credentials <- sprintf("%s/credentials", driverdir)
   drive_credentials <- list.files(driverdir, "@gmail.com", full.names = TRUE)[1]
 

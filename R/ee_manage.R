@@ -96,8 +96,11 @@
 #' }
 #' @export
 ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+
   # Is the same EE user?
-  ee_path <- path.expand("~/.config/earthengine")
   user <- read.table(file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
                      header = TRUE,
                      stringsAsFactors = FALSE)

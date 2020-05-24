@@ -58,23 +58,6 @@ ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           quiet = FALSE) {
-  # if (isFALSE(py_available(initialize = TRUE))) {
-  #   init_message <- paste0(
-  #     "No available Python version found in your system",
-  #     ". Would you like to install Miniconda?",
-  #     collapse = ""
-  #   )
-  #   switch(
-  #     EXPR = menu(
-  #       choices = c('yes','no'),
-  #       title = init_message
-  #     ) + 1,
-  #     stop('rgee needs a Python environment in the system\n'),
-  #     install_miniconda(),
-  #     stop('rgee needs a Python environment in the system\n')
-  #   )
-  #   return(0)
-  # }
   if (exists('ee')) {
     if (is.null(ee$computedobject)) {
       stop('rgee does not found the Earth Engine Python API.',
@@ -130,7 +113,7 @@ ee_Initialize <- function(email = NULL,
 
   # create a user's folder
   email_clean <- gsub("@gmail.com", "", email)
-  ee_path <- path.expand("~/.config/earthengine")
+  ee_path <- ee_utils$ee_path()
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   dir.create(ee_path_user, showWarnings = FALSE, recursive = TRUE)
 
@@ -212,7 +195,18 @@ ee_Initialize <- function(email = NULL,
     )
   }
 
-  ee_user <- ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id)
+  # Root folder exist?
+  ee_user <- tryCatch(
+    expr = ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id),
+    finally = function(e) stop(
+      "root folder for the current user does not exist. ",
+      "Create one using ee$data$createAssetHome(), ",
+      "once created you will not be able to change the root name again",
+      ". If the root folder was created successfully execute again",
+      " ee_Initialize()"
+    )
+  )
+
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(
     email = email_clean,
@@ -251,7 +245,7 @@ ee_create_credentials_earthengine <- function(email_clean) {
   utils_py <- ee_source_python(oauth_func_path)
 
   # first step
-  ee_path <- path.expand("~/.config/earthengine")
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   main_ee_credential <- sprintf("%s/credentials", ee_path)
   user_ee_credential <- sprintf(
     "%s/%s/credentials",
@@ -290,7 +284,9 @@ ee_create_credentials_drive <- function(email) {
     )
   }
   # setting drive folder
-  ee_path <- path.expand("~/.config/earthengine")
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   # drive_credentials
@@ -344,8 +340,10 @@ ee_create_credentials_gcs <- function(email) {
       call. = FALSE
     )
   }
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   # setting gcs folder
-  ee_path <- path.expand("~/.config/earthengine")
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   # gcs_credentials
@@ -390,8 +388,11 @@ ee_users <- function() {
   wsc <- "     "
   title  <- c('user', ' EE', ' GD', ' GCS')
 
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+
   # get all dirfiles
-  ee_path <- path.expand("~/.config/earthengine") %>%
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path()) %>%
     list.dirs(full.names = FALSE) %>%
     '['(-1)
 
@@ -477,9 +478,11 @@ ee_sessioninfo <- function(email = NULL,
                            user = NULL,
                            drive_cre = NULL,
                            gcs_cre = NULL) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
   sessioninfo <- sprintf(
     "%s/rgee_sessioninfo.txt",
-    path.expand("~/.config/earthengine")
+    ee_utils_py_to_r(utils_py$ee_path())
   )
   df <- data.frame(
     email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
@@ -492,10 +495,13 @@ ee_sessioninfo <- function(email = NULL,
 #' Get the path where the credentials are stored
 #' @export
 ee_get_earthengine_path <- function() {
-  ee_path <- path.expand("~/.config/earthengine")
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+
   sessioninfo <- sprintf(
     "%s/rgee_sessioninfo.txt",
-    path.expand("~/.config/earthengine")
+    ee_utils_py_to_r(utils_py$ee_path())
   )
   if (file.exists(sessioninfo)) {
     user <- read.table(sessioninfo,
@@ -543,7 +549,9 @@ add_extra_space <- function(name, space) {
 #'
 #' @noRd
 create_table <- function(user, wsc) {
-  ee_path <- path.expand("~/.config/earthengine")
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   user_clean <- gsub(" ", "", user, fixed = TRUE)
   credentials <- list.files(sprintf("%s/%s",ee_path,user_clean))
 
