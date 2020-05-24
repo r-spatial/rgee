@@ -15,6 +15,7 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   if (!requireNamespace("rstudioapi", quietly = TRUE)) {
     stop("package rstudioapi required, please install it first")
   }
+
   # If Python not found install miniconda
   if (!reticulate::py_available(initialize = TRUE)) {
     text <- paste(
@@ -43,6 +44,8 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
 
   # Create a python environment
   message(sprintf("1. Creating a Python Environment (%s)", py_env))
+  ee_install_delete_pyenv(py_env)
+
   rgee_path <- tryCatch(
     expr = ee_install_create_pyenv(py_env = py_env),
     error = function(e) stop(
@@ -90,12 +93,9 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   # Install the Earth Engine API
   message("3. Installing the earthengine-api. Running ...")
   message(sprintf("reticulate::py_install(packages = 'earthengine-api', envname = '%s')", rgee_path))
-  tryCatch(
-    expr = ee$computedobject,
-    error = function(e) reticulate::py_install(
+  reticulate::py_install(
       packages = c("earthengine-api", "numpy"),
       envname = rgee_path
-    )
   )
 
   # Restart to see changes
@@ -136,10 +136,25 @@ ee_install_create_pyenv <- function(py_env = "rgee") {
   pyenv_path
 }
 
+#' Delete an isolated Python virtual environment to be used in rgee
+#' @param py_env The name of, or path to, a Python virtual environment.
+#' @importFrom reticulate conda_remove virtualenv_remove
+#' @return Character. The path of the virtual environment created.
+#' @noRd
+ee_install_delete_pyenv <- function(py_env = "rgee") {
+  #Check is Python is greather than 3.5
+  ee_check_python(quiet = TRUE)
+  if (is_windows()) {
+    try(conda_remove(py_env), silent = TRUE)
+  } else {
+    try(virtualenv_remove(py_env, confirm = FALSE), silent = TRUE)
+  }
+}
+
 #' Set the Python environment to be used on rgee
 #'
 #' @param py_path The path to a Python interpreter, to be used with rgee.
-#' @noRd
+#' @export
 ee_install_set_pyenv <- function(py_path) {
   ee_clean_pyenv()
   # Trying to get the env from the py_path
