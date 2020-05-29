@@ -34,7 +34,7 @@ An ee$Image object
 Convert a Raster* object into an ee$Image.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)
@@ -73,3 +73,8 @@ Map$centerObject(ee_raster_02)
 Map$addLayer(ee_raster_02)
 }
 }
+\seealso{
+Other image upload functions: 
+\code{\link{stars_as_ee}()}
+}
+\concept{image upload functions}

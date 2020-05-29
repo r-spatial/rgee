@@ -54,7 +54,7 @@ filename <- system.file("external/lux.shp", package="raster")
 terraclimate_raw <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2000-01-01", "2001-01-01")$
-  map(function(x) x$select("pr"))
+  map(function(x) x$select("pr")$reproject("EPSG:4326"))
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE) %>%
   st_transform(4326)
 
@@ -63,7 +63,7 @@ test_that("ee_extract ee$ImageCollection",{
                            y = nc,
                            fun = ee$Reducer$max(),
                            sf = TRUE)
-  expect_equal(mean(ee_nc_rain$X200012),53.29)
+  expect_equal(mean(ee_nc_rain$X200012), 50.47)
 })
 
 test_that("ee_extract ee$Image",{
@@ -71,7 +71,7 @@ test_that("ee_extract ee$Image",{
                            y = sf_as_ee(nc),
                            fun = ee$Reducer$max(),
                            sf = TRUE)
-  expect_equal(mean(ee_nc_rain$X200012_pr),53.29)
+  expect_equal(mean(ee_nc_rain$X200012_pr), 50.47)
 })
 
 

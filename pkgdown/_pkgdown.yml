@@ -31,22 +31,17 @@ navbar:
       text: "github"
       href: https://github.com/r-spatial/rgee/
 
-
 reference:
 
   - title: "Install"
     contents:
-      - ee_install_create_pyenv
-      - ee_install_discover_pyenvs
+      - ee_install
       - ee_install_set_pyenv
-      - ee_install_python_packages
-      - ee_install_earthengine_upgrade
 
   - title: "Checking"
     contents:
       - ee_check
       - ee_check_python
-      - ee_check_rgee_python_packages
       - ee_check_credentials
 
   - title: "Clean"
@@ -55,7 +50,7 @@ reference:
       - ee_clean_credentials
       - ee_clean_pyenv
 
-  - title: "Session manage"
+  - title: "Session management"
     contents:
       - ee_Initialize
       - ee_reattach
@@ -63,7 +58,7 @@ reference:
       - ee_user_info
       - ee_users
 
-  - title: "Get path"
+  - title: "Path utils"
     contents:
       - ee_get_assethome
       - ee_get_earthengine_path
@@ -80,7 +75,7 @@ reference:
       - Map
       - +,mapview,mapview-method
 
-  - title: "Download Raster"
+  - title: "Image download"
     contents:
       - ee_as_raster
       - ee_as_stars
@@ -91,19 +86,19 @@ reference:
       - ee_image_info
       - ee_imagecollection_to_local
 
-  - title: "Download vector"
+  - title: "Vector download"
     contents:
       - ee_as_sf
       - ee_table_to_asset
       - ee_table_to_drive
       - ee_table_to_gcs
 
-  - title: "Download generic"
+  - title: "Generic download"
     contents:
       - ee_drive_to_local
       - ee_gcs_to_local
 
-  - title: "Asset manage"
+  - title: "Assets management"
     contents:
       - ee_manage_create
       - ee_manage_delete

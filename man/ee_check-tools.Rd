@@ -4,7 +4,7 @@
 \alias{ee_check-tools}
 \alias{ee_check}
 \alias{ee_check_python}
-\alias{ee_check_rgee_python_packages}
+\alias{ee_check_python_packages}
 \alias{ee_check_credentials}
 \title{Interface to check Python and non-R dependencies}
 \usage{
@@ -12,9 +12,9 @@ ee_check()
 
 ee_check_python(quiet = FALSE)
 
-ee_check_rgee_python_packages(quiet = FALSE)
+ee_check_python_packages(quiet = FALSE)
 
-ee_check_credentials()
+ee_check_credentials(quiet = FALSE)
 }
 \arguments{
 \item{quiet}{Logical. Suppress info message}
@@ -25,14 +25,15 @@ Google Drive and Google Cloud Storage) available in their system and the
 Python environment and the Third-Party Python Packages used by rgee.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
 
 ee_check_python()
-ee_check_rgee_python_packages()
+ee_check_python_packages()
 ee_check_credentials()
 ee_check() # put it all together
 }
 }
+\concept{ee_check functions}

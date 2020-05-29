@@ -11,13 +11,29 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 0.5.2
+
+- **CRAN release**
+- DESCRIPTION: single quotes in title and description.
+- DESCRIPTION: A more compresible description of what rgee does.
+- DESCRIPTION: Added web reference to the Earth Engine API.
+- \dontrun changed by \donttest in all our examples.
+- Added "#' @return" to several functions.
+- Added "#' @family" to all the functions.
+- Added 'quiet' argument to all the functions that needed.
+- Added new contributors to rgee (Kevin Ushey, Tim Appelhans, JJ Allaire, Yuan Tang).
+- New environmental variable for rgee "EARTHENGINE_INIT_MESSAGE". It will be used to display a message to new users.
+- Earth Engine Python API updated to 0.1.213.
+- Documentation updated for ee_print and ee_manage_*.
+- Fix a bug in ee_install_set_pyenv that did not permit to create properly
+the .Renviron_backup file.
 
 # rgee 0.5.1
 - ee_install_* functions were deprecated and replaced by ee_install. ee_install create an isolated Python virtual environment with all rgee dependencies.
 - ee_install_set_pyenv can be used to set the EARTHENGINE_PYTHON variable.
 
 # rgee 0.5.0
-- **Initial CRAN release**
+- **Initial CRAN submit**
 - Several typos fixed.
 - rgee paper added.
 - GitHub actions for automated testing and build the website.

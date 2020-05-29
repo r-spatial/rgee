@@ -61,7 +61,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 \item{...}{\link[sf]{st_read} arguments might be included.}
 }
 \value{
-A ee$FeatureCollection object
+An ee$FeatureCollection object
 }
 \description{
 Convert an sf object to an ee$FeatureCollection
@@ -95,7 +95,7 @@ outer, and clockwise for inner (hole) ones. By default, this is FALSE because
 it is an expensive operation.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(sf)
 

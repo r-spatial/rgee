@@ -30,7 +30,7 @@ necessaries to locate the file into google cloud storage are obtained from
 \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 library(sf)
@@ -92,3 +92,8 @@ ee_monitoring(task_img)
 img <- ee_gcs_to_local(task = task_img)
 }
 }
+\seealso{
+Other generic download functions: 
+\code{\link{ee_drive_to_local}()}
+}
+\concept{generic download functions}

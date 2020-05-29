@@ -66,13 +66,13 @@ searching and 'OR' exclusiveness.}
 \item{maxdisplay}{Numeric. Maximum number of tabs to display in their browser}
 }
 \value{
-a data.frame.
+A data.frame where rows represents public data archive.
 }
 \description{
 R functions for searching in Earth Engine's public data archive.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

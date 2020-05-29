@@ -15,7 +15,7 @@
 mapview + mapview; adds data from the second map to the first
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()

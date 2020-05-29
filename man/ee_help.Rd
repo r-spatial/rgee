@@ -15,7 +15,7 @@ ee_help(eeobject, browser = FALSE)
 Documentation for Earth Engine Objects
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach()
@@ -28,3 +28,9 @@ ee$Image \%>\% ee_help()
 ee$Image \%>\% ee_help(browser = TRUE)
 }
 }
+\seealso{
+Other helper functions: 
+\code{\link{ee_monitoring}()},
+\code{\link{ee_print}()}
+}
+\concept{helper functions}

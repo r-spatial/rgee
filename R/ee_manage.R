@@ -1,6 +1,8 @@
 #' Interface for manage the Earth Engine Asset
 #'
-#' R functions for managing the Earth Engine Asset
+#' R functions for managing the Earth Engine Asset. The interface allows users
+#' to create and eliminate folders, move and copy assets, set and delete
+#' properties, handle access control lists, and manage and/or cancel tasks.
 #'
 #' @name ee_manage-tools
 #' @param path_asset Character. Name of the EE asset (Table, Image, Folder or
@@ -27,7 +29,7 @@
 #' the properties.
 #' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' library(rgee)
 #'
@@ -239,7 +241,7 @@ ee_manage_assetlist <- function(path_asset, quiet = FALSE) {
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_quota <- function() {
+ee_manage_quota <- function(quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_manage.py", package = "rgee")
   ee_quota <- ee_source_python(oauth_func_path)
   ID <- ee$data$getAssetRoots()[[1]]$id %>%
@@ -247,7 +249,9 @@ ee_manage_quota <- function() {
   quota <- ee_utils_py_to_r(ee_quota$quota(ID))
   total_msg <- ee_humansize(as.numeric(quota[1]))
   used_msg <- ee_humansize(as.numeric(quota[2]))
-  cat(sprintf(" Total Quota: %s \n Used Quota: %s", total_msg, used_msg))
+  if (!quiet) {
+    cat(sprintf(" Total Quota: %s \n Used Quota: %s", total_msg, used_msg))
+  }
   invisible(quota)
 }
 
@@ -617,10 +621,12 @@ ee_manage_handle_names <- function(type = c("Folder", "ImageCollection")) {
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_asset_size <- function(path_asset) {
+ee_manage_asset_size <- function(path_asset, quiet = FALSE) {
   info_data <- ee$data$getInfo(path_asset)
   size_file <- as.numeric(info_data$sizeBytes)
-  cat('Type            :', info_data$type,'\n')
-  cat('Size (in Bytes) :', size_file)
+  if (!quiet) {
+    cat('Type            :', info_data$type,'\n')
+    cat('Size (in Bytes) :', size_file)
+  }
   invisible(size_file)
 }

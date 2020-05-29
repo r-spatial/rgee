@@ -34,7 +34,7 @@
 #' @importFrom sf st_read st_sf st_sfc st_is_longlat
 #' @importFrom geojsonio geojson_json
 #'
-#' @return A ee$FeatureCollection object
+#' @return An ee$FeatureCollection object
 #'
 #' @details
 #' \code{sf_as_ee} supports the upload of \code{sf} objects by three different
@@ -65,7 +65,7 @@
 #' it is an expensive operation.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #' library(sf)
 #'

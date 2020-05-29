@@ -68,7 +68,7 @@ more information about exporting data take a look at the
 Engine Guide - Export data}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
@@ -111,3 +111,4 @@ sf_randomPoints_gcs <- ee_as_sf(
 )
 }
 }
+\concept{vector download functions}

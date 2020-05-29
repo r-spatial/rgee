@@ -13,8 +13,8 @@ ee_get_date_img(x, time_end = FALSE)
 also returned. See details.}
 }
 \value{
-An List object with the id, time_start and time_end
-(if \code{time_end} argument is TRUE) of the image.
+An List object with the elements: id, time_start and time_end
+(if the \code{time_end} argument is TRUE).
 }
 \description{
 Get the date of a EE Image
@@ -26,7 +26,7 @@ Get the date of a EE Image
 for getting more information.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach()
@@ -38,3 +38,10 @@ srtm <- ee$Image('CGIAR/SRTM90_V4')
 ee_get_date_img(srtm, time_end = TRUE)
 }
 }
+\seealso{
+Other date functions: 
+\code{\link{ee_get_date_ic}()},
+\code{\link{eedate_to_rdate}()},
+\code{\link{rdate_to_eedate}()}
+}
+\concept{date functions}

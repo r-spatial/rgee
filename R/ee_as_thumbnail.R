@@ -47,6 +47,7 @@
 #' }
 #'
 #' @return An stars or Raster object depending on the \code{raster} argument.
+#' @family image download functions
 #'
 #' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom methods as
@@ -55,7 +56,7 @@
 #' @importFrom reticulate py_to_r
 #' @importFrom utils download.file zip str
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(raster)
 #' library(stars)
 #' library(rgee)

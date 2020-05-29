@@ -13,7 +13,10 @@ ee_get_date_ic(x, time_end = FALSE)
 also returned. See details.}
 }
 \value{
-A data.frame.
+A data.frame with the columns: \code{id} (ID of the image),
+\code{time_start}, and \code{time_end} (If the argument \code{time_end} is
+set as TRUE). The number of rows depends of the number of images
+(\code{ee$ImageCollection$size}).
 }
 \description{
 Get the date of a EE ImageCollection
@@ -25,7 +28,7 @@ Get the date of a EE ImageCollection
 for getting more information.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(sf)
 
@@ -43,3 +46,10 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
 ee_get_date_ic(ee_s2)
 }
 }
+\seealso{
+Other date functions: 
+\code{\link{ee_get_date_img}()},
+\code{\link{eedate_to_rdate}()},
+\code{\link{rdate_to_eedate}()}
+}
+\concept{date functions}

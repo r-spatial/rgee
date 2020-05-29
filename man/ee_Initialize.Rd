@@ -35,10 +35,10 @@ them, these are only necessary for exporting and importing tasks.
 All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specify the email
 argument all user credentials will be saved in a subdirectory
-called \code{ndef}.
+called \code{~/.config/earthengine/ndef}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
@@ -56,6 +56,10 @@ ee_user_info()
 }
 }
 \seealso{
-remove credential function: \cr
-\link[rgee]{ee_clean_credentials}
+Other session management functions: 
+\code{\link{ee_reattach}()},
+\code{\link{ee_user_info}()},
+\code{\link{ee_users}()},
+\code{\link{ee_version}()}
 }
+\concept{session management functions}

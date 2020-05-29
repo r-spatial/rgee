@@ -22,7 +22,7 @@ gcs_to_ee_image(
 \item{gs_uri}{Character. It represents the full name of the
 GeoTIFF file in a GCS bucket.}
 
-\item{assetId}{Character. What to call the file once uploaded
+\item{assetId}{Character. How to call the file once uploaded
 to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
@@ -41,11 +41,14 @@ or date.}
 
 \item{quiet}{Logical. Suppress info message.}
 }
+\value{
+Character. The Earth Engine asset ID.
+}
 \description{
 Move a GeoTIFF image from GCS to their EE assets
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)

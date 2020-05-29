@@ -33,7 +33,7 @@ An ee$Image object
 Convert a stars or stars-proxy object into an ee$Image.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)
@@ -72,3 +72,8 @@ Map$centerObject(ee_stars_02)
 Map$addLayer(ee_stars_02)
 }
 }
+\seealso{
+Other image upload functions: 
+\code{\link{raster_as_ee}()}
+}
+\concept{image upload functions}

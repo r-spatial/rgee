@@ -30,7 +30,7 @@ Creates a task to export a FeatureCollection to an EE table asset.
 This function is a wrapper around \code{ee$batch$Export$table$toAsset(...)}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 library(sf)
@@ -71,3 +71,9 @@ Map$centerObject(ee_fc)
 Map$addLayer(ee_fc)
 }
 }
+\seealso{
+Other vector export task creator: 
+\code{\link{ee_table_to_drive}()},
+\code{\link{ee_table_to_gcs}()}
+}
+\concept{vector export task creator}

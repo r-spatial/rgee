@@ -43,7 +43,7 @@ will download just the last file saved in Google Drive while with "all" all
 files will be downloaded.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 library(sf)
@@ -106,3 +106,8 @@ ee_monitoring(task_img)
 img <- ee_drive_to_local(task = task_img)
 }
 }
+\seealso{
+Other generic download functions: 
+\code{\link{ee_gcs_to_local}()}
+}
+\concept{generic download functions}

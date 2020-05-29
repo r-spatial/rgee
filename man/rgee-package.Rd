@@ -4,11 +4,14 @@
 \name{rgee-package}
 \alias{rgee}
 \alias{rgee-package}
-\title{rgee: R Bindings for Calling the Earth Engine API}
+\title{rgee: R Bindings for Calling the 'Earth Engine' API}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Provides bindings to the Google Earth Engine Python API and set tools for automating processes.
+Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
+    modules, and functions are made available. Implemented functions include importing (exporting) of R (Earth Engine) 
+    spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
+    See <https://r-spatial.github.io/rgee/> for further details.
 }
 \seealso{
 Useful links:
@@ -29,6 +32,10 @@ Other contributors:
   \item Lesly Bautista \email{leslyarcelly.213@gmail.com} (\href{https://orcid.org/0000-0003-3523-8687}{ORCID}) [contributor]
   \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
   \item Antony Barja \email{antony.barja8@gmail.com} (\href{https://orcid.org/0000-0001-5921-2858}{ORCID}) [contributor]
+  \item Kevin Ushey \email{kevin@rstudio.com} [contributor]
+  \item Tim Appelhans \email{tim.appelhans@gmail.com} [contributor]
+  \item JJ Allaire \email{jj@rstudio.com} [contributor]
+  \item Yuan Tang \email{terrytangyuan@gmail.com} [contributor]
   \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
   \item MariaElena Adauto \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
 }

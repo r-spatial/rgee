@@ -70,7 +70,7 @@ number \cr
 }
 }
 \examples{
-\dontrun{
+\donttest{
 library(raster)
 library(stars)
 library(rgee)
@@ -153,3 +153,10 @@ l8_img <- ee_as_thumbnail(
 plotRGB(l8_img, stretch = "lin")
 }
 }
+\seealso{
+Other image download functions: 
+\code{\link{ee_as_raster}()},
+\code{\link{ee_as_stars}()},
+\code{\link{ee_imagecollection_to_local}()}
+}
+\concept{image download functions}

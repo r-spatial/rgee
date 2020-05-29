@@ -9,6 +9,15 @@ ee_utils_py_to_r(x)
 \arguments{
 \item{x}{A python object}
 }
+\value{
+An R object
+}
 \description{
 Convert between Python and R objects
 }
+\seealso{
+Other ee_utils functions: 
+\code{\link{ee_utils_pyfunc}()},
+\code{\link{ee_utils_shp_to_zip}()}
+}
+\concept{ee_utils functions}

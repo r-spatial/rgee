@@ -60,11 +60,17 @@ is 20.}
 \item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
 Relevant just for \code{ee$ImageCollection} objects.}
 }
+\value{
+A list with the metadata of the Earth Engine object.
+}
 \description{
 Print and return metadata about Spatial Earth Engine Objects.
+\code{ee_print} can retrieve information about the number of images
+or features, number of bands or geometries, number of pixels, geotransform,
+data type, properties and object size.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach()
@@ -99,3 +105,9 @@ object <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   aside(ee_print)
 }
 }
+\seealso{
+Other helper functions: 
+\code{\link{ee_help}()},
+\code{\link{ee_monitoring}()}
+}
+\concept{helper functions}

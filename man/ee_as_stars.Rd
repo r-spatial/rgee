@@ -65,7 +65,7 @@ a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 
 ee_reattach()
@@ -121,3 +121,10 @@ ee_clean_container(
 )
 }
 }
+\seealso{
+Other image download functions: 
+\code{\link{ee_as_raster}()},
+\code{\link{ee_as_thumbnail}()},
+\code{\link{ee_imagecollection_to_local}()}
+}
+\concept{image download functions}

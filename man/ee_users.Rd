@@ -4,15 +4,26 @@
 \alias{ee_users}
 \title{Display the credentials of all users as a table}
 \usage{
-ee_users()
+ee_users(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{Logical. Suppress info messages.}
 }
 \description{
 Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 a table.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 ee_users()
 }
 }
+\seealso{
+Other session management functions: 
+\code{\link{ee_Initialize}()},
+\code{\link{ee_reattach}()},
+\code{\link{ee_user_info}()},
+\code{\link{ee_version}()}
+}
+\concept{session management functions}

@@ -31,13 +31,12 @@
 #' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specify the email
 #' argument all user credentials will be saved in a subdirectory
-#' called \code{ndef}.
+#' called \code{~/.config/earthengine/ndef}.
 #'
-#' @seealso remove credential function: \cr
-#' \link[rgee]{ee_clean_credentials}
+#' @family session management functions
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -95,7 +94,7 @@ ee_Initialize <- function(email = NULL,
     email <- "ndef"
   }
 
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     if (email == "ndef") {
       cat(
         "", green(symbol$tick),
@@ -113,7 +112,7 @@ ee_Initialize <- function(email = NULL,
 
   # create a user's folder
   email_clean <- gsub("@gmail.com", "", email)
-  ee_path <- ee_utils$ee_path()
+  ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   dir.create(ee_path_user, showWarnings = FALSE, recursive = TRUE)
 
@@ -220,7 +219,7 @@ ee_Initialize <- function(email = NULL,
         green(bold(ee_user)), "\n")
     cat(rule(), "\n")
   }
-  # ee_check_rgee_python_packages(quiet = TRUE)
+  # ee_check_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
 
@@ -377,13 +376,15 @@ ee_create_credentials_gcs <- function(email) {
 #'
 #' Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 #' a table.
+#' @family session management functions
+#' @param quiet Logical. Suppress info messages.
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #' ee_users()
 #' }
 #' @export
-ee_users <- function() {
+ee_users <- function(quiet = FALSE) {
   #space among columns
   wsc <- "     "
   title  <- c('user', ' EE', ' GD', ' GCS')
@@ -407,59 +408,81 @@ ee_users <- function() {
   title[1] <- add_extra_space(name = title[1],
                               space = max_char - nchar(title[1]))
 
-  cat("",bold(paste0(title, collapse = wsc)),"\n")
+  if (!quiet) {
+    cat("", bold(paste0(title, collapse = wsc)), "\n")
+  }
+
   users <- add_extra_space(ee_path, add_space)
   for (user in users) {
-    create_table(user,wsc)
+    create_table(user, wsc, quiet = quiet)
   }
-  cat("\n")
+
+  if(!quiet) {
+    cat("\n")
+  }
+
   invisible(TRUE)
 }
 
 #' Display the credentials and general info of the initialized user
+#' @family session management functions
+#'
+#' @param quiet Logical. Suppress info messages.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' ee_user_info()
 #' }
 #' @export
-ee_user_info <- function() {
+ee_user_info <- function(quiet = FALSE) {
   user_session <- ee_get_earthengine_path()
   user_session_list <- list.files(user_session,full.names = TRUE)
   user <- ee$data$getAssetRoots()[[1]]$id
 
-  cat(rule(right = bold(paste0("Earth Engine user info"))))
+  if (!quiet) {
+    cat(rule(right = bold(paste0("Earth Engine user info"))))
+  }
+
   # python version
   py_used <- py_discover_config()$python
-  cat(blue$bold("\nReticulate python version:"))
-  cat("\n - ", py_used)
+  if (!quiet) {
+    cat(blue$bold("\nReticulate python version:"))
+    cat("\n - ", py_used)
+  }
 
   # asset home
   asset_home <- ee_remove_project_chr(user)
-  cat(blue$bold('\nEarth Engine Asset Home:'))
-  cat("\n - ", asset_home)
+  if (!quiet) {
+    cat(blue$bold('\nEarth Engine Asset Home:'))
+    cat("\n - ", asset_home)
+  }
 
   # credentials directory path
-  cat(blue$bold('\nCredentials Directory Path:'))
-  cat("\n - ", user_session)
+  if (!quiet) {
+    cat(blue$bold('\nCredentials Directory Path:'))
+    cat("\n - ", user_session)
+  }
 
   # google drive
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
-  cat(blue$bold('\nGoogle Drive Credentials:'))
-  cat("\n - ", basename(gd))
+  if (!quiet) {
+    cat(blue$bold('\nGoogle Drive Credentials:'))
+    cat("\n - ", basename(gd))
+  }
   email_drive <- sub("[^_]+_(.*)@.*", "\\1", basename(gd))
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
-  cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
-  cat("\n - ",basename(gcs))
-
-  cat("\n", rule())
-
+  if (!quiet) {
+    cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
+    cat("\n - ",basename(gcs))
+    cat("\n", rule(), "\n")
+  }
   ee_user <- ee_exist_credentials()
+
   if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
     message(
       "\nNOTE: Google Drive credential does not match with your Google",
@@ -467,7 +490,7 @@ ee_user_info <- function() {
       " Drive will not work (e.g. ee_image_to_drive)."
     )
   }
-  ee_check_rgee_python_packages(quiet = TRUE)
+  ee_check_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
 
@@ -491,8 +514,12 @@ ee_sessioninfo <- function(email = NULL,
   write.table(df, sessioninfo, row.names = FALSE)
 }
 
-
 #' Get the path where the credentials are stored
+#'
+#' @family path utils
+#' @return A character which represents the path credential of a specific
+#' user
+#'
 #' @export
 ee_get_earthengine_path <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
@@ -531,6 +558,7 @@ ee_source_python <- function(oauth_func_path) {
 #' Function used in ee_user
 #'
 #' Add extra space to usernames to form a nice table
+#'
 #' @noRd
 add_extra_space <- function(name, space) {
   iter <- length(space)
@@ -548,7 +576,7 @@ add_extra_space <- function(name, space) {
 #' it as tick and crosses.
 #'
 #' @noRd
-create_table <- function(user, wsc) {
+create_table <- function(user, wsc, quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
@@ -576,25 +604,30 @@ create_table <- function(user, wsc) {
     ee_symbol <- red(symbol$cross)
   }
 
-  cat("\n",
-      user,
-      wsc,
-      gmail_symbol,
-      wsc,
-      gcs_symbol,
-      wsc,
-      ee_symbol
-    )
+  if (!quiet) {
+    cat("\n",
+        user,
+        wsc,
+        gmail_symbol,
+        wsc,
+        gcs_symbol,
+        wsc,
+        ee_symbol
+      )
+  }
 }
 
 #' Get the Asset home name
+#' @family path utils
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
-#' ee_reattach()
 #' ee_Initialize()
+#'
 #' ee_get_assethome()
 #' }
+#' @return Character. The name of the Earth Engine Asset home
+#' (e.g. users/datacolecfbf)
 #' @export
 ee_get_assethome <- function() {
   options('rgee.ee_user')[[1]]

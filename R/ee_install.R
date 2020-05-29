@@ -2,15 +2,20 @@
 #'
 #' @param py_env Character. The name, or full path, of the Python environment
 #' to be used by rgee.
+#' @param earthengine_version Character. The Earth Engine Python API version
+#' to install. By default \code{rgee::ee_version()}.
 #' @param confirm Logical. Confirm before restarting R?.
+#' @family ee_install functions
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #' ee_install() #It is just necessary once
 #' ee_Initialize()
 #' }
 #' @export
-ee_install <- function(py_env = "rgee", confirm = interactive()) {
+ee_install <- function(py_env = "rgee",
+                       earthengine_version = ee_version(),
+                       confirm = interactive()) {
   if (!requireNamespace("rstudioapi", quietly = TRUE)) {
     stop("package rstudioapi required, please install it first")
   }
@@ -22,6 +27,10 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
       "Would you like to download and install Miniconda?",
       "Miniconda is an open source environment management system for Python.",
       "See https://docs.conda.io/en/latest/miniconda.html for more details.",
+      "If you think it is an error, since you previously created a Python",
+      "environment in your system, run rgee::ee_clean_pyenv() to remove rgee",
+      "environmental variables, after this, restart the R session and try",
+      "again.",
       "",
       sep = "\n"
     )
@@ -43,7 +52,7 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
 
   # Create a python environment
   message(sprintf("1. Creating a Python Environment (%s)", py_env))
-  ee_install_delete_pyenv(py_env)
+  try(ee_install_delete_pyenv(py_env), silent = TRUE)
 
   rgee_path <- tryCatch(
     expr = ee_install_create_pyenv(py_env = py_env),
@@ -69,7 +78,7 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
       recursive = TRUE,
       full.names = TRUE
     )
-    py_path <- python_files[grepl("^python$", basename(python_files))][1]
+    py_path <- python_files[grepl("^python", basename(python_files))][1]
   }
 
   # Stop if py_path is not found
@@ -91,9 +100,18 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
 
   # Install the Earth Engine API
   message("3. Installing the earthengine-api. Running ...")
-  message(sprintf("reticulate::py_install(packages = 'earthengine-api', envname = '%s')", rgee_path))
+  message(
+    sprintf(
+      "reticulate::py_install(packages = 'earthengine-api', envname = '%s')",
+      rgee_path
+    )
+  )
+
   reticulate::py_install(
-      packages = c("earthengine-api", "numpy"),
+      packages = c(
+        sprintf("earthengine-api==%s", earthengine_version),
+        "numpy"
+      ),
       envname = rgee_path
   )
 
@@ -101,9 +119,11 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   if (rstudioapi::isAvailable()) {
     # Restart to see changes
     if (isTRUE(confirm)) {
-      title <- paste0(
-        "rgee needs restart R to see changes.\n",
-        "Do you want to continues?"
+      title <- paste(
+        bold("Well done! rgee was successfully set up in your system."),
+        "rgee needs restart R to see changes.",
+        "Do you want to continues?",
+        sep = "\n"
       )
       response <- menu(c("yes", "no"), title = title)
     } else {
@@ -118,22 +138,14 @@ ee_install <- function(py_env = "rgee", confirm = interactive()) {
   invisible(TRUE)
 }
 
-
-#' Set EARTHENGINE_PYTHON as an environment variable
+#' Set the Python environment to be used by rgee
 #'
-#' @param py_path The path to a Python interpreter, to be used by rgee.
+#' This function create a new environment variable called 'EARTHENGINE_PYTHON'.
+#' It is used to set the Python environment to be used by rgee.
+#' EARTHENGINE_PYTHON is saved into the file .Renviron.
 #'
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' library(reticulate)
-#' # windows?
-#' conda_list()
-#' # linux?
-#' virtualenv_list()
-#'
-#' ee_install_set_pyenv("../../rgee")
-#' }
+#' @param py_path The path to a Python interpreter.
+#' @family ee_install functions
 #' @export
 ee_install_set_pyenv <- function(py_path) {
   ee_clean_pyenv()
@@ -143,7 +155,7 @@ ee_install_set_pyenv <- function(py_path) {
 
   if (file.exists(renv)) {
     # Backup original .Renviron before doing anything else here.
-    file.copy(renv, file.path(home, ".Renviron_backup"))
+    file.copy(renv, file.path(home, ".Renviron_backup"), overwrite = TRUE)
   }
 
   if (!file.exists(renv)) {
@@ -172,6 +184,44 @@ ee_install_set_pyenv <- function(py_path) {
   invisible(TRUE)
 }
 
+#' Set EARTHENGINE_INIT_MESSAGE as an environment variable
+#' @noRd
+ee_install_set_init_message <- function() {
+  ee_clean_message()
+  # Trying to get the env from the py_path
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+
+  if (file.exists(renv)) {
+    # Backup original .Renviron before doing anything else here.
+    file.copy(renv, file.path(home, ".Renviron_backup"))
+  }
+
+  if (!file.exists(renv)) {
+    file.create(renv)
+  }
+
+  con  <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+
+  # Set EARTHENGINE_PYTHON in .Renviron
+  ret_python <- sprintf('EARTHENGINE_INIT_MESSAGE="%s"', "True")
+  system_vars <- c(lines, ret_python)
+
+  writeLines(system_vars, con)
+  close(con)
+  invisible(TRUE)
+}
 
 #' Create an isolated Python virtual environment to be used in rgee
 #' @param py_env The name of, or path to, a Python virtual environment.
@@ -219,3 +269,4 @@ ee_detect_os <- function() {
 is_windows <- function() {
   ee_detect_os() == 'windows'
 }
+

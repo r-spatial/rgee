@@ -9,3 +9,11 @@ ee_reattach()
 \description{
 Reattach ee as a reserved word
 }
+\seealso{
+Other session management functions: 
+\code{\link{ee_Initialize}()},
+\code{\link{ee_user_info}()},
+\code{\link{ee_users}()},
+\code{\link{ee_version}()}
+}
+\concept{session management functions}

@@ -39,8 +39,9 @@
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
 #' @return An sf object.
+#' @family vector download functions
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -117,9 +118,13 @@ ee_as_sf <- function(x,
   if (via == "getInfo") {
     fc_size <- 5000
     if (maxFeatures > 5000) {
-      cat("Number of features: Calculating ...")
+      if (!quiet) {
+        cat("Number of features: Calculating ...")
+      }
       fc_size <- x_fc$size()$getInfo()
-      cat(sprintf("\rNumber of features: %s              \n", fc_size))
+      if (!quiet) {
+        cat(sprintf("\rNumber of features: %s              \n", fc_size))
+      }
       if (maxFeatures < fc_size) {
         stop(
           "Export too large. Specified ",
@@ -145,12 +150,14 @@ ee_as_sf <- function(x,
       sf_list <- list()
       for (r_index in seq_len(nbatch)) {
         index <- r_index - 1
-        cat(
-          sprintf(
-            "Getting data from the patch: %s/%s",
-            r_index, nbatch
-          ), "\n"
-        )
+        if (!quiet) {
+          cat(
+            sprintf(
+              "Getting data from the patch: %s/%s",
+              r_index, nbatch
+            ), "\n"
+          )
+        }
         x_eelist <- x_fc$toList(count = 5000, offset = 5000*index)
         x_fc_batch <- ee$FeatureCollection(x_eelist)
         sf_list[[r_index]] <- ee_fc_to_sf_getInfo(

@@ -22,7 +22,7 @@ ee_manage_delete(path_asset, quiet = FALSE)
 
 ee_manage_assetlist(path_asset, quiet = FALSE)
 
-ee_manage_quota()
+ee_manage_quota(quiet = FALSE)
 
 ee_manage_copy(path_asset, final_path, quiet = FALSE)
 
@@ -44,7 +44,7 @@ ee_manage_task(cache = FALSE)
 
 ee_manage_cancel_all_running_task()
 
-ee_manage_asset_size(path_asset)
+ee_manage_asset_size(path_asset, quiet = FALSE)
 }
 \arguments{
 \item{path_asset}{Character. Name of the EE asset (Table, Image, Folder or
@@ -74,7 +74,9 @@ details.}
 in the /temp directory and used when the function .}
 }
 \description{
-R functions for managing the Earth Engine Asset
+R functions for managing the Earth Engine Asset. The interface allows users
+to create and eliminate folders, move and copy assets, set and delete
+properties, handle access control lists, and manage and/or cancel tasks.
 }
 \details{
 If the argument \code{del_properties} is 'ALL',
@@ -82,7 +84,7 @@ If the argument \code{del_properties} is 'ALL',
 the properties.
 }
 \examples{
-\dontrun{
+\donttest{
 
 library(rgee)
 

@@ -6,7 +6,17 @@
 \usage{
 ee_version()
 }
-\description{
-This function returns the Earth Engine Python API
-version with which rgee was built.
+\value{
+Character. Earth Engine Python API version used to build rgee.
 }
+\description{
+Earth Engine API version
+}
+\seealso{
+Other session management functions: 
+\code{\link{ee_Initialize}()},
+\code{\link{ee_reattach}()},
+\code{\link{ee_user_info}()},
+\code{\link{ee_users}()}
+}
+\concept{session management functions}

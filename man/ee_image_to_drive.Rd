@@ -87,7 +87,7 @@ Creates a task to export an EE Image to Drive.
 This function is a wrapper around \code{ee$batch$Export$image$toDrive(...)}.
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 library(sf)
@@ -148,3 +148,9 @@ ee_monitoring(task_img)
 ee_drive_to_local(task = task_img)
 }
 }
+\seealso{
+Other image export task creator: 
+\code{\link{ee_image_to_asset}()},
+\code{\link{ee_image_to_gcs}()}
+}
+\concept{image export task creator}

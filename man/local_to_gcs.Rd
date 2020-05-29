@@ -14,14 +14,14 @@ local_to_gcs(x, bucket = NULL, quiet = FALSE)
 \item{quiet}{Logical. Suppress info message.}
 }
 \value{
-Character which represents the full name of the
-object in the GCS bucket specified.
+Character which represents the full path of the object in the GCS
+bucket specified.
 }
 \description{
 Upload images or tables to Google Cloud Storage
 }
 \examples{
-\dontrun{
+\donttest{
 library(rgee)
 library(stars)
 ee_reattach()
@@ -38,3 +38,4 @@ tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 local_to_gcs(x = tif, bucket = 'rgee_dev')
 }
 }
+\concept{generic upload functions}
