@@ -18,6 +18,9 @@ ee_utils_shp_to_zip(
 \item{SHP_EXTENSIONS}{file extension of the files to save
 into the zip file. By default: "dbf", "prj", "shp", "shx".}
 }
+\value{
+Character. The full path of the zip file created.
+}
 \description{
 Create a zip file from a sf object
 }
@@ -60,3 +63,9 @@ Map$centerObject(ee_sf_02)
 Map$addLayer(ee_sf_02)
 }
 }
+\seealso{
+Other ee_utils functions: 
+\code{\link{ee_utils_py_to_r}()},
+\code{\link{ee_utils_pyfunc}()}
+}
+\concept{ee_utils functions}

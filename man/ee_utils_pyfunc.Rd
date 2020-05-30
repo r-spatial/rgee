@@ -54,6 +54,12 @@ ee_newic <- ee_ic$map(
 ee_newic$mean()$getInfo()$type
 }
 }
+\seealso{
+Other ee_utils functions: 
+\code{\link{ee_utils_py_to_r}()},
+\code{\link{ee_utils_shp_to_zip}()}
+}
 \author{
 Yuan Tang and J.J. Allaire
 }
+\concept{ee_utils functions}

@@ -12,6 +12,7 @@
 #' source_python
 #' @importFrom crayon yellow
 #' @importFrom cli cat_line
+#' @family ee_check functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -19,18 +20,19 @@
 #' ee_reattach() # reattach ee as a reserved word
 #'
 #' ee_check_python()
-#' ee_check_rgee_python_packages()
+#' ee_check_python_packages()
 #' ee_check_credentials()
 #' ee_check() # put it all together
 #' }
 #' @export
 ee_check <- function() {
   ee_check_python()
-  ee_check_rgee_python_packages()
+  ee_check_python_packages()
   ee_check_credentials()
 }
 
 #' @rdname ee_check-tools
+#' @family ee_check functions
 #' @export
 ee_check_python <- function(quiet = FALSE) {
   python_test <- py_available(initialize = TRUE)
@@ -57,13 +59,14 @@ ee_check_python <- function(quiet = FALSE) {
 }
 
 #' @rdname ee_check-tools
+#' @family ee_check functions
 #' @export
-ee_check_rgee_python_packages <- function(quiet = FALSE) {
+ee_check_python_packages <- function(quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_check.py",
     package = "rgee"
   )
   ee_check_utils_exist <- ee_source_python(oauth_func_path)
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     cat_line(
       "\n",
       blue(
@@ -77,7 +80,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
   ee_cond <- is.character(version_ee)
   if (ee_cond) {
     if (version_ee == ee_version()) {
-      if (isFALSE(quiet)) {
+      if (!quiet) {
         cat_line(
           green(symbol$tick, "[Ok]"),
           blue(symbol$check, "Python Earth Engine API version "),
@@ -85,24 +88,35 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
         )
       }
     } else {
-      ee_message <- sprintf(
-        "%s (version %s) is %s%s%s%s%s(%s)%s%s%s%s%s%s%s%s",
-        "NOTE: The Earth Engine Python API",
-        version_ee,
-        "installed correctly in the system but rgee was test ",
-        "using the version ",
-        ee_version(),
-        ". To avoid possible issues, we ",
-        "highly recommend install the version used by rgee ",
-        ee_version(),
-        ", you might use:\n >>> ee_install_earthengine_upgrade() \n",
-        " >>> pip install earthengine-api==",ee_version(),
-        " (Linux and Mac0S)\n >>> conda install earthengine-api==",ee_version(),
-        " (Windows)\nIf the installation is successful, restart to see",
-        " changes. Another option is to use the dev version of rgee: ",
-        "\n >>> remotes::install_github('r-spatial/rgee')"
+      text <- paste(
+        sprintf(
+          "%s The Earth Engine Python API version %s is installed",
+          crayon::bold("NOTE:"),
+          version_ee
+        ),
+        "correctly in the system but rgee was tested using the version",
+        sprintf(
+          "%s. To avoid possible issues, we recommend install the",
+          ee_version()
+        ),
+        sprintf("version used by rgee (%s). You might use:", ee_version()),
+        "* ee_install()",
+        sprintf(
+          "* reticulate::py_install('earthengine-api==%s')",
+          ee_version()
+        ),
+        sprintf(
+          "* pip install earthengine-api==%s (Linux and Mac0S)",
+          ee_version()
+        ),
+        sprintf(
+          "* conda install earthengine-api==%s (Windows)",
+          ee_version()
+        ),
+        "",
+        sep = "\n"
       )
-      message(ee_message)
+      message(text)
     }
   } else {
     if (isFALSE(quiet)) {
@@ -117,7 +131,7 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
       )
     }
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     ee_check_py_package("pyasn1")
     ee_check_py_package("urllib3")
     ee_check_py_package("setuptools")
@@ -128,8 +142,9 @@ ee_check_rgee_python_packages <- function(quiet = FALSE) {
 }
 
 #' @rdname ee_check-tools
+#' @family ee_check functions
 #' @export
-ee_check_credentials <- function() {
+ee_check_credentials <- function(quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   driverdir <- ee_utils_py_to_r(utils_py$ee_path())
@@ -139,17 +154,20 @@ ee_check_credentials <- function() {
   ex_ee_cred <- file.exists(ee_credentials)
   ex_drive_cred <- file.exists(drive_credentials)
   ex_gcs_cred <- file.exists(drive_credentials)
-
-  cat_line(
-    blue(symbol$circle_filled),
-    blue("  Credentials neccesaries for rgee: \n")
-  )
+  if (!quiet) {
+    cat_line(
+      blue(symbol$circle_filled),
+      blue("  Credentials neccesaries for rgee: \n")
+    )
+  }
 
   if (ex_ee_cred) {
-    cat_line(
-      green(symbol$tick, "[Ok]"),
-      blue(symbol$check, "Earth Engine Credentials found.")
-    )
+    if (!quiet) {
+      cat_line(
+        green(symbol$tick, "[Ok]"),
+        blue(symbol$check, "Earth Engine Credentials found.")
+      )
+    }
   } else {
     stop(
       "Does not exist Earth Engine credentials in their system.",
@@ -158,47 +176,56 @@ ee_check_credentials <- function() {
   }
 
   if (ex_drive_cred) {
-    cat_line(
-      green(symbol$tick, "[Ok]"),
-      blue(symbol$check, "Google Drive credentials found.")
-    )
-  } else {
-    cat_line(
-      yellow(
-        symbol$circle_cross,
-        "Does not exist Google Drive credentials in their",
-        "system. rgee::ee_download_drive() will not work."
+    if (!quiet) {
+      cat_line(
+        green(symbol$tick, "[Ok]"),
+        blue(symbol$check, "Google Drive credentials found.")
       )
-    )
-    message("Try rgee::ee_Initialize(drive = TRUE) to fixed.\n")
+    }
+  } else {
+    if (!quiet) {
+      cat_line(
+        yellow(
+          symbol$circle_cross,
+          "Does not exist Google Drive credentials in their",
+          "system. rgee::ee_download_drive() will not work."
+        )
+      )
+      message("Try rgee::ee_Initialize(drive = TRUE) to fixed.\n")
+    }
   }
 
   if (ex_gcs_cred) {
-    cat_line(
-      green(symbol$tick, "[Ok]"),
-      blue(
-        symbol$check,
-        "Google Cloud Storage ",
-        "credentials found."
+    if (!quiet) {
+      cat_line(
+        green(symbol$tick, "[Ok]"),
+        blue(
+          symbol$check,
+          "Google Cloud Storage ",
+          "credentials found."
+        )
       )
-    )
+    }
   } else {
-    cat_line(
-      yellow(
-        symbol$circle_cross,
-        "Does not exist Google Cloud Storage credentials in their system.",
-        'rgee::ee_download_gcs() and rgee::ee_upload(bucket=" ... ") will',
-        "not work."
+    if (!quiet) {
+      cat_line(
+        yellow(
+          symbol$circle_cross,
+          "Does not exist Google Cloud Storage credentials in their system.",
+          'rgee::ee_download_gcs() and rgee::ee_upload(bucket=" ... ") will',
+          "not work."
+        )
       )
-    )
-    message("Try rgee::ee_Initialize(gcs = TRUE) to fixed.\n")
+      message("Try rgee::ee_Initialize(gcs = TRUE) to fixed.\n")
+    }
   }
+  invisible(TRUE)
 }
 
 #' Check python packages
 #' @param rgee_package package name to install
 #' @noRd
-ee_check_py_package <- function(rgee_package) {
+ee_check_py_package <- function(rgee_package, quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_check.py",
     package = "rgee"
   )
@@ -214,22 +241,26 @@ ee_check_py_package <- function(rgee_package) {
   rgeepackage_is_TRUE <- isTRUE(version_rgeepackage)
 
   if (rgeepackage_is_text) {
-    cat_line(
-      green(symbol$tick),
-      green(" [Ok] "),
-      blue(
-        rgee_package, "v",
-        version_rgeepackage
+    if (!quiet) {
+      cat_line(
+        green(symbol$tick),
+        green(" [Ok] "),
+        blue(
+          rgee_package, "v",
+          version_rgeepackage
+        )
       )
-    )
+    }
   }
 
   if (rgeepackage_is_TRUE) {
-    cat_line(
-      green(symbol$tick),
-      green(" [Ok] "),
-      blue(rgee_package)
-    )
+    if (!quiet) {
+      cat_line(
+        green(symbol$tick),
+        green(" [Ok] "),
+        blue(rgee_package)
+      )
+    }
   }
 
   if (isFALSE(version_rgeepackage)) {
@@ -243,4 +274,5 @@ ee_check_py_package <- function(rgee_package) {
       "If the installation is successful, restart to see changes."
     )
   }
+  invisible(TRUE)
 }

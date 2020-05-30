@@ -7,7 +7,8 @@
 #' @param timestamp Logical. If TRUE, return the date in milliseconds
 #' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
 #' EE date object. By default FALSE.
-#' @return \code{rdate_to_eedate} will return a numeric timestamp or
+#' @family date functions
+#' @return \code{rdate_to_eedate} will return either a numeric timestamp or
 #' an ee$Date depending on the \code{timestamp} argument.
 #'
 #' @examples
@@ -51,8 +52,9 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #' use Python as a backend to obtain the date and convert it in float before
 #' exporting to R.
 #'
-#' @return \code{eedate_to_rdate} will return a numeric timestamp or
+#' @return \code{eedate_to_rdate} will return either a numeric timestamp or
 #' a POSIXct object depending on the \code{timestamp} argument.
+#' @family date functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -90,9 +92,9 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
 #' for getting more information.
 #'
-#' @return An List object with the id, time_start and time_end
-#' (if \code{time_end} argument is TRUE) of the image.
-#'
+#' @return An List object with the elements: id, time_start and time_end
+#' (if the \code{time_end} argument is TRUE).
+#' @family date functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -143,7 +145,12 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
 #' for getting more information.
 #'
-#' @return A data.frame.
+#' @return A data.frame with the columns: \code{id} (ID of the image),
+#' \code{time_start}, and \code{time_end} (If the argument \code{time_end} is
+#' set as TRUE). The number of rows depends of the number of images
+#' (\code{ee$ImageCollection$size}).
+#'
+#' @family date functions
 #'
 #' @examples
 #' \dontrun{

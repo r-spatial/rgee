@@ -4,11 +4,18 @@
 \alias{ee_install}
 \title{Create an isolated Python virtual environment with all rgee dependencies.}
 \usage{
-ee_install(py_env = "rgee", confirm = interactive())
+ee_install(
+  py_env = "rgee",
+  earthengine_version = ee_version(),
+  confirm = interactive()
+)
 }
 \arguments{
 \item{py_env}{Character. The name, or full path, of the Python environment
 to be used by rgee.}
+
+\item{earthengine_version}{Character. The Earth Engine Python API version
+to install. By default \code{rgee::ee_version()}.}
 
 \item{confirm}{Logical. Confirm before restarting R?.}
 }
@@ -22,3 +29,8 @@ ee_install() #It is just necessary once
 ee_Initialize()
 }
 }
+\seealso{
+Other ee_install functions: 
+\code{\link{ee_install_set_pyenv}()}
+}
+\concept{ee_install functions}

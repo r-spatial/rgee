@@ -151,3 +151,9 @@ ee_gcs_to_local(task = task_img)
 plot(img)
 }
 }
+\seealso{
+Other image export task creator: 
+\code{\link{ee_image_to_asset}()},
+\code{\link{ee_image_to_drive}()}
+}
+\concept{image export task creator}

@@ -1,4 +1,10 @@
 on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
   schedule:
     - cron: "0 1 * * *"
 
@@ -46,6 +52,7 @@ jobs:
         run: |
           brew install udunits
           brew install gdal
+          brew install v8
           brew install freetype
           cat <<EOT >> .Renviron
           PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/

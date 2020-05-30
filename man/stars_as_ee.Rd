@@ -72,3 +72,8 @@ Map$centerObject(ee_stars_02)
 Map$addLayer(ee_stars_02)
 }
 }
+\seealso{
+Other image upload functions: 
+\code{\link{raster_as_ee}()}
+}
+\concept{image upload functions}

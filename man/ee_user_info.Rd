@@ -4,7 +4,10 @@
 \alias{ee_user_info}
 \title{Display the credentials and general info of the initialized user}
 \usage{
-ee_user_info()
+ee_user_info(quiet = FALSE)
+}
+\arguments{
+\item{quiet}{Logical. Suppress info messages.}
 }
 \description{
 Display the credentials and general info of the initialized user
@@ -17,3 +20,11 @@ ee_Initialize()
 ee_user_info()
 }
 }
+\seealso{
+Other session management functions: 
+\code{\link{ee_Initialize}()},
+\code{\link{ee_reattach}()},
+\code{\link{ee_users}()},
+\code{\link{ee_version}()}
+}
+\concept{session management functions}

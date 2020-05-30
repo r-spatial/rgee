@@ -61,7 +61,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 \item{...}{\link[sf]{st_read} arguments might be included.}
 }
 \value{
-A ee$FeatureCollection object
+An ee$FeatureCollection object
 }
 \description{
 Convert an sf object to an ee$FeatureCollection

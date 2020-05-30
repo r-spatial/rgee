@@ -19,7 +19,9 @@ in size of data representation produced by a data compression algorithm
 \item{quiet}{Logical. Suppress info message}
 }
 \value{
-A list of parameters
+A list containing information about the number of rows (nrow),
+number of columns (ncol), total number of pixels (total_pixel), and image
+size (image_size).
 }
 \description{
 Get the approximate number of rows, cols, and size of an

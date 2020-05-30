@@ -1,6 +1,9 @@
 #' Print and return metadata about Spatial Earth Engine Objects
 #'
 #' Print and return metadata about Spatial Earth Engine Objects.
+#' \code{ee_print} can retrieve information about the number of images
+#' or features, number of bands or geometries, number of pixels, geotransform,
+#' data type, properties and object size.
 #'
 #' @param eeobject Earth Engine Object. Available for: Geometry, Feature,
 #' FeatureCollection, Image or ImageCollection.
@@ -20,6 +23,11 @@
 #' @importFrom sf st_crs
 #' @importFrom crayon bold blue
 #' @importFrom cli rule
+#'
+#' @family helper functions
+#'
+#' @return A list with the metadata of the Earth Engine object.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -102,7 +110,7 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file), silent = TRUE)
     )
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     # 7. Display Results
     cat(rule(right = bold(paste0("Earth Engine Geometry"))))
     cat(blue$bold("\nGeometry Metadata:"))
@@ -160,7 +168,7 @@ ee_print.ee.feature.Feature <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file), silent = TRUE)
     )
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     # 7. Display Results
     cat(rule(right = bold(paste0("Earth Engine Feature"))))
     cat(blue$bold("\nFeature Metadata:"))
@@ -233,7 +241,8 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file), silent = TRUE)
     )
   }
-  if (isFALSE(quiet)) {
+
+  if (!quiet) {
     # 7. Display Results
     cat(rule(right = bold(paste0("Earth Engine FeatureCollection"))))
     cat(blue$bold("\nFeatureCollection Metadata:"))
@@ -337,7 +346,7 @@ ee_print.ee.image.Image <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file),silent = TRUE)
     )
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     # 5. Display Results
     cat(rule(right = bold(paste0("Earth Engine Image"))))
     cat(blue$bold("\nImage Metadata:"))
@@ -447,7 +456,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file),silent = TRUE)
     )
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     # 5. Display Results
     cat(rule(right = bold(paste0("Earth Engine ImageCollection"))))
     cat(blue$bold("\nImageCollection Metadata:"))

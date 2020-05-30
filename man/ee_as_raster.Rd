@@ -121,3 +121,10 @@ ee_clean_container(
 )
 }
 }
+\seealso{
+Other image download functions: 
+\code{\link{ee_as_stars}()},
+\code{\link{ee_as_thumbnail}()},
+\code{\link{ee_imagecollection_to_local}()}
+}
+\concept{image download functions}

@@ -71,3 +71,9 @@ Map$centerObject(ee_fc)
 Map$addLayer(ee_fc)
 }
 }
+\seealso{
+Other vector export task creator: 
+\code{\link{ee_table_to_drive}()},
+\code{\link{ee_table_to_gcs}()}
+}
+\concept{vector export task creator}

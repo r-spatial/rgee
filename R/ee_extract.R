@@ -20,7 +20,7 @@
 #' @importFrom sf st_geometry st_geometry<- st_drop_geometry
 #'
 #' @return A data.frame or an sf object depending on the sf argument. The
-#' columns with the extracted values receive their column name from the image
+#' columns receive their name from the image
 #' metadata property \code{RGEE_NAME}. If it is not defined \code{ee_extract}
 #' use the band name (\code{ee$Image$name}) if \code{x} is an \code{ee$Image}
 #' and the \code{system:index} property if \code{x} is an
@@ -90,7 +90,7 @@
 #'   map(function(x){
 #'     date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
 #'     name <- ee$String$cat("Terraclimate_pp_", date)
-#'     x$select("pr")$set("RGEE_NAME", name)
+#'     x$select("pr")$reproject("EPSG:4326")$set("RGEE_NAME", name)
 #'   })
 #'
 #' # Define a geometry
@@ -127,6 +127,8 @@ ee_extract <- function(x,
   sf_classes <- c("sf", "sfc", "sfg")
   sp_objects <- ee_get_spatial_objects('Table')
   x_type <- x$name()
+
+  # datatype
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)

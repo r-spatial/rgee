@@ -44,6 +44,7 @@
 #' deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.
 #'
 #' @return An unstarted Task that exports the image to Drive.
+#' @family image export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -196,6 +197,7 @@ ee_image_to_drive <- function(image,
 #' deprecated such as 'crs_transform'.
 #'
 #' @return An unstarted Task that exports the image to Google Cloud Storage.
+#' @family image export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -306,9 +308,9 @@ ee_image_to_gcs <- function(image,
   )
 }
 
-#' Creates a task to export an EE Image to an EE Asset.
+#' Creates a task to export an EE Image to their EE Assets.
 #'
-#' Creates a task to export an EE Image to an EE Asset.
+#' Creates a task to export an EE Image to their EE Assets.
 #' This function is a wrapper around \code{ee$batch$Export$image$toAsset(...)}.
 #'
 #'
@@ -342,7 +344,8 @@ ee_image_to_gcs <- function(image,
 #' other keyword arguments that may have been deprecated such
 #' as 'crs_transform'.
 #'
-#' @return An unstarted Task that exports the image to Earth Engine Asset
+#' @return An unstarted task
+#' @family image export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -461,6 +464,7 @@ ee_image_to_asset <- function(image,
 #' 'driveFileNamePrefix'.
 #'
 #' @return An unstarted Task that exports the table to Google Drive.
+#' @family vector export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -546,6 +550,7 @@ ee_table_to_drive <- function(collection,
 #' that may have been deprecated such as 'outputBucket'.
 #'
 #' @return An unstarted Task that exports the table to Google Cloud Storage.
+#' @family vector export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -629,6 +634,7 @@ ee_table_to_gcs <- function(collection,
 #' it exists.
 #'
 #' @return An unstarted Task that exports the table to Earth Engine Asset.
+#' @family vector export task creator
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -713,10 +719,11 @@ ee_table_to_asset <- function(collection,
 #' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
 #'
-#' @return filename character vector.
-#'
 #' @importFrom stars read_stars
 #' @importFrom utils menu
+#'
+#' @return filename character vector.
+#' @family generic download functions
 #'
 #' @examples
 #' \dontrun{
@@ -924,6 +931,7 @@ ee_drive_to_local <- function(task,
 #' \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 #'
 #' @return filename character vector.
+#' @family generic download functions
 #'
 #' @examples
 #' \dontrun{

@@ -26,3 +26,9 @@ ee_clean_credentials('data.colec.fbf@gmail.com')
 
 }
 }
+\seealso{
+Other ee_clean functions: 
+\code{\link{ee_clean_container}()},
+\code{\link{ee_clean_pyenv}()}
+}
+\concept{ee_clean functions}

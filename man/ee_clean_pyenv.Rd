@@ -15,3 +15,9 @@ library(rgee)
 ee_clean_pyenv()
 }
 }
+\seealso{
+Other ee_clean functions: 
+\code{\link{ee_clean_container}()},
+\code{\link{ee_clean_credentials}()}
+}
+\concept{ee_clean functions}

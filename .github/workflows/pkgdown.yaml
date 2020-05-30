@@ -29,9 +29,27 @@ jobs:
 
       - name: INSTALL SYSTEM DEPENDENCIES [MAC0S]
         run: |
+          brew install udunits
+          brew install gdal
+          brew install v8
           brew install freetype
           brew install protobuf
           brew install liblwgeom
+          cat <<EOT >> .Renviron
+          PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
+          PROJ_LIB=/usr/local/opt/proj/share/proj/
+          EOT
+          cat <<EOT >> .Rprofile
+          config_args <- c("sf" = "--with-proj-lib=/usr/local/lib/", "rgdal" = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+          r <- getOption("repos")
+          r["CRAN"] <- "https://cran.rstudio.com"
+          options(configure.args = config_args, repos = r)
+          EOT
+
+      - name: INSTALL rgdal WITH CONFIGURE
+        run: |
+          install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+        shell: Rscript {0}
 
       - name: Install dependencies
         run: |

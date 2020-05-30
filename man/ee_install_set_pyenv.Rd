@@ -2,25 +2,20 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_set_pyenv}
 \alias{ee_install_set_pyenv}
-\title{Set EARTHENGINE_PYTHON as an environment variable}
+\title{Set the Python environment to be used by rgee}
 \usage{
 ee_install_set_pyenv(py_path)
 }
 \arguments{
-\item{py_path}{The path to a Python interpreter, to be used by rgee.}
+\item{py_path}{The path to a Python interpreter.}
 }
 \description{
-Set EARTHENGINE_PYTHON as an environment variable
+This function create a new environment variable called 'EARTHENGINE_PYTHON'.
+It is used to set the Python environment to be used by rgee.
+EARTHENGINE_PYTHON is saved into the file .Renviron.
 }
-\examples{
-\dontrun{
-library(rgee)
-library(reticulate)
-# windows?
-conda_list()
-# linux?
-virtualenv_list()
-
-ee_install_set_pyenv("../../rgee")
+\seealso{
+Other ee_install functions: 
+\code{\link{ee_install}()}
 }
-}
+\concept{ee_install functions}

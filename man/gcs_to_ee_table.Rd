@@ -18,6 +18,9 @@ it exists.}
 
 \item{quiet}{Logical. Suppress info message.}
 }
+\value{
+Character. The Earth Engine asset ID.
+}
 \description{
 Move a zipped shapefile from GCS to their EE Assets
 }

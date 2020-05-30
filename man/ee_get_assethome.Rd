@@ -6,14 +6,23 @@
 \usage{
 ee_get_assethome()
 }
+\value{
+Character. The name of the Earth Engine Asset home
+(e.g. users/datacolecfbf)
+}
 \description{
 Get the Asset home name
 }
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach()
 ee_Initialize()
+
 ee_get_assethome()
 }
 }
+\seealso{
+Other path utils: 
+\code{\link{ee_get_earthengine_path}()}
+}
+\concept{path utils}

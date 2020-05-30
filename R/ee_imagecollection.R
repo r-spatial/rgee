@@ -31,7 +31,8 @@
 #' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
 #' Engine Guide - Export data}.
 #' @importFrom crayon green
-#' @return A character object
+#' @return Character vector containing the filename of the images downloaded.
+#' @family image download functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -127,20 +128,20 @@ ee_imagecollection_to_local <- function(ic,
   # Output filename
   ic_names <- paste0(gsub("\\.tif$","", ic_names),".tif")
 
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     cat(
       rule(
         right = bold(sprintf("%s - via %s", "Downloading ImageCollection", via))
       )
     )
-    ee_geometry_message(region)
+    ee_geometry_message(region = region, quiet = quiet)
   }
 
   ic_files <- list()
   for (r_index in seq_len(ic_count)) {
     index <- r_index - 1
     image <- ee$Image(ic$toList(count = index + 1, offset = index)$get(0))
-    if (isFALSE(quiet)) {
+    if (!quiet) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
 
@@ -156,7 +157,7 @@ ee_imagecollection_to_local <- function(ic,
     )
     ic_files[[r_index]] <- ic_names[r_index]
   }
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     cat("\n", rule())
   }
   as.character(ic_files)
@@ -164,7 +165,7 @@ ee_imagecollection_to_local <- function(ic,
 
 #' geometry message
 #' @noRd
-ee_geometry_message <- function(region) {
+ee_geometry_message <- function(region, quiet = FALSE) {
   # From geometry to sf
   sf_region <- ee_as_sf(x = region)$geometry
   region_crs <- st_crs(sf_region)$epsg
@@ -183,11 +184,14 @@ ee_geometry_message <- function(region) {
   ### ------------
 
   # geom message to display
-  cat(
-    '- region parameters\n',
-    'WKT      :', st_as_text(sf_region), "\n",
-    'CRS      :', region_crs, "\n",
-    'geodesic :', is_geodesic, "\n",
-    'evenOdd  :', is_evenodd, "\n"
-  )
+  if (!quiet) {
+    cat(
+      '- region parameters\n',
+      'WKT      :', st_as_text(sf_region), "\n",
+      'CRS      :', region_crs, "\n",
+      'geodesic :', is_geodesic, "\n",
+      'evenOdd  :', is_evenodd, "\n"
+    )
+  }
+  invisible(TRUE)
 }

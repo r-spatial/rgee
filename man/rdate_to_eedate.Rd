@@ -14,7 +14,7 @@ from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return a
 EE date object. By default FALSE.}
 }
 \value{
-\code{rdate_to_eedate} will return a numeric timestamp or
+\code{rdate_to_eedate} will return either a numeric timestamp or
 an ee$Date depending on the \code{timestamp} argument.
 }
 \description{
@@ -30,3 +30,10 @@ rdate_to_eedate('2000-01-01')
 rdate_to_eedate(315532800000) # float number
 }
 }
+\seealso{
+Other date functions: 
+\code{\link{ee_get_date_ic}()},
+\code{\link{ee_get_date_img}()},
+\code{\link{eedate_to_rdate}()}
+}
+\concept{date functions}

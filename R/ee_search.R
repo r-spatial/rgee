@@ -19,7 +19,7 @@
 #' @param path_dataset Path of the dataset. By default it will loaded
 #' automatically.
 #' @name ee_search-tools
-#' @return a data.frame.
+#' @return A data.frame where rows represents public data archive.
 #' @examples
 #' \dontrun{
 #' library(rgee)

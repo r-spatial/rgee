@@ -109,7 +109,7 @@ sf_subset[gapPct] %>%
 ![Gaps percentage between plant canopies of different sizes in a place near to Carson City, Nevada, USA. \label{fig:AIM}](rgee_paper_00.png){ width=65% }
 
 ## Interactive Map Display
-rgee offers interactive map display through  `Map\$addLayer`, an R function mimicking the mapping module of the Earth Engine JavaScript Code Editor. `Map\$addLayer` takes advantage of the `getMapId` EE method to fetch and return an ID dictionary being used to create layers in a mapview [@appelhans2016mapview] object. Users can specify visualization parameters to `Map\$addLayer` by using the visParams argument, as demostrated below:
+rgee offers interactive map display through  `Map$addLayer`, an R function mimicking the mapping module of the Earth Engine JavaScript Code Editor. `Map$addLayer` takes advantage of the `getMapId` EE method to fetch and return an ID dictionary being used to create layers in a mapview [@appelhans2016mapview] object. Users can specify visualization parameters to `Map$addLayer` by using the visParams argument, as demostrated below:
 
 ```r
 library(rgee)
@@ -145,7 +145,7 @@ ee_Initialize()
 # Image or ImageCollection (mean composite)
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2001-01-01", "2002-01-01")$
-  map(function(x) x$select("pr"))
+  map(function(x) x$reproject("EPSG:4326")$select("pr"))
 
 # Define a geometry
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))
@@ -169,7 +169,7 @@ ee_nc_rain %>%
 
 ## Asset Management Interface
 
-rgee implements an interface to batch actions on assets extending capabilities of the existing EE data module (`ee.data.\*`). The interface allows users to create and eliminate folders, move and copy assets, set and delete properties, handle access control lists, and manage or cancel tasks. For example, users can copy a Landsat 8 image to their personal EE assets as follows:
+rgee implements an interface to batch actions on assets extending capabilities of the existing EE data module (`ee.data.*`). The interface allows users to create and eliminate folders, move and copy assets, set and delete properties, handle access control lists, and manage or cancel tasks. For example, users can copy a Landsat 8 image to their personal EE assets as follows:
 
 ```r
 library(rgee)

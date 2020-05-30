@@ -83,3 +83,9 @@ ee_monitoring(task_vector) # optional
 ee_drive_to_local(task = task_vector)
 }
 }
+\seealso{
+Other vector export task creator: 
+\code{\link{ee_table_to_asset}()},
+\code{\link{ee_table_to_gcs}()}
+}
+\concept{vector export task creator}

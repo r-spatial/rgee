@@ -106,3 +106,8 @@ ee_monitoring(task_img)
 img <- ee_drive_to_local(task = task_img)
 }
 }
+\seealso{
+Other generic download functions: 
+\code{\link{ee_gcs_to_local}()}
+}
+\concept{generic download functions}

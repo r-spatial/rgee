@@ -1,5 +1,7 @@
 #' Convert between Python and R objects
 #' @param x A python object
+#' @family ee_utils functions
+#' @return An R object
 #' @export
 ee_utils_py_to_r <- function(x) {
   p_r <- suppressWarnings(try(py_to_r(x),silent = TRUE))
@@ -19,6 +21,10 @@ ee_utils_py_to_r <- function(x) {
 #' into the zip file. By default: "dbf", "prj", "shp", "shx".
 #' @importFrom utils zip
 #' @importFrom sf write_sf
+#'
+#' @return Character. The full path of the zip file created.
+#' @family ee_utils functions
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -87,6 +93,9 @@ ee_utils_shp_to_zip <- function(x,
 #' @return A Python function that calls the R function `f` with the same
 #' signature.
 #' @param f An R function
+#'
+#' @family ee_utils functions
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)

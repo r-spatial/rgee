@@ -37,6 +37,7 @@
 #' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
+#' @family image download functions
 #' @export
 #' @examples
 #' \dontrun{
@@ -159,6 +160,7 @@ ee_as_stars <- function(image,
 #' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
+#' @family image download functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -265,7 +267,7 @@ ee_as_raster  <- function(image,
 #' @importFrom geojsonio geojson_json
 #'
 #' @return An ee$Image object
-#'
+#' @family image upload functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -354,6 +356,7 @@ stars_as_ee <- function(x,
 #' @importFrom geojsonio geojson_json
 #'
 #' @return An ee$Image object
+#' @family image upload functions
 #'
 #' @examples
 #' \dontrun{
@@ -799,7 +802,9 @@ ee_image_local <- function(image,
 #' (ignored if \code{getsize} is FALSE). By default is 20
 #' @param quiet Logical. Suppress info message
 #' @importFrom sf st_transform
-#' @return A list of parameters
+#' @return A list containing information about the number of rows (nrow),
+#' number of columns (ncol), total number of pixels (total_pixel), and image
+#' size (image_size).
 #' @examples
 #' \dontrun{
 #' library(rgee)

@@ -24,3 +24,9 @@ ee_Initialize()
 ee_monitoring(eeTaskList = TRUE)
 }
 }
+\seealso{
+Other helper functions: 
+\code{\link{ee_help}()},
+\code{\link{ee_print}()}
+}
+\concept{helper functions}

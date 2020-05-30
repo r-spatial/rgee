@@ -5,8 +5,9 @@
 #' @param x Character. filename.
 #' @param bucket bucket name you are uploading to
 #' @param quiet Logical. Suppress info message.
-#' @return Character which represents the full name of the
-#' object in the GCS bucket specified.
+#' @return Character which represents the full path of the object in the GCS
+#' bucket specified.
+#' @family generic upload functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -26,8 +27,8 @@
 #' }
 #' @export
 local_to_gcs <- function(x,
-                            bucket = NULL,
-                            quiet = FALSE) {
+                         bucket = NULL,
+                         quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
     stop(
       "The googleCloudStorageR package is required to use ",
@@ -95,6 +96,9 @@ local_to_gcs <- function(x,
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
 #' it exists.
 #' @param quiet Logical. Suppress info message.
+#'
+#' @return Character. The Earth Engine asset ID.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -139,7 +143,7 @@ gcs_to_ee_table <- function(gs_uri,
                             assetId,
                             overwrite = FALSE,
                             quiet = FALSE) {
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     cat(
       blue('Uploading'),
       green(gs_uri),
@@ -174,7 +178,7 @@ gcs_to_ee_table <- function(gs_uri,
 #' @param x stars object.
 #' @param gs_uri Character. It represents the full name of the
 #' GeoTIFF file in a GCS bucket.
-#' @param assetId Character. What to call the file once uploaded
+#' @param assetId Character. How to call the file once uploaded
 #' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
 #' it exists.
@@ -186,6 +190,9 @@ gcs_to_ee_table <- function(gs_uri,
 #' or date.
 #' @param pyramiding_policy The pyramid reduction policy to use.
 #' @param quiet Logical. Suppress info message.
+#'
+#' @return Character. The Earth Engine asset ID.
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -306,7 +313,7 @@ gcs_to_ee_image <- function(x,
     manifest = manifest
   )
 
-  if (isFALSE(quiet)) {
+  if (!quiet) {
     cat(
       blue('Uploading'),
       green(gs_uri),

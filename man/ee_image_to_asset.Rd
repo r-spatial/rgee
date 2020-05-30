@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_download.R
 \name{ee_image_to_asset}
 \alias{ee_image_to_asset}
-\title{Creates a task to export an EE Image to an EE Asset.}
+\title{Creates a task to export an EE Image to their EE Assets.}
 \usage{
 ee_image_to_asset(
   image,
@@ -60,10 +60,10 @@ other keyword arguments that may have been deprecated such
 as 'crs_transform'.}
 }
 \value{
-An unstarted Task that exports the image to Earth Engine Asset
+An unstarted task
 }
 \description{
-Creates a task to export an EE Image to an EE Asset.
+Creates a task to export an EE Image to their EE Assets.
 This function is a wrapper around \code{ee$batch$Export$image$toAsset(...)}.
 }
 \examples{
@@ -130,3 +130,9 @@ Map$centerObject(ee_l5)
 Map$addLayer(ee_l5)
 }
 }
+\seealso{
+Other image export task creator: 
+\code{\link{ee_image_to_drive}()},
+\code{\link{ee_image_to_gcs}()}
+}
+\concept{image export task creator}

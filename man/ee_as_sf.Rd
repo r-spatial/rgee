@@ -111,3 +111,4 @@ sf_randomPoints_gcs <- ee_as_sf(
 )
 }
 }
+\concept{vector download functions}

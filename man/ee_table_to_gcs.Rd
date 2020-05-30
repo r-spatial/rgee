@@ -83,3 +83,9 @@ amk_geom <- ee_gcs_to_local(task = task_vector)
 plot(amk_geom$geometry, border = "red", lwd = 10)
 }
 }
+\seealso{
+Other vector export task creator: 
+\code{\link{ee_table_to_asset}()},
+\code{\link{ee_table_to_drive}()}
+}
+\concept{vector export task creator}

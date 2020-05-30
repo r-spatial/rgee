@@ -42,7 +42,7 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 \item{quiet}{logical. Suppress info message}
 }
 \value{
-A character object
+Character vector containing the filename of the images downloaded.
 }
 \description{
 Save an EE ImageCollection in their local system
@@ -102,3 +102,10 @@ ic_drive_files <- ee_imagecollection_to_local(
 
 }
 }
+\seealso{
+Other image download functions: 
+\code{\link{ee_as_raster}()},
+\code{\link{ee_as_stars}()},
+\code{\link{ee_as_thumbnail}()}
+}
+\concept{image download functions}

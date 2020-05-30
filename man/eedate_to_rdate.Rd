@@ -14,7 +14,7 @@ from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
 date as a POSIXct object. By default FALSE.}
 }
 \value{
-\code{eedate_to_rdate} will return a numeric timestamp or
+\code{eedate_to_rdate} will return either a numeric timestamp or
 a POSIXct object depending on the \code{timestamp} argument.
 }
 \description{
@@ -42,3 +42,10 @@ eedate_to_rdate(eeDate,timestamp = TRUE) # good
 eeDate$getInfo()$value # bad
 }
 }
+\seealso{
+Other date functions: 
+\code{\link{ee_get_date_ic}()},
+\code{\link{ee_get_date_img}()},
+\code{\link{rdate_to_eedate}()}
+}
+\concept{date functions}
