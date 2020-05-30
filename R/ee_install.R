@@ -7,7 +7,7 @@
 #' @param confirm Logical. Confirm before restarting R?.
 #' @family ee_install functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_install() #It is just necessary once
 #' ee_Initialize()

@@ -8,7 +8,7 @@
 #' @family helper functions
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
 #' ee_monitoring(eeTaskList = TRUE)

@@ -65,7 +65,7 @@
 #' it is an expensive operation.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #'

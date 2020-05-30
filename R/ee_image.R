@@ -40,7 +40,7 @@
 #' @family image download functions
 #' @export
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()
@@ -162,7 +162,7 @@ ee_as_stars <- function(image,
 #' @return A RasterStack object
 #' @family image download functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()
@@ -269,7 +269,7 @@ ee_as_raster  <- function(image,
 #' @return An ee$Image object
 #' @family image upload functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' ee_Initialize(gcs = TRUE)
@@ -359,7 +359,7 @@ stars_as_ee <- function(x,
 #' @family image upload functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' ee_Initialize(gcs = TRUE)
@@ -806,7 +806,7 @@ ee_image_local <- function(image,
 #' number of columns (ncol), total number of pixels (total_pixel), and image
 #' size (image_size).
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()

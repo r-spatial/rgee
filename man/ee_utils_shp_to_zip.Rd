@@ -25,7 +25,7 @@ Character. The full path of the zip file created.
 Create a zip file from a sf object
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(sf)
 ee_Initialize(gcs = TRUE)

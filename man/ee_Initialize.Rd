@@ -38,7 +38,7 @@ argument all user credentials will be saved in a subdirectory
 called \code{~/.config/earthengine/ndef}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

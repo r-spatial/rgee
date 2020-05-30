@@ -70,7 +70,7 @@ or features, number of bands or geometries, number of pixels, geotransform,
 data type, properties and object size.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

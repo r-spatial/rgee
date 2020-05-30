@@ -25,7 +25,7 @@ Character. The Earth Engine asset ID.
 Move a zipped shapefile from GCS to their EE Assets
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(sf)
 ee_Initialize(gcs = TRUE)

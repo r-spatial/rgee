@@ -41,7 +41,7 @@
 #' @return An sf object.
 #' @family vector download functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word

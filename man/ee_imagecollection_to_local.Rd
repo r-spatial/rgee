@@ -62,7 +62,7 @@ getting more information about exporting data take a look at the
 Engine Guide - Export data}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(raster)
 

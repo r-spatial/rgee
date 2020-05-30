@@ -26,7 +26,7 @@ Get the date of a EE Image
 for getting more information.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

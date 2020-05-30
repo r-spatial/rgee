@@ -10,7 +10,7 @@ ee_clean_pyenv()
 Remove rgee system variables from .Renviron
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_clean_pyenv()
 }

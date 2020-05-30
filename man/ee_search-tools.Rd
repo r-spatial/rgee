@@ -72,7 +72,7 @@ A data.frame where rows represents public data archive.
 R functions for searching in Earth Engine's public data archive.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

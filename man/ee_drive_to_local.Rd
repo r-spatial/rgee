@@ -43,7 +43,7 @@ will download just the last file saved in Google Drive while with "all" all
 files will be downloaded.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

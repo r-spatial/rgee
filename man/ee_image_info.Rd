@@ -28,7 +28,7 @@ Get the approximate number of rows, cols, and size of an
 Earth Engine Image.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

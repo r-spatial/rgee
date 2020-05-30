@@ -14,7 +14,7 @@ Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 a table.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_users()
 }

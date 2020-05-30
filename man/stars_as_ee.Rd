@@ -33,7 +33,7 @@ An ee$Image object
 Convert a stars or stars-proxy object into an ee$Image.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)

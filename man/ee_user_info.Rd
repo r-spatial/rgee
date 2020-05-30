@@ -13,7 +13,7 @@ ee_user_info(quiet = FALSE)
 Display the credentials and general info of the initialized user
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_reattach() # reattach ee as a reserved word
 ee_Initialize()

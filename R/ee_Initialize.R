@@ -36,7 +36,7 @@
 #' @family session management functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -379,7 +379,7 @@ ee_create_credentials_gcs <- function(email) {
 #' @family session management functions
 #' @param quiet Logical. Suppress info messages.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_users()
 #' }
@@ -430,7 +430,7 @@ ee_users <- function(quiet = FALSE) {
 #' @param quiet Logical. Suppress info messages.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
@@ -620,7 +620,7 @@ create_table <- function(user, wsc, quiet = FALSE) {
 #' Get the Asset home name
 #' @family path utils
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
 #'

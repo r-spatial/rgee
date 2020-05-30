@@ -90,7 +90,7 @@ of its inputs.
 }
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(sf)
 

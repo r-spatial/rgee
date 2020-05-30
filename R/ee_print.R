@@ -29,7 +29,7 @@
 #' @return A list with the metadata of the Earth Engine object.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()

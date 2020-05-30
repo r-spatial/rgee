@@ -56,7 +56,7 @@
 #' @importFrom reticulate py_to_r
 #' @importFrom utils download.file zip str
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(raster)
 #' library(stars)
 #' library(rgee)

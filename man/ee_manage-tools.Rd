@@ -84,7 +84,7 @@ If the argument \code{del_properties} is 'ALL',
 the properties.
 }
 \examples{
-\donttest{
+\dontrun{
 
 library(rgee)
 

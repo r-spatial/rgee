@@ -26,7 +26,7 @@ ee_utils_py_to_r <- function(x) {
 #' @family ee_utils functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #' ee_Initialize(gcs = TRUE)
@@ -97,7 +97,7 @@ ee_utils_shp_to_zip <- function(x,
 #' @family ee_utils functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word

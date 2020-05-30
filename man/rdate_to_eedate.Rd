@@ -22,7 +22,7 @@ Pass an R date object ("Date", "Numeric", "character", "POSIXt",
 and "POSIXct") to Google Earth Engine (ee$Date).
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_reattach()
 ee_Initialize()

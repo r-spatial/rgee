@@ -67,7 +67,7 @@ Creates a task to export an EE Image to their EE Assets.
 This function is a wrapper around \code{ee$batch$Export$image$toAsset(...)}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

@@ -11,9 +11,14 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
-# rgee 0.5.2
-
+# rgee 0.5.3
 - **CRAN release**
+- Fix a bug in ee_check_python_packages.
+- \donttest changed by \dontrun in the documentation.
+- gdal and v8 system dependencies added to GH actions.
+- fix a bug in the paper (ee_extract example)
+
+# rgee 0.5.2
 - DESCRIPTION: single quotes in title and description.
 - DESCRIPTION: A more compresible description of what rgee does.
 - DESCRIPTION: Added web reference to the Earth Engine API.

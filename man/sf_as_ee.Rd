@@ -95,7 +95,7 @@ outer, and clockwise for inner (hole) ones. By default, this is FALSE because
 it is an expensive operation.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(sf)
 

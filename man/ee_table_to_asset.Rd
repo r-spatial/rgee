@@ -30,7 +30,7 @@ Creates a task to export a FeatureCollection to an EE table asset.
 This function is a wrapper around \code{ee$batch$Export$table$toAsset(...)}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

@@ -9,7 +9,7 @@
 #' bucket specified.
 #' @family generic upload functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' ee_reattach()
@@ -100,7 +100,7 @@ local_to_gcs <- function(x,
 #' @return Character. The Earth Engine asset ID.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #' ee_Initialize(gcs = TRUE)
@@ -194,7 +194,7 @@ gcs_to_ee_table <- function(gs_uri,
 #' @return Character. The Earth Engine asset ID.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' ee_Initialize(gcs = TRUE)

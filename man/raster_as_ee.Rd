@@ -34,7 +34,7 @@ An ee$Image object
 Convert a Raster* object into an ee$Image.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)

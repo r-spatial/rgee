@@ -21,7 +21,7 @@
 #' @name ee_search-tools
 #' @return A data.frame where rows represents public data archive.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word

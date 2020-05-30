@@ -31,7 +31,7 @@ use Python as a backend to obtain the date and convert it in float before
 exporting to R.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

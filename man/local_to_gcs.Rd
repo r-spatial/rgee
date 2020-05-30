@@ -21,7 +21,7 @@ bucket specified.
 Upload images or tables to Google Cloud Storage
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 ee_reattach()

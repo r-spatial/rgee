@@ -98,7 +98,7 @@ default 3.
 }
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

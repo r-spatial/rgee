@@ -68,7 +68,7 @@ more information about exporting data take a look at the
 Engine Guide - Export data}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

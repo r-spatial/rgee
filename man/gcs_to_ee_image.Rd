@@ -48,7 +48,7 @@ Character. The Earth Engine asset ID.
 Move a GeoTIFF image from GCS to their EE assets
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 ee_Initialize(gcs = TRUE)

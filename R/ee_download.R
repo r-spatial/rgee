@@ -46,7 +46,7 @@
 #' @return An unstarted Task that exports the image to Drive.
 #' @family image export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -199,7 +199,7 @@ ee_image_to_drive <- function(image,
 #' @return An unstarted Task that exports the image to Google Cloud Storage.
 #' @family image export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -347,7 +347,7 @@ ee_image_to_gcs <- function(image,
 #' @return An unstarted task
 #' @family image export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -466,7 +466,7 @@ ee_image_to_asset <- function(image,
 #' @return An unstarted Task that exports the table to Google Drive.
 #' @family vector export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -552,7 +552,7 @@ ee_table_to_drive <- function(collection,
 #' @return An unstarted Task that exports the table to Google Cloud Storage.
 #' @family vector export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -636,7 +636,7 @@ ee_table_to_gcs <- function(collection,
 #' @return An unstarted Task that exports the table to Earth Engine Asset.
 #' @family vector export task creator
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -726,7 +726,7 @@ ee_table_to_asset <- function(collection,
 #' @family generic download functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)
@@ -934,7 +934,7 @@ ee_drive_to_local <- function(task,
 #' @family generic download functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(stars)
 #' library(sf)

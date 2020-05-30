@@ -25,7 +25,7 @@ Google Drive and Google Cloud Storage) available in their system and the
 Python environment and the Third-Party Python Packages used by rgee.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word

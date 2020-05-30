@@ -65,7 +65,7 @@ a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

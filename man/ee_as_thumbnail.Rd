@@ -70,7 +70,7 @@ number \cr
 }
 }
 \examples{
-\donttest{
+\dontrun{
 library(raster)
 library(stars)
 library(rgee)

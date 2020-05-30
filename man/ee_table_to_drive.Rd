@@ -44,7 +44,7 @@ Creates a task to export a FeatureCollection to Google Drive.
 This function is a wrapper around \code{ee$batch$Export$table$toDrive(...)}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

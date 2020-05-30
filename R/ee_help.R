@@ -4,7 +4,7 @@
 #' @importFrom reticulate py_function_docs
 #' @family helper functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()

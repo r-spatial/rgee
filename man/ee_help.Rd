@@ -15,7 +15,7 @@ ee_help(eeobject, browser = FALSE)
 Documentation for Earth Engine Objects
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach()

@@ -18,7 +18,7 @@ listed.}
 Monitoring Earth Engine task progress
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_Initialize()
 ee_monitoring(eeTaskList = TRUE)

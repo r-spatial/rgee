@@ -18,7 +18,7 @@ after running successfully \code{ee_Initialize(...)}. They are saved in
 the path \code{rgee::ee_get_earthengine_path()}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_clean_credentials()

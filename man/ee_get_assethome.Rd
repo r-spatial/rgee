@@ -14,7 +14,7 @@ Character. The name of the Earth Engine Asset home
 Get the Asset home name
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_Initialize()
 

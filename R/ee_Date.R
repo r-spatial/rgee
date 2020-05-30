@@ -12,7 +12,7 @@
 #' an ee$Date depending on the \code{timestamp} argument.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach()
 #' ee_Initialize()
@@ -56,7 +56,7 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #' a POSIXct object depending on the \code{timestamp} argument.
 #' @family date functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()
@@ -96,7 +96,7 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' (if the \code{time_end} argument is TRUE).
 #' @family date functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach()
@@ -153,7 +153,7 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #' @family date functions
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #'

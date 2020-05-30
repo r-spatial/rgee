@@ -145,7 +145,7 @@ ee_Initialize()
 # Image or ImageCollection (mean composite)
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2001-01-01", "2002-01-01")$
-  map(function(x) x$select("pr"))
+  map(function(x) x$reproject("EPSG:4326")$select("pr"))
 
 # Define a geometry
 nc <- st_read(system.file("shape/nc.shp", package = "sf"))

@@ -34,7 +34,7 @@
 #' @return Character vector containing the filename of the images downloaded.
 #' @family image download functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(raster)
 #'

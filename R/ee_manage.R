@@ -29,7 +29,7 @@
 #' the properties.
 #' @author Samapriya Roy, adapted to R by csaybar.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'
 #' library(rgee)
 #'

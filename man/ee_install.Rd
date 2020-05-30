@@ -23,7 +23,7 @@ to install. By default \code{rgee::ee_version()}.}
 Create an isolated Python virtual environment with all rgee dependencies.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 ee_install() #It is just necessary once
 ee_Initialize()

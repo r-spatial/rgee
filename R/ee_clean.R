@@ -9,7 +9,7 @@
 #' @param quiet Logical. Suppress info messages.
 #' @family ee_clean functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_clean_credentials()
@@ -54,7 +54,7 @@ ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
 #'
 #' @family ee_clean functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_clean_pyenv()
 #' }

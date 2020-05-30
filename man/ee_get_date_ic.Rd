@@ -28,7 +28,7 @@ Get the date of a EE ImageCollection
 for getting more information.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(sf)
 

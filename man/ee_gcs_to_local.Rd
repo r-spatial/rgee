@@ -30,7 +30,7 @@ necessaries to locate the file into google cloud storage are obtained from
 \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

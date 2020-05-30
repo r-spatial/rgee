@@ -14,7 +14,7 @@
 #' @importFrom cli cat_line
 #' @family ee_check functions
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -88,7 +88,6 @@ ee_check_python_packages <- function(quiet = FALSE) {
         )
       }
     } else {
-      message(text)
       text <- paste(
         sprintf(
           "%s The Earth Engine Python API version %s is installed",

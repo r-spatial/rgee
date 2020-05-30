@@ -87,7 +87,7 @@
 #'  default 3.
 #' }
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #'
 #' ee_reattach() # reattach ee as a reserved word
@@ -351,7 +351,7 @@ if (!isGeneric("+")) {
 #' @param e1 a mapview map to which e2 should be added.
 #' @param e2 a mapview map from which the objects should be added to e1.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()

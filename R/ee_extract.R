@@ -77,7 +77,7 @@
 #' of its inputs.
 #' }
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #'
@@ -127,6 +127,8 @@ ee_extract <- function(x,
   sf_classes <- c("sf", "sfc", "sfg")
   sp_objects <- ee_get_spatial_objects('Table')
   x_type <- x$name()
+
+  # datatype
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)

@@ -43,7 +43,7 @@ This function is a wrapper around
 \code{ee$batch$Export$table$toCloudStorage(...)}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 library(stars)
 library(sf)

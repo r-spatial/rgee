@@ -24,7 +24,7 @@ just to maintain the rgee functions name's style. All recognition
 for this function must always be given to \pkg{reticulate}.
 }
 \examples{
-\donttest{
+\dontrun{
 library(rgee)
 
 ee_reattach() # reattach ee as a reserved word
