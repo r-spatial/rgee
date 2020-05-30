@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -182,14 +182,20 @@ also returned. See details.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An List object with the id, time_start and time_end
-(if <code>time_end</code> argument is TRUE) of the image.</p>
+    <p>An List object with the elements: id, time_start and time_end
+(if the <code>time_end</code> argument is TRUE).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>system:time_start</code> set the start period of data acquisition while
 <code>system:time_end</code> does the same for the end period. See the
 <a href='https://developers.google.com/earth-engine/glossary'>Earth Engine glossary</a>
 for getting more information.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other date functions: 
+<code><a href='ee_get_date_ic.html'>ee_get_date_ic</a>()</code>,
+<code><a href='eedate_to_rdate.html'>eedate_to_rdate</a>()</code>,
+<code><a href='rdate_to_eedate.html'>rdate_to_eedate</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

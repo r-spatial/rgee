@@ -18,7 +18,10 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R Bindings for Calling the Earth Engine API">
-<meta property="og:description" content="Provides bindings to the Google Earth Engine Python API and set tools for automating processes.">
+<meta property="og:description" content="Earth Engine &lt;https://earthengine.google.com/&gt; client library for R. All of the Earth Engine API classes, 
+    modules, and functions are made available. Implemented functions include importing (exporting) of R (Earth Engine) 
+    spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
+    See &lt;https://r-spatial.github.io/rgee/&gt; for further details.">
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -38,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -118,7 +121,7 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#google-earth-engine-for-r" class="anchor"></a>Google Earth Engine for R</h1></div>
 <p><a href="http://r-spatial.github.io/rgee"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="0" width="15%"></a></p>
-<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.222/">earthengine-api 0.1.222</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
+<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.223/">earthengine-api 0.1.223</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
 <div id="more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="section level3">
 <h3 class="hasAnchor">
 <a href="#more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="anchor"></a>More than 250+ examples using Google Earth Engine with R are available <a href="http://csaybar.github.io/rgee-examples/">here</a>

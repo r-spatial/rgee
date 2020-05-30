@@ -83,7 +83,7 @@ mimicking how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -209,7 +209,7 @@ the sf object y?</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data.frame or an sf object depending on the sf argument. The
-columns with the extracted values receive their column name from the image
+columns receive their name from the image
 metadata property <code>RGEE_NAME</code>. If it is not defined <code>ee_extract</code>
 use the band name (<code>ee$Image$name</code>) if <code>x</code> is an <code>ee$Image</code>
 and the <code>system:index</code> property if <code>x</code> is an
@@ -280,7 +280,7 @@ of its inputs.</p></li>
   <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>){
     <span class='no'>date</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='no'>x</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"system:time_start"</span>))$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='st'>'YYYY_MM_dd'</span>)
     <span class='no'>name</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>String</span>$<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Terraclimate_pp_"</span>, <span class='no'>date</span>)
-    <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>)$<span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='no'>name</span>)
+    <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>)$<span class='fu'>reproject</span>(<span class='st'>"EPSG:4326"</span>)$<span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='no'>name</span>)
   })
 
 <span class='co'># Define a geometry</span>

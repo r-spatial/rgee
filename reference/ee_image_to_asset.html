@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates a task to export an EE Image to an EE Asset. — ee_image_to_asset • rgee</title>
+<title>Creates a task to export an EE Image to their EE Assets. — ee_image_to_asset • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Creates a task to export an EE Image to an EE Asset. — ee_image_to_asset" />
-<meta property="og:description" content="Creates a task to export an EE Image to an EE Asset.
+<meta property="og:title" content="Creates a task to export an EE Image to their EE Assets. — ee_image_to_asset" />
+<meta property="og:description" content="Creates a task to export an EE Image to their EE Assets.
 This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -81,7 +81,7 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -156,13 +156,13 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates a task to export an EE Image to an EE Asset.</h1>
+    <h1>Creates a task to export an EE Image to their EE Assets.</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_download.R'><code>R/ee_download.R</code></a></small>
     <div class="hidden name"><code>ee_image_to_asset.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates a task to export an EE Image to an EE Asset.
+    <p>Creates a task to export an EE Image to their EE Assets.
 This function is a wrapper around <code>ee$batch$Export$image$toAsset(...)</code>.</p>
     </div>
 
@@ -249,7 +249,12 @@ as 'crs_transform'.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An unstarted Task that exports the image to Earth Engine Asset</p>
+    <p>An unstarted task</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other image export task creator: 
+<code><a href='ee_image_to_drive.html'>ee_image_to_drive</a>()</code>,
+<code><a href='ee_image_to_gcs.html'>ee_image_to_gcs</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

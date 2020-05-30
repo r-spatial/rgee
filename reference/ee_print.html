@@ -47,7 +47,10 @@
 
 
 <meta property="og:title" content="Print and return metadata about Spatial Earth Engine Objects — ee_print" />
-<meta property="og:description" content="Print and return metadata about Spatial Earth Engine Objects." />
+<meta property="og:description" content="Print and return metadata about Spatial Earth Engine Objects.
+ee_print can retrieve information about the number of images
+or features, number of bands or geometries, number of pixels, geotransform,
+data type, properties and object size." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -80,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -161,7 +164,10 @@
     </div>
 
     <div class="ref-description">
-    <p>Print and return metadata about Spatial Earth Engine Objects.</p>
+    <p>Print and return metadata about Spatial Earth Engine Objects.
+<code>ee_print</code> can retrieve information about the number of images
+or features, number of bands or geometries, number of pixels, geotransform,
+data type, properties and object size.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_print</span>(<span class='no'>eeobject</span>, <span class='no'>...</span>)
@@ -240,6 +246,14 @@ Relevant just for <code>ee$ImageCollection</code> objects.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A list with the metadata of the Earth Engine object.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other helper functions: 
+<code><a href='ee_help.html'>ee_help</a>()</code>,
+<code><a href='ee_monitoring.html'>ee_monitoring</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {

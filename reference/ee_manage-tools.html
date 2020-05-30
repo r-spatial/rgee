@@ -47,7 +47,9 @@
 
 
 <meta property="og:title" content="Interface for manage the Earth Engine Asset — ee_manage-tools" />
-<meta property="og:description" content="R functions for managing the Earth Engine Asset" />
+<meta property="og:description" content="R functions for managing the Earth Engine Asset. The interface allows users
+to create and eliminate folders, move and copy assets, set and delete
+properties, handle access control lists, and manage and/or cancel tasks." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -80,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -161,7 +163,9 @@
     </div>
 
     <div class="ref-description">
-    <p>R functions for managing the Earth Engine Asset</p>
+    <p>R functions for managing the Earth Engine Asset. The interface allows users
+to create and eliminate folders, move and copy assets, set and delete
+properties, handle access control lists, and manage and/or cancel tasks.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_manage_create</span>(<span class='no'>path_asset</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"Folder"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
@@ -170,7 +174,7 @@
 
 <span class='fu'>ee_manage_assetlist</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_manage_quota</span>()
+<span class='fu'>ee_manage_quota</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ee_manage_copy</span>(<span class='no'>path_asset</span>, <span class='no'>final_path</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
@@ -192,7 +196,7 @@
 
 <span class='fu'>ee_manage_cancel_all_running_task</span>()
 
-<span class='fu'>ee_manage_asset_size</span>(<span class='no'>path_asset</span>)</pre>
+<span class='fu'>ee_manage_asset_size</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

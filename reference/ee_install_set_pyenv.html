@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set EARTHENGINE_PYTHON as an environment variable — ee_install_set_pyenv • rgee</title>
+<title>Set the Python environment to be used by rgee — ee_install_set_pyenv • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,10 @@
 
 
 
-<meta property="og:title" content="Set EARTHENGINE_PYTHON as an environment variable — ee_install_set_pyenv" />
-<meta property="og:description" content="Set EARTHENGINE_PYTHON as an environment variable" />
+<meta property="og:title" content="Set the Python environment to be used by rgee — ee_install_set_pyenv" />
+<meta property="og:description" content="This function create a new environment variable called 'EARTHENGINE_PYTHON'.
+It is used to set the Python environment to be used by rgee.
+EARTHENGINE_PYTHON is saved into the file .Renviron." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -80,7 +82,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -155,13 +157,15 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set EARTHENGINE_PYTHON as an environment variable</h1>
+    <h1>Set the Python environment to be used by rgee</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
     <div class="hidden name"><code>ee_install_set_pyenv.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Set EARTHENGINE_PYTHON as an environment variable</p>
+    <p>This function create a new environment variable called 'EARTHENGINE_PYTHON'.
+It is used to set the Python environment to be used by rgee.
+EARTHENGINE_PYTHON is saved into the file .Renviron.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_set_pyenv</span>(<span class='no'>py_path</span>)</pre>
@@ -171,22 +175,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>py_path</th>
-      <td><p>The path to a Python interpreter, to be used by rgee.</p></td>
+      <td><p>The path to a Python interpreter.</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>reticulate</span>)
-<span class='co'># windows?</span>
-<span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/conda-tools.html'>conda_list</a></span>()
-<span class='co'># linux?</span>
-<span class='fu'><a href='https://rdrr.io/pkg/reticulate/man/virtualenv-tools.html'>virtualenv_list</a></span>()
+    <div class='dont-index'><p>Other ee_install functions: 
+<code><a href='ee_install.html'>ee_install</a>()</code></p></div>
 
-<span class='fu'>ee_install_set_pyenv</span>(<span class='st'>"../../rgee"</span>)
-}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

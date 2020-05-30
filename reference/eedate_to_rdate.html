@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
       </span>
     </div>
 
@@ -183,7 +183,7 @@ date as a POSIXct object. By default FALSE.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>eedate_to_rdate</code> will return a numeric timestamp or
+    <p><code>eedate_to_rdate</code> will return either a numeric timestamp or
 a POSIXct object depending on the <code>timestamp</code> argument.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -195,6 +195,12 @@ with Google Earth Engine date objects (ee$Date), which are represented
 by timestamps in milliseconds since the UNIX epoch. <code>eedate_to_rdate</code>
 use Python as a backend to obtain the date and convert it in float before
 exporting to R.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other date functions: 
+<code><a href='ee_get_date_ic.html'>ee_get_date_ic</a>()</code>,
+<code><a href='ee_get_date_img.html'>ee_get_date_img</a>()</code>,
+<code><a href='rdate_to_eedate.html'>rdate_to_eedate</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
