@@ -7,7 +7,7 @@
 ee_table_to_drive(
   collection,
   description = "myExportTableTask",
-  folder = NULL,
+  folder = "rgee_backup",
   fileNamePrefix = NULL,
   timePrefix = TRUE,
   fileFormat = NULL,

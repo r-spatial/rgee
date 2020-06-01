@@ -225,7 +225,7 @@ dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCO
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2000-01-01", "2001-01-01")$
-  map(function(x) x$select("pr"))
+  map(function(x) x$reproject("EPSG:4326")$select("pr"))
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works

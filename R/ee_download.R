@@ -507,7 +507,7 @@ ee_image_to_asset <- function(image,
 #' @export
 ee_table_to_drive <- function(collection,
                               description = "myExportTableTask",
-                              folder = NULL,
+                              folder = "rgee_backup",
                               fileNamePrefix = NULL,
                               timePrefix = TRUE,
                               fileFormat = NULL,

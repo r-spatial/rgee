@@ -200,7 +200,8 @@ ee_extract <- function(x,
     image$reduceRegions(
       collection = ee_y,
       reducer = fun,
-      scale = scale
+      scale = scale,
+      ...
     )$map(function(f) f$set("imageId", image$get("RGEE_NAME")))
   })$flatten()
 

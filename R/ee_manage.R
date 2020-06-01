@@ -525,7 +525,7 @@ ee_manage_cancel_all_running_task <- function() {
   all_task_state <- unlist(lapply(all_task, "[[", "state"))
   running_ready_tasks <- all_task_state  %in%  c("RUNNING" , "READY")
 
-  if (any(running_ready_tasks)) {
+  if (!any(running_ready_tasks)) {
     stop("There are no tasks running")
   } else {
     running <- all_task[which(running_ready_tasks)]

@@ -21,12 +21,29 @@ to install. By default \code{rgee::ee_version()}.}
 }
 \description{
 Create an isolated Python virtual environment with all rgee dependencies.
+\code{ee_install} realize the following six (6) tasks:
+\itemize{
+\item{1. }{If you do not count with a Python environment, it will display
+an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}
+(a free minimal installer for conda).}
+\item{2. }{Remove the previous Python environment defined in \code{py_env} if
+it exist.}
+\item{3. }{Create a new Python environment (See \code{py_env}).}
+\item{4. }{ Set the environmental variable EARTHENGINE_PYTHON. It is used to
+define RETICULATE_PYTHON when the library is loaded. See this
+\href{https://rstudio.github.io/reticulate/articles/versions.html}{article}
+for further details.
+}
+\item{5. }{Install rgee Python dependencies. Using
+\code{reticulate::py_install}.}
+\item{6. }{Interactive menu to confirm if restart the R session to see
+changes.}
+}
 }
 \examples{
 \dontrun{
 library(rgee)
 ee_install() #It is just necessary once
-ee_Initialize()
 }
 }
 \seealso{

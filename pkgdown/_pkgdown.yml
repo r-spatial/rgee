@@ -12,15 +12,14 @@ navbar:
     - text: "Articles"
       icon: fas fa-book
       menu:
-      -  text: Setup
+      -  text: Setup and details
          href: articles/setup.html
       -  text: Consideration
          href: articles/considerations.html
+      -  text: Best Practices
+         href: articles/BestPractices.html
       -  text: rgee examples
          href: http://csaybar.github.io/rgee-examples/
-    - text: "faq"
-      icon: fa-question-circle-o
-      href: articles/faq.html
     - icon: fa-newspaper-o
       text: "news"
       href: news/index.html

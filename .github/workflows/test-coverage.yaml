@@ -52,6 +52,7 @@ jobs:
           brew install gdal
           brew install freetype
           brew install protobuf
+          brew install v8
           cat <<EOT >> .Renviron
           PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
           PROJ_LIB=/usr/local/opt/proj/share/proj/

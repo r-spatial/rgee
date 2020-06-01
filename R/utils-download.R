@@ -32,12 +32,12 @@ ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
   }
   while (task$active() & task$state != "CANCEL_REQUESTED") {
     if (!quiet) {
-      cat(sprintf("Polling for task (id: %s).", task$id))
+      cat(sprintf("Polling for task (id: %s).\n", task$id))
     }
     Sys.sleep(5)
   }
   if (!quiet) {
-    cat(sprintf("State: %s", task$status()$state))
+    cat(sprintf("State: %s\n", task$status()$state))
   }
   if (task$status()$state != "COMPLETED") {
     stop(task$status()$error_message)

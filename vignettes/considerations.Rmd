@@ -1,6 +1,6 @@
 ---
 title: "Considerations"
-output:
+output: 
   md_document:
     variant: markdown_github
 vignette: >
