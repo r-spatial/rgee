@@ -1,8 +1,6 @@
 ---
 title: "Best Practices"
-output: 
-  md_document:
-    variant: markdown_github
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Best Practices}
   %\VignetteEngine{knitr::rmarkdown}

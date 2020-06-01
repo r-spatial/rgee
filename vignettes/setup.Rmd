@@ -1,8 +1,6 @@
 ---
 title: "Setup and Details"
-output: 
-  md_document:
-    variant: markdown_github
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Setup and Details}
   %\VignetteEngine{knitr::rmarkdown}

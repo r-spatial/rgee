@@ -9,10 +9,12 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^vignettes\considerations.Rmd
-^vignettes\setup.Rmd
-^vignettes\faq.Rmd
 ^revdep$
 ^inst\tests
 ^paper
 ^revdep$
+^vignettes\considerations.Rmd
+^vignettes\setup.Rmd
+^vignettes\BestPractices.Rmd
+^vignettes\thumb_down.png
+^vignettes\thumb_up.png
