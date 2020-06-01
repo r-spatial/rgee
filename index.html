@@ -65,22 +65,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/setup.html">Setup</a>
+      <a href="articles/setup.html">Setup and details</a>
     </li>
     <li>
       <a href="articles/considerations.html">Consideration</a>
     </li>
     <li>
+      <a href="articles/BestPractices.html">Best Practices</a>
+    </li>
+    <li>
       <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="articles/faq.html">
-    <span class="fa fa-question-circle-o"></span>
-     
-    faq
-  </a>
 </li>
 <li>
   <a href="news/index.html">
@@ -267,7 +263,7 @@ R
 <p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE">Terraclimate dataset</a></p>
 <div class="sourceCode" id="cb16"><pre class="r"><span class="no">terraclimate</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu">ImageCollection</span>(<span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
   <span class="fu">filterDate</span>(<span class="st">"2000-01-01"</span>, <span class="st">"2001-01-01"</span>)$
-  <span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>$<span class="fu">select</span>(<span class="st">"pr"</span>))</pre></div>
+  <span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>$<span class="fu">reproject</span>(<span class="st">"EPSG:4326"</span>)$<span class="fu">select</span>(<span class="st">"pr"</span>))</pre></div>
 <p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/raster/man/extract.html">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
 <div class="sourceCode" id="cb17"><pre class="r"><span class="no">ee_nc_rain</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">terraclimate</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">nc</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">Reducer</span>$<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(), <span class="kw">sf</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">ee_nc_rain</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%02d"</span>, <span class="fl">1</span>:<span class="fl">12</span>)

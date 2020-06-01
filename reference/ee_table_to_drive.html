@@ -105,22 +105,18 @@ This function is a wrapper around ee$batch$Export$table$toDrive(...)." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/setup.html">Setup</a>
+      <a href="../articles/setup.html">Setup and details</a>
     </li>
     <li>
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
+      <a href="../articles/BestPractices.html">Best Practices</a>
+    </li>
+    <li>
       <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../articles/faq.html">
-    <span class="fa fa-question-circle-o"></span>
-     
-    faq
-  </a>
 </li>
 <li>
   <a href="../news/index.html">
@@ -169,7 +165,7 @@ This function is a wrapper around <code>ee$batch$Export$table$toDrive(...)</code
     <pre class="usage"><span class='fu'>ee_table_to_drive</span>(
   <span class='no'>collection</span>,
   <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportTableTask"</span>,
-  <span class='kw'>folder</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>folder</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
   <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>timePrefix</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,

@@ -47,7 +47,24 @@
 
 
 <meta property="og:title" content="Create an isolated Python virtual environment with all rgee dependencies. — ee_install" />
-<meta property="og:description" content="Create an isolated Python virtual environment with all rgee dependencies." />
+<meta property="og:description" content="Create an isolated Python virtual environment with all rgee dependencies.
+ee_install realize the following six (6) tasks:
+1. If you do not count with a Python environment, it will display
+an interactive menu to install Miniconda
+(a free minimal installer for conda).
+2. Remove the previous Python environment defined in py_env if
+it exist.
+3. Create a new Python environment (See py_env).
+4.  Set the environmental variable EARTHENGINE_PYTHON. It is used to
+define RETICULATE_PYTHON when the library is loaded. See this
+article
+for further details.
+5. Install rgee Python dependencies. Using
+reticulate::py_install.
+6. Interactive menu to confirm if restart the R session to see
+changes.
+
+" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -104,22 +121,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/setup.html">Setup</a>
+      <a href="../articles/setup.html">Setup and details</a>
     </li>
     <li>
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
+      <a href="../articles/BestPractices.html">Best Practices</a>
+    </li>
+    <li>
       <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../articles/faq.html">
-    <span class="fa fa-question-circle-o"></span>
-     
-    faq
-  </a>
 </li>
 <li>
   <a href="../news/index.html">
@@ -161,7 +174,24 @@
     </div>
 
     <div class="ref-description">
-    <p>Create an isolated Python virtual environment with all rgee dependencies.</p>
+    <p>Create an isolated Python virtual environment with all rgee dependencies.
+<code>ee_install</code> realize the following six (6) tasks:</p><ul>
+<li><p>1. If you do not count with a Python environment, it will display
+an interactive menu to install <a href='https://docs.conda.io/en/latest/miniconda.html'>Miniconda</a>
+(a free minimal installer for conda).</p></li>
+<li><p>2. Remove the previous Python environment defined in <code>py_env</code> if
+it exist.</p></li>
+<li><p>3. Create a new Python environment (See <code>py_env</code>).</p></li>
+<li><p>4.  Set the environmental variable EARTHENGINE_PYTHON. It is used to
+define RETICULATE_PYTHON when the library is loaded. See this
+<a href='https://rstudio.github.io/reticulate/articles/versions.html'>article</a>
+for further details.</p></li>
+<li><p>5. Install rgee Python dependencies. Using
+<code><a href='https://rdrr.io/pkg/reticulate/man/py_install.html'>reticulate::py_install</a></code>.</p></li>
+<li><p>6. Interactive menu to confirm if restart the R session to see
+changes.</p></li>
+</ul>
+
     </div>
 
     <pre class="usage"><span class='fu'>ee_install</span>(
@@ -198,7 +228,6 @@ to install. By default <code><a href='ee_version.html'>rgee::ee_version()</a></c
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'>ee_install</span>() <span class='co'>#It is just necessary once</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

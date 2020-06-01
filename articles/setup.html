@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Setup_and_Details • rgee</title>
+<title>Setup and Details • rgee</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Setup_and_Details">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Setup and Details">
 <meta property="og:description" content="rgee">
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -62,22 +62,18 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/setup.html">Setup</a>
+      <a href="../articles/setup.html">Setup and details</a>
     </li>
     <li>
       <a href="../articles/considerations.html">Consideration</a>
     </li>
     <li>
+      <a href="../articles/BestPractices.html">Best Practices</a>
+    </li>
+    <li>
       <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
     </li>
   </ul>
-</li>
-<li>
-  <a href="../articles/faq.html">
-    <span class="fa fa-question-circle-o"></span>
-     
-    faq
-  </a>
 </li>
 <li>
   <a href="../news/index.html">
@@ -113,7 +109,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Setup_and_Details</h1>
+      <h1 data-toc-skip>Setup and Details</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/setup.Rmd"><code>vignettes/setup.Rmd</code></a></small>
@@ -123,70 +119,189 @@
 
     
     
-<p><code>rgee</code> has two types of dependencies: <strong>the strict ones and the related with I/O</strong> . The <span style="color:#b52b09"><strong>strict dependencies</strong></span> must be satisfied before the <code>rgee</code> installation. If this is not fulfilled <strong>rgee just will not work</strong>. The dependencies that comprised this group are:</p>
+<p><code>rgee</code> has two types of dependencies: <span style="color:#b52b09"><strong>strict dependencies</strong></span> which must be satisfied before the <code>rgee</code> installation and the <span style="color:#857e04"><b>credentials dependencies</b></span> for unlock <code>rgee</code> import &amp; export functions.</p>
+<p>If the first group of dependencies is not fulfilled <strong>rgee just will not work</strong>. The dependencies that comprised this group are:</p>
 <ul>
 <li><span style="color:#b52b09"><b> Google account with Earth Engine activated </b></span></li>
 <li><span style="color:#b52b09"><b> Python &gt;= v3.5 </b></span></li>
 <li><span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span></li>
 </ul>
-<p>The activation of <strong>Earth Engine accounts</strong> depends on each user, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a <strong>Python environment</strong> in your system, run <code><a href="../reference/ee_Initialize.html">ee_Initialize()</a></code> to display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda). We highly recommend use an virtual environment to use <code>rgee</code>, you can create one using <code>ee_install_create_pyenv</code>. Finally, the <code>ee_install_python_packages()</code> function is provided as a convenient way to install all Python packages needed in <code>rgee</code>, even though it is not mandatory. You can count on with your own custom installation. This would be also allowed. All the step described before are summarised below:</p>
+<p>The activation of <strong>Earth Engine accounts</strong> depends on each user, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we highly recommend you run <code><a href="../reference/ee_install.html">ee_install(py_env = "rgee")</a></code>. This function will realize the following six tasks:</p>
+<ol style="list-style-type: decimal">
+<li>If you do not count with a Python environment, it will display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda).</li>
+<li>Remove the previous Python environment defined in py_env if it exist.</li>
+<li>Create a new Python environment.</li>
+<li>Set the environmental variable EARTHENGINE_PYTHON. It is used to define RETICULATE_PYTHON when the library is loaded. See this article for further details.</li>
+<li>Install rgee Python dependencies. Using <code><a href="https://rdrr.io/pkg/reticulate/man/py_install.html">reticulate::py_install</a></code>.</li>
+<li>Interactive meny to confirm if restart the R session to see changes.</li>
+</ol>
+<p>However, the use of <code><a href="../reference/ee_install.html">ee_install()</a></code> is not mandatory. You can count on with your own custom installation. This would be also allowed.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="co"># Recommended way to install external rgee dependencies </span>
-
-<span class="co"># 1. Initialize rgee with ee_Initialize(). If there is no any</span>
-<span class="co">#    Python environment, miniconda will be installed by default.</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()
-
-<span class="co"># 2. Create a Python environment, e.g. ee.</span>
-<span class="no">pyenv</span> <span class="kw">&lt;-</span> <span class="fu">ee_install_create_pyenv</span>(<span class="kw">python_env</span> <span class="kw">=</span> <span class="st">"ee"</span>)
-
-<span class="co"># Find others Python environments in the system.</span>
-<span class="co"># ee_install_discover_pyenvs()</span>
-
-<span class="co"># 3. Set a Python environment (e.g. ee) and restart R to see changes.</span>
-<span class="fu"><a href="../reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span>(<span class="no">pyenv</span>, <span class="kw">install</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-
-<span class="co"># 4. Install Python package dependencies and restart R to see changes.</span>
-<span class="fu">ee_install_python_packages</span>()
-
-<span class="co"># 5. Initialize rgee again!</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></body></html></div>
-<p>By the other hand, the <span style="color:#857e04"><b>I/O dependencies</b></span> unlock <code>rgee</code> import &amp; export functions. This dependencies are not mandatory. However, many of the rgee I/O functionality depend on it. The dependencies that comprised this group are shown below:</p>
+<span class="fu"><a href="../reference/ee_install.html">ee_install</a></span>() <span class="co"># It is just neccessary once!</span></pre></body></html></div>
+<p>By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are mainly used to move data from Google Drive and Google Cloud Storage into their local environment. These dependencies are not mandatory. However, will help you to create a seamless connection between R and Earth Engine. The dependencies that comprised this group are shown below:</p>
 <ul>
-<li><span style="color:#857e04"><strong>Google Cloud Storage credentials</strong></span></li>
-<li><span style="color:#857e04"><strong>Google Drive credentials</strong></span></li>
+<li><span style="color:#857e04"><strong>Google Cloud Storage credential</strong></span></li>
+<li><span style="color:#857e04"><strong>Google Drive credential</strong></span></li>
 </ul>
-<div id="import-and-export-spatial-data-using-rgee" class="section level3">
-<h3 class="hasAnchor">
-<a href="#import-and-export-spatial-data-using-rgee" class="anchor"></a>Import and Export Spatial Data using rgee</h3>
-<p>The batch import/export involves difficulties for most GEE users. In <code>rgee</code>, we are aware of it and we created several functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> data from Earth Engine you will have three options:</p>
-<ul>
-<li>
-<strong>ee_as_sf</strong>: Useful to download ee$Geometry, ee$Feature and ee$FeatureCollection.</li>
-<li>
-<strong>ee_as_stars</strong> or <strong>ee_as_raster</strong>: Convert ee$Image to stars and raster object.</li>
-<li>
-<strong>ee_as_thumbnail</strong>: Create a raster or stars object based on a thumbnail image.</li>
-</ul>
-<p>These functions through the argument <strong><code>via</code></strong> will permit you to <strong>change the download method</strong>. There are three methods to download an EE object: The first one (<code>getInfo</code>) fetch and return spatial objects directly, the <code>drive</code> method use Google Drive (GD) as an intermediate container, and finally <code>gcs</code> which use Google Cloud Storage (GCS). <code>rgee</code> to deal with <strong>GD</strong> and <strong>GCS</strong> use the R package <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> respectively, so you will need to install it before.</p>
+<div id="import-and-export-spatial-data-using-rgee" class="section level2">
+<h2 class="hasAnchor">
+<a href="#import-and-export-spatial-data-using-rgee" class="anchor"></a>Import and Export Spatial Data using rgee</h2>
+<p>The batch import/export involves difficulties for most GEE users. In <code>rgee</code>, we are aware of it and we created several functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> rgee offers the following options:</p>
+<table class="table">
+<caption>Table 1. Download functions provided by the rgee package.</caption>
+<thead><tr class="header">
+<th></th>
+<th></th>
+<th align="center">FROM</th>
+<th align="center">TO</th>
+<th align="center">RETURN</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Image</td>
+<td>ee_image_to_drive</td>
+<td align="center">EE server</td>
+<td align="center">Drive</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>ee_image_to_gcs</td>
+<td align="center">EE server</td>
+<td align="center">Cloud Storage</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>ee_image_to_asset</td>
+<td align="center">EE server</td>
+<td align="center">EE asset</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>ee_as_raster</strong></td>
+<td align="center">EE server</td>
+<td align="center">Local</td>
+<td align="center">RasterStack object</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>ee_as_stars</strong></td>
+<td align="center">EE server</td>
+<td align="center">Local</td>
+<td align="center">Proxy-stars object</td>
+</tr>
+<tr class="even">
+<td>Table</td>
+<td>ee_table_to_drive</td>
+<td align="center">EE server</td>
+<td align="center">Drive</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>ee_table_to_gcs</td>
+<td align="center">EE server</td>
+<td align="center">Cloud Storage</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>ee_table_to_asset</td>
+<td align="center">EE server</td>
+<td align="center">EE asset</td>
+<td align="center">Unstarted task</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>ee_as_sf</strong></td>
+<td align="center">EE server</td>
+<td align="center">Local</td>
+<td align="center">sf object</td>
+</tr>
+<tr class="even">
+<td>Generic</td>
+<td>ee_drive_to_local</td>
+<td align="center">Drive</td>
+<td align="center">Local</td>
+<td align="center">object filename</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>ee_gcs_to_local</td>
+<td align="center">Cloud Storage</td>
+<td align="center">Local</td>
+<td align="center">GCS filename</td>
+</tr>
+</tbody>
+</table>
+<p>In <code>rgee</code>, all the functions from server to local side have the option to fetch data using an intermediate container (Google Drive or Google Cloud Storage) or through a REST call (“$getInfo”). Although the latter option performs a quick download, there is a request limit of 262144 pixels for ee$Image and 5000 elements for ee$FeatureCollection which makes it unsuitable for large objects. Other download functions, from server-side to others (see Table 1), are implemented to enable more customized download workflows. For example, using <code>ee_image_to_drive</code> and <code>ee_drive_to_local</code> users could create scripts which save results in the <code>.TFRecord</code> rather than the <code>.GeoTIFF</code> format. <code>rgee</code> to deal with <strong>Google Drive</strong> and <strong>Google Cloud Storage</strong> use the R package <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> respectively, so you will need to install it before.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># please try as follow</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</pre></body></html></div>
-<p><strong>GD</strong> is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large amounts of data, is preferable use <strong>GCS</strong> instead. For using GCS, you will need to have your own Google Project with a credit card added to the GCS service, charges will apply. See the <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
-<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make it simple. If you want to upload files in a batch way, firstly you must <strong>get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket</strong>. <code>rgee</code> implement three functions:</p>
-<ul>
-<li>
-<strong>sf_as_ee</strong>: Convert a sfg, sfc or sf object to an ee$FeatureCollection.</li>
-<li>
-<strong>stars_as_ee</strong>: Convert an stars object to an ee$Image.</li>
-<li>
-<strong>raster_as_ee</strong>: Convert an raster object to an ee$Image.</li>
-</ul>
+<p><strong>Google Drive</strong> is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large images or vectors, is preferable use <strong>Google Cloud Storage</strong> instead. For using Google Cloud Storage, you will need to have your own Google Project with a credit card added to the service, charges will apply. See the <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
+<p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make it simple. If you want to upload files in a batch way, firstly you must <strong>get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket</strong>. <code>rgee</code> implement the next functions:</p>
+<table class="table">
+<caption>Table 2. Upload functions provided by the rgee package.</caption>
+<thead><tr class="header">
+<th></th>
+<th></th>
+<th align="center">FROM</th>
+<th align="center">TO</th>
+<th align="center">RETURN</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Image</td>
+<td>gcs_to_ee_image</td>
+<td align="center">Cloud Storage</td>
+<td align="center">EE asset</td>
+<td align="center">EE Asset ID</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>raster_as_ee</td>
+<td align="center">Local</td>
+<td align="center">EE asset</td>
+<td align="center">EE Asset ID</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>stars_as_ee</td>
+<td align="center">Local</td>
+<td align="center">EE asset</td>
+<td align="center">EE Asset ID</td>
+</tr>
+<tr class="even">
+<td>Table</td>
+<td>gcs_to_ee_table</td>
+<td align="center">Cloud Storage</td>
+<td align="center">EE asset</td>
+<td align="center">EE Asset ID</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>sf_as_ee</td>
+<td align="center">Local</td>
+<td align="center">EE asset</td>
+<td align="center">EE Asset ID</td>
+</tr>
+<tr class="even">
+<td>Generic</td>
+<td>local_to_gcs</td>
+<td align="center">Local</td>
+<td align="center">Cloud Storage</td>
+<td align="center">GCS filename</td>
+</tr>
+</tbody>
+</table>
+<p>The upload process follows the same logic (Table 2). rgee includes <code>raster_as_ee</code> and <code>stars_as_ee</code> for uploading images and <code>sf_as_ee</code> for uploading vector data.</p>
 </div>
-<div id="authentication" class="section level3">
-<h3 class="hasAnchor">
-<a href="#authentication" class="anchor"></a>Authentication</h3>
-<p><code>rgee</code> deal with three different Google API’s:</p>
+<div id="authentication" class="section level2">
+<h2 class="hasAnchor">
+<a href="#authentication" class="anchor"></a>Authentication</h2>
+<p>As we have seen previously, <code>rgee</code> deal with three different Google API’s:</p>
 <ul>
 <li>Google Earth Engine</li>
 <li>Google Drive</li>
@@ -208,13 +323,13 @@
 
 <span class="co"># Initialize Earth Engine, GD and GCS</span>
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="kw">email</span> <span class="kw">=</span> <span class="st">'csaybar@gmail.com'</span>, <span class="kw">drive</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">gcs</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. Unlike Earth Engine and GD, GCS need to set up its credential manually (<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">link1</a> and <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">link2</a>). In all cases, the credentials always will be stored in:</p>
+<p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. Unlike Earth Engine and Google Drive, Google Cloud Storage need to set up its credential manually (<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">link1</a> and <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">link2</a>). In all cases, the users credentials always will be stored in:</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span>()</pre></body></html></div>
 <p>Remember you only have to authorize once, for next sessions it will not be necessary.</p>
 </div>
-<div id="checking" class="section level3">
-<h3 class="hasAnchor">
-<a href="#checking" class="anchor"></a>Checking</h3>
+<div id="checking" class="section level2">
+<h2 class="hasAnchor">
+<a href="#checking" class="anchor"></a>Checking</h2>
 <p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking the sanity of your <code>rgee</code> installation and dependencies.</p>
 <ul>
 <li>
@@ -222,16 +337,22 @@
 <li>
 <code><a href="../reference/ee_check-tools.html">ee_check_credentials()</a></code> - Google Drive and GCS credentials</li>
 <li>
-<code>ee_check_rgee_python_packages()</code> - Python packages</li>
+<code><a href="../reference/ee_check-tools.html">ee_check_python_packages()</a></code> - Python packages</li>
 </ul>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="fu"><a href="../reference/ee_check-tools.html">ee_check</a></span>()</pre></body></html></div>
+<span class="fu"><a href="../reference/ee_check-tools.html">ee_check</a></span>()
+
+<span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python</a></span>()
+<span class="fu"><a href="../reference/ee_check-tools.html">ee_check_credentials</a></span>()
+<span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python_packages</a></span>()</pre></body></html></div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
