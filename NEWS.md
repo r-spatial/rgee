@@ -11,12 +11,20 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+
 # rgee 0.5.3
 - **CRAN release**
 - Fix a bug in ee_check_python_packages.
 - \donttest changed by \dontrun in the documentation.
 - gdal and v8 system dependencies added to GH actions.
-- fix a bug in the paper (ee_extract example)
+- Fix a bug in the paper (`ee_extract` example).
+- Fix a minor bug in `ee_extract`, now the argument ... works.
+- `ee_table_to_drive`: changed the initial value of the argument folder from NULL to "rgee_backup".
+- Fix a minor bug in `ee_monitoring`.
+- Fix a minor bug in `ee_manage_cancel_all_running_task`.
+- Fix a minor bug in `ee_manage_cancel_all_running_task`.
+- Improvement in the documentation of `ee_install`.
+- Changes in vignettes, `Best Practices` vignette added.
 
 # rgee 0.5.2
 - DESCRIPTION: single quotes in title and description.
