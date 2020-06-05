@@ -17,8 +17,6 @@
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_reattach() # reattach ee as a reserved word
-#'
 #' ee_check_python()
 #' ee_check_python_packages()
 #' ee_check_credentials()
@@ -100,7 +98,6 @@ ee_check_python_packages <- function(quiet = FALSE) {
           ee_version()
         ),
         sprintf("version used by rgee (%s). You might use:", ee_version()),
-        "* ee_install()",
         sprintf(
           "* reticulate::py_install('earthengine-api==%s')",
           ee_version()

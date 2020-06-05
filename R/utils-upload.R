@@ -12,7 +12,6 @@
 #' \dontrun{
 #' library(rgee)
 #' library(stars)
-#' ee_reattach()
 #'
 #' # Initialize a specific Earth Engine account and
 #' # Google Cloud Storage credentials

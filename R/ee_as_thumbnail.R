@@ -61,7 +61,6 @@
 #' library(stars)
 #' library(rgee)
 #'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' nc <- st_read(system.file("shp/arequipa.shp", package = "rgee"))

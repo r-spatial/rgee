@@ -100,8 +100,6 @@ default 3.
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Case 1: Geometry*

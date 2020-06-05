@@ -29,11 +29,9 @@ skip_if_no_pypkg <- function() {
 
 # Init Earth Engine just if it is necessary
 init_rgee <- function() {
-  ee_reattach()
   tryCatch(
     expr = ee$Image()$getInfo(),
     error = function(e) {
-      ee_reattach()
       ee_Initialize(
         email = 'data.colec.fbf@gmail.com',
         drive = TRUE,

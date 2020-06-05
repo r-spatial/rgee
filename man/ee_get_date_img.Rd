@@ -28,8 +28,6 @@ for getting more information.
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach()
 ee_Initialize()
 
 l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')

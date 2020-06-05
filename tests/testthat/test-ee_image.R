@@ -27,11 +27,9 @@ skip_if_no_pypkg <- function() {
 
 # Init Earth Engine just if it is necessary
 init_rgee <- function() {
-  ee_reattach()
   tryCatch(
     expr = ee$Image()$getInfo(),
     error = function(e) {
-      ee_reattach()
       ee_Initialize(
         email = 'data.colec.fbf@gmail.com',
         drive = TRUE,
@@ -313,7 +311,8 @@ test_that("ee_image_info", {
   srtm_list <- ee_image_info(srtm)
   # Landast8
   l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-  l8_list <- ee_image_info(l8,getsize = FALSE)
+  l8_list <- ee_image_info(l8$select("B1"), getsize = FALSE)
   expect_type(srtm_list, "list")
   expect_type(l8_list, "list")
 })
+

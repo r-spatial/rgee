@@ -50,7 +50,6 @@ library(stars)
 library(sf)
 
 ee_users()
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize(drive = TRUE)
 
 

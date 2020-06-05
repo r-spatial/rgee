@@ -28,8 +28,6 @@ Python environment and the Third-Party Python Packages used by rgee.
 \dontrun{
 library(rgee)
 
-ee_reattach() # reattach ee as a reserved word
-
 ee_check_python()
 ee_check_python_packages()
 ee_check_credentials()

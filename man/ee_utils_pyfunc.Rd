@@ -26,8 +26,6 @@ for this function must always be given to \pkg{reticulate}.
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Earth Engine List

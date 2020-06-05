@@ -24,7 +24,6 @@ and "POSIXct") to Google Earth Engine (ee$Date).
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach()
 ee_Initialize()
 rdate_to_eedate('2000-01-01')
 rdate_to_eedate(315532800000) # float number

@@ -46,7 +46,7 @@
 #' @details
 #' `Map` takes advantage of the
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
-#' getMapId} EE method to fetch and return an ID dictionary beind used to create
+#' getMapId} EE method to fetch and return an ID dictionary being used to create
 #' layers in a \link[=mapview]{mapview} object. Users can specify visualization
 #' parameters to Map\$addLayer by using the visParams argument. It will depend
 #' on the type of spatial EE object. For \code{ee$Image}, the
@@ -89,8 +89,6 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Case 1: Geometry*
@@ -353,7 +351,6 @@ if (!isGeneric("+")) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Case 1: Geometry*

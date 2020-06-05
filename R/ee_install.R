@@ -63,12 +63,12 @@ ee_install <- function(py_env = "rgee",
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
         reticulate::install_miniconda()
-      }
-      if (ch == "n") {
+      } else if (ch == "n") {
         message("Installation aborted.")
         return(FALSE)
+      } else {
+        response <- readline("Please answer yes or no: ")
       }
-      response <- readline("Please answer yes or no: ")
     }
   }
 
@@ -138,17 +138,52 @@ ee_install <- function(py_env = "rgee",
   }
 
   # Create EARTHENGINE_PYTHON
-  message(
-    "\n",
-    sprintf(
-      bold("3. The Environment Variable 'EARTHENGINE_PYTHON=%s' "),
-      py_path
-    ),
-    "was set on the .Renviron file. Remember that you can remove it using",
-    " rgee::ee_clean_pyenv()."
+  response <- message(
+    paste(
+      "ee_install will stored the environmental variable EARTHENGINE_PYTHON",
+      sprintf(
+        "in your .Renviron for use the %s Python Path in future sessions.:",
+        py_path
+      ),
+      sep = "\n"
+    )
   )
-
-  ee_install_set_pyenv(py_path = py_path)
+  response <- readline("Would you like to continues? [Y/n]:")
+  repeat {
+    ch <- tolower(substring(response, 1, 1))
+    if (ch == "y" || ch == "") {
+      #ee_install_set_pyenv(py_path = py_path)
+      message(
+        "\n",
+        paste(
+          sprintf(
+            bold("3. The Environment Variable 'EARTHENGINE_PYTHON=%s' "),
+            py_path
+          ),
+          "has been stored in your .Renviron file. Remember that you",
+          "can remove EARTHENGINE_PYTHON using rgee::ee_clean_pyenv().",
+          ".Renviron can be accessed by Sys.getenv(\"EARTHENGINE_PYTHON\")",
+          sep = "\n"
+        )
+      )
+    } else if (ch == "n") {
+      message(
+        paste(
+          "Always that you want to use rgee you will need to run as follow:",
+          "----------------------------------",
+          "library(rgee)",
+          sprintf("Sys.setenv(\"RETICULATE_PYTHON\" = \"%s\")",py_path),
+          "ee_Initialize()",
+          "----------------------------------",
+          "To install EARTHENGINE_PYTHON for use in future sessions, run",
+          sprintf("rgee::ee_install_set_pyenv(py_path = \"%s\")",py_path),
+          sep = "\n"
+        )
+      )
+    } else {
+      response <- readline("Please answer yes or no: ")
+    }
+  }
 
   # Install the Earth Engine API
   message("\n", bold("4. Installing the earthengine-api. Running: "))
