@@ -149,6 +149,10 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
   if (!requireNamespace("png", quietly = TRUE)) {
     stop("package png required, please install it first")
   }
+
+  # check viz parameters
+  ee_check_vizparam(vizparams)
+
   # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
     stop("image argument is not an ee$image$Image")
@@ -229,6 +233,12 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
   vizparams$dimensions <- dimensions
   vizparams$region <- region
   vizparams$format <- "png"
+  if (is.null(vizparams$min)) {
+    vizparams$min <- 0
+  }
+  if (is.null(vizparams$max)) {
+    vizparams$min <- 1
+  }
 
   # Creating thumbnail in png format
   if (!quiet) {
@@ -345,4 +355,19 @@ read_png_as_stars <- function(x, band_name, mtx) {
   stars_object
 }
 
+
+#' Check the visualization parameters
+#' @noRd
+ee_check_vizparam <- function(x) {
+  list_names <- c(
+    "bands", "min", "max", "gain", "bias", "gamma", "palette","opacity"
+  )
+  check_listnames <- names(x) %in% list_names
+  if (any(!check_listnames)) {
+    stop(
+      "The following visualization parameters are not valid: ",
+      paste(names(x[!check_listnames]), collapse = ", ")
+    )
+  }
+}
 

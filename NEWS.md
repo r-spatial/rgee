@@ -11,8 +11,11 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+
 # rgee 0.5.4
 - Earth Engine Python API updated to 0.1.224.
+- Fix a Map typo.
+- Fix a bug in ee_as_thumbnail, now the vizparams are checked before to pass to ee$Image$getThumbURL(...).
 - ee is now an internal rgee environment.
 - ee_reattach was deleted.
 - ee_print now display the ee$Image properties: system:id, system:time_start and system:time_end.
