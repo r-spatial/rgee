@@ -68,7 +68,6 @@ Earth Engine Guide - Export data}.
 \dontrun{
 library(rgee)
 
-ee_reattach()
 ee_Initialize(drive = TRUE, gcs = TRUE)
 ee_user_info()
 

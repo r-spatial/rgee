@@ -31,7 +31,7 @@ function will realize the following six tasks:
     define RETICULATE\_PYTHON when the library is loaded. See this
     article for further details.
 5.  Install rgee Python dependencies. Using `reticulate::py_install`.
-6.  Interactive meny to confirm if restart the R session to see changes.
+6.  Interactive menu to confirm if restart the R session to see changes.
 
 However, the use of `ee_install()` is not mandatory. You can count on
 with your own custom installation. This would be also allowed.

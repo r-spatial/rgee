@@ -21,6 +21,7 @@ ee_print(eeobject, ...)
   eeobject,
   ...,
   img_band,
+  time_end = FALSE,
   compression_ratio = 20,
   clean = FALSE,
   quiet = FALSE
@@ -29,6 +30,7 @@ ee_print(eeobject, ...)
 \method{ee_print}{ee.imagecollection.ImageCollection}(
   eeobject,
   ...,
+  time_end = FALSE,
   img_index = 0,
   img_band,
   compression_ratio = 20,
@@ -52,6 +54,9 @@ Relevant just for \code{ee$FeatureCollection} objects.}
 \item{img_band}{Character. Band name of the \code{ee$Image} to fetch.
 Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
 
+\item{time_end}{Logical. If TRUE, the system:time_end property in ee$Image
+is also returned. See \code{rgee::ee_get_date_img} for details.}
+
 \item{compression_ratio}{Numeric. Measurement of the relative reduction
 in size of data representation produced by a data compression algorithm
 (ignored if \code{eeobject} is not a Image or ImageCollection). By default
@@ -72,8 +77,6 @@ data type, properties and object size.
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach()
 ee_Initialize()
 
 # Geometry

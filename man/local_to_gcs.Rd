@@ -24,7 +24,6 @@ Upload images or tables to Google Cloud Storage
 \dontrun{
 library(rgee)
 library(stars)
-ee_reattach()
 
 # Initialize a specific Earth Engine account and
 # Google Cloud Storage credentials

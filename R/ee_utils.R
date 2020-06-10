@@ -99,8 +99,6 @@ ee_utils_shp_to_zip <- function(x,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Earth Engine List

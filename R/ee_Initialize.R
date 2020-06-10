@@ -39,7 +39,6 @@
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_reattach() # reattach ee as a reserved word
 #' # Simple init - Load just the Earth Engine credential
 #' ee_Initialize()
 #'
@@ -57,14 +56,46 @@ ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           quiet = FALSE) {
-  if (exists('ee')) {
-    if (is.null(ee$computedobject)) {
-      stop('rgee does not found the Earth Engine Python API.',
-           ' Run rgee::ee_reattach() before continuing.')
+  # Message for new user
+  init_rgee_message <- Sys.getenv("EARTHENGINE_INIT_MESSAGE", unset = NA)
+  if (is.na(init_rgee_message)) {
+    if (!py_module_available("ee")) {
+      text <- paste(
+        crayon::bold("Welcome to the Earth Engine client library for R!"),
+        "----------------------------------------------------------------",
+        "It seems it is your first time using rgee. Before start coding is ",
+        sprintf(
+          "necessary to set up a Python environment. Run %s",
+          crayon::bold("rgee::ee_install()")
+        ),
+        "to set up automatically, after that, restart the R session to see",
+        "changes. rgee wraps a Python session into an R session. Therefore,",
+        "like the Earth Engine Python API, you will need to initialize",
+        sprintf(
+          "the API before starting coding. Run %s",
+          crayon::bold("rgee::ee_Initialize()")
+        ),
+        "to accomplish this task. See more than 250+ examples of rgee at",
+        crayon::bold("https://csaybar.github.io/rgee-examples/"),
+        "",
+        sep = "\n"
+      )
+      message(text)
+      response <- readline("Would you like to see this message again? [Y/n]: ")
+      repeat {
+        ch <- tolower(substring(response, 1, 1))
+        if (ch == "y" || ch == "") {
+          message("Initialization aborted.")
+          return(FALSE)
+        } else if (ch == "n") {
+          message("Initialization aborted.")
+          ee_install_set_init_message()
+          return(FALSE)
+        } else {
+          response <- readline("Please answer yes or no: ")
+        }
+      }
     }
-  } else {
-    stop('rgee does not found Python modules.',
-         ' Run rgee::ee_reattach() before continuing.')
   }
 
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
@@ -432,7 +463,6 @@ ee_users <- function(quiet = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #' ee_user_info()
 #' }

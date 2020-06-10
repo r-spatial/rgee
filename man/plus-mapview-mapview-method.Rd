@@ -17,7 +17,6 @@ mapview + mapview; adds data from the second map to the first
 \examples{
 \dontrun{
 library(rgee)
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Case 1: Geometry*

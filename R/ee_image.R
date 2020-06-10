@@ -43,7 +43,6 @@
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_reattach()
 #' ee_Initialize(drive = TRUE, gcs = TRUE)
 #' ee_user_info()
 #'
@@ -165,7 +164,6 @@ ee_as_stars <- function(image,
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_reattach()
 #' ee_Initialize(drive = TRUE, gcs = TRUE)
 #' ee_user_info()
 #'
@@ -808,8 +806,6 @@ ee_image_local <- function(image,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach()
 #' ee_Initialize()
 #'
 #' # World SRTM
@@ -825,6 +821,10 @@ ee_image_info <- function(image,
                           getsize = TRUE,
                           compression_ratio = 20,
                           quiet = FALSE) {
+  band_length <- length(image$bandNames()$getInfo())
+  if (band_length != 1) {
+    stop("ee_image_info needs that image only has one band.")
+  }
   img_proj <- image$projection()$getInfo()
   geotransform <- unlist(img_proj$transform)
   img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
@@ -857,12 +857,17 @@ ee_image_info <- function(image,
       )
     )
   } else {
-    bandtypes_info <- image$bandTypes()$getInfo()
-    img_types <- unlist(bandtypes_info)
-    band_types <- img_types[grepl("precision", names(img_types))]
-    band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
-    number_of_bytes <- total_pixel * band_precision / compression_ratio
-    image_size <- sum(number_of_bytes)
+    image_id <- ee_utils_py_to_r(image$get("system:id")$getInfo())
+    if (!is.null(image_id)) {
+      image_size <- ee_manage_asset_size(image_id, quiet = TRUE) / band_length
+    } else {
+      bandtypes_info <- image$bandTypes()$getInfo()
+      img_types <- unlist(bandtypes_info)
+      band_types <- img_types[grepl("precision", names(img_types))]
+      band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
+      number_of_bytes <- total_pixel * band_precision / compression_ratio
+      image_size <- sum(number_of_bytes)
+    }
     if (!quiet) {
       cat("Image Size       :", ee_humansize(image_size), "\n")
     }

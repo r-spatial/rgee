@@ -749,7 +749,7 @@ plot(
 )
 ```
 
-In this example, the classiifer is already very accurate, so there’s not
+In this example, the classifier is already very accurate, so there’s not
 much tuning to do. You might want to choose the smallest tree possible
 (i.e. largest `minLeafPopulation`) that still has the required accuracy.
 

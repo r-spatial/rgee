@@ -73,7 +73,6 @@ library(stars)
 library(sf)
 
 ee_users()
-ee_reattach() # reattach ee as a reserved word
 ee_Initialize()
 
 # Define study area (local -> earth engine)

@@ -81,7 +81,6 @@
 #' library(rgee)
 #' library(sf)
 #'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Define a Image or ImageCollection: Terraclimate
