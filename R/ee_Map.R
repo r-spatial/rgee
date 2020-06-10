@@ -1,7 +1,7 @@
 #' Module to display Earth Engine (EE) spatial objects
 #'
 #' Create interactive visualizations of spatial EE objects
-#' (ee.Geometry, ee.Image, ee.Feature, and ee.FeatureCollection)
+#' (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
 #' through \link[=mapview]{mapview}.
 #' @format An object of class environment with the
 #' following functions:
@@ -44,12 +44,13 @@
 #' }
 #'
 #' @details
-#' `Map` takes advantage of the
+#' `Map` use the Earth Engine method
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
-#' getMapId} EE method to fetch and return an ID dictionary beind used to create
+#' getMapId} to fetch and return an ID dictionary being used to create
 #' layers in a \link[=mapview]{mapview} object. Users can specify visualization
-#' parameters to Map\$addLayer by using the visParams argument. It will depend
-#' on the type of spatial EE object. For \code{ee$Image}, the
+#' parameters to Map\$addLayer by using the visParams argument. Each Earth
+#' Engine spatial object has a specific format. For
+#' \code{ee$Image}, the
 #' \href{https://developers.google.com/earth-engine/image_visualization}{
 #' parameters} available are:
 #'
@@ -77,11 +78,11 @@
 #' by default `Map$addLayer()` assigns the first three bands to red,
 #' green, and blue bands, respectively. The default stretch is based on the
 #' min-max range. By the other hand, for \code{ee$Geometry}, \code{ee$Feature},
-#' and \code{ee$FeatureCollection}. The available parameters are:
+#' and \code{ee$FeatureCollection} the available parameters are:
 #'
 #' \itemize{
 #'  \item \strong{color}: A hex string in the format RRGGBB specifying the
-#'  color to use for drawing the features. By default 000000.
+#'  color to use for drawing the features. By default #000000.
 #'  \item \strong{pointRadius}: The radius of the point markers. By default 3.
 #'  \item \strong{strokeWidth}: The width of lines and polygon borders. By
 #'  default 3.
@@ -89,8 +90,6 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Case 1: Geometry*
@@ -263,8 +262,8 @@ ee_addLayer <- function(eeObject,
 
   if (!any(class(eeObject) %in% ee_spatial_object)) {
     stop(
-      "The image argument in 'addLayer' function must be an instace of one",
-      " of ee.Image, ee.Geometry, ee.Feature or ee.FeatureCollection."
+      "The eeObject argument must be an instance of one",
+      " of ee$Image, ee$Geometry, ee$Feature, or ee$FeatureCollection."
     )
   }
   if (any(class(eeObject) %in% ee_get_spatial_objects("Table"))) {
@@ -353,7 +352,6 @@ if (!isGeneric("+")) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Case 1: Geometry*

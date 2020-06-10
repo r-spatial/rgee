@@ -17,8 +17,6 @@ Documentation for Earth Engine Objects
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach()
 ee_Initialize()
 
 ee$Image()$geometry()$centroid \%>\% ee_help()

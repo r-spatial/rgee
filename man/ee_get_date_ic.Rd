@@ -31,8 +31,6 @@ for getting more information.
 \dontrun{
 library(rgee)
 library(sf)
-
-ee_reattach()
 ee_Initialize()
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%

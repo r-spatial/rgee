@@ -6,5 +6,6 @@
 inst/doc
 inst/python/__pycache__/
 docs
+static
 pkgdown/favicon
 revdep

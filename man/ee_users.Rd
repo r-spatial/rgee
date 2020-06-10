@@ -22,7 +22,6 @@ ee_users()
 \seealso{
 Other session management functions: 
 \code{\link{ee_Initialize}()},
-\code{\link{ee_reattach}()},
 \code{\link{ee_user_info}()},
 \code{\link{ee_version}()}
 }

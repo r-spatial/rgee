@@ -52,7 +52,6 @@
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(drive = TRUE)
 #'
 #' # Define study area (local -> earth engine)
@@ -205,7 +204,6 @@ ee_image_to_drive <- function(image,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)
@@ -353,7 +351,6 @@ ee_image_to_gcs <- function(image,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Define study area (local -> earth engine)
@@ -472,7 +469,6 @@ ee_image_to_asset <- function(image,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(drive = TRUE)
 #'
 #'
@@ -558,7 +554,6 @@ ee_table_to_drive <- function(collection,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)
@@ -642,7 +637,6 @@ ee_table_to_gcs <- function(collection,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize()
 #'
 #' # Define study area (local -> earth engine)
@@ -732,7 +726,6 @@ ee_table_to_asset <- function(collection,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(drive = TRUE)
 #'
 #' # Define study area (local -> earth engine)
@@ -940,7 +933,6 @@ ee_drive_to_local <- function(task,
 #' library(sf)
 #'
 #' ee_users()
-#' ee_reattach() # reattach ee as a reserved word
 #' ee_Initialize(gcs = TRUE)
 #'
 #' # Define study area (local -> earth engine)

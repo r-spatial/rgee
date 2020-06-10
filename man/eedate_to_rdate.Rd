@@ -33,8 +33,6 @@ exporting to R.
 \examples{
 \dontrun{
 library(rgee)
-
-ee_reattach()
 ee_Initialize()
 
 eeDate <- ee$Date$fromYMD(2010,1,1)

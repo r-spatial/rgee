@@ -41,7 +41,6 @@ called \code{~/.config/earthengine/ndef}.
 \dontrun{
 library(rgee)
 
-ee_reattach() # reattach ee as a reserved word
 # Simple init - Load just the Earth Engine credential
 ee_Initialize()
 
@@ -57,7 +56,6 @@ ee_user_info()
 }
 \seealso{
 Other session management functions: 
-\code{\link{ee_reattach}()},
 \code{\link{ee_user_info}()},
 \code{\link{ee_users}()},
 \code{\link{ee_version}()}

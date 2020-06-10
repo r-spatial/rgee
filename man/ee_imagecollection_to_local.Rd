@@ -65,8 +65,6 @@ Engine Guide - Export data}.
 \dontrun{
 library(rgee)
 library(raster)
-
-ee_reattach()
 ee_Initialize(drive = TRUE, gcs = TRUE)
 
 # USDA example

@@ -12,8 +12,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# rgee 0.5.4
+- Earth Engine Python API updated to 0.1.224.
+- Fix a Map typo.
+- Fix a bug in ee_as_thumbnail, now the vizparams are checked before to pass to ee$Image$getThumbURL(...).
+- ee is now an internal rgee environment.
+- ee_reattach was deleted.
+- ee_print now display the ee$Image properties: system:id, system:time_start and system:time_end.
+- rgee now asks users if they would like to save EARTHENGINE_PYTHON in the .Renviron.
+
 # rgee 0.5.3
-- **CRAN release**
 - Fix a bug in ee_check_python_packages.
 - \donttest changed by \dontrun in the documentation.
 - gdal and v8 system dependencies added to GH actions.
@@ -28,7 +36,7 @@ vignette: >
 
 # rgee 0.5.2
 - DESCRIPTION: single quotes in title and description.
-- DESCRIPTION: A more compresible description of what rgee does.
+- DESCRIPTION: A more compressible description of what rgee does.
 - DESCRIPTION: Added web reference to the Earth Engine API.
 - \dontrun changed by \donttest in all our examples.
 - Added "#' @return" to several functions.
@@ -36,7 +44,7 @@ vignette: >
 - Added 'quiet' argument to all the functions that needed.
 - Added new contributors to rgee (Kevin Ushey, Tim Appelhans, JJ Allaire, Yuan Tang).
 - New environmental variable for rgee "EARTHENGINE_INIT_MESSAGE". It will be used to display a message to new users.
-- Earth Engine Python API updated to 0.1.213.
+- Earth Engine Python API updated to 0.1.223.
 - Documentation updated for ee_print and ee_manage_*.
 - Fix a bug in ee_install_set_pyenv that did not permit to create properly
 the .Renviron_backup file.

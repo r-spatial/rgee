@@ -14,7 +14,6 @@
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_reattach()
 #' ee_Initialize()
 #' rdate_to_eedate('2000-01-01')
 #' rdate_to_eedate(315532800000) # float number
@@ -58,8 +57,6 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach()
 #' ee_Initialize()
 #'
 #' eeDate <- ee$Date$fromYMD(2010,1,1)
@@ -98,8 +95,6 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#'
-#' ee_reattach()
 #' ee_Initialize()
 #'
 #' l8 <- ee$Image('LANDSAT/LC08/C01/T1_TOA/LC08_044034_20140318')
@@ -156,8 +151,6 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #' \dontrun{
 #' library(rgee)
 #' library(sf)
-#'
-#' ee_reattach()
 #' ee_Initialize()
 #'
 #' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
