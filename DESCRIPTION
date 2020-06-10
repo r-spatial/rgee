@@ -67,16 +67,16 @@ Depends:
 Imports:
     methods,
     reticulate (>= 1.15),
-    leaflet (>= 2.0.2),
-    mapview,
-    geojsonio,
-    sf,
-    stars,
     magrittr,
     getPass,
     crayon,
     cli
 Suggests:
+    leaflet (>= 2.0.2),
+    mapview,
+    geojsonio,
+    sf,
+    stars,
     googledrive (>= 1.0.0),
     googleCloudStorageR (>= 0.5.1),
     rstudioapi (>= 0.7),
