@@ -78,7 +78,7 @@ jobs:
 
       - name: INSTALL R TEST PACKAGES
         run: |
-          install.packages(c("remotes", "Rcpp"))
+          install.packages(c("remotes", "Rcpp")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr", force = TRUE)
           remotes::install_cran("rcmdcheck")
@@ -97,6 +97,11 @@ jobs:
       - name: INSTALL rgdal WITH CONFIGURE
         run: |
           install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
+        shell: Rscript {0}
+
+      - name: INSTALL geojsonio
+        run: |
+          install.packages("geojsonio")
         shell: Rscript {0}
 
       - name: CHECK

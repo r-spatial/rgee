@@ -25,7 +25,7 @@ setMethod(
           group = e2_name[x],
           options = leaflet::tileOptions(opacity = e2_opacity[x])
         ) %>%
-        rgee:::ee_mapViewLayersControl(names = e2_name[x]) %>%
+        ee_mapViewLayersControl(names = e2_name[x]) %>%
         leaflet::hideGroup(if (!e2_shown[x]) e2_name[x] else NULL)
     }
     return(e1)
