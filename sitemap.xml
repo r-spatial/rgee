@@ -4,7 +4,13 @@
     <loc>http://r-spatial.github.io/rgee/index.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/EarthEngineMap-class.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/Map.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc>
@@ -79,6 +85,9 @@
     <loc>http://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_install_upgrade.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_manage-tools.html</loc>
   </url>
   <url>
@@ -86,9 +95,6 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_print.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/ee_reattach.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_search-tools.html</loc>
@@ -136,7 +142,13 @@
     <loc>http://r-spatial.github.io/rgee/reference/pipe.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/reference/plus-mapview-mapview-method.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/plus-EarthEngineMap-EarthEngineMap-method.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/print-EarthEngineMap-method.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/print.ee.computedobject.ComputedObject.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/raster_as_ee.html</loc>
@@ -149,6 +161,9 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/sf_as_ee.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/show-EarthEngineMap-method.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc>

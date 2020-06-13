@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -154,11 +154,23 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-054" class="section level1">
+<h1 class="page-header" data-toc-text="0.5.4">
+<a href="#rgee-054" class="anchor"></a>rgee 0.5.4</h1>
+<ul>
+<li>Earth Engine Python API updated to 0.1.224.</li>
+<li>Fix a Map typo.</li>
+<li>Fix a bug in ee_as_thumbnail, now the vizparams are checked before to pass to ee<span class="math inline"><em>I</em><em>m</em><em>a</em><em>g</em><em>e</em></span>getThumbURL(…).</li>
+<li>ee is now an internal rgee environment.</li>
+<li>ee_reattach was deleted.</li>
+<li>ee_print now display the ee$Image properties: system:id, system:time_start and system:time_end.</li>
+<li>rgee now asks users if they would like to save EARTHENGINE_PYTHON in the .Renviron.</li>
+</ul>
+</div>
     <div id="rgee-053" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.3">
 <a href="#rgee-053" class="anchor"></a>rgee 0.5.3</h1>
 <ul>
-<li><strong>CRAN release</strong></li>
 <li>Fix a bug in ee_check_python_packages.</li>
 <li>\donttest changed by \dontrun in the documentation.</li>
 <li>gdal and v8 system dependencies added to GH actions.</li>
@@ -178,7 +190,7 @@
 <a href="#rgee-052" class="anchor"></a>rgee 0.5.2</h1>
 <ul>
 <li>DESCRIPTION: single quotes in title and description.</li>
-<li>DESCRIPTION: A more compresible description of what rgee does.</li>
+<li>DESCRIPTION: A more compressible description of what rgee does.</li>
 <li>DESCRIPTION: Added web reference to the Earth Engine API.</li>
 <li>\dontrun changed by \donttest in all our examples.</li>
 <li>Added “#’ <a href='https://github.com/return'>@return</a>” to several functions.</li>
@@ -186,7 +198,7 @@
 <li>Added ‘quiet’ argument to all the functions that needed.</li>
 <li>Added new contributors to rgee (Kevin Ushey, Tim Appelhans, JJ Allaire, Yuan Tang).</li>
 <li>New environmental variable for rgee “EARTHENGINE_INIT_MESSAGE”. It will be used to display a message to new users.</li>
-<li>Earth Engine Python API updated to 0.1.213.</li>
+<li>Earth Engine Python API updated to 0.1.223.</li>
 <li>Documentation updated for ee_print and ee_manage_*.</li>
 <li>Fix a bug in ee_install_set_pyenv that did not permit to create properly the .Renviron_backup file.</li>
 </ul>

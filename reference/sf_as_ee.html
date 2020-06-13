@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -210,7 +210,7 @@ will be monitored.</p></td>
     </tr>
     <tr>
       <th>check_ring_dir</th>
-      <td><p>Logical. See <a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a> for details.</p></td>
+      <td><p>Logical. See <code>st_read</code> for details.</p></td>
     </tr>
     <tr>
       <th>evenOdd</th>
@@ -240,7 +240,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
     </tr>
     <tr>
       <th>...</th>
-      <td><p><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a> arguments might be included.</p></td>
+      <td><p><code>st_read</code> arguments might be included.</p></td>
     </tr>
     </table>
 
@@ -252,7 +252,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
     <p><code>sf_as_ee</code> supports the upload of <code>sf</code> objects by three different
 options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
 When "getInfo" is set in the <code>via</code> argument the sf object is
-transformed to GeoJSON (using <a href='https://docs.ropensci.org/geojsonio/reference/geojson_json.html'>geojson_json</a>) and then
+transformed to GeoJSON (using <code><a href='https://docs.ropensci.org/geojsonio/reference/geojson_json.html'>geojsonio::geojson_json</a></code>) and then
 encrusted in an HTTP request using the server-side objects that are
 implemented in the Earth Engine API (ee$Geometry). If the sf object is too
 large (~ &gt;1Mb) it is likely to cause bottlenecks since it is a temporary
@@ -279,8 +279,6 @@ it is an expensive operation.</p>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
-
-<span class='fu'><a href='ee_reattach.html'>ee_reattach</a></span>() <span class='co'># reattach ee as a reserved word</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># 1. Handling geometry parameters</span>
