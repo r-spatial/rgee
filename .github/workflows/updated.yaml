@@ -60,7 +60,6 @@ jobs:
       - name: INSTALL R TEST PACKAGES
         run: |
           install.packages(c("remotes", "Rcpp"))
-          remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr", force = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
