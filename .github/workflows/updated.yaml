@@ -28,7 +28,7 @@ jobs:
       - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
         run: |
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = "Imports"), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: RETICULATE_PYTHON SETTING
@@ -60,6 +60,7 @@ jobs:
       - name: INSTALL R TEST PACKAGES
         run: |
           install.packages(c("remotes", "Rcpp"))
+          remotes::install_deps(dependencies = "Imports")
           remotes::install_cran("covr", force = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
