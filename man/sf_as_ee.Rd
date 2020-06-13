@@ -38,7 +38,7 @@ whether "filename" should be overwritten. By default TRUE.}
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
 
-\item{check_ring_dir}{Logical. See \link[sf]{st_read} for details.}
+\item{check_ring_dir}{Logical. See \code{st_read} for details.}
 
 \item{evenOdd}{Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 polygon interiors will be determined by the even/odd rule, where a point
@@ -58,7 +58,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{...}{\link[sf]{st_read} arguments might be included.}
+\item{...}{\code{st_read} arguments might be included.}
 }
 \value{
 An ee$FeatureCollection object
@@ -70,7 +70,7 @@ Convert an sf object to an ee$FeatureCollection
 \code{sf_as_ee} supports the upload of \code{sf} objects by three different
 options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
 When "getInfo" is set in the \code{via} argument the sf object is
-transformed to GeoJSON (using \link[geojsonio]{geojson_json}) and then
+transformed to GeoJSON (using \code{geojsonio::geojson_json}) and then
 encrusted in an HTTP request using the server-side objects that are
 implemented in the Earth Engine API (ee$Geometry). If the sf object is too
 large (~ >1Mb) it is likely to cause bottlenecks since it is a temporary

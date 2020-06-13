@@ -10,7 +10,7 @@
 #' will be monitored.
 #' @param assetId Character. Destination asset ID for the uploaded file. Ignore
 #' if \code{via} argument is "getInfo".
-#' @param check_ring_dir Logical. See \link[sf]{st_read} for details.
+#' @param check_ring_dir Logical. See \code{st_read} for details.
 #' @param proj Integer or character. Coordinate Reference System (CRS) for the
 #' EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
@@ -29,10 +29,7 @@
 #' @param overwrite A boolean argument which indicates indicating
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param quiet Logical. Suppress info message.
-#' @param ... \link[sf]{st_read} arguments might be included.
-#'
-#' @importFrom sf st_read st_sf st_sfc st_is_longlat
-#' @importFrom geojsonio geojson_json
+#' @param ... \code{st_read} arguments might be included.
 #'
 #' @return An ee$FeatureCollection object
 #'
@@ -40,7 +37,7 @@
 #' \code{sf_as_ee} supports the upload of \code{sf} objects by three different
 #' options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
 #' When "getInfo" is set in the \code{via} argument the sf object is
-#' transformed to GeoJSON (using \link[geojsonio]{geojson_json}) and then
+#' transformed to GeoJSON (using \code{geojsonio::geojson_json}) and then
 #' encrusted in an HTTP request using the server-side objects that are
 #' implemented in the Earth Engine API (ee$Geometry). If the sf object is too
 #' large (~ >1Mb) it is likely to cause bottlenecks since it is a temporary
@@ -140,13 +137,13 @@ sf_as_ee <- function(x,
 
   # geodesic is null?
   if (is.null(geodesic)) {
-    is_geodesic <- st_is_longlat(eex)
+    is_geodesic <- sf::st_is_longlat(eex)
   } else {
     is_geodesic <- geodesic
   }
 
 
-  if (is.na(st_crs(eex)$epsg)) {
+  if (is.na(sf::st_crs(eex)$epsg)) {
     stop(
       "The x EPSG needs to be defined, use sf::st_set_crs to",
       " set, replace or retrieve."
@@ -154,14 +151,14 @@ sf_as_ee <- function(x,
   }
 
   # Transform x according to proj argument
-  eex_proj <- st_crs(proj)$epsg
-  eex <- st_transform(eex, eex_proj)
-  eex_proj <- sprintf("EPSG:%s", st_crs(eex)$epsg)
+  eex_proj <- sf::st_crs(proj)$epsg
+  eex <- sf::st_transform(eex, eex_proj)
+  eex_proj <- sprintf("EPSG:%s", sf::st_crs(eex)$epsg)
 
   if (via == "getInfo") {
     # sf to geojson
     ee_sf_to_fc(
-      sf = eex,
+      x = eex,
       proj = eex_proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
@@ -169,7 +166,7 @@ sf_as_ee <- function(x,
   } else if (via == "getInfo_to_asset") {
     # sf to geojson
     sf_fc <- ee_sf_to_fc(
-      sf = eex,
+      x = eex,
       proj = eex_proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd

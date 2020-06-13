@@ -91,10 +91,13 @@ ee_exist_credentials <- function() {
 #' Fix offset of stars object
 #' @noRd
 ee_fix_offset <- function(img_transform, sf_region) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   if (all(img_transform %in% c(1, 0, 0, 0, 1, 0))) {
-    st_bbox(sf_region)
+    sf::st_bbox(sf_region)
   } else {
-    rectangle_coord <- st_coordinates(sf_region)
+    rectangle_coord <- sf::st_coordinates(sf_region)
     # image spatial parameters
     img_x_scale <- img_transform[1][[1]]
     img_x_offset <- img_transform[3][[1]]
@@ -153,14 +156,20 @@ ee_fix_y_coord <- function(img_offset, sf_offset, scale, option) {
 #' Set crs and band names
 #' @noRd
 set_crs <- function(image_stars, prj_image, band_names) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+  if (!requireNamespace("stars", quietly = TRUE)) {
+    stop("package stars required, please install it first")
+  }
   img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
-  st_crs(image_stars) <- img_crs
+  sf::st_crs(image_stars) <- img_crs
   if (length(band_names) > 1) {
-    st_set_dimensions(image_stars, 3, values = band_names)
+    stars::st_set_dimensions(image_stars, 3, values = band_names)
   } else {
-    image_stars <- st_set_dimensions(image_stars, "bands")
+    image_stars <- stars::st_set_dimensions(image_stars, "bands")
     attr(image_stars, "dimensions")$bands$to <- 1
-    st_set_dimensions(image_stars, 3, values = band_names)
+    stars::st_set_dimensions(image_stars, 3, values = band_names)
   }
 }
 

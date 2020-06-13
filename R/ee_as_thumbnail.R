@@ -49,10 +49,7 @@
 #' @return An stars or Raster object depending on the \code{raster} argument.
 #' @family image download functions
 #'
-#' @importFrom stars st_set_dimensions st_as_stars write_stars
 #' @importFrom methods as
-#' @importFrom sf st_crs<- st_coordinates st_as_text st_make_grid
-#' @importFrom stars st_get_dimension_values st_mosaic
 #' @importFrom reticulate py_to_r
 #' @importFrom utils download.file zip str
 #' @examples
@@ -140,6 +137,12 @@
 #' @export
 ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                             raster = FALSE, quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+  if (!requireNamespace("stars", quietly = TRUE)) {
+    stop("package stars required, please install it first")
+  }
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
@@ -168,7 +171,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
 
   ## region is a ee$Geometry$Rectangle?
   if (any(class(region) %in% "ee.geometry.Geometry")) {
-    npoints <- nrow(st_coordinates(sf_region))
+    npoints <- nrow(sf::st_coordinates(sf_region))
     if (npoints != 5) {
       stop(
         stop("region needs to be a ee$Geometry$Rectangle.")
@@ -215,13 +218,13 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
   }
 
   # bbox and CRS of the geometry
-  init_offset <- st_bbox(sf_region)
-  ee_crs <- st_crs(sf_region)$epsg
+  init_offset <- sf::st_bbox(sf_region)
+  ee_crs <- sf::st_crs(sf_region)$epsg
 
   if (!quiet) {
     cat(
       '- region parameters\n',
-      '\rWKT      :', st_as_text(sf_region),
+      '\rWKT      :', sf::st_as_text(sf_region),
       '\nCRS      :', ee_crs,
       '\ngeodesic :', is_geodesic,
       '\nevenOdd  :', is_evenodd,
@@ -283,7 +286,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
     stars_png %>%
       add() %>%
       merge()  %>%
-      st_set_dimensions(names = c("x", "y", "band")) -> stars_png
+      stars::st_set_dimensions(names = c("x", "y", "band")) -> stars_png
 
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- init_offset[1]
@@ -292,11 +295,11 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
     attr_dim$y$delta <- (init_offset[4] - init_offset[2]) / attr_dim$y$to
 
     attr(stars_png, "dimensions") <- attr_dim
-    st_crs(stars_png) <- ee_crs
+    sf::st_crs(stars_png) <- ee_crs
     if (isFALSE(raster)) {
-      thumbnail_stars <- st_as_stars(as(stars_png, "Raster"))
+      thumbnail_stars <- stars::st_as_stars(as(stars_png, "Raster"))
       names(thumbnail_stars) <- image_id
-      thumbnail_stars <- st_set_dimensions(
+      thumbnail_stars <- stars::st_set_dimensions(
         .x = thumbnail_stars,
         which =  3,
         values = band_name
@@ -315,7 +318,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                         SIMPLIFY = FALSE,
                         MoreArgs = list(mtx = raw_image)
     )[[1]]
-    stars_png <- st_set_dimensions(.x = stars_png, names = c("x", "y"))
+    stars_png <- stars::st_set_dimensions(.x = stars_png, names = c("x", "y"))
 
     attr_dim <- attr(stars_png, "dimensions")
     attr_dim$x$offset <- init_offset[1]
@@ -323,11 +326,11 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
     attr_dim$x$delta <- (init_offset[3] - init_offset[1]) / attr_dim$x$to
     attr_dim$y$delta <- (init_offset[4] - init_offset[2]) / attr_dim$y$to
     attr(stars_png, "dimensions") <- attr_dim
-    st_crs(stars_png) <- ee_crs
+    sf::st_crs(stars_png) <- ee_crs
     if (isFALSE(raster)) {
       thumbnail_stars <- stars_png %>%
         as("Raster") %>%
-        st_as_stars()
+        stars::st_as_stars()
       names(thumbnail_stars) <- image_id
       thumbnail_stars
     } else {
@@ -349,7 +352,7 @@ read_png_as_stars <- function(x, band_name, mtx) {
   dim_x <- dim(rotate_x)
   array_x <- array(NA, dim = c(dim_x[1], dim_x[2], 1))
   array_x[, , 1] <- rotate_x
-  stars_object <- st_as_stars(array_x)
+  stars_object <- stars::st_as_stars(array_x)
   stars_object <- stars_object[, , , 1, drop = TRUE]
   names(stars_object) <- band_name
   stars_object

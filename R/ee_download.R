@@ -713,7 +713,6 @@ ee_table_to_asset <- function(collection,
 #' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
 #'
-#' @importFrom stars read_stars
 #' @importFrom utils menu
 #'
 #' @return filename character vector.

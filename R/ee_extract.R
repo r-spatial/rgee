@@ -17,8 +17,6 @@
 #' @param ... reduceRegions additional parameters. See
 #' \code{ee_help(ee$Image$reduceRegions)} for more details.
 #'
-#' @importFrom sf st_geometry st_geometry<- st_drop_geometry
-#'
 #' @return A data.frame or an sf object depending on the sf argument. The
 #' columns receive their name from the image
 #' metadata property \code{RGEE_NAME}. If it is not defined \code{ee_extract}
@@ -122,6 +120,12 @@ ee_extract <- function(x,
                        scale = 1000,
                        sf = FALSE,
                        ...) {
+  if (!requireNamespace("geojsonio", quietly = TRUE)) {
+    stop("package geojsonio required, please install it first")
+  }
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   # spatial classes
   sf_classes <- c("sf", "sfc", "sfg")
   sp_objects <- ee_get_spatial_objects('Table')
@@ -214,8 +218,8 @@ ee_extract <- function(x,
   # Extracting data and passing to sf
   table_geojson <- ee_utils_py_to_r(table$getInfo())
   class(table_geojson) <- "geo_list"
-  table_sf <- geojson_sf(table_geojson)
-  st_geometry(table_sf) <- NULL
+  table_sf <- geojsonio::geojson_sf(table_geojson)
+  sf::st_geometry(table_sf) <- NULL
   table_sf <- table_sf[, order(names(table_sf))]
 
   # Removing helper index's
@@ -223,11 +227,11 @@ ee_extract <- function(x,
   table_sf["ee_ID"] <- NULL
 
   if (isTRUE(sf)) {
-    table_geometry  <- st_geometry(sf_y)
+    table_geometry  <- sf::st_geometry(sf_y)
     table_sf <- sf_y %>%
-      st_drop_geometry() %>%
+      sf::st_drop_geometry() %>%
       cbind(table_sf) %>%
-      st_sf(geometry = table_geometry)
+      sf::st_sf(geometry = table_geometry)
   }
   table_sf
 }

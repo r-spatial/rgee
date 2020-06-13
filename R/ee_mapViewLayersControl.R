@@ -20,8 +20,6 @@ ee_getCallEntryFromMap <- function(map, call) {
 
 # Add leaflet control button to map ---------------------------------------
 #' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
-#' @importFrom leaflet addLayersControl
-#' @importFrom mapview mapviewGetOption
 #' @noRd
 ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   ind <- ee_getCallEntryFromMap(map, call = "addLayersControl")
@@ -32,8 +30,8 @@ ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
     bgm <- map$x$calls[[ind[1]]]$args[[1]]
   }
   if (!native.crs) {
-    m <- addLayersControl(
-      map = map, position = mapviewGetOption("layers.control.pos"),
+    m <- leaflet::addLayersControl(
+      map = map, position = mapview::mapviewGetOption("layers.control.pos"),
       baseGroups = bgm, overlayGroups = c(
         ee_getLayerNamesFromMap(map),
         names
@@ -41,8 +39,8 @@ ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
     )
   }
   else {
-    m <- addLayersControl(
-      map = map, position = mapviewGetOption("layers.control.pos"),
+    m <- leaflet::addLayersControl(
+      map = map, position = mapview::mapviewGetOption("layers.control.pos"),
       overlayGroups = c(ee_getLayerNamesFromMap(map), names)
     )
   }
@@ -52,7 +50,6 @@ ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
 #' Get layer names of leaflet map ------------------------------------------
 #' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
-#' @importFrom leaflet addLayersControl
 #' @noRd
 ee_getLayerNamesFromMap <- function(map) {
   len <- ee_getLayerControlEntriesFromMap(map)

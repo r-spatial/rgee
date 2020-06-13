@@ -20,7 +20,6 @@ ee_utils_py_to_r <- function(x) {
 #' @param SHP_EXTENSIONS file extension of the files to save
 #' into the zip file. By default: "dbf", "prj", "shp", "shx".
 #' @importFrom utils zip
-#' @importFrom sf write_sf
 #'
 #' @return Character. The full path of the zip file created.
 #' @family ee_utils functions
@@ -68,10 +67,13 @@ ee_utils_shp_to_zip <- function(x,
                                 filename,
                                 SHP_EXTENSIONS = c("dbf", "prj", "shp",
                                                    "shx")) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   if (missing(filename)) {
     filename <- sprintf("%s%s",tempfile(),'.shp')
   }
-  write_sf(obj = x, dsn = filename)
+  sf::write_sf(obj = x, dsn = filename)
   shp_basename <- gsub("\\.shp$", "", filename)
   shp_filenames <- sprintf("%s.%s", shp_basename, SHP_EXTENSIONS)
   zipname <- sprintf("%s.zip", shp_basename)

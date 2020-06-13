@@ -36,6 +36,7 @@ reference:
     contents:
       - ee_install
       - ee_install_set_pyenv
+      - ee_install_upgrade
 
   - title: "Checking"
     contents:

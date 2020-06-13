@@ -259,13 +259,13 @@ gcs_to_ee_image <- function(x,
   if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
   name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
 
-  if (is.na(st_crs(x)$wkt)) {
+  if (is.na(sf::st_crs(x)$wkt)) {
     stop("x does not have a CRS defined first")
   }
 
   # Creating tileset
   tilesets <- list(
-    crs = st_crs(x)$wkt,
+    crs = sf::st_crs(x)$wkt,
     sources = list(
       list(
         uris = gs_uri,
@@ -338,17 +338,25 @@ gcs_to_ee_image <- function(x,
 }
 
 #' From sf object to Earth Engine FeatureCollection
-#' @importFrom sf st_geometry
 #' @noRd
-ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
+ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
+
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+  if (!requireNamespace("geojsonio", quietly = TRUE)) {
+    stop("package geojsonio required, please install it first")
+  }
+
   # Load python module
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)
+
   fc <- list()
-  for (index in seq_len(nrow(sf))) {
-    feature <- sf[index,]
-    sfc_feature <- st_geometry(feature)
-    py_geometry <- geojson_json(sfc_feature,type = 'skip')
+  for (index in seq_len(nrow(x))) {
+    feature <- x[index,]
+    sfc_feature <- sf::st_geometry(feature)
+    py_geometry <- geojsonio::geojson_json(sfc_feature,type = 'skip')
     wkt_type <- class(sfc_feature)[1] # wkt type identifier
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                          sfc_class = wkt_type,
@@ -359,7 +367,7 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
       stop("rgee does not support the upload of GEOMETRYCOLLECTION",
            " (sfg object).")
     }
-    st_geometry(feature) <- NULL
+    sf::st_geometry(feature) <- NULL
     fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
   ee$FeatureCollection(fc)
@@ -368,16 +376,19 @@ ee_sf_to_fc <- function(sf, proj, geodesic, evenOdd) {
 #' Pass a character, sfg, sfc to sf
 #' @noRd
 ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   if (any(class(x) %in% 'sf')) {
-    x$geometry <- st_sfc(x$geometry, check_ring_dir = check_ring_dir)
+    x$geometry <- sf::st_sfc(x$geometry, check_ring_dir = check_ring_dir)
     x
   } else if (any(class(x) %in% 'sfg')) {
     if (is.null(proj)) {
       proj <- 4326
     }
-    st_sf(
+    sf::st_sf(
       index = 1,
-      geometry = st_sfc(
+      geometry = sf::st_sfc(
         x,
         crs = 4326,
         check_ring_dir = check_ring_dir
@@ -385,13 +396,13 @@ ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
     )
   } else {
     result <- tryCatch(
-      expr = st_sf(index = 1,
-                   geometry = x,
-                   check_ring_dir = check_ring_dir),
-      error = function(e) st_read(dsn = x,
-                                  stringsAsFactors =  FALSE,
-                                  check_ring_dir = check_ring_dir,
-                                  quiet = quiet)
+      expr = sf::st_sf(index = 1,
+                       geometry = x,
+                       check_ring_dir = check_ring_dir),
+      error = function(e) sf::st_read(dsn = x,
+                                      stringsAsFactors =  FALSE,
+                                      check_ring_dir = check_ring_dir,
+                                      quiet = quiet)
     )
     if (ncol(result) == 1) {
       result$index <- seq_len(nrow(result))
@@ -403,14 +414,19 @@ ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
 #' Pass a character or stars object to stars-proxy
 #' @noRd
 ee_as_proxystars <- function(x, temp_dir = tempdir()) {
+
+  if (!requireNamespace("stars", quietly = TRUE)) {
+    stop("package stars required, please install it first")
+  }
+
   if (is.character(x)) {
-    read_stars(x, proxy = TRUE)
+    stars::read_stars(x, proxy = TRUE)
   } else if (is(x,"stars")) {
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
-    write_stars(x, tiff_filename)
-    read_stars(tiff_filename, proxy = TRUE)
+    stars::write_stars(x, tiff_filename)
+    stars::read_stars(tiff_filename, proxy = TRUE)
   } else if (is(x,"Raster")) {
     if (!requireNamespace("raster", quietly = TRUE)) {
       stop("package raster required, please install it first")
@@ -419,7 +435,7 @@ ee_as_proxystars <- function(x, temp_dir = tempdir()) {
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
     raster::writeRaster(x, tiff_filename)
-    read_stars(tiff_filename, proxy = TRUE)
+    stars::read_stars(tiff_filename, proxy = TRUE)
   } else {
     stop('x argument not defined properly.')
   }

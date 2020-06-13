@@ -347,91 +347,14 @@ ee_addTile <- function(tile, name, shown, opacity) {
   m@object$names <- name
   m@object$opacity <- opacity
   m@object$shown <- shown
-  new("EarthEngineMap", object = m@object, map = m@map)
+  m <- new("EarthEngineMap", object = m@object, map = m@map)
+  m
 }
 
 if (!isGeneric("+")) {
   setGeneric("+", function(x, y, ...)
     standardGeneric("+"))
 }
-
-#' mapview + mapview; adds data from the second map to the first
-#'
-#' @author Adapted from
-#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim}  code.
-#' @param e1 a mapview map to which e2 should be added.
-#' @param e2 a mapview map from which the objects should be added to e1.
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' # Case 1: Geometry*
-#' geom <- ee$Geometry$Point(list(-73.53, -15.75))
-#' Map$centerObject(geom, zoom = 13)
-#' m1 <- Map$addLayer(
-#'   eeObject = geom,
-#'   visParams = list(
-#'     pointRadius = 10,
-#'     color = "FF0000"
-#'   ),
-#'   name = "Geometry-Arequipa"
-#' )
-#' # Case 2: Feature
-#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
-#'   first()
-#' m2 <- Map$addLayer(
-#'   eeObject = ee$Feature(eeobject_fc),
-#'   name = "Feature-Arequipa"
-#' )
-#' m2 + m1
-#'
-#' # Case 3: FeatureCollection
-#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' Map$centerObject(eeobject_fc)
-#' m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
-#' m3 + m2 + m1
-#'
-#' # Case 4: Image
-#' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' Map$centerObject(image)
-#' m4 <- Map$addLayer(
-#'   eeObject = image,
-#'   visParams = list(
-#'     bands = c("B4", "B3", "B2"),
-#'     max = 10000
-#'   ),
-#'   name = "SF"
-#' )
-#' m4
-#' }
-#'
-setMethod(
-  "+",
-  signature(
-    e1 = "EarthEngineMap",
-    e2 = "EarthEngineMap"
-  ),
-  function(e1, e2) {
-    e2_token <- e2@object$tokens
-    e2_name <- e2@object$names
-    e2_opacity <- e2@object$opacity
-    e2_shown <- e2@object$shown
-
-    for (x in seq_len(length(e2_name))) {
-      e1@map <- e1@map %>%
-        leaflet::addTiles(
-          urlTemplate = e2_token[x],
-          group = e2_name[x],
-          options = leaflet::tileOptions(opacity = e2_opacity[x])
-        ) %>%
-        rgee:::ee_mapViewLayersControl(names = e2_name[x]) %>%
-        leaflet::hideGroup(if (!e2_shown[x]) e2_name[x] else NULL)
-    }
-    return(e1)
-  }
-)
 
 #' Get the tile_fetcher to display into ee_map
 #' @noRd

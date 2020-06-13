@@ -22,7 +22,7 @@
 #' @param clean Logical. If TRUE, the cache will be cleaned.
 #' @param quiet Logical. Suppress info message
 #' @param ... ignored
-#' @importFrom sf st_crs
+#'
 #' @importFrom crayon bold blue
 #' @importFrom cli rule
 #'
@@ -77,6 +77,9 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
                                           ...,
                                           clean = FALSE,
                                           quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   # 1. Search if Geometry metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -94,7 +97,7 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
     geom_info <- eeobject$projection()$getInfo()
     geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
     geom_geodesic <- ee_utils_py_to_r(ee$Geometry$geodesic(eeobject)$getInfo())
-    geom_proj4string <- st_crs(geom_epsg)$proj4string
+    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
     ee_metadata <- list(
       name = "Geometry",
@@ -132,6 +135,9 @@ ee_print.ee.feature.Feature <- function(eeobject,
                                         ...,
                                         clean = FALSE,
                                         quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -152,7 +158,7 @@ ee_print.ee.feature.Feature <- function(eeobject,
     geom_info <- eeobject$geometry()$projection()$getInfo()
     geom_geodesic <- ee_utils_py_to_r(eeobject$geometry()$geodesic()$getInfo())
     geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
-    geom_proj4string <- st_crs(geom_epsg)$proj4string
+    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
 
     ee_metadata <- list(
@@ -195,6 +201,10 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                             f_index = 0,
                                                             clean = FALSE,
                                                             quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject, f_index))
@@ -224,7 +234,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
     geom_info <- feature$geometry()$projection()$getInfo()
     geom_geodesic <- ee_utils_py_to_r(feature$geometry()$geodesic()$getInfo())
     geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
-    geom_proj4string <- st_crs(geom_epsg)$proj4string
+    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
 
     ee_metadata <- list(
@@ -281,6 +291,10 @@ ee_print.ee.image.Image <- function(eeobject,
                                     compression_ratio = 20,
                                     clean = FALSE,
                                     quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+
   # 1. Fetch and Return bandname about ee$Image
   img_bandNames <- eeobject$bandNames()$getInfo()
   img_nband <- length(img_bandNames)
@@ -346,7 +360,7 @@ ee_print.ee.image.Image <- function(eeobject,
       img_time_end = img_id_time$time_end,
       band_name = img_band,
       band_epsg = band_metadata_epsg,
-      band_proj4string = st_crs(band_metadata_epsg)$proj4string,
+      band_proj4string = sf::st_crs(band_metadata_epsg)$proj4string,
       band_geotransform = paste0(band_metadata$crs_transform, collapse = " "),
       band_scale_x = band_metadata$crs_transform[1],
       band_scale_y = band_metadata$crs_transform[5],
@@ -549,18 +563,6 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     )
   }
   invisible(ee_metadata)
-}
-
-#' @export
-print.ee.computedobject.ComputedObject <-
-  function(x, type = getOption("rgee.print.option"), ...) {
-  if (type == "json") {
-    str(x)
-  } else if (type == "simply") {
-    cat(paste0("EarthEngine Object: ", x$name()))
-  } else if (type == "ee_print") {
-    ee_print(x)
-  }
 }
 
 #' Create a hash function digests for Earth Engine objects

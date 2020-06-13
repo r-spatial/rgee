@@ -164,9 +164,12 @@ ee_imagecollection_to_local <- function(ic,
 #' geometry message
 #' @noRd
 ee_geometry_message <- function(region, quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   # From geometry to sf
   sf_region <- ee_as_sf(x = region)$geometry
-  region_crs <- st_crs(sf_region)$epsg
+  region_crs <- sf::st_crs(sf_region)$epsg
 
   ### Metadata ----
   #is geodesic?
@@ -185,7 +188,7 @@ ee_geometry_message <- function(region, quiet = FALSE) {
   if (!quiet) {
     cat(
       '- region parameters\n',
-      'WKT      :', st_as_text(sf_region), "\n",
+      'WKT      :', sf::st_as_text(sf_region), "\n",
       'CRS      :', region_crs, "\n",
       'geodesic :', is_geodesic, "\n",
       'evenOdd  :', is_evenodd, "\n"
