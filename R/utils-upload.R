@@ -339,7 +339,7 @@ gcs_to_ee_image <- function(x,
 
 #' From sf object to Earth Engine FeatureCollection
 #' @noRd
-ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
+  ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
 
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")

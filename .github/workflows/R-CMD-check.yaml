@@ -52,6 +52,7 @@ jobs:
       - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
         run: |
           install.packages('remotes')
+          install.packages('knitr')
           install.packages('pillar') # winbug
           install.packages('vctrs')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
