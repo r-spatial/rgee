@@ -357,7 +357,7 @@ exported_stats <- ee_drive_to_local(task = task,dsn = "exported_stats.csv")
 read.csv(exported_stats)
 ```
 
-Note that the link is embedded into the asset name, for reproducability.
+Note that the link is embedded into the asset name, for reproducibility.
 Also note that if you want to export `toAsset`, you will need to supply
 a geometry, which can be anything, for example the image centroid, which
 is small and cheap to compute. (i.e. don’t use a complex geometry if you

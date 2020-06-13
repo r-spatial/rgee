@@ -303,7 +303,7 @@ read.csv(exported_stats)
 ```
 
 
-Note that the link is embedded into the asset name, for reproducability. Also note that if you want to export `toAsset`, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don't use a complex geometry if you don't need it).
+Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export `toAsset`, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don't use a complex geometry if you don't need it).
 
 See the debugging page for examples of using `Export` to resolve [Computation](https://developers.google.com/earth-engine/debugging#timed-out) timed out and [Too many concurrent aggregations](https://developers.google.com/earth-engine/debugging#too-many). See [this doc](https://developers.google.com/earth-engine/exporting) for details on exporting in general.
 

@@ -153,11 +153,12 @@ update_rgee <- function(pkg = ".",
     # updated_ee_DESCRIPTION(dest_dir)
     # github_push(dest_dir, commit_message, remote, branch)
     # git("fetch", remote, branch)
-    rcmdcheck::rcmdcheck(
-      args = c("--no-manual", "--as-cran"),
-      error_on = "warning",
-      check_dir = "check"
-    )
+    # rcmdcheck::rcmdcheck(
+    #   args = c("--no-manual", "--as-cran"),
+    #   error_on = "warning",
+    #   check_dir = "check"
+    # )
+    stop("rgee not updated")
   }
   invisible(TRUE)
 }

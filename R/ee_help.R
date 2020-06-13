@@ -2,6 +2,7 @@
 #' @param eeobject Earth Engine Object to print documentation.
 #' @param browser Logical. Display documentation in the browser.
 #' @importFrom reticulate py_function_docs
+#' @importFrom utils tail
 #' @family helper functions
 #' @examples
 #' \dontrun{

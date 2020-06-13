@@ -40,7 +40,7 @@ ee_install <- function(py_env = "rgee",
   }
 
   # If Python not found install miniconda
-  if (!reticulate::py_available(initialize = TRUE)) {
+  if ((!reticulate::py_available(initialize = TRUE))) {
     text <- paste(
       "No non-system installation of Python could be found.",
       "Would you like to download and install Miniconda?",
@@ -63,6 +63,7 @@ ee_install <- function(py_env = "rgee",
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
         reticulate::install_miniconda()
+        break
       } else if (ch == "n") {
         message("Installation aborted.")
         return(FALSE)
@@ -139,12 +140,17 @@ ee_install <- function(py_env = "rgee",
 
   # Create EARTHENGINE_PYTHON
   response <- message(
+    "\n",
     paste(
-      "ee_install will stored the environmental variable EARTHENGINE_PYTHON",
       sprintf(
-        "in your .Renviron for use the %s Python Path in future sessions.:",
-        py_path
+        "ee_install want to store the environmental variables: %s ",
+        bold("EARTHENGINE_PYTHON")
       ),
+      sprintf(
+        "and %s in your .Renviron file to use the Python path:",
+        bold("EARTHENGINE_PYTHON_ENV")
+      ),
+      sprintf("%s in future sessions.", py_path),
       sep = "\n"
     )
   )
@@ -152,7 +158,7 @@ ee_install <- function(py_env = "rgee",
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
-      #ee_install_set_pyenv(py_path = py_path)
+      ee_install_set_pyenv(py_path = py_path)
       message(
         "\n",
         paste(
@@ -161,11 +167,12 @@ ee_install <- function(py_env = "rgee",
             py_path
           ),
           "has been stored in your .Renviron file. Remember that you",
-          "can remove EARTHENGINE_PYTHON using rgee::ee_clean_pyenv().",
-          ".Renviron can be accessed by Sys.getenv(\"EARTHENGINE_PYTHON\")",
+          "can remove EARTHENGINE_PYTHON  and EARTHENGINE_ENV using",
+          " rgee::ee_clean_pyenv().",
           sep = "\n"
         )
       )
+      break
     } else if (ch == "n") {
       message(
         paste(
@@ -180,6 +187,7 @@ ee_install <- function(py_env = "rgee",
           sep = "\n"
         )
       )
+      break
     } else {
       response <- readline("Please answer yes or no: ")
     }
@@ -196,11 +204,11 @@ ee_install <- function(py_env = "rgee",
   )
 
   reticulate::py_install(
-      packages = c(
-        sprintf("earthengine-api==%s", earthengine_version),
-        "numpy"
-      ),
-      envname = rgee_path
+    packages = c(
+      sprintf("earthengine-api==%s", earthengine_version),
+      "numpy"
+    ),
+    envname = rgee_path
   )
 
   # Restart to see changes
@@ -235,9 +243,10 @@ ee_install <- function(py_env = "rgee",
 #' EARTHENGINE_PYTHON is saved into the file .Renviron.
 #'
 #' @param py_path The path to a Python interpreter.
+#' @param py_env The name of the environment. By default "rgee".
 #' @family ee_install functions
 #' @export
-ee_install_set_pyenv <- function(py_path) {
+ee_install_set_pyenv <- function(py_path, py_env = "rgee") {
   ee_clean_pyenv()
   # Trying to get the env from the py_path
   home <- Sys.getenv("HOME")
@@ -267,7 +276,8 @@ ee_install_set_pyenv <- function(py_path) {
 
   # Set EARTHENGINE_PYTHON in .Renviron
   ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
-  system_vars <- c(lines, ret_python)
+  ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
+  system_vars <- c(lines, ret_python, ret_env)
 
   writeLines(system_vars, con)
   close(con)
@@ -358,5 +368,39 @@ ee_detect_os <- function() {
 #' @noRd
 is_windows <- function() {
   ee_detect_os() == 'windows'
+}
+
+
+#' Upgrade the Earth Engine Python API
+#'
+#' @param version Character. The Earth Engine Python API version to upgrade.
+#' By default \code{rgee::ee_version()}.
+#'
+#' @export
+ee_install_upgrade <- function(version = NULL) {
+  if (is.null(version)) {
+    version <- rgee::ee_version()
+  }
+  reticulate::py_install(
+    packages = c(sprintf("earthengine-api==%s", version)),
+    envname = Sys.getenv("EARTHENGINE_ENV")
+  )
+  title <- paste(
+    "",
+    bold(
+      sprintf(
+        "Well done! the Earth Engine Python API was successfully upgraded (%s).",
+        version
+      )
+    ),
+    "rgee needs restart R to see changes.",
+    "Do you want to continues?",
+    sep = "\n"
+  )
+  response <- menu(c("yes", "no"), title = title)
+  switch(response + 1,
+         cat("Restart R session to see changes.\n"),
+         rstudioapi::restartSession(),
+         cat("Restart R session to see changes.\n"))
 }
 

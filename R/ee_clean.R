@@ -82,7 +82,7 @@ ee_clean_pyenv <- function() {
     close(con)
 
     # Remove system variables EARTHENGINE_PYTHON
-    system_vars <- lines[!grepl("EARTHENGINE_PYTHON", lines)]
+    system_vars <- lines[!grepl("EARTHENGINE_", lines)]
     fileConn <- file(renv)
     writeLines(system_vars, fileConn)
     close(fileConn)

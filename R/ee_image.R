@@ -103,6 +103,12 @@ ee_as_stars <- function(image,
                               maxPixels = 1e9,
                               container = "rgee_backup",
                               quiet = FALSE) {
+  if (!requireNamespace("stars", quietly = TRUE)) {
+    stop("package stars required, please install it first")
+  }
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
 
   img_files <- ee_image_local(
     image = image,
@@ -115,9 +121,9 @@ ee_as_stars <- function(image,
     quiet = quiet
   )
 
-  img_stars <- read_stars(img_files$file,proxy = TRUE)
-  st_crs(img_stars) <- img_files$crs
-  st_set_dimensions(img_stars, 3, values = img_files$band_names)
+  img_stars <- stars::read_stars(img_files$file,proxy = TRUE)
+  sf::st_crs(img_stars) <- img_files$crs
+  stars::st_set_dimensions(img_stars, 3, values = img_files$band_names)
 }
 
 
@@ -261,9 +267,6 @@ ee_as_raster  <- function(image,
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #'
-#' @importFrom sf st_read st_sf st_sfc st_is_longlat
-#' @importFrom geojsonio geojson_json
-#'
 #' @return An ee$Image object
 #' @family image upload functions
 #' @examples
@@ -350,9 +353,6 @@ stars_as_ee <- function(x,
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #'
-#' @importFrom sf st_read st_sf st_sfc st_is_longlat
-#' @importFrom geojsonio geojson_json
-#'
 #' @return An ee$Image object
 #' @family image upload functions
 #'
@@ -408,10 +408,15 @@ ee_image_local <- function(image,
                            maxPixels = 1e9,
                            container = "rgee_backup",
                            quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("package jsonlite required, please install it first")
   }
-
+  if (!requireNamespace("stars", quietly = TRUE)) {
+    stop("package stars required, please install it first")
+  }
   # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
     dsn <- paste0(tempfile(),".tif")
@@ -433,11 +438,11 @@ ee_image_local <- function(image,
 
   # From geometry to sf
   sf_region <- ee_as_sf(x = region)$geometry
-  region_crs <- st_crs(sf_region)$epsg
+  region_crs <- sf::st_crs(sf_region)$epsg
 
   # region crs and image crs are equal?, otherwise force it.
   if (isFALSE(region_crs == img_crs)) {
-    sf_region <- st_transform(sf_region, img_crs)
+    sf_region <- sf::st_transform(sf_region, img_crs)
   }
 
   # Getting image ID if it is exist
@@ -473,6 +478,9 @@ ee_image_local <- function(image,
   ### -----------
 
   if (via == "getInfo") {
+    if (!requireNamespace("stars", quietly = TRUE)) {
+      stop("package stars required, please install it first")
+    }
     # initial crstransform
     xScale <- prj_image$transform[[1]]
     yScale <- -abs(prj_image$transform[[5]]) #always negative
@@ -489,7 +497,7 @@ ee_image_local <- function(image,
 
     # region is a ee$Geometry$Rectangle?
     if (any(class(region) %in% "ee.geometry.Geometry")) {
-      npoints <- nrow(st_coordinates(sf_region))
+      npoints <- nrow(sf::st_coordinates(sf_region))
       if (npoints != 5) {
         stop("region needs to be a ee$Geometry$Rectangle.")
       }
@@ -518,7 +526,7 @@ ee_image_local <- function(image,
     # Estimating the number of pixels (approximately)
     # It is necessary just a single batch? (512x512)
     bbox <- sf_region %>%
-      st_bbox() %>%
+      sf::st_bbox() %>%
       as.numeric()
     x_diff <- bbox[3] - bbox[1]
     y_diff <- bbox[4] - bbox[2]
@@ -550,7 +558,9 @@ ee_image_local <- function(image,
 
     # Create a regular tesselation over the bounding box
     # after that move to earth engine.
-    sf_region_gridded <- suppressMessages(st_make_grid(sf_region, n = nbatch))
+    sf_region_gridded <- suppressMessages(
+      sf::st_make_grid(sf_region, n = nbatch)
+    )
     region_fixed <- sf_region_gridded %>%
       sf_as_ee(
         check_ring_dir = TRUE,
@@ -563,7 +573,7 @@ ee_image_local <- function(image,
     if (!quiet) {
       cat(
         '- region parameters\n',
-        'WKT      :', st_as_text(sf_region), "\n",
+        'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
         'geodesic :', is_geodesic, "\n",
         'evenOdd  :', is_evenodd, "\n"
@@ -627,9 +637,9 @@ ee_image_local <- function(image,
 
       # Create stars object
       image_stars <- image_array %>%
-        st_as_stars() %>%
+        stars::st_as_stars() %>%
         `names<-`(image_id) %>%
-        st_set_dimensions(names = c("x", "y", "band"))
+        stars::st_set_dimensions(names = c("x", "y", "band"))
       attr_dim <- attr(image_stars, "dimensions")
 
       ## Configure metadata of the local image and geotransform
@@ -648,13 +658,15 @@ ee_image_local <- function(image,
       attr_dim$x$delta <- xScale
       attr_dim$y$delta <- yScale
       attr(image_stars, "dimensions") <- attr_dim
-      image_stars <- st_set_dimensions(image_stars, 3, values = band_names)
+      image_stars <- stars::st_set_dimensions(
+        .x = image_stars, which = 3, values = band_names
+      )
       stars_img_list[[r_index]] <- image_stars
     }
 
     # Analizing the stars dimensions
-    dim_x <- st_get_dimension_values(stars_img_list[[1]],"x")
-    dim_y <- st_get_dimension_values(stars_img_list[[1]],"y")
+    dim_x <- stars::st_get_dimension_values(stars_img_list[[1]],"x")
+    dim_y <- stars::st_get_dimension_values(stars_img_list[[1]],"y")
 
     if (length(dim_x) == 1 | length(dim_y) == 1) {
       stop(
@@ -663,16 +675,16 @@ ee_image_local <- function(image,
       )
     } else {
       # Upgrading metadata of mosaic
-      mosaic <- do.call(st_mosaic, stars_img_list)
-      st_crs(mosaic) <- img_crs
+      mosaic <- do.call(stars::st_mosaic, stars_img_list)
+      sf::st_crs(mosaic) <- img_crs
 
       # The stars object have bands dimensions?
-      if (!is.null(st_get_dimension_values(mosaic,"bands"))) {
-        st_set_dimensions(mosaic, 3, values = band_names)
+      if (!is.null(stars::st_get_dimension_values(mosaic,"bands"))) {
+        stars::st_set_dimensions(mosaic, 3, values = band_names)
       }
 
       # Save results in dsn
-      write_stars(mosaic, dsn)
+      stars::write_stars(mosaic, dsn)
     }
   } else if (via == "drive") {
     if (is.na(ee_user$drive_cre)) {
@@ -688,7 +700,7 @@ ee_image_local <- function(image,
     if (!quiet) {
       cat(
         '- region parameters\n',
-        'WKT      :', st_as_text(sf_region), "\n",
+        'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
         'geodesic :', is_geodesic, "\n",
         'evenOdd  :', is_evenodd, "\n"
@@ -745,7 +757,7 @@ ee_image_local <- function(image,
     if (!quiet) {
       cat(
         '- region parameters\n',
-        'WKT      :', st_as_text(sf_region), "\n",
+        'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
         'geodesic :', is_geodesic, "\n",
         'evenOdd  :', is_evenodd, "\n"
@@ -799,7 +811,6 @@ ee_image_local <- function(image,
 #' in size of data representation produced by a data compression algorithm
 #' (ignored if \code{getsize} is FALSE). By default is 20
 #' @param quiet Logical. Suppress info message
-#' @importFrom sf st_transform
 #' @return A list containing information about the number of rows (nrow),
 #' number of columns (ncol), total number of pixels (total_pixel), and image
 #' size (image_size).
@@ -821,6 +832,9 @@ ee_image_info <- function(image,
                           getsize = TRUE,
                           compression_ratio = 20,
                           quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   band_length <- length(image$bandNames()$getInfo())
   if (band_length != 1) {
     stop("ee_image_info needs that image only has one band.")
@@ -829,11 +843,11 @@ ee_image_info <- function(image,
   geotransform <- unlist(img_proj$transform)
   img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
   suppressWarnings(
-    st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
+    sf::st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
   )
   bbox <- img_totalarea %>%
-    st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
-    st_bbox() %>%
+    sf::st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
+    sf::st_bbox() %>%
     as.numeric()
 
   x_diff <- bbox[3] - bbox[1]

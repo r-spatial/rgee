@@ -2,7 +2,7 @@
 #'
 #' Create interactive visualizations of spatial EE objects
 #' (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
-#' through \link[=mapview]{mapview}.
+#' using \code{mapview}.
 #' @format An object of class environment with the
 #' following functions:
 #' \itemize{
@@ -47,7 +47,7 @@
 #' `Map` use the Earth Engine method
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 #' getMapId} to fetch and return an ID dictionary being used to create
-#' layers in a \link[=mapview]{mapview} object. Users can specify visualization
+#' layers in a \code{mapview} object. Users can specify visualization
 #' parameters to Map\$addLayer by using the visParams argument. Each Earth
 #' Engine spatial object has a specific format. For
 #' \code{ee$Image}, the
@@ -250,6 +250,12 @@ ee_addLayer <- function(eeObject,
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("package jsonlite required, please install it first")
   }
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("package mapview required, please install it first")
+  }
+  if (!requireNamespace("leaflet", quietly = TRUE)) {
+    stop("package leaflet required, please install it first")
+  }
 
   if (is.null(visParams)) {
     visParams <- list()
@@ -310,30 +316,38 @@ ee_addLayer <- function(eeObject,
 #' Basic base mapview object
 #' @noRd
 ee_mapview <- function() {
-  m <- mapview()
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("package mapview required, please install it first")
+  }
+  m <- mapview::mapview()
   m@map$x$setView[[1]] <- c(Map$lat, Map$lon)
   m@map$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
   m
 }
 
 #' Add a mapview object based on a tile_fetcher
-#' @importFrom mapview mapview
-#' @importFrom leaflet addTiles tileOptions hideGroup setView
 #' @noRd
 ee_addTile <- function(tile, name, shown, opacity) {
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("package mapview required, please install it first")
+  }
+  if (!requireNamespace("leaflet", quietly = TRUE)) {
+    stop("package leaflet required, please install it first")
+  }
   m <- ee_mapview()
   m@map <- m@map %>%
-    addTiles(
+    leaflet::addTiles(
       urlTemplate = tile,
       group = name,
-      options = tileOptions(opacity = opacity)
+      options = leaflet::tileOptions(opacity = opacity)
     ) %>%
     ee_mapViewLayersControl(names = name) %>%
-    hideGroup(if (!shown) name else NULL)
+    leaflet::hideGroup(if (!shown) name else NULL)
   m@object$tokens <- tile
   m@object$names <- name
   m@object$opacity <- opacity
   m@object$shown <- shown
+  m <- new("EarthEngineMap", object = m@object, map = m@map)
   m
 }
 
@@ -341,84 +355,6 @@ if (!isGeneric("+")) {
   setGeneric("+", function(x, y, ...)
     standardGeneric("+"))
 }
-
-#' mapview + mapview; adds data from the second map to the first
-#'
-#' @author Adapted from
-#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim}  code.
-#' @param e1 a mapview map to which e2 should be added.
-#' @param e2 a mapview map from which the objects should be added to e1.
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' # Case 1: Geometry*
-#' geom <- ee$Geometry$Point(list(-73.53, -15.75))
-#' Map$centerObject(geom, zoom = 13)
-#' m1 <- Map$addLayer(
-#'   eeObject = geom,
-#'   visParams = list(
-#'     pointRadius = 10,
-#'     color = "FF0000"
-#'   ),
-#'   name = "Geometry-Arequipa"
-#' )
-#' # Case 2: Feature
-#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
-#'   first()
-#' m2 <- Map$addLayer(
-#'   eeObject = ee$Feature(eeobject_fc),
-#'   name = "Feature-Arequipa"
-#' )
-#' m2 + m1
-#'
-#' # Case 3: FeatureCollection
-#' eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-#' Map$centerObject(eeobject_fc)
-#' m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
-#' m3 + m2 + m1
-#'
-#' # Case 4: Image
-#' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-#' Map$centerObject(image)
-#' m4 <- Map$addLayer(
-#'   eeObject = image,
-#'   visParams = list(
-#'     bands = c("B4", "B3", "B2"),
-#'     max = 10000
-#'   ),
-#'   name = "SF"
-#' )
-#' m4
-#' }
-#'
-setMethod(
-  "+",
-  signature(
-    e1 = "mapview",
-    e2 = "mapview"
-  ),
-  function(e1, e2) {
-    e2_token <- e2@object$tokens
-    e2_name <- e2@object$names
-    e2_opacity <- e2@object$opacity
-    e2_shown <- e2@object$shown
-
-    for (x in seq_len(length(e2_name))) {
-      e1@map <- e1@map %>%
-        addTiles(
-          urlTemplate = e2_token[x],
-          group = e2_name[x],
-          options = tileOptions(opacity = e2_opacity[x])
-        ) %>%
-        ee_mapViewLayersControl(names = e2_name[x]) %>%
-        hideGroup(if (!e2_shown[x]) e2_name[x] else NULL)
-    }
-    return(e1)
-  }
-)
 
 #' Get the tile_fetcher to display into ee_map
 #' @noRd
@@ -515,7 +451,6 @@ ee_getZoom <- function(eeObject, maxError = ee$ErrorMargin(1)) {
 }
 
 #' Get boundary of a Earth Engine Object
-#' @importFrom sf st_polygon st_bbox
 #' @noRd
 ee_get_boundary <- function(eeObject, maxError) {
   if (any(class(eeObject) %in% "ee.geometry.Geometry")) {
@@ -527,39 +462,10 @@ ee_get_boundary <- function(eeObject, maxError) {
     unlist() %>%
     matrix(ncol = 2, byrow = TRUE) %>%
     list() %>%
-    st_polygon() %>%
-    st_bbox()
+    sf::st_polygon() %>%
+    sf::st_bbox()
 }
 
-#' Get the box for a specific Device Surface
-#' @noRd
-# ee_getBox <- function(mapview_object, width , height){
-#   view <- mapview_object@map$x$setView
-#   lat <- view[[1]][1]
-#   lng <- view[[1]][2]
-#   zoom <- view[[2]]
-#   zoom_eq <- 256*2^(zoom)
-#   lng_width <- width/zoom_eq*360
-#   lat_height <- height/zoom_eq*180
-#   xmin <- lng - lng_width/2
-#   ymin <- lat - lat_height/2
-#   xmax <- lng + lng_width/2
-#   ymax <- lat + lat_height/2
-#   list(c(xmin,ymin),c(xmin,ymax),c(xmax,ymax),c(xmax,ymin),c(xmin,ymin))
-# }
-
-
-# ee_getBounds <- function(eeObject) {
-#   viewer_canvas <- dev.size("px")
-#   width <- viewer_canvas[1]
-#   height <- viewer_canvas[2]
-#   area_box <- ee_getBox(mapview_object = Map$mapdisplay,
-#                         width = width,
-#                         height = height)
-#   m@map$width <- viewer_canvas[1]
-#   m@map$height <- viewer_canvas[2]
-#   Map$mapdisplay
-# }
-
+# Create an Map env and set methods
 Map <- Map()
 ee_set_methods()

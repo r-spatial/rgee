@@ -99,6 +99,11 @@ jobs:
           install.packages("rgdal", type = "source", configure.args = "--with-proj-lib=/usr/local/lib/ --with-proj-include=/usr/local/include/")
         shell: Rscript {0}
 
+      - name: INSTALL geojsonio
+        run: |
+          install.packages("geojsonio")
+        shell: Rscript {0}
+
       - name: CHECK
         env:
           _R_CHECK_CRAN_INCOMING_: false

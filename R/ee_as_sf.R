@@ -20,10 +20,7 @@
 #' list of strings or a comma-separated string. By default, all properties are
 #' included.
 #' @param quiet logical. Suppress info message
-#' @importFrom geojsonio geojson_sf
-#' @importFrom utils tail
 #' @importFrom methods as setMethod new is setGeneric
-#' @importFrom sf st_write read_sf
 #' @details
 #' \code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
 #' \code{ee$Feature} and \code{ee$Geometry} by three different options:
@@ -92,6 +89,14 @@ ee_as_sf <- function(x,
                      container = "rgee_backup",
                      selectors = NULL,
                      quiet = FALSE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
+
+  if (!requireNamespace("geojsonio", quietly = TRUE)) {
+    stop("package geojsonio required, please install it first")
+  }
+
   sp_eeobjects <- ee_get_spatial_objects('Table')
 
   if (missing(dsn)) {
@@ -166,7 +171,7 @@ ee_as_sf <- function(x,
         )
       }
       x_sf_mosaic <- do.call(rbind, sf_list)
-      st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
+      sf::st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
       local_sf <- x_sf_mosaic
     } else {
       local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
@@ -220,7 +225,7 @@ ee_as_sf <- function(x,
       overwrite = overwrite,
       consider = 'all'
     )
-    local_sf <- read_sf(dsn, quiet = TRUE)
+    local_sf <- sf::read_sf(dsn, quiet = TRUE)
   } else if (via == 'gcs') {
     # Creating name for temporal file; just for either drive or gcs
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
@@ -264,7 +269,7 @@ ee_as_sf <- function(x,
       stop(table_task$status()$error_message)
     }
     ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
-    local_sf <- read_sf(dsn, quiet = TRUE)
+    local_sf <- sf::read_sf(dsn, quiet = TRUE)
   } else {
     stop("via argument invalid.")
   }
@@ -277,7 +282,7 @@ ee_as_sf <- function(x,
       ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
       ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
     }
-    suppressWarnings(st_crs(local_sf) <- ft_proj)
+    suppressWarnings(sf::st_crs(local_sf) <- ft_proj)
     return(local_sf)
   }
 }
@@ -286,6 +291,9 @@ ee_as_sf <- function(x,
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
 ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("package sf required, please install it first")
+  }
   x_list <- tryCatch(
     expr = x_fc$getInfo(),
     error = function(e) {
@@ -299,11 +307,11 @@ ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
     }
   )
   class(x_list) <- "geo_list"
-  x_sf <- geojson_sf(x_list, stringsAsFactors = FALSE)
+  x_sf <- geojsonio::geojson_sf(x_list, stringsAsFactors = FALSE)
   if (missing(dsn)) {
     x_sf
   } else {
-    write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+    sf::write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
     x_sf
   }
 }
