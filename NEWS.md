@@ -12,6 +12,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# rgee 0.6.0 
+- Earth Engine Python API updated to 0.1.225.
+- Fix some typos.
+- DESCRIPTION: Moving leaflet, mapview, geojsonio, sf and stars from Import to Suggest. Now users with installation problems can equally use the Earth Engine API although with less operability.
+- The 'EarthEngineMap' S4 class was created to avoid incompatibilities with mapview.
+- Fix a critical bug in **ee_install** due to the lack of breaks in repeat bucles.
+- New function **ee_install_upgrade**.
+- New global environment EARTHENGINE_PYTHON was created to help **ee_install_upgrade** to identify the Python environment used by rgee.
+
 # rgee 0.5.4
 - Earth Engine Python API updated to 0.1.224.
 - Fix a Map typo.
@@ -54,7 +63,7 @@ the .Renviron_backup file.
 - ee_install_set_pyenv can be used to set the EARTHENGINE_PYTHON variable.
 
 # rgee 0.5.0
-- **Initial CRAN submit**
+- **First try to submit to CRAN**
 - Several typos fixed.
 - rgee paper added.
 - GitHub actions for automated testing and build the website.
@@ -113,7 +122,7 @@ the .Renviron_backup file.
 - `ee_Image_to_local`: now region arg must be a ee$Geometry$Rectangle only when via = "getInfo" is used. It is will affect also to download of `ee$ImageCollections`.
 
 # rgee 0.3.12
-- Minor changes in ee_Initialize and ee_install-
+- Minor changes in ee_Initialize and ee_install.
 - ee_version passed from 0.1.127 to 0.1.128.
 
 # rgee 0.3.11
