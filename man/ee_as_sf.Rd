@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_as_sf.R
 \name{ee_as_sf}
 \alias{ee_as_sf}
-\title{Convert an EE table in a sf object}
+\title{Convert an Earth Engine table in a sf object}
 \usage{
 ee_as_sf(
   x,
@@ -17,7 +17,8 @@ ee_as_sf(
 )
 }
 \arguments{
-\item{x}{EE table (ee$FeatureCollection) to be converted into a sf object.}
+\item{x}{Earth Engine table (ee$FeatureCollection) to be converted into a sf
+object.}
 
 \item{dsn}{Character. Output filename; in case \code{dsn} is missing
 \code{ee_as_sf} will create a temporary file.}
@@ -50,7 +51,7 @@ included.}
 An sf object.
 }
 \description{
-Convert an EE table in a sf object
+Convert an Earth Engine table in a sf object
 }
 \details{
 \code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
@@ -63,9 +64,9 @@ all the known information about the object. The advantage of use
 collections. Instead of "getInfo", the options: "drive" and "gcs" are
 suitable for large collections since they use an intermediate container,
 which may be Google Drive and Google Cloud Storage respectively. For getting
-more information about exporting data take a look at the
-\href{https://developers.google.com/earth-engine/exporting}{Google Earth
-Engine Guide - Export data}.
+more information about exporting data from Earth Engine, take a look at the
+\href{https://developers.google.com/earth-engine/exporting}{Google
+Earth Engine Guide - Export data}.
 }
 \examples{
 \dontrun{

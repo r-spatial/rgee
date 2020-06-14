@@ -12,7 +12,8 @@ ee_imagecollection_to_local(
   scale = NULL,
   maxPixels = 1e+09,
   container = "rgee_backup",
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
 \item{quiet}{logical. Suppress info message}
+
+\item{...}{Extra exporting argument. See \link{ee_image_to_drive} and
+\link{ee_image_to_gcs}.}
 }
 \value{
 Character vector containing the filename of the images downloaded.
@@ -57,9 +61,9 @@ there is a limitation of 262144 pixels by request which makes it not
 recommendable for large images. Instead of "getInfo", the options: "drive"
 and "gcs" are suitable for large collections since they use an intermediate
 container. They use Google Drive and Google Cloud Storage respectively. For
-getting more information about exporting data take a look at the
-\href{https://developers.google.com/earth-engine/exporting}{Google Earth
-Engine Guide - Export data}.
+getting more information about exporting data from Earth Engine,  take a
+look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+Earth Engine Guide - Export data}.
 }
 \examples{
 \dontrun{

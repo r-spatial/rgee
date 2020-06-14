@@ -1,11 +1,11 @@
 [![R build status](https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/r-spatial/rgee/actions)
-[![updated](https://github.com/r-spatial/rgee/workflows/updated/badge.svg)](https://github.com/r-spatial/rgee/actions)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![codecov](https://codecov.io/gh/r-spatial/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/r-spatial/rgee)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![status](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg)](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
 
@@ -88,7 +88,7 @@ image$bandNames()$getInfo()
 </tr>
 </table>
 
-**Quite similar, isn’t it?**. However, there are additional smaller changes that you must consider when you use Google Earth Engine with R. Please check the [consideration section](https://r-spatial.github.io/rgee/articles/considerations.html) before start coding\!
+**Quite similar, isn’t it?**. However, there are additional smaller changes should consider when using Google Earth Engine with R. Please check the [consideration section](https://r-spatial.github.io/rgee/articles/considerations.html) before you start coding\!
 
 ## Installation
 
@@ -131,7 +131,7 @@ ee_clean_credentials() # Remove credentials of a specific user
 ee_clean_pyenv() # Remove reticulate system variables
 ```
 
-Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/articles/setup.html) for major information to customizing Python installation.
+Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/articles/setup.html) for more information on customizing your Python installation.
 
 ## Package Conventions
 
@@ -366,7 +366,7 @@ browseURL(rgbVis$getVideoThumbURL(gifParams))
 
 ## How does rgee work?
 
-`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece of code to Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. 
+`rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece into Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path. 
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
@@ -387,8 +387,20 @@ Using **rgee** for a paper you are writing? Consider citing it
 
 ``` r
 citation("rgee")
-#> 
-#> WORKING ON THIS :)
+To cite rgee in publications use:
+
+  C Aybar, Q Wu, L Bautista, R Yali and A Barja (2020) rgee: An R
+  package for interacting with Google Earth Engine Journal of Open
+  Source Software URL https://github.com/r-spatial/rgee/.
+
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    title = {rgee: An R package for interacting with Google Earth Engine},
+    author = {Cesar Aybar and Quisheng Wu and Lesly Bautista and Roy Yali and Antony Barja},
+    journal = {Journal of Open Source Software},
+    year = {2020},
+  }
 ``` 
 
 ## Credits :bow:

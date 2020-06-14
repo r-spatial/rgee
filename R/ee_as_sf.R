@@ -1,6 +1,7 @@
-#' Convert an EE table in a sf object
+#' Convert an Earth Engine table in a sf object
 #'
-#' @param x EE table (ee$FeatureCollection) to be converted into a sf object.
+#' @param x Earth Engine table (ee$FeatureCollection) to be converted into a sf
+#' object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
 #' \code{ee_as_sf} will create a temporary file.
 #' @param crs Integer or character. coordinate reference system
@@ -32,9 +33,9 @@
 #' collections. Instead of "getInfo", the options: "drive" and "gcs" are
 #' suitable for large collections since they use an intermediate container,
 #' which may be Google Drive and Google Cloud Storage respectively. For getting
-#' more information about exporting data take a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
-#' Engine Guide - Export data}.
+#'  more information about exporting data from Earth Engine, take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google
+#' Earth Engine Guide - Export data}.
 #' @return An sf object.
 #' @family vector download functions
 #' @examples

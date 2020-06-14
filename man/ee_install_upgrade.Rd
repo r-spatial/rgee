@@ -13,3 +13,9 @@ By default \code{rgee::ee_version()}.}
 \description{
 Upgrade the Earth Engine Python API
 }
+\seealso{
+Other ee_install functions: 
+\code{\link{ee_install_set_pyenv}()},
+\code{\link{ee_install}()}
+}
+\concept{ee_install functions}

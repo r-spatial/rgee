@@ -19,6 +19,8 @@
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param quiet Logical. Suppress info message
+#' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
+#' \link{ee_image_to_gcs}.
 #'
 #' @details
 #' \code{ee_as_stars} supports the download of \code{ee$Image}
@@ -33,8 +35,9 @@
 #' to install the R packages
 #' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 #' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR}. For getting more information about exporting data take
-#' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+#' googleCloudStorageR}. For getting more information about exporting data from
+#' Earth Engine,  take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
 #' @family image download functions
@@ -96,13 +99,14 @@
 #' }
 #' @export
 ee_as_stars <- function(image,
-                              region,
-                              dsn = NULL,
-                              via = "getInfo",
-                              scale = NULL,
-                              maxPixels = 1e9,
-                              container = "rgee_backup",
-                              quiet = FALSE) {
+                        region,
+                        dsn = NULL,
+                        via = "getInfo",
+                        scale = NULL,
+                        maxPixels = 1e9,
+                        container = "rgee_backup",
+                        quiet = FALSE,
+                        ...) {
   if (!requireNamespace("stars", quietly = TRUE)) {
     stop("package stars required, please install it first")
   }
@@ -118,7 +122,8 @@ ee_as_stars <- function(image,
     scale = scale,
     maxPixels = maxPixels,
     container = container,
-    quiet = quiet
+    quiet = quiet,
+    ...
   )
 
   img_stars <- stars::read_stars(img_files$file,proxy = TRUE)
@@ -148,6 +153,8 @@ ee_as_stars <- function(image,
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param quiet Logical. Suppress info message
+#' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
+#' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_as_raster} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
@@ -161,8 +168,9 @@ ee_as_stars <- function(image,
 #' to install the R packages
 #' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 #' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR}. For getting more information about exporting data take
-#' a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+#' googleCloudStorageR}. For getting more information about exporting data from
+#' Earth Engine,  take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
 #' @family image download functions
@@ -223,13 +231,14 @@ ee_as_stars <- function(image,
 #' }
 #' @export
 ee_as_raster  <- function(image,
-                                region,
-                                dsn = NULL,
-                                via = "getInfo",
-                                scale = NULL,
-                                maxPixels = 1e9,
-                                container = "rgee_backup",
-                                quiet = FALSE) {
+                          region,
+                          dsn = NULL,
+                          via = "getInfo",
+                          scale = NULL,
+                          maxPixels = 1e9,
+                          container = "rgee_backup",
+                          quiet = FALSE,
+                          ...) {
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
@@ -242,7 +251,8 @@ ee_as_raster  <- function(image,
     scale = scale,
     maxPixels = maxPixels,
     container = container,
-    quiet = quiet
+    quiet = quiet,
+    ...
   )
 
   if (length(img_files$file) > 1) {
@@ -407,7 +417,8 @@ ee_image_local <- function(image,
                            scale = NULL,
                            maxPixels = 1e9,
                            container = "rgee_backup",
-                           quiet = FALSE) {
+                           quiet = FALSE,
+                           ...) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
@@ -716,7 +727,8 @@ ee_image_local <- function(image,
       fileFormat = "GEO_TIFF",
       region = region,
       maxPixels = maxPixels,
-      fileNamePrefix = file_name
+      fileNamePrefix = file_name,
+      ...
     )
 
     # download parameter display
@@ -773,7 +785,8 @@ ee_image_local <- function(image,
       region = region,
       maxPixels = maxPixels,
       scale = scale,
-      fileNamePrefix = file_name
+      fileNamePrefix = file_name,
+      ...
     )
 
     # download parameter display

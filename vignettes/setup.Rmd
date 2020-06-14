@@ -8,8 +8,8 @@ vignette: >
 ---
 
 `rgee` has two types of dependencies: <span
-style="color:#b52b09">**strict dependencies**</span> which must be
-satisfied before the `rgee` installation and the <span style="color:#857e04"><b>credentials dependencies</b></span> for 
+style="color:#b52b09">**strict dependencies**</span> that must be
+satisfied before the `rgee` installation and the <span style="color:#857e04"><b>credentials dependencies</b></span> that 
 unlock `rgee` import & export functions.
 
 If the first group of dependencies is not fulfilled **rgee just will not work**. The dependencies that comprised this group are:
@@ -20,7 +20,7 @@ If the first group of dependencies is not fulfilled **rgee just will not work**.
 -   <span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span>
 
 The activation of **Earth Engine accounts** depends on each user, check
-the oficial website of [Google Earth Engine](https://earthengine.google.com/) for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we highly recommend you run  `ee_install(py_env = "rgee")`. This function will realize the following six tasks:
+the oficial website of [Google Earth Engine](https://earthengine.google.com/) for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we strongly recommend you run  `ee_install(py_env = "rgee")`. This function will realize the following six tasks:
   
   1. If you do not count with a Python environment, it will display an
   interactive  menu to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
@@ -42,8 +42,8 @@ ee_install() # It is just neccessary once!
 ```
 
 By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span>
-are mainly used to move data from Google Drive and Google Cloud Storage into their local environment. 
-These dependencies are not mandatory. However, will help you to create a seamless connection between
+are only needed to move data from Google Drive and Google Cloud Storage to your local environment.
+These dependencies are not mandatory. However, they will help you to create a seamless connection between
 R and Earth Engine.  The dependencies that comprised this group are shown below:
 
 -   <span style="color:#857e04">**Google Cloud Storage
@@ -54,8 +54,8 @@ R and Earth Engine.  The dependencies that comprised this group are shown below:
 
 The batch import/export involves difficulties for most GEE users. In
 `rgee`, we are aware of it and we created several functions to help
-users to download and upload spatial data. If you are trying to **download** rgee offers
-the following options:
+users to download and upload spatial data. If you are trying to **export data** 
+from Earth Engine, rgee offers the following options:
 
 |         	|                   	|      FROM      	|       TO      	|       RETURN       	|
 |---------	|-------------------	|:--------------:	|:-------------:	|:------------------:	|
@@ -85,7 +85,7 @@ install.packages('googleCloudStorageR')
 **Google Drive** is more friendly to novice Earth Engine users because the
 authentication process could be done without leaving R. However, if you
 are trying to move large images or vectors, is preferable use **Google Cloud Storage** instead. For using Google Cloud Storage, you will need to have your own Google Project with a credit card added to the service, charges will apply. See the
-[GCS\_AUTH\_FILE](https://github.com/csaybar/GCS_AUTH_FILE.json) tutorial to create your own service account key. If you want to understand why this is necessary, please have a look [Mark Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
+[GCS\_AUTH\_FILE](https://github.com/csaybar/GCS_AUTH_FILE.json) tutorial to create your own service account key. If you want to understand why this is necessary, please have a look at [Mark Edmondson](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html)
 tutorial.
 
 Batch **upload** is a harder process, in `rgee` we try to make it

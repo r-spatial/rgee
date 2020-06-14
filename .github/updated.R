@@ -133,12 +133,12 @@ updated_ee_DESCRIPTION <- function(dest_dir) {
 update_rgee <- function(pkg = ".",
                         commit_message = construct_commit_message(pkg),
                         branch = "dev", remote = "origin") {
-  dest_dir <- fs::dir_create(fs::file_temp())
-  on.exit(fs::dir_delete(dest_dir))
-  git("remote", "set-branches", remote, branch)
-  git("fetch", remote, branch)
-  github_worktree_add(dest_dir, remote, branch)
-  on.exit(github_worktree_remove(dest_dir), add = TRUE)
+  # dest_dir <- fs::dir_create(fs::file_temp())
+  # on.exit(fs::dir_delete(dest_dir))
+  # git("remote", "set-branches", remote, branch)
+  # git("fetch", remote, branch)
+  # github_worktree_add(dest_dir, remote, branch)
+  # on.exit(github_worktree_remove(dest_dir), add = TRUE)
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils_py <- ee_source_python(oauth_func_path)

@@ -63,7 +63,10 @@ ee_install <- function(py_env = "rgee",
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
         reticulate::install_miniconda()
-        break
+        message(
+          "Miniconda was successfully installed, please restart R and run",
+          " again rgee::ee_install")
+        return(TRUE)
       } else if (ch == "n") {
         message("Installation aborted.")
         return(FALSE)
@@ -375,7 +378,7 @@ is_windows <- function() {
 #'
 #' @param version Character. The Earth Engine Python API version to upgrade.
 #' By default \code{rgee::ee_version()}.
-#'
+#' @family ee_install functions
 #' @export
 ee_install_upgrade <- function(version = NULL) {
   if (is.null(version)) {

@@ -12,7 +12,8 @@ ee_as_raster(
   scale = NULL,
   maxPixels = 1e+09,
   container = "rgee_backup",
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
 \item{quiet}{Logical. Suppress info message}
+
+\item{...}{Extra exporting argument. See \link{ee_image_to_drive} and
+\link{ee_image_to_gcs}.}
 }
 \value{
 A RasterStack object
@@ -60,8 +64,9 @@ service. Before using any of these options, it is necessary previously
 to install the R packages
 \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
 and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-googleCloudStorageR}. For getting more information about exporting data take
-a look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+googleCloudStorageR}. For getting more information about exporting data from
+Earth Engine,  take a look at the
+\href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }
 \examples{

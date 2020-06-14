@@ -17,6 +17,8 @@
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param quiet logical. Suppress info message
+#' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
+#' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_imagecollection_to_local} supports the download of \code{ee$Image}
 #' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
@@ -27,9 +29,9 @@
 #' recommendable for large images. Instead of "getInfo", the options: "drive"
 #' and "gcs" are suitable for large collections since they use an intermediate
 #' container. They use Google Drive and Google Cloud Storage respectively. For
-#' getting more information about exporting data take a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google Earth
-#' Engine Guide - Export data}.
+#' getting more information about exporting data from Earth Engine,  take a
+#' look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+#' Earth Engine Guide - Export data}.
 #' @importFrom crayon green
 #' @return Character vector containing the filename of the images downloaded.
 #' @family image download functions
@@ -79,7 +81,8 @@ ee_imagecollection_to_local <- function(ic,
                                         scale = NULL,
                                         maxPixels = 1e9,
                                         container = "rgee_backup",
-                                        quiet = FALSE) {
+                                        quiet = FALSE,
+                                        ...) {
   # is image an ee.image.Image?
   if (!any(class(ic) %in% "ee.imagecollection.ImageCollection")) {
     stop("ic argument is not an ee$imagecollection$ImageCollection")
@@ -151,7 +154,8 @@ ee_imagecollection_to_local <- function(ic,
       scale = scale,
       maxPixels = maxPixels,
       container = container,
-      quiet = TRUE
+      quiet = TRUE,
+      ...
     )
     ic_files[[r_index]] <- ic_names[r_index]
   }

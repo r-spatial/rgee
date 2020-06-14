@@ -48,6 +48,7 @@ ee_install() #It is just necessary once
 }
 \seealso{
 Other ee_install functions: 
-\code{\link{ee_install_set_pyenv}()}
+\code{\link{ee_install_set_pyenv}()},
+\code{\link{ee_install_upgrade}()}
 }
 \concept{ee_install functions}

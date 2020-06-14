@@ -9,7 +9,7 @@
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Implemented functions include importing (exporting) of R (Earth Engine) 
+    modules, and functions are made available. Additional functions implemented include importing (exporting) of R (Earth Engine) 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
     See <https://r-spatial.github.io/rgee/> for further details.
 }
@@ -38,6 +38,12 @@ Other contributors:
   \item Yuan Tang \email{terrytangyuan@gmail.com} [contributor]
   \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
   \item MariaElena Adauto \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
+  \item Jeffrey Hollister \email{hollister.jeff@epa.gov} (Hollister reviewed the package for JOSS, see 
+                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
+  \item Gennadii Donchyts (Gena reviewed the package for JOSS, see 
+                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
+  \item Marius Appel \email{marius.appel@uni-muenster.de} (Appel reviewed the package for JOSS, see 
+                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
 }
 
 }

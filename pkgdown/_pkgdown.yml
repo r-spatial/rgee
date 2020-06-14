@@ -31,7 +31,9 @@ navbar:
       href: https://github.com/r-spatial/rgee/
 
 reference:
-
+  - title: "Earth Engine module"
+    contents:
+      - ee
   - title: "Install"
     contents:
       - ee_install
@@ -53,7 +55,6 @@ reference:
   - title: "Session management"
     contents:
       - ee_Initialize
-      - ee_reattach
       - ee_version
       - ee_user_info
       - ee_users
@@ -73,7 +74,11 @@ reference:
   - title: "Visualization"
     contents:
       - Map
-      - +,mapview,mapview-method
+      - EarthEngineMap-class
+      - +,EarthEngineMap,EarthEngineMap-method
+      - print,EarthEngineMap-method
+      - print.ee.computedobject.ComputedObject
+      - show,EarthEngineMap-method
 
   - title: "Image download"
     contents:

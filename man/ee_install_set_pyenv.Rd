@@ -18,6 +18,7 @@ EARTHENGINE_PYTHON is saved into the file .Renviron.
 }
 \seealso{
 Other ee_install functions: 
+\code{\link{ee_install_upgrade}()},
 \code{\link{ee_install}()}
 }
 \concept{ee_install functions}
