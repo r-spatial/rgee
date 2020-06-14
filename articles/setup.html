@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -119,14 +119,14 @@
 
     
     
-<p><code>rgee</code> has two types of dependencies: <span style="color:#b52b09"><strong>strict dependencies</strong></span> which must be satisfied before the <code>rgee</code> installation and the <span style="color:#857e04"><b>credentials dependencies</b></span> for unlock <code>rgee</code> import &amp; export functions.</p>
+<p><code>rgee</code> has two types of dependencies: <span style="color:#b52b09"><strong>strict dependencies</strong></span> that must be satisfied before the <code>rgee</code> installation and the <span style="color:#857e04"><b>credentials dependencies</b></span> that unlock <code>rgee</code> import &amp; export functions.</p>
 <p>If the first group of dependencies is not fulfilled <strong>rgee just will not work</strong>. The dependencies that comprised this group are:</p>
 <ul>
 <li><span style="color:#b52b09"><b> Google account with Earth Engine activated </b></span></li>
 <li><span style="color:#b52b09"><b> Python &gt;= v3.5 </b></span></li>
 <li><span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span></li>
 </ul>
-<p>The activation of <strong>Earth Engine accounts</strong> depends on each user, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we highly recommend you run <code><a href="../reference/ee_install.html">ee_install(py_env = "rgee")</a></code>. This function will realize the following six tasks:</p>
+<p>The activation of <strong>Earth Engine accounts</strong> depends on each user, check the oficial website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we strongly recommend you run <code><a href="../reference/ee_install.html">ee_install(py_env = "rgee")</a></code>. This function will realize the following six tasks:</p>
 <ol style="list-style-type: decimal">
 <li>If you do not count with a Python environment, it will display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda).</li>
 <li>Remove the previous Python environment defined in py_env if it exist.</li>
@@ -138,7 +138,7 @@
 <p>However, the use of <code><a href="../reference/ee_install.html">ee_install()</a></code> is not mandatory. You can count on with your own custom installation. This would be also allowed.</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="../reference/ee_install.html">ee_install</a></span>() <span class="co"># It is just neccessary once!</span></pre></body></html></div>
-<p>By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are mainly used to move data from Google Drive and Google Cloud Storage into their local environment. These dependencies are not mandatory. However, will help you to create a seamless connection between R and Earth Engine. The dependencies that comprised this group are shown below:</p>
+<p>By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are only needed to move data from Google Drive and Google Cloud Storage to your local environment. These dependencies are not mandatory. However, they will help you to create a seamless connection between R and Earth Engine. The dependencies that comprised this group are shown below:</p>
 <ul>
 <li><span style="color:#857e04"><strong>Google Cloud Storage credential</strong></span></li>
 <li><span style="color:#857e04"><strong>Google Drive credential</strong></span></li>
@@ -146,7 +146,7 @@
 <div id="import-and-export-spatial-data-using-rgee" class="section level2">
 <h2 class="hasAnchor">
 <a href="#import-and-export-spatial-data-using-rgee" class="anchor"></a>Import and Export Spatial Data using rgee</h2>
-<p>The batch import/export involves difficulties for most GEE users. In <code>rgee</code>, we are aware of it and we created several functions to help users to download and upload spatial data. If you are trying to <strong>download</strong> rgee offers the following options:</p>
+<p>The batch import/export involves difficulties for most GEE users. In <code>rgee</code>, we are aware of it and we created several functions to help users to download and upload spatial data. If you are trying to <strong>export data</strong> from Earth Engine, rgee offers the following options:</p>
 <table class="table">
 <caption>Table 1. Download functions provided by the rgee package.</caption>
 <thead><tr class="header">
@@ -240,7 +240,7 @@
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># please try as follow</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</pre></body></html></div>
-<p><strong>Google Drive</strong> is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large images or vectors, is preferable use <strong>Google Cloud Storage</strong> instead. For using Google Cloud Storage, you will need to have your own Google Project with a credit card added to the service, charges will apply. See the <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
+<p><strong>Google Drive</strong> is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large images or vectors, is preferable use <strong>Google Cloud Storage</strong> instead. For using Google Cloud Storage, you will need to have your own Google Project with a credit card added to the service, charges will apply. See the <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look at <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
 <p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make it simple. If you want to upload files in a batch way, firstly you must <strong>get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket</strong>. <code>rgee</code> implement the next functions:</p>
 <table class="table">
 <caption>Table 2. Upload functions provided by the rgee package.</caption>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>mapview + mapview; adds data from the second map to the first — +,EarthEngineMap,EarthEngineMap-method • rgee</title>
+<title>EarthEngineMap + EarthEngineMap; adds data from the second map to the first — +,EarthEngineMap,EarthEngineMap-method • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,9 +46,8 @@
 
 
 
-<meta property="og:title" content="mapview + mapview; adds data from the second map to the first — +,EarthEngineMap,EarthEngineMap-method" />
-<meta property="og:description" content="mapview + mapview; adds data from the second map to the first
-EarthEngineMap + EarthEngineMap; adds data from the second map to the first" />
+<meta property="og:title" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first — +,EarthEngineMap,EarthEngineMap-method" />
+<meta property="og:description" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -81,7 +80,7 @@ EarthEngineMap + EarthEngineMap; adds data from the second map to the first" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -152,20 +151,16 @@ EarthEngineMap + EarthEngineMap; adds data from the second map to the first" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>mapview + mapview; adds data from the second map to the first</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_Map.R'><code>R/ee_Map.R</code></a>, <a href='https://github.com/r-spatial/rgee/blob/master/R/plus.R'><code>R/plus.R</code></a></small>
+    <h1>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/plus.R'><code>R/plus.R</code></a></small>
     <div class="hidden name"><code>plus-EarthEngineMap-EarthEngineMap-method.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>mapview + mapview; adds data from the second map to the first</p>
-<p>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</p>
+    <p>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</p>
     </div>
 
     <pre class="usage"># S4 method for EarthEngineMap,EarthEngineMap
-+(e1, e2)
-
-# S4 method for EarthEngineMap,EarthEngineMap
 +(e1, e2)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,50 +177,6 @@ EarthEngineMap + EarthEngineMap; adds data from the second map to the first" />
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-
-<span class='co'># Case 1: Geometry*</span>
-<span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53</span>, -<span class='fl'>15.75</span>))
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>geom</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>13</span>)
-<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>
-  ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
-)
-<span class='co'># Case 2: Feature</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$
-  <span class='fu'>first</span>()
-<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>
-)
-<span class='no'>m2</span> + <span class='no'>m1</span>
-
-<span class='co'># Case 3: FeatureCollection</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>eeobject_fc</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)
-<span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
-
-<span class='co'># Case 4: Image</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>image</span>)
-<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>),
-    <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>10000</span>
-  ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF"</span>
-)
-<span class='no'>m4</span>
-}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

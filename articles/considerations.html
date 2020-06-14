@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -119,11 +119,11 @@
 
     
     
-<p><code>rgee</code> and the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> share the same classes, functions, and methods. Therefore, is expected that works identical to all user requests. However, differences in the language design of R and Python might cause <strong>three</strong> bug-potential scenarios. Each of them are explained in-depth below.</p>
+<p><code>rgee</code> and the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> share the same classes, functions, and methods. Therefore, is expected that works identical to all user requests. However, differences in the language design of R and Python might cause some problems. We identify <strong>three</strong> bug-potential scenarios. Each of them are explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
-<p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue happens when the <strong>map</strong> method is used under the next two scenarios: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
+<p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue happens when the <strong>map</strong> method is used under the next two cases: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="no">ee</span>$<span class="fu">Initialize</span>()
 <span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">10</span>)
@@ -147,7 +147,7 @@
 <span class="co">#&gt;     self._body = body(*variables)</span>
 <span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
 <span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></pre></body></html></div>
-<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit users wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
+<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="no">ee</span>$<span class="fu">Initialize</span>()
 <span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
@@ -170,16 +170,24 @@
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="fl">1</span>)
 <span class="co">#&gt; [1] "numeric"</span></pre></body></html></div>
-<p>But, why is this a big deal?. Let’s explain with an example:</p>
+<p>But why does this matter? Let’s explain it with an example:</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ee.Initialize()</span>
 <span id="cb5-2"><a href="#cb5-2"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>and_bitwise.getInfo()</span>
 <span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; 32</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100</span>) <span class="co">#caution: silent error</span>
-<span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt; [1] 32</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r">and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
+and_bitwise$getInfo()
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py", line 95, in getInfo
+    return data.computeValue(self)
+  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 490, in computeValue
+    return send_('/value', ({'json': obj.serialize(), 'json_format': 'v2'}))
+  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 1186, in send_
+    raise ee_exception.EEException(json_content['error']['message'])
+ee.ee_exception.EEException: Number.bitwiseAnd: Bitwise operands must be integer only.</pre></body></html></div>
 <p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
 <span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()

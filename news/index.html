@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -154,17 +154,24 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rgee-060" class="section level1">
-<h1 class="page-header" data-toc-text="0.6.0">
-<a href="#rgee-060" class="anchor"></a>rgee 0.6.0</h1>
+    <div id="rgee-061" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.1">
+<a href="#rgee-061" class="anchor"></a>rgee 0.6.1</h1>
 <ul>
-<li>Earth Engine Python API updated to 0.1.225.</li>
-<li>Fix some typos.</li>
-<li>DESCRIPTION: Moving leaflet, mapview, geojsonio, sf and stars from Import to Suggest. Now users with installation problems can equally use the Earth Engine API although with less operability.</li>
-<li>The ‘EarthEngineMap’ S4 class was created to avoid incompatibilities with mapview.</li>
-<li>Fix a critical bug in <strong>ee_install</strong> due to the lack of breaks in repeat bucles.</li>
-<li>New function <strong>ee_install_upgrade</strong>.</li>
-<li>New global environment EARTHENGINE_PYTHON was created to help <strong>ee_install_upgrade</strong> to identify the Python environment used by rgee.</li>
+<li><p>Fix some typos.</p></li>
+<li><p>rgee website update.</p></li>
+<li><p>Add citation package option .</p></li>
+<li>
+<p>Additional export arguments add to ee_as_stars,ee_as_raster, ee_imagecollection_to_local and ee_as_sf.</p>
+<h1 id="rgee-060" class="page-header" data-toc-text="0.6.1">rgee 0.6.0</h1>
+</li>
+<li><p>Earth Engine Python API updated to 0.1.225.</p></li>
+<li><p>Fix some typos.</p></li>
+<li><p>DESCRIPTION: Moving leaflet, mapview, geojsonio, sf and stars from Import to Suggest. Now users with installation problems can equally use the Earth Engine API although with less operability.</p></li>
+<li><p>The ‘EarthEngineMap’ S4 class was created to avoid incompatibilities with mapview.</p></li>
+<li><p>Fix a critical bug in <strong>ee_install</strong> due to the lack of breaks in repeat bucles.</p></li>
+<li><p>New function <strong>ee_install_upgrade</strong>.</p></li>
+<li><p>New global environment EARTHENGINE_PYTHON was created to help <strong>ee_install_upgrade</strong> to identify the Python environment used by rgee.</p></li>
 </ul>
 </div>
     <div id="rgee-054" class="section level1">
@@ -228,7 +235,7 @@
 <h1 class="page-header" data-toc-text="0.5.0">
 <a href="#rgee-050" class="anchor"></a>rgee 0.5.0</h1>
 <ul>
-<li><strong>First try to submit to CRAN</strong></li>
+<li><strong>First attempt to submit to CRAN</strong></li>
 <li>Several typos fixed.</li>
 <li>rgee paper added.</li>
 <li>GitHub actions for automated testing and build the website.</li>
@@ -247,235 +254,6 @@
 <code>ee_get_img_date</code> and <code>ee_get_ic_date</code> are now <code>ee_get_date_img</code> and <code>ee_get_date_ic</code>.</li>
 <li>A new group of functions was created at <code>ee_utils.R</code>. <code>ee_pyfunc</code> is now <code>ee_utils_pyfunc</code>.</li>
 <li>Added new examples in <code>README.R</code>.</li>
-</ul>
-</div>
-    <div id="rgee-043" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.3">
-<a href="#rgee-043" class="anchor"></a>rgee 0.4.3</h1>
-<ul>
-<li>ee_extract improved: when RGEE_NAME is not defined, columns name will use the band name for <code>ee$Images</code> and the <code>system:index</code> property for <code>ee$ImageCollections</code>. Various bugs fixed.</li>
-<li>ee_manage upgrade. documentation enhanced.</li>
-<li>I/O module upgrade.</li>
-</ul>
-</div>
-    <div id="rgee-042" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.2">
-<a href="#rgee-042" class="anchor"></a>rgee 0.4.2</h1>
-<ul>
-<li>ee_image_to_local and ee_local_image_as_ee removed.</li>
-<li>ee_image_as_stars and ee_image_as_raster now is ee_as_stars and ee_as_raster.</li>
-<li>ee_gcs_to_image renamed to gcs_to_ee_image.</li>
-<li>minor bug in ee_print solved.</li>
-</ul>
-</div>
-    <div id="rgee-041" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.1">
-<a href="#rgee-041" class="anchor"></a>rgee 0.4.1</h1>
-<ul>
-<li>ee_extract bug fixed now sf arg works for Earth Engine tables.</li>
-<li>ee_install_create_pyenv now return a Python Path</li>
-<li>doc upgrade</li>
-</ul>
-</div>
-    <div id="rgee-04" class="section level1">
-<h1 class="page-header" data-toc-text="0.4">
-<a href="#rgee-04" class="anchor"></a>rgee 0.4</h1>
-<ul>
-<li>travis and appveyor replaced by github-actions.</li>
-<li>docker folder deleted and saved in docker branch.</li>
-<li>examples folder deleted and saved in examples branch.</li>
-<li>Changes in installation module.</li>
-<li>Readme and documentation upgrade.</li>
-<li>new test added.</li>
-</ul>
-</div>
-    <div id="rgee-0316" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.16">
-<a href="#rgee-0316" class="anchor"></a>rgee 0.3.16</h1>
-<ul>
-<li>New test added.</li>
-<li>minor bugs solved</li>
-</ul>
-</div>
-    <div id="rgee-0315" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.15">
-<a href="#rgee-0315" class="anchor"></a>rgee 0.3.15</h1>
-<ul>
-<li>git action button added.</li>
-<li>minor bugs solved</li>
-</ul>
-</div>
-    <div id="rgee-0314" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.14">
-<a href="#rgee-0314" class="anchor"></a>rgee 0.3.14</h1>
-<ul>
-<li>ee_image module upgrade: new tests, new doc, and several bugs fixed.</li>
-<li>functions ee_gcs_to_asset_* renamed to ee_gcs_to_*</li>
-</ul>
-</div>
-    <div id="rgee-0313" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.13">
-<a href="#rgee-0313" class="anchor"></a>rgee 0.3.13</h1>
-<ul>
-<li>new function inside the ee_search interface: <code>ee_datacatalog_display</code>
-</li>
-<li>sf_as_ee doc upgrade.</li>
-<li>
-<code>ee_Image_to_local</code>: now region arg must be a ee<span class="math inline"><em>G</em><em>e</em><em>o</em><em>m</em><em>e</em><em>t</em><em>r</em><em>y</em></span>Rectangle only when via = “getInfo” is used. It is will affect also to download of <code>ee$ImageCollections</code>.</li>
-</ul>
-</div>
-    <div id="rgee-0312" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.12">
-<a href="#rgee-0312" class="anchor"></a>rgee 0.3.12</h1>
-<ul>
-<li>Minor changes in ee_Initialize and ee_install.</li>
-<li>ee_version passed from 0.1.127 to 0.1.128.</li>
-</ul>
-</div>
-    <div id="rgee-0311" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.11">
-<a href="#rgee-0311" class="anchor"></a>rgee 0.3.11</h1>
-<ul>
-<li>sf_as_ee now permits their use not just in polygons.</li>
-<li>ee_as_thumbnail bug: it does not work in one-band images (fixed).</li>
-<li>ee_user_info new display.</li>
-<li>ee_Initialize now does not display Python version used (use ee_user_info instead).</li>
-</ul>
-</div>
-    <div id="rgee-0310" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.10">
-<a href="#rgee-0310" class="anchor"></a>rgee 0.3.10</h1>
-<ul>
-<li>ee_imagecollection_to_local local added.</li>
-<li>ee_as_stars changed by ee_as_stars.</li>
-<li>ee_image_stars and ee_image_to_local added</li>
-<li>ee_extract new argument added “sf = FALSE”.</li>
-<li>ee_as_thumbnail arguments modified.</li>
-<li>ee_print new display.</li>
-<li>ee_help bug fixed.</li>
-<li>ee_fix_offset function added to support image downloads by getInfo.</li>
-</ul>
-</div>
-    <div id="rgee-039" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.9">
-<a href="#rgee-039" class="anchor"></a>rgee 0.3.9</h1>
-<ul>
-<li>ee_date functions upgraded</li>
-<li>Documentation enhanced</li>
-<li>Several bug fixed</li>
-</ul>
-</div>
-    <div id="rgee-038" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.8">
-<a href="#rgee-038" class="anchor"></a>rgee 0.3.8</h1>
-<ul>
-<li>ee_as_sf support the download of large tables</li>
-<li>Several bug fixed</li>
-</ul>
-</div>
-    <div id="rgee-036" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.6">
-<a href="#rgee-036" class="anchor"></a>rgee 0.3.6</h1>
-<ul>
-<li>bugs in ee_as_thumbnail and ee_as_stars were fixed.</li>
-</ul>
-</div>
-    <div id="rgee-035" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.5">
-<a href="#rgee-035" class="anchor"></a>rgee 0.3.5</h1>
-<ul>
-<li>ee_help display enhanced.</li>
-<li>ee_Initialize now display reticulate Python version.</li>
-<li>Several bug fixed.</li>
-</ul>
-</div>
-    <div id="rgee-034" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.4">
-<a href="#rgee-034" class="anchor"></a>rgee 0.3.4</h1>
-<ul>
-<li>Several bugs fixed</li>
-</ul>
-</div>
-    <div id="rgee-033" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.3">
-<a href="#rgee-033" class="anchor"></a>rgee 0.3.3</h1>
-<ul>
-<li>Several bugs fixed</li>
-</ul>
-</div>
-    <div id="rgee-030" class="section level1">
-<h1 class="page-header" data-toc-text="0.3.0">
-<a href="#rgee-030" class="anchor"></a>rgee 0.3.0</h1>
-<ul>
-<li>changed ee_map from Map.</li>
-<li>New friendly-user installation module implemented.</li>
-<li>ee_download and ee_upload were deprecated</li>
-<li>selenium functionality deprecated</li>
-<li>ee_as_sf and sf_as_ee now support gcs and drive</li>
-<li>ee_as_stars and stars_as_ee functions created.</li>
-<li>rgee support geometry with different CRS.</li>
-<li>arguments evenOdd, Geodesic, and proj implemented in several functions.</li>
-<li>ee_help permit you display Earth Engine documentation.</li>
-</ul>
-</div>
-    <div id="rgee-020" class="section level1">
-<h1 class="page-header" data-toc-text="0.2.0">
-<a href="#rgee-020" class="anchor"></a>rgee 0.2.0</h1>
-<ul>
-<li>Several bugs fixed.</li>
-<li>A collection of 300+ examples for using Google Earth Engine in <a href="https://github.com/csaybar/rgee-examples">R</a>.</li>
-<li>Functions added:
-<ul>
-<li>
-<strong>non-R</strong> installation module added</li>
-<li>
-<strong>ee_pyfunc:</strong> Wrap an R function in a Python function with the same signature.</li>
-<li>
-<strong>ee_remove_*:</strong> Delete credentials and selenium drivers.</li>
-</ul>
-</li>
-</ul>
-</div>
-    <div id="rgee-010" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0">
-<a href="#rgee-010" class="anchor"></a>rgee 0.1.0</h1>
-<ul>
-<li>Documentation improved.</li>
-<li>Examples for all functions.</li>
-<li>py_help: Generate compressible documentation in an html format.</li>
-<li>Unit testing in both Python and R.</li>
-<li>Functions added:
-<ul>
-<li>
-<strong>ee$…:</strong> Complete access to the Earth Engine API from within R.</li>
-<li>
-<strong>ee_Initialize:</strong> Multi-user support for Initialize Earth Engine, a wrapper around <code>ee$Initialize</code>.</li>
-<li>
-<strong>ee_install:</strong> Interface for installing Selenium drivers and Python packages effortlessly.</li>
-<li>
-<strong>ee_check:</strong> Interface for dependencies checking.</li>
-<li>
-<strong>ee_manage:</strong> Manage EE assets and tasks recursively.</li>
-<li>
-<strong>ee_map:</strong> Display EE spatial objects using <a href="https://r-spatial.github.io/mapview/">mapview</a>.</li>
-<li>
-<strong>ee_print:</strong> Print EE metadata.</li>
-<li>
-<strong>ee_upload:</strong> Upload ESRI shapefiles or GeoTIFF files to Earth Engine.</li>
-<li>
-<strong>ee_download:</strong> Download EE spatial objects.</li>
-<li>
-<strong>ee_as_sf</strong> &amp; <strong>sf_as_ee:</strong> Convert EE tables (Feature Collection) to sf and vice-versa.</li>
-<li>
-<strong>ee_as_thumbnail:</strong> Create a stars object based on an EE thumbnail image.</li>
-<li>
-<strong>ee_extract:</strong> Extract values for EE ImageCollections, similarly to [raster::extract].</li>
-<li>
-<strong>ee_search:</strong> Search among the Earth Engine Data Catalog.</li>
-<li>
-<strong>ee_help:</strong> Display the Earth Engine documentation.</li>
-</ul>
-</li>
 </ul>
 </div>
   </div>

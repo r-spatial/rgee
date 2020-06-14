@@ -49,9 +49,6 @@
 <meta property="og:title" content="Module to display Earth Engine (EE) spatial objects — Map" />
 <meta property="og:description" content="Create interactive visualizations of spatial EE objects
 (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
-using mapview.
-Create interactive visualizations of spatial EE objects
-(ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
 using mapview." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -85,7 +82,7 @@ using mapview." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -157,7 +154,7 @@ using mapview." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Module to display Earth Engine (EE) spatial objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Map.R'><code>R/Map.R</code></a>, <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_Map.R'><code>R/ee_Map.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Map.R'><code>R/Map.R</code></a></small>
     <div class="hidden name"><code>Map.Rd</code></div>
     </div>
 
@@ -165,54 +162,14 @@ using mapview." />
     <p>Create interactive visualizations of spatial EE objects
 (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
 using <code>mapview</code>.</p>
-<p>Create interactive visualizations of spatial EE objects
-(ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
-using <code>mapview</code>.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Map</span>
-
-<span class='no'>Map</span></pre>
+    <pre class="usage"><span class='no'>Map</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p>An object of class environment with the
-following functions:</p><ul>
-<li><p><strong>addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
-<li><p><strong>eeObject:</strong> The object to add to mapview.<br /></p></li>
-<li><p><strong>visParams:</strong> List of parameters for visualization.
-See details.<br /></p></li>
-<li><p><strong>name:</strong> The name of the layer.<br /></p></li>
-<li><p><strong>shown:</strong> A flag indicating whether the
-layer should be on by default. <br /></p></li>
-<li><p><strong>opacity:</strong> The layer's opacity represented as a number
-between 0 and 1. Defaults to 1. <br /></p></li>
-</ul></li>
-<li><p><strong>setCenter(lon = 0, lat = 0, zoom = NULL)</strong>: Centers the map
-view at the given coordinates with the given zoom level. If no zoom level
-is provided, it uses 1 by default.</p><ul>
-<li><p><strong>lon:</strong> The longitude of the center, in degrees.<br /></p></li>
-<li><p><strong>lat:</strong> The latitude of the center, in degrees.<br /></p></li>
-<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
-</ul></li>
-<li><p><strong>setZoom(zoom = NULL)</strong>: Sets the zoom level of the map.</p><ul>
-<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
-</ul></li>
-<li><p><strong>centerObject(eeObject, zoom = NULL,
-maxError = ee$ErrorMargin(1))</strong>: Centers the
-map view on a given object. If no zoom level is provided, it will
-be predicted according to the bounds of the Earth Engine object specified.</p><ul>
-<li><p><strong>eeObject:</strong> EE object.<br /></p></li>
-<li><p><strong>zoom:</strong> The zoom level, from 1 to 24.</p></li>
-<li><p><strong>maxError:</strong> 	Max error when input
-image must be reprojected to an explicitly
-requested result projection or geodesic state.</p></li>
-</ul></li>
-</ul>
-
-<p>An object of class environment with the
 following functions:</p><ul>
 <li><p><strong>addLayer(eeObject, visParams, name = NULL, shown = TRUE,
 opacity = 1)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
@@ -291,95 +248,9 @@ color to use for drawing the features. By default #000000.</p></li>
 default 3.</p></li>
 </ul>
 
-<p><code>Map</code> use the Earth Engine method
-<a href='https://developers.google.com/earth-engine/api_docs#ee.data.getmapid'>
-getMapId</a> to fetch and return an ID dictionary being used to create
-layers in a <code>mapview</code> object. Users can specify visualization
-parameters to Map\$addLayer by using the visParams argument. Each Earth
-Engine spatial object has a specific format. For
-<code>ee$Image</code>, the
-<a href='https://developers.google.com/earth-engine/image_visualization'>
-parameters</a> available are:</p>
-<table class='table'>
-<tr><td><strong>Parameter</strong></td><td><strong>Description</strong></td><td><strong>Type</strong></td></tr>
-<tr><td><strong>bands</strong></td><td>Comma-delimited list of three band names to be
-mapped to RGB</td><td>list</td></tr>
-<tr><td><strong>min</strong></td><td>Value(s) to map to 0</td><td>number or list of three
-numbers, one for each band</td></tr>
-<tr><td><strong>max</strong></td><td>Value(s) to map to 1</td><td>number or list of three
-numbers, one for each band</td></tr>
-<tr><td><strong>gain</strong></td><td>Value(s) by which to multiply each pixel value</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>bias</strong></td><td>Value(s) to add to each Digital Number (DN)
-value</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>gamma</strong></td><td>Gamma correction factor(s)</td><td>number or list of
-three numbers, one for each band</td></tr>
-<tr><td><strong>palette</strong></td><td>List of CSS-style color strings
-(single-band images only)</td><td>comma-separated list of hex strings</td></tr>
-<tr><td><strong>opacity</strong></td><td>The opacity of the layer (0.0 is fully transparent
-and 1.0 is fully opaque)</td><td>number</td></tr>
-</table>
-
-
-<p>If you add an <code>ee$Image</code> to the map without any additional parameters,
-by default <code>Map$addLayer()</code> assigns the first three bands to red,
-green, and blue bands, respectively. The default stretch is based on the
-min-max range. By the other hand, for <code>ee$Geometry</code>, <code>ee$Feature</code>,
-and <code>ee$FeatureCollection</code> the available parameters are:</p>
-<ul>
-<li><p><strong>color</strong>: A hex string in the format RRGGBB specifying the
-color to use for drawing the features. By default #000000.</p></li>
-<li><p><strong>pointRadius</strong>: The radius of the point markers. By default 3.</p></li>
-<li><p><strong>strokeWidth</strong>: The width of lines and polygon borders. By
-default 3.</p></li>
-</ul>
-
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-
-<span class='co'># Case 1: Geometry*</span>
-<span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53</span>, -<span class='fl'>15.75</span>))
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>geom</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>13</span>)
-<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>
-  ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
-)
-
-<span class='co'># Case 2: Feature</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$
-  <span class='fu'>first</span>()
-<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>
-)
-<span class='no'>m2</span> + <span class='no'>m1</span>
-
-<span class='co'># Case 3: FeatureCollection</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>eeobject_fc</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)
-<span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
-
-<span class='co'># Case 4: Image</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>image</span>)
-<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>),
-    <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>10000</span>
-  ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF"</span>
-)
-<span class='no'>m4</span>
-}
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 

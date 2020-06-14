@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
       </span>
     </div>
 
@@ -168,7 +168,8 @@
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>maxPixels</span> <span class='kw'>=</span> <span class='fl'>1e+09</span>,
   <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -215,6 +216,11 @@ to be exported into (ignored if <code>via</code> is not defined as "drive" or
       <th>quiet</th>
       <td><p>Logical. Suppress info message</p></td>
     </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Extra exporting argument. See <a href='ee_image_to_drive.html'>ee_image_to_drive</a> and
+<a href='ee_image_to_gcs.html'>ee_image_to_gcs</a>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -234,8 +240,9 @@ service. Before using any of these options, it is necessary previously
 to install the R packages
 <a href=' https://CRAN.R-project.org/package=googledrive'>googledrive</a>
 and <a href='https://CRAN.R-project.org/package=googleCloudStorageR'>
-googleCloudStorageR</a>. For getting more information about exporting data take
-a look at the <a href='https://developers.google.com/earth-engine/exporting'>Google
+googleCloudStorageR</a>. For getting more information about exporting data from
+Earth Engine,  take a look at the
+<a href='https://developers.google.com/earth-engine/exporting'>Google
 Earth Engine Guide - Export data</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
