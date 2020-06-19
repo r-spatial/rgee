@@ -58,46 +58,38 @@ ee_Initialize <- function(email = NULL,
                           quiet = FALSE) {
   # Message for new user
   init_rgee_message <- Sys.getenv("EARTHENGINE_INIT_MESSAGE", unset = NA)
-  if (is.na(init_rgee_message)) {
-    if (!py_module_available("ee")) {
-      text <- paste(
-        crayon::bold("Welcome to the Earth Engine client library for R!"),
-        "----------------------------------------------------------------",
-        "It seems it is your first time using rgee. Before start coding is ",
-        sprintf(
-          "necessary to set up a Python environment. Run %s",
-          crayon::bold("rgee::ee_install()")
-        ),
-        "to set up automatically, after that, restart the R session to see",
-        "changes. rgee wraps a Python session into an R session. Therefore,",
-        "like the Earth Engine Python API, you will need to initialize",
-        sprintf(
-          "the API before starting coding. Run %s",
-          crayon::bold("rgee::ee_Initialize()")
-        ),
-        "to accomplish this task. See more than 250+ examples of rgee at",
-        crayon::bold("https://csaybar.github.io/rgee-examples/"),
-        "",
-        sep = "\n"
-      )
-      message(text)
-      response <- readline("Would you like to see this message again? [Y/n]: ")
-      repeat {
-        ch <- tolower(substring(response, 1, 1))
-        if (ch == "y" || ch == "") {
-          message("Initialization aborted.")
-          return(FALSE)
-        } else if (ch == "n") {
-          message("Initialization aborted.")
-          ee_install_set_init_message()
-          return(FALSE)
-        } else {
-          response <- readline("Please answer yes or no: ")
-        }
+  if (is.na(init_rgee_message) &&  !py_module_available("ee")) {
+    text <- paste(
+      crayon::bold("Welcome to the Earth Engine client library for R!"),
+      "----------------------------------------------------------------",
+      "It seems it is your first time using rgee. Before start coding is ",
+      sprintf(
+        "necessary to set up a Python environment. Run %s",
+        crayon::bold("rgee::ee_install()")
+      ),
+      "to set up automatically, after that, restart the R session to see",
+      "changes. See more than 250+ examples of rgee at",
+      crayon::bold("https://csaybar.github.io/rgee-examples/"),
+      "",
+      sep = "\n"
+    )
+    message(text)
+    response <- readline("Would you like to see this message again? [Y/n]: ")
+    repeat {
+      ch <- tolower(substring(response, 1, 1))
+      if (ch == "y" || ch == "") {
+        message("Initialization aborted.")
+        return(FALSE)
+      } else if (ch == "n") {
+        message("Initialization aborted.")
+        ee_install_set_init_message()
+        return(FALSE)
+      } else {
+        response <- readline("Please answer yes or no: ")
       }
     }
   }
-
+  # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils <- ee_source_python(ee_current_version)
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
@@ -146,6 +138,10 @@ ee_Initialize <- function(email = NULL,
   ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   dir.create(ee_path_user, showWarnings = FALSE, recursive = TRUE)
+
+  ## remove previous gd and gcs credentials
+  unlink(list.files(ee_path, "@gmail.com", full.names = TRUE))
+  unlink(list.files(ee_path, ".json", full.names = TRUE))
 
   # Loading all the credentials: earthengine, drive and GCS.
   drive_credentials <- NA
@@ -228,12 +224,19 @@ ee_Initialize <- function(email = NULL,
   # Root folder exist?
   ee_user <- tryCatch(
     expr = ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id),
-    finally = function(e) stop(
-      "root folder for the current user does not exist. ",
-      "Create one using ee$data$createAssetHome(), ",
-      "once created you will not be able to change the root name again",
-      ". If the root folder was created successfully execute again",
-      " ee_Initialize()"
+    error = function(e) stop(
+      "Earth Engine Assets home root folder does not ",
+      "exist for the current user. ",
+      sprintf(
+        "Run %s to attempt to create it. ",
+        bold("ee$data$createAssetHome(users/PUT_YOUR_NAME_HERE)")
+      ),
+      sprintf(
+        "Take into consideration that once created %s",
+        bold("you will not be able to change the folder name again. ")
+      ),
+      "If the root folder was created successfully ",
+      sprintf("execute again %s.", bold("ee_Initialize()"))
     )
   )
 
