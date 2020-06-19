@@ -49,7 +49,7 @@ ee_install <- function(py_env = "rgee",
       "",
       "If you think it is an error since you previously created a Python",
       sprintf(
-        "environment in the system. Run %s to remove rgee",
+        "environment in your system. Run %s to remove rgee",
         bold('rgee::ee_clean_pyenv()')
       ),
       "environmental variables. After this, restart the R session and try",
@@ -170,7 +170,7 @@ ee_install <- function(py_env = "rgee",
             py_path
           ),
           "has been stored in your .Renviron file. Remember that you",
-          "can remove EARTHENGINE_PYTHON  and EARTHENGINE_ENV using",
+          "can remove EARTHENGINE_PYTHON and EARTHENGINE_ENV using",
           " rgee::ee_clean_pyenv().",
           sep = "\n"
         )
@@ -207,10 +207,7 @@ ee_install <- function(py_env = "rgee",
   )
 
   reticulate::py_install(
-    packages = c(
-      sprintf("earthengine-api==%s", earthengine_version),
-      "numpy"
-    ),
+    packages = c("earthengine-api", "numpy"),
     envname = rgee_path
   )
 
@@ -221,8 +218,9 @@ ee_install <- function(py_env = "rgee",
       title <- paste(
         "",
         bold("Well done! rgee was successfully set up in your system."),
-        "rgee needs restart R to see changes.",
-        "Do you want to continues?",
+        "You need restart R to see changes. After doing that, we recommend",
+        "run ee_check() to perform a full check of all non-R dependencies.",
+        "Do you want restart your R session?",
         sep = "\n"
       )
       response <- menu(c("yes", "no"), title = title)
