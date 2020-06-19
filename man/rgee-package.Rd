@@ -36,8 +36,9 @@ Other contributors:
   \item Tim Appelhans \email{tim.appelhans@gmail.com} [contributor]
   \item JJ Allaire \email{jj@rstudio.com} [contributor]
   \item Yuan Tang \email{terrytangyuan@gmail.com} [contributor]
-  \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
+  \item Samapriya Roy \email{samapriya.roy@gmail.com} [contributor]
   \item MariaElena Adauto \email{2a.mariaelena@gmail.com} (\href{https://orcid.org/0000-0002-2154-2429}{ORCID}) [contributor]
+  \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
   \item Jeffrey Hollister \email{hollister.jeff@epa.gov} (Hollister reviewed the package for JOSS, see 
                         https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
   \item Gennadii Donchyts (Gena reviewed the package for JOSS, see 

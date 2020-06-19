@@ -8,7 +8,7 @@
 \alias{ee_check_credentials}
 \title{Interface to check Python and non-R dependencies}
 \usage{
-ee_check()
+ee_check(user = NULL, quiet = FALSE)
 
 ee_check_python(quiet = FALSE)
 
@@ -17,12 +17,15 @@ ee_check_python_packages(quiet = FALSE)
 ee_check_credentials(quiet = FALSE)
 }
 \arguments{
+\item{user}{Character. User to check credentials. If it is not defined,
+ee_check will skip the check of credentials.}
+
 \item{quiet}{Logical. Suppress info message}
 }
 \description{
 R functions for checking Google credentials (Google Earth Engine,
-Google Drive and Google Cloud Storage) available in their system and the
-Python environment and the Third-Party Python Packages used by rgee.
+Google Drive and Google Cloud Storage), Python environment and the
+Third-Party Python Packages used by rgee.
 }
 \examples{
 \dontrun{
@@ -31,7 +34,7 @@ library(rgee)
 ee_check_python()
 ee_check_python_packages()
 ee_check_credentials()
-ee_check() # put it all together
+ee_check() # put them all together
 }
 }
 \concept{ee_check functions}

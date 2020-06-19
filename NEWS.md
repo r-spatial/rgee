@@ -11,12 +11,13 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 0.6.2
+- 
 # rgee 0.6.1
 - Fix some typos.
 - rgee website update.
 - Add citation package option .
-- Additional export arguments add to ee_as_stars,ee_as_raster, 
-ee_imagecollection_to_local and ee_as_sf.
+- Additional export arguments add to ee_as_stars,ee_as_raster,  ee_imagecollection_to_local and ee_as_sf.
 # rgee 0.6.0 
 - Earth Engine Python API updated to 0.1.225.
 - Fix some typos.
