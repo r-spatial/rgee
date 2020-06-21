@@ -48,8 +48,8 @@
 
 <meta property="og:title" content="Interface to check Python and non-R dependencies — ee_check-tools" />
 <meta property="og:description" content="R functions for checking Google credentials (Google Earth Engine,
-Google Drive and Google Cloud Storage) available in their system and the
-Python environment and the Third-Party Python Packages used by rgee." />
+Google Drive and Google Cloud Storage), Python environment and the
+Third-Party Python Packages used by rgee." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -82,7 +82,7 @@ Python environment and the Third-Party Python Packages used by rgee." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
       </span>
     </div>
 
@@ -160,11 +160,11 @@ Python environment and the Third-Party Python Packages used by rgee." />
 
     <div class="ref-description">
     <p>R functions for checking Google credentials (Google Earth Engine,
-Google Drive and Google Cloud Storage) available in their system and the
-Python environment and the Third-Party Python Packages used by rgee.</p>
+Google Drive and Google Cloud Storage), Python environment and the
+Third-Party Python Packages used by rgee.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_check</span>()
+    <pre class="usage"><span class='fu'>ee_check</span>(<span class='kw'>user</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='fu'>ee_check_python</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
@@ -175,6 +175,11 @@ Python environment and the Third-Party Python Packages used by rgee.</p>
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>user</th>
+      <td><p>Character. User to check credentials. If it is not defined,
+ee_check will skip the check of credentials.</p></td>
+    </tr>
     <tr>
       <th>quiet</th>
       <td><p>Logical. Suppress info message</p></td>
@@ -189,7 +194,7 @@ Python environment and the Third-Party Python Packages used by rgee.</p>
 <span class='fu'>ee_check_python</span>()
 <span class='fu'>ee_check_python_packages</span>()
 <span class='fu'>ee_check_credentials</span>()
-<span class='fu'>ee_check</span>() <span class='co'># put it all together</span>
+<span class='fu'>ee_check</span>() <span class='co'># put them all together</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
