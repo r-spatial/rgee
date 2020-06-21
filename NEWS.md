@@ -12,7 +12,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 0.6.2
-- 
+- Earth Engine Python API updated to 0.1.226.
+- Fix some typos.
+- Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.
+- Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.
+- ee_check completely renovated. 
+  - New message display.
+  - Fix a minor bug when testing GCS credentials.
+  - The file ee_check.py was deleted.
+- Roy Samapriya added as a contributor.  
 # rgee 0.6.1
 - Fix some typos.
 - rgee website update.
