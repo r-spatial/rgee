@@ -158,36 +158,45 @@
 <h1 class="page-header" data-toc-text="0.6.2">
 <a href="#rgee-062" class="anchor"></a>rgee 0.6.2</h1>
 <ul>
-<li><p>Earth Engine Python API updated to 0.1.226.</p></li>
-<li><p>Fix some typos.</p></li>
-<li><p>Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.</p></li>
-<li><p>Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.</p></li>
-<li>
-<p>ee_check completely renovated.</p>
+<li>Earth Engine Python API updated to 0.1.226.</li>
+<li>Fix some typos.</li>
+<li>Fix a minor bug in ee_monitoring.</li>
+<li>Users can mix mapview and EarthEnginemap objects in the same pipeline (see Examples in <code>Map$addLayer</code>).</li>
+<li>Add <code>ee_as_mapview</code>, a function to convert <code>EarthEnginemap</code> objects to <code>mapview</code> objects.</li>
+<li>add a new logical argument called ‘strict’ to <strong>ee_manage_delete</strong>. If TRUE, the existence of the asset will be evaluate before to perform the task.</li>
+<li>Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.</li>
+<li>Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.</li>
+<li>ee_check completely renovated.
 <ul>
 <li>New message display.</li>
 <li>Fix a minor bug when testing GCS credentials.</li>
 <li>The file ee_check.py was deleted.</li>
 </ul>
 </li>
-<li>
-<p>Roy Samapriya added as a contributor.</p>
-<h1 id="rgee-061" class="page-header" data-toc-text="0.6.2">rgee 0.6.1</h1>
-</li>
-<li><p>Fix some typos.</p></li>
-<li><p>rgee website update.</p></li>
-<li><p>Add citation package option .</p></li>
-<li>
-<p>Additional export arguments add to ee_as_stars,ee_as_raster, ee_imagecollection_to_local and ee_as_sf.</p>
-<h1 id="rgee-060" class="page-header" data-toc-text="0.6.2">rgee 0.6.0</h1>
-</li>
-<li><p>Earth Engine Python API updated to 0.1.225.</p></li>
-<li><p>Fix some typos.</p></li>
-<li><p>DESCRIPTION: Moving leaflet, mapview, geojsonio, sf and stars from Import to Suggest. Now users with installation problems can equally use the Earth Engine API although with less operability.</p></li>
-<li><p>The ‘EarthEngineMap’ S4 class was created to avoid incompatibilities with mapview.</p></li>
-<li><p>Fix a critical bug in <strong>ee_install</strong> due to the lack of breaks in repeat bucles.</p></li>
-<li><p>New function <strong>ee_install_upgrade</strong>.</p></li>
-<li><p>New global environment EARTHENGINE_PYTHON was created to help <strong>ee_install_upgrade</strong> to identify the Python environment used by rgee.</p></li>
+<li>Roy Samapriya added as a contributor.</li>
+</ul>
+</div>
+    <div id="rgee-061" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.1">
+<a href="#rgee-061" class="anchor"></a>rgee 0.6.1</h1>
+<ul>
+<li>Fix some typos.</li>
+<li>rgee website update.</li>
+<li>Add citation package option .</li>
+<li>Additional export arguments add to ee_as_stars,ee_as_raster, ee_imagecollection_to_local and ee_as_sf.</li>
+</ul>
+</div>
+    <div id="rgee-060" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.0">
+<a href="#rgee-060" class="anchor"></a>rgee 0.6.0</h1>
+<ul>
+<li>Earth Engine Python API updated to 0.1.225.</li>
+<li>Fix some typos.</li>
+<li>DESCRIPTION: Moving leaflet, mapview, geojsonio, sf and stars from Import to Suggest. Now users with installation problems can equally use the Earth Engine API although with less operability.</li>
+<li>The ‘EarthEngineMap’ S4 class was created to avoid incompatibilities with mapview.</li>
+<li>Fix a critical bug in <strong>ee_install</strong> due to the lack of breaks in repeat bucles.</li>
+<li>New function <strong>ee_install_upgrade</strong>.</li>
+<li>New global environment EARTHENGINE_PYTHON was created to help <strong>ee_install_upgrade</strong> to identify the Python environment used by rgee.</li>
 </ul>
 </div>
     <div id="rgee-054" class="section level1">

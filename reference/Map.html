@@ -251,14 +251,16 @@ default 3.</p></li>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapview</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># Case 1: Geometry*</span>
-<span class='no'>geom</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53</span>, -<span class='fl'>15.75</span>))
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>geom</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>13</span>)
+<span class='no'>geom1</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53</span>, -<span class='fl'>15.75</span>))
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>geom1</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>8</span>)
 <span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>geom</span>,
+  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>geom1</span>,
   <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
     <span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
     <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>
@@ -267,19 +269,12 @@ default 3.</p></li>
 )
 
 <span class='co'># Case 2: Feature</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)$
-  <span class='fu'>first</span>()
+<span class='no'>feature_arq</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>72.53</span>, -<span class='fl'>15.75</span>)))
 <span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>eeobject_fc</span>),
+  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>feature_arq</span>,
   <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>
 )
 <span class='no'>m2</span> + <span class='no'>m1</span>
-
-<span class='co'># Case 3: FeatureCollection</span>
-<span class='no'>eeobject_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='st'>"users/csaybar/DLdemos/train_set"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>eeobject_fc</span>)
-<span class='no'>m3</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>eeobject_fc</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"FeatureCollection"</span>)
-<span class='no'>m3</span> + <span class='no'>m2</span> + <span class='no'>m1</span>
 
 <span class='co'># Case 4: Image</span>
 <span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
@@ -293,6 +288,15 @@ default 3.</p></li>
   <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF"</span>
 )
 <span class='no'>m4</span>
+
+<span class='co'># Case 5: mapview + EarthEnginemap</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
+<span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
+<span class='no'>m2</span> + <span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>)
+
+<span class='co'># Case 6: mapedit</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapedit</span>)
+<span class='no'>my_geometry</span> <span class='kw'>&lt;-</span> <span class='no'>m2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_as_mapview.html'>ee_as_mapview</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>editMap</span>()
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

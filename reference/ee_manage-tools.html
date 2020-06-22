@@ -166,7 +166,7 @@ properties, handle access control lists, and manage and/or cancel tasks.</p>
 
     <pre class="usage"><span class='fu'>ee_manage_create</span>(<span class='no'>path_asset</span>, <span class='kw'>asset_type</span> <span class='kw'>=</span> <span class='st'>"Folder"</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='fu'>ee_manage_delete</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'>ee_manage_delete</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>strict</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>ee_manage_assetlist</span>(<span class='no'>path_asset</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
@@ -210,6 +210,11 @@ ImageCollection).</p></td>
     <tr>
       <th>quiet</th>
       <td><p>Logical. Suppress info message.</p></td>
+    </tr>
+    <tr>
+      <th>strict</th>
+      <td><p>Character vector. If TRUE, the existence of the asset will be
+evaluate before to perform the task.</p></td>
     </tr>
     <tr>
       <th>final_path</th>
