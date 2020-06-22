@@ -100,14 +100,16 @@ default 3.
 }
 \examples{
 \dontrun{
+library(mapview)
 library(rgee)
+library(sf)
 ee_Initialize()
 
 # Case 1: Geometry*
-geom <- ee$Geometry$Point(list(-73.53, -15.75))
-Map$centerObject(geom, zoom = 13)
+geom1 <- ee$Geometry$Point(list(-73.53, -15.75))
+Map$centerObject(geom1, zoom = 8)
 m1 <- Map$addLayer(
-  eeObject = geom,
+  eeObject = geom1,
   visParams = list(
     pointRadius = 10,
     color = "FF0000"
@@ -116,19 +118,12 @@ m1 <- Map$addLayer(
 )
 
 # Case 2: Feature
-eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")$
-  first()
+feature_arq <- ee$Feature(ee$Geometry$Point(list(-72.53, -15.75)))
 m2 <- Map$addLayer(
-  eeObject = ee$Feature(eeobject_fc),
+  eeObject = feature_arq,
   name = "Feature-Arequipa"
 )
 m2 + m1
-
-# Case 3: FeatureCollection
-eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
-Map$centerObject(eeobject_fc)
-m3 <- Map$addLayer(eeObject = eeobject_fc, name = "FeatureCollection")
-m3 + m2 + m1
 
 # Case 4: Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -142,6 +137,15 @@ m4 <- Map$addLayer(
   name = "SF"
 )
 m4
+
+# Case 5: mapview + EarthEnginemap
+nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
+mapview(nc) + m2
+m2 + mapview(nc)
+
+# Case 6: mapedit
+library(mapedit)
+my_geometry <- m2 \%>\% ee_as_mapview() \%>\% editMap()
 }
 }
 \keyword{datasets}

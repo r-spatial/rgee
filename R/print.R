@@ -3,6 +3,7 @@
 #' @param type Character. What to show about the x object?. Three options are
 #' supported: "json", "simply", "ee_print". By default "simply".
 #' @param ... ignored
+#' @export
 print.ee.computedobject.ComputedObject <-
   function(x, type = getOption("rgee.print.option"), ...) {
     if (type == "json") {
@@ -13,7 +14,6 @@ print.ee.computedobject.ComputedObject <-
       ee_print(x)
     }
   }
-
 
 #' Method for printing EarthEngineMap objects
 #' @param x a EarthEngineMap object

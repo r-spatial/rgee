@@ -48,7 +48,7 @@ init_rgee()
 
 # data --------------------------------------------------------------------
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
-eeobject_fc <- ee$FeatureCollection("users/csaybar/DLdemos/train_set")
+eeobject_fc <- ee$FeatureCollection(geom)
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
   filter(ee$Filter()$eq("WRS_PATH", 44))$
@@ -129,12 +129,14 @@ test_that("Map FeatureCollection", {
 
 # Case: Image
 test_that("Map Image", {
+  nc <- sf::st_read(system.file("shp/arequipa.shp", package="rgee"))
   m4 <- rgee:::ee_addLayer(
     eeObject = image,
     visParams = list(bands = c("B4", "B3", "B2"), max = 10000),
     name = "SF"
   )
-  m4 + m4
+  m6 <- m4 + mapview::mapview(nc)
+  m5 <- mapview::mapview(nc) + m4
   expect_equal(m4@object$names,"SF")
 })
 

@@ -14,6 +14,10 @@ vignette: >
 # rgee 0.6.2
 - Earth Engine Python API updated to 0.1.226.
 - Fix some typos.
+- Fix a minor bug in ee_monitoring.
+- Users can mix mapview and EarthEnginemap objects in the same pipeline (see Examples in `Map$addLayer`).
+- Add `ee_as_mapview`, a function to convert `EarthEnginemap` objects to  `mapview` objects.
+- add a new logical argument called 'strict' to **ee_manage_delete**. If TRUE, the existence of the asset will be evaluate before to perform the task.
 - Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.
 - Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.
 - ee_check completely renovated. 
@@ -21,11 +25,13 @@ vignette: >
   - Fix a minor bug when testing GCS credentials.
   - The file ee_check.py was deleted.
 - Roy Samapriya added as a contributor.  
+
 # rgee 0.6.1
 - Fix some typos.
 - rgee website update.
 - Add citation package option .
 - Additional export arguments add to ee_as_stars,ee_as_raster,  ee_imagecollection_to_local and ee_as_sf.
+
 # rgee 0.6.0 
 - Earth Engine Python API updated to 0.1.225.
 - Fix some typos.

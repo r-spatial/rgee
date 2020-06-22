@@ -18,7 +18,7 @@
 \usage{
 ee_manage_create(path_asset, asset_type = "Folder", quiet = FALSE)
 
-ee_manage_delete(path_asset, quiet = FALSE)
+ee_manage_delete(path_asset, quiet = FALSE, strict = TRUE)
 
 ee_manage_assetlist(path_asset, quiet = FALSE)
 
@@ -54,6 +54,9 @@ ImageCollection).}
 'ImageCollection').}
 
 \item{quiet}{Logical. Suppress info message.}
+
+\item{strict}{Character vector. If TRUE, the existence of the asset will be
+evaluate before to perform the task.}
 
 \item{final_path}{Character. Output filename
 (e.g users/datacolecfbf/ic_moved)}

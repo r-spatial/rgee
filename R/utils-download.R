@@ -40,7 +40,11 @@ ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
     cat(sprintf("State: %s\n", task$status()$state))
   }
   if (task$status()$state != "COMPLETED") {
-    stop(task$status()$error_message)
+    message(
+      "ERROR in Earth Engine servers: ",
+      task$status()$error_message
+    )
+    stop("ee_monitoring was forced to stop before getting results")
   }
 }
 

@@ -31,3 +31,69 @@ setMethod(
     return(e1)
   }
 )
+
+
+#' EarthEngineMap + ANY; adds data from the second map to the first
+#'
+#' @author Adapted from
+#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
+#' tim-salabim} code.
+#' @param e1 a EarthEngineMap map to which e2 should be added.
+#' @param e2 a EarthEngineMap map from which the objects should be added to e1.
+#'
+setMethod(
+  "+",
+  signature(
+    e1 = "EarthEngineMap",
+    e2 = "mapview"
+  ),
+  function(e1, e2) {
+    mapview_e1 <- ee_as_mapview(e1)
+    idx <- ee_getCallEntryFromMap(e2@map, "addProviderTiles")
+    if (length(idx) > 0) {
+      e2@map$x$calls[idx] = NULL
+    }
+    idx = ee_getCallEntryFromMap(e2@map, "addLayersControl")
+    if (length(idx) > 0) {
+      e2@map$x$calls[idx][[1]]$args[[1]] = character(0)
+    }
+    m <- ee_appendMapCallEntries_lf(map1 = mapview_e1@map, map2 = e2@map)
+    out_obj <- append(e1@object, e2@object)
+    out_obj <- out_obj[lengths(out_obj) != 0]
+    methods::new('EarthEngineMap', object = out_obj, map = m)
+  }
+)
+
+
+
+#' ANY + EarthEngineMap; adds data from the second map to the first
+#'
+#' @author Adapted from
+#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
+#' tim-salabim} code.
+#' @param e1 a EarthEngineMap map to which e2 should be added.
+#' @param e2 a EarthEngineMap map from which the objects should be added to e1.
+#'
+setMethod(
+  "+",
+  signature(
+    e1 = "mapview",
+    e2 = "EarthEngineMap"
+  ),
+  function(e1, e2) {
+    mapview_e2 <- ee_as_mapview(e2)
+    idx <- ee_getCallEntryFromMap(e2@map, "addProviderTiles")
+    if (length(idx) > 0) {
+      e2@map$x$calls[idx] = NULL
+    }
+    idx = ee_getCallEntryFromMap(e2@map, "addLayersControl")
+    if (length(idx) > 0) {
+      e2@map$x$calls[idx][[1]]$args[[1]] = character(0)
+    }
+    m <- ee_appendMapCallEntries_lf(map1 = e1@map, map2 = mapview_e2@map)
+    out_obj <- append(e1@object, e2@object)
+    out_obj <- out_obj[lengths(out_obj) != 0]
+    methods::new('EarthEngineMap', object = out_obj, map = m)
+  }
+)
+

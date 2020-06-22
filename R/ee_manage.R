@@ -15,6 +15,8 @@
 #' of an EE object. See details.
 #' @param del_properties Character. Names of properties to be deleted. See
 #' details.
+#' @param strict Character vector. If TRUE, the existence of the asset will be
+#' evaluate before to perform the task.
 #' @param editor Character vector. Define editor users in the IAM Policy.
 #' @param viewer Character vector. Define viewer users in the IAM Policy.
 #' @param all_users_can_read Logical. All users can see the asset element.
@@ -184,9 +186,9 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
 
 #' @name ee_manage-tools
 #' @export
-ee_manage_delete <- function(path_asset, quiet = FALSE) {
+ee_manage_delete <- function(path_asset, quiet = FALSE, strict = TRUE) {
   # path_asset exist?
-  path_asset <- ee_verify_filename(path_asset, strict = TRUE)
+  path_asset <- ee_verify_filename(path_asset, strict = strict)
   response <- ee$data$getInfo(path_asset)
   if (is.null(response)) stop("path_asset does not exist!")
 
@@ -540,22 +542,24 @@ ee_manage_cancel_all_running_task <- function() {
 #' @noRd
 ee_verify_filename <- function(path_asset, strict = TRUE) {
   ee_path_dirname <- gsub("\\..+$", "", path_asset)
-  m <- gregexpr("[\\w']+", ee_path_dirname, perl = TRUE)
-  folder <- ee_path_dirname %>%
+  m <- gregexpr("[\\w'|-]+", ee_path_dirname, perl = TRUE)
+  asset <- ee_path_dirname %>%
     regmatches(m) %>%
     "[["(1) %>%
     paste(collapse = "/") %>%
     ee_remove_project_chr()
-  response <- ee$data$getInfo(folder)
-  if (is.null(response) & strict) {
-    message <- c(
-      "%s is not a valid destination.",
-      " Make sure a correct full path is provided",
-      " (e.g. either users/user/nameofcollection",
-      " or projects/myproject/myfolder/newcollection).")
-    stop(sprintf(message, path_asset))
+  if (strict) {
+    response <- ee$data$getInfo(asset)
+    if (is.null(response)) {
+      message <- c(
+        "%s is not a valid destination.",
+        " Make sure a correct full path is provided",
+        " (e.g. either users/user/nameofcollection",
+        " or projects/myproject/myfolder/newcollection).")
+      stop(sprintf(message, path_asset))
+    }
   }
-  return(folder)
+  return(asset)
 }
 
 #' Change the unit of measurement of bytes

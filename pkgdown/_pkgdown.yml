@@ -74,10 +74,11 @@ reference:
   - title: "Visualization"
     contents:
       - Map
+      - ee_as_mapview
       - EarthEngineMap-class
       - +,EarthEngineMap,EarthEngineMap-method
+      - +,mapview,EarthEngineMap-method
       - print,EarthEngineMap-method
-      - print.ee.computedobject.ComputedObject
       - show,EarthEngineMap-method
 
   - title: "Image download"
@@ -141,6 +142,7 @@ reference:
     contents:
       - ee_help
       - ee_print
+      - print.ee.computedobject.ComputedObject
       - ee_monitoring
 
   - title: "Utils"
