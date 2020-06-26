@@ -39,6 +39,8 @@ init_rgee <- function() {
   )
 }
 
+library(mapview)
+
 user <- "data.colec.fbf"
 skip_if_no_credentials(user)
 skip_if_no_pypkg()

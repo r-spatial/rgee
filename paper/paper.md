@@ -136,7 +136,8 @@ Map$addLayer(
 rgee can extract values from `ee.Image` and `ee.ImageCollection` objects at a certain location based on `ee.Geometry`, `ee.Feature`, `ee.FeatureCollection` and `sf` objects. If the geometry is a polygon, users can summarize the values using built-in Earth Engine reducer functions. The code below explains how to extract the average areal rainfall from North Carolina counties using the [TerraClimate](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE) dataset.
 
 ```r
-library(tidyverse)
+library(ggplot2)
+library(tidyr)
 library(rgee)
 library(sf)
 
@@ -198,7 +199,7 @@ ee_print(l8)
 
 # Availability
 
-rgee is an open-source software package made available under the Apache 2.0 license. It can be installed through CRAN using: install.packages("rgee"). rgee can also be installed from its GitHub repository using the remotes package: remotes::install_github("r-spatial/rgee"). A series of examples for using rgee are available at [https://r-spatial.github.io/rgee](https://r-spatial.github.io/rgee).
+rgee is an open-source software package made available under the Apache 2.0 license. It can be installed through GitHub repository using the remotes package: remotes::install_github("r-spatial/rgee"). A series of examples for using rgee are available at [https://r-spatial.github.io/rgee](https://r-spatial.github.io/rgee).
 
 # Acknowledgments
 

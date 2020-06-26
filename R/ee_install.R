@@ -404,4 +404,3 @@ ee_install_upgrade <- function(version = NULL) {
          rstudioapi::restartSession(),
          cat("Restart R session to see changes.\n"))
 }
-

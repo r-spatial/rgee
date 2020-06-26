@@ -18,7 +18,7 @@ vignette: >
 - Users can mix mapview and EarthEnginemap objects in the same pipeline (see Examples in `Map$addLayer`).
 - Add `ee_as_mapview`, a function to convert `EarthEnginemap` objects to  `mapview` objects.
 - add a new logical argument called 'strict' to **ee_manage_delete**. If TRUE, the existence of the asset will be evaluate before to perform the task.
-- Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.
+- Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message.
 - Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.
 - ee_check completely renovated. 
   - New message display.

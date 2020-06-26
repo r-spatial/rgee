@@ -3,7 +3,7 @@
 #' @param type Character. What to show about the x object?. Three options are
 #' supported: "json", "simply", "ee_print". By default "simply".
 #' @param ... ignored
-#' @export
+#' @method print ee.computedobject.ComputedObject
 print.ee.computedobject.ComputedObject <-
   function(x, type = getOption("rgee.print.option"), ...) {
     if (type == "json") {

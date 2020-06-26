@@ -4,11 +4,7 @@
 \alias{print.ee.computedobject.ComputedObject}
 \title{print Earth Engine object}
 \usage{
-print.ee.computedobject.ComputedObject(
-  x,
-  type = getOption("rgee.print.option"),
-  ...
-)
+\method{print}{ee.computedobject.ComputedObject}(x, type = getOption("rgee.print.option"), ...)
 }
 \arguments{
 \item{x}{Earth Engine spatial object.}

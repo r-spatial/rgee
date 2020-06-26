@@ -58,17 +58,21 @@ ee_Initialize <- function(email = NULL,
                           quiet = FALSE) {
   # Message for new user
   init_rgee_message <- Sys.getenv("EARTHENGINE_INIT_MESSAGE", unset = NA)
-  if (is.na(init_rgee_message) &&  !py_module_available("ee")) {
+  if (is.na(init_rgee_message)) {
     text <- paste(
       crayon::bold("Welcome to the Earth Engine client library for R!"),
       "----------------------------------------------------------------",
-      "It seems it is your first time using rgee. Before start coding is ",
+      "It seems it is your first time using rgee. First off, keep in mind that",
+      sprintf("Google Earth Engine is %s, check the",
+              bold("only available to registered users")),
+      sprintf("official website %s to get more information.",
+              bold("https://earthengine.google.com/")),
+      "Before start coding is necessary to set up a Python environment. Run",
       sprintf(
-        "necessary to set up a Python environment. Run %s",
-        crayon::bold("rgee::ee_install()")
+        "%s to set up automatically, after that, restart the R",
+        bold("rgee::ee_install()")
       ),
-      "to set up automatically, after that, restart the R session to see",
-      "changes. See more than 250+ examples of rgee at",
+      "session to see changes. See more than 250+ examples of rgee at",
       crayon::bold("https://csaybar.github.io/rgee-examples/"),
       "",
       sep = "\n"
@@ -222,23 +226,26 @@ ee_Initialize <- function(email = NULL,
   }
 
   # Root folder exist?
-  ee_user <- tryCatch(
-    expr = ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id),
-    error = function(e) stop(
-      "Earth Engine Assets home root folder does not ",
-      "exist for the current user. ",
-      sprintf(
-        "Run %s to attempt to create it. ",
-        bold("ee$data$createAssetHome(users/PUT_YOUR_NAME_HERE)")
-      ),
-      sprintf(
-        "Take into consideration that once created %s",
-        bold("you will not be able to change the folder name again. ")
-      ),
-      "If the root folder was created successfully ",
-      sprintf("execute again %s.", bold("ee_Initialize()"))
+  ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+  # if ee_asset_home (list) length is zero
+  if (length(ee_user_assetroot) == 0) {
+    root_text <- paste(
+      "Earth Engine Assets home root folder does not exist for the current user.",
+      "Please enter your desired root folder name below. Take into consideration",
+      sprintf("that once created %s Alternatively,",
+              bold("you will not be able to change the folder name again. ")),
+      sprintf("press ESC to interrupt and run: %s",
+              bold("ee$data$createAssetHome(\"users/PUT_YOUR_NAME_HERE\")")),
+      sprintf("to attempt to create it. After that execute again %s.",
+              bold("ee_Initialize()")),
+      sep = "\n"
     )
-  )
+    message(root_text)
+    ee_createAssetHome()
+    ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+  }
+
+  ee_user <- ee_remove_project_chr(ee_user_assetroot$id)
 
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(
@@ -664,4 +671,20 @@ create_table <- function(user, wsc, quiet = FALSE) {
 #' @export
 ee_get_assethome <- function() {
   options('rgee.ee_user')[[1]]
+}
+
+
+#' Wrapper to create a EE Assets home
+#' @noRd
+ee_createAssetHome <- function() {
+  x <- readline("Please insert the desired name of your root folder : users/")
+  tryCatch(
+    expr = ee$data$createAssetHome(sprintf("users/", x)),
+    error = function(x) {
+      message(
+        strsplit(x$message,"\n")[[1]][1]
+      )
+      ee_createAssetHome()
+    }
+  )
 }

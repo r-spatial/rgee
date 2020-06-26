@@ -128,6 +128,7 @@
 #' m4
 #'
 #' # Case 5: mapview + EarthEnginemap
+#' library(sf)
 #' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
 #' mapview(nc) + m2
 #' m2 + mapview(nc)
