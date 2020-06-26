@@ -138,6 +138,7 @@ rgee can extract values from `ee.Image` and `ee.ImageCollection` objects at a ce
 ```r
 library(ggplot2)
 library(tidyr)
+library(dplyr)
 library(rgee)
 library(sf)
 
