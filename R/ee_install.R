@@ -404,3 +404,30 @@ ee_install_upgrade <- function(version = NULL) {
          rstudioapi::restartSession(),
          cat("Restart R session to see changes.\n"))
 }
+
+
+#' Search if EARTHENGINE_INIT_MESSAGE is set
+#' @noRd
+ee_search_init_message <- function() {
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  if (!file.exists(renv)) {
+    return(FALSE)
+  }
+
+  con  <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+  close(con)
+  # Find if EARTHENGINE_INIT_MESSAGE is set
+  any(grepl("EARTHENGINE_INIT_MESSAGE", lines))
+}

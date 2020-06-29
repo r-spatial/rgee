@@ -4,7 +4,13 @@
 \alias{gcs_to_ee_table}
 \title{Move a zipped shapefile from GCS to their EE Assets}
 \usage{
-gcs_to_ee_table(gs_uri, assetId, overwrite = FALSE, quiet = FALSE)
+gcs_to_ee_table(
+  gs_uri,
+  assetId,
+  command_line_tool_path = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{gs_uri}{Character. It represents the full name of an
@@ -12,6 +18,10 @@ zipped shapefile in a GCS bucket.}
 
 \item{assetId}{Character. What to call the file once uploaded
 to their Earth Engine Assets}
+
+\item{command_line_tool_path}{Character. Path to the Earth Engine command line
+tool. If NULL, rgee assumes is saved in the same path that your Python
+environment.}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
 it exists.}

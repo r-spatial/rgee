@@ -574,7 +574,6 @@ ee_image_local <- function(image,
     )
     region_fixed <- sf_region_gridded %>%
       sf_as_ee(
-        check_ring_dir = TRUE,
         evenOdd = is_evenodd,
         proj = img_crs,
         geodesic = is_geodesic

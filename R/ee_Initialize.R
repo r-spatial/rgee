@@ -57,8 +57,8 @@ ee_Initialize <- function(email = NULL,
                           gcs = FALSE,
                           quiet = FALSE) {
   # Message for new user
-  init_rgee_message <- Sys.getenv("EARTHENGINE_INIT_MESSAGE", unset = NA)
-  if (is.na(init_rgee_message)) {
+  init_rgee_message <- ee_search_init_message()
+  if (!init_rgee_message) {
     text <- paste(
       crayon::bold("Welcome to the Earth Engine client library for R!"),
       "----------------------------------------------------------------",
@@ -82,12 +82,13 @@ ee_Initialize <- function(email = NULL,
     repeat {
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
-        message("Initialization aborted.")
-        return(FALSE)
+        # message("Initialization aborted.")
+        # return(FALSE)
+        break
       } else if (ch == "n") {
-        message("Initialization aborted.")
+        # message("Initialization aborted.")
         ee_install_set_init_message()
-        return(FALSE)
+        break
       } else {
         response <- readline("Please answer yes or no: ")
       }

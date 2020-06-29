@@ -11,6 +11,18 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.0
+- Removed `check_ring_dir` argument from `sf_as_ee`. Now `rgee` expect that users fix potential geometry problems before upload geometries to Earth Engine assets.
+- The message "Initialization aborted" was removed from `ee_Initialize` and replaced by `ee_search_init_message`. It will permit to `rgee` to know if the user accepted to create the global var "EARTHENGINE_INIT_MESSAGE" without need to restart the R session.
+- Fix a bug in `ee_as_sf`, new test were also added. The argument `command_line_tool_path` was added to give users the option to set the path of the Earth Engine command linetool. It is useful to upload files using Google Cloud Storage. New diagnostic message were added.
+- mejorar upload test
+- mensajes a la hora de subir informacion
+- cambiar el earthengine al que se instala con el local
+- error es ee_as_stars
+- mejorar policy
+- agregar test argumt a todaas las funciones ee_manage que se puedan strict
+- agregar los cambios de los reviewer
+
 # rgee 0.6.2
 - Earth Engine Python API updated to 0.1.226.
 - Fix some typos.

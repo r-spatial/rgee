@@ -86,12 +86,13 @@ local_to_gcs <- function(x,
 
 #' Move a zipped shapefile from GCS to their EE Assets
 #'
-#' Move a zipped shapefile from GCS to their EE Assets
-#'
 #' @param gs_uri Character. It represents the full name of an
 #' zipped shapefile in a GCS bucket.
 #' @param assetId Character. What to call the file once uploaded
 #' to their Earth Engine Assets
+#' @param command_line_tool_path Character. Path to the Earth Engine command line
+#' tool. If NULL, rgee assumes is saved in the same path that your Python
+#' environment.
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
 #' it exists.
 #' @param quiet Logical. Suppress info message.
@@ -140,16 +141,20 @@ local_to_gcs <- function(x,
 #' @export
 gcs_to_ee_table <- function(gs_uri,
                             assetId,
+                            command_line_tool_path = NULL,
                             overwrite = FALSE,
                             quiet = FALSE) {
+  if (is.null(command_line_tool_path)) {
+    command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
+  }
+
+  command = sprintf(
+    "%s/earthengine upload table --asset_id %s %s",
+    command_line_tool_path, assetId, gs_uri
+  )
+
   if (!quiet) {
-    cat(
-      blue('Uploading'),
-      green(gs_uri),
-      blue('to'),
-      green(assetId),
-      blue('... please wait\n')
-    )
+    message("Running the OS command:", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -159,14 +164,23 @@ gcs_to_ee_table <- function(gs_uri,
     )
   }
 
-  system(
-    command = sprintf(
-      "earthengine upload table --assetId %s '%s'",
-      assetId, gs_uri
-      ),
+  upload_state <- system(
+    command = command,
     ignore.stdout = TRUE,
     ignore.stderr = TRUE
   )
+
+  if (upload_state != 0) {
+    stop(
+      sprintf(
+        "An error occurs when %s try to upload %s to %s",
+        bold("gcs_to_ee_table"), bold(gs_uri), bold(assetId)
+      ),
+      ". Please make sure that you set the ",
+      bold("command_line_tool_path"),
+      " argument correctly."
+    )
+  }
   assetId
 }
 
@@ -371,44 +385,6 @@ gcs_to_ee_image <- function(x,
     fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
   }
   ee$FeatureCollection(fc)
-}
-
-#' Pass a character, sfg, sfc to sf
-#' @noRd
-ee_st_read <- function(x, proj = 4326, check_ring_dir = FALSE, quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-  if (any(class(x) %in% 'sf')) {
-    x$geometry <- sf::st_sfc(x$geometry, check_ring_dir = check_ring_dir)
-    x
-  } else if (any(class(x) %in% 'sfg')) {
-    if (is.null(proj)) {
-      proj <- 4326
-    }
-    sf::st_sf(
-      index = 1,
-      geometry = sf::st_sfc(
-        x,
-        crs = 4326,
-        check_ring_dir = check_ring_dir
-      )
-    )
-  } else {
-    result <- tryCatch(
-      expr = sf::st_sf(index = 1,
-                       geometry = x,
-                       check_ring_dir = check_ring_dir),
-      error = function(e) sf::st_read(dsn = x,
-                                      stringsAsFactors =  FALSE,
-                                      check_ring_dir = check_ring_dir,
-                                      quiet = quiet)
-    )
-    if (ncol(result) == 1) {
-      result$index <- seq_len(nrow(result))
-    }
-    result
-  }
 }
 
 #' Pass a character or stars object to stars-proxy

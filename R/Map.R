@@ -191,7 +191,7 @@ ee_centerObject <- function(eeObject,
                             zoom = NULL,
                             maxError = ee$ErrorMargin(1)) {
   if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
-    message("NOTE: Center got from the first element.")
+    message("NOTE: Center obtained from the first element.")
     eeObject <- ee$Feature(eeObject$first())
   }
 

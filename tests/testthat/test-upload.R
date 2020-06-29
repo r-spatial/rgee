@@ -59,12 +59,15 @@ test_that("gcs_to_ee_table ", {
   assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
   zipfile <- ee_utils_shp_to_zip(nc)
   gs_uri <- local_to_gcs(x = zipfile,
-                            bucket = 'rgee_dev')
+                         bucket = 'rgee_dev')
   gcs_to_ee_table(
     gs_uri = gs_uri,
-    assetId = assetId
+    assetId = assetId,
+    overwrite = TRUE,
+    command_line_tool_path = dirname(Sys.getenv("EARTHENGINE_PYTHON"))
   )
-  #ee_monitoring()
+
+  ee_monitoring()
   ee_sf_01 <- ee$FeatureCollection(assetId)
   expect_s3_class(object = ee_sf_01,
                   class =  "ee.featurecollection.FeatureCollection")

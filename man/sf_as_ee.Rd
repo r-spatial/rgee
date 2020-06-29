@@ -9,9 +9,9 @@ sf_as_ee(
   via = "getInfo",
   assetId = NULL,
   bucket = NULL,
+  command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,
-  check_ring_dir = FALSE,
   evenOdd = TRUE,
   proj = 4326,
   geodesic = NULL,
@@ -31,14 +31,16 @@ if \code{via} argument is "getInfo".}
 \item{bucket}{Character. Name of the bucket (GCS) to save intermediate files
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
+\item{command_line_tool_path}{Character. Path to the Earth Engine command line
+tool. If NULL, rgee assumes is saved in the same path that your Python
+environment (ignore if \code{via} is not defined as "gcs_to_asset").}
+
 \item{overwrite}{A boolean argument which indicates indicating
 whether "filename" should be overwritten. By default TRUE.}
 
 \item{monitoring}{Logical. Ignore if via is not set as
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
-
-\item{check_ring_dir}{Logical. See \code{st_read} for details.}
 
 \item{evenOdd}{Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 polygon interiors will be determined by the even/odd rule, where a point
@@ -87,12 +89,6 @@ the function \code{gcs_to_ee_table} the ESRI shapefile will be loaded
 to their EE Assets.
 See \href{https://developers.google.com/earth-engine/importing}{Importing
 table data} documentation for more details.
-
-Earth Engine is strict on polygon ring directions (outer ring
-counter-clockwise, and the inner one clockwise). If \code{check_ring_dir} is TRUE,
-it checks every ring, and revert them if necessary, to counter clockwise for
-outer, and clockwise for inner (hole) ones. By default, this is FALSE because
-it is an expensive operation.
 }
 \examples{
 \dontrun{
@@ -113,7 +109,10 @@ toy_poly <- matrix(data = c(-35,-10,-35,10,35,10,35,-10,-35,-10),
                    ncol = 2,
                    byrow = TRUE) \%>\%
   list() \%>\%
-  st_polygon()
+  st_polygon() \%>\%
+  st_sfc(crs="EPSG:4326") \%>\%
+  st_sf()
+
 holePoly <- sf_as_ee(x = toy_poly, evenOdd = FALSE)
 
 # Create an even-odd version of the polygon.
@@ -132,10 +131,11 @@ eex <- sf_as_ee(
   x = toy_poly,
   overwrite = TRUE,
   assetId = assetId,
-  via = 'getInfo_to_asset')
+  via = "getInfo_to_asset")
 
 # 3. Upload large geometries to EE asset
-ee_Initialize(gcs = TRUE)
+ee_Initialize("data.colec.fbf", gcs = TRUE)
+
 assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
 eex <- sf_as_ee(
   x = toy_poly,
@@ -145,5 +145,6 @@ eex <- sf_as_ee(
   monitoring = FALSE,
   via = 'gcs_to_asset'
 )
+ee_monitoring()
 }
 }
