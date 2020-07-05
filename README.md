@@ -212,7 +212,7 @@ Map$addLayer(
 
 ### 2. Extract precipitation values
 
-Load `tidyverse` and `sf` and initialize the Earth Engine R API.
+Install and load `tidyverse` and `sf` R package, after that, initialize the Earth Engine R API. 
 
 ``` r
 library(tidyverse)
@@ -234,7 +234,7 @@ dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCO
 
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01", "2001-01-01")$
+  filterDate("2001-01-01", "2002-01-01")$
   map(function(x) x$reproject("EPSG:4326")$select("pr"))
 ```
 
@@ -243,7 +243,7 @@ similar to `raster::extract`, you just need to define: the ImageCollection objec
 summarize the values (fun).
 
 ``` r
-ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), sf = FALSE)
+ee_nc_rain <- ee_extract(x = terraclimate, y = nc, sf = FALSE)
 colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
 ee_nc_rain$name <- nc$NAME
 ```
@@ -267,8 +267,7 @@ ee_nc_rain %>%
 
 ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
 
-
-Load `sf` and initialize the Earth Engine R API.
+Install and load `sf`, after that, initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
