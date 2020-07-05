@@ -200,7 +200,7 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># Create sf object</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
 
 <span class='co'># Method 1</span>

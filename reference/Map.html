@@ -290,9 +290,9 @@ default 3.</p></li>
 <span class='no'>m4</span>
 
 <span class='co'># Case 5: mapview + EarthEnginemap</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
-<span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
-<span class='no'>m2</span> + <span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>)
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
+<span class='fu'>mapview</span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
+<span class='no'>m2</span> + <span class='fu'>mapview</span>(<span class='no'>nc</span>)
 
 <span class='co'># Case 6: mapedit</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapedit</span>)

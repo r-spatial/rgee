@@ -220,9 +220,9 @@ it exists.</p></td>
          <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>)
 <span class='no'>ee_ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_polygon</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_sfc</span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
 <span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(

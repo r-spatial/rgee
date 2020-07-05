@@ -252,7 +252,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
     <p><code>sf_as_ee</code> supports the upload of <code>sf</code> objects by three different
 options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
 When "getInfo" is set in the <code>via</code> argument the sf object is
-transformed to GeoJSON (using <code><a href='https://docs.ropensci.org/geojsonio/reference/geojson_json.html'>geojsonio::geojson_json</a></code>) and then
+transformed to GeoJSON (using <code>geojsonio::geojson_json</code>) and then
 encrusted in an HTTP request using the server-side objects that are
 implemented in the Earth Engine API (ee$Geometry). If the sf object is too
 large (~ &gt;1Mb) it is likely to cause bottlenecks since it is a temporary
@@ -283,7 +283,7 @@ it is an expensive operation.</p>
 
 <span class='co'># 1. Handling geometry parameters</span>
 <span class='co'># Simple</span>
-<span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
+<span class='no'>ee_x</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'>sf_as_ee</span>()
 
 <span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>ee_x</span>)
@@ -294,7 +294,7 @@ it is an expensive operation.</p>
                    <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>,
                    <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>()
+  <span class='fu'>st_polygon</span>()
 <span class='no'>holePoly</span> <span class='kw'>&lt;-</span> <span class='fu'>sf_as_ee</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>toy_poly</span>, <span class='kw'>evenOdd</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
 <span class='co'># Create an even-odd version of the polygon.</span>

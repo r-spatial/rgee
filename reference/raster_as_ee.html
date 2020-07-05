@@ -215,7 +215,7 @@ an ee$Image.</p></td>
 
 <span class='co'># Get the filename of a image</span>
 <span class='no'>tif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/L7_ETMs.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read_stars</span>(<span class='no'>tif</span>)
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'stars_l7'</span>)
 
 <span class='co'># Method 1</span>
