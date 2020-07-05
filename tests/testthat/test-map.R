@@ -83,17 +83,17 @@ test_that("Map FeatureCollection", {
 })
 
 # Case: Image
-test_that("Map Image", {
-  nc <- sf::st_read(system.file("shp/arequipa.shp", package="rgee"))
-  m4 <- rgee:::ee_addLayer(
-    eeObject = image,
-    visParams = list(bands = c("B4", "B3", "B2"), max = 10000),
-    name = "SF"
-  )
-  m6 <- m4 + mapview::mapview(nc)
-  m5 <- mapview::mapview(nc) + m4
-  expect_equal(m4@object$names,"SF")
-})
+#test_that("Map Image", {
+  # nc <- sf::st_read(system.file("shp/arequipa.shp", package="rgee"))
+  # m4 <- rgee:::ee_addLayer(
+  #   eeObject = image,
+  #   visParams = list(bands = c("B4", "B3", "B2"), max = 10000),
+  #   name = "SF"
+  # )
+  # m6 <- m4 + mapview::mapview(nc)
+  # m5 <- mapview::mapview(nc) + m4
+  # expect_equal(m4@object$names,"SF")
+#})
 
 
 test_that("Map$centerObject", {

@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - dev
+      - JOSS
   pull_request:
     branches:
-      - dev
+      - JOSS
 
 name: R-CMD-check
 
@@ -18,14 +18,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '3.6'}
-          #- {os: macOS-latest, r: '3.6'}
-          #- {os: macOS-latest, r: 'devel'}
-          #- {os: ubuntu-16.04, r: '3.2', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.3', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.4', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.5', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04, r: '3.6', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          - {os: windows-latest, r: '3.6', platform: windows-x86_64}
+          - {os: windows-latest, r: 'release', platform: windows-x86_64}
+          - {os: macOS-latest, r: '3.6', platform: osx-x86_64-clang}
+          - {os: macOS-latest, r: 'release', platform: osx-x86_64-clang}
+          - {os: ubuntu-latest, r: '3.6', platform: linux-x86_64-ubuntu-gcc}
+          - {os: ubuntu-latest, r: 'release', platform: linux-x86_64-ubuntu-gcc}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
