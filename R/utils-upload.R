@@ -88,8 +88,8 @@ local_to_gcs <- function(x,
 #' @param assetId Character. What to call the file once uploaded
 #' to their Earth Engine Assets
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
-#' tool. If NULL, rgee assumes is saved in the same path that your Python
-#' environment.
+#' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+#' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
 #' it exists.
 #' @param quiet Logical. Suppress info message.
@@ -144,7 +144,7 @@ gcs_to_ee_table <- function(gs_uri,
                             overwrite = FALSE,
                             quiet = FALSE) {
   if (is.null(command_line_tool_path)) {
-    command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
+    command_line_tool_path <- ""
   }
 
   if (command_line_tool_path == "") {
@@ -196,8 +196,8 @@ gcs_to_ee_table <- function(gs_uri,
 #' @param gs_uri Character. It represents the full name of the
 #' GeoTIFF file of \code{x} in a GCS bucket.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
-#' tool. If NULL, rgee assumes is saved in the same path that your Python
-#' environment.
+#' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+#' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param assetId Character. How to call the file once uploaded
 #' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
@@ -270,7 +270,7 @@ gcs_to_ee_image <- function(x,
 
   # If the command_line_tool_path does not exist
   if (is.null(command_line_tool_path)) {
-    command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
+    command_line_tool_path <- ""
   }
 
   # Verify is the EE assets path is valid, if not try to fix

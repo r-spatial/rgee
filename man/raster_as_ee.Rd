@@ -21,8 +21,8 @@ an ee$Image.}
 \item{assetId}{Character. Destination asset ID for the uploaded file.}
 
 \item{command_line_tool_path}{Character. Path to the Earth Engine command line
-tool. If NULL, rgee assumes is saved in the same path that your Python
-environment (ignore if \code{via} is not defined as "gcs_to_asset").}
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten.}
 

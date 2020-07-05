@@ -32,8 +32,8 @@ if \code{via} argument is "getInfo".}
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{command_line_tool_path}{Character. Path to the Earth Engine command line
-tool. If NULL, rgee assumes is saved in the same path that your Python
-environment (ignore if \code{via} is not defined as "gcs_to_asset").}
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{overwrite}{A boolean argument which indicates indicating
 whether "filename" should be overwritten. Ignore if \code{via} argument

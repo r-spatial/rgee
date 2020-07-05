@@ -3,8 +3,8 @@
 #' @param x stars or stars-proxy object to be converted into an ee$Image.
 #' @param assetId Character. Destination asset ID for the uploaded file.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
-#' tool. If NULL, rgee assumes is saved in the same path that your Python
-#' environment (ignore if \code{via} is not defined as "gcs_to_asset").
+#' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+#' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
@@ -65,7 +65,7 @@ stars_as_ee <- function(x,
   ee_temp <- tempdir()
 
   if (is.null(command_line_tool_path)) {
-    command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
+    command_line_tool_path <- ""
   }
 
   message("1. Converting stars (raster) object to GeoTIFF ... saving in /tmp")
@@ -108,8 +108,8 @@ stars_as_ee <- function(x,
 #' an ee$Image.
 #' @param assetId Character. Destination asset ID for the uploaded file.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
-#' tool. If NULL, rgee assumes is saved in the same path that your Python
-#' environment (ignore if \code{via} is not defined as "gcs_to_asset").
+#' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+#' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
