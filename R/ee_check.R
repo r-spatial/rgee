@@ -211,6 +211,7 @@ ee_check_credentials <- function(quiet = FALSE) {
         "- sf_as_ee(via = \"gcs_to_asset\")\n",
         "- gcs_to_ee_image\n",
         "- raster_as_ee\n",
+        "- local_to_gcs",
         "- stars_as_ee\n",
         "Try rgee::ee_Initialize(gcs = TRUE) to fix.\n"
       )

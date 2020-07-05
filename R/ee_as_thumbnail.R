@@ -94,8 +94,7 @@
 #' arequipa_region <- nc %>%
 #'   st_bbox() %>%
 #'   st_as_sfc() %>%
-#'   sf_as_ee() %>%
-#'   ee$FeatureCollection$geometry()
+#'   sf_as_ee()
 #'
 #' arequipa_dem <- ee_as_thumbnail(
 #'   image = image,
@@ -226,7 +225,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
       '- region parameters\n',
       '\rWKT      :', sf::st_as_text(sf_region),
       '\nCRS      :', ee_crs,
-      '\ngeodesic :', is_geodesic,
+      '\ngeodesic :', ee_utils_py_to_r(is_geodesic),
       '\nevenOdd  :', is_evenodd,
       '\n'
     )

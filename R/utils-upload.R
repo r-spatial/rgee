@@ -15,14 +15,11 @@
 #'
 #' # Initialize a specific Earth Engine account and
 #' # Google Cloud Storage credentials
-#' ee_Initialize(
-#'   email = "data.colec.fbf@gmail.com",
-#'   gcs = TRUE
-#' )
+#' ee_Initialize(gcs = TRUE)
 #'
-#' # Define an image.
-#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-#' local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' # # Define an image.
+#' # tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' # local_to_gcs(x = tif, bucket = 'rgee_dev')
 #' }
 #' @export
 local_to_gcs <- function(x,
@@ -38,11 +35,11 @@ local_to_gcs <- function(x,
     if (is.null(bucket)) {
       stop("Cloud Storage bucket was not defined")
     }
-    ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$gcs_cre)) {
+
+    if (is.na(getOption("rgee.gcs.auth"))) {
       stop(
         "Google Cloud Storage credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        ' Run ee_Initialize(..., gcs = TRUE)',
         " to fix it"
       )
     }
@@ -113,30 +110,32 @@ local_to_gcs <- function(x,
 #' # 1. Pass the sf to a zip file
 #' zipfile <- ee_utils_shp_to_zip(nc)
 #'
-#' # 2. From local to gcs
-#' gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
-#'
-#' # 3. Pass the sf to a zip file
-#' gcs_to_ee_table(
-#'   gs_uri = gs_uri,
-#'   assetId = assetId
-#' )
-#'
-#' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
-#'
-#' # OPTIONAL: Display results
-#' ee_sf_01 <- ee$FeatureCollection(assetId)
-#' Map$centerObject(ee_sf_01)
-#' Map$addLayer(ee_sf_01)
-#'
-#' # Method 2
-#' ee_sf_02 <- sf_as_ee(x = nc,
-#'                      assetId = assetId,
-#'                      bucket = "rgee_dev",
-#'                      via = 'gcs')
-#' Map$centerObject(ee_sf_02)
-#' Map$addLayer(ee_sf_02)
+#' # # 2. From local to gcs
+#' # gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#' #
+#' # # 3. Pass the sf to a zip file
+#' # gcs_to_ee_table(
+#' #   gs_uri = gs_uri,
+#' #   overwrite = TRUE,
+#' #   assetId = assetId
+#' # )
+#' #
+#' # # OPTIONAL: Monitoring progress
+#' # ee_monitoring()
+#' #
+#' # # OPTIONAL: Display results
+#' # ee_sf_01 <- ee$FeatureCollection(assetId)
+#' # Map$centerObject(ee_sf_01)
+#' # Map$addLayer(ee_sf_01)
+#' #
+#' # # Method 2
+#' # ee_sf_02 <- sf_as_ee(x = nc,
+#' #                      assetId = assetId,
+#' #                      overwrite = TRUE,
+#' #                      bucket = "rgee_dev",
+#' #                      via = 'gcs')
+#' # Map$centerObject(ee_sf_02)
+#' # Map$addLayer(ee_sf_02)
 #' }
 #' @export
 gcs_to_ee_table <- function(gs_uri,
@@ -148,10 +147,17 @@ gcs_to_ee_table <- function(gs_uri,
     command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
   }
 
-  command = sprintf(
-    "%s/earthengine upload table --asset_id %s %s",
-    command_line_tool_path, assetId, gs_uri
-  )
+  if (command_line_tool_path == "") {
+    command = sprintf(
+      "earthengine upload table --asset_id %s %s",
+      assetId, gs_uri
+    )
+  } else {
+    command = sprintf(
+      "%s/earthengine upload table --asset_id %s %s",
+      command_line_tool_path, assetId, gs_uri
+    )
+  }
 
   if (!quiet) {
     message("Running the OS command:", command)
@@ -186,11 +192,12 @@ gcs_to_ee_table <- function(gs_uri,
 
 #' Move a GeoTIFF image from GCS to their EE assets
 #'
-#' Move a GeoTIFF image from GCS to their EE assets
-#'
-#' @param x stars object.
+#' @param x An object of class stars or stars-proxy.
 #' @param gs_uri Character. It represents the full name of the
-#' GeoTIFF file in a GCS bucket.
+#' GeoTIFF file of \code{x} in a GCS bucket.
+#' @param command_line_tool_path Character. Path to the Earth Engine command line
+#' tool. If NULL, rgee assumes is saved in the same path that your Python
+#' environment.
 #' @param assetId Character. How to call the file once uploaded
 #' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten if
@@ -209,39 +216,43 @@ gcs_to_ee_table <- function(gs_uri,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' library(stars)
+#' library(sf)
 #' ee_Initialize(gcs = TRUE)
 #'
-#' # Get the filename of a image
-#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-#' x <- read_stars(tif)
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
+#' # Create sf object
+#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
 #'
 #' # Method 1
-#' # 1. Move from local to gcs
-#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
+#' # 1. Pass the sf to a zip file
+#' zipfile <- ee_utils_shp_to_zip(nc)
 #'
-#' # 2. Pass from gcs to asset
-#' gcs_to_ee_image(
-#'   x = x,
-#'   gs_uri = gs_uri,
-#'   assetId = assetId
-#' )
+#' # # 2. From local to gcs
+#' # gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 #'
-#' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
+#' # # 3. Pass the sf to a zip file
+#' # gcs_to_ee_table(
+#' #    gs_uri = gs_uri,
+#' #    overwrite = TRUE,
+#' #    assetId = assetId
+#' # )
 #'
-#' # OPTIONAL: Display results
-#' ee_stars_01 <- ee$Image(assetId)
-#' Map$centerObject(ee_stars_01)
-#' Map$addLayer(ee_stars_01)
+#' # # OPTIONAL: Monitoring progress
+#' # ee_monitoring()
 #'
-#' # Method 2
-#' ee_sf_02 <- stars_as_ee(x = x,
-#'                         assetId = assetId,
-#'                         bucket = "rgee_dev")
-#' Map$centerObject(ee_sf_02)
-#' Map$addLayer(ee_sf_02)
+#' # # OPTIONAL: Display results
+#' # ee_sf_01 <- ee$FeatureCollection(assetId)
+#' # Map$centerObject(ee_sf_01)
+#' # Map$addLayer(ee_sf_01)
+#'
+#' # # Method 2
+#' # ee_sf_02 <- sf_as_ee(x = nc,
+#' #                       assetId = assetId,
+#' #                       overwrite = TRUE,
+#' #                       bucket = "rgee_dev",
+#' #                       via = 'gcs')
+#' # Map$centerObject(ee_sf_02)
+#' # Map$addLayer(ee_sf_02)
 #' }
 #' @export
 gcs_to_ee_image <- function(x,
@@ -249,13 +260,26 @@ gcs_to_ee_image <- function(x,
                             assetId,
                             overwrite = FALSE,
                             properties = NULL,
+                            command_line_tool_path = NULL,
                             start_time = "1970-01-01",
                             end_time = "1970-01-01",
                             pyramiding_policy = 'MEAN',
                             quiet = FALSE) {
+  # Folder to save upload temporary files.
   tempdir_gee <- tempdir()
 
-  # Load python module
+  # If the command_line_tool_path does not exist
+  if (is.null(command_line_tool_path)) {
+    command_line_tool_path <- dirname(Sys.getenv("EARTHENGINE_PYTHON"))
+  }
+
+  # Verify is the EE assets path is valid, if not try to fix
+  assetId <- ee_verify_filename(
+    path_asset = assetId,
+    strict = FALSE
+  )
+
+  # Load utils python module
   oauth_func_path <- system.file(
     "python/ee_utils.py",
     package = "rgee"
@@ -326,14 +350,17 @@ gcs_to_ee_image <- function(x,
     manifest = manifest
   )
 
+  #Command to run in console
+  if (command_line_tool_path == "") {
+    command <- sprintf("earthengine upload image --manifest '%s'",
+                       json_path)
+  } else {
+    command <- sprintf("%s/earthengine upload image --manifest '%s'",
+                       command_line_tool_path, json_path)
+  }
+
   if (!quiet) {
-    cat(
-      blue('Uploading'),
-      green(gs_uri),
-      blue('to'),
-      green(assetId),
-      blue('... please wait\n')
-    )
+    message("Running the OS command:", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -343,18 +370,29 @@ gcs_to_ee_image <- function(x,
     )
   }
 
-  system(
-    command = sprintf("earthengine upload image --manifest '%s'", json_path),
+  upload_state <- system(
+    command = command,
     ignore.stdout = TRUE,
     ignore.stderr = TRUE
   )
+
+  if (upload_state != 0) {
+    stop(
+      sprintf(
+        "An error occurs when %s try to upload %s to %s",
+        bold("gcs_to_ee_image"), bold(gs_uri), bold(assetId)
+      ),
+      ". Please make sure that you set the ",
+      bold("command_line_tool_path"),
+      " argument correctly."
+    )
+  }
   assetId
 }
 
 #' From sf object to Earth Engine FeatureCollection
 #' @noRd
-  ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
-
+ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
@@ -366,25 +404,57 @@ gcs_to_ee_image <- function(x,
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
   sf_as_ee <- ee_source_python(oauth_func_path)
 
-  fc <- list()
-  for (index in seq_len(nrow(x))) {
-    feature <- x[index,]
-    sfc_feature <- sf::st_geometry(feature)
-    py_geometry <- geojsonio::geojson_json(sfc_feature,type = 'skip')
-    wkt_type <- class(sfc_feature)[1] # wkt type identifier
+  ngeometries <- if (any(class(x) %in% "sf")) nrow(x) else length(x)
+
+  if (ngeometries == 1 & !any(class(x) %in% "sf")) {
+    sfc_feature <- sf::st_geometry(x)
+    py_geometry <- geojsonio::geojson_json(sfc_feature, type = 'skip')
+    sf_obj_class <- class(sfc_feature)
+    wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
+    if (length(wkt_type) == 0) {
+      stop(
+        "sf_as_ee does not support objects of class ",
+        paste0(sf_obj_class,collapse = ", ")
+      )
+    }
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                          sfc_class = wkt_type,
                                          opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
-    if (isFALSE(ee_geometry)) {
-      stop("rgee does not support the upload of GEOMETRYCOLLECTION",
-           " (sfg object).")
+    return(ee_geometry)
+  } else {
+    fc <- list()
+    for (index in seq_len(ngeometries)) {
+      feature <- x[index,]
+      sfc_feature <- sf::st_geometry(feature)
+      py_geometry <- geojsonio::geojson_json(sfc_feature, type = 'skip')
+      sf_obj_class <- class(sfc_feature)
+      wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
+      ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+                                           sfc_class = wkt_type,
+                                           opt_proj = proj,
+                                           opt_geodesic = geodesic,
+                                           opt_evenOdd = evenOdd)
+      if (isFALSE(ee_geometry)) {
+        stop(
+          "sf_as_ee only support the upload of geometries of type: ",
+          paste0(ee_sf_comp(), collapse = ", "),
+          ". If you are using a GEOMETRYCOLLECTION geometry, please simplify ",
+          "it first or use the argument ",
+          "via = \"gcs_to_asset\"."
+        )
+      }
+
+      if (any(class(x) %in% "sf")) {
+        sf::st_geometry(feature) <- NULL
+        fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
+      } else {
+        fc[[index]] <- ee$Feature(ee_geometry, list())
+      }
     }
-    sf::st_geometry(feature) <- NULL
-    fc[[index]] <- ee$Feature(ee_geometry, as.list(feature))
+    ee$FeatureCollection(fc)
   }
-  ee$FeatureCollection(fc)
 }
 
 #' Pass a character or stars object to stars-proxy
@@ -415,4 +485,12 @@ ee_as_proxystars <- function(x, temp_dir = tempdir()) {
   } else {
     stop('x argument not defined properly.')
   }
+}
+
+#' sf classes that ee supports
+#' @noRd
+ee_sf_comp <- function(){
+  c("sfc_MULTIPOLYGON", "sfc_POLYGON", "sfc_LINESTRING", "sfc_MULTILINESTRING",
+    "sfc_POINT", "sfc_MULTIPOINT", "MULTIPOLYGON", "POLYGON", "LINESTRING",
+    "MULTILINESTRING", "POINT", "MULTIPOINT")
 }

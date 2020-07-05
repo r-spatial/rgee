@@ -20,20 +20,21 @@ ee_manage_create(path_asset, asset_type = "Folder", quiet = FALSE)
 
 ee_manage_delete(path_asset, quiet = FALSE, strict = TRUE)
 
-ee_manage_assetlist(path_asset, quiet = FALSE)
+ee_manage_assetlist(path_asset, quiet = FALSE, strict = TRUE)
 
 ee_manage_quota(quiet = FALSE)
 
-ee_manage_copy(path_asset, final_path, quiet = FALSE)
+ee_manage_copy(path_asset, final_path, strict = TRUE, quiet = FALSE)
 
-ee_manage_move(path_asset, final_path, quiet = FALSE)
+ee_manage_move(path_asset, final_path, strict = TRUE, quiet = FALSE)
 
-ee_manage_set_properties(path_asset, add_properties)
+ee_manage_set_properties(path_asset, add_properties, strict = TRUE)
 
-ee_manage_delete_properties(path_asset, del_properties = "ALL")
+ee_manage_delete_properties(path_asset, del_properties = "ALL", strict = TRUE)
 
 ee_manage_asset_access(
   path_asset,
+  owner = NULL,
   editor = NULL,
   viewer = NULL,
   all_users_can_read = TRUE,
@@ -67,6 +68,8 @@ of an EE object. See details.}
 \item{del_properties}{Character. Names of properties to be deleted. See
 details.}
 
+\item{owner}{Character vector. Define owner user in the IAM Policy.}
+
 \item{editor}{Character vector. Define editor users in the IAM Policy.}
 
 \item{viewer}{Character vector. Define viewer users in the IAM Policy.}
@@ -88,58 +91,58 @@ the properties.
 }
 \examples{
 \dontrun{
-
 library(rgee)
 
 ee_Initialize()
 ee_user_info()
 
 # Change datacolecfbf by your EE user to be able to reproduce
-
+user <- ee_get_assethome()
+addm <- function(x) sprintf("\%s/\%s",user, x)
 # 1. Create a folder or Image Collection
 # Change path asset according to your specific user
-ee_manage_create("users/datacolecfbf/rgee")
+ee_manage_create(addm("rgee"))
 
 # 1. List all the elements inside a folder or a ImageCollection
-ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee")
+ee_manage_assetlist(path_asset = addm("rgee"))
 
 # 2. Create a Folder or a ImageCollection
 ee_manage_create(
-  path_asset = "users/datacolecfbf/rgee/rgee_folder",
+  path_asset = addm("rgee/rgee_folder"),
   asset_type = "Folder"
 )
 
 ee_manage_create(
-  path_asset = "users/datacolecfbf/rgee/rgee_ic",
+  path_asset = addm("rgee/rgee_ic"),
   asset_type = "ImageCollection"
 )
 
-ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee")
+ee_manage_assetlist(path_asset = addm("rgee"))
 
 # 3. Shows Earth Engine quota
 ee_manage_quota()
 
 # 4. Move an EE object to another folder
 ee_manage_move(
-  path_asset = "users/datacolecfbf/rgee/rgee_ic",
-  final_path = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+  path_asset = addm("rgee/rgee_ic"),
+  final_path = addm("rgee/rgee_folder/rgee_ic_moved")
 )
 
-ee_manage_assetlist(path_asset = "users/datacolecfbf/rgee/rgee_folder")
+ee_manage_assetlist(path_asset = addm("rgee/rgee_folder"))
 
 # 5. Set properties to an EE object.
 ee_manage_set_properties(
-  path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
+  path_asset = addm("rgee/rgee_folder/rgee_ic_moved"),
   add_properties = list(message = "hello-world", language = "R")
 )
 
-ic_id <- "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved"
+ic_id <- addm("rgee/rgee_folder/rgee_ic_moved")
 test_ic <- ee$ImageCollection(ic_id)
 test_ic$getInfo()
 
 # 6. Delete properties
 ee_manage_delete_properties(
-  path_asset = "users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved",
+  path_asset = addm("rgee/rgee_folder/rgee_ic_moved"),
   del_properties = c("message", "language")
 )
 test_ic$getInfo()
@@ -152,7 +155,7 @@ ee_manage_task()
 ee_manage_cancel_all_running_task()
 
 # 9. Delete EE objects or folders
-ee_manage_delete("users/datacolecfbf/rgee/")
+ee_manage_delete(addm("rgee/"))
 }
 }
 \author{

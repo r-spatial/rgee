@@ -1,54 +1,7 @@
 context("rgee: sf_as_ee test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-library(mapview)
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
 # -------------------------------------------------------------------------
 
-
-# data --------------------------------------------------------------------
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 eeobject_fc <- ee$FeatureCollection(geom)
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -196,6 +149,3 @@ test_that("messages 01", {
     eeObject = eeobject_fc$first()$geometry())
   expect_type(message,"environment")
 })
-
-
-

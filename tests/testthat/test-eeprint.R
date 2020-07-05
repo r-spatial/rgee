@@ -1,50 +1,6 @@
 context("rgee: ee_print test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
 # -------------------------------------------------------------------------
-
 
 # clean TRUE
 test_that("simple ee_print test - ImageCollection", {
@@ -68,12 +24,12 @@ test_that("simple ee_print test -  2 - ImageCollection", {
   ROI <- c(xmin, ymin, xmax, ymin, xmax, ymax, xmin, ymax, xmin, ymin)
   ROI_polygon <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
     list() %>%
-    st_polygon() %>%
-    st_sfc() %>%
-    st_set_crs(4326)
+    sf::st_polygon() %>%
+    sf::st_sfc() %>%
+    sf::st_set_crs(4326)
   ee_geom <- sf_as_ee(ROI_polygon)
   eeobject <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-    filterBounds(ee_geom)$
+    filterBounds(ee$FeatureCollection(ee_geom))$
     filterDate("2011-01-01", "2011-12-31")
   ee_print_obj <- ee_print(
     eeobject = eeobject,
@@ -95,8 +51,8 @@ test_that("simple ee_print test - Image", {
 })
 
 test_that("simple ee_print test - FeatureCollection", {
-  nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-    st_transform(4326) %>%
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf::st_transform(4326) %>%
     "["(1:10, )
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
@@ -107,10 +63,9 @@ test_that("simple ee_print test - FeatureCollection", {
   expect_equal(ee_print_obj$name, "FeatureCollection")
 })
 
-
 test_that("simple ee_print test - Feature", {
-  nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-    st_transform(4326) %>%
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf::st_transform(4326) %>%
     "["(1, )
   ee_nc <- ee$Feature(sf_as_ee(nc)$first())
   ee_print_obj <- ee_print(
@@ -123,23 +78,23 @@ test_that("simple ee_print test - Feature", {
 
 
 test_that("simple ee_print test - Geometry", {
-  nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-    st_transform(4326) %>%
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf::st_transform(4326) %>%
     "["(1, ) %>%
-    st_geometry()
+    sf::st_geometry()
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
-    eeobject = ee_nc$geometry(),
+    eeobject = ee_nc,
     clean = TRUE
   )
-  ee_print_obj <- ee_print(eeobject = ee_nc$geometry())
+  ee_print_obj <- ee_print(eeobject = ee_nc)
   expect_equal(ee_print_obj$name, "Geometry")
 })
 
 # Testing create table
 test_that("simple ee_print test - FeatureCollection", {
-  nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-    st_transform(4326) %>%
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf::st_transform(4326) %>%
     "["(1:10, )
   ee_nc <- sf_as_ee(nc)
   ee_print_obj <- ee_print(
@@ -152,16 +107,16 @@ test_that("simple ee_print test - FeatureCollection", {
 
 # Testing print
 test_that("different typ ee_print test - json", {
-  nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
-    st_transform(4326) %>%
+  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf::st_transform(4326) %>%
     "["(1, ) %>%
-    st_geometry()
+    sf::st_geometry()
   ee_nc <- sf_as_ee(nc)
 
   expect_equal(print(ee_nc, type = "json"), NULL)
   expect_equal(print(ee_nc, type = "simply"), NULL)
   ee_print_obj <- print(ee_nc, type = "ee_print")
-  expect_equal(ee_print_obj$name, "FeatureCollection")
+  expect_equal(ee_print_obj$name, "Geometry")
 })
 
 test_that("simple ee_print test - ImageCollection not EPSG", {

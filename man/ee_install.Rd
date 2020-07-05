@@ -42,8 +42,8 @@ changes.}
 }
 \examples{
 \dontrun{
-library(rgee)
-ee_install() #It is just necessary once
+# library(rgee)
+# ee_install() #It is just necessary once
 }
 }
 \seealso{

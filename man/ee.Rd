@@ -19,7 +19,7 @@ and functions as well as sub-modules (e.g. \code{ee$Image},
 \dontrun{
 library(rgee)
 
-ee$Initialize()
+ee_Initialize()
 
 ee_img <- ee$Image(0)
 ee_ic <- ee$ImageCollection(ee_img)

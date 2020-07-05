@@ -21,8 +21,8 @@ the path \code{rgee::ee_get_earthengine_path()}.
 \dontrun{
 library(rgee)
 
-ee_clean_credentials()
-ee_clean_credentials('data.colec.fbf@gmail.com')
+# ee_clean_credentials()
+# ee_clean_credentials('data.colec.fbf@gmail.com')
 
 }
 }

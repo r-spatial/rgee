@@ -103,6 +103,7 @@ ROI <- c(rlist$xmin, rlist$ymin,
          rlist$xmax, rlist$ymax,
          rlist$xmin, rlist$ymax,
          rlist$xmin, rlist$ymin)
+
 ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon() \%>\%
@@ -123,7 +124,7 @@ cloudMaskL457 <- function(image) {
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_ROI)$
+  filterBounds(ee$FeatureCollection(ee_ROI))$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
 
@@ -136,7 +137,7 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 task_img <- ee_image_to_drive(
   image = mean_l5_Amarakaeri,
   fileFormat = "GEO_TIFF",
-  region = ee_ROI$geometry(),
+  region = ee_ROI,
   fileNamePrefix = "my_image"
 )
 

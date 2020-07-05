@@ -42,7 +42,7 @@ rgee is an Earth Engine (EE) client library for R that allows users to leverage 
 
 ## Enhanced I/O 
 
-rgee implements several functions to support download/upload of spatial objects (Table \ref{table:1} and Table \ref{table:2}). For instance, to download vector (image) files one can use `ee_as_sf` (`ee_as_raster` or `ee_as_stars`). In rgee, all the functions from server to local side have the option to fetch data using an intermediate container (Google Drive or Google Cloud Storage) or through a REST call ("$getInfo"). Although the latter option performs a quick download, there is a request limit of 262144 pixels for ee.Image and 5000 elements for ee.FeatureCollection which makes it unsuitable for large objects. Other download functions, from server-side to others (see Table \ref{table:1}), are implemented to enable more customized download workflows. For example, using `ee_image_to_drive` and `ee_drive_to_local` users could create scripts which save results in the `.TFRecord` rather than the `.GeoTIFF` format. The upload process follows the same logic (Table \ref{table:2}). rgee includes `raster_as_ee` and `stars_as_ee` for uploading images and `sf_as_ee` for uploading vector data. Large uploads are only possible with an active Google Cloud Storage account.
+rgee implements several functions to support download/upload of spatial objects (Table \ref{table:1} and Table \ref{table:2}). For instance, to download vector (image) files one can use `ee_as_sf` (`ee_as_raster` or `ee_as_stars`). In rgee, all the functions from server to local side have the option to fetch data using an intermediate container (Google Drive or Google Cloud Storage) or through a REST call ("$getInfo"). Although the latter option performs a quick download, there is a request limit of 262144 pixels for `ee$Image` and 5000 elements for `ee$FeatureCollection` which makes it unsuitable for large objects. Other download functions, from server-side to others (see Table \ref{table:1}), are implemented to enable more customized download workflows. For example, using `ee_image_to_drive` and `ee_drive_to_local` users could create scripts which save results in the `.TFRecord` rather than the `.GeoTIFF` format. The upload process follows the same logic (Table \ref{table:2}). rgee includes `raster_as_ee` and `stars_as_ee` for uploading images and `sf_as_ee` for uploading vector data. Large uploads are only possible with an active Google Cloud Storage account.
 
 
 |         	|                   	|      FROM      	|       TO      	|       RETURN       	|
@@ -115,13 +115,13 @@ rgee offers interactive map display through  `Map$addLayer`, an R function mimic
 library(rgee)
 ee_Initialize()
 
-# Load an ee.Image
+# Load an ee$Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 
 # Centers the map view
 Map$centerObject(image)
 
-# Display the ee.Image
+# Display the ee$Image
 Map$addLayer(
   eeObject = image, 
   visParams = list(bands = c("B4", "B3", "B2"), max = 10000), 
@@ -133,7 +133,7 @@ Map$addLayer(
 
 ## Extraction of time series
 
-rgee can extract values from `ee.Image` and `ee.ImageCollection` objects at a certain location based on `ee.Geometry`, `ee.Feature`, `ee.FeatureCollection` and `sf` objects. If the geometry is a polygon, users can summarize the values using built-in Earth Engine reducer functions. The code below explains how to extract the average areal rainfall from North Carolina counties using the [TerraClimate](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE) dataset.
+rgee can extract values from `ee$Image` and `ee$ImageCollection` objects at a certain location based on `ee$Geometry`, `ee$Feature`, `ee$FeatureCollection` and `sf` objects. If the geometry is a polygon, users can summarize the values using built-in Earth Engine reducer functions. The code below explains how to extract the average areal rainfall from North Carolina counties using the [TerraClimate](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE) dataset.
 
 ```r
 library(ggplot2)
@@ -144,7 +144,8 @@ library(sf)
 
 ee_Initialize()
 
-# Image or ImageCollection (mean composite)
+# Filter the terraclimate dataset by dates, reproject
+# and select only the band "pr".
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
   filterDate("2001-01-01", "2002-01-01")$
   map(function(x) x$reproject("EPSG:4326")$select("pr"))
@@ -157,6 +158,7 @@ ee_nc_rain <- ee_extract(terraclimate, nc, sf = FALSE)
 colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
 ee_nc_rain$name <- nc$NAME
 
+# Create a data frame in a tidy format and display rainfall values
 ee_nc_rain %>%
   pivot_longer(-name, names_to = "month", values_to = "pr") %>%
   ggplot(aes(x = month, y = pr, group = name, color = pr)) +
@@ -166,12 +168,12 @@ ee_nc_rain %>%
   theme_minimal()
 ```
 
-![Average areal rainfall in counties of North Carolina for the year 2011 according to the TerraClimate dataset.](rgee_paper_01.png){ width=80% }
+![Average areal rainfall in counties of North Carolina for the year 2001 according to the TerraClimate dataset.](rgee_paper_01.png){ width=80% }
 
 
 ## Asset Management Interface
 
-rgee implements an interface to batch actions on assets extending capabilities of the existing EE data module (`ee.data.*`). The interface allows users to create and eliminate folders, move and copy assets, set and delete properties, handle access control lists, and manage or cancel tasks. For example, users can copy a Landsat 8 image to their personal EE assets as follows:
+rgee implements an interface to batch actions on assets extending capabilities of the existing EE data module (`ee$data$*`). The interface allows users to create and eliminate folders, move and copy assets, set and delete properties, handle access control lists, and manage or cancel tasks. For example, users can copy a Landsat 8 image to their personal EE assets as follows:
 
 ```r
 library(rgee)
@@ -187,7 +189,7 @@ ee_manage_copy(
 ```
 
 ## Metadata display
-The `ee_print` function can save and display all metadata related to EE spatial objects. With `ee_print`, users can retrieve information about the number of images or features, number of bands or geometries, number of pixels, geotransform, datatype, properties and approximate object size. `ee_print` can be used inside debugging pipelines (e.g. linking with `ee.Image.aside`).
+The `ee_print` function can save and display all metadata related to EE spatial objects. With `ee_print`, users can retrieve information about the number of images or features, number of bands or geometries, number of pixels, geotransform, datatype, properties and approximate object size. `ee_print` can be used inside debugging pipelines (e.g. linking with `ee$Image$aside`).
 
 ```r
 library(rgee)

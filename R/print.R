@@ -1,11 +1,11 @@
 #' print Earth Engine object
 #' @param x Earth Engine spatial object.
+#' @param ... ignored
 #' @param type Character. What to show about the x object?. Three options are
 #' supported: "json", "simply", "ee_print". By default "simply".
-#' @param ... ignored
-#' @method print ee.computedobject.ComputedObject
+#' @export
 print.ee.computedobject.ComputedObject <-
-  function(x, type = getOption("rgee.print.option"), ...) {
+  function(x, ..., type = getOption("rgee.print.option")) {
     if (type == "json") {
       str(x)
     } else if (type == "simply") {
@@ -15,13 +15,6 @@ print.ee.computedobject.ComputedObject <-
     }
   }
 
-#' Method for printing EarthEngineMap objects
-#' @param x a EarthEngineMap object
-setMethod('print', signature(x = "EarthEngineMap"),
-          function(x) {
-            print(methods::slot(x, "map"))
-          }
-)
 
 #' Method for printing EarthEngineMap objects (show)
 #' @param object a EarthEngineMap object

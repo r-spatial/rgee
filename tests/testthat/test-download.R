@@ -1,57 +1,8 @@
 context("rgee: ee_download test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
+drive_folder <- drive_folder_f()
+gcs_bucket <- gcs_bucket_f()
 # -------------------------------------------------------------------------
-
-
-
-library(rgee)
-library(sf)
-
-drive_folder <- 'rgee_backup'
-gcs_bucket <- 'rgee_dev'
 
 # Communal Reserve Amarakaeri - Peru
 xmin <- -71.13
@@ -67,8 +18,7 @@ ee_geom <- matrix(ROI, ncol = 2, byrow = TRUE) %>%
   sf::st_polygon() %>%
   sf::st_sfc() %>%
   sf::st_set_crs(4326) %>%
-  sf_as_ee(check_ring_dir = TRUE) %>%
-  ee$FeatureCollection$geometry()
+  sf_as_ee()
 
 # Elevation map
 ic_srtm <- ee$Image("CGIAR/SRTM90_V4") %>%
@@ -93,8 +43,13 @@ imageExportFormatOptions_2 <- list(
 vectorExportFormatOptions_1 <- list(compressed = TRUE)
 vectorExportFormatOptions_2 <- list(compressed = FALSE)
 
-ee_clean_container(name = drive_folder, type = 'drive')
-ee_clean_container(name = gcs_bucket, type = 'gcs')
+suppressWarnings(
+  try(ee_clean_container(name = drive_folder, type = 'drive'), silent = TRUE)
+)
+
+suppressWarnings(
+  try(ee_clean_container(name = gcs_bucket, type = 'gcs'), silent = TRUE)
+)
 
 # ### IMAGES
 # # 1. GEOTIFF - DRIVE
@@ -158,6 +113,7 @@ test_that("GEOTIFF_DRIVE", {
 
 # # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS", {
+  skip_if_no_credentials()
   task_img <- ee_image_to_gcs(
     image = image_test,
     bucket = gcs_bucket,
@@ -364,6 +320,7 @@ test_that("GEOJSON_VECTOR_DRIVE",{
 
 # # 17. KMZ_VECTOR - GCS
 test_that("KMZ_VECTOR_GCS",{
+  skip_if_no_credentials()
   task_vector <- ee_table_to_gcs(
     collection = fc_test,
     bucket = gcs_bucket,
@@ -383,6 +340,7 @@ test_that("KMZ_VECTOR_GCS",{
 
 # # 18. GEOJSON_VECTOR - GCS
 test_that("GEOJSON_VECTOR_GCS",{
+  skip_if_no_credentials()
   task_vector <- ee_table_to_gcs(
     collection = fc_test,
     bucket = gcs_bucket,

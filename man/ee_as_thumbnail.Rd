@@ -111,8 +111,7 @@ plot(
 arequipa_region <- nc \%>\%
   st_bbox() \%>\%
   st_as_sfc() \%>\%
-  sf_as_ee() \%>\%
-  ee$FeatureCollection$geometry()
+  sf_as_ee()
 
 arequipa_dem <- ee_as_thumbnail(
   image = image,

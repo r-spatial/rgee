@@ -7,7 +7,7 @@
 ee_image_info(image, getsize = TRUE, compression_ratio = 20, quiet = FALSE)
 }
 \arguments{
-\item{image}{EE Image object.}
+\item{image}{Single-band EE Image object.}
 
 \item{getsize}{Logical. If TRUE, the size of the object
 will be estimated.}
@@ -24,7 +24,7 @@ number of columns (ncol), total number of pixels (total_pixel), and image
 size (image_size).
 }
 \description{
-Get the approximate number of rows, cols, and size of an
+Get the approximate number of rows, cols, and size of an single-band
 Earth Engine Image.
 }
 \examples{
@@ -37,7 +37,7 @@ srtm <- ee$Image("CGIAR/SRTM90_V4")
 ee_image_info(srtm)
 
 # Landast8
-l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
+l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$select("B4")
 ee_image_info(l8)
 }
 }

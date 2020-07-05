@@ -135,7 +135,7 @@
 #'
 #' # Case 6: mapedit
 #' library(mapedit)
-#' my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
+#' # my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
 #' }
 #' @export
 Map <- function() {

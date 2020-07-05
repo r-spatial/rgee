@@ -4,15 +4,15 @@
 \alias{print.ee.computedobject.ComputedObject}
 \title{print Earth Engine object}
 \usage{
-\method{print}{ee.computedobject.ComputedObject}(x, type = getOption("rgee.print.option"), ...)
+\method{print}{ee.computedobject.ComputedObject}(x, ..., type = getOption("rgee.print.option"))
 }
 \arguments{
 \item{x}{Earth Engine spatial object.}
 
+\item{...}{ignored}
+
 \item{type}{Character. What to show about the x object?. Three options are
 supported: "json", "simply", "ee_print". By default "simply".}
-
-\item{...}{ignored}
 }
 \description{
 print Earth Engine object

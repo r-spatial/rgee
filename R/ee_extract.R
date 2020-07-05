@@ -127,17 +127,15 @@ ee_extract <- function(x,
     stop("package sf required, please install it first")
   }
   # spatial classes
-  sf_classes <- c("sf", "sfc", "sfg")
   sp_objects <- ee_get_spatial_objects('Table')
   x_type <- x$name()
 
-  # datatype
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)
 
   # Is y a Spatial object?
-  if (!any(class(y) %in% c(sp_objects, sf_classes))) {
+  if (!any(class(y) %in% c(sp_objects, "sf"))) {
     stop("y is not a Earth Engine table or a sf object.")
   }
 
@@ -177,7 +175,7 @@ ee_extract <- function(x,
   }
 
   # If y is a sf object convert into a ee$FeatureCollection object
-  if (any(sf_classes %in% class(y))) {
+  if (any("sf" %in% class(y))) {
     sf_y <- y
     ee_y <- sf_as_ee(y)
   }
@@ -192,7 +190,7 @@ ee_extract <- function(x,
   }
 
   #set ee_ID for identify rows in the data.frame
-  ee_y <- ee_y$map(function(f) f$set("ee_ID", f$get("system:index")))
+  ee_y <- ee$FeatureCollection(ee_y)$map(function(f) f$set("ee_ID", f$get("system:index")))
 
   # Get the funname
   fun_name <- gsub("Reducer.", "", fun$getInfo()["type"])

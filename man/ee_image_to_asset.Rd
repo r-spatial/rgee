@@ -103,7 +103,7 @@ cloudMaskL457 <- function(image) {
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_ROI)$
+  filterBounds(ee$FeatureCollection(ee_ROI))$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
 
@@ -117,8 +117,9 @@ assetid <- paste0(ee_get_assethome(), '/l5_Amarakaeri')
 task_img <- ee_image_to_asset(
   image = mean_l5_Amarakaeri,
   assetId = assetid,
+  overwrite = TRUE,
   scale = 500,
-  region = ee_ROI$geometry()
+  region = ee_ROI
 )
 
 task_img$start()

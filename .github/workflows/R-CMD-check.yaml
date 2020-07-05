@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - master
+      - dev
   pull_request:
     branches:
-      - master
+      - dev
 
 name: R-CMD-check
 
@@ -18,61 +18,48 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: '3.6', platform: windows-x86_64}
-          - {os: windows-latest, r: 'release', platform: windows-x86_64}
-          - {os: macOS-latest, r: '3.6', platform: osx-x86_64-clang}
-          - {os: macOS-latest, r: 'release', platform: osx-x86_64-clang}
-          - {os: ubuntu-latest, r: '3.6', platform: linux-x86_64-ubuntu-gcc}
-          - {os: ubuntu-latest, r: 'release', platform: linux-x86_64-ubuntu-gcc}
+          - {os: windows-latest, r: '3.6'}
+          #- {os: macOS-latest, r: '3.6'}
+          #- {os: macOS-latest, r: 'devel'}
+          #- {os: ubuntu-16.04, r: '3.2', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          #- {os: ubuntu-16.04, r: '3.3', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          #- {os: ubuntu-16.04, r: '3.4', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          #- {os: ubuntu-16.04, r: '3.5', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          #- {os: ubuntu-16.04, r: '3.6', rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      CRAN: ${{ matrix.config.cran }}
+      RSPM: ${{ matrix.config.rspm }}
+      # prevent rgl issues because no X11 display is available
+      RGL_USE_NULL: true
       # macOS >= 10.15.4 linking
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
 
     steps:
-      - name: CHECKOUT CODE
-        uses: actions/checkout@v2
-
-      - name: SETUP PYTHON
+      - uses: actions/checkout@v2
+      - name: Setup python
         uses: actions/setup-python@v1
         with:
-          python-version: 3.6
-
-      - name: SETUP R
-        uses: r-lib/actions/setup-r@master
+          python-version: '3.6'
+          architecture: 'x64'
+      - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: SETUP PANDOC
-        uses: r-lib/actions/setup-pandoc@master
+      - uses: r-lib/actions/setup-pandoc@master
 
-      - name: FIND ALL R PACKAGES DEPENDECIES OF RGEE
+      - name: Query dependencies
         run: |
           install.packages('remotes')
-          install.packages('knitr')
-          install.packages('pillar') # winbug
-          install.packages('vctrs')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: RETICULATE_PYTHON SETTING
+      - name: Install Python dependencies
+        if: runner.os == 'Windows'
         run: |
-          reticulate_dir <- path.expand("~/.Renviron")
-          fileConn <- file(reticulate_dir)
-          pyPATH <- Sys.getenv("pythonLocation")
-          writeLines(sprintf('RETICULATE_PYTHON="%s"', pyPATH), fileConn)
-          close(fileConn)
-        shell: Rscript {0}
-
-      - name: INSTALL PYTHON DEPENDENCIES
-        run: |
-          pip install --upgrade pip
-          pip install setuptools oauth2client earthengine-api numpy virtualenv
-
-      - name: CACHE R PACKAGES [LINUX and macOS]
+          %PYTHON%\\python.exe -m pip install setuptools numpy earthengine-api
+      - name: Cache R packages
         if: runner.os != 'Windows'
         uses: actions/cache@v1
         with:
@@ -80,23 +67,28 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-
 
-      - name: PREBUILD TESTING
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        env:
+          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          earthengine -h
+          Rscript -e "remotes::install_github('r-hub/sysreqs')"
+          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
+          sudo -s eval "$sysreqs"
 
-      - name: INSTALL dependencies and rcmdcheck
+      - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
-      - name: CHECK
+      - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-examples"), error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
-      - name: UPLOAD CHECK RESULTS
+      - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:

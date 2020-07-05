@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 0.6.2
+Version: 1.0.0
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -75,14 +75,14 @@ Authors@R:
              comment = "Appel reviewed the package for JOSS, see 
                         https://github.com/openjournals/joss-reviews/issues/2272"))
 Description: Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of R (Earth Engine) 
+    modules, and functions are made available. Additional functions implemented include importing (exporting) of R Earth Engine 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
     See <https://r-spatial.github.io/rgee/> for further details.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Depends:
     R (>= 3.3.0)
 Imports:
