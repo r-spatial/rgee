@@ -1,8 +1,6 @@
 #' EarthEngineMap + EarthEngineMap; adds data from the second map to the first
 #'
-#' @author Adapted from
-#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim} code.
+#' @author tim-salabim Adapted from mapview code.
 #' @param e1 a EarthEngineMap map to which e2 should be added.
 #' @param e2 a EarthEngineMap map from which the objects should be added to e1.
 #'
@@ -35,9 +33,7 @@ setMethod(
 
 #' EarthEngineMap + ANY; adds data from the second map to the first
 #'
-#' @author Adapted from
-#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim} code.
+#' @author tim-salabim Adapted from mapview code.
 #' @param e1 a EarthEngineMap map to which e2 should be added.
 #' @param e2 a EarthEngineMap map from which the objects should be added to e1.
 #'
@@ -68,9 +64,7 @@ setMethod(
 
 #' ANY + EarthEngineMap; adds data from the second map to the first
 #'
-#' @author Adapted from
-#' \href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-#' tim-salabim} code.
+#' @author tim-salabim Adapted from mapview code.
 #' @param e1 a EarthEngineMap map to which e2 should be added.
 #' @param e2 a EarthEngineMap map from which the objects should be added to e1.
 #'

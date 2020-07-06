@@ -46,6 +46,10 @@ gcs_bucket_f <- function(){
 
 # Initialize credentials
 # If you do not count with GCS credentials the test will be skipped
-ee_Initialize(drive = TRUE, gcs = TRUE)
+have_ee <- reticulate::py_module_available("ee")
+have_numpy <- reticulate::py_module_available("numpy")
+if (have_ee & have_numpy) {
+  ee_Initialize(drive = TRUE, gcs = TRUE)
+}
 
 test_check("rgee")

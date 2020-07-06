@@ -9,7 +9,7 @@
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
 Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of R Earth Engine 
+    modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
     See <https://r-spatial.github.io/rgee/> for further details.
 }

@@ -15,7 +15,5 @@
 EarthEngineMap + EarthEngineMap; adds data from the second map to the first
 }
 \author{
-Adapted from
-\href{https://github.com/r-spatial/mapview/blob/develop/R/plus.R}{
-tim-salabim} code.
+tim-salabim Adapted from mapview code.
 }

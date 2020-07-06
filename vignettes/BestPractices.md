@@ -590,7 +590,7 @@ print(means$limit(10)$getInfo())
 
 Note that other ways of reducing pixels of one image within zones of
 another include
-[reduceConnectedCommponents()](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents)
+[reduceConnectedCommponents](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents)
 and/or [grouping
 reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents).
 
@@ -932,8 +932,7 @@ Calling `reduceRegions()` with a very large or complex
 is too large” error. One potential solution is to map `reduceRegion()`
 over the `FeatureCollection` instead. Another potential solution is to
 use a (gasp) for-loop. Although this is strongly discouraged in Earth
-Engine as described [here](), [here]() and [here](), `reduceRegion()`
-can be implemented in a for-loop to perform large reductions.
+Engine as described [here](https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop), [here](https://developers.google.com/earth-engine/tutorial_js_03#for-loops) and [here](https://developers.google.com/earth-engine/client_server#looping), `reduceRegion()` can be implemented in a for-loop to perform large reductions.
 
 Suppose your objective is to obtain the mean of pixels (or any
 statistic) in each feature in a `FeatureCollection` for each image in an
