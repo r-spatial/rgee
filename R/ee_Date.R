@@ -174,6 +174,16 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
     ee_utils$eedate_to_rdate_ic(x, "system:time_start")
   )
 
+  # Getting ID
+  image_id <- x$aggregate_array("system:id")$getInfo()
+  if (is.null(image_id)) {
+    image_id <- rep("no_id", x$size()$getInfo())
+  }
+  if (length(image_id) == 0) {
+    image_id <- rep("no_id", x$size()$getInfo())
+  }
+
+
   if (is.null(time_start)) {
     time_start <- NA
   } else {
@@ -185,37 +195,23 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
   }
 
   # Getting time_end
-  time_end <- ee_utils_py_to_r(
-    ee_utils$eedate_to_rdate_ic(x, "system:time_end")
-  )
-
-  if (is.null(time_end)) {
-    time_end <- NULL
+  if (!time_end) {
+    return(
+      data.frame(
+        id = image_id,
+        time_start = time_start,
+        stringsAsFactors = FALSE
+      )
+    )
   } else {
+    time_end <- ee_utils_py_to_r(
+      ee_utils$eedate_to_rdate_ic(x, "system:time_end")
+    )
     time_end <- as.POSIXct(
       x = time_end / 1000,
       origin = "1970-01-01",
       tz = "GMT"
     )
-  }
-
-  # Getting ID
-  image_id <- x$aggregate_array("system:id")$getInfo()
-  if (is.null(image_id)) {
-    image_id <- rep("no_id", x$size()$getInfo())
-  }
-  if (length(image_id) == 0) {
-    image_id <- rep("no_id", x$size()$getInfo())
-  }
-
-  # Create data.frame
-  if (is.null(time_end)) {
-    data.frame(
-      id = image_id,
-      time_start = time_start,
-      stringsAsFactors = FALSE
-    )
-  } else {
     data.frame(
       id = image_id,
       time_start = time_start,

@@ -35,6 +35,7 @@ to upload and download images.
 - `ee_extract` was adapted to work well with changes in `sf_as_ee`.
 - R CMD check is more friendly with users, the use of `--run-dontrun` is also 
 available (#72 Thanks @appelmar).
+- Fix a bug in `ee_get_date_ic`.
 
 # rgee 0.6.2
 - Earth Engine Python API updated to 0.1.226.
