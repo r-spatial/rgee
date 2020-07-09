@@ -9,7 +9,7 @@ An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+opacity = 1, legend = TRUE)}: Adds a given EE object to the map as a layer. \cr
 \itemize{
 \item \strong{eeObject:} The object to add to mapview.\cr
 \item \strong{visParams:} List of parameters for visualization.
@@ -19,6 +19,8 @@ See details.\cr
 layer should be on by default. \cr
 \item \strong{opacity:} The layer's opacity represented as a number
 between 0 and 1. Defaults to 1. \cr
+\item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
+is not a single-band ee$Image.
 }
 \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
 view at the given coordinates with the given zoom level. If no zoom level
