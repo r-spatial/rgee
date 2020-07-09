@@ -52,8 +52,8 @@ test_that("Map geometry", {
     list(pointRadius = 10, color = "FF0000"),
     "Geometry-Arequipa-test")
   m1_noviz <- rgee:::ee_addLayer(geom,name =  "Geometry-Arequipa")
-  expect_equal(m1@object$names, "Geometry-Arequipa-test")
-  expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
+  expect_equal(m1@object$name, "Geometry-Arequipa-test")
+  expect_equal(m1_noviz@object$name, "Geometry-Arequipa")
 })
 
 test_that("Map geometry", {
@@ -61,8 +61,8 @@ test_that("Map geometry", {
                            list(pointRadius = 10, color = "FF0000"),
                            "Geometry-Arequipa-test")
   m1_noviz <- rgee:::ee_addLayer(geom,name =  "Geometry-Arequipa")
-  expect_equal(m1@object$names, "Geometry-Arequipa-test")
-  expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
+  expect_equal(m1@object$name, "Geometry-Arequipa-test")
+  expect_equal(m1_noviz@object$name, "Geometry-Arequipa")
 })
 
 test_that("Map feature", {
@@ -70,7 +70,7 @@ test_that("Map feature", {
     ee$Feature(geom),
     name = "Feature-Arequipa-test"
   )
-  expect_equal(m2@object$names,"Feature-Arequipa-test")
+  expect_equal(m2@object$name,"Feature-Arequipa-test")
 })
 
 # Case: FeatureCollection
@@ -79,7 +79,7 @@ test_that("Map FeatureCollection", {
     eeObject = eeobject_fc,
     name = "FeatureCollection"
   )
-  expect_equal(m3@object$names,"FeatureCollection")
+  expect_equal(m3@object$name,"FeatureCollection")
 })
 
 # Case: Image

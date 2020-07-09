@@ -357,12 +357,9 @@ ee_addTile <- function(tile, name, shown, opacity) {
     leaflet::hideGroup(if (!shown) name else NULL)
 
   m@object$tokens <- tile
-  m@object$names <- name
+  m@object$name <- name
   m@object$opacity <- opacity
   m@object$shown <- shown
-  m@object$min <- shown
-  m@object$max <- shown
-  m@object$palette <- shown
   m <- new("EarthEngineMap", object = m@object, map = m@map)
   m
 }
@@ -402,7 +399,6 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
 
       # Extra parameters to EarthEngineMap objects that inherit from
       # one single-band ee$Image and active legend = TRUE
-      m@object$name <-  name
       m@object$min <- visParams$min
       m@object$max <- visParams$max
       m@object$palette <-  pal
