@@ -319,7 +319,7 @@ ee_addLayer <- function(eeObject,
   tile <- get_ee_image_url(image)
   map <- ee_addTile(tile = tile, name = name, shown = shown, opacity = opacity)
   if (legend) {
-    map <- ee_add_legend(map, eeObject, visParams, name)
+    ee_add_legend(map, eeObject, visParams, name)
   } else {
     map
   }
