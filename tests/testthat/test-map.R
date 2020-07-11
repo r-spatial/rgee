@@ -32,7 +32,6 @@ test_that("Map ee_setZoom", {
   expect_type(eeCenter, "environment")
 })
 
-
 test_that("Map ee_centerObject", {
   eeCenter <- rgee:::ee_centerObject(
     eeObject = geom,
@@ -94,8 +93,6 @@ test_that("Map FeatureCollection", {
   # m5 <- mapview::mapview(nc) + m4
   # expect_equal(m4@object$names,"SF")
 #})
-
-
 test_that("Map$centerObject", {
   rgee:::ee_centerObject(eeObject = image)
   expect_equal(Map$lat, 37.4716,tolerance = .001)

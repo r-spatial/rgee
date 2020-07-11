@@ -269,8 +269,6 @@ ee_addLayer <- function(eeObject,
     visParams <- list()
   }
 
-  image <- NULL
-
   # Earth Engine Spatial object
   ee_spatial_object <- ee_get_spatial_objects("Simple")
 
@@ -375,7 +373,14 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
       if (is.null(visParams$max) | is.null(visParams$min)) {
         eeimage_type <- eeObject$bandTypes()$getInfo()
         eeimage_type_min <- eeimage_type[[1]]$min
+        # Added to deal with PixelType Images
+        if (is.null(eeimage_type_min)) {
+          eeimage_type_min <- 0
+        }
         eeimage_type_max <- eeimage_type[[1]]$max
+        if (is.null(eeimage_type_max)) {
+          eeimage_type_max <- 1
+        }
       }
       if (is.null(visParams$max)) {
         visParams$max <- eeimage_type_max
