@@ -1,10 +1,10 @@
 on:
   push:
     branches:
-      - JOSS
+      - master
   pull_request:
     branches:
-      - JOSS
+      - master
 
 name: R-CMD-check
 
