@@ -36,7 +36,9 @@ to upload and download images.
 - R CMD check is more friendly with users, the use of `--run-dontrun` is also 
 available (#72 Thanks @appelmar).
 - Fix a bug in `ee_get_date_ic`.
-- `Map$addLayer` now display a legend when `eeObject` is an one-band `ee$Image`.
+- `Map$addLayer` now could display a legend when `eeObject` is an one-band `ee$Image` (By default legend = TRUE).
+- New function `ee_get`: Return the element at the specified position in a Earth Engine Collection.
+- New function `Map$addLayers`: Create interactive visualizations of ImageCollections.
 - - Earth Engine Python API updated to 0.1.227.
 
 # rgee 0.6.2

@@ -571,39 +571,6 @@ ee_sessioninfo <- function(email = NULL,
   write.table(df, sessioninfo, row.names = FALSE)
 }
 
-#' Get the path where the credentials are stored
-#'
-#' @family path utils
-#' @return A character which represents the path credential of a specific
-#' user
-#'
-#' @export
-ee_get_earthengine_path <- function() {
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-
-  sessioninfo <- sprintf(
-    "%s/rgee_sessioninfo.txt",
-    ee_utils_py_to_r(utils_py$ee_path())
-  )
-  if (file.exists(sessioninfo)) {
-    user <- read.table(sessioninfo,
-      header = TRUE,
-      stringsAsFactors = FALSE
-    )[[1]]
-    if (is.na(user)) {
-      stop("rgee_sessioninfo.txt malformed")
-    }
-  } else {
-    stop(
-      "rgee_sessioninfo.txt does not exist, ",
-      "run rgee::ee_Initialize() to fixed."
-    )
-  }
-  return(sprintf("%s/%s/", ee_path, user))
-}
-
 #' Read and evaluate a python script
 #' @noRd
 ee_source_python <- function(oauth_func_path) {
@@ -673,23 +640,6 @@ create_table <- function(user, wsc, quiet = FALSE) {
       )
   }
 }
-
-#' Get the Asset home name
-#' @family path utils
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' ee_get_assethome()
-#' }
-#' @return Character. The name of the Earth Engine Asset home
-#' (e.g. users/datacolecfbf)
-#' @export
-ee_get_assethome <- function() {
-  options('rgee.ee_user')[[1]]
-}
-
 
 #' Wrapper to create a EE Assets home
 #' @noRd

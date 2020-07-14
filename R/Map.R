@@ -7,7 +7,7 @@
 #' following functions:
 #' \itemize{
 #'   \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-#'   opacity = 1, legend = TRUE)}: Adds a given EE object to the map as a layer. \cr
+#'   opacity = 1, legend = FALSE)}: Adds a given EE object to the map as a layer. \cr
 #'   \itemize{
 #'     \item \strong{eeObject:} The object to add to mapview.\cr
 #'     \item \strong{visParams:} List of parameters for visualization.
@@ -19,6 +19,20 @@
 #'      between 0 and 1. Defaults to 1. \cr
 #'     \item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
 #'     is not a single-band ee$Image.
+#'   }
+#'   \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
+#'   opacity = 1, legend = FALSE)}: Adds a given ee$ImageCollection to the map
+#'   as multiple layers. \cr
+#'   \itemize{
+#'     \item \strong{eeObject:} The ee$ImageCollection to add to mapview.\cr
+#'     \item \strong{visParams:} List of parameters for visualization.
+#'     See details.\cr
+#'     \item \strong{name:} The name of layers.\cr
+#'     \item \strong{shown:} A flag indicating whether
+#'     layers should be on by default. \cr
+#'     \item \strong{opacity:} The layer's opacity represented as a number
+#'      between 0 and 1. Defaults to 1. \cr
+#'     \item \strong{legend:} Should a legend be plotted?.
 #'   }
 #'   \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
 #'   view at the given coordinates with the given zoom level. If no zoom level
@@ -138,6 +152,18 @@
 #' # Case 6: mapedit
 #' library(mapedit)
 #' # my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
+#'
+#' # Case 7: ImageCollection
+#' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
+#'   st_transform(4326) %>%
+#'   sf_as_ee()
+#'
+#' ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
+#'   filterDate("2016-01-01", "2016-01-31")$
+#'   filterBounds(nc) %>%
+#'   ee_get(0:4)
+#' Map$centerObject(nc$geometry())
+#' Map$addLayers(ee_s2)
 #' }
 #' @export
 Map <- function() {
@@ -146,6 +172,7 @@ Map <- function() {
 
 ee_set_methods <- function() {
   Map$addLayer <- ee_addLayer
+  Map$addLayers <- ee_addLayers
   Map$setCenter <- ee_setCenter
   Map$setZoom <- ee_setZoom
   Map$centerObject <- ee_centerObject
@@ -254,7 +281,7 @@ ee_addLayer <- function(eeObject,
                         name = NULL,
                         shown = TRUE,
                         opacity = 1,
-                        legend = TRUE) {
+                        legend = FALSE) {
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("package jsonlite required, please install it first")
   }
@@ -323,6 +350,74 @@ ee_addLayer <- function(eeObject,
   }
 }
 
+#' Adds a given ee$ImageCollection to the map as a layer.
+#' https://developers.google.com/earth-engine/api_docs#map.addlayer
+#' @noRd
+ee_addLayers <- function(eeObject,
+                         visParams = NULL,
+                         nmax = 5,
+                         name = NULL,
+                         shown = TRUE,
+                         opacity = 1,
+                         legend = FALSE) {
+
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("package mapview required, please install it first")
+  }
+
+  if (!requireNamespace("leaflet", quietly = TRUE)) {
+    stop("package leaflet required, please install it first")
+  }
+
+  # is an ee.imagecollection.ImageCollection?
+  if (!any(class(eeObject) %in% "ee.imagecollection.ImageCollection")) {
+    stop("eeObject argument is not an ee$imagecollection$ImageCollection")
+  }
+
+  if (is.null(visParams)) {
+    visParams <- list()
+  }
+
+  # size of objects
+  eeObject_size <- eeObject$size()$getInfo()
+  m_img_list <- list()
+
+  if (is.null(name)) {
+    name <- tryCatch(
+      expr = eeObject$aggregate_array("system:id")$getInfo(),
+      error = function(e) "untitled"
+    )
+    if (is.null(name)) name <- "untitled"
+  }
+
+  if (length(name) == 1) {
+    name <- sprintf("%s_%02d", name, seq_len(eeObject_size))
+  }
+
+  if (length(name) == length(eeObject_size)) {
+    stop("name does not have the same length than eeObject$size()$getInfo().")
+  }
+
+  for (index in seq_len(eeObject_size)) {
+    py_index <- index - 1
+    m_img <- Map$addLayer(
+      eeObject = ee_get(eeObject, index = py_index)$first(),
+      visParams = visParams,
+      name = name[index],
+      shown = shown,
+      opacity = opacity,
+      legend = legend
+    )
+    m_img_list[[index]] <- m_img
+  }
+  Reduce('+',m_img_list)
+}
+
+
 #' Basic base mapview object
 #' @noRd
 ee_mapview <- function() {
@@ -389,7 +484,7 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
         visParams$min <- eeimage_type_min
       }
       if (is.null(visParams$palette)) {
-        visParams$palette <- c("000000","FFFFFF")
+        visParams$palette <- c("000000", "FFFFFF")
       }
       visParams$palette <- sprintf("#%s", gsub("#", "",visParams$palette))
       pal <- leaflet::colorNumeric(visParams$palette, c(visParams$min, visParams$max))
