@@ -1,50 +1,6 @@
 context("rgee: ee_as_sf test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
 # -------------------------------------------------------------------------
-
 
 # Load and filter watersheds from a data table.
 sheds <- ee$FeatureCollection('USGS/WBD/2017/HUC06')$
@@ -76,8 +32,9 @@ test_that("sf - drive",{
 })
 
 test_that("sf - gcs",{
+  skip_if_no_credentials()
   mysheds <- ee_as_sf(ee$Feature(sheds$first()),via = "gcs",
-                      container = "rgee_dev")
+                      container = gcs_bucket_f())
   expect_s3_class(mysheds,"sf")
 })
 

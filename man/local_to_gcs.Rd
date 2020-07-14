@@ -27,14 +27,11 @@ library(stars)
 
 # Initialize a specific Earth Engine account and
 # Google Cloud Storage credentials
-ee_Initialize(
-  email = "data.colec.fbf@gmail.com",
-  gcs = TRUE
-)
+ee_Initialize(gcs = TRUE)
 
-# Define an image.
-tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-local_to_gcs(x = tif, bucket = 'rgee_dev')
+# # Define an image.
+# tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+# local_to_gcs(x = tif, bucket = 'rgee_dev')
 }
 }
 \concept{generic upload functions}

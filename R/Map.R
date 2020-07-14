@@ -7,7 +7,7 @@
 #' following functions:
 #' \itemize{
 #'   \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-#'   opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+#'   opacity = 1, legend = FALSE)}: Adds a given EE object to the map as a layer. \cr
 #'   \itemize{
 #'     \item \strong{eeObject:} The object to add to mapview.\cr
 #'     \item \strong{visParams:} List of parameters for visualization.
@@ -17,6 +17,22 @@
 #'     layer should be on by default. \cr
 #'     \item \strong{opacity:} The layer's opacity represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
+#'     \item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
+#'     is not a single-band ee$Image.
+#'   }
+#'   \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
+#'   opacity = 1, legend = FALSE)}: Adds a given ee$ImageCollection to the map
+#'   as multiple layers. \cr
+#'   \itemize{
+#'     \item \strong{eeObject:} The ee$ImageCollection to add to mapview.\cr
+#'     \item \strong{visParams:} List of parameters for visualization.
+#'     See details.\cr
+#'     \item \strong{name:} The name of layers.\cr
+#'     \item \strong{shown:} A flag indicating whether
+#'     layers should be on by default. \cr
+#'     \item \strong{opacity:} The layer's opacity represented as a number
+#'      between 0 and 1. Defaults to 1. \cr
+#'     \item \strong{legend:} Should a legend be plotted?.
 #'   }
 #'   \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
 #'   view at the given coordinates with the given zoom level. If no zoom level
@@ -128,13 +144,26 @@
 #' m4
 #'
 #' # Case 5: mapview + EarthEnginemap
+#' library(sf)
 #' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
 #' mapview(nc) + m2
 #' m2 + mapview(nc)
 #'
 #' # Case 6: mapedit
 #' library(mapedit)
-#' my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
+#' # my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
+#'
+#' # Case 7: ImageCollection
+#' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
+#'   st_transform(4326) %>%
+#'   sf_as_ee()
+#'
+#' ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
+#'   filterDate("2016-01-01", "2016-01-31")$
+#'   filterBounds(nc) %>%
+#'   ee_get(0:4)
+#' Map$centerObject(nc$geometry())
+#' Map$addLayers(ee_s2)
 #' }
 #' @export
 Map <- function() {
@@ -143,6 +172,7 @@ Map <- function() {
 
 ee_set_methods <- function() {
   Map$addLayer <- ee_addLayer
+  Map$addLayers <- ee_addLayers
   Map$setCenter <- ee_setCenter
   Map$setZoom <- ee_setZoom
   Map$centerObject <- ee_centerObject
@@ -190,7 +220,7 @@ ee_centerObject <- function(eeObject,
                             zoom = NULL,
                             maxError = ee$ErrorMargin(1)) {
   if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
-    message("NOTE: Center got from the first element.")
+    message("NOTE: Center obtained from the first element.")
     eeObject <- ee$Feature(eeObject$first())
   }
 
@@ -250,7 +280,8 @@ ee_addLayer <- function(eeObject,
                         visParams = NULL,
                         name = NULL,
                         shown = TRUE,
-                        opacity = 1) {
+                        opacity = 1,
+                        legend = FALSE) {
   if (!requireNamespace("jsonlite", quietly = TRUE)) {
     stop("package jsonlite required, please install it first")
   }
@@ -265,8 +296,6 @@ ee_addLayer <- function(eeObject,
     visParams <- list()
   }
 
-  image <- NULL
-
   # Earth Engine Spatial object
   ee_spatial_object <- ee_get_spatial_objects("Simple")
 
@@ -276,6 +305,7 @@ ee_addLayer <- function(eeObject,
       " of ee$Image, ee$Geometry, ee$Feature, or ee$FeatureCollection."
     )
   }
+
   if (any(class(eeObject) %in% ee_get_spatial_objects("Table"))) {
     features <- ee$FeatureCollection(eeObject)
 
@@ -298,7 +328,6 @@ ee_addLayer <- function(eeObject,
       fillColor = "00000000",
       width = width
     )
-
     image <- image_fill$blend(image_outline)
   } else {
     image <- do.call(eeObject$visualize, visParams)
@@ -313,7 +342,79 @@ ee_addLayer <- function(eeObject,
     if (is.null(name)) name <- "untitled"
   }
   tile <- get_ee_image_url(image)
-  ee_addTile(tile, name = name, shown = shown, opacity = opacity)
+  map <- ee_addTile(tile = tile, name = name, shown = shown, opacity = opacity)
+  if (legend) {
+    ee_add_legend(map, eeObject, visParams, name)
+  } else {
+    map
+  }
+}
+
+#' Adds a given ee$ImageCollection to the map as a layer.
+#' https://developers.google.com/earth-engine/api_docs#map.addlayer
+#' @noRd
+ee_addLayers <- function(eeObject,
+                         visParams = NULL,
+                         nmax = 5,
+                         name = NULL,
+                         shown = TRUE,
+                         opacity = 1,
+                         legend = FALSE) {
+
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("package mapview required, please install it first")
+  }
+
+  if (!requireNamespace("leaflet", quietly = TRUE)) {
+    stop("package leaflet required, please install it first")
+  }
+
+  # is an ee.imagecollection.ImageCollection?
+  if (!any(class(eeObject) %in% "ee.imagecollection.ImageCollection")) {
+    stop("eeObject argument is not an ee$imagecollection$ImageCollection")
+  }
+
+  if (is.null(visParams)) {
+    visParams <- list()
+  }
+
+  # size of objects
+  eeObject_size <- eeObject$size()$getInfo()
+  m_img_list <- list()
+
+  if (is.null(name)) {
+    name <- tryCatch(
+      expr = eeObject$aggregate_array("system:id")$getInfo(),
+      error = function(e) "untitled"
+    )
+    if (is.null(name)) name <- "untitled"
+  }
+
+  if (length(name) == 1) {
+    name <- sprintf("%s_%02d", name, seq_len(eeObject_size))
+  }
+
+  if (length(name) == length(eeObject_size)) {
+    stop("name does not have the same length than eeObject$size()$getInfo().")
+  }
+
+  for (index in seq_len(eeObject_size)) {
+    py_index <- index - 1
+    m_img <- Map$addLayer(
+      eeObject = ee_get(eeObject, index = py_index)$first(),
+      visParams = visParams,
+      name = name[index],
+      shown = shown,
+      opacity = opacity,
+      legend = legend
+    )
+    m_img_list[[index]] <- m_img
+  }
+  Reduce('+',m_img_list)
 }
 
 
@@ -347,12 +448,70 @@ ee_addTile <- function(tile, name, shown, opacity) {
     ) %>%
     ee_mapViewLayersControl(names = name) %>%
     leaflet::hideGroup(if (!shown) name else NULL)
+
   m@object$tokens <- tile
-  m@object$names <- name
+  m@object$name <- name
   m@object$opacity <- opacity
   m@object$shown <- shown
   m <- new("EarthEngineMap", object = m@object, map = m@map)
   m
+}
+
+#' Add legend to EarthEngineMap objects
+#' @noRd
+ee_add_legend <- function(m, eeObject, visParams, name) {
+  ee_obj_class <- class(eeObject)
+  type <- ee_obj_class[ee_obj_class %in%  ee_get_spatial_objects("All")]
+  if (type == "ee.image.Image") {
+    # add legend only to one-band images
+    if (is.null(visParams$bands) | length(visParams$bands) == 1) {
+      if (is.null(visParams$max) | is.null(visParams$min)) {
+        eeimage_type <- eeObject$bandTypes()$getInfo()
+        eeimage_type_min <- eeimage_type[[1]]$min
+        # Added to deal with PixelType Images
+        if (is.null(eeimage_type_min)) {
+          eeimage_type_min <- 0
+        }
+        eeimage_type_max <- eeimage_type[[1]]$max
+        if (is.null(eeimage_type_max)) {
+          eeimage_type_max <- 1
+        }
+      }
+      if (is.null(visParams$max)) {
+        visParams$max <- eeimage_type_max
+      }
+      if (is.null(visParams$min)) {
+        visParams$min <- eeimage_type_min
+      }
+      if (is.null(visParams$palette)) {
+        visParams$palette <- c("000000", "FFFFFF")
+      }
+      visParams$palette <- sprintf("#%s", gsub("#", "",visParams$palette))
+      pal <- leaflet::colorNumeric(visParams$palette, c(visParams$min, visParams$max))
+      map <- m@map %>%
+        leaflet::addLegend(
+          position = "bottomright",
+          pal = pal,
+          values = c(visParams$min, visParams$max),
+          opacity = 1,
+          title = name
+        )
+
+      # Extra parameters to EarthEngineMap objects that inherit from
+      # one single-band ee$Image and active legend = TRUE
+      m@object$min <- visParams$min
+      m@object$max <- visParams$max
+      m@object$palette <-  pal
+      m@object$legend <-  TRUE
+
+      m <- new("EarthEngineMap", object = m@object, map = map)
+      m
+    } else {
+      m
+    }
+  } else {
+    m
+  }
 }
 
 if (!isGeneric("+")) {
@@ -371,7 +530,7 @@ get_ee_image_url <- function(image) {
 
 #' Return R classes for Earth Engine Spatial Objects
 #' @noRd
-ee_get_spatial_objects <- function(type = "all") {
+ee_get_spatial_objects <- function(type = "All") {
   if (type == "Table") {
     ee_spatial_object <- c(
       "ee.geometry.Geometry",
@@ -481,3 +640,4 @@ ee_as_mapview <- function(x) {
 # Create an Map env and set methods
 Map <- Map()
 ee_set_methods()
+

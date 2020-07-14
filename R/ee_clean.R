@@ -12,8 +12,8 @@
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_clean_credentials()
-#' ee_clean_credentials('data.colec.fbf@gmail.com')
+#' # ee_clean_credentials()
+#' # ee_clean_credentials('data.colec.fbf@gmail.com')
 #'
 #' }
 #' @export
@@ -55,8 +55,8 @@ ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
 #' @family ee_clean functions
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_clean_pyenv()
+#' # library(rgee)
+#' # ee_clean_pyenv()
 #' }
 #' @export
 ee_clean_pyenv <- function() {
@@ -82,7 +82,7 @@ ee_clean_pyenv <- function() {
     close(con)
 
     # Remove system variables EARTHENGINE_PYTHON
-    system_vars <- lines[!grepl("EARTHENGINE_", lines)]
+    system_vars <- lines[!grepl("EARTHENGINE_PYTHON|EARTHENGINE_ENV", lines)]
     fileConn <- file(renv)
     writeLines(system_vars, fileConn)
     close(fileConn)

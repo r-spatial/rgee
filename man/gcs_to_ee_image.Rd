@@ -10,6 +10,7 @@ gcs_to_ee_image(
   assetId,
   overwrite = FALSE,
   properties = NULL,
+  command_line_tool_path = NULL,
   start_time = "1970-01-01",
   end_time = "1970-01-01",
   pyramiding_policy = "MEAN",
@@ -17,10 +18,10 @@ gcs_to_ee_image(
 )
 }
 \arguments{
-\item{x}{stars object.}
+\item{x}{An object of class stars or stars-proxy.}
 
 \item{gs_uri}{Character. It represents the full name of the
-GeoTIFF file in a GCS bucket.}
+GeoTIFF file of \code{x} in a GCS bucket.}
 
 \item{assetId}{Character. How to call the file once uploaded
 to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.}
@@ -30,6 +31,10 @@ it exists.}
 
 \item{properties}{List. Set of parameters to be set up as properties
 of the EE object.}
+
+\item{command_line_tool_path}{Character. Path to the Earth Engine command line
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{start_time}{Character. Sets the start time property to a number
 or date.}
@@ -50,38 +55,42 @@ Move a GeoTIFF image from GCS to their EE assets
 \examples{
 \dontrun{
 library(rgee)
-library(stars)
+library(sf)
 ee_Initialize(gcs = TRUE)
 
-# Get the filename of a image
-tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-x <- read_stars(tif)
-assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
+# Create sf object
+nc <- st_read(system.file("shape/nc.shp", package="sf"))
+assetId <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
 
 # Method 1
-# 1. Move from local to gcs
-gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
+# 1. Pass the sf to a zip file
+zipfile <- ee_utils_shp_to_zip(nc)
 
-# 2. Pass from gcs to asset
-gcs_to_ee_image(
-  x = x,
-  gs_uri = gs_uri,
-  assetId = assetId
-)
+# # 2. From local to gcs
+# gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
 
-# OPTIONAL: Monitoring progress
-ee_monitoring()
+# # 3. Pass the sf to a zip file
+# gcs_to_ee_table(
+#    gs_uri = gs_uri,
+#    overwrite = TRUE,
+#    assetId = assetId
+# )
 
-# OPTIONAL: Display results
-ee_stars_01 <- ee$Image(assetId)
-Map$centerObject(ee_stars_01)
-Map$addLayer(ee_stars_01)
+# # OPTIONAL: Monitoring progress
+# ee_monitoring()
 
-# Method 2
-ee_sf_02 <- stars_as_ee(x = x,
-                        assetId = assetId,
-                        bucket = "rgee_dev")
-Map$centerObject(ee_sf_02)
-Map$addLayer(ee_sf_02)
+# # OPTIONAL: Display results
+# ee_sf_01 <- ee$FeatureCollection(assetId)
+# Map$centerObject(ee_sf_01)
+# Map$addLayer(ee_sf_01)
+
+# # Method 2
+# ee_sf_02 <- sf_as_ee(x = nc,
+#                       assetId = assetId,
+#                       overwrite = TRUE,
+#                       bucket = "rgee_dev",
+#                       via = 'gcs')
+# Map$centerObject(ee_sf_02)
+# Map$addLayer(ee_sf_02)
 }
 }

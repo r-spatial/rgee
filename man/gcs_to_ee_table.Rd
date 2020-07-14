@@ -4,7 +4,13 @@
 \alias{gcs_to_ee_table}
 \title{Move a zipped shapefile from GCS to their EE Assets}
 \usage{
-gcs_to_ee_table(gs_uri, assetId, overwrite = FALSE, quiet = FALSE)
+gcs_to_ee_table(
+  gs_uri,
+  assetId,
+  command_line_tool_path = NULL,
+  overwrite = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{gs_uri}{Character. It represents the full name of an
@@ -12,6 +18,10 @@ zipped shapefile in a GCS bucket.}
 
 \item{assetId}{Character. What to call the file once uploaded
 to their Earth Engine Assets}
+
+\item{command_line_tool_path}{Character. Path to the Earth Engine command line
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
 it exists.}
@@ -38,29 +48,31 @@ assetId <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
 # 1. Pass the sf to a zip file
 zipfile <- ee_utils_shp_to_zip(nc)
 
-# 2. From local to gcs
-gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
-
-# 3. Pass the sf to a zip file
-gcs_to_ee_table(
-  gs_uri = gs_uri,
-  assetId = assetId
-)
-
-# OPTIONAL: Monitoring progress
-ee_monitoring()
-
-# OPTIONAL: Display results
-ee_sf_01 <- ee$FeatureCollection(assetId)
-Map$centerObject(ee_sf_01)
-Map$addLayer(ee_sf_01)
-
-# Method 2
-ee_sf_02 <- sf_as_ee(x = nc,
-                     assetId = assetId,
-                     bucket = "rgee_dev",
-                     via = 'gcs')
-Map$centerObject(ee_sf_02)
-Map$addLayer(ee_sf_02)
+# # 2. From local to gcs
+# gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#
+# # 3. Pass the sf to a zip file
+# gcs_to_ee_table(
+#   gs_uri = gs_uri,
+#   overwrite = TRUE,
+#   assetId = assetId
+# )
+#
+# # OPTIONAL: Monitoring progress
+# ee_monitoring()
+#
+# # OPTIONAL: Display results
+# ee_sf_01 <- ee$FeatureCollection(assetId)
+# Map$centerObject(ee_sf_01)
+# Map$addLayer(ee_sf_01)
+#
+# # Method 2
+# ee_sf_02 <- sf_as_ee(x = nc,
+#                      assetId = assetId,
+#                      overwrite = TRUE,
+#                      bucket = "rgee_dev",
+#                      via = 'gcs')
+# Map$centerObject(ee_sf_02)
+# Map$addLayer(ee_sf_02)
 }
 }

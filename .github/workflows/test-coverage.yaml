@@ -91,7 +91,7 @@ jobs:
         run: |
           earthengine -h
           ls $HOME/.config/earthengine/
-          ls $HOME/.config/earthengine/data.colec.fbf
+          ls $HOME/.config/earthengine/ndef
 
 
       - name: INSTALL rgdal WITH CONFIGURE

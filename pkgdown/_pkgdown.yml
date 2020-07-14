@@ -80,6 +80,8 @@ reference:
       - +,mapview,EarthEngineMap-method
       - print,EarthEngineMap-method
       - show,EarthEngineMap-method
+      - mapview-class
+      - +,EarthEngineMap,mapview-method
 
   - title: "Image download"
     contents:

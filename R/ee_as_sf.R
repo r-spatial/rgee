@@ -74,11 +74,11 @@
 #' )
 #'
 #' # Download via GCS
-#' sf_randomPoints_gcs <- ee_as_sf(
-#'   x = subset,
-#'   via = 'gcs',
-#'   container = 'rgee_dev' #GCS bucket name
-#' )
+#' # sf_randomPoints_gcs <- ee_as_sf(
+#' #   x = subset,
+#' #   via = 'gcs',
+#' #   container = 'rgee_dev' #GCS bucket name
+#' # )
 #' }
 #' @export
 ee_as_sf <- function(x,
@@ -103,6 +103,7 @@ ee_as_sf <- function(x,
   if (missing(dsn)) {
     dsn <- paste0(tempfile(),".geojson")
   }
+
   if (!any(class(x) %in% sp_eeobjects)) {
     stop("x is not a Earth Engine table\n")
   }

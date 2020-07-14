@@ -4,12 +4,12 @@
 \alias{ee_install_set_pyenv}
 \title{Set the Python environment to be used by rgee}
 \usage{
-ee_install_set_pyenv(py_path, py_env = "rgee")
+ee_install_set_pyenv(py_path = NULL, py_env = NULL)
 }
 \arguments{
 \item{py_path}{The path to a Python interpreter.}
 
-\item{py_env}{The name of the environment. By default "rgee".}
+\item{py_env}{The name of the environment}
 }
 \description{
 This function create a new environment variable called 'EARTHENGINE_PYTHON'.

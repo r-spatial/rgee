@@ -8,15 +8,14 @@ ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email
-name is used as a folder inside the path \code{rgee::ee_get_earthengine_path()}.
-This enable a multi-user support allowing to target a specific
-Google identity.}
+argument is used to create a folder inside the path \code{~/.config/earthengine/}
+that save all credentials for a specific Google identity.}
 
 \item{drive}{Logical (optional). If TRUE, the drive credential
-will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
+will be cached in the path \code{~/.config/earthengine/}.}
 
-\item{gcs}{Logical. If TRUE, the Google Cloud Storage
-credential will be cached in the path \code{rgee::ee_get_earthengine_path()}.}
+\item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
+credential will be cached in the path \code{~/.config/earthengine/}.}
 
 \item{quiet}{Logical. Suppress info messages.}
 }
@@ -28,10 +27,10 @@ allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize(...)} can also manage Google drive and Google
+\code{ee_Initialize(...)} can manage Google drive and Google
 Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
-them, these are only necessary for exporting and importing tasks.
+them, these are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specify the email
 argument all user credentials will be saved in a subdirectory
@@ -45,11 +44,11 @@ library(rgee)
 ee_Initialize()
 
 # Advanced init - Load full credentials
-ee_Initialize(
-  email = "your_email@gmail.com",
-  drive = TRUE,
-  gcs = TRUE
-)
+# ee_Initialize(
+#   email = "your_email@gmail.com",
+#   drive = TRUE,
+#   gcs = TRUE
+# )
 
 ee_user_info()
 }

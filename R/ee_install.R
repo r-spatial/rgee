@@ -28,8 +28,8 @@
 #' @family ee_install functions
 #' @examples
 #' \dontrun{
-#' library(rgee)
-#' ee_install() #It is just necessary once
+#' # library(rgee)
+#' # ee_install() #It is just necessary once
 #' }
 #' @export
 ee_install <- function(py_env = "rgee",
@@ -161,7 +161,7 @@ ee_install <- function(py_env = "rgee",
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
-      ee_install_set_pyenv(py_path = py_path)
+      ee_install_set_pyenv(py_path = py_path, py_env = py_env)
       message(
         "\n",
         paste(
@@ -244,10 +244,10 @@ ee_install <- function(py_env = "rgee",
 #' EARTHENGINE_PYTHON is saved into the file .Renviron.
 #'
 #' @param py_path The path to a Python interpreter.
-#' @param py_env The name of the environment. By default "rgee".
+#' @param py_env The name of the environment
 #' @family ee_install functions
 #' @export
-ee_install_set_pyenv <- function(py_path, py_env = "rgee") {
+ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL) {
   ee_clean_pyenv()
   # Trying to get the env from the py_path
   home <- Sys.getenv("HOME")
@@ -275,11 +275,19 @@ ee_install_set_pyenv <- function(py_path, py_env = "rgee") {
     ii <- ii + 1
   }
 
-  # Set EARTHENGINE_PYTHON in .Renviron
-  ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
-  ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
-  system_vars <- c(lines, ret_python, ret_env)
+  # Set EARTHENGINE_PYTHON and EARTHENGINE_ENV in .Renviron if
+  # exists.
+  to_remote <- as.character()
+  if (!is.null(py_path)) {
+    ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
+    to_remote <- c(to_remote, ret_python)
+  }
 
+  if (!is.null(py_env)) {
+    ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
+    to_remote <- c(to_remote, ret_python)
+  }
+  system_vars <- c(lines, ret_python, ret_env)
   writeLines(system_vars, con)
   close(con)
   invisible(TRUE)
@@ -376,9 +384,19 @@ is_windows <- function() {
 #'
 #' @param version Character. The Earth Engine Python API version to upgrade.
 #' By default \code{rgee::ee_version()}.
+#' @param earthengine_env Character. The name, or full path, of the
+#' environment in which the earthengine-api packages are to be installed.
 #' @family ee_install functions
 #' @export
-ee_install_upgrade <- function(version = NULL) {
+ee_install_upgrade <- function(version = NULL,
+                               earthengine_env = Sys.getenv("EARTHENGINE_ENV")) {
+  if (earthengine_env == "") {
+    stop(
+      "ee_install_upgrade needs that global env EARTHENGINE_ENV",
+      " is defined to work. Run ee_install_set_pyenv(py_env = \"YOUR_ENV\")",
+      " to set a Python environment."
+      )
+  }
   if (is.null(version)) {
     version <- rgee::ee_version()
   }
@@ -405,3 +423,29 @@ ee_install_upgrade <- function(version = NULL) {
          cat("Restart R session to see changes.\n"))
 }
 
+
+#' Search if EARTHENGINE_INIT_MESSAGE is set
+#' @noRd
+ee_search_init_message <- function() {
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  if (!file.exists(renv)) {
+    return(FALSE)
+  }
+
+  con  <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+  close(con)
+  # Find if EARTHENGINE_INIT_MESSAGE is set
+  any(grepl("EARTHENGINE_INIT_MESSAGE", lines))
+}

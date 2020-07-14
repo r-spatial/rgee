@@ -54,12 +54,13 @@ ee_ROI <- matrix(ROI, ncol = 2, byrow = TRUE) \%>\%
   sf_as_ee()
 
 amk_fc <- ee$FeatureCollection(
-  list(ee$Feature(ee_ROI$geometry(), list(name = "Amarakaeri")))
+  list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
 )
 
 assetid <- paste0(ee_get_assethome(), '/geom_Amarakaeri')
 task_vector <- ee_table_to_asset(
   collection = amk_fc,
+  overwrite = TRUE,
   assetId = assetid
 )
 task_vector$start()

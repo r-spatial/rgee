@@ -1,52 +1,7 @@
 context("rgee: sf_as_ee test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
 # -------------------------------------------------------------------------
 
-
-# data --------------------------------------------------------------------
 geom <- ee$Geometry$Point(list(-73.53522, -15.75453))
 eeobject_fc <- ee$FeatureCollection(geom)
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -77,7 +32,6 @@ test_that("Map ee_setZoom", {
   expect_type(eeCenter, "environment")
 })
 
-
 test_that("Map ee_centerObject", {
   eeCenter <- rgee:::ee_centerObject(
     eeObject = geom,
@@ -97,8 +51,8 @@ test_that("Map geometry", {
     list(pointRadius = 10, color = "FF0000"),
     "Geometry-Arequipa-test")
   m1_noviz <- rgee:::ee_addLayer(geom,name =  "Geometry-Arequipa")
-  expect_equal(m1@object$names, "Geometry-Arequipa-test")
-  expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
+  expect_equal(m1@object$name, "Geometry-Arequipa-test")
+  expect_equal(m1_noviz@object$name, "Geometry-Arequipa")
 })
 
 test_that("Map geometry", {
@@ -106,8 +60,8 @@ test_that("Map geometry", {
                            list(pointRadius = 10, color = "FF0000"),
                            "Geometry-Arequipa-test")
   m1_noviz <- rgee:::ee_addLayer(geom,name =  "Geometry-Arequipa")
-  expect_equal(m1@object$names, "Geometry-Arequipa-test")
-  expect_equal(m1_noviz@object$names, "Geometry-Arequipa")
+  expect_equal(m1@object$name, "Geometry-Arequipa-test")
+  expect_equal(m1_noviz@object$name, "Geometry-Arequipa")
 })
 
 test_that("Map feature", {
@@ -115,7 +69,7 @@ test_that("Map feature", {
     ee$Feature(geom),
     name = "Feature-Arequipa-test"
   )
-  expect_equal(m2@object$names,"Feature-Arequipa-test")
+  expect_equal(m2@object$name,"Feature-Arequipa-test")
 })
 
 # Case: FeatureCollection
@@ -124,23 +78,21 @@ test_that("Map FeatureCollection", {
     eeObject = eeobject_fc,
     name = "FeatureCollection"
   )
-  expect_equal(m3@object$names,"FeatureCollection")
+  expect_equal(m3@object$name,"FeatureCollection")
 })
 
 # Case: Image
-test_that("Map Image", {
-  nc <- sf::st_read(system.file("shp/arequipa.shp", package="rgee"))
-  m4 <- rgee:::ee_addLayer(
-    eeObject = image,
-    visParams = list(bands = c("B4", "B3", "B2"), max = 10000),
-    name = "SF"
-  )
-  m6 <- m4 + mapview::mapview(nc)
-  m5 <- mapview::mapview(nc) + m4
-  expect_equal(m4@object$names,"SF")
-})
-
-
+#test_that("Map Image", {
+  # nc <- sf::st_read(system.file("shp/arequipa.shp", package="rgee"))
+  # m4 <- rgee:::ee_addLayer(
+  #   eeObject = image,
+  #   visParams = list(bands = c("B4", "B3", "B2"), max = 10000),
+  #   name = "SF"
+  # )
+  # m6 <- m4 + mapview::mapview(nc)
+  # m5 <- mapview::mapview(nc) + m4
+  # expect_equal(m4@object$names,"SF")
+#})
 test_that("Map$centerObject", {
   rgee:::ee_centerObject(eeObject = image)
   expect_equal(Map$lat, 37.4716,tolerance = .001)
@@ -194,6 +146,3 @@ test_that("messages 01", {
     eeObject = eeobject_fc$first()$geometry())
   expect_type(message,"environment")
 })
-
-
-

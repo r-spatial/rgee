@@ -3,9 +3,9 @@
 #' Convert an ee$Image into a stars object
 #'
 #' @param image ee$Image to be converted into a stars object
-#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
-#' CRS needs to be the same that the x argument otherwise it will be
-#' forced. If not specified, image bounds will be taken.
+#' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
+#' to export. CRS needs to be the same that the x argument otherwise it will be
+#' forced. If not specified image bounds will be taken.
 #' @param dsn Character. Output filename. If missing,
 #' \code{ee_as_stars} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
@@ -13,8 +13,8 @@
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Multiple
-#' options supported. See details.
+#' @param via Character. Method to fetch data about the object. Three methods
+#' are implemented: "getInfo", "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -80,26 +80,20 @@
 #' )
 #'
 #' ## gcs - Method 03
-#' img_03 <- ee_as_stars(
-#'   image = img,
-#'   region = geometry,
-#'   container = "rgee_dev",
-#'   via = "gcs"
-#' )
+#' # img_03 <- ee_as_stars(
+#' #   image = img,
+#' #  region = geometry,
+#' #   container = "rgee_dev",
+#' #  via = "gcs"
+#' #)
 #'
 #' # OPTIONAL: Delete containers
-#' ee_clean_container(
-#'   name = "rgee_backup",
-#'   type = "drive"
-#' )
-#' ee_clean_container(
-#'   name = "rgee_dev",
-#'   type = "gcs"
-#' )
+#' # ee_clean_container(name = "rgee_backup", type = "drive")
+#' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_stars <- function(image,
-                        region,
+                        region = NULL,
                         dsn = NULL,
                         via = "getInfo",
                         scale = NULL,
@@ -112,6 +106,13 @@ ee_as_stars <- function(image,
   }
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
+  }
+
+  if (is.null(region)) {
+    if (!quiet) {
+      message("region is not specified taking the image's region...")
+    }
+    region <- image$geometry()
   }
 
   img_files <- ee_image_local(
@@ -127,8 +128,13 @@ ee_as_stars <- function(image,
   )
 
   img_stars <- stars::read_stars(img_files$file,proxy = TRUE)
-  sf::st_crs(img_stars) <- img_files$crs
-  stars::st_set_dimensions(img_stars, 3, values = img_files$band_names)
+
+  # It's a single image?
+  if (length(stars::st_dimensions(img_stars)) < 3) {
+    img_stars
+  } else {
+    stars::st_set_dimensions(img_stars, 3, values = img_files$band_names)
+  }
 }
 
 
@@ -137,9 +143,9 @@ ee_as_stars <- function(image,
 #' Convert an ee$Image into a raster object
 #'
 #' @param image ee$Image to be converted into a raster object
-#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
-#' CRS needs to be the same that the x argument otherwise it will be
-#' forced. If not specified, image bounds will be taken.
+#' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
+#' to export. CRS needs to be the same that the x argument otherwise it will be
+#' forced. If not specified image bounds will be taken.
 #' @param dsn Character. Output filename. If missing,
 #' \code{ee_as_raster} will create a temporary file.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
@@ -147,8 +153,8 @@ ee_as_stars <- function(image,
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Multiple
-#' options supported. See details.
+#' @param via Character. Method to fetch data about the object. Three methods
+#' are implemented: "getInfo", "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -212,26 +218,20 @@ ee_as_stars <- function(image,
 #' )
 #'
 #' ## gcs - Method 03
-#' img_03 <- ee_as_raster(
-#'   image = img,
-#'   region = geometry,
-#'   container = "rgee_dev",
-#'   via = "gcs"
-#' )
+#' # img_03 <- ee_as_raster(
+#' #   image = img,
+#' #   region = geometry,
+#' #   container = "rgee_dev",
+#' #   via = "gcs"
+#' # )
 #'
 #' # OPTIONAL: Delete containers
-#' ee_clean_container(
-#'   name = "rgee_backup",
-#'   type = "drive"
-#' )
-#' ee_clean_container(
-#'   name = "rgee_dev",
-#'   type = "gcs"
-#' )
+#' # ee_clean_container(name = "rgee_backup", type = "drive")
+#' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_raster  <- function(image,
-                          region,
+                          region = NULL,
                           dsn = NULL,
                           via = "getInfo",
                           scale = NULL,
@@ -241,6 +241,13 @@ ee_as_raster  <- function(image,
                           ...) {
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
+  }
+
+  if (is.null(region)) {
+    if (!quiet) {
+      message("region is not specified taking the image's region...")
+    }
+    region <- image$geometry()
   }
 
   img_files <- ee_image_local(
@@ -265,148 +272,6 @@ ee_as_raster  <- function(image,
     img_raster
   }
 }
-
-#' Convert a stars or stars-proxy object into an EE Image
-#'
-#' Convert a stars or stars-proxy object into an ee$Image.
-#'
-#' @param x stars or stars-proxy object to be converted into an ee$Image.
-#' @param assetId Character. Destination asset ID for the uploaded file.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten.
-#' @param bucket Character. Name of the GCS bucket.
-#' @param monitoring Logical. If TRUE the exportation task will be monitored.
-#' @param quiet Logical. Suppress info message.
-#'
-#' @return An ee$Image object
-#' @family image upload functions
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' library(stars)
-#' ee_Initialize(gcs = TRUE)
-#'
-#' # Get the filename of a image
-#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-#' x <- read_stars(tif)
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
-#'
-#' # Method 1
-#' # 1. Move from local to gcs
-#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
-#'
-#' # 2. Pass from gcs to asset
-#' gcs_to_ee_image(
-#'   x = x,
-#'   gs_uri = gs_uri,
-#'   assetId = assetId
-#' )
-#'
-#' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
-#'
-#' # OPTIONAL: Display results
-#' ee_stars_01 <- ee$Image(assetId)
-#' Map$centerObject(ee_stars_01)
-#' Map$addLayer(ee_stars_01)
-#'
-#' # Method 2
-#' ee_stars_02 <- stars_as_ee(
-#'   x = x,
-#'   assetId = assetId,
-#'   bucket = "rgee_dev"
-#' )
-#' Map$centerObject(ee_stars_02)
-#' Map$addLayer(ee_stars_02)
-#' }
-#' @export
-stars_as_ee <- function(x,
-                        assetId,
-                        overwrite = FALSE,
-                        monitoring = TRUE,
-                        bucket = NULL,
-                        quiet = FALSE) {
-  # Create a temporary shapefile as
-  ee_temp <- tempdir()
-
-  stars_proxy <- ee_as_proxystars(x, temp_dir = ee_temp)
-  gcs_filename <- local_to_gcs(
-    x = stars_proxy[[1]],
-    bucket = bucket,
-    quiet = quiet
-  )
-
-  gcs_to_ee_image(
-    x = x,
-    gs_uri = gcs_filename,
-    overwrite = overwrite,
-    assetId = assetId
-  )
-
-  if (isTRUE(monitoring)) {
-    ee_monitoring()
-    ee$Image(assetId)
-  } else {
-    assetId
-  }
-}
-
-
-#' Convert a Raster* object into an EE Image
-#'
-#' Convert a Raster* object into an ee$Image.
-#'
-#' @param x RasterLayer, RasterStack or RasterBrick object to be converted into
-#' an ee$Image.
-#' @param assetId Character. Destination asset ID for the uploaded file.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten.
-#' @param bucket Character. Name of the GCS bucket.
-#' @param monitoring Logical. If TRUE the exportation task will be monitored.
-#' @param quiet Logical. Suppress info message.
-#'
-#' @return An ee$Image object
-#' @family image upload functions
-#'
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' library(stars)
-#' ee_Initialize(gcs = TRUE)
-#'
-#' # Get the filename of a image
-#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-#' x <- read_stars(tif)
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
-#'
-#' # Method 1
-#' # 1. Move from local to gcs
-#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
-#'
-#' # 2. Pass from gcs to asset
-#' gcs_to_ee_image(
-#'   x = x,
-#'   gs_uri = gs_uri,
-#'   assetId = assetId
-#' )
-#'
-#' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
-#'
-#' # OPTIONAL: Display results
-#' ee_raster_01 <- ee$Image(assetId)
-#' Map$centerObject(ee_raster_01)
-#' Map$addLayer(ee_raster_01)
-#'
-#' # Method 2
-#' ee_raster_02 <- raster_as_ee(
-#'   x = x,
-#'   assetId = assetId,
-#'   bucket = "rgee_dev"
-#' )
-#' Map$centerObject(ee_raster_02)
-#' Map$addLayer(ee_raster_02)
-#' }
-#' @export
-raster_as_ee <- stars_as_ee
 
 #' Passing an Earth Engine Image to Local
 #' @noRd
@@ -574,10 +439,11 @@ ee_image_local <- function(image,
     )
     region_fixed <- sf_region_gridded %>%
       sf_as_ee(
-        check_ring_dir = TRUE,
         evenOdd = is_evenodd,
         proj = img_crs,
-        geodesic = is_geodesic
+        geodesic = is_geodesic,
+        quiet = TRUE
+
       )
 
     # region parameters display
@@ -586,13 +452,13 @@ ee_image_local <- function(image,
         '- region parameters\n',
         'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
-        'geodesic :', is_geodesic, "\n",
+        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
         'evenOdd  :', is_evenodd, "\n"
       )
     }
 
     # ee$FeatureCollection to ee$List
-    region_features <- region_fixed$toList(
+    region_features <- ee$FeatureCollection(region_fixed)$toList(
       length(sf_region_gridded)
     )
 
@@ -713,7 +579,7 @@ ee_image_local <- function(image,
         '- region parameters\n',
         'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
-        'geodesic :', is_geodesic, "\n",
+        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
         'evenOdd  :', is_evenodd, "\n"
       )
     }
@@ -771,7 +637,7 @@ ee_image_local <- function(image,
         '- region parameters\n',
         'WKT      :', sf::st_as_text(sf_region), "\n",
         'CRS      :', img_crs, "\n",
-        'geodesic :', is_geodesic, "\n",
+        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
         'evenOdd  :', is_evenodd, "\n"
       )
     }
@@ -814,10 +680,10 @@ ee_image_local <- function(image,
 
 #' Approximate size of an EE Image object
 #'
-#' Get the approximate number of rows, cols, and size of an
+#' Get the approximate number of rows, cols, and size of an single-band
 #' Earth Engine Image.
 #'
-#' @param image EE Image object.
+#' @param image Single-band EE Image object.
 #' @param getsize Logical. If TRUE, the size of the object
 #' will be estimated.
 #' @param compression_ratio Numeric. Measurement of the relative reduction
@@ -837,7 +703,7 @@ ee_image_local <- function(image,
 #' ee_image_info(srtm)
 #'
 #' # Landast8
-#' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
+#' l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$select("B4")
 #' ee_image_info(l8)
 #' }
 #' @export

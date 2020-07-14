@@ -9,9 +9,9 @@ sf_as_ee(
   via = "getInfo",
   assetId = NULL,
   bucket = NULL,
+  command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,
-  check_ring_dir = FALSE,
   evenOdd = TRUE,
   proj = 4326,
   geodesic = NULL,
@@ -20,10 +20,10 @@ sf_as_ee(
 )
 }
 \arguments{
-\item{x}{sf object to be converted into an ee$FeatureCollection.}
+\item{x}{object of class sf, sfc or sfg.}
 
 \item{via}{Character. Upload method for sf objects. Three methods are
-implemented 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.}
+implemented: 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.}
 
 \item{assetId}{Character. Destination asset ID for the uploaded file. Ignore
 if \code{via} argument is "getInfo".}
@@ -31,14 +31,17 @@ if \code{via} argument is "getInfo".}
 \item{bucket}{Character. Name of the bucket (GCS) to save intermediate files
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
+\item{command_line_tool_path}{Character. Path to the Earth Engine command line
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if \code{via} is not defined as "gcs_to_asset").}
+
 \item{overwrite}{A boolean argument which indicates indicating
-whether "filename" should be overwritten. By default TRUE.}
+whether "filename" should be overwritten. Ignore if \code{via} argument
+is "getInfo". By default TRUE.}
 
 \item{monitoring}{Logical. Ignore if via is not set as
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
-
-\item{check_ring_dir}{Logical. See \code{st_read} for details.}
 
 \item{evenOdd}{Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 polygon interiors will be determined by the even/odd rule, where a point
@@ -61,38 +64,34 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 \item{...}{\code{st_read} arguments might be included.}
 }
 \value{
-An ee$FeatureCollection object
+When \code{via} is "getInfo" and \code{x} is either an sf or sfc object
+with multiple geometries will return an \code{ee$FeatureCollection}. For
+single sfc and sfg objects will return an \code{ee$Geometry$...}.
+
+If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" and
+monitoring is TRUE will return an \code{ee$FeatureCollection} otherwise
+will return an unstarted task.
 }
 \description{
-Convert an sf object to an ee$FeatureCollection
+Load an sf object to Earth Engine.
 }
 \details{
 \code{sf_as_ee} supports the upload of \code{sf} objects by three different
-options: "getInfo", "getInfo_to_asset", and "gcs_to_asset".
-When "getInfo" is set in the \code{via} argument the sf object is
-transformed to GeoJSON (using \code{geojsonio::geojson_json}) and then
-encrusted in an HTTP request using the server-side objects that are
-implemented in the Earth Engine API (ee$Geometry). If the sf object is too
-large (~ >1Mb) it is likely to cause bottlenecks since it is a temporary
-file that will save in the request message not in their EE Assets. See
-\href{https://developers.google.com/earth-engine/client_server}{Client
-vs Server} documentation for more details. The second method implemented is
-'getInfo_to_asset'. It is similar to the previous one, with the difference
-that the result will be saved in your Earth Engine Asset. For dealing
-with very large spatial objects is preferable to use the third option
-'gcs_to_asset'. This option firstly saves the sf object as a *.shp file
-in the /temp directory. Secondly, using the function \code{local_to_gcs}
+options: "getInfo" (default), "getInfo_to_asset", and "gcs_to_asset". \code{getInfo}
+transforms sf objects (sfg, sfc, or sf) to GeoJSON (using \code{geojsonio::geojson_json})
+and then encrusted them in an HTTP request using the server-side objects that are
+implemented in the Earth Engine API (i.e. ee$Geometry$...). If the sf object is too
+large (~ >1Mb) is likely to cause bottlenecks since it is a temporary
+file that is not saved in your EE Assets (server-side). The second option implemented
+is 'getInfo_to_asset'. It is similar to the previous one, with the difference
+that after create the server-side object will save it in your Earth Engine
+Assets. For dealing with very large spatial objects is preferable to use the
+third option 'gcs_to_asset'. This option firstly saves the sf object as a *.shp
+file in the /temp directory. Secondly, using the function \code{local_to_gcs}
 will move the shapefile from local to Google Cloud Storage. Finally, using
 the function \code{gcs_to_ee_table} the ESRI shapefile will be loaded
-to their EE Assets.
-See \href{https://developers.google.com/earth-engine/importing}{Importing
+to their EE Assets. See \href{https://developers.google.com/earth-engine/importing}{Importing
 table data} documentation for more details.
-
-Earth Engine is strict on polygon ring directions (outer ring
-counter-clockwise, and the inner one clockwise). If \code{check_ring_dir} is TRUE,
-it checks every ring, and revert them if necessary, to counter clockwise for
-outer, and clockwise for inner (hole) ones. By default, this is FALSE because
-it is an expensive operation.
 }
 \examples{
 \dontrun{
@@ -114,6 +113,7 @@ toy_poly <- matrix(data = c(-35,-10,-35,10,35,10,35,-10,-35,-10),
                    byrow = TRUE) \%>\%
   list() \%>\%
   st_polygon()
+
 holePoly <- sf_as_ee(x = toy_poly, evenOdd = FALSE)
 
 # Create an even-odd version of the polygon.
@@ -123,27 +123,27 @@ evenOddPoly <- sf_as_ee(toy_poly, evenOdd = TRUE)
 pt <- ee$Geometry$Point(c(1.5, 1.5))
 
 # Check insideness with a contains operator.
-print(holePoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
-print(evenOddPoly$geometry()$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
+print(holePoly$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
+print(evenOddPoly$contains(pt)$getInfo() \%>\% ee_utils_py_to_r())
 
-# 2. Upload small geometries to EE asset
-assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')
-eex <- sf_as_ee(
-  x = toy_poly,
-  overwrite = TRUE,
-  assetId = assetId,
-  via = 'getInfo_to_asset')
-
-# 3. Upload large geometries to EE asset
-ee_Initialize(gcs = TRUE)
-assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
-eex <- sf_as_ee(
-  x = toy_poly,
-  overwrite = TRUE,
-  assetId = assetId,
-  bucket = 'rgee_dev',
-  monitoring = FALSE,
-  via = 'gcs_to_asset'
-)
+# # 2. Upload small geometries to EE asset
+# assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly')
+# eex <- sf_as_ee(
+#   x = toy_poly,
+#   overwrite = TRUE,
+#   assetId = assetId,
+#   via = "getInfo_to_asset")
+# # 3. Upload large geometries to EE asset
+# ee_Initialize(gcs = TRUE)
+# assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
+#  eex <- sf_as_ee(
+#  x = toy_poly,
+#  overwrite = TRUE,
+#  assetId = assetId,
+#  bucket = 'rgee_dev',
+#  monitoring = FALSE,
+#  via = 'gcs_to_asset'
+#  )
+# ee_monitoring()
 }
 }

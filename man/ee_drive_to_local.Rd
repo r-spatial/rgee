@@ -4,13 +4,7 @@
 \alias{ee_drive_to_local}
 \title{Move results from Google Drive to a local directory}
 \usage{
-ee_drive_to_local(
-  task,
-  dsn,
-  overwrite = TRUE,
-  consider = interactive(),
-  quiet = FALSE
-)
+ee_drive_to_local(task, dsn, overwrite = TRUE, consider = TRUE, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
@@ -80,7 +74,7 @@ cloudMaskL457 <- function(image) {
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_ROI)$
+  filterBounds(ee$FeatureCollection(ee_ROI))$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
 
@@ -94,7 +88,7 @@ task_img <- ee_image_to_drive(
   image = mean_l5_Amarakaeri,
   folder = "Amarakaeri",
   fileFormat = "GEO_TIFF",
-  region = ee_ROI$geometry(),
+  region = ee_ROI,
   fileNamePrefix = paste0("my_image", Sys.time())
 )
 

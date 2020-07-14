@@ -11,6 +11,36 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.0
+- We implement `ee_createAssetHome` to help users to define their *Earth Engine Assets home root folder* without leaving ee_Initialize(). (#70 Thanks @jhollist)
+- Fix a bug in `ee_Initialize(drive = TRUE, gcs = TRUE)` which do not permit users save credentials. (#72 Thanks @appelmar).
+- Removed `check_ring_dir` argument from `sf_as_ee`. Now `rgee` expect that users fix potential geometry problems before upload geometries to their Earth Engine assets.
+- Changes in "welcome to rgee"  message (located in `ee_Initialize`). We delete `stop("Initialization aborted")` and implement `ee_search_init_message`. It will permit to `rgee` to know if the user accepted to create the global var "EARTHENGINE_INIT_MESSAGE" without need to restart the R session.
+- Fix minor bugs in `sf_as_ee` and `gcs_to_ee_table`. The argument `command_line_tool_path` was added to give users the option to set the path of the Earth Engine command linetool. This new argument is only relevant to upload files using Google Cloud Storage. New diagnostic message were added.
+- Now `sf_as_ee` returns an `ee$Geometry$...` when `x` is a `sfg` or a single sfc object. If `x` is a sf or a `sfc` object with multiple geometries will return an `ee$FeatureCollection`. New unit test for `sf_as_ee`.
+- Changes in the documentation of `ee_as_stars` and `ee_as_raster` (#72 Thanks @appelmar).
+- Fix minor bugs in `raster_as_ee`, `stars_as_ee` and `gcs_to_ee_image`. The argument `command_line_tool_path` was added to give users the option to set the path of the Earth Engine command linetool. New diagnostic message were added. New unit test added.
+- Fixed a bug in `stars_as_ee` that didn't allow to read single-band images.
+- `ee_manage_asset_access` has a better approach to determine the user owner of the asset.
+- Add a new logical argument called 'strict' to `ee_manage_assetlist`, `ee_manage_copy`,
+`ee_manage_move`, `ee_manage_set_properties` and `ee_manage_delete_properties`. If TRUE, 
+the existence of the asset will be evaluate before to perform the task. By default TRUE.
+- If the `path_asset` is not specified in `ee_manage_assetlist`, rgee will assume that the
+path_asset is `ee_get_assethome`.
+- `raster_as_ee.R` was created in the /R folder to maintain an order between functions
+to upload and download images.
+- Fix a bug in the documentation of `print.ee.computedobject.ComputedObject()` (#72 Thanks @appelmar).
+- Fix a bug in `ee_install_set_pyenv` now users can set `py_path` without set 
+`py_env` and  vice versa.
+- `ee_extract` was adapted to work well with changes in `sf_as_ee`.
+- R CMD check is more friendly with users, the use of `--run-dontrun` is also 
+available (#72 Thanks @appelmar).
+- Fix a bug in `ee_get_date_ic`.
+- `Map$addLayer` now could display a legend when `eeObject` is an one-band `ee$Image` (By default legend = TRUE).
+- New function `ee_get`: Return the element at the specified position in a Earth Engine Collection.
+- New function `Map$addLayers`: Create interactive visualizations of ImageCollections.
+- - Earth Engine Python API updated to 0.1.227.
+
 # rgee 0.6.2
 - Earth Engine Python API updated to 0.1.226.
 - Fix some typos.
@@ -18,10 +48,10 @@ vignette: >
 - Users can mix mapview and EarthEnginemap objects in the same pipeline (see Examples in `Map$addLayer`).
 - Add `ee_as_mapview`, a function to convert `EarthEnginemap` objects to  `mapview` objects.
 - add a new logical argument called 'strict' to **ee_manage_delete**. If TRUE, the existence of the asset will be evaluate before to perform the task.
-- Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.
+- Fix a bug in ee_Initialize, now users without an Earth Engine Assets home root will see a message.
 - Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.
 - ee_check completely renovated. 
-  - New message display.
+  - New diagnostic messages.
   - Fix a minor bug when testing GCS credentials.
   - The file ee_check.py was deleted.
 - Roy Samapriya added as a contributor.  

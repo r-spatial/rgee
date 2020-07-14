@@ -7,14 +7,15 @@
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
 #' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`). The email
-#' name is used as a folder inside the path `rgee::ee_get_earthengine_path()`.
-#' This enable a multi-user support allowing to target a specific
-#' Google identity.
+#' argument is used to create a folder inside the path \code{~/.config/earthengine/}
+#' that save all credentials for a specific Google identity.
 #'
 #' @param drive Logical (optional). If TRUE, the drive credential
-#' will be cached in the path `rgee::ee_get_earthengine_path()`.
-#' @param gcs Logical. If TRUE, the Google Cloud Storage
-#' credential will be cached in the path `rgee::ee_get_earthengine_path()`.
+#' will be cached in the path \code{~/.config/earthengine/}.
+#'
+#' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
+#' credential will be cached in the path \code{~/.config/earthengine/}.
+#'
 #' @param quiet Logical. Suppress info messages.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -24,10 +25,10 @@
 #' @importFrom crayon blue green black red bold white
 #'
 #' @details
-#' \code{ee_Initialize(...)} can also manage Google drive and Google
+#' \code{ee_Initialize(...)} can manage Google drive and Google
 #' Cloud Storage resources using the R packages googledrive and
 #' googlecloudStorageR, respectively. By default, rgee does not require
-#' them, these are only necessary for exporting and importing tasks.
+#' them, these are only necessary to enable rgee I/O functionality.
 #' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specify the email
 #' argument all user credentials will be saved in a subdirectory
@@ -43,11 +44,11 @@
 #' ee_Initialize()
 #'
 #' # Advanced init - Load full credentials
-#' ee_Initialize(
-#'   email = "your_email@gmail.com",
-#'   drive = TRUE,
-#'   gcs = TRUE
-#' )
+#' # ee_Initialize(
+#' #   email = "your_email@gmail.com",
+#' #   drive = TRUE,
+#' #   gcs = TRUE
+#' # )
 #'
 #' ee_user_info()
 #' }
@@ -57,18 +58,22 @@ ee_Initialize <- function(email = NULL,
                           gcs = FALSE,
                           quiet = FALSE) {
   # Message for new user
-  init_rgee_message <- Sys.getenv("EARTHENGINE_INIT_MESSAGE", unset = NA)
-  if (is.na(init_rgee_message) &&  !py_module_available("ee")) {
+  init_rgee_message <- ee_search_init_message()
+  if (!init_rgee_message) {
     text <- paste(
       crayon::bold("Welcome to the Earth Engine client library for R!"),
       "----------------------------------------------------------------",
-      "It seems it is your first time using rgee. Before start coding is ",
+      "It seems it is your first time using rgee. First off, keep in mind that",
+      sprintf("Google Earth Engine is %s, check the",
+              bold("only available to registered users")),
+      sprintf("official website %s to get more information.",
+              bold("https://earthengine.google.com/")),
+      "Before start coding is necessary to set up a Python environment. Run",
       sprintf(
-        "necessary to set up a Python environment. Run %s",
-        crayon::bold("rgee::ee_install()")
+        "%s to set up automatically, after that, restart the R",
+        bold("rgee::ee_install()")
       ),
-      "to set up automatically, after that, restart the R session to see",
-      "changes. See more than 250+ examples of rgee at",
+      "session to see changes. See more than 250+ examples of rgee at",
       crayon::bold("https://csaybar.github.io/rgee-examples/"),
       "",
       sep = "\n"
@@ -78,12 +83,13 @@ ee_Initialize <- function(email = NULL,
     repeat {
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
-        message("Initialization aborted.")
-        return(FALSE)
+        # message("Initialization aborted.")
+        # return(FALSE)
+        break
       } else if (ch == "n") {
-        message("Initialization aborted.")
+        # message("Initialization aborted.")
         ee_install_set_init_message()
-        return(FALSE)
+        break
       } else {
         response <- readline("Please answer yes or no: ")
       }
@@ -145,7 +151,7 @@ ee_Initialize <- function(email = NULL,
 
   # Loading all the credentials: earthengine, drive and GCS.
   drive_credentials <- NA
-  gcs_credentials <- NA
+  gcs_credentials <- list(path = NA, message = NA)
 
   if (drive) {
     if (!quiet) {
@@ -175,40 +181,40 @@ ee_Initialize <- function(email = NULL,
         blue("GCS credentials:")
       )
     }
-    gcs_credentials <- ee_create_credentials_gcs(email)
+    gcs_credentials <- tryCatch(
+      expr = ee_create_credentials_gcs(email),
+      error = function(e) {
+        list(path = NA, message = NA)
+      })
+
     if (!quiet) {
-      cat(
-        "\r",
-        green(symbol$tick),
-        blue("GCS credentials:"),
-        # gcs_credentials,
-        green(" FOUND\n")
-      )
+      if (!is.na(gcs_credentials$path)) {
+        cat(
+          "\r",
+          green(symbol$tick),
+          blue("GCS credentials:"),
+          # gcs_credentials,
+          green(" FOUND\n")
+        )
+      } else {
+        cat(
+          "\r",
+          green(symbol$tick),
+          blue("GCS credentials:"),
+          # gcs_credentials,
+          red("NOT FOUND\n")
+        )
+      }
     }
   }
   ## rgee session file
-  options(rgee.gcs.auth = gcs_credentials)
-  options(rgee.manage.setIamPolicy = list(bindings = list(
-    list(
-      role = "roles/owner",
-      members = paste0("user:", email)
-    ),
-    list(
-      role = "roles/editor",
-      members = NULL
-    ),
-    list(
-      role = "roles/viewer",
-      members = NULL
-    )
-  )))
+  options(rgee.gcs.auth = gcs_credentials$path)
   if (!quiet) {
     cat(
       "", green(symbol$tick),
       blue("Initializing Google Earth Engine:")
     )
   }
-
   ee_create_credentials_earthengine(email_clean)
   ee$Initialize()
 
@@ -222,36 +228,42 @@ ee_Initialize <- function(email = NULL,
   }
 
   # Root folder exist?
-  ee_user <- tryCatch(
-    expr = ee_remove_project_chr(ee$data$getAssetRoots()[[1]]$id),
-    error = function(e) stop(
-      "Earth Engine Assets home root folder does not ",
-      "exist for the current user. ",
-      sprintf(
-        "Run %s to attempt to create it. ",
-        bold("ee$data$createAssetHome(users/PUT_YOUR_NAME_HERE)")
-      ),
-      sprintf(
-        "Take into consideration that once created %s",
-        bold("you will not be able to change the folder name again. ")
-      ),
-      "If the root folder was created successfully ",
-      sprintf("execute again %s.", bold("ee_Initialize()"))
+  ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+  # if ee_asset_home (list) length is zero
+  if (length(ee_user_assetroot) == 0) {
+    root_text <- paste(
+      "Earth Engine Assets home root folder does not exist for the current user.",
+      "Please enter your desired root folder name below. Take into consideration",
+      sprintf("that once created %s Alternatively,",
+              bold("you will not be able to change the folder name again. ")),
+      sprintf("press ESC to interrupt and run: %s",
+              bold("ee$data$createAssetHome(\"users/PUT_YOUR_NAME_HERE\")")),
+      sprintf("to attempt to create it. After that execute again %s.",
+              bold("ee_Initialize()")),
+      sep = "\n"
     )
-  )
+    message(root_text)
+    ee_createAssetHome()
+    ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+  }
+
+  ee_user <- ee_remove_project_chr(ee_user_assetroot$id)
 
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(
     email = email_clean,
     user = ee_user,
     drive_cre = drive_credentials,
-    gcs_cre = gcs_credentials
+    gcs_cre = gcs_credentials$path
   )
 
   if (!quiet) {
     cat("\r", green(symbol$tick), blue("Earth Engine user:"),
         green(bold(ee_user)), "\n")
     cat(rule(), "\n")
+    if (!is.na(gcs_credentials$message)) {
+     message(gcs_credentials$message)
+    }
   }
   # ee_check_python_packages(quiet = TRUE)
   invisible(TRUE)
@@ -383,27 +395,39 @@ ee_create_credentials_gcs <- function(email) {
   full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
   gcs_condition <- grepl(".json", full_credentials)
   if (!any(gcs_condition)) {
-    stop(
-      "Unable to find GCS_AUTH_FILE.json in ", ee_path_user, ". \n",
-      "First download and save the Google Project JSON file in ",
-      "the path mentioned before.\n",
-      "A compressible tutorial to obtain the GCS_AUTH_FILE.json is ",
-      "available here: \n",
-      "- https://github.com/csaybar/GCS_AUTH_FILE.json\n",
-      "- https://console.cloud.google.com/apis/credentials/serviceaccountkey ",
-      "(download link)\n"
+    gcs_text <- paste(
+      sprintf("Unable to find a service account key (SAK) file in: %s",  bold(ee_path_user)),
+      "Please, download and save it manually on the path mentioned",
+      "above. A compressible tutorial to obtain a SAK file are available at:",
+      "> https://github.com/csaybar/GCS_AUTH_FILE.json",
+      "> https://cloud.google.com/iam/docs/creating-managing-service-account-keys",
+      "> https://console.cloud.google.com/apis/credentials/serviceaccountkey",
+      bold("Until you do not save a SKA file, the following functions will not work:"),
+      "- rgee::ee_gcs_to_local()",
+      "- ee_as_raster(..., via = \"gcs\")",
+      "- ee_as_stars(..., via = \"gcs\")",
+      "- ee_as_sf(..., via = \"gcs\")",
+      "- sf_as_ee(..., via = \"gcs_to_asset\")",
+      "- gcs_to_ee_image",
+      "- raster_as_ee",
+      "- local_to_gcs",
+      "- stars_as_ee",
+      sep = "\n"
     )
+    gcs_info <- list(path = NA, message = gcs_text)
+    invisible(gcs_info)
   } else {
     gcs_credentials <- full_credentials[gcs_condition]
     googleCloudStorageR::gcs_auth(gcs_credentials)
+    unlink(list.files(ee_path, ".json", full.names = TRUE))
+    file.copy(
+      from = gcs_credentials,
+      to = sprintf("%s/%s", ee_path, basename(gcs_credentials)),
+      overwrite = TRUE
+    )
+    gcs_info <- list(path = gcs_credentials, message = NA)
+    invisible(gcs_info)
   }
-  unlink(list.files(ee_path, ".json", full.names = TRUE))
-  file.copy(
-    from = gcs_credentials,
-    to = sprintf("%s/%s", ee_path, basename(gcs_credentials)),
-    overwrite = TRUE
-  )
-  invisible(gcs_credentials)
 }
 
 #' Display the credentials of all users as a table
@@ -547,39 +571,6 @@ ee_sessioninfo <- function(email = NULL,
   write.table(df, sessioninfo, row.names = FALSE)
 }
 
-#' Get the path where the credentials are stored
-#'
-#' @family path utils
-#' @return A character which represents the path credential of a specific
-#' user
-#'
-#' @export
-ee_get_earthengine_path <- function() {
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-
-  sessioninfo <- sprintf(
-    "%s/rgee_sessioninfo.txt",
-    ee_utils_py_to_r(utils_py$ee_path())
-  )
-  if (file.exists(sessioninfo)) {
-    user <- read.table(sessioninfo,
-      header = TRUE,
-      stringsAsFactors = FALSE
-    )[[1]]
-    if (is.na(user)) {
-      stop("rgee_sessioninfo.txt malformed")
-    }
-  } else {
-    stop(
-      "rgee_sessioninfo.txt does not exist, ",
-      "run rgee::ee_Initialize() to fixed."
-    )
-  }
-  return(sprintf("%s/%s/", ee_path, user))
-}
-
 #' Read and evaluate a python script
 #' @noRd
 ee_source_python <- function(oauth_func_path) {
@@ -650,18 +641,17 @@ create_table <- function(user, wsc, quiet = FALSE) {
   }
 }
 
-#' Get the Asset home name
-#' @family path utils
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' ee_get_assethome()
-#' }
-#' @return Character. The name of the Earth Engine Asset home
-#' (e.g. users/datacolecfbf)
-#' @export
-ee_get_assethome <- function() {
-  options('rgee.ee_user')[[1]]
+#' Wrapper to create a EE Assets home
+#' @noRd
+ee_createAssetHome <- function() {
+  x <- readline("Please insert the desired name of your root folder : users/")
+  tryCatch(
+    expr = ee$data$createAssetHome(sprintf("users/", x)),
+    error = function(x) {
+      message(
+        strsplit(x$message,"\n")[[1]][1]
+      )
+      ee_createAssetHome()
+    }
+  )
 }

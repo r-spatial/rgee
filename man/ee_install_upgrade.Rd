@@ -4,11 +4,17 @@
 \alias{ee_install_upgrade}
 \title{Upgrade the Earth Engine Python API}
 \usage{
-ee_install_upgrade(version = NULL)
+ee_install_upgrade(
+  version = NULL,
+  earthengine_env = Sys.getenv("EARTHENGINE_ENV")
+)
 }
 \arguments{
 \item{version}{Character. The Earth Engine Python API version to upgrade.
 By default \code{rgee::ee_version()}.}
+
+\item{earthengine_env}{Character. The name, or full path, of the
+environment in which the earthengine-api packages are to be installed.}
 }
 \description{
 Upgrade the Earth Engine Python API

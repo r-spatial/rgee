@@ -16,11 +16,11 @@ status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/p
 `rgee` is a binding package for calling [Google Earth Engine
 API](https://developers.google.com/earth-engine/) from within R.
 Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the 
-[earthengine-api 0.1.226](https://pypi.org/project/earthengine-api/0.1.226/).
+[earthengine-api 0.1.227](https://pypi.org/project/earthengine-api/0.1.227/).
 **Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
 
 
-### More than 250+ examples using Google Earth Engine with R are available [here](http://csaybar.github.io/rgee-examples/)
+### More than 250+ examples using GEE with R are available [here](http://csaybar.github.io/rgee-examples/)
 
 <a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
 <a href="https://github.com/r-spatial/rgee/blob/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
@@ -40,6 +40,16 @@ Additionally, several functions have been implemented to make simple the connect
 <a href="https://github.com/r-spatial/rgee/blob/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
 <a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
 <a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
+
+### Quick Start User's Guide for rgee in Portuguese and Spanish.  
+<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
+<a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
+
+**Created by:**
+- POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
+- SPA: Antony Barja Ingaruca <https://barja8.github.io/>
+### 
+
 
 ## What is Google Earth Engine?
 
@@ -202,7 +212,7 @@ Map$addLayer(
 
 ### 2. Extract precipitation values
 
-Load `tidyverse` and `sf` and initialize the Earth Engine R API.
+Install and load `tidyverse` and `sf` R package, after that, initialize the Earth Engine R API. 
 
 ``` r
 library(tidyverse)
@@ -224,7 +234,7 @@ dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCO
 
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2000-01-01", "2001-01-01")$
+  filterDate("2001-01-01", "2002-01-01")$
   map(function(x) x$reproject("EPSG:4326")$select("pr"))
 ```
 
@@ -233,7 +243,7 @@ similar to `raster::extract`, you just need to define: the ImageCollection objec
 summarize the values (fun).
 
 ``` r
-ee_nc_rain <- ee_extract(x = terraclimate, y = nc, fun = ee$Reducer$max(), sf = FALSE)
+ee_nc_rain <- ee_extract(x = terraclimate, y = nc, sf = FALSE)
 colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
 ee_nc_rain$name <- nc$NAME
 ```
@@ -257,8 +267,7 @@ ee_nc_rain %>%
 
 ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
 
-
-Load `sf` and initialize the Earth Engine R API.
+Install and load `sf`, after that, initialize the Earth Engine R API.
 
 ``` r
 library(rgee)

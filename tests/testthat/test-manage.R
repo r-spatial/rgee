@@ -1,132 +1,86 @@
 context("rgee: ee_manage test")
-
-# Pre-checking ------------------------------------------------------
-# Google credentials were loaded in the system?
-skip_if_no_credentials <- function(user) {
-  ee_path <- path.expand(sprintf("~/.config/earthengine/%s", user))
-  credentials <- list.files(
-    path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
-  )
-  if (length(credentials) != 3) {
-    skip("All google credentials were not found")
-  }
-}
-
-# Neccesary Python packages were loaded?
-skip_if_no_pypkg <- function() {
-  have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
-  if (isFALSE(have_ee)) {
-    skip("ee not available for testing")
-  }
-  if (isFALSE(have_numpy)) {
-    skip("numpy not available for testing")
-  }
-}
-
-# Init Earth Engine just if it is necessary
-init_rgee <- function() {
-  tryCatch(
-    expr = ee$Image()$getInfo(),
-    error = function(e) {
-      ee_Initialize(
-        email = 'data.colec.fbf@gmail.com',
-        drive = TRUE,
-        gcs = TRUE
-      )
-    }
-  )
-}
-
-user <- "data.colec.fbf"
-skip_if_no_credentials(user)
 skip_if_no_pypkg()
-init_rgee()
 # -------------------------------------------------------------------------
 
-
-try(ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/'))
+try(ee_manage_delete(path_asset = sprintf("%s/rgee/",ee_get_assethome())))
 
 test_that("ee_manage_create", {
   ee_manage_create(
-    path_asset = 'users/datacolecfbf/rgee/rgee_folder',
+    path_asset = sprintf("%s/rgee/rgee_folder",ee_get_assethome()),
     asset_type = 'Folder'
   )
   ee_manage_copy(
-    path_asset = 'users/datacolecfbf/rgee/rgee_folder',
-    final_path = 'users/datacolecfbf/rgee/rgee_folder1'
+    path_asset = sprintf("%s/rgee/rgee_folder",ee_get_assethome()),
+    final_path = sprintf("%s/rgee/rgee_folder1",ee_get_assethome())
   )
   msg <- ee_manage_create(
-    path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+    path_asset = sprintf("%s/rgee/rgee_ic",ee_get_assethome()),
     asset_type = 'ImageCollection'
   )
   expect_error(ee_manage_create(path_asset = 'users/pinkipie/rgee/rgee_ic'))
   expect_true(msg)
 })
 
-
 test_that("ee_manage_assetlist", {
-  data_01 <- ee_manage_assetlist(path_asset = 'users/datacolecfbf/rgee')
+  data_01 <- ee_manage_assetlist(path_asset = sprintf("%s/rgee",ee_get_assethome()))
   expect_s3_class(data_01,'data.frame')
 })
 
 test_that("ee_manage_move", {
   ee_manage_move(
-    path_asset = 'users/datacolecfbf/rgee/rgee_ic',
-    final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'
+    path_asset = sprintf("%s/rgee/rgee_ic",ee_get_assethome()),
+    final_path = sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome())
   )
-  ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic',
+  ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic",ee_get_assethome()),
                    asset_type = 'ImageCollection')
-  ret <- ee_manage_delete('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+  ret <- ee_manage_delete(sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome()))
   expect_true(ret)
 })
 
 test_that("ee_manage_copy", {
-  ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
+  ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
                    asset_type = 'ImageCollection')
-  ee_manage_copy(path_asset = 'users/datacolecfbf/rgee_test',
-                 final_path = 'users/datacolecfbf/rgee/rgee_ic2/rgee_test')
-  ret <- ee_manage_delete('users/datacolecfbf/rgee/rgee_ic2')
+  ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+                 final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome()))
+  ret <- ee_manage_delete(sprintf("%s/rgee/rgee_ic2",ee_get_assethome()))
   expect_true(ret)
 })
 
 test_that("ee_manage_move - II", {
-  ee_manage_create(path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
+  ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
                    asset_type = 'ImageCollection')
   ee_manage_copy(
-    path_asset = 'users/datacolecfbf/rgee_test',
-    final_path = 'users/datacolecfbf/rgee/rgee_ic2/rgee_test'
+    path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+    final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome())
   )
   ee_manage_move(
-    path_asset = 'users/datacolecfbf/rgee/rgee_ic2',
-    final_path = 'users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved'
+    path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
+    final_path = sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome())
   )
-  ret <- ee_manage_delete('users/datacolecfbf/rgee/rgee_folder/rgee_ic_moved')
+  ret <- ee_manage_delete(sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome()))
   expect_true(ret)
 })
 
 test_that("ee_manage_set_properties", {
-  ee_manage_copy(path_asset = 'users/datacolecfbf/rgee_test',
-                 final_path = 'users/datacolecfbf/rgee/rgee_test')
-  ee_manage_set_properties(path_asset = 'users/datacolecfbf/rgee/rgee_test',
+  ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+                 final_path = sprintf("%s/rgee/rgee_test",ee_get_assethome()))
+  ee_manage_set_properties(path_asset = sprintf("%s/rgee/rgee_test",ee_get_assethome()),
                            add_properties = list(message = 'hello-world',
                                                  language = 'R'))
-  ret <- ee_manage_delete(path_asset = 'users/datacolecfbf/rgee/rgee_test')
+  ret <- ee_manage_delete(path_asset = sprintf("%s/rgee/rgee_test",ee_get_assethome()))
   expect_true(ret)
 })
 
-
 test_that("ee_manage_delete_properties", {
-  ee_manage_copy(path_asset = 'users/datacolecfbf/rgee_test',
-                 final_path = 'users/datacolecfbf/rgee/rgee_test')
-  ee_manage_set_properties(path_asset = 'users/datacolecfbf/rgee/rgee_test',
+  ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+                 final_path = sprintf("%s/rgee/rgee_test",ee_get_assethome()))
+  ee_manage_set_properties(path_asset = sprintf("%s/rgee/rgee_test",ee_get_assethome()),
                            add_properties = list(message = 'hello-world',
                                                  language = 'R'))
   #ee$data$getAsset('users/datacolecfbf/rgee/L7')$properties
-  ee_manage_delete_properties('users/datacolecfbf/rgee/rgee_test')
-  prop <- ee$data$getAsset('users/datacolecfbf/rgee/rgee_test')$properties
-  ee_manage_delete('users/datacolecfbf/rgee/rgee_test')
+  ee_manage_delete_properties(sprintf("%s/rgee/rgee_test",ee_get_assethome()))
+  prop <- ee$data$getAsset(sprintf("%s/rgee/rgee_test",ee_get_assethome()))$properties
+  ee_manage_delete(sprintf("%s/rgee/rgee_test",ee_get_assethome()))
   expect_null(prop)
 })
 
@@ -139,7 +93,7 @@ test_that("ee_manage_task", {
 
 test_that("ee_verify_filename - error message",{
   expect_error(
-    ee_verify_filename(path_asset = "user/datacolecfbf/xxx",
+    ee_verify_filename(path_asset = sprintf("%s/xxx",ee_get_assethome()),
                        strict = TRUE)
     )
   }
@@ -148,12 +102,12 @@ test_that("ee_verify_filename - error message",{
 test_that("ee_manage_create - error message", {
   expect_error(object =
                  ee_manage_create(
-                   path_asset = 'users/datacolecfbf/to_c',
+                   path_asset = sprintf("%s/to_c",ee_get_assethome()),
                    asset_type = 'nekko')
                )
   expect_error(
     object = ee_manage_create(
-      path_asset = 'users/datacolecfbf/ee_manage',
+      path_asset = sprintf("%s/ee_manage",ee_get_assethome()),
       asset_type = 'nekko'),
     expected =  TRUE)
   }
@@ -165,15 +119,9 @@ test_that("ee_manage_quota", {
 )
 
 test_that("ee_manage_asset_access", {
-  ee_Initialize(
-    email = "data.colec.fbf@gmail.com",
-    drive = TRUE,
-    gcs = TRUE
-  )
-  ee_manage_asset_access('users/datacolecfbf/rgee',
-                       editor =  'data.colec.fbf@gmail.com')
-  message <- ee_manage_asset_access('users/datacolecfbf/rgee',
-                                    editor =  'data.colec.fbf@gmail.com',
+  ee_manage_asset_access(path_asset = sprintf("%s/rgee",ee_get_assethome()))
+  message <- ee_manage_asset_access(sprintf("%s/rgee",ee_get_assethome()),
+                                    editor =  'csaybar@gmail.com',
                                     all_users_can_read = TRUE)
   expect_true(message)
   }
@@ -193,9 +141,8 @@ expect_type(
 )
 })
 
-
 test_that("ee_manage_create - extra", {
-  ic_name <- 'users/datacolecfbf/rgee/cs/cs/rgee_folder'
+  ic_name <- sprintf("%s/rgee/cs/cs/rgee_folder",ee_get_assethome())
   ic <- ee_manage_create(
     path_asset = ic_name,
     asset_type = 'ImageCollection'
@@ -210,8 +157,8 @@ test_that("ee_manage_create - extra", {
 
 
 test_that("ee_manage_copy - ImageCollection", {
-  lesly_ic_in <- "users/datacolecfbf/rgee/lesly_ic"
-  lesly_ic_out <- "users/datacolecfbf/rgee/lesly/lesly_ic"
+  lesly_ic_in <- sprintf("%s/rgee/lesly_ic",ee_get_assethome())
+  lesly_ic_out <- sprintf("%s/rgee/lesly/lesly_ic",ee_get_assethome())
   ee_manage_create(lesly_ic_in, "ImageCollection")
   exp_01 <- ee_manage_copy(
     path_asset = lesly_ic_in,
@@ -221,8 +168,8 @@ test_that("ee_manage_copy - ImageCollection", {
 })
 
 test_that("ee_manage_move - Folder", {
-  lesly_f_in <- "users/datacolecfbf/rgee/lesly_folder/"
-  lesly_f_out <- "users/datacolecfbf/rgee/lesly/lesly_folder/"
+  lesly_f_in <- sprintf("%s/rgee/lesly_folder/",ee_get_assethome())
+  lesly_f_out <- sprintf("%s/rgee/lesly/lesly_folder/",ee_get_assethome())
   ee_manage_create(lesly_f_in)
   exp_02 <- ee_manage_move(
     path_asset = lesly_f_in,

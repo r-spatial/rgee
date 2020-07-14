@@ -6,7 +6,7 @@
 \usage{
 ee_as_raster(
   image,
-  region,
+  region = NULL,
   dsn = NULL,
   via = "getInfo",
   scale = NULL,
@@ -19,15 +19,15 @@ ee_as_raster(
 \arguments{
 \item{image}{ee$Image to be converted into a raster object}
 
-\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle). The
-CRS needs to be the same that the x argument otherwise it will be
-forced. If not specified, image bounds will be taken.}
+\item{region}{EE Geometry (ee$Geometry$Polygon) which specify the region
+to export. CRS needs to be the same that the x argument otherwise it will be
+forced. If not specified image bounds will be taken.}
 
 \item{dsn}{Character. Output filename. If missing,
 \code{ee_as_raster} will create a temporary file.}
 
-\item{via}{Character. Method to fetch data about the object. Multiple
-options supported. See details.}
+\item{via}{Character. Method to fetch data about the object. Three methods
+are implemented: "getInfo", "drive", "gcs". See details.}
 
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image asset.}
@@ -107,22 +107,16 @@ img_02 <- ee_as_raster(
 )
 
 ## gcs - Method 03
-img_03 <- ee_as_raster(
-  image = img,
-  region = geometry,
-  container = "rgee_dev",
-  via = "gcs"
-)
+# img_03 <- ee_as_raster(
+#   image = img,
+#   region = geometry,
+#   container = "rgee_dev",
+#   via = "gcs"
+# )
 
 # OPTIONAL: Delete containers
-ee_clean_container(
-  name = "rgee_backup",
-  type = "drive"
-)
-ee_clean_container(
-  name = "rgee_dev",
-  type = "gcs"
-)
+# ee_clean_container(name = "rgee_backup", type = "drive")
+# ee_clean_container(name = "rgee_dev", type = "gcs")
 }
 }
 \seealso{

@@ -124,7 +124,7 @@ cloudMaskL457 <- function(image) {
 }
 
 ic_l5 <- ee$ImageCollection("LANDSAT/LT05/C01/T1_SR")$
-  filterBounds(ee_ROI)$
+  filterBounds(ee$FeatureCollection(ee_ROI))$
   filterDate("2011-01-01", "2011-12-31")$
   map(cloudMaskL457)
 
@@ -133,21 +133,21 @@ mean_l5 <- ic_l5$mean()$rename("NDVI")
 mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 
-# Move results from Earth Engine to Drive
-task_img <- ee_image_to_gcs(
-  image = mean_l5_Amarakaeri,
-  bucket = "rgee_dev",
-  fileFormat = "GEO_TIFF",
-  region = ee_ROI$geometry(),
-  fileNamePrefix = "my_image"
-)
+# Move results from Earth Engine to GCS
+# task_img <- ee_image_to_gcs(
+#   image = mean_l5_Amarakaeri,
+#   bucket = "rgee_dev",
+#   fileFormat = "GEO_TIFF",
+#   region = ee_ROI,
+#   fileNamePrefix = "my_image"
+# )
+#
+# task_img$start()
+# ee_monitoring(task_img)
 
-task_img$start()
-ee_monitoring(task_img)
-
-# Move results from Drive to local
-ee_gcs_to_local(task = task_img)
-plot(img)
+# Move results from GCS to local
+# ee_gcs_to_local(task = task_img)
+# plot(img)
 }
 }
 \seealso{

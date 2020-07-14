@@ -7,22 +7,22 @@ import re
 
 >>> sfg_as_ee_py(x)
 
-These functions are using in R/sf_as_ee.R
+These functions are used in R/sf_as_ee.R
 """
-
 def sfg_as_ee_py(x, sfc_class, opt_proj, opt_geodesic, opt_evenOdd):
     x = re.sub(r':null', ':None', x)
+    sfc_class = re.sub('sfc_','',sfc_class)
     # sfg to ee
-    if sfc_class in ["sfc_MULTIPOLYGON","sfc_POLYGON"]:
+    if sfc_class in ["MULTIPOLYGON","POLYGON"]:
         return ee.Geometry(geo_json = eval(x),
                            opt_proj = opt_proj,
                            opt_geodesic = opt_geodesic,
                            opt_evenOdd = opt_evenOdd)
-    elif sfc_class in ["sfc_MULTILINESTRING","sfc_LINESTRING"]:
+    elif sfc_class in ["MULTILINESTRING","LINESTRING"]:
         return ee.Geometry(geo_json = eval(x),
                            opt_proj = opt_proj,
                            opt_geodesic = opt_geodesic)
-    elif sfc_class in ["sfc_MULTIPOINT","sfc_POINT"]:
+    elif sfc_class in ["MULTIPOINT","POINT"]:
         return ee.Geometry(geo_json = eval(x),
                            opt_proj = opt_proj)
     else:
