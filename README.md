@@ -8,6 +8,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![status](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg)](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3945409.svg)](https://doi.org/10.5281/zenodo.3945409)
 
 # Google Earth Engine for R
 

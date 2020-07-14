@@ -27,6 +27,11 @@ jobs:
           key: macOS-r-3.6-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: macOS-r-3.6-
 
+      - name: git config
+        run: |
+          git config --global user.email "csaybar@gmail.com"
+          git config --global user.name "csaybar"
+
       - name: Install dependencies
         run: |
           install.packages("remotes")
