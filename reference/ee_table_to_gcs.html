@@ -82,7 +82,7 @@ ee$batch$Export$table$toCloudStorage(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -240,25 +240,25 @@ that may have been deprecated such as 'outputBucket'.</p></td>
          <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>)
 <span class='no'>ee_ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_polygon</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_sfc</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
 <span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_ROI</span>$<span class='fu'>geometry</span>(), <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_ROI</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
 )
 
-<span class='no'>task_vector</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_table_to_gcs</span>(
-    <span class='kw'>collection</span> <span class='kw'>=</span> <span class='no'>amk_fc</span>,
-    <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-    <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"SHP"</span>,
-    <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='st'>"geom_Amarakaeri"</span>
-)
-<span class='no'>task_vector</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_vector</span>) <span class='co'># optional</span>
-<span class='no'>amk_geom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_gcs_to_local.html'>ee_gcs_to_local</a></span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_vector</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>amk_geom</span>$<span class='no'>geometry</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"red"</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='co'>#task_vector &lt;- ee_table_to_gcs(</span>
+<span class='co'>#    collection = amk_fc,</span>
+<span class='co'>#    bucket = "rgee_dev",</span>
+<span class='co'>#    fileFormat = "SHP",</span>
+<span class='co'>#    fileNamePrefix = "geom_Amarakaeri"</span>
+<span class='co'>#)</span>
+<span class='co'>#task_vector$start()</span>
+<span class='co'>#ee_monitoring(task_vector) # optional</span>
+<span class='co'>#amk_geom &lt;- ee_gcs_to_local(task = task_vector)</span>
+<span class='co'>#plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

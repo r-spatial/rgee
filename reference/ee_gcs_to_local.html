@@ -81,7 +81,7 @@ directory." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -219,9 +219,9 @@ necessaries to locate the file into google cloud storage are obtained from
          <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>)
 <span class='no'>ee_ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_polygon</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_sfc</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_set_crs</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
 
@@ -237,7 +237,7 @@ necessaries to locate the file into google cloud storage are obtained from
 }
 
 <span class='no'>ic_l5</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"LANDSAT/LT05/C01/T1_SR"</span>)$
-  <span class='fu'>filterBounds</span>(<span class='no'>ee_ROI</span>)$
+  <span class='fu'>filterBounds</span>(<span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>ee_ROI</span>))$
   <span class='fu'>filterDate</span>(<span class='st'>"2011-01-01"</span>, <span class='st'>"2011-12-31"</span>)$
   <span class='fu'>map</span>(<span class='no'>cloudMaskL457</span>)
 
@@ -246,20 +246,20 @@ necessaries to locate the file into google cloud storage are obtained from
 <span class='no'>mean_l5</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'>reproject</span>(<span class='kw'>crs</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>500</span>)
 <span class='no'>mean_l5_Amarakaeri</span> <span class='kw'>&lt;-</span> <span class='no'>mean_l5</span>$<span class='fu'><a href='https://rdrr.io/r/graphics/clip.html'>clip</a></span>(<span class='no'>ee_ROI</span>)
 
-<span class='co'># Move results from Earth Engine to Drive</span>
-<span class='no'>task_img</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_image_to_gcs.html'>ee_image_to_gcs</a></span>(
-    <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>mean_l5_Amarakaeri</span>,
-    <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-    <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='st'>"GEO_TIFF"</span>,
-    <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>ee_ROI</span>$<span class='fu'>geometry</span>(),
-    <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"my_image"</span>, <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())
-)
+<span class='co'>## Move results from Earth Engine to Drive</span>
+<span class='co'># task_img &lt;- ee_image_to_gcs(</span>
+<span class='co'>#     image = mean_l5_Amarakaeri,</span>
+<span class='co'>#     bucket = "rgee_dev",</span>
+<span class='co'>#    fileFormat = "GEO_TIFF",</span>
+<span class='co'>#     region = ee_ROI,</span>
+<span class='co'>#     fileNamePrefix = paste0("my_image", Sys.time())</span>
+<span class='co'>#)</span>
 
-<span class='no'>task_img</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>()
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>(<span class='no'>task_img</span>)
+<span class='co'># task_img$start()</span>
+<span class='co'># ee_monitoring(task_img)</span>
 
-<span class='co'># Move results from Drive to local</span>
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_gcs_to_local</span>(<span class='kw'>task</span> <span class='kw'>=</span> <span class='no'>task_img</span>)
+<span class='co'>## Move results from Drive to local</span>
+<span class='co'># img &lt;- ee_gcs_to_local(task = task_img)</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

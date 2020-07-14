@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -152,7 +152,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get the date of a EE ImageCollection</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_Date.R'><code>R/ee_Date.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_get.R'><code>R/ee_get.R</code></a></small>
     <div class="hidden name"><code>ee_get_date_ic.Rd</code></div>
     </div>
 
@@ -201,8 +201,8 @@ for getting more information.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_transform</span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
 <span class='no'>ee_s2</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"COPERNICUS/S2"</span>)$

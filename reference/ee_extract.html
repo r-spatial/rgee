@@ -83,7 +83,7 @@ mimicking how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -163,7 +163,7 @@ mimicking how extract currently works." />
     <p>Extract values from a <code>ee$Image</code> or <code>ImageCollection</code> at the
 locations of a geometry object. You can use <code>ee$Geometry$*</code>,
 <code>ee$Feature</code>, <code>ee$FeatureCollection</code> and sf objects. This function
-mimicking how extract currently works.</p>
+mimicking how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
@@ -279,7 +279,7 @@ of its inputs.</p></li>
   })
 
 <span class='co'># Define a geometry</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(
   <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>),
   <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
@@ -295,7 +295,7 @@ of its inputs.</p></li>
 )
 
 <span class='co'># Spatial plot</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(
+<span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(
   <span class='no'>ee_nc_rain</span>[<span class='st'>"Terraclimate_pp_2001_01_01"</span>],
   <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
   <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>

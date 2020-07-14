@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -191,14 +191,11 @@ bucket specified.</p>
 
 <span class='co'># Initialize a specific Earth Engine account and</span>
 <span class='co'># Google Cloud Storage credentials</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(
-  <span class='kw'>email</span> <span class='kw'>=</span> <span class='st'>"data.colec.fbf@gmail.com"</span>,
-  <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># Define an image.</span>
-<span class='no'>tif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/L7_ETMs.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
-<span class='fu'>local_to_gcs</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>tif</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
+<span class='co'># # Define an image.</span>
+<span class='co'># tif &lt;- system.file("tif/L7_ETMs.tif", package = "stars")</span>
+<span class='co'># local_to_gcs(x = tif, bucket = 'rgee_dev')</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

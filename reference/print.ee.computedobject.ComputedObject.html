@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -160,11 +160,8 @@
     <p>print Earth Engine object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>print.ee.computedobject.ComputedObject</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.print.option"</span>),
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='co'># S3 method for ee.computedobject.ComputedObject</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"rgee.print.option"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,13 +171,13 @@
       <td><p>Earth Engine spatial object.</p></td>
     </tr>
     <tr>
+      <th>...</th>
+      <td><p>ignored</p></td>
+    </tr>
+    <tr>
       <th>type</th>
       <td><p>Character. What to show about the x object?. Three options are
 supported: "json", "simply", "ee_print". By default "simply".</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>ignored</p></td>
     </tr>
     </table>
 

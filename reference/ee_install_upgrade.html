@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -160,7 +160,10 @@
     <p>Upgrade the Earth Engine Python API</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_install_upgrade</span>(<span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_install_upgrade</span>(
+  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>earthengine_env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.getenv.html'>Sys.getenv</a></span>(<span class='st'>"EARTHENGINE_ENV"</span>)
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,6 +172,11 @@
       <th>version</th>
       <td><p>Character. The Earth Engine Python API version to upgrade.
 By default <code><a href='ee_version.html'>rgee::ee_version()</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>earthengine_env</th>
+      <td><p>Character. The name, or full path, of the
+environment in which the earthengine-api packages are to be installed.</p></td>
     </tr>
     </table>
 

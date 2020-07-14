@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -154,6 +154,40 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#rgee-100" class="anchor"></a>rgee 1.0.0</h1>
+<ul>
+<li>We implement <code>ee_createAssetHome</code> to help users to define their <em>Earth Engine Assets home root folder</em> without leaving ee_Initialize(). (<a href='https://github.com/r-spatial/rgee/issues/70'>#70</a> Thanks <a href='https://github.com/jhollist'>@jhollist</a>)</li>
+<li>Fix a bug in <code><a href="../reference/ee_Initialize.html">ee_Initialize(drive = TRUE, gcs = TRUE)</a></code> which do not permit users save credentials. (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
+<li>Removed <code>check_ring_dir</code> argument from <code>sf_as_ee</code>. Now <code>rgee</code> expect that users fix potential geometry problems before upload geometries to their Earth Engine assets.</li>
+<li>Changes in “welcome to rgee” message (located in <code>ee_Initialize</code>). We delete <code><a href="https://rdrr.io/r/base/stop.html">stop("Initialization aborted")</a></code> and implement <code>ee_search_init_message</code>. It will permit to <code>rgee</code> to know if the user accepted to create the global var “EARTHENGINE_INIT_MESSAGE” without need to restart the R session.</li>
+<li>Fix minor bugs in <code>sf_as_ee</code> and <code>gcs_to_ee_table</code>. The argument <code>command_line_tool_path</code> was added to give users the option to set the path of the Earth Engine command linetool. This new argument is only relevant to upload files using Google Cloud Storage. New diagnostic message were added.</li>
+<li>Now <code>sf_as_ee</code> returns an <code>ee$Geometry$...</code> when <code>x</code> is a <code>sfg</code> or a single sfc object. If <code>x</code> is a sf or a <code>sfc</code> object with multiple geometries will return an <code>ee$FeatureCollection</code>. New unit test for <code>sf_as_ee</code>.</li>
+<li>Changes in the documentation of <code>ee_as_stars</code> and <code>ee_as_raster</code> (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
+<li>Fix minor bugs in <code>raster_as_ee</code>, <code>stars_as_ee</code> and <code>gcs_to_ee_image</code>. The argument <code>command_line_tool_path</code> was added to give users the option to set the path of the Earth Engine command linetool. New diagnostic message were added. New unit test added.</li>
+<li>Fixed a bug in <code>stars_as_ee</code> that didn’t allow to read single-band images.</li>
+<li>
+<code>ee_manage_asset_access</code> has a better approach to determine the user owner of the asset.</li>
+<li>Add a new logical argument called ‘strict’ to <code>ee_manage_assetlist</code>, <code>ee_manage_copy</code>, <code>ee_manage_move</code>, <code>ee_manage_set_properties</code> and <code>ee_manage_delete_properties</code>. If TRUE, the existence of the asset will be evaluate before to perform the task. By default TRUE.</li>
+<li>If the <code>path_asset</code> is not specified in <code>ee_manage_assetlist</code>, rgee will assume that the path_asset is <code>ee_get_assethome</code>.</li>
+<li>
+<code>raster_as_ee.R</code> was created in the /R folder to maintain an order between functions to upload and download images.</li>
+<li>Fix a bug in the documentation of <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print.ee.computedobject.ComputedObject()</a></code> (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
+<li>Fix a bug in <code>ee_install_set_pyenv</code> now users can set <code>py_path</code> without set <code>py_env</code> and vice versa.</li>
+<li>
+<code>ee_extract</code> was adapted to work well with changes in <code>sf_as_ee</code>.</li>
+<li>R CMD check is more friendly with users, the use of <code>--run-dontrun</code> is also available (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
+<li>Fix a bug in <code>ee_get_date_ic</code>.</li>
+<li>
+<code>Map$addLayer</code> now could display a legend when <code>eeObject</code> is an one-band <code>ee$Image</code> (By default legend = TRUE).</li>
+<li>New function <code>ee_get</code>: Return the element at the specified position in a Earth Engine Collection.</li>
+<li>New function <code>Map$addLayers</code>: Create interactive visualizations of ImageCollections.</li>
+<li><ul>
+<li>Earth Engine Python API updated to 0.1.227.</li>
+</ul></li>
+</ul>
+</div>
     <div id="rgee-062" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.2">
 <a href="#rgee-062" class="anchor"></a>rgee 0.6.2</h1>
@@ -164,11 +198,11 @@
 <li>Users can mix mapview and EarthEnginemap objects in the same pipeline (see Examples in <code>Map$addLayer</code>).</li>
 <li>Add <code>ee_as_mapview</code>, a function to convert <code>EarthEnginemap</code> objects to <code>mapview</code> objects.</li>
 <li>add a new logical argument called ‘strict’ to <strong>ee_manage_delete</strong>. If TRUE, the existence of the asset will be evaluate before to perform the task.</li>
-<li>Fix a bug en ee_Initialize, now users without an Earth Engine Assets home root will see a message error.</li>
+<li>Fix a bug in ee_Initialize, now users without an Earth Engine Assets home root will see a message.</li>
 <li>Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.</li>
 <li>ee_check completely renovated.
 <ul>
-<li>New message display.</li>
+<li>New diagnostic messages.</li>
 <li>Fix a minor bug when testing GCS credentials.</li>
 <li>The file ee_check.py was deleted.</li>
 </ul>

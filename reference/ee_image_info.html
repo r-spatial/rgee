@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Approximate size of an EE Image object — ee_image_info" />
-<meta property="og:description" content="Get the approximate number of rows, cols, and size of an
+<meta property="og:description" content="Get the approximate number of rows, cols, and size of an single-band
 Earth Engine Image." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -81,7 +81,7 @@ Earth Engine Image." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@ Earth Engine Image." />
     </div>
 
     <div class="ref-description">
-    <p>Get the approximate number of rows, cols, and size of an
+    <p>Get the approximate number of rows, cols, and size of an single-band
 Earth Engine Image.</p>
     </div>
 
@@ -169,7 +169,7 @@ Earth Engine Image.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>image</th>
-      <td><p>EE Image object.</p></td>
+      <td><p>Single-band EE Image object.</p></td>
     </tr>
     <tr>
       <th>getsize</th>
@@ -204,7 +204,7 @@ size (image_size).</p>
 <span class='fu'>ee_image_info</span>(<span class='no'>srtm</span>)
 
 <span class='co'># Landast8</span>
-<span class='no'>l8</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)
+<span class='no'>l8</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)$<span class='fu'>select</span>(<span class='st'>"B4"</span>)
 <span class='fu'>ee_image_info</span>(<span class='no'>l8</span>)
 }</pre>
   </div>

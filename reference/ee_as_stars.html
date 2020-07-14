@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -162,7 +162,7 @@
 
     <pre class="usage"><span class='fu'>ee_as_stars</span>(
   <span class='no'>image</span>,
-  <span class='no'>region</span>,
+  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>,
   <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -181,9 +181,9 @@
     </tr>
     <tr>
       <th>region</th>
-      <td><p>EE Geometry Rectangle (ee$Geometry$Rectangle). The
-CRS needs to be the same that the x argument otherwise it will be
-forced. If not specified, image bounds will be taken.</p></td>
+      <td><p>EE Geometry (ee$Geometry$Polygon) which specify the region
+to export. CRS needs to be the same that the x argument otherwise it will be
+forced. If not specified image bounds will be taken.</p></td>
     </tr>
     <tr>
       <th>dsn</th>
@@ -192,8 +192,8 @@ forced. If not specified, image bounds will be taken.</p></td>
     </tr>
     <tr>
       <th>via</th>
-      <td><p>Character. Method to fetch data about the object. Multiple
-options supported. See details.</p></td>
+      <td><p>Character. Method to fetch data about the object. Three methods
+are implemented: "getInfo", "drive", "gcs". See details.</p></td>
     </tr>
     <tr>
       <th>scale</th>
@@ -289,22 +289,16 @@ Earth Engine Guide - Export data</a>.</p>
 )
 
 <span class='co'>## gcs - Method 03</span>
-<span class='no'>img_03</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_stars</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>geometry</span>,
-  <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"gcs"</span>
-)
+<span class='co'># img_03 &lt;- ee_as_stars(</span>
+<span class='co'>#   image = img,</span>
+<span class='co'>#  region = geometry,</span>
+<span class='co'>#   container = "rgee_dev",</span>
+<span class='co'>#  via = "gcs"</span>
+<span class='co'>#)</span>
 
 <span class='co'># OPTIONAL: Delete containers</span>
-<span class='fu'><a href='ee_clean_container.html'>ee_clean_container</a></span>(
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"drive"</span>
-)
-<span class='fu'><a href='ee_clean_container.html'>ee_clean_container</a></span>(
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"gcs"</span>
-)
+<span class='co'># ee_clean_container(name = "rgee_backup", type = "drive")</span>
+<span class='co'># ee_clean_container(name = "rgee_dev", type = "gcs")</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

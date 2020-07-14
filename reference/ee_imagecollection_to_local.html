@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -261,7 +261,7 @@ Earth Engine Guide - Export data</a>.</p>
   <span class='fu'><a href='https://rdrr.io/r/stats/filter.html'>filter</a></span>(<span class='no'>ee</span>$<span class='no'>Filter</span>$<span class='fu'>listContains</span>(<span class='st'>"system:band_names"</span>, <span class='st'>"N"</span>))
 
 <span class='co'># From ImageCollection to local directory</span>
-<span class='no'>ee_crs</span> <span class='kw'>&lt;-</span> <span class='no'>collection</span>$<span class='fu'>first</span>()$<span class='fu'>projection</span>()$<span class='fu'>getInfo</span>()$<span class='no'>crs</span>
+<span class='no'>ee_crs</span> <span class='kw'>&lt;-</span> <span class='no'>collection</span>$<span class='fu'>first</span>()$<span class='fu'><a href='https://rdrr.io/pkg/raster/man/projection.html'>projection</a></span>()$<span class='fu'>getInfo</span>()$<span class='no'>crs</span>
 <span class='no'>geometry</span> <span class='kw'>&lt;-</span> <span class='no'>collection</span>$<span class='fu'>first</span>()$<span class='fu'>geometry</span>(<span class='kw'>proj</span> <span class='kw'>=</span> <span class='no'>ee_crs</span>)$<span class='fu'>bounds</span>()
 <span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span>()
 

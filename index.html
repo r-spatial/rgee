@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R Bindings for Calling the Earth Engine API">
 <meta property="og:description" content="Earth Engine &lt;https://earthengine.google.com/&gt; client library for R. All of the Earth Engine API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of R (Earth Engine) 
+    modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
     See &lt;https://r-spatial.github.io/rgee/&gt; for further details.">
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png">
@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -117,12 +117,25 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#google-earth-engine-for-r" class="anchor"></a>Google Earth Engine for R</h1></div>
 <p><a href="http://r-spatial.github.io/rgee"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="0" width="15%"></a></p>
-<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.226/">earthengine-api 0.1.226</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
-<div id="more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="section level3">
+<p><code>rgee</code> is a binding package for calling <a href="https://developers.google.com/earth-engine/">Google Earth Engine API</a> from within R. Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the <a href="https://pypi.org/project/earthengine-api/0.1.227/">earthengine-api 0.1.227</a>. <strong>Note that access to Google Earth Engine is only available to <a href="https://earthengine.google.com/">registered users</a></strong>.</p>
+<div id="more-than-250-examples-using-gee-with-r-are-available-here" class="section level3">
 <h3 class="hasAnchor">
-<a href="#more-than-250-examples-using-google-earth-engine-with-r-are-available-here" class="anchor"></a>More than 250+ examples using Google Earth Engine with R are available <a href="http://csaybar.github.io/rgee-examples/">here</a>
+<a href="#more-than-250-examples-using-gee-with-r-are-available-here" class="anchor"></a>More than 250+ examples using GEE with R are available <a href="http://csaybar.github.io/rgee-examples/">here</a>
 </h3>
 <p><a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/idw_interpolation.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_03_idw_interpolation.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/image/spectral_unmixing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_04_spectral_unmixing.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_05_sentinel2.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/image/canny_edge_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_06_canny_edge_detector.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/image/cumulative_cost_mapping.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_07_cumulative_cost_mapping.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/image/zero_crossing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_08_zero_crossing.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples//Visualization/hillshade.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_09_hillshade.png" height="100" hspace="5"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/styled_layer_descriptors.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_10_styled_layer_descriptors.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/terrain_visualization.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_11_terrain_visualization.png" height="100" hspace="5"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/us_census_counties.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_12_us_census_counties.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_13_global_power_plant_database.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Water/jrc_metadata.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_15_jrc_metadata.png" height="100"></a> <a href="https://github.com/r-spatial/rgee/blob/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"></a> <a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"></a></p>
+</div>
+<div id="quick-start-users-guide-for-rgee-in-portuguese-and-spanish" class="section level3">
+<h3 class="hasAnchor">
+<a href="#quick-start-users-guide-for-rgee-in-portuguese-and-spanish" class="anchor"></a>Quick Start User’s Guide for rgee in Portuguese and Spanish.</h3>
+<p><a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"></a> <a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"></a></p>
+<p><strong>Created by:</strong></p>
+<ul>
+<li><p>POR: Andres Luiz Lima Costa <a href="http://amazeone.com.br/index.php" class="uri">http://amazeone.com.br/index.php</a></p></li>
+<li>
+<p>SPA: Antony Barja Ingaruca <a href="https://barja8.github.io/" class="uri">https://barja8.github.io/</a></p>
+<h3 id="section"></h3>
+</li>
+</ul>
 </div>
 <div id="what-is-google-earth-engine" class="section level2">
 <h2 class="hasAnchor">
@@ -251,7 +264,7 @@ R
 <div id="2-extract-precipitation-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#2-extract-precipitation-values" class="anchor"></a>2. Extract precipitation values</h3>
-<p>Load <code>tidyverse</code> and <code>sf</code> and initialize the Earth Engine R API.</p>
+<p>Install and load <code>tidyverse</code> and <code>sf</code> R package, after that, initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb14"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">tidyverse</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
@@ -259,13 +272,13 @@ R
 <span class="co"># ee_reattach() # reattach ee as a reserve word</span>
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()</pre></div>
 <p>Read the <code>nc</code> shapefile.</p>
-<div class="sourceCode" id="cb15"><pre class="r"><span class="no">nc</span> <span class="kw">&lt;-</span> <span class="fu">st_read</span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"sf"</span>), <span class="kw">quiet</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb15"><pre class="r"><span class="no">nc</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"sf"</span>), <span class="kw">quiet</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
 <p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE">Terraclimate dataset</a></p>
 <div class="sourceCode" id="cb16"><pre class="r"><span class="no">terraclimate</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu">ImageCollection</span>(<span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
-  <span class="fu">filterDate</span>(<span class="st">"2000-01-01"</span>, <span class="st">"2001-01-01"</span>)$
+  <span class="fu">filterDate</span>(<span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span>)$
   <span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">x</span>$<span class="fu">reproject</span>(<span class="st">"EPSG:4326"</span>)$<span class="fu">select</span>(<span class="st">"pr"</span>))</pre></div>
-<p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code>raster::extract</code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
-<div class="sourceCode" id="cb17"><pre class="r"><span class="no">ee_nc_rain</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">terraclimate</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">nc</span>, <span class="kw">fun</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">Reducer</span>$<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(), <span class="kw">sf</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/raster/man/extract.html">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
+<div class="sourceCode" id="cb17"><pre class="r"><span class="no">ee_nc_rain</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">terraclimate</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">nc</span>, <span class="kw">sf</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="no">ee_nc_rain</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%02d"</span>, <span class="fl">1</span>:<span class="fl">12</span>)
 <span class="no">ee_nc_rain</span>$<span class="no">name</span> <span class="kw">&lt;-</span> <span class="no">nc</span>$<span class="no">NAME</span></pre></div>
 <p>Use ggplot2 to generate a beautiful static plot!</p>
@@ -282,14 +295,14 @@ R
 <div id="3-create-an-ndvi-animation-js-version" class="section level3">
 <h3 class="hasAnchor">
 <a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation">JS version</a>)</h3>
-<p>Load <code>sf</code> and initialize the Earth Engine R API.</p>
+<p>Install and load <code>sf</code>, after that, initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb19"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">sf</span>)
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
 <span class="co"># ee_reattach() # reattach ee as a reserve word</span></pre></div>
 <p>Define the regional bounds of animation frames and a mask to clip the NDVI data by.</p>
 <div class="sourceCode" id="cb20"><pre class="r"><span class="no">mask</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shp/arequipa.shp"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"rgee"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">st_read</span>(<span class="kw">quiet</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(<span class="kw">quiet</span> <span class="kw">=</span> <span class="fl">TRUE</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="reference/sf_as_ee.html">sf_as_ee</a></span>()
 <span class="no">region</span> <span class="kw">&lt;-</span> <span class="no">mask</span>$<span class="fu">geometry</span>()$<span class="fu">bounds</span>()</pre></div>
 <p>Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an <code>ee.ImageCollection</code> and select the NDVI band.</p>
@@ -456,6 +469,7 @@ A BibTeX entry for LaTeX users is
 <li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
 <li><a href="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc"><img src="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg" alt="status"></a></li>
 <li><a href="https://cran.r-project.org/package=rgee"><img src="https://www.r-pkg.org/badges/version/rgee" alt="CRAN status"></a></li>
+<li><a href="https://doi.org/10.5281/zenodo.3945409"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3945409.svg" alt="DOI"></a></li>
 </ul>
 </div>
 </div>

@@ -82,7 +82,7 @@ using mapview." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -172,7 +172,7 @@ using <code>mapview</code>.</p>
     <p>An object of class environment with the
 following functions:</p><ul>
 <li><p><strong>addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
+opacity = 1, legend = FALSE)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
 <li><p><strong>eeObject:</strong> The object to add to mapview.<br /></p></li>
 <li><p><strong>visParams:</strong> List of parameters for visualization.
 See details.<br /></p></li>
@@ -181,6 +181,21 @@ See details.<br /></p></li>
 layer should be on by default. <br /></p></li>
 <li><p><strong>opacity:</strong> The layer's opacity represented as a number
 between 0 and 1. Defaults to 1. <br /></p></li>
+<li><p><strong>legend:</strong> Should a legend be plotted?. Ignore if <code>eeObject</code>
+is not a single-band ee$Image.</p></li>
+</ul></li>
+<li><p><strong>addLayers(eeObject, visParams, name = NULL, shown = TRUE,
+opacity = 1, legend = FALSE)</strong>: Adds a given ee$ImageCollection to the map
+as multiple layers. <br /></p><ul>
+<li><p><strong>eeObject:</strong> The ee$ImageCollection to add to mapview.<br /></p></li>
+<li><p><strong>visParams:</strong> List of parameters for visualization.
+See details.<br /></p></li>
+<li><p><strong>name:</strong> The name of layers.<br /></p></li>
+<li><p><strong>shown:</strong> A flag indicating whether
+layers should be on by default. <br /></p></li>
+<li><p><strong>opacity:</strong> The layer's opacity represented as a number
+between 0 and 1. Defaults to 1. <br /></p></li>
+<li><p><strong>legend:</strong> Should a legend be plotted?.</p></li>
 </ul></li>
 <li><p><strong>setCenter(lon = 0, lat = 0, zoom = NULL)</strong>: Centers the map
 view at the given coordinates with the given zoom level. If no zoom level
@@ -290,13 +305,26 @@ default 3.</p></li>
 <span class='no'>m4</span>
 
 <span class='co'># Case 5: mapview + EarthEnginemap</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
-<span class='fu'>mapview</span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
-<span class='no'>m2</span> + <span class='fu'>mapview</span>(<span class='no'>nc</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
+<span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
+<span class='no'>m2</span> + <span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>)
 
 <span class='co'># Case 6: mapedit</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapedit</span>)
-<span class='no'>my_geometry</span> <span class='kw'>&lt;-</span> <span class='no'>m2</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='ee_as_mapview.html'>ee_as_mapview</a></span>() <span class='kw'>%&gt;%</span> <span class='fu'>editMap</span>()
+<span class='co'># my_geometry &lt;- m2 %&gt;% ee_as_mapview() %&gt;% editMap()</span>
+
+<span class='co'># Case 7: ImageCollection</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
+
+<span class='no'>ee_s2</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"COPERNICUS/S2"</span>)$
+  <span class='fu'>filterDate</span>(<span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span>)$
+  <span class='fu'>filterBounds</span>(<span class='no'>nc</span>) <span class='kw'>%&gt;%</span>
+  <span class='fu'><a href='ee_get.html'>ee_get</a></span>(<span class='fl'>0</span>:<span class='fl'>4</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>nc</span>$<span class='fu'>geometry</span>())
+<span class='no'>Map</span>$<span class='fu'>addLayers</span>(<span class='no'>ee_s2</span>)
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

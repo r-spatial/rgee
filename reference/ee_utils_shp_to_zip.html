@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -200,36 +200,8 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".</p></td>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='co'># Create sf object</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
-<span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
-
-<span class='co'># Method 1</span>
-<span class='co'># 1. Pass the sf to a zip file</span>
+<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
 <span class='no'>zipfile</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_utils_shp_to_zip</span>(<span class='no'>nc</span>)
-
-<span class='co'># 2. From local to gcs</span>
-<span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>zipfile</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
-
-<span class='co'># 3. Pass the sf to a zip file</span>
-<span class='fu'><a href='gcs_to_ee_table.html'>gcs_to_ee_table</a></span>(
-  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
-  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>
-)
-
-<span class='co'># OPTIONAL: Monitoring progress</span>
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
-
-<span class='co'># OPTIONAL: Display results</span>
-<span class='no'>ee_sf_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(<span class='no'>assetId</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_01</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_01</span>)
-
-<span class='co'># Method 2</span>
-<span class='no'>ee_sf_02</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>,
-                     <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
-                     <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_sf_02</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_sf_02</span>)
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

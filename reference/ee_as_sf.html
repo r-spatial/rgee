@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -280,11 +280,11 @@ Earth Engine Guide - Export data</a>.</p>
 )
 
 <span class='co'># Download via GCS</span>
-<span class='no'>sf_randomPoints_gcs</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_sf</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>subset</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>'gcs'</span>,
-  <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span> <span class='co'>#GCS bucket name</span>
-)
+<span class='co'># sf_randomPoints_gcs &lt;- ee_as_sf(</span>
+<span class='co'>#   x = subset,</span>
+<span class='co'>#   via = 'gcs',</span>
+<span class='co'>#   container = 'rgee_dev' #GCS bucket name</span>
+<span class='co'># )</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

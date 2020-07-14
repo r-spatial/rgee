@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert a Raster* object into an EE Image — raster_as_ee • rgee</title>
+<title>Convert a Raster* object into an EE Image object — raster_as_ee • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Convert a Raster* object into an EE Image — raster_as_ee" />
-<meta property="og:description" content="Convert a Raster* object into an ee$Image." />
+<meta property="og:title" content="Convert a Raster* object into an EE Image object — raster_as_ee" />
+<meta property="og:description" content="Convert a Raster* object into an EE Image object" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -151,18 +151,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert a Raster* object into an EE Image</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_image.R'><code>R/ee_image.R</code></a></small>
+    <h1>Convert a Raster* object into an EE Image object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/raster_as_ee.R'><code>R/raster_as_ee.R</code></a></small>
     <div class="hidden name"><code>raster_as_ee.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert a Raster* object into an ee$Image.</p>
+    <p>Convert a Raster* object into an EE Image object</p>
     </div>
 
     <pre class="usage"><span class='fu'>raster_as_ee</span>(
   <span class='no'>x</span>,
   <span class='no'>assetId</span>,
+  <span class='kw'>command_line_tool_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
@@ -180,6 +181,12 @@ an ee$Image.</p></td>
     <tr>
       <th>assetId</th>
       <td><p>Character. Destination asset ID for the uploaded file.</p></td>
+    </tr>
+    <tr>
+      <th>command_line_tool_path</th>
+      <td><p>Character. Path to the Earth Engine command line
+tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
+(ignore if <code>via</code> is not defined as "gcs_to_asset").</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
@@ -215,36 +222,38 @@ an ee$Image.</p></td>
 
 <span class='co'># Get the filename of a image</span>
 <span class='no'>tif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"tif/L7_ETMs.tif"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"stars"</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'>read_stars</span>(<span class='no'>tif</span>)
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>)
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'stars_l7'</span>)
 
-<span class='co'># Method 1</span>
-<span class='co'># 1. Move from local to gcs</span>
-<span class='no'>gs_uri</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>tif</span>, <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>'rgee_dev'</span>)
-
-<span class='co'># 2. Pass from gcs to asset</span>
-<span class='fu'><a href='gcs_to_ee_image.html'>gcs_to_ee_image</a></span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
-  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='no'>gs_uri</span>,
-  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>
-)
-
-<span class='co'># OPTIONAL: Monitoring progress</span>
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span>()
-
-<span class='co'># OPTIONAL: Display results</span>
-<span class='no'>ee_raster_01</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='no'>assetId</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_raster_01</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_raster_01</span>)
-
-<span class='co'># Method 2</span>
-<span class='no'>ee_raster_02</span> <span class='kw'>&lt;-</span> <span class='fu'>raster_as_ee</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>x</span>,
-  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='no'>assetId</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='st'>"rgee_dev"</span>
-)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>ee_raster_02</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='no'>ee_raster_02</span>)
+<span class='co'># # Method 1</span>
+<span class='co'># # 1. Move from local to gcs</span>
+<span class='co'># gs_uri &lt;- local_to_gcs(x = tif, bucket = 'rgee_dev')</span>
+<span class='co'>#</span>
+<span class='co'># # 2. Pass from gcs to asset</span>
+<span class='co'># gcs_to_ee_image(</span>
+<span class='co'>#   x = x,</span>
+<span class='co'>#   overwrite = TRUE,</span>
+<span class='co'>#   gs_uri = gs_uri,</span>
+<span class='co'>#   assetId = assetId</span>
+<span class='co'># )</span>
+<span class='co'>#</span>
+<span class='co'># # OPTIONAL: Monitoring progress</span>
+<span class='co'># ee_monitoring()</span>
+<span class='co'>#</span>
+<span class='co'># # OPTIONAL: Display results</span>
+<span class='co'># ee_raster_01 &lt;- ee$Image(assetId)</span>
+<span class='co'># Map$centerObject(ee_raster_01)</span>
+<span class='co'># Map$addLayer(ee_raster_01)</span>
+<span class='co'>#</span>
+<span class='co'># # Method 2</span>
+<span class='co'># ee_raster_02 &lt;- raster_as_ee(</span>
+<span class='co'>#   x = x,</span>
+<span class='co'>#   assetId = assetId,</span>
+<span class='co'>#   overwrite = TRUE,</span>
+<span class='co'>#   bucket = "rgee_dev"</span>
+<span class='co'># )</span>
+<span class='co'># Map$centerObject(ee_raster_02)</span>
+<span class='co'># Map$addLayer(ee_raster_02)</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -52,6 +52,9 @@
     <loc>http://r-spatial.github.io/rgee/reference/ee_gcs_to_local.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_get.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_get_assethome.html</loc>
   </url>
   <url>
@@ -142,6 +145,9 @@
     <loc>http://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/mapview-class.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/pipe.html</loc>
   </url>
   <url>
@@ -152,9 +158,6 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/plus-mapview-EarthEngineMap-method.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/print-EarthEngineMap-method.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/print.ee.computedobject.ComputedObject.html</loc>
