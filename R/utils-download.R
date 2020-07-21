@@ -36,13 +36,14 @@ ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
     }
     Sys.sleep(5)
   }
+  task_status <- ee_utils_py_to_r(task$status())
   if (!quiet) {
-    cat(sprintf("State: %s\n", task$status()$state))
+    cat(sprintf("State: %s\n", task_status$state))
   }
-  if (task$status()$state != "COMPLETED") {
+  if (task_status$state != "COMPLETED") {
     message(
       "ERROR in Earth Engine servers: ",
-      task$status()$error_message
+      task_status$error_message
     )
     stop("ee_monitoring was forced to stop before getting results")
   }

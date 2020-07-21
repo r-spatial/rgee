@@ -39,7 +39,8 @@ available (#72 Thanks @appelmar).
 - `Map$addLayer` now could display a legend when `eeObject` is an one-band `ee$Image` (By default legend = TRUE).
 - New function `ee_get`: Return the element at the specified position in a Earth Engine Collection.
 - New function `Map$addLayers`: Create interactive visualizations of ImageCollections.
-- - Earth Engine Python API updated to 0.1.227.
+- Fix a bug: "OverflowError: Python int too large to convert to C long" in `ee_monitoring` (#79 Thanks @andreatitolo).
+- Earth Engine Python API updated to 0.1.227.
 
 # rgee 0.6.2
 - Earth Engine Python API updated to 0.1.226.

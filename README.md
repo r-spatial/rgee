@@ -42,12 +42,13 @@ Additionally, several functions have been implemented to make simple the connect
 <a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
 <a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
 
-### Quick Start User's Guide for rgee in Portuguese and Spanish.  
+### Quick Start User's Guide for rgee 
+<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1eng.pdf"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a>
 <a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
 <a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
 
 **Created by:**
-- POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
+- EN and POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
 - SPA: Antony Barja Ingaruca <https://barja8.github.io/>
 ### 
 
