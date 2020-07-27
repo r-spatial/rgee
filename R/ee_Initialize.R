@@ -95,6 +95,13 @@ ee_Initialize <- function(email = NULL,
       }
     }
   }
+
+  # Load your Python Session
+  # if EARTHENGINE_PYTHON is defined, then send it to RETICULATE_PYTHON
+  earthengine_python <- Sys.getenv("EARTHENGINE_PYTHON", unset = NA)
+  if (!is.na(earthengine_python))
+    Sys.setenv(RETICULATE_PYTHON = earthengine_python)
+
   # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
   ee_utils <- ee_source_python(ee_current_version)
