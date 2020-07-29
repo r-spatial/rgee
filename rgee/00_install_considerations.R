@@ -15,11 +15,6 @@ use_python("/usr/bin/python3")
 sys <- import("sys")
 sys$executable
 
-# Configure which version of Python to use (To avoid this step use RETICULATE_ENV)
-use_python("/usr/bin/python3")
-sys <- import("sys")
-sys$executable
-
 use_python("/home/aybarpc01/.virtualenvs/rgee/bin/python")
 py_config()
 py_discover_config()
