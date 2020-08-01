@@ -11,9 +11,13 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.2
+- Earth Engine Python API updated to 0.1.229.
+- Fix a bug in `ee_Initialize`, that does not permit users to use `ee_createAssetHome` to define their *Earth Engine Assets home root folder*
+
 # rgee 1.0.1
 - Earth Engine Python API updated to 0.1.228.
-- ee_Initialize now set the global env "RETICULATE_PYTHON" rather than .onLoad
+- `ee_Initialize` now set the global env "RETICULATE_PYTHON" rather than .onLoad
 
 # rgee 1.0.0
 - We implement `ee_createAssetHome` to help users to define their *Earth Engine Assets home root folder* without leaving ee_Initialize(). (#70 Thanks @jhollist)

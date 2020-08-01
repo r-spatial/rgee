@@ -235,9 +235,9 @@ ee_Initialize <- function(email = NULL,
   }
 
   # Root folder exist?
-  ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+  ee_user_assetroot <- try(ee$data$getAssetRoots()[[1]])
   # if ee_asset_home (list) length is zero
-  if (length(ee_user_assetroot) == 0) {
+  if (length(ee_user_assetroot) == 0 | class(ee_user_assetroot) == "try-error") {
     root_text <- paste(
       "Earth Engine Assets home root folder does not exist for the current user.",
       "Please enter your desired root folder name below. Take into consideration",
