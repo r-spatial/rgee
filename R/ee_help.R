@@ -28,40 +28,44 @@ ee_help <- function(eeobject, browser = FALSE) {
     ee_functions <- eequery_scope[search_funnames]
     fun_name <- paste0("ee$",gsub("\\.","$",tail(ee_functions,1)))
   } else {
-    wrap_lhs <- function(x) gsub("rgee", "", ee_get_lhs())
-    fun_name <- wrap_lhs(eeobject)
-    if (length(fun_name) == 0) {
-      fun_name <- deparse(substitute(eeobject))
-    }
-
-    if (is.null(eequery_scope)) {
-      components <- strsplit(fun_name, "\\$")[[1]]
-      topic <- components[[length(components)]]
-      source <- paste(components[1:(length(components) - 1)],
-                      collapse = "$")
-      # The name is a base function?
-      is_a_basefunction <- tryCatch(
-        expr = {eval(parse(text = sprintf("base::%s", fun_name))); TRUE},
-        error = function(e) FALSE
-      )
-      if (isTRUE(is_a_basefunction)) {
-        stop(
-          "'", fun_name, "' is not subsettable. Are you using a ",
-          "function name that matches the names of the R base",
-          " library?. If 'base::", fun_name, "' exists ee_help will not work."
-        )
+    if (is.character(eeobject)) {
+      fun_name <- eeobject
+    } else {
+      wrap_lhs <- function(x) gsub("rgee", "", ee_get_lhs())
+      fun_name <- wrap_lhs(eeobject)
+      if (length(fun_name) == 0) {
+        fun_name <- deparse(substitute(eeobject))
       }
-      if (topic == source) {
-        fun_name <- topic
-      } else {
-        # Remove just the last parenthesis
-        extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
-                                             topic,
-                                             perl = TRUE)
-        parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
-        to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
-        to_display <- gsub("\\(|\\)", "", to_display)
-        fun_name <- paste(source,to_display,sep = "$")
+
+      if (is.null(eequery_scope)) {
+        components <- strsplit(fun_name, "\\$")[[1]]
+        topic <- components[[length(components)]]
+        source <- paste(components[1:(length(components) - 1)],
+                        collapse = "$")
+        # The name is a base function?
+        is_a_basefunction <- tryCatch(
+          expr = {eval(parse(text = sprintf("base::%s", fun_name))); TRUE},
+          error = function(e) FALSE
+        )
+        if (isTRUE(is_a_basefunction)) {
+          stop(
+            "'", fun_name, "' is not subsettable. Are you using a ",
+            "function name that matches the names of the R base",
+            " library?. If 'base::", fun_name, "' exists ee_help will not work."
+          )
+        }
+        if (topic == source) {
+          fun_name <- topic
+        } else {
+          # Remove just the last parenthesis
+          extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
+                                               topic,
+                                               perl = TRUE)
+          parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
+          to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
+          to_display <- gsub("\\(|\\)", "", to_display)
+          fun_name <- paste(source,to_display,sep = "$")
+        }
       }
     }
   }
