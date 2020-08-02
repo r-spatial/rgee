@@ -22,7 +22,6 @@
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import install_miniconda py_available
-#' @importFrom getPass getPass
 #' @importFrom cli symbol rule
 #' @importFrom crayon blue green black red bold white
 #'
@@ -323,7 +322,7 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
     # Display URL?
     if (display) {
-      replaceMessage(paste0(paste0(earthengine_auth)))
+      cat("\n", earthengine_auth)
     }
     ee_save_eecredentials(
       url = earthengine_auth,
@@ -331,9 +330,6 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
       main_ee_credential = main_ee_credential,
       user_ee_credential = user_ee_credential
     )
-    if (display) {
-      replaceMessage("")
-    }
     invisible(TRUE)
   }
 }
@@ -342,7 +338,7 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
 #' @noRd
 ee_save_eecredentials <- function(url, code_verifier, main_ee_credential, user_ee_credential) {
   browseURL(url)
-  auth_code <- getPass("Enter Earth Engine Authentication: ")
+  auth_code <- readline("Enter Earth Engine Authentication: ")
   token <- ee$oauth$request_token(auth_code, code_verifier)
   credential <- sprintf('{"refresh_token":"%s"}', token)
   write(credential, main_ee_credential)
@@ -684,13 +680,4 @@ ee_createAssetHome <- function() {
       ee_createAssetHome()
     }
   )
-}
-
-#' Replace text
-#' Created by jthetzel
-#' https://stackoverflow.com/questions/10218796/is-there-a-simpler-way-to-erase-the-end-of-the-line-using-cat-in-r
-#' @noRd
-replaceMessage <- function(x, width = 500) {
-  cat("\r", rep(" ", times = width - length(x)), "\r", append = T)
-  cat(x, append = F)
 }

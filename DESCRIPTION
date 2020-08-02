@@ -89,7 +89,6 @@ Imports:
     methods,
     reticulate (>= 1.15),
     magrittr,
-    getPass,
     crayon,
     cli
 Suggests:
