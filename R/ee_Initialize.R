@@ -322,7 +322,7 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
     # Display URL?
     if (display) {
-      cat("\n", earthengine_auth)
+      message("\n", earthengine_auth)
     }
     ee_save_eecredentials(
       url = earthengine_auth,
