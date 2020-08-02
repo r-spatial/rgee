@@ -16,6 +16,8 @@
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
 #' credential will be cached in the path \code{~/.config/earthengine/}.
 #'
+#' @param display Logical. If TRUE display the earthengine authentification URL.
+#'
 #' @param quiet Logical. Suppress info messages.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -56,6 +58,7 @@
 ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
+                          display = FALSE,
                           quiet = FALSE) {
   # Message for new user
   init_rgee_message <- ee_search_init_message()
@@ -222,7 +225,8 @@ ee_Initialize <- function(email = NULL,
       blue("Initializing Google Earth Engine:")
     )
   }
-  ee_create_credentials_earthengine(email_clean)
+
+  ee_create_credentials_earthengine(email_clean, display = display)
   ee$Initialize()
 
   if (!quiet) {
@@ -292,7 +296,7 @@ ee_Initialize <- function(email = NULL,
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(email_clean) {
+ee_create_credentials_earthengine <- function(email_clean, display) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
 
@@ -317,13 +321,32 @@ ee_create_credentials_earthengine <- function(email_clean) {
     code_verifier <- oauth_codes[[1]]
     code_challenge <- oauth_codes[[2]]
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
-    browseURL(earthengine_auth)
-    auth_code <- getPass("Enter Earth Engine Authentication: ")
-    token <- ee$oauth$request_token(auth_code, code_verifier)
-    credential <- sprintf('{"refresh_token":"%s"}', token)
-    write(credential, main_ee_credential)
-    write(credential, user_ee_credential)
+    # Display URL?
+    if (display) {
+      replaceMessage(paste0(paste0(earthengine_auth)))
+    }
+    ee_save_eecredentials(
+      url = earthengine_auth,
+      code_verifier = code_verifier,
+      main_ee_credential = main_ee_credential,
+      user_ee_credential = user_ee_credential
+    )
+    if (display) {
+      replaceMessage("")
+    }
+    invisible(TRUE)
   }
+}
+
+#' Save EE credentials
+#' @noRd
+ee_save_eecredentials <- function(url, code_verifier, main_ee_credential, user_ee_credential) {
+  browseURL(url)
+  auth_code <- getPass("Enter Earth Engine Authentication: ")
+  token <- ee$oauth$request_token(auth_code, code_verifier)
+  credential <- sprintf('{"refresh_token":"%s"}', token)
+  write(credential, main_ee_credential)
+  write(credential, user_ee_credential)
 }
 
 #' Create credentials - Google Drive
@@ -661,4 +684,13 @@ ee_createAssetHome <- function() {
       ee_createAssetHome()
     }
   )
+}
+
+#' Replace text
+#' Created by jthetzel
+#' https://stackoverflow.com/questions/10218796/is-there-a-simpler-way-to-erase-the-end-of-the-line-using-cat-in-r
+#' @noRd
+replaceMessage <- function(x, width = 500) {
+  cat("\r", rep(" ", times = width - length(x)), "\r", append = T)
+  cat(x, append = F)
 }
