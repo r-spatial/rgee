@@ -38,7 +38,9 @@ img_available <- function(id, path, row, cloud) {
 
 plot_available_img <- function(name, img_available) {
   plot_img <- img_available %>%
-    ggplot(aes(x = anio, y = factor(mes, labels = month.abb))) +
+    as_tibble() %>% 
+    mutate_if(is.character,as.factor) %>% 
+    ggplot(aes(x = anio , y = factor(mes, labels = month.abb[1:length(levels(mes))]))) +
     geom_raster(aes(fill = type), alpha = 0.7) +
     geom_point(aes(size = factor(total)), color = "black") +
     geom_point(shape = 21, color = "white", size = 3) +
