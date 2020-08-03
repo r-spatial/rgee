@@ -106,7 +106,16 @@ ee_Initialize <- function(email = NULL,
 
   # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils <- ee_source_python(ee_current_version)
+  ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
+  # counter added to prevent problems with reticulate
+  con_reticulate_counter <- 0
+  while (any(class(ee_utils) %in%  "try-error") & con_reticulate_counter < 3) {
+    ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
+    con_reticulate_counter <- con_reticulate_counter + 1
+    if (con_reticulate_counter == 2) {
+      stop("reticulate refuse to connect with rgee")
+    }
+  }
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
