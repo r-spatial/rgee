@@ -172,6 +172,12 @@ ee_Initialize <- function(email = NULL,
   gcs_credentials <- list(path = NA, message = NA)
 
   if (drive) {
+    if (!requireNamespace("googledrive", quietly = TRUE)) {
+      stop("The googledrive package is not installed. Try",
+           ' install.packages("googledrive")',
+           call. = FALSE
+      )
+    }
     if (!quiet) {
       cat(
         "",
@@ -192,6 +198,12 @@ ee_Initialize <- function(email = NULL,
   }
 
   if (gcs) {
+    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+      stop("The googleCloudStorageR package is not installed. Try",
+           ' install.packages("googleCloudStorageR")',
+           call. = FALSE
+      )
+    }
     if (!quiet) {
       cat(
         "",
