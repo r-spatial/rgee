@@ -84,7 +84,7 @@ a wrapper around rgee::ee$Initialize()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -168,7 +168,13 @@ allows you to grant permission to manage resources. This function is
 a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_Initialize</span>(<span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_Initialize</span>(
+  <span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>display</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,6 +194,10 @@ will be cached in the path <code>~/.config/earthengine/</code>.</p></td>
       <th>gcs</th>
       <td><p>Logical (optional). If TRUE, the Google Cloud Storage
 credential will be cached in the path <code>~/.config/earthengine/</code>.</p></td>
+    </tr>
+    <tr>
+      <th>display</th>
+      <td><p>Logical. If TRUE display the earthengine authentification URL.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
