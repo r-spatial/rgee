@@ -492,7 +492,7 @@ ee_create_credentials_gcs <- function(email) {
 ee_users <- function(quiet = FALSE) {
   #space among columns
   wsc <- "     "
-  title  <- c('user', ' EE', ' GD', ' GCS')
+  title  <- c('user', ' EE', ' GCS', ' GD')
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
@@ -572,6 +572,10 @@ ee_user_info <- function(quiet = FALSE) {
 
   # google drive
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
+  if (length(gd) == 0) {
+    gd <- "NOT FOUND"
+  }
+
   if (!quiet) {
     cat(blue$bold('\nGoogle Drive Credentials:'))
     cat("\n - ", basename(gd))
@@ -580,6 +584,10 @@ ee_user_info <- function(quiet = FALSE) {
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
+  if (length(gcs) == 0) {
+    gcs <- "NOT FOUND"
+  }
+
   if (!quiet) {
     cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
     cat("\n - ",basename(gcs))
@@ -587,13 +595,14 @@ ee_user_info <- function(quiet = FALSE) {
   }
   ee_user <- ee_exist_credentials()
 
-  if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
-    message(
-      "\nNOTE: Google Drive credential does not match with your Google",
-      " Earth Engine credentials. All functions which depend on Google",
-      " Drive will not work (e.g. ee_image_to_drive)."
-    )
-  }
+  # if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
+  #   message(
+  #     "\nNOTE: Google Drive credential does not match with your Google",
+  #     " Earth Engine credentials. All functions which depend on Google",
+  #     " Drive will not work (e.g. ee_image_to_drive)."
+  #   )
+  # }
+
   ee_check_python_packages(quiet = TRUE)
   invisible(TRUE)
 }
