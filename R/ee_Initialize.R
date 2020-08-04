@@ -16,11 +16,12 @@
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
 #' credential will be cached in the path \code{~/.config/earthengine/}.
 #'
+#' @param display Logical. If TRUE display the earthengine authentification URL.
+#'
 #' @param quiet Logical. Suppress info messages.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import install_miniconda py_available
-#' @importFrom getPass getPass
 #' @importFrom cli symbol rule
 #' @importFrom crayon blue green black red bold white
 #'
@@ -56,6 +57,7 @@
 ee_Initialize <- function(email = NULL,
                           drive = FALSE,
                           gcs = FALSE,
+                          display = FALSE,
                           quiet = FALSE) {
   # Message for new user
   init_rgee_message <- ee_search_init_message()
@@ -104,7 +106,16 @@ ee_Initialize <- function(email = NULL,
 
   # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils <- ee_source_python(ee_current_version)
+  ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
+  # counter added to prevent problems with reticulate
+  con_reticulate_counter <- 0
+  while (any(class(ee_utils) %in%  "try-error") & con_reticulate_counter < 3) {
+    ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
+    con_reticulate_counter <- con_reticulate_counter + 1
+    if (con_reticulate_counter == 2) {
+      stop("reticulate refuse to connect with rgee")
+    }
+  }
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
@@ -161,6 +172,12 @@ ee_Initialize <- function(email = NULL,
   gcs_credentials <- list(path = NA, message = NA)
 
   if (drive) {
+    if (!requireNamespace("googledrive", quietly = TRUE)) {
+      stop("The googledrive package is not installed. Try",
+           ' install.packages("googledrive")',
+           call. = FALSE
+      )
+    }
     if (!quiet) {
       cat(
         "",
@@ -181,6 +198,12 @@ ee_Initialize <- function(email = NULL,
   }
 
   if (gcs) {
+    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+      stop("The googleCloudStorageR package is not installed. Try",
+           ' install.packages("googleCloudStorageR")',
+           call. = FALSE
+      )
+    }
     if (!quiet) {
       cat(
         "",
@@ -222,7 +245,8 @@ ee_Initialize <- function(email = NULL,
       blue("Initializing Google Earth Engine:")
     )
   }
-  ee_create_credentials_earthengine(email_clean)
+
+  ee_create_credentials_earthengine(email_clean, display = display)
   ee$Initialize()
 
   if (!quiet) {
@@ -292,7 +316,7 @@ ee_Initialize <- function(email = NULL,
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(email_clean) {
+ee_create_credentials_earthengine <- function(email_clean, display) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
 
@@ -317,13 +341,29 @@ ee_create_credentials_earthengine <- function(email_clean) {
     code_verifier <- oauth_codes[[1]]
     code_challenge <- oauth_codes[[2]]
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
-    browseURL(earthengine_auth)
-    auth_code <- getPass("Enter Earth Engine Authentication: ")
-    token <- ee$oauth$request_token(auth_code, code_verifier)
-    credential <- sprintf('{"refresh_token":"%s"}', token)
-    write(credential, main_ee_credential)
-    write(credential, user_ee_credential)
+    # Display URL?
+    if (display) {
+      message("\n", earthengine_auth)
+    }
+    ee_save_eecredentials(
+      url = earthengine_auth,
+      code_verifier = code_verifier,
+      main_ee_credential = main_ee_credential,
+      user_ee_credential = user_ee_credential
+    )
+    invisible(TRUE)
   }
+}
+
+#' Save EE credentials
+#' @noRd
+ee_save_eecredentials <- function(url, code_verifier, main_ee_credential, user_ee_credential) {
+  browseURL(url)
+  auth_code <- readline("Enter Earth Engine Authentication: ")
+  token <- ee$oauth$request_token(auth_code, code_verifier)
+  credential <- sprintf('{"refresh_token":"%s"}', token)
+  write(credential, main_ee_credential)
+  write(credential, user_ee_credential)
 }
 
 #' Create credentials - Google Drive
@@ -452,7 +492,7 @@ ee_create_credentials_gcs <- function(email) {
 ee_users <- function(quiet = FALSE) {
   #space among columns
   wsc <- "     "
-  title  <- c('user', ' EE', ' GD', ' GCS')
+  title  <- c('user', ' EE', ' GCS', ' GD')
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
@@ -532,6 +572,10 @@ ee_user_info <- function(quiet = FALSE) {
 
   # google drive
   gd <- user_session_list[grepl("@gmail.com", user_session_list)]
+  if (length(gd) == 0) {
+    gd <- "NOT FOUND"
+  }
+
   if (!quiet) {
     cat(blue$bold('\nGoogle Drive Credentials:'))
     cat("\n - ", basename(gd))
@@ -540,6 +584,10 @@ ee_user_info <- function(quiet = FALSE) {
 
   # google cloud storage
   gcs <- user_session_list[grepl(".json", user_session_list)]
+  if (length(gcs) == 0) {
+    gcs <- "NOT FOUND"
+  }
+
   if (!quiet) {
     cat(blue$bold('\nGoogle Cloud Storage Credentials:'))
     cat("\n - ",basename(gcs))
@@ -547,13 +595,14 @@ ee_user_info <- function(quiet = FALSE) {
   }
   ee_user <- ee_exist_credentials()
 
-  if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
-    message(
-      "\nNOTE: Google Drive credential does not match with your Google",
-      " Earth Engine credentials. All functions which depend on Google",
-      " Drive will not work (e.g. ee_image_to_drive)."
-    )
-  }
+  # if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
+  #   message(
+  #     "\nNOTE: Google Drive credential does not match with your Google",
+  #     " Earth Engine credentials. All functions which depend on Google",
+  #     " Drive will not work (e.g. ee_image_to_drive)."
+  #   )
+  # }
+
   ee_check_python_packages(quiet = TRUE)
   invisible(TRUE)
 }

@@ -4,7 +4,13 @@
 \alias{ee_Initialize}
 \title{Authenticate and Initialize Earth Engine}
 \usage{
-ee_Initialize(email = NULL, drive = FALSE, gcs = FALSE, quiet = FALSE)
+ee_Initialize(
+  email = NULL,
+  drive = FALSE,
+  gcs = FALSE,
+  display = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email
@@ -16,6 +22,8 @@ will be cached in the path \code{~/.config/earthengine/}.}
 
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential will be cached in the path \code{~/.config/earthengine/}.}
+
+\item{display}{Logical. If TRUE display the earthengine authentification URL.}
 
 \item{quiet}{Logical. Suppress info messages.}
 }

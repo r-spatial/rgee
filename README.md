@@ -1,3 +1,4 @@
+<a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img align="left" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
 [![R build status](https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/r-spatial/rgee/actions)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
@@ -110,7 +111,11 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("r-spatial/rgee")
 ```
 
-**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing).
+**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing). If you are using a Debian-based operating system, you probably need to install **virtualenv** as well. If you are using a Debian-based operating system, you probably need to install virtualenv as well.
+
+```
+sudo pip3 install virtualenv
+```
 
 #### Docker image
     
