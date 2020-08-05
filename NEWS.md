@@ -15,6 +15,7 @@ vignette: >
 - Fix a bug that makes that `ee_as_sf` only supports `GeoJSON` format.
 - If `dsn` is not specified in `ee_as_sf`, it will create a temporary shapefile (in \tmp dir).
 - Fix a bug in `ee_imagecollection_to_local` (#87 Thanks @cedlfc44)
+- Fix a bug in `ee_image_local` (#88 Thanks @cedlfc44)
 
 # rgee 1.0.3
 - getPass library removed from `ee_Initialize`.
