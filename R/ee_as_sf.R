@@ -3,7 +3,7 @@
 #' @param x Earth Engine table (ee$FeatureCollection) to be converted into a sf
 #' object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
-#' \code{ee_as_sf} will create a temporary file.
+#' \code{ee_as_sf} will create a shapefile file in tmp() directory.
 #' @param crs Integer or character. coordinate reference system
 #' for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
@@ -101,7 +101,7 @@ ee_as_sf <- function(x,
   sp_eeobjects <- ee_get_spatial_objects('Table')
 
   if (missing(dsn)) {
-    dsn <- paste0(tempfile(),".geojson")
+    dsn <- paste0(tempfile(),".shp")
   }
 
   if (!any(class(x) %in% sp_eeobjects)) {
@@ -195,12 +195,21 @@ ee_as_sf <- function(x,
     file_name <- paste0(table_id, "_", time_format)
 
     # table to drive
+    table_format <- ee_get_table_format(dsn)
+    if (is.na(table_format)) {
+      stop(
+        'sf_as_ee(..., via = \"drive\"), only support the ',
+        'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+        '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+      )
+    }
+
     table_task <- ee_table_to_drive(
       collection = x_fc,
       description = ee_description,
       folder = container,
       fileNamePrefix = file_name,
-      fileFormat = "GeoJSON",
+      fileFormat = table_format,
       selectors = selectors
     )
 
@@ -227,7 +236,12 @@ ee_as_sf <- function(x,
       overwrite = overwrite,
       consider = 'all'
     )
-    local_sf <- sf::read_sf(dsn, quiet = TRUE)
+
+    if (table_format == "CSV") {
+      return(read.csv(dsn, stringsAsFactors = FALSE))
+    } else {
+      local_sf <- sf::read_sf(dsn, quiet = TRUE)
+    }
   } else if (via == 'gcs') {
     # Creating name for temporal file; just for either drive or gcs
     time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
@@ -245,13 +259,22 @@ ee_as_sf <- function(x,
 
     file_name <- paste0(table_id, "_", time_format)
 
-    # table to drive
+    # table to gcs
+    table_format <- ee_get_table_format(dsn)
+    if (is.na(table_format)) {
+      stop(
+        'sf_as_ee(..., via = \"gcs\"), only support the ',
+        'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+        '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+      )
+    }
+
     table_task <- ee_table_to_gcs(
       collection = x_fc,
       description = ee_description,
       bucket = container,
       fileNamePrefix = file_name,
-      fileFormat = "GeoJSON",
+      fileFormat = table_format,
       selectors = selectors
     )
 
@@ -271,7 +294,11 @@ ee_as_sf <- function(x,
       stop(table_task$status()$error_message)
     }
     ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
-    local_sf <- sf::read_sf(dsn, quiet = TRUE)
+    if (table_format == "CSV") {
+      return(read.csv(dsn, stringsAsFactors = FALSE))
+    } else {
+      local_sf <- sf::read_sf(dsn, quiet = TRUE)
+    }
   } else {
     stop("via argument invalid.")
   }
@@ -313,7 +340,32 @@ ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
   if (missing(dsn)) {
     x_sf
   } else {
-    sf::write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+    suppressWarnings(
+      sf::write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+    )
     x_sf
+  }
+}
+
+#' Sync sf and ee drivers
+#' @noRd
+ee_get_table_format <- function(dsn) {
+  table_format <- tolower(sub(".*([.*])", "\\1", basename(dsn)))
+  if (length(table_format) != 1) {
+    stop("dns must be a single-length character")
+  }
+
+  if (table_format == ".shp") {
+    "SHP"
+  } else if (table_format == ".geojson") {
+    "GeoJSON"
+  } else if (table_format == ".kml") {
+    "KML"
+  } else if (table_format == ".kmz") {
+    "KMZ"
+  } else if (table_format == ".csv") {
+    "CSV"
+  } else {
+    NA
   }
 }

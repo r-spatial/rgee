@@ -180,9 +180,9 @@ ee_geometry_message <- function(region, quiet = FALSE) {
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
   query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
-  is_evenodd <- as.logical(
+  is_evenodd <- all(as.logical(
     query_params[grepl("evenOdd", names(query_params))]
-  )
+  ))
   if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
     is_evenodd <- TRUE
   }
@@ -194,7 +194,7 @@ ee_geometry_message <- function(region, quiet = FALSE) {
       '- region parameters\n',
       'WKT      :', sf::st_as_text(sf_region), "\n",
       'CRS      :', region_crs, "\n",
-      'geodesic :', is_geodesic, "\n",
+      'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
       'evenOdd  :', is_evenodd, "\n"
     )
   }

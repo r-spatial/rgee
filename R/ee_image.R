@@ -345,9 +345,9 @@ ee_image_local <- function(image,
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
   query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
-  is_evenodd <- as.logical(
+  is_evenodd <- all(as.logical(
     query_params[grepl("evenOdd", names(query_params))]
-  )
+  ))
   if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
     is_evenodd <- TRUE
   }
