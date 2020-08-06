@@ -16,6 +16,7 @@ vignette: >
 - If `dsn` is not specified in `ee_as_sf`, it will create a temporary shapefile (in \tmp dir).
 - Fix a bug in `ee_imagecollection_to_local` (#87 Thanks @cedlfc44)
 - Fix a bug in `ee_image_local` (#88 Thanks @cedlfc44)
+- Fix a bug in `ee_create_credentials_drive` (#90 #78 Thanks @cedlfc44)
 
 # rgee 1.0.3
 - getPass library removed from `ee_Initialize`.

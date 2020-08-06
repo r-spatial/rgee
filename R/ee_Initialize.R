@@ -376,16 +376,16 @@ ee_create_credentials_drive <- function(email) {
       call. = FALSE
     )
   }
-  # setting drive folder
+  # Set folder to save Google Drive Credentials
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
 
-  # Load drive_credentials
+  # Load GD credentials (googledrive::drive_auth)
   full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-  drive_condition <- grepl(email_clean, basename(full_credentials))
+  drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
   if (!any(drive_condition)) {
     suppressMessages(
       googledrive::drive_auth(
@@ -403,10 +403,11 @@ ee_create_credentials_drive <- function(email) {
       )
     )
   }
-  # from user folder to EE folder
-  clean_drive <- list.files(ee_path, email_clean, full.names = TRUE) %in% list.dirs(ee_path)
+
+  # Clean previous and copy new GD credentials in ./earthengine folder
+  clean_drive <- list.files(ee_path, ".*_.*@.*", full.names = TRUE) %in% list.dirs(ee_path)
   unlink(
-    list.files(ee_path, email_clean, full.names = TRUE)[!clean_drive]
+    list.files(ee_path, ".*_.*@.*", full.names = TRUE)[!clean_drive]
   )
   file.copy(
     from = drive_credentials,
