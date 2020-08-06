@@ -382,31 +382,32 @@ ee_create_credentials_drive <- function(email) {
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
-  # drive_credentials
-  repeat {
-    full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-    drive_condition <- grepl("@gmail.com", full_credentials)
-    if (!any(drive_condition)) {
-      suppressMessages(
-        googledrive::drive_auth(
-          email = NULL,
-          cache = ee_path_user
-        )
+
+  # Load drive_credentials
+  full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+  drive_condition <- grepl(email_clean, basename(full_credentials))
+  if (!any(drive_condition)) {
+    suppressMessages(
+      googledrive::drive_auth(
+        email = NULL,
+        cache = ee_path_user
       )
-    } else {
-      drive_credentials <- full_credentials[drive_condition]
-      email <- sub("^[^_]*_", "", drive_credentials)
-      suppressMessages(
-        googledrive::drive_auth(
-          email = email,
-          cache = ee_path_user
-        )
+    )
+  } else {
+    drive_credentials <- full_credentials[drive_condition]
+    email <- sub("^[^_]*_", "", drive_credentials)
+    suppressMessages(
+      googledrive::drive_auth(
+        email = email,
+        cache = ee_path_user
       )
-      break
-    }
+    )
   }
   # from user folder to EE folder
-  unlink(list.files(ee_path, "@gmail.com", full.names = TRUE))
+  clean_drive <- list.files(ee_path, email_clean, full.names = TRUE) %in% list.dirs(ee_path)
+  unlink(
+    list.files(ee_path, email_clean, full.names = TRUE)[!clean_drive]
+  )
   file.copy(
     from = drive_credentials,
     to = sprintf("%s/%s", ee_path, basename(drive_credentials)),
