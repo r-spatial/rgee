@@ -384,24 +384,27 @@ ee_create_credentials_drive <- function(email) {
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
 
   # Load GD credentials (googledrive::drive_auth)
-  full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-  drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
-  if (!any(drive_condition)) {
-    suppressMessages(
-      googledrive::drive_auth(
-        email = NULL,
-        cache = ee_path_user
+  repeat {
+    full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+    drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
+    if (!any(drive_condition)) {
+      suppressMessages(
+        googledrive::drive_auth(
+          email = NULL,
+          cache = ee_path_user
+        )
       )
-    )
-  } else {
-    drive_credentials <- full_credentials[drive_condition]
-    email <- sub("^[^_]*_", "", drive_credentials)
-    suppressMessages(
-      googledrive::drive_auth(
-        email = email,
-        cache = ee_path_user
+    } else {
+      drive_credentials <- full_credentials[drive_condition]
+      email <- sub("^[^_]*_", "", drive_credentials)
+      suppressMessages(
+        googledrive::drive_auth(
+          email = email,
+          cache = ee_path_user
+        )
       )
-    )
+      break
+    }
   }
 
   # Clean previous and copy new GD credentials in ./earthengine folder
