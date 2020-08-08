@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -154,6 +154,32 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-104" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.4">
+<a href="#rgee-104" class="anchor"></a>rgee 1.0.4</h1>
+<ul>
+<li>Add <code>ee_help</code> a new Rstudio addins that mimics the help Rstudio interface (F1).</li>
+<li>Fix a bug that makes that <code>ee_as_sf</code> only supports <code>GeoJSON</code> format.</li>
+<li>If <code>dsn</code> is not specified in <code>ee_as_sf</code>, it will create a temporary shapefile (in \tmp dir).</li>
+<li>Fix a bug in <code>ee_imagecollection_to_local</code> (<a href='https://github.com/r-spatial/rgee/issues/87'>#87</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
+<li>Fix a bug in <code>ee_image_local</code> (<a href='https://github.com/r-spatial/rgee/issues/88'>#88</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
+<li>Fix a bug in <code>ee_create_credentials_drive</code> (<a href='https://github.com/r-spatial/rgee/issues/90'>#90</a> <a href='https://github.com/r-spatial/rgee/issues/78'>#78</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
+</ul>
+</div>
+    <div id="rgee-103" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.3">
+<a href="#rgee-103" class="anchor"></a>rgee 1.0.3</h1>
+<ul>
+<li>getPass library removed from <code>ee_Initialize</code>.</li>
+<li>New argument <code>display</code> in <code>ee_Initialize</code> to return the authentication URI. Useful for <code>rgee</code> colab users.</li>
+<li>Changes in some diagnostic messages to make possible to use <code>rgee</code> in colab.</li>
+<li>
+<code>ee_help</code> returns a HTML file rather than TRUE. It also now supports characters (e.g. <code><a href="../reference/ee_help.html">ee_help("ee$Image")</a></code>).</li>
+<li>Fix a strange bug when <code>ee_Initialize</code> tries to connect to reticulate the first time.</li>
+<li>Fix small bugs in <code>ee_user_info</code> and <code>ee_users</code>
+</li>
+</ul>
+</div>
     <div id="rgee-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">
 <a href="#rgee-102" class="anchor"></a>rgee 1.0.2</h1>
