@@ -4,7 +4,6 @@ ee_help_addins <- function() {
   context <- rstudioapi::getSourceEditorContext()
   selected_content <- context$selection[[1]]$text
   if (selected_content == "") {
-    print(ee_get_eefunc())
     try(ee_help(ee_get_eefunc()), silent = TRUE)
   } else {
     selected_content_filtered <- gsub("\n|[[:space:]]","", selected_content)
@@ -23,6 +22,11 @@ ee_space_removed <- function(text, cursor) {
 #' @noRd
 ee_get_funname <- function(text, cursor) {
   text <- strsplit(text,"")[[1]]
+
+  if (length(text) < cursor) {
+    return(invisible(FALSE))
+  }
+
   if (text[cursor] == "(") {
     cursor <- cursor -1
   }
