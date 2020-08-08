@@ -30,55 +30,65 @@ ee_help <- function(eeobject, browser = FALSE) {
   } else {
     if (is.character(eeobject)) {
       fun_name <- eeobject
+      # fun_name has parenthesis
+      fun_name_d <- strsplit(fun_name, "\\$")[[1]]
+      exist_parenthesis <- grepl(
+        pattern = "(",
+        x = fun_name_d[length(fun_name_d)],
+        fixed = TRUE
+      )
     } else {
       wrap_lhs <- function(x) gsub("rgee", "", ee_get_lhs())
       fun_name <- wrap_lhs(eeobject)
       if (length(fun_name) == 0) {
         fun_name <- deparse(substitute(eeobject))
       }
+    }
 
-      if (is.null(eequery_scope)) {
-        components <- strsplit(fun_name, "\\$")[[1]]
-        topic <- components[[length(components)]]
-        source <- paste(components[1:(length(components) - 1)],
-                        collapse = "$")
-        # The name is a base function?
-        is_a_basefunction <- tryCatch(
-          expr = {eval(parse(text = sprintf("base::%s", fun_name))); TRUE},
-          error = function(e) FALSE
+    if (is.null(eequery_scope) | exist_parenthesis) {
+      components <- strsplit(fun_name, "\\$")[[1]]
+      topic <- components[[length(components)]]
+      source <- paste(components[1:(length(components) - 1)],
+                      collapse = "$")
+      # The name is a base function?
+      is_a_basefunction <- tryCatch(
+        expr = {eval(parse(text = sprintf("base::%s", fun_name))); TRUE},
+        error = function(e) FALSE
+      )
+      if (isTRUE(is_a_basefunction)) {
+        stop(
+          "'", fun_name, "' is not subsettable. Are you using a ",
+          "function name that matches the names of the R base",
+          " library?. If 'base::", fun_name, "' exists ee_help will not work."
         )
-        if (isTRUE(is_a_basefunction)) {
-          stop(
-            "'", fun_name, "' is not subsettable. Are you using a ",
-            "function name that matches the names of the R base",
-            " library?. If 'base::", fun_name, "' exists ee_help will not work."
-          )
-        }
-        if (topic == source) {
-          fun_name <- topic
-        } else {
-          # Remove just the last parenthesis
-          extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
-                                               topic,
-                                               perl = TRUE)
-          parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
-          to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
-          to_display <- gsub("\\(|\\)", "", to_display)
-          fun_name <- paste(source,to_display,sep = "$")
-        }
+      }
+      if (topic == source) {
+        fun_name <- topic
+      } else {
+        # Remove just the last parenthesis
+        extract_parenthesis_text <- gregexpr("(?=\\().*?(?<=\\))",
+                                             topic,
+                                             perl = TRUE)
+        parenthesis_text <- regmatches(topic, extract_parenthesis_text)[[1]]
+        to_display <- gsub(parenthesis_text, "", topic, fixed = TRUE)
+        to_display <- gsub("\\(|\\)", "", to_display)
+        fun_name <- paste(source,to_display,sep = "$")
       }
     }
   }
 
-  doc_to_display <- tryCatch(
-    expr = fun_name %>%
-      paste(collapse = '') %>%
-      ee_function_docs,
-    error = function(e) ee_real_name(fun_name) %>%
-      paste(collapse = '') %>%
-      ee_function_docs
-  )
-
+  if (fun_name == "ee") {
+    doc_to_display <- ee_module_help()
+  } else {
+    doc_to_display <- tryCatch(
+      expr = fun_name %>%
+        paste(collapse = '') %>%
+        ee_function_docs,
+      error = function(e) ee_real_name(fun_name) %>%
+        paste(collapse = '') %>%
+        ee_function_docs
+    )
+  }
 
   # Creating html to display
   temp_file <- sprintf("%s/ee_help.html", tempdir())
@@ -515,3 +525,19 @@ ee_help_create_arg <- function(function_docs) {
   return(list(arg = arguments_des, signature = signature_text))
 }
 
+
+#' ee module help
+#' @noRd
+ee_module_help <- function() {
+  list(
+    name = "",
+    qualified_name = "ee",
+    description = "Interface to main Earth Engine module. Provides access to top level classes and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first, etc.).",
+    details = "",
+    signature = "ee",
+    parameters = "",
+    sections = list(),
+    returns = NULL,
+    title = "Main Earth Engine module"
+  )
+}
