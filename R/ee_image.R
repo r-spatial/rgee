@@ -310,7 +310,22 @@ ee_image_local <- function(image,
 
   # Default projection on an Image
   prj_image <- image$projection()$getInfo()
-  img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
+
+  if (grepl("EPSG:", prj_image$crs)) {
+    img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
+  } else {
+    img_crs <- NA
+    # getInfo only supports images with EPSG CRS
+    if (is.na(img_crs) & via == "getInfo") {
+      stop(
+        "ee_imagecollection_to_local(..., via = \"getInfo\") only supports a ",
+        "SRC linked to an EPSG code. Change the SRC or use ",
+        " ee_imagecollection_to_local(..., via = \"drive\") to solve.\n",
+        " Entered -> ", prj_image$crs, "\n",
+        " Expected -> EPSG:4326 (or others)"
+      )
+    }
+  }
 
   # From geometry to sf
   sf_region <- ee_as_sf(x = region)$geometry
@@ -345,9 +360,9 @@ ee_image_local <- function(image,
   is_geodesic <- region$geodesic()$getInfo()
   #is evenodd?
   query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
-  is_evenodd <- as.logical(
+  is_evenodd <- all(as.logical(
     query_params[grepl("evenOdd", names(query_params))]
-  )
+  ))
   if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
     is_evenodd <- TRUE
   }

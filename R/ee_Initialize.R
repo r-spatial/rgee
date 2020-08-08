@@ -259,9 +259,10 @@ ee_Initialize <- function(email = NULL,
   }
 
   # Root folder exist?
-  ee_user_assetroot <- try(ee$data$getAssetRoots()[[1]])
+  ee_user_assetroot <- ee$data$getAssetRoots()
+  assetroot_exist <- length(ee_user_assetroot) == 0
   # if ee_asset_home (list) length is zero
-  if (length(ee_user_assetroot) == 0 | class(ee_user_assetroot) == "try-error") {
+  if (assetroot_exist) {
     root_text <- paste(
       "Earth Engine Assets home root folder does not exist for the current user.",
       "Please enter your desired root folder name below. Take into consideration",
@@ -275,10 +276,10 @@ ee_Initialize <- function(email = NULL,
     )
     message(root_text)
     ee_createAssetHome()
-    ee_user_assetroot <- ee$data$getAssetRoots()[[1]]
+    ee_user_assetroot <- ee$data$getAssetRoots()
   }
-
-  ee_user <- ee_remove_project_chr(ee_user_assetroot$id)
+  ee_user_assetroot_id <- ee_user_assetroot[[1]]$id
+  ee_user <- ee_remove_project_chr(ee_user_assetroot_id)
 
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(
@@ -375,16 +376,17 @@ ee_create_credentials_drive <- function(email) {
       call. = FALSE
     )
   }
-  # setting drive folder
+  # Set folder to save Google Drive Credentials
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
-  # drive_credentials
+
+  # Load GD credentials (googledrive::drive_auth)
   repeat {
     full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-    drive_condition <- grepl("@gmail.com", full_credentials)
+    drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
     if (!any(drive_condition)) {
       suppressMessages(
         googledrive::drive_auth(
@@ -404,8 +406,12 @@ ee_create_credentials_drive <- function(email) {
       break
     }
   }
-  # from user folder to EE folder
-  unlink(list.files(ee_path, "@gmail.com", full.names = TRUE))
+
+  # Clean previous and copy new GD credentials in ./earthengine folder
+  clean_drive <- list.files(ee_path, ".*_.*@.*", full.names = TRUE) %in% list.dirs(ee_path)
+  unlink(
+    list.files(ee_path, ".*_.*@.*", full.names = TRUE)[!clean_drive]
+  )
   file.copy(
     from = drive_credentials,
     to = sprintf("%s/%s", ee_path, basename(drive_credentials)),

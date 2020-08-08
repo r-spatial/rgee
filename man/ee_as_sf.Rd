@@ -21,7 +21,7 @@ ee_as_sf(
 object.}
 
 \item{dsn}{Character. Output filename; in case \code{dsn} is missing
-\code{ee_as_sf} will create a temporary file.}
+\code{ee_as_sf} will create a shapefile file in tmp() directory.}
 
 \item{overwrite}{Logical. Delete data source \code{dsn} before attempting
 to write?.}

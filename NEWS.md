@@ -11,6 +11,22 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.4
+- Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).
+- Fix a bug that makes that `ee_as_sf` only supports `GeoJSON` format.
+- If `dsn` is not specified in `ee_as_sf`, it will create a temporary shapefile (in \tmp dir).
+- Fix a bug in `ee_imagecollection_to_local` (#87 Thanks @cedlfc44)
+- Fix a bug in `ee_image_local` (#88 Thanks @cedlfc44)
+- Fix a bug in `ee_create_credentials_drive` (#90 #78 Thanks @cedlfc44)
+
+# rgee 1.0.3
+- getPass library removed from `ee_Initialize`.
+- New argument `display` in `ee_Initialize` to return the authentication URI. Useful for `rgee` colab users.
+- Changes in some diagnostic messages to make possible to use `rgee` in colab.
+- `ee_help` returns a HTML file rather than TRUE. It also now supports characters (e.g. `ee_help("ee$Image")`).
+- Fix a strange bug when `ee_Initialize` tries to connect to reticulate the first time.
+- Fix small bugs in `ee_user_info` and `ee_users`
+
 # rgee 1.0.2
 - Earth Engine Python API updated to 0.1.229.
 - Fix a bug in `ee_Initialize`, that does not permit users to use `ee_createAssetHome` to define their *Earth Engine Assets home root folder*
