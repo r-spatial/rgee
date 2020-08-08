@@ -38,6 +38,7 @@ ee_help <- function(eeobject, browser = FALSE) {
         fixed = TRUE
       )
     } else {
+      exist_parenthesis <- FALSE
       wrap_lhs <- function(x) gsub("rgee", "", ee_get_lhs())
       fun_name <- wrap_lhs(eeobject)
       if (length(fun_name) == 0) {

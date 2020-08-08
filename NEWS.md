@@ -12,6 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.4
+- Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).
 - Fix a bug that makes that `ee_as_sf` only supports `GeoJSON` format.
 - If `dsn` is not specified in `ee_as_sf`, it will create a temporary shapefile (in \tmp dir).
 - Fix a bug in `ee_imagecollection_to_local` (#87 Thanks @cedlfc44)
