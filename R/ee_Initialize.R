@@ -62,40 +62,7 @@ ee_Initialize <- function(email = NULL,
   # Message for new user
   init_rgee_message <- ee_search_init_message()
   if (!init_rgee_message) {
-    text <- paste(
-      crayon::bold("Welcome to the Earth Engine client library for R!"),
-      "----------------------------------------------------------------",
-      "It seems it is your first time using rgee. First off, keep in mind that",
-      sprintf("Google Earth Engine is %s, check the",
-              bold("only available to registered users")),
-      sprintf("official website %s to get more information.",
-              bold("https://earthengine.google.com/")),
-      "Before start coding is necessary to set up a Python environment. Run",
-      sprintf(
-        "%s to set up automatically, after that, restart the R",
-        bold("rgee::ee_install()")
-      ),
-      "session to see changes. See more than 250+ examples of rgee at",
-      crayon::bold("https://csaybar.github.io/rgee-examples/"),
-      "",
-      sep = "\n"
-    )
-    message(text)
-    response <- readline("Would you like to see this message again? [Y/n]: ")
-    repeat {
-      ch <- tolower(substring(response, 1, 1))
-      if (ch == "y" || ch == "") {
-        # message("Initialization aborted.")
-        # return(FALSE)
-        break
-      } else if (ch == "n") {
-        # message("Initialization aborted.")
-        ee_install_set_init_message()
-        break
-      } else {
-        response <- readline("Please answer yes or no: ")
-      }
-    }
+    ee_init_message()
   }
 
   # Load your Python Session
@@ -106,16 +73,7 @@ ee_Initialize <- function(email = NULL,
 
   # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
-  ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
-  # counter added to prevent problems with reticulate
-  con_reticulate_counter <- 0
-  while (any(class(ee_utils) %in%  "try-error") & con_reticulate_counter < 3) {
-    ee_utils <- try(ee_source_python(ee_current_version), silent = TRUE)
-    con_reticulate_counter <- con_reticulate_counter + 1
-    if (con_reticulate_counter == 2) {
-      stop("reticulate refuse to connect with rgee")
-    }
-  }
+  ee_utils <- ee_connect_to_py(ee_current_version, n = 5)
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
@@ -717,3 +675,61 @@ ee_createAssetHome <- function() {
     }
   )
 }
+
+#' Message for new users
+#' @noRd
+ee_init_message <- function() {
+  text <- paste(
+    crayon::bold("Welcome to the Earth Engine client library for R!"),
+    "----------------------------------------------------------------",
+    "It seems it is your first time using rgee. First off, keep in mind that",
+    sprintf("Google Earth Engine is %s, check the",
+            bold("only available to registered users")),
+    sprintf("official website %s to get more information.",
+            bold("https://earthengine.google.com/")),
+    "Before start coding is necessary to set up a Python environment. Run",
+    sprintf(
+      "%s to set up automatically, after that, restart the R",
+      bold("rgee::ee_install()")
+    ),
+    "session to see changes. See more than 250+ examples of rgee at",
+    crayon::bold("https://csaybar.github.io/rgee-examples/"),
+    "",
+    sep = "\n"
+  )
+  message(text)
+  response <- readline("Would you like to stop to receive this message? [Y/n]: ")
+  repeat {
+    ch <- tolower(substring(response, 1, 1))
+    if (ch == "y" || ch == "") {
+      # message("Initialization aborted.")
+      ee_install_set_init_message()
+      break
+    } else if (ch == "n") {
+      # message("Initialization aborted.")
+      # return(FALSE)
+      break
+    } else {
+      response <- readline("Please answer yes or no: ")
+    }
+  }
+}
+
+#' ee_utils if the first call that rgee does to Python, so delay_load (reticulate::import)
+#' will affected. This function was created to force n times the connection to Python virtual
+#' env, before to display a error message.
+#' @noRd
+ee_connect_to_py <- function(path, n = 5) {
+  ee_utils <- try(ee_source_python(path), silent = TRUE)
+  # counter added to prevent problems with reticulate
+  con_reticulate_counter <- 1
+  while (any(class(ee_utils) %in%  "try-error")) {
+    ee_utils <- try(ee_source_python(path), silent = TRUE)
+    con_reticulate_counter <- con_reticulate_counter + 1
+    if (con_reticulate_counter == (n + 1)) {
+      stop("reticulate refuse to connect with rgee")
+    }
+  }
+  return(ee_utils)
+}
+
