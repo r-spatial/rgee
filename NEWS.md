@@ -11,6 +11,12 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.5
+- ee_utils_add_text_to_gif
+- ee_utils_create_manifest
+- New | operator inspirated in mapview 2.9.0 (now with adaptive resampling <3)
+- Fix typos.
+
 # rgee 1.0.4
 - Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).
 - Fix a bug that makes that `ee_as_sf` only supports `GeoJSON` format.
