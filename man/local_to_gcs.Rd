@@ -34,4 +34,8 @@ ee_Initialize(gcs = TRUE)
 # local_to_gcs(x = tif, bucket = 'rgee_dev')
 }
 }
+\seealso{
+Other generic upload functions: 
+\code{\link{ee_utils_create_manifest_image}()}
+}
 \concept{generic upload functions}

@@ -11,7 +11,8 @@ stars_as_ee(
   overwrite = FALSE,
   monitoring = TRUE,
   bucket = NULL,
-  quiet = FALSE
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 \item{bucket}{Character. Name of the GCS bucket.}
 
 \item{quiet}{Logical. Suppress info message.}
+
+\item{...}{parameter(s) passed on to \code{\link{ee_utils_create_manifest_image}}}
 }
 \value{
 An ee$Image object
@@ -41,7 +44,7 @@ Convert a stars or stars-proxy object into an EE Image object
 \dontrun{
 library(rgee)
 library(stars)
-ee_Initialize(gcs = TRUE)
+ee_Initialize("csaybar", gcs = TRUE)
 
 # Get the filename of a image
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
@@ -49,34 +52,35 @@ x <- read_stars(tif)
 assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
 
 # # Method 1
-# # 1. Move from local to gcs
-# gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
+# 1. Move from local to gcs
+gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
 
-# # 2. Pass from gcs to asset
-# gcs_to_ee_image(
-#   x = x,
-#   overwrite = TRUE,
-#   gs_uri = gs_uri,
-#   assetId = assetId
-#)
+# 2. Create a manifest
+manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
 
-# # OPTIONAL: Monitoring progress
-# ee_monitoring()
+# 3. Pass from gcs to asset
+gcs_to_ee_image(
+  manifest = manifest,
+  overwrite = TRUE
+)
 
-# # OPTIONAL: Display results
-# ee_stars_01 <- ee$Image(assetId)
-# Map$centerObject(ee_stars_01)
-# Map$addLayer(ee_stars_01)
+# OPTIONAL: Monitoring progress
+ee_monitoring()
 
-# # Method 2
-# ee_stars_02 <- stars_as_ee(
-#   x = x,
-#   overwrite = TRUE,
-#   assetId = assetId,
-#   bucket = "rgee_dev"
-# )
-# Map$centerObject(ee_stars_02)
-# Map$addLayer(ee_stars_02)
+# OPTIONAL: Display results
+ee_stars_01 <- ee$Image(assetId)
+Map$centerObject(ee_stars_01)
+Map$addLayer(ee_stars_01, list(min = 0, max = 255))
+
+# Method 2
+ee_stars_02 <- stars_as_ee(
+  x = x,
+  overwrite = TRUE,
+  assetId = assetId,
+  bucket = "rgee_dev"
+)
+Map$centerObject(ee_stars_02)
+Map$addLayer(ee_stars_02, list(min = 0, max = 255))
 }
 }
 \seealso{
