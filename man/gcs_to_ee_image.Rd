@@ -31,6 +31,33 @@ Move a GeoTIFF image from GCS to their EE assets
 }
 \examples{
 \dontrun{
-1
+library(rgee)
+library(stars)
+ee_Initialize("csaybar", gcs = TRUE)
+
+# Get the filename of a image
+tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+x <- read_stars(tif)
+assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
+
+# 1. Move from local to gcs
+gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
+
+# 2. Create a manifest
+manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
+
+# 3. Pass from gcs to asset
+gcs_to_ee_image(
+  manifest = manifest,
+  overwrite = TRUE
+)
+
+# OPTIONAL: Monitoring progress
+ee_monitoring()
+
+# OPTIONAL: Display results
+ee_stars_01 <- ee$Image(assetId)
+Map$centerObject(ee_stars_01)
+Map$addLayer(ee_stars_01, list(min = 0, max = 255))
 }
 }

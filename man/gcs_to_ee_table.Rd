@@ -5,19 +5,14 @@
 \title{Move a zipped shapefile from GCS to their EE Assets}
 \usage{
 gcs_to_ee_table(
-  gs_uri,
-  assetId,
+  manifest,
   command_line_tool_path = NULL,
   overwrite = FALSE,
   quiet = FALSE
 )
 }
 \arguments{
-\item{gs_uri}{Character. It represents the full name of an
-zipped shapefile in a GCS bucket.}
-
-\item{assetId}{Character. What to call the file once uploaded
-to their Earth Engine Assets}
+\item{manifest}{Character. manifest upload file. See \code{\link{ee_utils_create_manifest_table}}.}
 
 \item{command_line_tool_path}{Character. Path to the Earth Engine command line
 tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.

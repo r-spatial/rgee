@@ -36,6 +36,7 @@ ee_Initialize(gcs = TRUE)
 }
 \seealso{
 Other generic upload functions: 
-\code{\link{ee_utils_create_manifest_image}()}
+\code{\link{ee_utils_create_manifest_image}()},
+\code{\link{ee_utils_create_manifest_table}()}
 }
 \concept{generic upload functions}
