@@ -16,7 +16,7 @@ ee_utils_create_manifest_table(
 }
 \arguments{
 \item{gs_uri}{Character. GCS full path of the table to upload to Earth Engine assets
-e.g. gs://rgee_dev/l8.tif}
+e.g. gs://rgee_dev/nc.zip}
 
 \item{assetId}{Character. How to call the file once uploaded
 to the Earth Engine Asset. e.g. users/datacolecfbf/nc.}
@@ -47,21 +47,23 @@ details.
 \examples{
 \dontrun{
 library(rgee)
-ee_Initialize()
-tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+library(sf)
+ee_Initialize(gcs = TRUE)
+
+x <- st_read(system.file("shape/nc.shp", package = "sf"))
+shp_dir <- sprintf("\%s.shp", tempfile())
+geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 
 # Return a JSON file
-ee_utils_create_manifest_image(
-  img = tif,
-  gs_uri = "gs://rgee_dev/l8.tif",
-  assetId = "users/datacolecfbf/l8"
+manifest <- ee_utils_create_manifest_table(
+  gs_uri = "gs://rgee_dev/nc.zip",
+  assetId = "users/datacolecfbf/nc"
 )
 
 # Return a list
-ee_utils_create_manifest_image(
-  img = tif,
-  gs_uri = "gs://rgee_dev/l8.tif",
-  assetId = "users/datacolecfbf/l8",
+ee_utils_create_manifest_table(
+  gs_uri = "gs://rgee_dev/nc.zip",
+  assetId = "users/datacolecfbf/nc",
   returnList = TRUE
 )
 }

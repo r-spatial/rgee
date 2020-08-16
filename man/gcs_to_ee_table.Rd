@@ -35,39 +35,29 @@ library(rgee)
 library(sf)
 ee_Initialize(gcs = TRUE)
 
-# Create sf object
-nc <- st_read(system.file("shape/nc.shp", package="sf"))
-assetId <- sprintf("\%s/\%s",ee_get_assethome(),'sf_nc')
+# 1. Read dataset and create a output filename
+x <- st_read(system.file("shape/nc.shp", package = "sf"))
+assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
 
-# Method 1
-# 1. Pass the sf to a zip file
-zipfile <- ee_utils_shp_to_zip(nc)
+# 2. From sf to .shp
+shp_dir <- sprintf("\%s.shp", tempfile())
+geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 
-# # 2. From local to gcs
-# gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+# # 3. From local to gcs
+# gcs_filename <- local_to_gcs(
+#   x = geozip_dir,
+#   bucket = "rgee_dev" # Insert your own bucket here!
+# )
 #
-# # 3. Pass the sf to a zip file
-# gcs_to_ee_table(
-#   gs_uri = gs_uri,
-#   overwrite = TRUE,
+# # 4. Create Table Manifest
+# manifest <- ee_utils_create_manifest_table(
+#   gs_uri = gcs_filename,
 #   assetId = assetId
 # )
 #
-# # OPTIONAL: Monitoring progress
+# # 5. From GCS to Earth Engine
+# ee_nc <- gcs_to_ee_table(manifest, overwrite = TRUE)
 # ee_monitoring()
-#
-# # OPTIONAL: Display results
-# ee_sf_01 <- ee$FeatureCollection(assetId)
-# Map$centerObject(ee_sf_01)
-# Map$addLayer(ee_sf_01)
-#
-# # Method 2
-# ee_sf_02 <- sf_as_ee(x = nc,
-#                      assetId = assetId,
-#                      overwrite = TRUE,
-#                      bucket = "rgee_dev",
-#                      via = 'gcs')
-# Map$centerObject(ee_sf_02)
-# Map$addLayer(ee_sf_02)
+# Map$addLayer(ee$FeatureCollection(ee_nc))
 }
 }

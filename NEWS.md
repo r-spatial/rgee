@@ -12,10 +12,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.5
-- ee_utils_add_text_to_gif
-- ee_utils_create_manifest
+- Important changes in the low level API to upload raster and vector with GCS. However,
+high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
+- Add the functions `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
+to help users to create a JSON file with all the upload parameters ("manifest", see https://developers.google.com/earth-engine/image_manifest).
+- Add the function `ee_utils_add_text_to_gif` to help users to add text to gif files.
 - New | operator inspirated in mapview 2.9.0 (now with adaptive resampling <3)
-- Fix typos.
+- Fix typos in `ee_extract`.
 
 # rgee 1.0.4
 - Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).

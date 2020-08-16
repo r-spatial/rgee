@@ -99,40 +99,30 @@ local_to_gcs <- function(x,
 #' library(sf)
 #' ee_Initialize(gcs = TRUE)
 #'
-#' # Create sf object
-#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#' # 1. Read dataset and create a output filename
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
 #'
-#' # Method 1
-#' # 1. Pass the sf to a zip file
-#' zipfile <- ee_utils_shp_to_zip(nc)
+#' # 2. From sf to .shp
+#' shp_dir <- sprintf("%s.shp", tempfile())
+#' geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 #'
-#' # # 2. From local to gcs
-#' # gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#' # # 3. From local to gcs
+#' # gcs_filename <- local_to_gcs(
+#' #   x = geozip_dir,
+#' #   bucket = "rgee_dev" # Insert your own bucket here!
+#' # )
 #' #
-#' # # 3. Pass the sf to a zip file
-#' # gcs_to_ee_table(
-#' #   gs_uri = gs_uri,
-#' #   overwrite = TRUE,
+#' # # 4. Create Table Manifest
+#' # manifest <- ee_utils_create_manifest_table(
+#' #   gs_uri = gcs_filename,
 #' #   assetId = assetId
 #' # )
 #' #
-#' # # OPTIONAL: Monitoring progress
+#' # # 5. From GCS to Earth Engine
+#' # ee_nc <- gcs_to_ee_table(manifest, overwrite = TRUE)
 #' # ee_monitoring()
-#' #
-#' # # OPTIONAL: Display results
-#' # ee_sf_01 <- ee$FeatureCollection(assetId)
-#' # Map$centerObject(ee_sf_01)
-#' # Map$addLayer(ee_sf_01)
-#' #
-#' # # Method 2
-#' # ee_sf_02 <- sf_as_ee(x = nc,
-#' #                      assetId = assetId,
-#' #                      overwrite = TRUE,
-#' #                      bucket = "rgee_dev",
-#' #                      via = 'gcs')
-#' # Map$centerObject(ee_sf_02)
-#' # Map$addLayer(ee_sf_02)
+#' # Map$addLayer(ee$FeatureCollection(ee_nc))
 #' }
 #' @export
 gcs_to_ee_table <- function(manifest,
@@ -161,7 +151,7 @@ gcs_to_ee_table <- function(manifest,
   }
 
   if (!quiet) {
-    message("Running the OS command:", command)
+    message("Running the OS command: ", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -208,30 +198,34 @@ gcs_to_ee_table <- function(manifest,
 #' library(stars)
 #' ee_Initialize("csaybar", gcs = TRUE)
 #'
-#' # Get the filename of a image
+#' # 1. Read GeoTIFF file and create a output filename
 #' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 #' x <- read_stars(tif)
 #' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 #'
-#' # 1. Move from local to gcs
-#' gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
-#'
-#' # 2. Create a manifest
-#' manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
-#'
-#' # 3. Pass from gcs to asset
-#' gcs_to_ee_image(
-#'   manifest = manifest,
-#'   overwrite = TRUE
-#' )
-#'
-#' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
-#'
-#' # OPTIONAL: Display results
-#' ee_stars_01 <- ee$Image(assetId)
-#' Map$centerObject(ee_stars_01)
-#' Map$addLayer(ee_stars_01, list(min = 0, max = 255))
+#' # # 2. From local to gcs
+#' # gs_uri <- local_to_gcs(
+#' #   x = tif,
+#' #   bucket = 'rgee_dev' # Insert your own bucket here!
+#' # )
+#' #
+#' # # 3. Create an Image Manifest
+#' # manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
+#' #
+#' # # 4. From GCS to Earth Engine
+#' # gcs_to_ee_image(
+#' #   manifest = manifest,
+#' #   overwrite = TRUE
+#' # )
+#' #
+#' # # OPTIONAL: Monitoring progress
+#' # ee_monitoring()
+#' #
+#' # # OPTIONAL: Display results
+#' # ee_stars_01 <- ee$Image(assetId)
+#' # # ee_stars_01$bandNames()$getInfo()
+#' # Map$centerObject(ee_stars_01)
+#' # Map$addLayer(ee_stars_01, list(min = 0, max = 255, bands = c("b3", "b2", "b1")))
 #' }
 #' @export
 gcs_to_ee_image <- function(manifest,
@@ -263,7 +257,7 @@ gcs_to_ee_image <- function(manifest,
   }
 
   if (!quiet) {
-    message("Running the OS command:", command)
+    message("Running the OS command: ", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -450,18 +444,17 @@ ee_utils_create_json <- function(x) {
 #' \dontrun{
 #' library(rgee)
 #' ee_Initialize()
+#'
 #' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 #'
 #' # Return a JSON file
 #' ee_utils_create_manifest_image(
-#'   img = tif,
 #'   gs_uri = "gs://rgee_dev/l8.tif",
 #'   assetId = "users/datacolecfbf/l8"
 #' )
 #'
 #' # Return a list
 #' ee_utils_create_manifest_image(
-#'   img = tif,
 #'   gs_uri = "gs://rgee_dev/l8.tif",
 #'   assetId = "users/datacolecfbf/l8",
 #'   returnList = TRUE
@@ -524,7 +517,7 @@ ee_utils_create_manifest_image <- function(gs_uri,
 #' details.
 #'
 #' @param gs_uri Character. GCS full path of the table to upload to Earth Engine assets
-#' e.g. gs://rgee_dev/l8.tif
+#' e.g. gs://rgee_dev/nc.zip
 #' @param assetId Character. How to call the file once uploaded
 #' to the Earth Engine Asset. e.g. users/datacolecfbf/nc.
 #' @param properties List. Set of parameters to be set up as properties
@@ -543,21 +536,23 @@ ee_utils_create_manifest_image <- function(gs_uri,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' ee_Initialize()
-#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' library(sf)
+#' ee_Initialize(gcs = TRUE)
+#'
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))
+#' shp_dir <- sprintf("%s.shp", tempfile())
+#' geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 #'
 #' # Return a JSON file
-#' ee_utils_create_manifest_image(
-#'   img = tif,
-#'   gs_uri = "gs://rgee_dev/l8.tif",
-#'   assetId = "users/datacolecfbf/l8"
+#' manifest <- ee_utils_create_manifest_table(
+#'   gs_uri = "gs://rgee_dev/nc.zip",
+#'   assetId = "users/datacolecfbf/nc"
 #' )
 #'
 #' # Return a list
-#' ee_utils_create_manifest_image(
-#'   img = tif,
-#'   gs_uri = "gs://rgee_dev/l8.tif",
-#'   assetId = "users/datacolecfbf/l8",
+#' ee_utils_create_manifest_table(
+#'   gs_uri = "gs://rgee_dev/nc.zip",
+#'   assetId = "users/datacolecfbf/nc",
 #'   returnList = TRUE
 #' )
 #' }

@@ -35,29 +35,33 @@ library(rgee)
 library(stars)
 ee_Initialize("csaybar", gcs = TRUE)
 
-# Get the filename of a image
+# 1. Read GeoTIFF file and create a output filename
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 x <- read_stars(tif)
 assetId <- sprintf("\%s/\%s",ee_get_assethome(),'stars_l7')
 
-# 1. Move from local to gcs
-gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
-
-# 2. Create a manifest
-manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
-
-# 3. Pass from gcs to asset
-gcs_to_ee_image(
-  manifest = manifest,
-  overwrite = TRUE
-)
-
-# OPTIONAL: Monitoring progress
-ee_monitoring()
-
-# OPTIONAL: Display results
-ee_stars_01 <- ee$Image(assetId)
-Map$centerObject(ee_stars_01)
-Map$addLayer(ee_stars_01, list(min = 0, max = 255))
+# # 2. From local to gcs
+# gs_uri <- local_to_gcs(
+#   x = tif,
+#   bucket = 'rgee_dev' # Insert your own bucket here!
+# )
+#
+# # 3. Create an Image Manifest
+# manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
+#
+# # 4. From GCS to Earth Engine
+# gcs_to_ee_image(
+#   manifest = manifest,
+#   overwrite = TRUE
+# )
+#
+# # OPTIONAL: Monitoring progress
+# ee_monitoring()
+#
+# # OPTIONAL: Display results
+# ee_stars_01 <- ee$Image(assetId)
+# # ee_stars_01$bandNames()$getInfo()
+# Map$centerObject(ee_stars_01)
+# Map$addLayer(ee_stars_01, list(min = 0, max = 255, bands = c("b3", "b2", "b1")))
 }
 }

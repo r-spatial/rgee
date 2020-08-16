@@ -51,18 +51,17 @@ details.
 \dontrun{
 library(rgee)
 ee_Initialize()
+
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
 
 # Return a JSON file
 ee_utils_create_manifest_image(
-  img = tif,
   gs_uri = "gs://rgee_dev/l8.tif",
   assetId = "users/datacolecfbf/l8"
 )
 
 # Return a list
 ee_utils_create_manifest_image(
-  img = tif,
   gs_uri = "gs://rgee_dev/l8.tif",
   assetId = "users/datacolecfbf/l8",
   returnList = TRUE
