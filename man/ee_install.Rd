@@ -29,7 +29,7 @@ an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.h
 \item{2. }{Remove the previous Python environment defined in \code{py_env} if
 it exist.}
 \item{3. }{Create a new Python environment (See \code{py_env}).}
-\item{4. }{ Set the environmental variable EARTHENGINE_PYTHON. It is used to
+\item{4. }{ Set the environment variable EARTHENGINE_PYTHON. It is used to
 define RETICULATE_PYTHON when the library is loaded. See this
 \href{https://rstudio.github.io/reticulate/articles/versions.html}{article}
 for further details.

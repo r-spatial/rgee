@@ -94,6 +94,7 @@ Imports:
 Suggests:
     leaflet (>= 2.0.2),
     mapview,
+    magick,
     geojsonio,
     sf,
     stars,

@@ -9,7 +9,7 @@
 #'  \item{2. }{Remove the previous Python environment defined in \code{py_env} if
 #'  it exist.}
 #'  \item{3. }{Create a new Python environment (See \code{py_env}).}
-#'  \item{4. }{ Set the environmental variable EARTHENGINE_PYTHON. It is used to
+#'  \item{4. }{ Set the environment variable EARTHENGINE_PYTHON. It is used to
 #'  define RETICULATE_PYTHON when the library is loaded. See this
 #'  \href{https://rstudio.github.io/reticulate/articles/versions.html}{article}
 #'  for further details.
@@ -52,7 +52,7 @@ ee_install <- function(py_env = "rgee",
         "environment in your system. Run %s to remove rgee",
         bold('rgee::ee_clean_pyenv()')
       ),
-      "environmental variables. After this, restart the R session and try",
+      "environment variables. After this, restart the R session and try",
       "again.",
       "",
       sep = "\n"
@@ -146,7 +146,7 @@ ee_install <- function(py_env = "rgee",
     "\n",
     paste(
       sprintf(
-        "ee_install want to store the environmental variables: %s ",
+        "ee_install want to store the environment variables: %s ",
         bold("EARTHENGINE_PYTHON")
       ),
       sprintf(

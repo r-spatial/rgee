@@ -61,7 +61,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{...}{\code{st_read} arguments might be included.}
+\item{...}{\code{\link{ee_utils_create_manifest_table}} arguments might be included.}
 }
 \value{
 When \code{via} is "getInfo" and \code{x} is either an sf or sfc object

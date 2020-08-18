@@ -32,7 +32,7 @@
 #' whether "filename" should be overwritten. Ignore if \code{via} argument
 #' is "getInfo". By default TRUE.
 #' @param quiet Logical. Suppress info message.
-#' @param ... \code{st_read} arguments might be included.
+#' @param ... \code{\link{ee_utils_create_manifest_table}} arguments might be included.
 #'
 #' @return
 #' When \code{via} is "getInfo" and \code{x} is either an sf or sfc object
