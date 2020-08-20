@@ -170,7 +170,7 @@ gcs_to_ee_table <- function(manifest,
   if (upload_state != 0) {
     stop(
       sprintf(
-        "An error occurs when %s try to upload a shp",
+        "An error occurs when %s try to upload",
         bold("gcs_to_ee_table")),
       ". Please make sure that you set the ",
       bold("command_line_tool_path"),
@@ -276,9 +276,8 @@ gcs_to_ee_image <- function(manifest,
   if (upload_state != 0) {
     stop(
       sprintf(
-        "An error occurs when %s try to upload %s to %s",
-        bold("gcs_to_ee_image"), bold(gs_uri), bold(assetId)
-      ),
+        "An error occurs when %s try to upload",
+        bold("gcs_to_ee_image")),
       ". Please make sure that you set the ",
       bold("command_line_tool_path"),
       " argument correctly."

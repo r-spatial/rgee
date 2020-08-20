@@ -16,9 +16,11 @@ vignette: >
 high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
 to help users to create a JSON file with all the upload parameters ("manifest", see https://developers.google.com/earth-engine/image_manifest).
-- Add the function `ee_utils_add_text_to_gif` to help users to add text to gif files.
-- New | operator inspirated in mapview 2.9.0 (now with adaptive resampling <3)
+- Add the functions: `ee_utils_gif_creator`, `ee_utils_gif_annotate` and
+`ee_utils_gif_save` to help users to read, add text, and save to gif files.
+- New | operator inspirated in mapview 2.9.0! try: m4 | m5
 - Fix typos in `ee_extract`.
+- Earth Engine Python API updated to 0.1.231.
 
 # rgee 1.0.4
 - Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).

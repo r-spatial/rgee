@@ -395,9 +395,6 @@ ee_utils_gif_save <- function(image,
   if (!requireNamespace("magick", quietly = TRUE)) {
     stop("package magick required, please install it first")
   }
-  if (!requireNamespace("gifski", quietly = TRUE)) {
-    stop("package gifski required, please install it first")
-  }
   magick::image_write(image = image, path = path, format = format,
                       quality = quality, depth = depth, density = density,
                       comment = comment, flatten = flatten)

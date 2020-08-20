@@ -111,19 +111,17 @@ setMethod(
 )
 
 
-#' EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
-#'
-#' @param e1 a EarthEngineMap.
-#' @param e2 a EarthEngineMap.
-#' @noRd
 if ( !isGeneric('|') ) {
   setGeneric('|', function(x, y, ...)
     standardGeneric('|'))
 }
 
-#' Comparison operator to  EarthEngineMap | EarthEngineMap
+#' EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
 #' @author tim-salabim. Adapted from mapview code.
-#' @noRd
+#' @param e1 a leaflet or mapview map, or NULL.
+#' @param e2 a leaflet or mapview map, or NULL.
+#' @name slider
+#' @aliases |,EarthEngineMap,EarthEngineMap-method
 setMethod(
   "|",
   signature(
@@ -186,7 +184,10 @@ setMethod(
 
 #' Comparison operator to EarthEngineMap | mapview
 #' @author tim-salabim. Adapted from mapview code.
-#' @noRd
+#' @param e1 a EarthEngineMap.
+#' @param e2 a leaflet or mapview map, or NULL.
+#' @name slider
+#' @aliases |,EarthEngineMap,mapview-method
 setMethod(
   "|",
   signature(
@@ -227,7 +228,11 @@ setMethod(
 
 #' Comparison operator to mapview | EarthEngineMap
 #' @author tim-salabim. Adapted from mapview code.
-#' @noRd
+#' @param e1 a leaflet or mapview map, or NULL.
+#' @param e2 a EarthEngineMap.
+#' @name slider
+#' @aliases |,mapview,EarthEngineMap-method
+#'
 setMethod(
   "|",
   signature(
