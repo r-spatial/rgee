@@ -164,6 +164,17 @@
 #'   ee_get(0:4)
 #' Map$centerObject(nc$geometry())
 #' Map$addLayers(ee_s2)
+#'
+#' # Case 8: Map comparison
+#' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+#' Map$centerObject(image)
+#' m_ndvi <- Map$addLayer(
+#'   eeObject = image$normalizedDifference(list("B5", "B4")),
+#'   visParams = list(max = 0.7),
+#'   name = "SF_NDVI",
+#'   legend = TRUE
+#' )
+#' m4 | m_ndvi
 #' }
 #' @export
 Map <- function() {
@@ -391,6 +402,7 @@ ee_addLayers <- function(eeObject,
       expr = eeObject$aggregate_array("system:id")$getInfo(),
       error = function(e) "untitled"
     )
+    if (length(name) == 0) name <- sprintf("untitled_%02d", seq_len(eeObject_size))
     if (is.null(name)) name <- "untitled"
   }
 
@@ -414,7 +426,7 @@ ee_addLayers <- function(eeObject,
     )
     m_img_list[[index]] <- m_img
   }
-  Reduce('+',m_img_list)
+  Reduce('+', m_img_list)
 }
 
 

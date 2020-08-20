@@ -44,7 +44,7 @@ setMethod(
     }
     out_obj <- append(e1@object, e2@object)
     out_obj <- out_obj[lengths(out_obj) != 0]
-    methods::new('EarthEngineMap', object = out_obj, map = e1)
+    methods::new('EarthEngineMap', object = out_obj, map = e1@map)
   }
 )
 
