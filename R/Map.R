@@ -443,6 +443,7 @@ ee_addTile <- function(tile, name, shown, opacity) {
   m@map <- m@map %>%
     leaflet::addTiles(
       urlTemplate = tile,
+      layerId = name,
       group = name,
       options = leaflet::tileOptions(opacity = opacity)
     ) %>%
