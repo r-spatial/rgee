@@ -111,7 +111,7 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("r-spatial/rgee")
 ```
 
-**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing). If you are using a Debian-based operating system, you probably need to install **virtualenv** as well. If you are using a Debian-based operating system, you probably need to install virtualenv as well.
+**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing). If you are using a Debian-based operating system, you probably need to install **virtualenv** as well.
 
 ```
 sudo pip3 install virtualenv
