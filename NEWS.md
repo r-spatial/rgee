@@ -11,6 +11,16 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.5
+- Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
+- Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
+to help users to create a JSON file with all the upload parameters ("manifest", see https://developers.google.com/earth-engine/image_manifest).
+- Add the functions: `ee_utils_gif_creator`, `ee_utils_gif_annotate` and
+`ee_utils_gif_save` to help users to read, add text, and save gif files.
+- New | operator inspired in mapview 2.9.0! try: m4 | m5
+- Fix several typos.
+- Earth Engine Python API updated to 0.1.232.
+
 # rgee 1.0.4
 - Add `ee_help` a new Rstudio addins that mimics the help Rstudio interface (F1).
 - Fix a bug that makes that `ee_as_sf` only supports `GeoJSON` format.

@@ -19,12 +19,14 @@ test_that("gcs_to_ee_table ", {
   zipfile <- ee_utils_shp_to_zip(nc)
   gs_uri <- local_to_gcs(x = zipfile,
                          bucket = gcs_bucket_f())
-  gcs_to_ee_table(
+  manifest <- ee_utils_create_manifest_table(
     gs_uri = gs_uri,
-    assetId = assetId,
+    assetId = assetId
+  )
+  gcs_to_ee_table(
+    manifest = manifest,
     overwrite = TRUE
   )
-
   ee_monitoring()
   ee_sf_01 <- ee$FeatureCollection(assetId)
   expect_s3_class(object = ee_sf_01,
@@ -44,12 +46,15 @@ test_that("gcs_to_ee_image ", {
   # 1. Move from local to gcs
   gs_uri <- local_to_gcs(x = tif, bucket = gcs_bucket_f())
 
-  # 2. Pass from gcs to asset
-  result <- gcs_to_ee_image(
-    x = x,
-    overwrite = TRUE,
+  manifest <- ee_utils_create_manifest_image(
     gs_uri = gs_uri,
     assetId = assetId
   )
-  expect_equal(result,"users/datacolecfbf/stars_l7")
+
+  # 2. Pass from gcs to asset
+  result <- gcs_to_ee_image(
+    manifest,
+    overwrite = TRUE
+  )
+  expect_equal(result,sprintf("%s/stars_l7", ee_get_assethome()))
 })

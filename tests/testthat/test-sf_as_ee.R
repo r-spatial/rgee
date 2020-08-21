@@ -29,7 +29,7 @@ test_that("sf_as_ee.sfg", {
 })
 
 test_that("sf_as_ee - getInfo_to_asset", {
-  remove_id <- "/users/datacolecfbf/sf_as_ee_test"
+  remove_id <- sprintf("%s/sf_as_ee_test", ee_get_assethome())
   p <- sf::read_sf(filename) %>%
     sf::st_as_sf() %>%
     sf::st_geometry() %>%
@@ -44,7 +44,7 @@ test_that("sf_as_ee - getInfo_to_asset", {
 
 test_that("sf_as_ee - gcs_to_asset", {
   skip_if_no_credentials()
-  remove_id <- "/users/datacolecfbf/sf_as_ee_test"
+  remove_id <- sprintf("%s/sf_as_ee_test", ee_get_assethome())
   p <- sf::read_sf(filename) %>%
     sf::st_as_sf() %>%
     sf::st_geometry() %>%
@@ -57,9 +57,8 @@ test_that("sf_as_ee - gcs_to_asset", {
   expect_is(p$geometry(), "ee.geometry.Geometry")
 })
 
-
 test_that("sf_as_ee - single", {
-  remove_id <- "/users/datacolecfbf/sf_as_ee_test"
+  remove_id <- sprintf("%s/sf_as_ee_test", ee_get_assethome())
   p_sf <- sf::read_sf(filename)[1,]
   p_sfc <- sf::read_sf(filename)[1,]$geometry
   p_sfg <- sf::read_sf(filename)[1,]$geometry[[1]]

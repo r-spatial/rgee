@@ -175,6 +175,17 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   ee_get(0:4)
 Map$centerObject(nc$geometry())
 Map$addLayers(ee_s2)
+
+# Case 8: Map comparison
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+Map$centerObject(image)
+m_ndvi <- Map$addLayer(
+  eeObject = image$normalizedDifference(list("B5", "B4")),
+  visParams = list(max = 0.7),
+  name = "SF_NDVI",
+  legend = TRUE
+)
+m4 | m_ndvi
 }
 }
 \keyword{datasets}

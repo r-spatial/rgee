@@ -23,7 +23,7 @@ will be cached in the path \code{~/.config/earthengine/}.}
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential will be cached in the path \code{~/.config/earthengine/}.}
 
-\item{display}{Logical. If TRUE display the earthengine authentification URL.}
+\item{display}{Logical. If TRUE display the earthengine authentication URL.}
 
 \item{quiet}{Logical. Suppress info messages.}
 }

@@ -203,6 +203,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "thumbnail"
   )
+  if (is.null(image_id))  image_id <- "thumbnail"
 
   # Metadata of the Geometry to display
   ## is geodesic?

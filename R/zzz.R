@@ -8,5 +8,6 @@
   # if (!is.na(earthengine_python))
   #   Sys.setenv(RETICULATE_PYTHON = earthengine_python)
 
+  # delay load earthengine-api
   ee <<- reticulate::import("ee", delay_load = TRUE)
 }

@@ -7,7 +7,7 @@
 ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = FALSE, ...)
 }
 \arguments{
-\item{x}{ee$Image or ee$ImageCollection with a single band.}
+\item{x}{ee$Image or a ee$ImageCollection with a single band.}
 
 \item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.}
 
@@ -21,21 +21,21 @@ By default 1000.}
 \item{sf}{Logical. Should the extracted values be added to the data.frame of
 the sf object y?}
 
-\item{...}{reduceRegions additional parameters. See
+\item{...}{ee$Image$reduceRegions additional parameters. See
 \code{ee_help(ee$Image$reduceRegions)} for more details.}
 }
 \value{
-A data.frame or an sf object depending on the sf argument. The
-columns receive their name from the image
-metadata property \code{RGEE_NAME}. If it is not defined \code{ee_extract}
-use the band name (\code{ee$Image$name}) if \code{x} is an \code{ee$Image}
-and the \code{system:index} property if \code{x} is an
-\code{ee$ImageCollection}.
+A data.frame or an sf object depending on the sf argument.
+If \code{x} is an image, column names will be extracted from the
+band names of the image (use \code{ee$Image$rename} to change the
+band names). Otherwise, if \code{x} is an \code{ee$ImageCollection},
+column names are extracted from the "RGEE_NAME" property and if it
+does not exist from "system:index".
 }
 \description{
 Extract values from a \code{ee$Image} or \code{ImageCollection} at the
 locations of a geometry object. You can use \code{ee$Geometry$*},
-\code{ee$Feature}, \code{ee$FeatureCollection} and sf objects. This function
+\code{ee$Feature}, \code{ee$FeatureCollection} or sf objects. This function
 mimicking how \link[raster]{extract} currently works.
 }
 \details{

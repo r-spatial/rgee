@@ -37,29 +37,30 @@ test_that("ee_manage_move", {
   expect_true(ret)
 })
 
-test_that("ee_manage_copy", {
-  ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
-                   asset_type = 'ImageCollection')
-  ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
-                 final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome()))
-  ret <- ee_manage_delete(sprintf("%s/rgee/rgee_ic2",ee_get_assethome()))
-  expect_true(ret)
-})
+# test_that("ee_manage_copy", {
+#   ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
+#                    asset_type = 'ImageCollection')
+#   ee_manage_create(sprintf("%s/rgee_test",ee_get_assethome()),"ImageCollection")
+#   ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+#                  final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome()))
+#   ret <- ee_manage_delete(sprintf("%s/rgee/rgee_ic2",ee_get_assethome()))
+#   expect_true(ret)
+# })
 
-test_that("ee_manage_move - II", {
-  ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
-                   asset_type = 'ImageCollection')
-  ee_manage_copy(
-    path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
-    final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome())
-  )
-  ee_manage_move(
-    path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
-    final_path = sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome())
-  )
-  ret <- ee_manage_delete(sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome()))
-  expect_true(ret)
-})
+# test_that("ee_manage_move - II", {
+#   ee_manage_create(path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
+#                    asset_type = 'ImageCollection')
+#   ee_manage_copy(
+#     path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
+#     final_path = sprintf("%s/rgee/rgee_ic2/rgee_test",ee_get_assethome())
+#   )
+#   ee_manage_move(
+#     path_asset = sprintf("%s/rgee/rgee_ic2",ee_get_assethome()),
+#     final_path = sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome())
+#   )
+#   ret <- ee_manage_delete(sprintf("%s/rgee/rgee_folder/rgee_ic_moved",ee_get_assethome()))
+#   expect_true(ret)
+# })
 
 test_that("ee_manage_set_properties", {
   ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),

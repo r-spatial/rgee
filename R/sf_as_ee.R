@@ -32,16 +32,15 @@
 #' whether "filename" should be overwritten. Ignore if \code{via} argument
 #' is "getInfo". By default TRUE.
 #' @param quiet Logical. Suppress info message.
-#' @param ... \code{st_read} arguments might be included.
+#' @param ... \code{\link{ee_utils_create_manifest_table}} arguments might be included.
 #'
 #' @return
 #' When \code{via} is "getInfo" and \code{x} is either an sf or sfc object
 #' with multiple geometries will return an \code{ee$FeatureCollection}. For
 #' single sfc and sfg objects will return an \code{ee$Geometry$...}.
 #'
-#' If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" and
-#' monitoring is TRUE will return an \code{ee$FeatureCollection} otherwise
-#' will return an unstarted task.
+#' If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" always will
+#' return an \code{ee$FeatureCollection}.
 #'
 #' @details
 #' \code{sf_as_ee} supports the upload of \code{sf} objects by three different
@@ -219,7 +218,8 @@ sf_as_ee <- function(x,
       ee_monitoring(ee_task)
       ee$FeatureCollection(assetId)
     } else {
-      assetId
+      ee_task$start()
+      ee$FeatureCollection(assetId)
     }
   } else if (via == "gcs_to_asset") {
     if (is.null(bucket)) {
@@ -233,36 +233,50 @@ sf_as_ee <- function(x,
     shp_dir <- sprintf("%s.shp", tempfile())
 
     # From sf to .shp
-    message("1. Converting sf object to shapefile ... saving in /tmp")
+    if (!quiet) {
+      message("1. Converting sf object to shapefile ... saving in /tmp")
+    }
     geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 
     # From local to gcs
-    message("2. From local to GCS")
+    if (!quiet) {
+      message("2. From local to GCS")
+    }
     gcs_filename <- local_to_gcs(
       x = geozip_dir,
       bucket = bucket,
       quiet = quiet
     )
 
-    message("3. From GCS to Earth Engine")
+    if (!quiet) {
+      message("3. Creating the manifest")
+    }
     # Verify is the EE assets path is valid
     assetId <- ee_verify_filename(
       path_asset = assetId,
       strict = FALSE
     )
-
-    gcs_to_ee_table(
+    manifest <- ee_utils_create_manifest_table(
       gs_uri = gcs_filename,
-      overwrite = overwrite,
       assetId = assetId,
-      command_line_tool_path = command_line_tool_path
+      ...
+    )
+
+    if (!quiet) {
+      message("4. From GCS to Earth Engine")
+    }
+    gcs_to_ee_table(
+      manifest = manifest,
+      command_line_tool_path = command_line_tool_path,
+      overwrite = overwrite,
+      quiet = quiet
     )
 
     if (isTRUE(monitoring)) {
       ee_monitoring()
       ee$FeatureCollection(assetId)
     } else {
-      assetId
+      ee$FeatureCollection(assetId)
     }
   } else {
     stop('Invalid via argument')

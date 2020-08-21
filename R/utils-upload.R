@@ -83,10 +83,7 @@ local_to_gcs <- function(x,
 
 #' Move a zipped shapefile from GCS to their EE Assets
 #'
-#' @param gs_uri Character. It represents the full name of an
-#' zipped shapefile in a GCS bucket.
-#' @param assetId Character. What to call the file once uploaded
-#' to their Earth Engine Assets
+#' @param manifest Character. manifest upload file. See \code{\link{ee_utils_create_manifest_table}}.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
 #' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
@@ -102,65 +99,59 @@ local_to_gcs <- function(x,
 #' library(sf)
 #' ee_Initialize(gcs = TRUE)
 #'
-#' # Create sf object
-#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
+#' # 1. Read dataset and create a output filename
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
 #'
-#' # Method 1
-#' # 1. Pass the sf to a zip file
-#' zipfile <- ee_utils_shp_to_zip(nc)
+#' # 2. From sf to .shp
+#' shp_dir <- sprintf("%s.shp", tempfile())
+#' geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 #'
-#' # # 2. From local to gcs
-#' # gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
+#' # # 3. From local to gcs
+#' # gcs_filename <- local_to_gcs(
+#' #   x = geozip_dir,
+#' #   bucket = "rgee_dev" # Insert your own bucket here!
+#' # )
 #' #
-#' # # 3. Pass the sf to a zip file
-#' # gcs_to_ee_table(
-#' #   gs_uri = gs_uri,
-#' #   overwrite = TRUE,
+#' # # 4. Create Table Manifest
+#' # manifest <- ee_utils_create_manifest_table(
+#' #   gs_uri = gcs_filename,
 #' #   assetId = assetId
 #' # )
 #' #
-#' # # OPTIONAL: Monitoring progress
+#' # # 5. From GCS to Earth Engine
+#' # ee_nc <- gcs_to_ee_table(manifest, overwrite = TRUE)
 #' # ee_monitoring()
-#' #
-#' # # OPTIONAL: Display results
-#' # ee_sf_01 <- ee$FeatureCollection(assetId)
-#' # Map$centerObject(ee_sf_01)
-#' # Map$addLayer(ee_sf_01)
-#' #
-#' # # Method 2
-#' # ee_sf_02 <- sf_as_ee(x = nc,
-#' #                      assetId = assetId,
-#' #                      overwrite = TRUE,
-#' #                      bucket = "rgee_dev",
-#' #                      via = 'gcs')
-#' # Map$centerObject(ee_sf_02)
-#' # Map$addLayer(ee_sf_02)
+#' # Map$addLayer(ee$FeatureCollection(ee_nc))
 #' }
 #' @export
-gcs_to_ee_table <- function(gs_uri,
-                            assetId,
+gcs_to_ee_table <- function(manifest,
                             command_line_tool_path = NULL,
                             overwrite = FALSE,
                             quiet = FALSE) {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+
+  manifest_list <- jsonlite::read_json(manifest)
+  assetId <- ee_remove_project_chr(manifest_list$name)
+
+  manifest_list$name
   if (is.null(command_line_tool_path)) {
     command_line_tool_path <- ""
   }
 
   if (command_line_tool_path == "") {
-    command = sprintf(
-      "earthengine upload table --asset_id %s %s",
-      assetId, gs_uri
-    )
+    command <- sprintf("earthengine upload table --manifest %s", manifest)
   } else {
-    command = sprintf(
-      "%s/earthengine upload table --asset_id %s %s",
-      command_line_tool_path, assetId, gs_uri
+    command <- sprintf(
+      "%s/earthengine upload table --manifest %s",
+      command_line_tool_path, manifest
     )
   }
 
   if (!quiet) {
-    message("Running the OS command:", command)
+    message("Running the OS command: ", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -179,9 +170,8 @@ gcs_to_ee_table <- function(gs_uri,
   if (upload_state != 0) {
     stop(
       sprintf(
-        "An error occurs when %s try to upload %s to %s",
-        bold("gcs_to_ee_table"), bold(gs_uri), bold(assetId)
-      ),
+        "An error occurs when %s try to upload",
+        bold("gcs_to_ee_table")),
       ". Please make sure that you set the ",
       bold("command_line_tool_path"),
       " argument correctly."
@@ -192,23 +182,12 @@ gcs_to_ee_table <- function(gs_uri,
 
 #' Move a GeoTIFF image from GCS to their EE assets
 #'
-#' @param x An object of class stars or stars-proxy.
-#' @param gs_uri Character. It represents the full name of the
-#' GeoTIFF file of \code{x} in a GCS bucket.
+#' @param manifest Character. manifest upload file. See \code{\link{ee_utils_create_manifest_image}}.
+#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
+#' it exists.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
 #' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
-#' @param assetId Character. How to call the file once uploaded
-#' to the Earth Engine Asset. e.g. users/datacolecfbf/mydatacollection.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
-#' it exists.
-#' @param properties List. Set of parameters to be set up as properties
-#' of the EE object.
-#' @param start_time Character. Sets the start time property to a number
-#' or date.
-#' @param end_time Character. Sets the end time property to a number
-#' or date.
-#' @param pyramiding_policy The pyramid reduction policy to use.
 #' @param quiet Logical. Suppress info message.
 #'
 #' @return Character. The Earth Engine asset ID.
@@ -216,55 +195,50 @@ gcs_to_ee_table <- function(gs_uri,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' library(sf)
-#' ee_Initialize(gcs = TRUE)
+#' library(stars)
+#' ee_Initialize("csaybar", gcs = TRUE)
 #'
-#' # Create sf object
-#' nc <- st_read(system.file("shape/nc.shp", package="sf"))
-#' assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
-#'
-#' # Method 1
-#' # 1. Pass the sf to a zip file
-#' zipfile <- ee_utils_shp_to_zip(nc)
+#' # 1. Read GeoTIFF file and create a output filename
+#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#' x <- read_stars(tif)
+#' assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 #'
 #' # # 2. From local to gcs
-#' # gs_uri <- local_to_gcs(x = zipfile, bucket = 'rgee_dev')
-#'
-#' # # 3. Pass the sf to a zip file
-#' # gcs_to_ee_table(
-#' #    gs_uri = gs_uri,
-#' #    overwrite = TRUE,
-#' #    assetId = assetId
+#' # gs_uri <- local_to_gcs(
+#' #   x = tif,
+#' #   bucket = 'rgee_dev' # Insert your own bucket here!
 #' # )
-#'
+#' #
+#' # # 3. Create an Image Manifest
+#' # manifest <- ee_utils_create_manifest_image(gs_uri, assetId)
+#' #
+#' # # 4. From GCS to Earth Engine
+#' # gcs_to_ee_image(
+#' #   manifest = manifest,
+#' #   overwrite = TRUE
+#' # )
+#' #
 #' # # OPTIONAL: Monitoring progress
 #' # ee_monitoring()
-#'
+#' #
 #' # # OPTIONAL: Display results
-#' # ee_sf_01 <- ee$FeatureCollection(assetId)
-#' # Map$centerObject(ee_sf_01)
-#' # Map$addLayer(ee_sf_01)
-#'
-#' # # Method 2
-#' # ee_sf_02 <- sf_as_ee(x = nc,
-#' #                       assetId = assetId,
-#' #                       overwrite = TRUE,
-#' #                       bucket = "rgee_dev",
-#' #                       via = 'gcs')
-#' # Map$centerObject(ee_sf_02)
-#' # Map$addLayer(ee_sf_02)
+#' # ee_stars_01 <- ee$Image(assetId)
+#' # # ee_stars_01$bandNames()$getInfo()
+#' # Map$centerObject(ee_stars_01)
+#' # Map$addLayer(ee_stars_01, list(min = 0, max = 255, bands = c("b3", "b2", "b1")))
 #' }
 #' @export
-gcs_to_ee_image <- function(x,
-                            gs_uri,
-                            assetId,
+gcs_to_ee_image <- function(manifest,
                             overwrite = FALSE,
-                            properties = NULL,
                             command_line_tool_path = NULL,
-                            start_time = "1970-01-01",
-                            end_time = "1970-01-01",
-                            pyramiding_policy = 'MEAN',
                             quiet = FALSE) {
+  if (!requireNamespace("jsonlite", quietly = TRUE)) {
+    stop("package jsonlite required, please install it first")
+  }
+
+  manifest_list <- jsonlite::read_json(manifest)
+  assetId <- ee_remove_project_chr(manifest_list$name)
+
   # Folder to save upload temporary files.
   tempdir_gee <- tempdir()
 
@@ -273,94 +247,17 @@ gcs_to_ee_image <- function(x,
     command_line_tool_path <- ""
   }
 
-  # Verify is the EE assets path is valid, if not try to fix
-  assetId <- ee_verify_filename(
-    path_asset = assetId,
-    strict = FALSE
-  )
-
-  # Load utils python module
-  oauth_func_path <- system.file(
-    "python/ee_utils.py",
-    package = "rgee"
-  )
-  ee_utils <- ee_source_python(oauth_func_path)
-
-  # Creating affine_transform params
-  affine_transform <- attr(x, "dimensions")
-  shear <- x %>%
-    attr("dimensions") %>%
-    attr("raster")
-  nbands <- (affine_transform$band$to - affine_transform$band$from) + 1L
-  if (length(nbands) == 0) nbands <- 1
-  band_names <- affine_transform$band$values
-  if (is.null(band_names)) band_names <- sprintf("b%s", 1:nbands)
-  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
-
-  if (is.na(sf::st_crs(x)$wkt)) {
-    stop("x does not have a CRS defined first")
-  }
-
-  # Creating tileset
-  tilesets <- list(
-    crs = sf::st_crs(x)$wkt,
-    sources = list(
-      list(
-        uris = gs_uri,
-        affine_transform = list(
-          scale_x = affine_transform$x$delta,
-          shear_x = shear$affine[1],
-          translate_x = affine_transform$x$offset,
-          shear_y = shear$affine[2],
-          scale_y = affine_transform$y$delta,
-          translate_y = affine_transform$y$offset
-        )
-      )
-    )
-  )
-
-  # from R date to JS timestamp: time_start + time_end
-  time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
-  time_end <- rdate_to_eedate(end_time, timestamp = TRUE)
-
-  # Adding bands
-  bands <- list()
-  for (index in seq_len(length(band_names))) {
-    bands[[index]] <- list(
-      id = band_names[index],
-      tileset_band_index = as.integer((index - 1))
-    )
-  }
-
-  # Putting all together
-  manifest <- list(
-    name = name,
-    tilesets = list(tilesets),
-    bands = bands,
-    pyramiding_policy = pyramiding_policy,
-    properties = properties,
-    start_time = list(seconds = time_start / 1000),
-    end_time = list(seconds = time_end / 1000)
-  )
-
-  if (is.null(properties)) manifest[["properties"]] <- NULL
-  json_path <- sprintf("%s/manifest.json", tempdir_gee)
-  ee_utils$ee_create_json_py(
-    towrite = json_path,
-    manifest = manifest
-  )
-
   #Command to run in console
   if (command_line_tool_path == "") {
     command <- sprintf("earthengine upload image --manifest '%s'",
-                       json_path)
+                       manifest)
   } else {
     command <- sprintf("%s/earthengine upload image --manifest '%s'",
-                       command_line_tool_path, json_path)
+                       command_line_tool_path, manifest)
   }
 
   if (!quiet) {
-    message("Running the OS command:", command)
+    message("Running the OS command: ", command)
   }
 
   if (isTRUE(overwrite)) {
@@ -379,9 +276,8 @@ gcs_to_ee_image <- function(x,
   if (upload_state != 0) {
     stop(
       sprintf(
-        "An error occurs when %s try to upload %s to %s",
-        bold("gcs_to_ee_image"), bold(gs_uri), bold(assetId)
-      ),
+        "An error occurs when %s try to upload",
+        bold("gcs_to_ee_image")),
       ". Please make sure that you set the ",
       bold("command_line_tool_path"),
       " argument correctly."
@@ -493,4 +389,210 @@ ee_sf_comp <- function(){
   c("sfc_MULTIPOLYGON", "sfc_POLYGON", "sfc_LINESTRING", "sfc_MULTILINESTRING",
     "sfc_POINT", "sfc_MULTIPOINT", "MULTIPOLYGON", "POLYGON", "LINESTRING",
     "MULTILINESTRING", "POINT", "MULTIPOINT")
+}
+
+#' Convert a R list into a JSON file
+#' @param x List to convert into a JSON file.
+#' @return A JSON file saved in a /tmp dir.
+#' @examples
+#' library(rgee)
+#' ee_utils_create_json(list(a=10,b=10))
+#' @export
+ee_utils_create_json <- function(x) {
+  tmpf <- tempfile()
+  json_path <- sprintf("%s/%s_manifest.json", dirname(tmpf), basename(tmpf))
+
+  # Load utils python module
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  ee_utils <- ee_source_python(oauth_func_path)
+
+  ee_utils$ee_create_json_py(
+    towrite = json_path,
+    manifest = x
+  )
+  json_path
+}
+
+
+#' Create a manifest to upload an image
+#'
+#' Create a manifest to upload a GeoTIFF to Earth Engine assets folder. The
+#' "manifest" is simply a JSON file which describe all the upload parameters. See
+#' \url{https://developers.google.com/earth-engine/image_manifest} to get more
+#' details.
+#'
+#' @param gs_uri Character. GCS full path of the image to upload to Earth Engine assets
+#' e.g. gs://rgee_dev/l8.tif
+#' @param assetId Character. How to call the file once uploaded
+#' to the Earth Engine Asset. e.g. users/datacolecfbf/l8.
+#' @param properties List. Set of parameters to be set up as properties
+#' of the EE object.
+#' @param start_time Character. Sets the start time property (system:time_start)
+#' It could be a number (timestamp) or a date.
+#' @param end_time Character. Sets the end time property (system:time_end)
+#' It could be a number (timestamp) or a date.
+#' @param pyramiding_policy Character. The pyramid reduction policy to use.
+#' @param returnList Logical. If TRUE will return the "manifest" as a list otherwise
+#' will return a JSON file.
+#' @param quiet Logical. Suppress info message.
+#'
+#' @return If \code{returnList} is TRUE a list otherwise a JSON file.
+#' @family generic upload functions
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_Initialize()
+#'
+#' tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+#'
+#' # Return a JSON file
+#' ee_utils_create_manifest_image(
+#'   gs_uri = "gs://rgee_dev/l8.tif",
+#'   assetId = "users/datacolecfbf/l8"
+#' )
+#'
+#' # Return a list
+#' ee_utils_create_manifest_image(
+#'   gs_uri = "gs://rgee_dev/l8.tif",
+#'   assetId = "users/datacolecfbf/l8",
+#'   returnList = TRUE
+#' )
+#' }
+#' @export
+ee_utils_create_manifest_image <- function(gs_uri,
+                                           assetId,
+                                           properties = NULL,
+                                           start_time = "1970-01-01",
+                                           end_time = "1970-01-01",
+                                           pyramiding_policy = 'MEAN',
+                                           returnList = FALSE,
+                                           quiet = FALSE) {
+  # Verify is the EE assets path is valid, if not try to fix
+  assetId <- ee_verify_filename(
+    path_asset = assetId,
+    strict = FALSE
+  )
+
+  # Create a name
+  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+
+  # from R date to JS timestamp: time_start + time_end
+  time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
+  time_end <- rdate_to_eedate(end_time, timestamp = TRUE)
+
+  # Creating tileset
+  tilesets <- list(
+    sources = list(
+      list(
+        uris = gs_uri
+      )
+    )
+  )
+
+  # Putting all together
+  manifest <- list(
+    name = name,
+    tilesets = list(tilesets),
+    pyramiding_policy = pyramiding_policy,
+    properties = properties,
+    start_time = list(seconds = time_start / 1000),
+    end_time = list(seconds = time_end / 1000)
+  )
+
+  if (is.null(properties)) manifest[["properties"]] <- NULL
+  if (returnList) {
+    manifest
+  } else {
+    ee_utils_create_json(manifest)
+  }
+}
+
+#' Create a manifest to upload a table
+#'
+#' Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
+#' "manifest" is simply a JSON file which describe all the upload parameters. See
+#' \url{https://developers.google.com/earth-engine/image_manifest} to get more
+#' details.
+#'
+#' @param gs_uri Character. GCS full path of the table to upload to Earth Engine assets
+#' e.g. gs://rgee_dev/nc.zip
+#' @param assetId Character. How to call the file once uploaded
+#' to the Earth Engine Asset. e.g. users/datacolecfbf/nc.
+#' @param properties List. Set of parameters to be set up as properties
+#' of the EE object.
+#' @param start_time Character. Sets the start time property (system:time_start)
+#' It could be a number (timestamp) or a date.
+#' @param end_time Character. Sets the end time property (system:time_end)
+#' It could be a number (timestamp) or a date.
+#' @param returnList Logical. If TRUE will return the "manifest" as a list otherwise
+#' will return a JSON file.
+#' @param quiet Logical. Suppress info message.
+#'
+#' @return If \code{returnList} is TRUE a list otherwise a JSON file.
+#' @family generic upload functions
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(sf)
+#' ee_Initialize(gcs = TRUE)
+#'
+#' x <- st_read(system.file("shape/nc.shp", package = "sf"))
+#' shp_dir <- sprintf("%s.shp", tempfile())
+#' geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
+#'
+#' # Return a JSON file
+#' manifest <- ee_utils_create_manifest_table(
+#'   gs_uri = "gs://rgee_dev/nc.zip",
+#'   assetId = "users/datacolecfbf/nc"
+#' )
+#'
+#' # Return a list
+#' ee_utils_create_manifest_table(
+#'   gs_uri = "gs://rgee_dev/nc.zip",
+#'   assetId = "users/datacolecfbf/nc",
+#'   returnList = TRUE
+#' )
+#' }
+#' @export
+ee_utils_create_manifest_table <- function(gs_uri,
+                                           assetId,
+                                           start_time = "1970-01-01",
+                                           end_time = "1970-01-01",
+                                           properties = NULL,
+                                           returnList = FALSE,
+                                           quiet = FALSE) {
+  # Verify is the EE assets path is valid, if not try to fix
+  assetId <- ee_verify_filename(
+    path_asset = assetId,
+    strict = FALSE
+  )
+
+  # Create a name
+  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+
+  # Creating tileset
+  sources <- list(
+    uris = list(gs_uri)
+  )
+
+  # from R date to JS timestamp: time_start + time_end
+  time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
+  time_end <- rdate_to_eedate(end_time, timestamp = TRUE)
+
+  # Putting all together
+  manifest <- list(
+    name = name,
+    sources = list(sources),
+    properties = properties,
+    start_time = list(seconds = time_start / 1000),
+    end_time = list(seconds = time_end / 1000)
+  )
+  if (is.null(properties)) manifest[["properties"]] <- NULL
+  if (returnList) {
+    manifest
+  } else {
+    ee_utils_create_json(manifest)
+  }
 }

@@ -61,16 +61,15 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{...}{\code{st_read} arguments might be included.}
+\item{...}{\code{\link{ee_utils_create_manifest_table}} arguments might be included.}
 }
 \value{
 When \code{via} is "getInfo" and \code{x} is either an sf or sfc object
 with multiple geometries will return an \code{ee$FeatureCollection}. For
 single sfc and sfg objects will return an \code{ee$Geometry$...}.
 
-If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" and
-monitoring is TRUE will return an \code{ee$FeatureCollection} otherwise
-will return an unstarted task.
+If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" always will
+return an \code{ee$FeatureCollection}.
 }
 \description{
 Load an sf object to Earth Engine.

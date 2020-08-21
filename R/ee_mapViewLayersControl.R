@@ -139,3 +139,23 @@ ee_appendMapCallEntries_lf <- function(map1, map2) {
   return(map1)
 }
 
+# Add basemap to leaflet ---------------------------------------
+#' @noRd
+add_basemaps <- function(map, pane = "right") {
+  bgm <- c("CartoDB.Positron", "CartoDB.DarkMatter", "OpenStreetMap",
+           "Esri.WorldImagery", "OpenTopoMap")
+  leaflet::leaflet() %>%
+    leaflet::addProviderTiles(bgm[1], group = bgm[1],
+                              options = leaflet::pathOptions(pane = pane)) %>%
+    leaflet::addProviderTiles(bgm[2], group = bgm[2],
+                              options = leaflet::pathOptions(pane = pane)) %>%
+    leaflet::addProviderTiles(bgm[3], group = bgm[3],
+                              options = leaflet::pathOptions(pane = pane)) %>%
+    leaflet::addProviderTiles(bgm[4], group = bgm[4],
+                              options = leaflet::pathOptions(pane = pane)) %>%
+    leaflet::addProviderTiles(bgm[5], group = bgm[5],
+                              options = leaflet::pathOptions(pane = pane)) %>%
+    leaflet::addLayersControl(
+      baseGroups = bgm
+    )
+}
