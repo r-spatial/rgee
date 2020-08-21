@@ -16,7 +16,7 @@
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
 #' credential will be cached in the path \code{~/.config/earthengine/}.
 #'
-#' @param display Logical. If TRUE display the earthengine authentification URL.
+#' @param display Logical. If TRUE display the earthengine authentication URL.
 #'
 #' @param quiet Logical. Suppress info messages.
 #'

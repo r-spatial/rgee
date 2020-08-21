@@ -141,7 +141,6 @@ ee_utils_pyfunc <- reticulate::py_func
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' library(magick)
 #'
 #' ee_Initialize()
 #'
@@ -180,9 +179,11 @@ ee_utils_pyfunc <- reticulate::py_func
 #'
 #' ## 1.2 Download, display and save the GIF!
 #' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
+#'   ee_utils_gif_annotate(get_years, size = 15, location = "+90+40",
+#'                         boxcolor = "#FFFFFF") %>%
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
@@ -240,7 +241,6 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' library(magick)
 #'
 #' ee_Initialize()
 #'
@@ -279,9 +279,11 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
 #'
 #' ## 1.2 Download, display and save the GIF!
 #' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
+#'   ee_utils_gif_annotate(get_years, size = 15, location = "+90+40",
+#'                         boxcolor = "#FFFFFF") %>%
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
@@ -307,11 +309,28 @@ ee_utils_gif_annotate <- function(image,
   if (!requireNamespace("magick", quietly = TRUE)) {
     stop("package magick required, please install it first")
   }
-  magick::image_annotate(image, text, gravity = gravity, location = location,
-                         degrees = degrees, size = size, font = font,
-                         style = style, weight = weight, kerning = kerning,
-                         decoration = decoration, color = color,
-                         strokecolor = strokecolor, boxcolor = boxcolor)
+  if (length(text) == 1) {
+    image <- magick::image_annotate(image, text, gravity = gravity,
+                                    location = location, degrees = degrees, size = size,
+                                    font = font, style = style, weight = weight,
+                                    kerning = kerning, decoration = decoration,
+                                    color = color, strokecolor = strokecolor,
+                                    boxcolor = boxcolor)
+  } else if(length(text) == length(image)) {
+    image <- magick::image_annotate(image, text, gravity = gravity,
+                           location = location, degrees = degrees, size = size,
+                           font = font, style = style, weight = weight,
+                           kerning = kerning, decoration = decoration,
+                           color = color, strokecolor = strokecolor,
+                           boxcolor = boxcolor)
+  } else {
+    stop(
+      "The text argument has not the same length as the magick-image object",
+      "\nActual:",length(text),
+      "\nExpected:", length(image)
+    )
+  }
+  image
 }
 
 
@@ -334,7 +353,6 @@ ee_utils_gif_annotate <- function(image,
 #' @examples
 #' \dontrun{
 #' library(rgee)
-#' library(magick)
 #'
 #' ee_Initialize()
 #'
@@ -373,9 +391,11 @@ ee_utils_gif_annotate <- function(image,
 #'
 #' ## 1.2 Download, display and save the GIF!
 #' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
+#'   ee_utils_gif_annotate(get_years, size = 15, location = "+90+40",
+#'                         boxcolor = "#FFFFFF") %>%
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt

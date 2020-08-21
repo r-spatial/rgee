@@ -65,7 +65,6 @@ Add text to a GIF (magick-image object). This function is a wrapper around
 \examples{
 \dontrun{
 library(rgee)
-library(magick)
 
 ee_Initialize()
 
@@ -104,9 +103,11 @@ videoArgs = list(
 
 ## 1.2 Download, display and save the GIF!
 animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
-animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+get_years <- basicAnimation$aggregate_array("year")$getInfo()
 animation \%>\%
   ee_utils_gif_annotate("Ucayali, Peru") \%>\%
+  ee_utils_gif_annotate(get_years, size = 15, location = "+90+40",
+                        boxcolor = "#FFFFFF") \%>\%
   ee_utils_gif_annotate("created using {magick} + {rgee}",
                         size = 15, font = "sans",location = "+70+20") ->
   animation_wtxt

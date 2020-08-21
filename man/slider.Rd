@@ -3,32 +3,18 @@
 \name{slider}
 \alias{slider}
 \alias{|,EarthEngineMap,EarthEngineMap-method}
-\alias{|,EarthEngineMap,mapview-method}
-\alias{|,mapview,EarthEngineMap-method}
 \title{EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.}
 \usage{
 \S4method{|}{EarthEngineMap,EarthEngineMap}(e1, e2)
-
-\S4method{|}{EarthEngineMap,mapview}(e1, e2)
-
-\S4method{|}{mapview,EarthEngineMap}(e1, e2)
 }
 \arguments{
 \item{e1}{a leaflet or mapview map, or NULL.}
 
-\item{e2}{a EarthEngineMap.}
+\item{e2}{a leaflet or mapview map, or NULL.}
 }
 \description{
 EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
-
-Comparison operator to EarthEngineMap | mapview
-
-Comparison operator to mapview | EarthEngineMap
 }
 \author{
-tim-salabim. Adapted from mapview code.
-
-tim-salabim. Adapted from mapview code.
-
 tim-salabim. Adapted from mapview code.
 }
