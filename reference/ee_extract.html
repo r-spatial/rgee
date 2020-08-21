@@ -49,7 +49,7 @@
 <meta property="og:title" content="Extract values from EE Images or ImageCollections objects — ee_extract" />
 <meta property="og:description" content="Extract values from a ee$Image or ImageCollection at the
 locations of a geometry object. You can use ee$Geometry$*,
-ee$Feature, ee$FeatureCollection and sf objects. This function
+ee$Feature, ee$FeatureCollection or sf objects. This function
 mimicking how extract currently works." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -83,7 +83,7 @@ mimicking how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -162,7 +162,7 @@ mimicking how extract currently works." />
     <div class="ref-description">
     <p>Extract values from a <code>ee$Image</code> or <code>ImageCollection</code> at the
 locations of a geometry object. You can use <code>ee$Geometry$*</code>,
-<code>ee$Feature</code>, <code>ee$FeatureCollection</code> and sf objects. This function
+<code>ee$Feature</code>, <code>ee$FeatureCollection</code> or sf objects. This function
 mimicking how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
     </div>
 
@@ -173,7 +173,7 @@ mimicking how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> 
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>ee$Image or ee$ImageCollection with a single band.</p></td>
+      <td><p>ee$Image or a ee$ImageCollection with a single band.</p></td>
     </tr>
     <tr>
       <th>y</th>
@@ -197,19 +197,19 @@ the sf object y?</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>reduceRegions additional parameters. See
+      <td><p>ee$Image$reduceRegions additional parameters. See
 <code><a href='ee_help.html'>ee_help(ee$Image$reduceRegions)</a></code> for more details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data.frame or an sf object depending on the sf argument. The
-columns receive their name from the image
-metadata property <code>RGEE_NAME</code>. If it is not defined <code>ee_extract</code>
-use the band name (<code>ee$Image$name</code>) if <code>x</code> is an <code>ee$Image</code>
-and the <code>system:index</code> property if <code>x</code> is an
-<code>ee$ImageCollection</code>.</p>
+    <p>A data.frame or an sf object depending on the sf argument.
+If <code>x</code> is an image, column names will be extracted from the
+band names of the image (use <code>ee$Image$rename</code> to change the
+band names). Otherwise, if <code>x</code> is an <code>ee$ImageCollection</code>,
+column names are extracted from the "RGEE_NAME" property and if it
+does not exist from "system:index".</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The reducer functions that return one value are:</p><ul>

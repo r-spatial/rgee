@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class EarthEngineMap — EarthEngineMap-class • rgee</title>
+<title>Create a manifest to upload a table — ee_utils_create_manifest_table • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,11 @@
 
 
 
-<meta property="og:title" content="Class EarthEngineMap — EarthEngineMap-class" />
-<meta property="og:description" content="Class EarthEngineMap" />
+<meta property="og:title" content="Create a manifest to upload a table — ee_utils_create_manifest_table" />
+<meta property="og:description" content="Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
+&quot;manifest&quot; is simply a JSON file which describe all the upload parameters. See
+https://developers.google.com/earth-engine/image_manifest to get more
+details." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -151,28 +154,99 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class EarthEngineMap</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/AAAMapclass.R'><code>R/AAAMapclass.R</code></a></small>
-    <div class="hidden name"><code>EarthEngineMap-class.Rd</code></div>
+    <h1>Create a manifest to upload a table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
+    <div class="hidden name"><code>ee_utils_create_manifest_table.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Class EarthEngineMap</p>
+    <p>Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
+"manifest" is simply a JSON file which describe all the upload parameters. See
+<a href='https://developers.google.com/earth-engine/image_manifest'>https://developers.google.com/earth-engine/image_manifest</a> to get more
+details.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>ee_utils_create_manifest_table</span>(
+  <span class='no'>gs_uri</span>,
+  <span class='no'>assetId</span>,
+  <span class='kw'>start_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>end_time</span> <span class='kw'>=</span> <span class='st'>"1970-01-01"</span>,
+  <span class='kw'>properties</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>returnList</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>gs_uri</th>
+      <td><p>Character. GCS full path of the table to upload to Earth Engine assets
+e.g. gs://rgee_dev/nc.zip</p></td>
+    </tr>
+    <tr>
+      <th>assetId</th>
+      <td><p>Character. How to call the file once uploaded
+to the Earth Engine Asset. e.g. users/datacolecfbf/nc.</p></td>
+    </tr>
+    <tr>
+      <th>start_time</th>
+      <td><p>Character. Sets the start time property (system:time_start)
+It could be a number (timestamp) or a date.</p></td>
+    </tr>
+    <tr>
+      <th>end_time</th>
+      <td><p>Character. Sets the end time property (system:time_end)
+It could be a number (timestamp) or a date.</p></td>
+    </tr>
+    <tr>
+      <th>properties</th>
+      <td><p>List. Set of parameters to be set up as properties
+of the EE object.</p></td>
+    </tr>
+    <tr>
+      <th>returnList</th>
+      <td><p>Logical. If TRUE will return the "manifest" as a list otherwise
+will return a JSON file.</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>Logical. Suppress info message.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
+    <p>If <code>returnList</code> is TRUE a list otherwise a JSON file.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-<dl'>
-<dt><code>object</code></dt><dd><p>the spatial object</p></dd>
+    <div class='dont-index'><p>Other generic upload functions: 
+<code><a href='ee_utils_create_manifest_image.html'>ee_utils_create_manifest_image</a>()</code>,
+<code><a href='local_to_gcs.html'>local_to_gcs</a>()</code></p></div>
 
-<dt><code>map</code></dt><dd><p>the leaflet map object</p></dd>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-</dl>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>))
+<span class='no'>shp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s.shp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())
+<span class='no'>geozip_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span>(<span class='no'>x</span>, <span class='no'>shp_dir</span>)
 
+<span class='co'># Return a JSON file</span>
+<span class='no'>manifest</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_utils_create_manifest_table</span>(
+  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='st'>"gs://rgee_dev/nc.zip"</span>,
+  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/nc"</span>
+)
+
+<span class='co'># Return a list</span>
+<span class='fu'>ee_utils_create_manifest_table</span>(
+  <span class='kw'>gs_uri</span> <span class='kw'>=</span> <span class='st'>"gs://rgee_dev/nc.zip"</span>,
+  <span class='kw'>assetId</span> <span class='kw'>=</span> <span class='st'>"users/datacolecfbf/nc"</span>,
+  <span class='kw'>returnList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

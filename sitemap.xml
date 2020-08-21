@@ -121,6 +121,24 @@
     <loc>http://r-spatial.github.io/rgee/reference/ee_users.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_create_json.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_image.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_table.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_gif_annotate.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_gif_creator.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_gif_save.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_py_to_r.html</loc>
   </url>
   <url>
@@ -176,6 +194,9 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/show-EarthEngineMap-method.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/slider.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc>

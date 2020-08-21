@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Class EarthEngineMap — EarthEngineMap-class • rgee</title>
+<title>Convert a R list into a JSON file — ee_utils_create_json • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Class EarthEngineMap — EarthEngineMap-class" />
-<meta property="og:description" content="Class EarthEngineMap" />
+<meta property="og:title" content="Convert a R list into a JSON file — ee_utils_create_json" />
+<meta property="og:description" content="Convert a R list into a JSON file" />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -151,28 +151,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Class EarthEngineMap</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/AAAMapclass.R'><code>R/AAAMapclass.R</code></a></small>
-    <div class="hidden name"><code>EarthEngineMap-class.Rd</code></div>
+    <h1>Convert a R list into a JSON file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
+    <div class="hidden name"><code>ee_utils_create_json.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Class EarthEngineMap</p>
+    <p>Convert a R list into a JSON file</p>
     </div>
 
+    <pre class="usage"><span class='fu'>ee_utils_create_json</span>(<span class='no'>x</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>List to convert into a JSON file.</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="slots"><a class="anchor" href="#slots"></a>Slots</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
+    <p>A JSON file saved in a /tmp dir.</p>
 
-<dl'>
-<dt><code>object</code></dt><dd><p>the spatial object</p></dd>
-
-<dt><code>map</code></dt><dd><p>the leaflet map object</p></dd>
-
-</dl>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+<span class='fu'>ee_utils_create_json</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span><span class='kw'>=</span><span class='fl'>10</span>,<span class='kw'>b</span><span class='kw'>=</span><span class='fl'>10</span>))</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

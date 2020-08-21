@@ -82,7 +82,7 @@ using mapview." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -325,6 +325,17 @@ default 3.</p></li>
   <span class='fu'><a href='ee_get.html'>ee_get</a></span>(<span class='fl'>0</span>:<span class='fl'>4</span>)
 <span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>nc</span>$<span class='fu'>geometry</span>())
 <span class='no'>Map</span>$<span class='fu'>addLayers</span>(<span class='no'>ee_s2</span>)
+
+<span class='co'># Case 8: Map comparison</span>
+<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
+<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>image</span>)
+<span class='no'>m_ndvi</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
+  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"B5"</span>, <span class='st'>"B4"</span>)),
+  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.7</span>),
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF_NDVI"</span>,
+  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+<span class='no'>m4</span> <span class='kw'>|</span> <span class='no'>m_ndvi</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

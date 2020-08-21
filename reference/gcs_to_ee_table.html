@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -161,8 +161,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>gcs_to_ee_table</span>(
-  <span class='no'>gs_uri</span>,
-  <span class='no'>assetId</span>,
+  <span class='no'>manifest</span>,
   <span class='kw'>command_line_tool_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
@@ -172,14 +171,8 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>gs_uri</th>
-      <td><p>Character. It represents the full name of an
-zipped shapefile in a GCS bucket.</p></td>
-    </tr>
-    <tr>
-      <th>assetId</th>
-      <td><p>Character. What to call the file once uploaded
-to their Earth Engine Assets</p></td>
+      <th>manifest</th>
+      <td><p>Character. manifest upload file. See <code><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></code>.</p></td>
     </tr>
     <tr>
       <th>command_line_tool_path</th>
@@ -208,40 +201,30 @@ it exists.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='co'># Create sf object</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"sf"</span>))
-<span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'sf_nc'</span>)
+<span class='co'># 1. Read dataset and create a output filename</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>))
+<span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(), <span class='st'>'toy_poly_gcs'</span>)
 
-<span class='co'># Method 1</span>
-<span class='co'># 1. Pass the sf to a zip file</span>
-<span class='no'>zipfile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span>(<span class='no'>nc</span>)
+<span class='co'># 2. From sf to .shp</span>
+<span class='no'>shp_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s.shp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>())
+<span class='no'>geozip_dir</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span>(<span class='no'>x</span>, <span class='no'>shp_dir</span>)
 
-<span class='co'># # 2. From local to gcs</span>
-<span class='co'># gs_uri &lt;- local_to_gcs(x = zipfile, bucket = 'rgee_dev')</span>
+<span class='co'># # 3. From local to gcs</span>
+<span class='co'># gcs_filename &lt;- local_to_gcs(</span>
+<span class='co'>#   x = geozip_dir,</span>
+<span class='co'>#   bucket = "rgee_dev" # Insert your own bucket here!</span>
+<span class='co'># )</span>
 <span class='co'>#</span>
-<span class='co'># # 3. Pass the sf to a zip file</span>
-<span class='co'># gcs_to_ee_table(</span>
-<span class='co'>#   gs_uri = gs_uri,</span>
-<span class='co'>#   overwrite = TRUE,</span>
+<span class='co'># # 4. Create Table Manifest</span>
+<span class='co'># manifest &lt;- ee_utils_create_manifest_table(</span>
+<span class='co'>#   gs_uri = gcs_filename,</span>
 <span class='co'>#   assetId = assetId</span>
 <span class='co'># )</span>
 <span class='co'>#</span>
-<span class='co'># # OPTIONAL: Monitoring progress</span>
+<span class='co'># # 5. From GCS to Earth Engine</span>
+<span class='co'># ee_nc &lt;- gcs_to_ee_table(manifest, overwrite = TRUE)</span>
 <span class='co'># ee_monitoring()</span>
-<span class='co'>#</span>
-<span class='co'># # OPTIONAL: Display results</span>
-<span class='co'># ee_sf_01 &lt;- ee$FeatureCollection(assetId)</span>
-<span class='co'># Map$centerObject(ee_sf_01)</span>
-<span class='co'># Map$addLayer(ee_sf_01)</span>
-<span class='co'>#</span>
-<span class='co'># # Method 2</span>
-<span class='co'># ee_sf_02 &lt;- sf_as_ee(x = nc,</span>
-<span class='co'>#                      assetId = assetId,</span>
-<span class='co'>#                      overwrite = TRUE,</span>
-<span class='co'>#                      bucket = "rgee_dev",</span>
-<span class='co'>#                      via = 'gcs')</span>
-<span class='co'># Map$centerObject(ee_sf_02)</span>
-<span class='co'># Map$addLayer(ee_sf_02)</span>
+<span class='co'># Map$addLayer(ee$FeatureCollection(ee_nc))</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -163,11 +163,12 @@
     <pre class="usage"><span class='fu'>stars_as_ee</span>(
   <span class='no'>x</span>,
   <span class='no'>assetId</span>,
+  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>command_line_tool_path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>monitoring</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,6 +181,10 @@
     <tr>
       <th>assetId</th>
       <td><p>Character. Destination asset ID for the uploaded file.</p></td>
+    </tr>
+    <tr>
+      <th>bucket</th>
+      <td><p>Character. Name of the GCS bucket.</p></td>
     </tr>
     <tr>
       <th>command_line_tool_path</th>
@@ -196,12 +201,12 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
       <td><p>Logical. If TRUE the exportation task will be monitored.</p></td>
     </tr>
     <tr>
-      <th>bucket</th>
-      <td><p>Character. Name of the GCS bucket.</p></td>
-    </tr>
-    <tr>
       <th>quiet</th>
       <td><p>Logical. Suppress info message.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>parameter(s) passed on to <code><a href='ee_utils_create_manifest_image.html'>ee_utils_create_manifest_image</a></code></p></td>
     </tr>
     </table>
 
@@ -224,26 +229,27 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/stars/man/read_stars.html'>read_stars</a></span>(<span class='no'>tif</span>)
 <span class='no'>assetId</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"%s/%s"</span>,<span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span>(),<span class='st'>'stars_l7'</span>)
 
-<span class='co'># # Method 1</span>
+<span class='co'># # # Method 1</span>
 <span class='co'># # 1. Move from local to gcs</span>
 <span class='co'># gs_uri &lt;- local_to_gcs(x = tif, bucket = 'rgee_dev')</span>
 
-<span class='co'># # 2. Pass from gcs to asset</span>
+<span class='co'># # 2. Create a manifest</span>
+<span class='co'># manifest &lt;- ee_utils_create_manifest_image(gs_uri, assetId)</span>
+
+<span class='co'># # 3. Pass from gcs to asset</span>
 <span class='co'># gcs_to_ee_image(</span>
-<span class='co'>#   x = x,</span>
-<span class='co'>#   overwrite = TRUE,</span>
-<span class='co'>#   gs_uri = gs_uri,</span>
-<span class='co'>#   assetId = assetId</span>
-<span class='co'>#)</span>
+<span class='co'>#  manifest = manifest,</span>
+<span class='co'>#  overwrite = TRUE</span>
+<span class='co'># )</span>
 
 <span class='co'># # OPTIONAL: Monitoring progress</span>
 <span class='co'># ee_monitoring()</span>
-
+<span class='co'>#</span>
 <span class='co'># # OPTIONAL: Display results</span>
 <span class='co'># ee_stars_01 &lt;- ee$Image(assetId)</span>
 <span class='co'># Map$centerObject(ee_stars_01)</span>
-<span class='co'># Map$addLayer(ee_stars_01)</span>
-
+<span class='co'># Map$addLayer(ee_stars_01, list(min = 0, max = 255))</span>
+<span class='co'>#</span>
 <span class='co'># # Method 2</span>
 <span class='co'># ee_stars_02 &lt;- stars_as_ee(</span>
 <span class='co'>#   x = x,</span>
@@ -252,7 +258,7 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 <span class='co'>#   bucket = "rgee_dev"</span>
 <span class='co'># )</span>
 <span class='co'># Map$centerObject(ee_stars_02)</span>
-<span class='co'># Map$addLayer(ee_stars_02)</span>
+<span class='co'># Map$addLayer(ee_stars_02, list(min = 0, max = 255))</span>
 }</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

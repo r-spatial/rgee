@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -154,6 +154,18 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-105" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.5">
+<a href="#rgee-105" class="anchor"></a>rgee 1.0.5</h1>
+<ul>
+<li>Important changes in the low level API to upload raster and vector with GCS. However, high upload API (<code>sf_as_ee</code>, <code>stars_as_ee</code>, and <code>raster_as_ee</code>) continue working in the same way.</li>
+<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see <a href="https://developers.google.com/earth-engine/image_manifest" class="uri">https://developers.google.com/earth-engine/image_manifest</a>).</li>
+<li>Add the functions: <code>ee_utils_gif_creator</code>, <code>ee_utils_gif_annotate</code> and <code>ee_utils_gif_save</code> to help users to read, add text, and save gif files.</li>
+<li>New | operator inspired in mapview 2.9.0! try: m4 | m5</li>
+<li>Fix several typos.</li>
+<li>Earth Engine Python API updated to 0.1.232.</li>
+</ul>
+</div>
     <div id="rgee-104" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.4">
 <a href="#rgee-104" class="anchor"></a>rgee 1.0.4</h1>

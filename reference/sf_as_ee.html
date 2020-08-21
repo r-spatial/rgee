@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -243,7 +243,7 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
     </tr>
     <tr>
       <th>...</th>
-      <td><p><code>st_read</code> arguments might be included.</p></td>
+      <td><p><code><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></code> arguments might be included.</p></td>
     </tr>
     </table>
 
@@ -252,9 +252,8 @@ in the specified CRS. If absent, defaults to TRUE if the CRS is geographic
     <p>When <code>via</code> is "getInfo" and <code>x</code> is either an sf or sfc object
 with multiple geometries will return an <code>ee$FeatureCollection</code>. For
 single sfc and sfg objects will return an <code>ee$Geometry$...</code>.</p>
-<p>If <code>via</code> is either "getInfo_to_asset" or "gcs_to_asset" and
-monitoring is TRUE will return an <code>ee$FeatureCollection</code> otherwise
-will return an unstarted task.</p>
+<p>If <code>via</code> is either "getInfo_to_asset" or "gcs_to_asset" always will
+return an <code>ee$FeatureCollection</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>sf_as_ee</code> supports the upload of <code>sf</code> objects by three different
