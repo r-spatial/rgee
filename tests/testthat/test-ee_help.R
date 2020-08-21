@@ -5,30 +5,30 @@ skip_if_no_pypkg()
 # clean TRUE
 test_that("simple ee_help - py class", {
   return_message <- ee$Image %>% ee_help()
-  expect_true(return_message)
+  expect_is(return_message, "character")
 })
 
 test_that("simple ee_help - py function", {
   return_message <- ee$batch$Export$image$toDrive %>% ee_help()
-  expect_true(return_message)
+  expect_is(return_message, "character")
 })
 
 
 test_that("complex query ee_help - py function", {
   return_message <- ee$batch$Export$image$toCloudStorage %>% ee_help()
-  expect_true(return_message)
+  expect_is(return_message, "character")
 })
 
 
 test_that("complex query ee_help + browser - py function", {
   return_message <- ee$batch$Export$image$toCloudStorage %>%
     ee_help(browser = TRUE)
-  expect_true(return_message)
+  expect_is(return_message, "character")
 })
 
 test_that("eequery_scope null", {
   ret <- ee_help(ee$Image(0))
-  expect_true(ret)
+  expect_is(ret, "character")
 })
 
 
@@ -69,3 +69,4 @@ test_that("ee_html_head_rstudio", {
     "character"
   )
 })
+

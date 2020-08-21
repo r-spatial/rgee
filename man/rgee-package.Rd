@@ -33,6 +33,7 @@ Other contributors:
   \item Roy Yali \email{ryali93@gmail.com} (\href{https://orcid.org/0000-0003-4542-3755}{ORCID}) [contributor]
   \item Antony Barja \email{antony.barja8@gmail.com} (\href{https://orcid.org/0000-0001-5921-2858}{ORCID}) [contributor]
   \item Kevin Ushey \email{kevin@rstudio.com} [contributor]
+  \item Jeroen Ooms \email{jeroen@berkeley.edu} (\href{https://orcid.org/0000-0002-4035-0289}{ORCID}) [contributor]
   \item Tim Appelhans \email{tim.appelhans@gmail.com} [contributor]
   \item JJ Allaire \email{jj@rstudio.com} [contributor]
   \item Yuan Tang \email{terrytangyuan@gmail.com} [contributor]
