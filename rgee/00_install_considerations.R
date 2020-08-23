@@ -1,50 +1,77 @@
-#' rgee Demo #1: Installation and setup
+#' Demo N°01: Good practices in rgee installation
+#' https://csaybar.github.io/rgee-examples/
 #' @author Cesar Aybar
 
-# 1. Install from GitHub --------------------------------------------------
+# -------------------------------
+# 1. Install rgee and reticulate
+# -------------------------------
+
 remotes::install_github("r-spatial/rgee")
-# devtools::install_github("r-spatial/rgee")
+remotes::install_github("rstudio/reticulate")
 
-# 2. Install Python dependencies
+# Please if you have any problem installing rgee reported in
+# https://github.com/r-spatial/rgee/issues/new
+
+
+# -------------------------------
+# 2. Load libraries
+# -------------------------------
 library(reticulate)
-# Check which versions of Python will be discovered on a system
-py_discover_config()
-
-# Configure which version of Python to use (To avoid this use RETICULATE_ENV)
-use_python("/usr/bin/python3")
-sys <- import("sys")
-sys$executable
-
-use_python("/home/aybarpc01/.virtualenvs/rgee/bin/python")
-py_config()
-py_discover_config()
-sys <- import("sys")
-sys$executable
-
-
-# 3. Install Python dependencies (Basic)
 library(rgee)
+
+# Use the py_discover_config() function to see what version of Python will be
+# used without actually loading Python (no initialize R-Python connection!)
+py_discover_config()
+
+# Use the py_config() function to query for information about the specific 
+# version of Python IN USE as well as a list of other Python versions discovered
+# on the system. (initialize R-Python connection!)
+py_config()
+
+# Verify current Python path 
+import("sys")$executable
+
+# -------------------------------
+# 3. Set a Python Env
+# -------------------------------
+
+# >>> rgee needs that the Python version IN USE is Python3.
+# >>> rgee (reticulate) needs that your system is x64 rather than x86.
+# >>> If you are a Window users, rgee (reticulate) needs conda environment (see
+#     https://docs.conda.io/en/latest/miniconda.html), linux or MacOS users could
+#     use either virtualenv or conda.
+use_python("PUT_HERE_THE_PYTHON3_VERSION_PATH_TO_BE_USE_TO_CREATE_A_PYTHON_ENV_TO_RGEE")
+
+# -------------------------------
+# 4. Set a Python Env to rgee
+# -------------------------------
 ee_install()
+
+# -------------------------------
+# 5. Upgrade rgee!
+# -------------------------------
+ee_install_upgrade(version = "0.1.232")
+
+# -------------------------------
+# 6. Helper functions
+# -------------------------------
+
+# https://twitter.com/csaybar/status/1292015511547580416
 ee_Initialize()
-
-# 4. Other options
-# ee_install_set_pyenv()
-
-# 5. Helper functions
 ee_help(ee$Algorithms$CannyEdgeDetector)
-ee_print(ee$Image(0))
 
+# -------------------------------
+# 7. Considerations
+# -------------------------------
 
-# 6. Considerations
-
-# 6.1 Use ee_utils_pyfunc to avoid erros when map over a ee$List
+# 7.1 Use ee_utils_pyfunc to avoid erros when map over a ee$List
 ee_double_fn <- function(x) ee$Number(x)$add(x)
 ee_SimpleList <- ee$List$sequence(0, 12)
 ee_NewList <- ee_SimpleList$map(ee_double_fn) # error
 ee_NewList <- ee_SimpleList$map(ee_utils_pyfunc(ee_double_fn))
 ee_NewList$getInfo()
 
-# 6.2 Dates
+# 7.2 Dates
 
 ## Load an Image Sentinel2 level-1C
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
