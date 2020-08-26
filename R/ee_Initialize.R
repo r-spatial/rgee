@@ -354,7 +354,7 @@ ee_create_credentials_drive <- function(email) {
       )
     } else {
       drive_credentials <- full_credentials[drive_condition]
-      email <- sub("^[^_]*_", "", drive_credentials)
+      email <- sub("^[^_]*_", "", basename(drive_credentials))
       suppressMessages(
         googledrive::drive_auth(
           email = email,
