@@ -249,10 +249,10 @@ gcs_to_ee_image <- function(manifest,
 
   #Command to run in console
   if (command_line_tool_path == "") {
-    command <- sprintf("earthengine upload image --manifest '%s'",
+    command <- sprintf("earthengine upload image --manifest %s",
                        manifest)
   } else {
-    command <- sprintf("%s/earthengine upload image --manifest '%s'",
+    command <- sprintf("%s/earthengine upload image --manifest %s",
                        command_line_tool_path, manifest)
   }
 
