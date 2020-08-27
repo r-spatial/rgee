@@ -364,7 +364,7 @@ ee_as_proxystars <- function(x, temp_dir = tempdir()) {
   if (is.character(x)) {
     stars::read_stars(x, proxy = TRUE)
   } else if (is(x,"stars")) {
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H%M%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
     stars::write_stars(x, tiff_filename)
@@ -373,7 +373,7 @@ ee_as_proxystars <- function(x, temp_dir = tempdir()) {
     if (!requireNamespace("raster", quietly = TRUE)) {
       stop("package raster required, please install it first")
     }
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    time_format <- format(Sys.time(), "%Y-%m-%d-%H%M%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)
     raster::writeRaster(x, tiff_filename)
