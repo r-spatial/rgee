@@ -309,7 +309,20 @@ ee_image_local <- function(image,
   }
 
   # Default projection on an Image
-  prj_image <- image$projection()$getInfo()
+  prj_image <- tryCatch(
+    expr = image$projection()$getInfo(),
+    error = function(e) {
+      message(
+        "The bands of the specified image contains different projections. ",
+        sprintf("Use %s to pick a single band.", bold("Image.select")),
+        sprintf(" Taking the projection of the first band and running %s ...",
+                bold("img$reproject(crsTransform, crs)"))
+      )
+      ee_proj <- image$select(0)$projection()$getInfo()
+      image <- image$reproject(crsTransform = ee_proj$transform, crs = ee_proj$crs)
+      image$projection()$getInfo()
+    }
+  )
 
   if (grepl("EPSG:", prj_image$crs)) {
     img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))

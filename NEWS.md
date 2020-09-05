@@ -11,6 +11,25 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.6
+
+- Class method chaining were changed by pipe ({magrittr**}) in all the `rgee` functions.
+- rgee functions has a cleaner method to run system processes, {**processx**} 
+instead of **base::system**. 
+- `rgee` I/O functions now check argument before to start to upload/download data.
+- New unit tests were added.
+- Map operators (**+** and **|**) now support EarthEnginemap objects with the 
+same name.
+- Now `Map$addLayers` only display the legend of the first image.
+- Fix a bug in rgee:::ee_image_local which makes do not work when bands have not
+the same crs and crsTransform.
+- Fix a bug in rgee:::ee_image_local which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
+- `ee_users` returns a data.frame.
+- `ee_monitoring` counts the processing time.
+- Fix a bug in `ee_utils_gif_creator` which makes don't work in windows.
+- `ee_extract` take the default resolution of the image instead of 1000.
+- Fix a bug in name creator in `ee_imagecollection_local`.
+
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
