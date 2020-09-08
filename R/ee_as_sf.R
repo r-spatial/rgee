@@ -127,7 +127,9 @@ ee_as_sf <- function(x,
       if (!quiet) {
         cat("Number of features: Calculating ...")
       }
-      fc_size <- x_fc$size()$getInfo()
+      fc_size <- x_fc %>%
+        ee$FeatureCollection$size() %>%
+        ee$Number$getInfo()
       if (!quiet) {
         cat(sprintf("\rNumber of features: %s              \n", fc_size))
       }
