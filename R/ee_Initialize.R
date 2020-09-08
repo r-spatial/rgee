@@ -727,7 +727,16 @@ ee_connect_to_py <- function(path, n = 5) {
     ee_utils <- try(ee_source_python(path), silent = TRUE)
     con_reticulate_counter <- con_reticulate_counter + 1
     if (con_reticulate_counter == (n + 1)) {
-      stop("reticulate refuse to connect with rgee")
+      python_path <- reticulate::py_discover_config()
+      message_con <- c(
+        sprintf("The current Python PATH: %s",
+                bold(python_path[["python"]])),
+        "does not have the earthengine-api installed. Are you restarted your R session?.",
+        "If no, please try:",
+        "> ee_install(): To create and set a Python environment with all rgee dependencies.",
+        "> ee_install_set_pyenv(): To set a specific Python environment."
+      )
+      stop(paste(message_con,collapse = "\n"))
     }
   }
   return(ee_utils)
