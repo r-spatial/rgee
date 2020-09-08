@@ -93,7 +93,7 @@ local_to_gcs <- function(x,
 #'
 #' @return Character. The Earth Engine asset ID.
 #'
-#' @param processx run
+#' @importFrom processx run
 #'
 #' @examples
 #' \dontrun{
@@ -186,7 +186,7 @@ gcs_to_ee_table <- function(manifest,
 #' @param quiet Logical. Suppress info message.
 #'
 #' @return Character. The Earth Engine asset ID.
-#' @param processx run
+#' @importFrom processx run
 #' @examples
 #' \dontrun{
 #' library(rgee)
