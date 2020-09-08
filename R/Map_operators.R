@@ -22,13 +22,14 @@ setMethod(
     e2_legend <- e2@object$legend
 
     if (e1_name == e2_name) {
+      e2_name <- paste0(e2_name,"_duplicated")
       message_01 <-  c(
-        "Both maps have the same name argument, run to fix:",
-        "m1 <- Map$addLayer(..., name = \"map_01\")",
-        "m2 <- Map$addLayer(..., name = \"map_02\")",
+        "Both maps have the same name argument. The name of the second map was changed to:",
+        sprintf("m1 <- Map$addLayer(..., name = \"%s\")", e1_name),
+        sprintf("m2 <- Map$addLayer(..., name = \"%s\")", e2_name),
         "m1 + m2"
       )
-      stop(paste0(message_01,collapse = "\n"))
+      message(paste0(message_01,collapse = "\n"))
     }
 
     for (x in seq_len(length(e2_name))) {
@@ -59,7 +60,6 @@ setMethod(
   }
 )
 
-
 #' EarthEngineMap + ANY; adds data from the second map to the first
 #'
 #' @author tim-salabim Adapted from mapview code.
@@ -76,13 +76,14 @@ setMethod(
     e1_name <- e1@object$name
     e2_name <- ee_getLayerNamesFromMap(e2@map)
     if (e1_name == e2_name) {
+      e2_name <- paste0(e2_name,"_duplicated")
       message_01 <-  c(
-        "Both maps have the same name argument, run to fix:",
-        "m1 <- Map$addLayer(..., name = \"map_01\")",
-        "m2 <- mapview(..., layer.name = \"map_02\")",
+        "Both maps have the same name argument. The name of the second map was changed to:",
+        sprintf("m1 <- Map$addLayer(..., name = \"%s\")", e1_name),
+        sprintf("m2 <- Map$addLayer(..., name = \"%s\")", e2_name),
         "m1 + m2"
       )
-      stop(paste0(message_01,collapse = "\n"))
+      message(paste0(message_01, collapse = "\n"))
     }
 
     mapview_e1 <- ee_as_mapview(e1)
@@ -121,13 +122,14 @@ setMethod(
     e2_name <- e2@object$name
 
     if (e1_name == e2_name) {
+      e2_name <- paste0(e2_name,"_duplicated")
       message_01 <-  c(
-        "Both maps have the same name argument, run to fix:",
-        "m1 <- mapview(..., layer.name = \"map_01\")",
-        "m2 <- Map$addLayer(..., name = \"map_02\")",
+        "Both maps have the same name argument. The name of the second map was changed to:",
+        sprintf("m1 <- Map$addLayer(..., name = \"%s\")", e1_name),
+        sprintf("m2 <- Map$addLayer(..., name = \"%s\")", e2_name),
         "m1 + m2"
       )
-      stop(paste0(message_01,collapse = "\n"))
+      message(paste0(message_01,collapse = "\n"))
     }
 
     mapview_e2 <- ee_as_mapview(e2)
@@ -192,13 +194,14 @@ setMethod(
     e2_legend <- e2@object$legend
 
     if (e1_name == e2_name) {
+      e2_name <- paste0(e2_name,"_duplicated")
       message_01 <-  c(
-        "Both map have the same name argument, run to fix:",
-        "m1 <- Map$addLayer(..., name = \"map_01\")",
-        "m2 <- Map$addLayer(..., name = \"map_02\")",
+        "Both map have the same name argument. The name of the second map was changed to:",
+        sprintf("m1 <- Map$addLayer(..., name = \"%s\")", e1_name),
+        sprintf("m2 <- Map$addLayer(..., name = \"%s\")", e2_name),
         "m1 | m2"
       )
-      stop(paste0(message_01,collapse = "\n"))
+      message(paste0(message_01,collapse = "\n"))
     }
 
     # Create map with addSidebyside
@@ -253,7 +256,6 @@ setMethod(
     methods::new('EarthEngineMap', object = out_obj, map = m)
   }
 )
-
 
 #' Comparison operator to EarthEngineMap | mapview
 #' @author tim-salabim. Adapted from mapview code.
