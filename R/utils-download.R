@@ -1,6 +1,7 @@
 #' Monitoring Earth Engine task progress
 #'
 #' @param task List generated after an created an EE task.
+#' @param task_time Numeric. How often (in seconds) should a task be polled?
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.
 #' @param quiet Logical. Suppress info message
@@ -14,9 +15,10 @@
 #' ee_monitoring(eeTaskList = TRUE)
 #' }
 #' @export
-ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
+ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE) {
   if (missing(task)) {
-    task <- ee$batch$Task$list()[[1]]
+    all_task <- ee_utils_py_to_r(ee$batch$Task$list())
+    task <- all_task[[1]]
   }
   if (eeTaskList) {
     if (!quiet) {
@@ -30,20 +32,23 @@ ee_monitoring <- function(task, eeTaskList = FALSE, quiet = FALSE) {
       cat("\n")
     }
   }
-  while (task$active() & task$state != "CANCEL_REQUESTED") {
+  counter <- 0
+  while (ee_utils_py_to_r(task$active()) & task[["state"]] != "CANCEL_REQUESTED") {
     if (!quiet) {
-      cat(sprintf("Polling for task (id: %s).\n", task$id))
+      cat(sprintf("Polling for task <id: %s, time: %ds>.\n",
+                  task[["id"]], counter))
     }
-    Sys.sleep(5)
+    counter <- counter + task_time
+    Sys.sleep(task_time)
   }
   task_status <- ee_utils_py_to_r(task$status())
   if (!quiet) {
-    cat(sprintf("State: %s\n", task_status$state))
+    cat(sprintf("State: %s\n", task_status[["state"]]))
   }
-  if (task_status$state != "COMPLETED") {
+  if (task_status[["state"]] != "COMPLETED") {
     message(
       "ERROR in Earth Engine servers: ",
-      task_status$error_message
+      task_status[["error_message"]]
     )
     stop("ee_monitoring was forced to stop before getting results")
   }

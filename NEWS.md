@@ -25,8 +25,8 @@ same name [DONE].
 the same crs and crsTransform.
 - Fix a bug in rgee:::ee_image_local which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
 - `ee_users` returns a data.frame.
-- `ee_monitoring` counts the processing time.
-- Fix a bug in `ee_utils_gif_creator` which makes don't work in windows.
+- `ee_monitoring` counts the processing time [DONE].
+- Fix a bug in `ee_utils_gif_creator` which makes don't work in windows [DONE].
 - `ee_extract` take the default resolution of the image instead of 1000.
 - Fix a bug in name creator in `ee_imagecollection_local`.
 - rgee-examples improved.
