@@ -22,6 +22,8 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
 \item{quiet}{Logical. Suppress info message.}
+
+\item{processx}{run}
 }
 \value{
 Character. The Earth Engine asset ID.

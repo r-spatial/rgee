@@ -22,6 +22,8 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 it exists.}
 
 \item{quiet}{Logical. Suppress info message.}
+
+\item{processx}{run}
 }
 \value{
 Character. The Earth Engine asset ID.
