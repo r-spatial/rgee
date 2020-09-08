@@ -117,7 +117,7 @@ ee_utils_pyfunc <- reticulate::py_func
 #' @param ic An ee$ImageCollection.
 #' @param parameters List of parameters for visualization and animation. See details.
 #' @param quiet Logical. Suppress info message.
-#' @param ... parameter(s) passed on to [image_read][magick::image_read]
+#' @param ... parameter(s) passed on to [download.file][utils::download.file]
 #' @details
 #' The parameters argument is identical to visParams (See \code{rgee::Map$addLayer}),
 #' plus, optionally:
@@ -178,7 +178,7 @@ ee_utils_pyfunc <- reticulate::py_func
 #' )
 #'
 #' ## 1.2 Download, display and save the GIF!
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs, mode = "wb")
 #' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
@@ -204,8 +204,12 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
   if (!quiet) {
     message("1. Downloading GIF from: ", animation_url)
   }
-  download.file(animation_url, temp_gif, quiet = quiet)
-  magick::image_read(path = temp_gif, ...)
+  download.file(
+    url = animation_url,
+    destfile = temp_gif,
+    quiet = quiet,
+    ...)
+  magick::image_read(path = temp_gif)
 }
 
 
@@ -278,7 +282,7 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
 #' )
 #'
 #' ## 1.2 Download, display and save the GIF!
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs, mode = "wb")
 #' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
@@ -390,7 +394,7 @@ ee_utils_gif_annotate <- function(image,
 #' )
 #'
 #' ## 1.2 Download, display and save the GIF!
-#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+#' animation <- ee_utils_gif_creator(basicAnimation, videoArgs, mode = "wb")
 #' get_years <- basicAnimation$aggregate_array("year")$getInfo()
 #' animation %>%
 #'   ee_utils_gif_annotate("Ucayali, Peru") %>%
