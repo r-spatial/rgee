@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.6
-
+- Several changes in rgee examples.
 - Class method chaining were changed by pipe ({magrittr**}) in all the `rgee` functions.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
 instead of **base::system** [DONE]. 
@@ -24,13 +24,14 @@ same name [DONE].
 - Fix a bug in rgee:::ee_image_local which makes do not work when bands have not
 the same crs and crsTransform.
 - Fix a bug in rgee:::ee_image_local which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
-- `ee_users` returns a data.frame.
+- `ee_users` returns a data.frame [DONE].
 - `ee_monitoring` counts the processing time [DONE].
 - Fix a bug in `ee_utils_gif_creator` which makes don't work in windows [DONE].
 - `ee_extract` take the default resolution of the image instead of 1000.
 - Fix a bug in name creator in `ee_imagecollection_local`.
-- rgee-examples improved.
 - A new message more detailed when the Python path does not have the earth-engine Python API [DONE].
+- transforming coordinates in sf_as_ee
+
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`

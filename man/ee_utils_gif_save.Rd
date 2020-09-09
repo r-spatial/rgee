@@ -77,7 +77,7 @@ videoArgs = list(
 )
 
 ## 1.2 Download, display and save the GIF!
-animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+animation <- ee_utils_gif_creator(basicAnimation, videoArgs, mode = "wb")
 get_years <- basicAnimation$aggregate_array("year")$getInfo()
 animation \%>\%
   ee_utils_gif_annotate("Ucayali, Peru") \%>\%

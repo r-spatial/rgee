@@ -4,7 +4,15 @@
 \alias{ee_extract}
 \title{Extract values from EE Images or ImageCollections objects}
 \usage{
-ee_extract(x, y, fun = ee$Reducer$mean(), scale = 1000, sf = FALSE, ...)
+ee_extract(
+  x,
+  y,
+  fun = ee$Reducer$mean(),
+  scale = 1000,
+  sf = FALSE,
+  quiet = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{ee$Image or a ee$ImageCollection with a single band.}
@@ -20,6 +28,8 @@ By default 1000.}
 
 \item{sf}{Logical. Should the extracted values be added to the data.frame of
 the sf object y?}
+
+\item{quiet}{Logical. Suppress info message.}
 
 \item{...}{ee$Image$reduceRegions additional parameters. See
 \code{ee_help(ee$Image$reduceRegions)} for more details.}

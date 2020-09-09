@@ -4,10 +4,12 @@
 \alias{ee_monitoring}
 \title{Monitoring Earth Engine task progress}
 \usage{
-ee_monitoring(task, eeTaskList = FALSE, quiet = FALSE)
+ee_monitoring(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after an created an EE task.}
+
+\item{task_time}{Numeric. How often (in seconds) should a task be polled?}
 
 \item{eeTaskList}{Logical. If \code{TRUE}, all Earth Engine tasks will be
 listed.}

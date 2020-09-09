@@ -9,6 +9,9 @@ ee_users(quiet = FALSE)
 \arguments{
 \item{quiet}{Logical. Suppress info messages.}
 }
+\value{
+A data.frame with credential information of all users.
+}
 \description{
 Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 a table.

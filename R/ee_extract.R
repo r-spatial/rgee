@@ -14,6 +14,7 @@
 #' By default 1000.
 #' @param sf Logical. Should the extracted values be added to the data.frame of
 #' the sf object y?
+#' @param quiet Logical. Suppress info message.
 #' @param ... ee$Image$reduceRegions additional parameters. See
 #' \code{ee_help(ee$Image$reduceRegions)} for more details.
 #'
@@ -108,7 +109,7 @@
 #'
 #' # Spatial plot
 #' plot(
-#'   ee_nc_rain["Terraclimate_pp_2001_01_01"],
+#'   ee_nc_rain["X200110_pr"],
 #'   main = "2001 Jan Precipitation - Terraclimate",
 #'   reset = FALSE
 #' )
@@ -119,102 +120,111 @@ ee_extract <- function(x,
                        fun = ee$Reducer$mean(),
                        scale = 1000,
                        sf = FALSE,
+                       quiet = FALSE,
                        ...) {
+  if (!quiet) {
+    message(sprintf("The image scale is set to %s.", scale))
+  }
   if (!requireNamespace("geojsonio", quietly = TRUE)) {
     stop("package geojsonio required, please install it first")
   }
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
-  # spatial classes
-  sp_objects <- ee_get_spatial_objects('Table')
-  x_type <- x$name()
-
-  # Load Python module
-  oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
-  extract_py <- ee_source_python(oauth_func_path)
-
-  # Is y a Spatial object?
-  if (!any(class(y) %in% c(sp_objects, "sf"))) {
-    stop("y is not a Earth Engine table or a sf object.")
-  }
-
   # Is x a Image or ImageCollection?
   if (!any(class(x) %in% ee_get_spatial_objects("i+ic"))) {
     stop("x is neither an ee$Image nor ee$ImageCollection")
   }
-
-  # Is a complex ImageCollection?
-  if (x_type == "ImageCollection") {
-    band_names <- x$first()$bandNames()$getInfo()
-    if (length(band_names) > 1) {
-      stop(
-        "ee_extract does not support ee$ImageCollection with",
-        " multiple bands"," \nEntered: ",
-        paste0(band_names,collapse = " "),
-        "\nExpected: ",
-        band_names[1]
-      )
+  # Is x a ImageCollection?
+  if (any(class(x) %in%  "ee.imagecollection.ImageCollection")) {
+    if (!quiet) {
+      message("x is an ImageCollection, running 'x$toBands()' to ",
+              "convert it into an Image")
     }
-  } else {
-    band_names <- x$bandNames()$getInfo()
-    img_to_ic <- function(index) x$select(ee$String(x$bandNames()$get(index)))
-    # Force to x to be a ImageCollection
-    x <- ee$ImageCollection$fromImages(
-      lapply(seq_along(band_names) - 1 , img_to_ic)
-    )
+    x <- ee$ImageCollection$toBands(x)
   }
+  # Load Python module
+  oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
+  extract_py <- ee_source_python(oauth_func_path)
+  # spatial classes
+  sp_objects <- ee_get_spatial_objects('Table')
 
-  # RGEE_NAME exist?
-  if (is.null(x$first()$get("RGEE_NAME")$getInfo())) {
-    if (x_type == "ImageCollection") {
-      x <- x$map(function(img) img$set("RGEE_NAME", img$get("system:index")))
-    } else {
-      x <- x$map(function(img) img$set("RGEE_NAME", ee$String(img$bandNames())))
-    }
+  # Is y a Spatial object?
+  if (!any(class(y) %in% c("sf", "sfc", sp_objects))) {
+    stop("y is not a sf, sfc, ee$Geometry, ee$Feature or ee$FeatureCollection object.")
   }
 
   # If y is a sf object convert into a ee$FeatureCollection object
   if (any("sf" %in% class(y))) {
     sf_y <- y
-    ee_y <- sf_as_ee(y)
-  }
-
-  # If y is a ee$FeatureCollection object and sf is TRUE convert it to an
-  # sf object
-  if (any(ee_get_spatial_objects('Table') %in%  class(y))) {
+    if (!quiet) {
+      message("y is an sf object, running 'sf_as_ee(y$geometry)' to ",
+              "convert it into an ee$FeatureCollection object.")
+    }
+    ee_y <- sf_as_ee(y[["geometry"]], quiet = TRUE)
+  } else if(any("sfc" %in%  class(y))) {
+    sf_y <- st_sf(id = seq_along(y), geometry = y)
+    if (!quiet) {
+      message("y is an sfc object, running 'sf_as_ee(y)' to ",
+              "convert it into an ee$FeatureCollection object.")
+    }
+    ee_y <- sf_as_ee(y, quiet = TRUE)
+    # If y is a ee$FeatureCollection object and 'sf' arg is TRUE convert it to an
+    # sf object
+  } else if(any(ee_get_spatial_objects('Table') %in%  class(y))) {
     ee_y <- ee$FeatureCollection(y)
     if (isTRUE(sf)) {
-      sf_y <- ee_as_sf(y)
+      sf_y <- ee_as_sf(y, quiet = TRUE)
     }
   }
 
   #set ee_ID for identify rows in the data.frame
-  ee_y <- ee$FeatureCollection(ee_y)$map(function(f) f$set("ee_ID", f$get("system:index")))
+  ee_add_rows <- function(f) {
+    f_prop <- ee$Feature$get(f, "system:index")
+    ee$Feature(ee$Feature$set(f, "ee_ID", f_prop))
+  }
+  ee_y <- ee$FeatureCollection(ee_y) %>%
+    ee$FeatureCollection$map(ee_add_rows)
 
   # Get the funname
-  fun_name <- gsub("Reducer.", "", fun$getInfo()["type"])
+  fun_name <- gsub("Reducer.", "", (ee$Reducer$getInfo(fun))[["type"]])
 
-  # triplets save info about the value, the row_id (ee_ID) and
-  # col_id (imageId)
-  triplets <- x$map(function(image) {
-    image$reduceRegions(
+  # Convert Image into ImageCollection
+  x_ic <- bands_to_image_collection(x)
+
+
+  # triplets save info about the value, the row_id (ee_ID) and col_id (imageId)
+  create_tripplets <- function(img) {
+    img_reduce_regions <- ee$Image$reduceRegions(
+      image = img,
       collection = ee_y,
       reducer = fun,
       scale = scale,
       ...
-    )$map(function(f) f$set("imageId", image$get("RGEE_NAME")))
-  })$flatten()
+    )
+    ee$FeatureCollection$map(
+      img_reduce_regions,
+      function(f) {
+        ee$Feature$set(f, "imageId", ee$Image$get(img, "system:index"))
+      }
+    )
+  }
+
+  triplets <- x_ic %>%
+    ee$ImageCollection$map(create_tripplets) %>%
+    ee$ImageCollection$flatten()
 
   # From ee$Dict format to a table
   table <- extract_py$
     table_format(triplets, "ee_ID", "imageId", fun_name)$
     map(function(feature) {
-    feature$setGeometry(NULL)
-  })
+      ee$Feature$setGeometry(feature, NULL)
+    })
 
   # Extracting data and passing to sf
-  table_geojson <- ee_utils_py_to_r(table$getInfo())
+  table_geojson <- table %>%
+    ee$FeatureCollection$getInfo() %>%
+    ee_utils_py_to_r()
   class(table_geojson) <- "geo_list"
   table_sf <- geojsonio::geojson_sf(table_geojson)
   sf::st_geometry(table_sf) <- NULL
@@ -232,4 +242,22 @@ ee_extract <- function(x,
       sf::st_sf(geometry = table_geometry)
   }
   table_sf
+}
+
+#' Converts all bands in an image to an image collection.
+#' @param img ee$Image. The image to convert.
+#' @return ee$ImageCollection
+#' @noRd
+bands_to_image_collection <- function(img) {
+  bname_to_image <- function(band) {
+    img %>%
+      ee$Image$select(ee$String(band)) %>%
+      ee$Image$set(
+        list("system:index" = ee$String(band))
+      )
+  }
+  img %>%
+    ee$Image$bandNames() %>%
+    ee$List$map(ee_utils_pyfunc(bname_to_image)) %>%
+    ee$ImageCollection()
 }
