@@ -87,8 +87,8 @@ ee_Initialize <- function(email = NULL,
 
   # is earthengine-api greater than 0.1.215?
   if (as.numeric(gsub("\\.","",earthengine_version)) < 01215) {
-    stop(
-      "Update local installations to v0.1.215 or greater. ",
+    warning(
+      "Update your earthnengine-api installations to v0.1.232 or greater. ",
       "Earlier versions are not compatible with recent ",
       "changes to the Earth Engine backend."
     )
@@ -446,6 +446,7 @@ ee_create_credentials_gcs <- function(email) {
 #' Display Earth Engine, Google Drive, and Google Cloud Storage Credentials as
 #' a table.
 #' @family session management functions
+#' @return A data.frame with credential information of all users.
 #' @param quiet Logical. Suppress info messages.
 #' @examples
 #' \dontrun{
@@ -483,14 +484,19 @@ ee_users <- function(quiet = FALSE) {
 
   users <- add_extra_space(ee_path, add_space)
   for (user in users) {
-    create_table(user, wsc, quiet = quiet)
+    if (user == users[1]) {
+      first_user_info <- create_table(user, wsc, quiet = quiet)
+    } else {
+      user_info <- create_table(user, wsc, quiet = quiet)
+      first_user_info <- rbind(first_user_info, user_info)
+    }
   }
 
   if(!quiet) {
     cat("\n")
   }
 
-  invisible(TRUE)
+  invisible(first_user_info)
 }
 
 #' Display the credentials and general info of the initialized user
@@ -630,22 +636,28 @@ create_table <- function(user, wsc, quiet = FALSE) {
   #google drive
   if (any(grepl("@gmail.com",credentials))) {
     gmail_symbol <- green(symbol$tick)
+    gd_count <- 1
   } else {
     gmail_symbol <- red(symbol$cross)
+    gd_count <- 0
   }
 
   #GCS
   if (any(grepl(".json",credentials))) {
     gcs_symbol <- green(symbol$tick)
+    gcs_count <- 1
   } else {
     gcs_symbol <- red(symbol$cross)
+    gcs_count <- 0
   }
 
   #Earth Engine
   if (any(grepl("credentials",credentials))) {
     ee_symbol <- green(symbol$tick)
+    ee_count <- 1
   } else {
     ee_symbol <- red(symbol$cross)
+    ee_count <- 0
   }
 
   if (!quiet) {
@@ -659,6 +671,9 @@ create_table <- function(user, wsc, quiet = FALSE) {
         ee_symbol
       )
   }
+  user_str <- data.frame(EE = ee_count, GD = gd_count, GCS = gcs_count)
+  row.names(user_str) <- user_clean
+  invisible(user_str)
 }
 
 #' Wrapper to create a EE Assets home

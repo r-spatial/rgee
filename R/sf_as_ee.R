@@ -168,7 +168,9 @@ sf_as_ee <- function(x,
   if (x_proj == proj) {
     x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
   } else {
-    message(sprintf("Transforming current coordinates to EPSG:%s", proj))
+    if (!quiet) {
+      message(sprintf("Transforming current coordinates to EPSG:%s", proj))
+    }
     x <- sf::st_transform(x, proj)
     x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
   }
