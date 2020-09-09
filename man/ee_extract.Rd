@@ -15,9 +15,9 @@ ee_extract(
 )
 }
 \arguments{
-\item{x}{ee$Image or a ee$ImageCollection with a single band.}
+\item{x}{ee$Image.}
 
-\item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.}
+\item{y}{ee$Geometry$*, ee$Feature, ee$FeatureCollection, sfc or sf objects.}
 
 \item{fun}{ee$Reducer object. Function to summarize the values. The function
 must take a single numeric value as an argument and return a single value.
@@ -26,8 +26,7 @@ See details.}
 \item{scale}{A nominal scale in meters of the Image projection to work in.
 By default 1000.}
 
-\item{sf}{Logical. Should the extracted values be added to the data.frame of
-the sf object y?}
+\item{sf}{Logical. Should return a sf object?}
 
 \item{quiet}{Logical. Suppress info message.}
 
@@ -36,16 +35,13 @@ the sf object y?}
 }
 \value{
 A data.frame or an sf object depending on the sf argument.
-If \code{x} is an image, column names will be extracted from the
-band names of the image (use \code{ee$Image$rename} to change the
-band names). Otherwise, if \code{x} is an \code{ee$ImageCollection},
-column names are extracted from the "RGEE_NAME" property and if it
-does not exist from "system:index".
+Column names are extracted from band names, use \code{ee$Image$rename} to
+rename the bands of an \code{ee$Image}. See \code{ee_help(ee$Image$rename)}.
 }
 \description{
-Extract values from a \code{ee$Image} or \code{ImageCollection} at the
+Extract values from a \code{ee$Image} at the
 locations of a geometry object. You can use \code{ee$Geometry$*},
-\code{ee$Feature}, \code{ee$FeatureCollection} or sf objects. This function
+\code{ee$Feature}, \code{ee$FeatureCollection}, sf  or sfc objects. This function
 mimicking how \link[raster]{extract} currently works.
 }
 \details{
@@ -133,7 +129,7 @@ ee_nc_rain <- ee_extract(
 
 # Spatial plot
 plot(
-  ee_nc_rain["Terraclimate_pp_2001_01_01"],
+  ee_nc_rain["X200110_pr"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
