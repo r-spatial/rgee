@@ -15,22 +15,24 @@ vignette: >
 - Several changes in rgee examples.
 - Class method chaining were changed by pipe ({magrittr**}) in all the `rgee` functions.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
-instead of **base::system** [DONE]. 
+instead of **base::system**. 
 - `rgee` I/O functions now check argument before to start to upload/download data.
 - New unit tests were added.
 - Map operators (**+** and **|**) now support EarthEnginemap objects with the 
-same name [DONE].
-- Now `Map$addLayers` only display the legend of the first image [DONE].
-- Fix a bug in rgee:::ee_image_local which makes do not work when bands have not
+same name.
+- Now `Map$addLayers` only display the legend of the first image.
+- Fix a bug in `rgee:::ee_image_local` which makes do not work when all bands have not
 the same crs and crsTransform.
-- Fix a bug in rgee:::ee_image_local which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
-- `ee_users` returns a data.frame [DONE].
-- `ee_monitoring` counts the processing time [DONE].
-- Fix a bug in `ee_utils_gif_creator` which makes don't work in windows [DONE].
-- `ee_extract` take the default resolution of the image instead of 1000.
-- Fix a bug in name creator in `ee_imagecollection_local`.
-- A new message more detailed when the Python path does not have the earth-engine Python API [DONE].
-- transforming coordinates in sf_as_ee
+- Fix a bug in `rgee:::ee_image_local` which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
+- Fix a bug in `sf_as_ee` now all geometries are convert it to EPSG:4326 before to uploaded and support SR-ORG CRS codes.
+- Now `ee_as_sf` support SR-ORG CRS codes.
+
+- `ee_users` returns a data.frame.
+- `ee_monitoring` counts the processing time.
+- Fix a bug in `ee_utils_gif_creator` which makes don't work in windows.
+- Several changes in `ee_extract`, now is faster and code is cleaner.
+- Fix a bug in name creator in `ee_imagecollection_to_local`.
+- A new message more detailed when the Python path does not have the earth-engine Python API.
 
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
