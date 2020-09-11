@@ -684,7 +684,11 @@ ee_createAssetHome <- function() {
     expr = ee$data$createAssetHome(paste0("users/", x)),
     error = function(x) {
       message(
-        strsplit(x$message,"\n")[[1]][1]
+        strsplit(x$message,"\n")[[1]][1],
+        " If you have problems creating the ROOT folder use the Earth Engine",
+        " Code Editor. \n",
+        ">>> https://code.earthengine.google.com/\n",
+        ">>> https://raw.githubusercontent.com/csaybar/GCS_AUTH_FILE.json/master/asset_folder.png"
       )
       ee_createAssetHome()
     }
