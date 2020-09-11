@@ -178,7 +178,13 @@ ee_as_sf <- function(x,
       sf::st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
       local_sf <- x_sf_mosaic
     } else {
+      crs_sf <- x_fc %>%
+        ee$FeatureCollection$geometry() %>%
+        ee$Geometry$projection() %>%
+        ee$Projection$wkt() %>%
+        ee$String$getInfo()
       local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
+      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
     }
   } else if (via == "drive") {
     # Creating name for temporal file; just for either drive or gcs
@@ -304,18 +310,7 @@ ee_as_sf <- function(x,
   } else {
     stop("via argument invalid.")
   }
-
-  if (nrow(local_sf) == 0) {
-      return(local_sf)
-  } else {
-    if (is.null(crs)) {
-      ## OBS: we assume that all the featurecollection have the same crs
-      ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
-      ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
-    }
-    suppressWarnings(sf::st_crs(local_sf) <- ft_proj)
-    return(local_sf)
-  }
+  local_sf
 }
 
 

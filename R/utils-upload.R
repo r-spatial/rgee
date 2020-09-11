@@ -295,12 +295,10 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
     if (length(wkt_type) == 0) {
       stop(
         "sf_as_ee does not support objects of class ",
-        paste0(sf_obj_class,collapse = ", ")
       )
     }
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                          sfc_class = wkt_type,
-                                         opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
     return(ee_geometry)
@@ -314,7 +312,6 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
       wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
       ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                            sfc_class = wkt_type,
-                                           opt_proj = proj,
                                            opt_geodesic = geodesic,
                                            opt_evenOdd = evenOdd)
       if (isFALSE(ee_geometry)) {
@@ -580,4 +577,46 @@ ee_utils_create_manifest_table <- function(gs_uri,
   } else {
     ee_utils_create_json(manifest)
   }
+}
+
+
+#' Convert EPSG, ESRI or SR-ORG code into a OGC WKT
+#'
+#' @param code The projection code.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' ee_utils_get_crs("SR-ORG:6864")
+#' ee_utils_get_crs("EPSG:4326")
+#' ee_utils_get_crs("ESRI:37002")
+#' }
+#' @export
+ee_utils_get_crs <- function(code) {
+  codetype <- tolower(strsplit(code,":")[[1]][1])
+  if (codetype == "sr-org") {
+    ee_proj_ogcwkt <- ee_utils_get_crs_web(code = code)
+  } else {
+    ee_proj_ogcwkt <- sf::st_crs(code)$Wkt
+  }
+  ee_utils_py_to_r(ee_proj_ogcwkt)
+}
+
+#' Convert EPSG, ESRI or SR-ORG code into a OGC WKT
+#'
+#' @param code The projection code.
+#' @noRd
+ee_utils_get_crs_web <- function(code) {
+  codetype <- tolower(strsplit(code,":")[[1]][1])
+  ee_code <- strsplit(code,":")[[1]][2]
+  if (codetype == 'epsg') {
+    format <- "wkt"
+    link <- sprintf('https://epsg.io/%s.%s', ee_code, format)
+    crs_wkt <- suppressWarnings(readLines(link))
+  } else {
+    format <- "ogcwkt"
+    link <- sprintf("https://spatialreference.org/ref/%s/%s/%s/", codetype, ee_code, format)
+    crs_wkt <- suppressWarnings(readLines(link))
+  }
+  ee_utils_py_to_r(crs_wkt)
 }
