@@ -666,7 +666,7 @@ create_table <- function(user, wsc, quiet = FALSE) {
 ee_createAssetHome <- function() {
   x <- readline("Please insert the desired name of your root folder : users/")
   tryCatch(
-    expr = ee$data$createAssetHome(sprintf("users/", x)),
+    expr = ee$data$createAssetHome(paste0("users/", x)),
     error = function(x) {
       message(
         strsplit(x$message,"\n")[[1]][1]
