@@ -13,7 +13,6 @@ sf_as_ee(
   overwrite = TRUE,
   monitoring = TRUE,
   evenOdd = TRUE,
-  proj = 4326,
   geodesic = NULL,
   quiet = FALSE,
   ...
@@ -50,9 +49,6 @@ Otherwise polygons use the left-inside rule, where interiors are on the
 left side of the shell's edges when walking the vertices in the given order.
 If unspecified, defaults to TRUE.}
 
-\item{proj}{Integer or character. Coordinate Reference System (CRS) for the
-EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
-
 \item{geodesic}{Logical. Ignored if \code{x} is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If
 FALSE, indicates that line segments should be interpreted as planar lines
@@ -72,7 +68,8 @@ If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" always will
 return an \code{ee$FeatureCollection}.
 }
 \description{
-Load an sf object to Earth Engine.
+Load an sf object to Earth Engine. The projection of the sf object must
+be EPSG:4326 if not will be forced.
 }
 \details{
 \code{sf_as_ee} supports the upload of \code{sf} objects by three different

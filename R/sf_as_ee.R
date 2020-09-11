@@ -1,6 +1,7 @@
 #' Convert an sf object to an EE object
 #'
-#' Load an sf object to Earth Engine.
+#' Load an sf object to Earth Engine. The projection of the sf object must
+#' be EPSG:4326 if not will be forced.
 #'
 #' @param x object of class sf, sfc or sfg.
 #' @param via Character. Upload method for sf objects. Three methods are
@@ -10,8 +11,6 @@
 #' will be monitored.
 #' @param assetId Character. Destination asset ID for the uploaded file. Ignore
 #' if \code{via} argument is "getInfo".
-#' @param proj Integer or character. Coordinate Reference System (CRS) for the
-#' EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
 #' Whether line segments should be interpreted as spherical geodesics. If
 #' FALSE, indicates that line segments should be interpreted as planar lines
@@ -124,7 +123,6 @@ sf_as_ee <- function(x,
                      overwrite = TRUE,
                      monitoring = TRUE,
                      evenOdd = TRUE,
-                     proj = 4326,
                      geodesic = NULL,
                      quiet = FALSE,
                      ...) {
@@ -148,38 +146,20 @@ sf_as_ee <- function(x,
     is_geodesic <- geodesic
   }
 
-  if (is.na(sf::st_crs(x)$epsg)) {
+  if (is.na(sf::st_crs(x)$Wkt)) {
     stop(
-      "The x EPSG needs to be defined, use sf::st_set_crs to",
-      " set, replace or retrieve."
+      "The x CRS needs to be defined, use sf::st_set_crs to set."
     )
   }
 
-  # Transform x according to proj argument
-  proj <- sf::st_crs(proj)$epsg
-  if (is.na(proj)) {
-    stop(
-      "sf_as_ee only supports uploading sf objects with an SRC linked to",
-      " an EPSG code. Use rgee::local_to_gcs and rgee::gcs_to_ee_table to solve."
-    )
-  }
-  # x_proj represent the projection of x
-  x_proj <- sf::st_crs(x)$epsg
-  if (x_proj == proj) {
-    x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
-  } else {
-    if (!quiet) {
-      message(sprintf("Transforming current coordinates to EPSG:%s", proj))
-    }
-    x <- sf::st_transform(x, proj)
-    x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
-  }
+  # Transform x according to EPSG:4326 argument
+  proj_wkt <- sf::st_crs(proj)$Wkt
+  x <- sf::st_transform(x, "EPSG:4326")
 
   if (via == "getInfo") {
     # sf to geojson
     ee_sf_to_fc(
       x = x,
-      proj = x_proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
@@ -187,7 +167,6 @@ sf_as_ee <- function(x,
     # sf to geojson
     sf_fc <- ee_sf_to_fc(
       x = x,
-      proj = x_proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
@@ -226,6 +205,13 @@ sf_as_ee <- function(x,
   } else if (via == "gcs_to_asset") {
     if (is.null(bucket)) {
       stop("Cloud Storage bucket was not defined")
+    } else {
+      tryCatch(
+        expr = googleCloudStorageR::gcs_get_bucket(bucket),
+        error = function(e) {
+          stop(sprintf("The %s bucket was not found.", bucket))
+        }
+      )
     }
 
     if (is.null(command_line_tool_path)) {
@@ -236,7 +222,8 @@ sf_as_ee <- function(x,
 
     # From sf to .shp
     if (!quiet) {
-      message("1. Converting sf object to shapefile ... saving in /tmp")
+      message("1. Converting sf object to a compressed ZIP shapefile ",
+              "... saving in /tmp")
     }
     geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 
