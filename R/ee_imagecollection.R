@@ -122,7 +122,7 @@ ee_imagecollection_to_local <- function(ic,
     # if dsn is a directory or a character
     if (tryCatch(dir.exists(dirname(dsn)), error = function(e) FALSE)) {
       ic_names <- ic$aggregate_array('system:index')$getInfo()
-      ic_names <- sprintf("%s_%s",dsn,ic_names)
+      ic_names <- sprintf("%s%s",dsn,ic_names)
     }
   }
 
@@ -166,14 +166,18 @@ ee_imagecollection_to_local <- function(ic,
 }
 
 #' geometry message
+#' @importFrom crayon bold
 #' @noRd
 ee_geometry_message <- function(region, quiet = FALSE) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
   # From geometry to sf
-  sf_region <- ee_as_sf(x = region)$geometry
-  region_crs <- sf::st_crs(sf_region)$epsg
+  sf_region <- ee_as_sf(x = region)[["geometry"]]
+  region_crs <- sf::st_crs(sf_region)[["wkt"]]
+  region_crs_summary <- strsplit(region_crs, "\n")[[1]][1:3] %>%
+    paste0(collapse = "\n") %>%
+    paste0(bold(" ....."))
 
   ### Metadata ----
   #is geodesic?
@@ -187,15 +191,14 @@ ee_geometry_message <- function(region, quiet = FALSE) {
     is_evenodd <- TRUE
   }
   ### ------------
-
   # geom message to display
   if (!quiet) {
     cat(
-      '- region parameters\n',
-      'WKT      :', sf::st_as_text(sf_region), "\n",
-      'CRS      :', region_crs, "\n",
-      'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
-      'evenOdd  :', is_evenodd, "\n"
+      bold("- region parameters\n"),
+      bold("sfg      :"), sf::st_as_text(sf_region), "\n",
+      bold("CRS      :"), region_crs_summary, "\n",
+      bold("geodesic :"), ee_utils_py_to_r(is_geodesic), "\n",
+      bold("evenOdd  :"), is_evenodd, "\n"
     )
   }
   invisible(TRUE)

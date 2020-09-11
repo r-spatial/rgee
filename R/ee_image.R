@@ -127,7 +127,7 @@ ee_as_stars <- function(image,
     ...
   )
 
-  img_stars <- stars::read_stars(img_files$file,proxy = TRUE)
+  img_stars <- stars::read_stars(img_files$file, proxy = TRUE)
 
   # It's a single image?
   if (length(stars::st_dimensions(img_stars)) < 3) {
@@ -293,6 +293,10 @@ ee_image_local <- function(image,
   if (!requireNamespace("stars", quietly = TRUE)) {
     stop("package stars required, please install it first")
   }
+  if (!requireNamespace("raster", quietly = TRUE)) {
+    stop("package raster required, please install it first")
+  }
+
   # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
     dsn <- paste0(tempfile(),".tif")
@@ -308,45 +312,190 @@ ee_image_local <- function(image,
     stop("region argument is not an ee$geometry$Geometry")
   }
 
-  # Default projection on an Image
-  prj_image <- tryCatch(
-    expr = image$projection()$getInfo(),
-    error = function(e) {
-      message(
-        "The bands of the specified image contains different projections. ",
-        sprintf("Use %s to pick a single band.", bold("Image.select")),
-        sprintf(" Taking the projection of the first band and running %s ...",
-                bold("img$reproject(crsTransform, crs)"))
-      )
-      ee_proj <- image$select(0)$projection()$getInfo()
-      image <- image$reproject(crsTransform = ee_proj$transform, crs = ee_proj$crs)
-      image$projection()$getInfo()
-    }
-  )
+  # Get bandnames
+  band_names <- image$bandNames()$getInfo()
 
-  if (grepl("EPSG:", prj_image$crs)) {
-    img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
+  if (via == "getInfo") {
+    ee_image_local_getInfo(image, region, dsn, scale, maxPixels,
+                           container, band_names, quiet)
+
+  } else if (via == "drive") {
+    ee_image_local_drive(image, region, dsn, scale, maxPixels,
+                         container, quiet, ...)
+  } else if (via == "gcs") {
+    ee_image_local_gcs(image, region, dsn, scale, maxPixels,
+                       container, quiet, ...)
   } else {
-    img_crs <- NA
-    # getInfo only supports images with EPSG CRS
-    if (is.na(img_crs) & via == "getInfo") {
-      stop(
-        "ee_imagecollection_to_local(..., via = \"getInfo\") only supports a ",
-        "SRC linked to an EPSG code. Change the SRC or use ",
-        " ee_imagecollection_to_local(..., via = \"drive\") to solve.\n",
-        " Entered -> ", prj_image$crs, "\n",
-        " Expected -> EPSG:4326 (or others)"
-      )
-    }
+    stop("via argument invalid")
+  }
+  list(file = dsn, band_names = band_names)
+}
+
+#' Passing an Earth Engine Image to Local using drive
+#' @noRd
+ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
+                                 container, quiet, ...) {
+
+  # Have you loaded the necessary credentials?
+  # Relevant for either drive or gcs.
+  ee_user <- ee_exist_credentials()
+
+  # Getting image ID if it is exist
+  image_id <- tryCatch(
+    expr = jsonlite::parse_json(image$id()$serialize())$
+      scope[[1]][[2]][["arguments"]][["id"]],
+    error = function(e) "noid_image"
+  )
+  if (is.null(image_id)) {
+    image_id <- "noid_image"
   }
 
-  # From geometry to sf
-  sf_region <- ee_as_sf(x = region)$geometry
-  region_crs <- sf::st_crs(sf_region)$epsg
+  # Create description (Human-readable name of the task)
+  # Relevant for either drive or gcs.
+  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+  ee_description <- paste0("ee_as_stars_task_", time_format)
+  file_name <- paste0(image_id, "_", time_format)
 
-  # region crs and image crs are equal?, otherwise force it.
-  if (isFALSE(region_crs == img_crs)) {
-    sf_region <- sf::st_transform(sf_region, img_crs)
+  # Are GD credentials loaded?
+  if (is.na(ee_user$drive_cre)) {
+    ee_Initialize(email = ee_user$email, drive = TRUE)
+    message(
+      "Google Drive credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+      " to fix it."
+    )
+  }
+
+  # region parameter display
+  ee_geometry_message(region, quiet = quiet)
+
+  # From Google Earth Engine to Google Drive
+  img_task <- ee_image_to_drive(
+    image = image,
+    description = ee_description,
+    scale = scale,
+    folder = container,
+    fileFormat = "GEO_TIFF",
+    region = region,
+    maxPixels = maxPixels,
+    fileNamePrefix = file_name,
+    ...
+  )
+
+  # download parameter display
+  if (!quiet) {
+    cat(
+      bold("\n- download parameters (Google Drive)\n"),
+      bold("Image ID    :"), image_id, "\n",
+      bold("Google user :"), ee_user$email, "\n",
+      bold("Folder name :"), container, "\n",
+      bold("Date        :"), time_format, "\n"
+    )
+  }
+  ee$batch$Task$start(img_task)
+  ee_monitoring(task = img_task, quiet = quiet)
+
+  # From Google Drive to local
+  if (isFALSE(quiet)) {
+    cat('Moving image from Google Drive to Local ... Please wait  \n')
+  }
+
+  dsn <- ee_drive_to_local(
+    task = img_task,
+    dsn = dsn,
+    consider = 'all',
+    quiet = quiet
+  )
+  invisible(dsn)
+}
+
+#' Passing an Earth Engine Image to Local using gcs
+#' @noRd
+ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
+                               container, quiet, ...) {
+  if (is.na(ee_user$gcs_cre)) {
+    ee_Initialize(email = ee_user$email, gcs = TRUE)
+    message(
+      "Google Cloud Storage credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
+      " to fix it."
+    )
+  }
+  if (is.null(container)) {
+    stop("Cloud Storage bucket was not defined")
+  } else {
+    tryCatch(
+      expr = googleCloudStorageR::gcs_get_bucket(container),
+      error = function(e) {
+        stop(sprintf("The %s bucket was not found.", container))
+      }
+    )
+  }
+
+  # region parameter display
+  ee_geometry_message(region, quiet = quiet)
+
+  # From Earth Engine to Google Cloud Storage
+  img_task <- ee_image_to_gcs(
+    image = image,
+    description = ee_description,
+    bucket = container,
+    fileFormat = "GEO_TIFF",
+    region = region,
+    maxPixels = maxPixels,
+    scale = scale,
+    fileNamePrefix = file_name,
+    ...
+  )
+
+  # download parameter display
+  if (!quiet) {
+    cat(
+      bold("\n- download parameters (Google Cloud Storage)\n"),
+      bold("Image ID    :"), image_id, "\n",
+      bold("Google user :"), ee_user$email, "\n",
+      bold("Bucket name :"), container, "\n",
+      bold("Date        :"), time_format, "\n"
+    )
+  }
+  img_task$start()
+  ee_monitoring(task = img_task, quiet = quiet)
+
+  # From Google Cloud Storage to local
+  cat('Moving image from GCS to Local ... Please wait  \n')
+  dsn <- ee_gcs_to_local(img_task,  dsn = dsn, quiet = quiet)
+  invisible(dsn)
+}
+
+#' Passing an Earth Engine Image to Local using getinfo
+#' @noRd
+ee_image_local_getInfo <- function(image, region, dsn, scale, maxPixels,
+                                   container, band_names, quiet) {
+  # If region is NULL get from images
+  if (is.null(region)) {
+    if (!quiet) {
+      message("region is not specified taking the image's region...")
+    }
+    region <- image$geometry()$bounds()
+  }
+
+  image <- image$clip(region)
+  # If region is NULL get from images
+  if (is.null(scale)) {
+    scale <- tryCatch(
+      expr = image %>%
+        ee$Image$projection() %>%
+        ee$Projection$nominalScale() %>%
+        ee$Number$getInfo(),
+      error = function(e) {
+        message(paste0(e$message, " Trying only taking the first band ...."))
+        image %>%
+          ee$Image$select(0) %>%
+          ee$Image$projection() %>%
+          ee$Projection$nominalScale() %>%
+          ee$Number$getInfo()
+      })
+    message(sprintf("scale argument was set at %s meters.", scale))
   }
 
   # Getting image ID if it is exist
@@ -355,356 +504,117 @@ ee_image_local <- function(image,
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "noid_image"
   )
-
-  # Create description (Human-readable name of the task)
-  # Relevant for either drive or gcs.
-  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
-  ee_description <- paste0("ee_as_stars_task_", time_format)
-  file_name <- paste0(image_id, "_", time_format)
-
-  # Have you loaded the necessary credentials?
-  # Relevant for either drive or gcs.
-  ee_user <- ee_exist_credentials()
-
-  ### Metadata ---
-  # Band names
-  band_names <- image$bandNames()$getInfo()
-  #is geodesic?
-  is_geodesic <- region$geodesic()$getInfo()
-  #is evenodd?
-  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
-  is_evenodd <- all(as.logical(
-    query_params[grepl("evenOdd", names(query_params))]
-  ))
-  if (length(is_evenodd) == 0 | is.null(is_evenodd)) {
-    is_evenodd <- TRUE
+  if (is.null(image_id)) {
+    image_id <- "noid_image"
   }
-  ### -----------
 
-  if (via == "getInfo") {
-    if (!requireNamespace("stars", quietly = TRUE)) {
-      stop("package stars required, please install it first")
-    }
-    # initial crstransform
-    xScale <- prj_image$transform[[1]]
-    yScale <- -abs(prj_image$transform[[5]]) #always negative
-    xshearing <- prj_image$transform[[2]]
-    yshearing <- prj_image$transform[[4]]
+  # Image info
+  init_proj <- image$projection()$wkt()$getInfo()
+  img_lonlat <- image$addBands(ee$Image$pixelLonLat())$
+    reproject(crs = "EPSG:4326", scale = scale)
+  img_info <- ee_image_info(img_lonlat, getsize = FALSE, quiet = TRUE)
+  total_pixel <- img_info[["total_pixel"]]
+  sf_wkt <- img_info[["image_wkt"]]
+  sf_region <- img_info[["image_bounds"]] %>%
+    st_transform("EPSG:4326")
 
-    # getInfo does not support xShearing and yShearing different to zero
-    if ((xshearing | yshearing) != 0) {
-      stop(
-        " 'getInfo' does not support xShearing and yShearing different",
-        " to zero. Use 'drive' or 'gcs' instead."
-      )
-    }
-
-    # region is a ee$Geometry$Rectangle?
-    if (any(class(region) %in% "ee.geometry.Geometry")) {
-      npoints <- nrow(sf::st_coordinates(sf_region))
-      if (npoints != 5) {
-        stop("region needs to be a ee$Geometry$Rectangle.")
-      }
-    }
-
-    # Reproject image if you defined a scale
-    # if not, get the scale from geotransform parameter
-    if (!is.null(scale)) {
-      if (!is.numeric(scale)) {
-        stop("scale argument needs to be a numeric vector")
-      }
-      if (!length(scale) == 1) {
-        stop("scale argument needs to be a one-length numeric vector")
-      }
-      nominalscale <- image$projection()$nominalScale()$getInfo()
-      xScale <- xScale * scale/nominalscale
-      yScale <- yScale * scale/nominalscale
-      prj_image$transform[[1]] <- xScale
-      prj_image$transform[[5]] <- yScale
-      image <- image$reproject(
-        crs = prj_image$crs,
-        crsTransform = prj_image$transform
-      )
-    }
-
-    # Estimating the number of pixels (approximately)
-    # It is necessary just a single batch? (512x512)
-    bbox <- sf_region %>%
-      sf::st_bbox() %>%
-      as.numeric()
-    x_diff <- bbox[3] - bbox[1]
-    y_diff <- bbox[4] - bbox[2]
-    x_npixel <- tail(abs(x_diff / xScale))
-    y_npixel <- tail(abs(y_diff / yScale))
-    total_pixel <- x_npixel * y_npixel # approximately
-    if (total_pixel > maxPixels) {
-      stop(
-        "Export too large. Specified ",
-        total_pixel,
-        " pixels (max:",
-        maxPixels,
-        "). ",
-        "Specify higher maxPixels value if you",
-        "intend to export a large area."
-      )
-    }
-
-    # Warning message if your image is large
-    maxPixels_getInfo <- 1024*1024
-    nbatch <- ceiling(sqrt(total_pixel / (512 * 512)))
-    if (nbatch > 3) {
-      message(
-        "Warning: getInfo is just for small images (max: ",
-        maxPixels_getInfo,
-        "). Use 'drive' or 'gcs' instead for faster download."
-      )
-    }
-
-    # Create a regular tesselation over the bounding box
-    # after that move to earth engine.
-    sf_region_gridded <- suppressMessages(
-      sf::st_make_grid(sf_region, n = nbatch)
+  # Are image larger than maxPixels?
+  if (total_pixel > maxPixels) {
+    stop(
+      "Export too large. Specified ",
+      total_pixel,
+      " pixels (max:",
+      maxPixels,
+      "). ",
+      "Specify higher maxPixels value if you",
+      "intend to export a large area."
     )
-    region_fixed <- sf_region_gridded %>%
-      sf_as_ee(
-        evenOdd = is_evenodd,
-        proj = img_crs,
-        geodesic = is_geodesic,
-        quiet = TRUE
+  }
 
-      )
+  # Warning message if your image is large than 512 * 512 * 3 pixels
+  ntile <- 512
+  maxPixels_getInfo <- 1024*1024
+  nbatch <- ceiling(sqrt(total_pixel / (ntile * ntile)))
+  if (nbatch > 3) {
+    message(
+      "Warning: getInfo is just for small images (max: ",
+      maxPixels_getInfo,
+      "). Use 'drive' or 'gcs' instead for faster download."
+    )
+  }
 
-    # region parameters display
-    if (!quiet) {
+  # Create a regular tesselation over the bounding box
+  # after that move to earth engine.
+  sf_region_gridded <- suppressMessages(
+    sf::st_make_grid(sf_region, n = nbatch)
+  )
+  sf_region_fixed <- sf_region_gridded %>%
+    sf_as_ee() %>%
+    ee$FeatureCollection()
+
+  # region parameters display
+  ee_geometry_message(region = region, quiet = quiet)
+
+  # ee$FeatureCollection to ee$List
+  region_features <- sf_region_fixed$toList(
+    length(sf_region_gridded)
+  )
+
+  # Iterate for each tessellation
+  stars_img_list <- list()
+  if (!quiet) {
+    if (nbatch * nbatch > 1) {
       cat(
-        '- region parameters\n',
-        'WKT      :', sf::st_as_text(sf_region), "\n",
-        'CRS      :', img_crs, "\n",
-        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
-        'evenOdd  :', is_evenodd, "\n"
+        "region is too large ... creating ",
+        length(sf_region_gridded), " patches.\n"
       )
     }
-
-    # ee$FeatureCollection to ee$List
-    region_features <- ee$FeatureCollection(region_fixed)$toList(
-      length(sf_region_gridded)
-    )
-
-    # Iterate for each tessellation
-    stars_img_list <- list()
+  }
+  for (r_index in seq_len(nbatch * nbatch)) {
     if (!quiet) {
       if (nbatch * nbatch > 1) {
         cat(
-          "region is too large ... creating ",
-          length(sf_region_gridded), " patches.\n"
+          sprintf(
+            "Getting data from the patch: %s/%s",
+            r_index, nbatch * nbatch
+          ), "\n"
         )
       }
     }
+    index <- r_index - 1
+    feature <- ee$Feature(region_features$get(index))$geometry()
 
-    for (r_index in seq_len(nbatch * nbatch)) {
-      if (!quiet) {
-        if (nbatch * nbatch > 1) {
-          cat(
-            sprintf(
-              "Getting data from the patch: %s/%s",
-              r_index, nbatch * nbatch
-            ), "\n"
-          )
-        }
-      }
-      index <- r_index - 1
-      feature <- ee$Feature(region_features$get(index))$geometry()
-
-      # Extracts a rectangular region of pixels from an image
-      # into a 2D array per (return a Feature)
-      ee_image_array <- image$sampleRectangle(
-        region = feature,
-        defaultValue = 0
-      )
-
-      # Extract pixel values band by band
-      band_results <- list()
-      for (index in seq_along(band_names)) {
-        band <- band_names[index]
-        band_results[[band]] <- ee_image_array$get(band)$getInfo()
-        if (index == 1) {
-          nrow_array <- length(band_results[[band]])
-          ncol_array <- length(band_results[[band]][[1]])
-        }
-      }
-
-      # Passing from an array to a stars object
-      # Create array from a list
-      image_array <- array(
-        data = unlist(band_results),
-        dim = c(ncol_array, nrow_array, length(band_names))
-      )
-
-      # Create stars object
-      image_stars <- image_array %>%
-        stars::st_as_stars() %>%
-        `names<-`(image_id) %>%
-        stars::st_set_dimensions(names = c("x", "y", "band"))
-      attr_dim <- attr(image_stars, "dimensions")
-
-      ## Configure metadata of the local image and geotransform
-      sf_region_batch <- ee_as_sf(feature)
-
-      # Fix the init_x and init_y of each image
-      init_offset <- ee_fix_offset(
-        img_transform = prj_image$transform,
-        sf_region =  sf_region_batch
-      )
-
-      xTranslation_fixed <- init_offset[1]
-      yTranslation_fixed <- init_offset[4]
-      attr_dim$x$offset <- xTranslation_fixed
-      attr_dim$y$offset <- yTranslation_fixed
-      attr_dim$x$delta <- xScale
-      attr_dim$y$delta <- yScale
-      attr(image_stars, "dimensions") <- attr_dim
-      image_stars <- stars::st_set_dimensions(
-        .x = image_stars, which = 3, values = band_names
-      )
-      stars_img_list[[r_index]] <- image_stars
-    }
-
-    # Analizing the stars dimensions
-    dim_x <- stars::st_get_dimension_values(stars_img_list[[1]],"x")
-    dim_y <- stars::st_get_dimension_values(stars_img_list[[1]],"y")
-
-    if (length(dim_x) == 1 | length(dim_y) == 1) {
-      stop(
-        "The number of pixels of the resulting image in x (y) is zero. ",
-        "Are you define the scale properly?"
-      )
-    } else {
-      # Upgrading metadata of mosaic
-      mosaic <- do.call(stars::st_mosaic, stars_img_list)
-      sf::st_crs(mosaic) <- img_crs
-
-      # The stars object have bands dimensions?
-      if (!is.null(stars::st_get_dimension_values(mosaic,"bands"))) {
-        stars::st_set_dimensions(mosaic, 3, values = band_names)
-      }
-
-      # Save results in dsn
-      stars::write_stars(mosaic, dsn)
-    }
-  } else if (via == "drive") {
-    if (is.na(ee_user$drive_cre)) {
-      ee_Initialize(email = ee_user$email, drive = TRUE)
-      message(
-        "Google Drive credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
-        " to fix it."
-      )
-    }
-
-    # region parameter display
-    if (!quiet) {
-      cat(
-        '- region parameters\n',
-        'WKT      :', sf::st_as_text(sf_region), "\n",
-        'CRS      :', img_crs, "\n",
-        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
-        'evenOdd  :', is_evenodd, "\n"
-      )
-    }
-
-    # From Google Earth Engine to Google Drive
-    img_task <- ee_image_to_drive(
-      image = image,
-      description = ee_description,
-      scale = scale,
-      folder = container,
-      fileFormat = "GEO_TIFF",
-      region = region,
-      maxPixels = maxPixels,
-      fileNamePrefix = file_name,
-      ...
+    # Extracts a rectangular region of pixels from an image
+    # into a 2D array per (return a Feature)
+    ee_image_array <- img_lonlat$sampleRectangle(
+      region = feature,
+      defaultValue = 0
     )
+    ee_image_array_local <- ee_image_array$getInfo()
 
-    # download parameter display
-    if (!quiet) {
-      cat(
-        "\n- download parameters (Google Drive)\n",
-        "Image ID    :", image_id, "\n",
-        "Google user :", ee_user$email, "\n",
-        "Folder name :", container, "\n",
-        "Date        :", time_format, "\n"
-      )
-    }
-    img_task$start()
-
-    ee_monitoring(task = img_task, quiet = quiet)
-
-    # From Google Drive to local
-    if (isFALSE(quiet)) {
-      cat('Moving image from Google Drive to Local ... Please wait  \n')
-    }
-    dsn <- ee_drive_to_local(
-      task = img_task,
-      dsn = dsn,
-      consider = 'all',
-      quiet = quiet
-    )
-  } else if (via == "gcs") {
-    if (is.na(ee_user$gcs_cre)) {
-      ee_Initialize(email = ee_user$email, gcs = TRUE)
-      message(
-        "Google Cloud Storage credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
-        " to fix it."
-      )
-    }
-
-    # region parameter display
-    if (!quiet) {
-      cat(
-        '- region parameters\n',
-        'WKT      :', sf::st_as_text(sf_region), "\n",
-        'CRS      :', img_crs, "\n",
-        'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
-        'evenOdd  :', is_evenodd, "\n"
-      )
-    }
-
-    # From Earth Engine to Google Cloud Storage
-    img_task <- ee_image_to_gcs(
-      image = image,
-      description = ee_description,
-      bucket = container,
-      fileFormat = "GEO_TIFF",
-      region = region,
-      maxPixels = maxPixels,
-      scale = scale,
-      fileNamePrefix = file_name,
-      ...
-    )
-
-    # download parameter display
-    if (!quiet) {
-      cat(
-        "\n- download parameters (Google Cloud Storage)\n",
-        "Image ID    :", image_id,
-        "Google user :", ee_user$email, "\n",
-        "Bucket name :", container, "\n",
-        "Date        :", time_format, "\n"
-      )
-    }
-    img_task$start()
-
-    ee_monitoring(task = img_task, quiet = quiet)
-
-    # From Google Cloud Storage to local
-    cat('Moving image from GCS to Local ... Please wait  \n')
-    dsn <- ee_gcs_to_local(img_task,  dsn = dsn, quiet = quiet)
-  } else {
-    stop("via argument invalid")
+    # From list to raster::raster
+    band_names_latlon <- c("longitude", "latitude", band_names)
+    extract_fn <- function(x) as.numeric(unlist(ee_image_array_local$properties[x]))
+    image_as_df <- data.frame(do.call(cbind,lapply(band_names_latlon, extract_fn)))
+    colnames(image_as_df) <- band_names_latlon
+    stars_img_list[[r_index]] <- rasterFromXYZ(image_as_df)
   }
-  return(list(file = dsn, band_names = band_names, crs = img_crs))
+
+  multiple_mosaic <- function(...) {
+    nchips <- length(list(...))
+    if (nchips == 1) {
+      c(...)[[1]]
+    } else {
+      raster::mosaic(... , fun=mean)
+    }
+  }
+  img_merged <- do.call(multiple_mosaic, stars_img_list) %>%
+    stars::st_as_stars() %>%
+    sf::'st_crs<-'(4326) %>%
+    stars::st_warp(crs = init_proj)
+  write_stars(img_merged, dsn)
 }
+
 
 #' Approximate size of an EE Image object
 #'
@@ -743,17 +653,25 @@ ee_image_info <- function(image,
     stop("package sf required, please install it first")
   }
   band_length <- length(image$bandNames()$getInfo())
-  if (band_length != 1) {
-    stop("ee_image_info needs that image only has one band.")
-  }
-  img_proj <- image$projection()$getInfo()
-  geotransform <- unlist(img_proj$transform)
-  img_totalarea <- ee_as_sf(image$geometry(proj = img_proj$crs))
-  suppressWarnings(
-    sf::st_crs(img_totalarea) <- as.numeric(gsub("EPSG:", "", img_proj$crs))
+
+  # if (band_length != 1) {
+  #   stop("ee_image_info needs that image only has one band.")
+  # }
+  img_proj <- tryCatch(
+    expr = image$projection()$getInfo(),
+    error = function(e) {
+      message(paste0(e$message, " Trying only taking the first band...."))
+      image$select(0)$projection()$getInfo()
+    }
   )
+
+  geotransform <- unlist(img_proj$transform)
+  img_proj_wkt <- ee_utils_get_crs(img_proj$crs)
+
+  img_totalarea <- ee_as_sf(image$geometry()$bounds()) %>%
+    sf::st_transform(img_proj_wkt)
+
   bbox <- img_totalarea %>%
-    sf::st_transform(as.numeric(gsub("EPSG:", "", img_proj$crs))) %>%
     sf::st_bbox() %>%
     as.numeric()
 
@@ -764,41 +682,55 @@ ee_image_info <- function(image,
   total_pixel <- abs(as.numeric(x_npixel * y_npixel))
 
   if (!quiet) {
-    cat('Image Rows       :', x_npixel,'\n')
-    cat('Image Cols       :', y_npixel,'\n')
-    cat('Number of Pixels :', format(total_pixel,scientific = FALSE),'\n')
+    cat(bold("Image Rows       :"), x_npixel, "\n")
+    cat(bold("Image Cols       :"), y_npixel, "\n")
+    cat(bold("Number of Pixels :"), format(total_pixel, scientific = FALSE), "\n")
   }
 
+  # Obtain the size of an ee.Image
   if (isFALSE(getsize)) {
     invisible(
       list(
         nrow = x_npixel,
         ncol = y_npixel,
-        total_pixel = total_pixel
+        total_pixel = total_pixel,
+        image_wkt = img_proj_wkt,
+        image_bounds = img_totalarea
       )
     )
   } else {
     image_id <- ee_utils_py_to_r(image$get("system:id")$getInfo())
     if (!is.null(image_id)) {
       image_size <- ee_manage_asset_size(image_id, quiet = TRUE) / band_length
+      if (length(image_size) == 0) {
+        image_size <- ee_image_msize(image, total_pixel, compression_ratio)
+      }
     } else {
-      bandtypes_info <- image$bandTypes()$getInfo()
-      img_types <- unlist(bandtypes_info)
-      band_types <- img_types[grepl("precision", names(img_types))]
-      band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
-      number_of_bytes <- total_pixel * band_precision / compression_ratio
-      image_size <- sum(number_of_bytes)
+      image_size <-ee_image_msize(image, total_pixel, compression_ratio)
     }
     if (!quiet) {
-      cat("Image Size       :", ee_humansize(image_size), "\n")
+      cat(bold("Image Size       :"), ee_humansize(image_size), "\n")
     }
     invisible(
       list(
         nrow = x_npixel,
         ncol = y_npixel,
         total_pixel = total_pixel,
-        image_size = image_size
+        image_size = image_size,
+        image_wkt = img_proj_wkt,
+        image_bounds = img_totalarea
       )
     )
   }
+}
+
+#' Get manually the image size
+#' @noRd
+ee_image_msize <- function(image, total_pixel, compression_ratio) {
+  bandtypes_info <- image$bandTypes()$getInfo()
+  img_types <- unlist(bandtypes_info)
+  band_types <- img_types[grepl("precision", names(img_types))]
+  band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
+  number_of_bytes <- total_pixel * band_precision / compression_ratio
+  sum(number_of_bytes)
 }
