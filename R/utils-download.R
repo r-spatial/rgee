@@ -163,26 +163,6 @@ ee_fix_y_coord <- function(img_offset, sf_offset, scale, option) {
   }
 }
 
-#' Set crs and band names
-#' @noRd
-set_crs <- function(image_stars, prj_image, band_names) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-  if (!requireNamespace("stars", quietly = TRUE)) {
-    stop("package stars required, please install it first")
-  }
-  img_crs <- as.numeric(gsub("EPSG:", "", prj_image$crs))
-  sf::st_crs(image_stars) <- img_crs
-  if (length(band_names) > 1) {
-    stars::st_set_dimensions(image_stars, 3, values = band_names)
-  } else {
-    image_stars <- stars::st_set_dimensions(image_stars, "bands")
-    attr(image_stars, "dimensions")$bands$to <- 1
-    stars::st_set_dimensions(image_stars, 3, values = band_names)
-  }
-}
-
 #' type of an Earth Engine Image
 #' @noRd
 ee_get_typeimage_size <- function(type) {
