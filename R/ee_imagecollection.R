@@ -168,12 +168,25 @@ ee_imagecollection_to_local <- function(ic,
 #' geometry message
 #' @importFrom crayon bold
 #' @noRd
-ee_geometry_message <- function(region, quiet = FALSE) {
+ee_geometry_message <- function(region, sf_region = NULL, quiet = FALSE) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
   # From geometry to sf
-  sf_region <- ee_as_sf(x = region)[["geometry"]]
+  if (is.null(sf_region)) {
+    sf_region <- ee_as_sf(x = region)[["geometry"]]
+  }
+
+  sfg_geom_data <- sf::st_as_text(sf_region)
+  current_lenght <- nchar(sfg_geom_data)
+  if (current_lenght > 60) {
+    sfg_geom_data <- paste0(
+      substr(sfg_geom_data,1, 27),
+      " .... ",
+      substr(sfg_geom_data, current_lenght - 27, current_lenght)
+    )
+  }
+
   region_crs <- sf::st_crs(sf_region)[["wkt"]]
   region_crs_summary <- strsplit(region_crs, "\n")[[1]][1:3] %>%
     paste0(collapse = "\n") %>%
@@ -195,7 +208,7 @@ ee_geometry_message <- function(region, quiet = FALSE) {
   if (!quiet) {
     cat(
       bold("- region parameters\n"),
-      bold("sfg      :"), sf::st_as_text(sf_region), "\n",
+      bold("sfg      :"), sfg_geom_data, "\n",
       bold("CRS      :"), region_crs_summary, "\n",
       bold("geodesic :"), ee_utils_py_to_r(is_geodesic), "\n",
       bold("evenOdd  :"), is_evenodd, "\n"

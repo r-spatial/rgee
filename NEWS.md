@@ -24,15 +24,14 @@ same name.
 - Fix a bug in `rgee:::ee_image_local` which makes do not work when all bands have not
 the same crs and crsTransform.
 - Fix a bug in `rgee:::ee_image_local` which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
-- Fix a bug in `sf_as_ee` now all geometries are convert it to EPSG:4326 before to uploaded and support SR-ORG CRS codes.
-- Now `ee_as_sf` support SR-ORG CRS codes.
-
+- Fix a bug in `sf_as_ee` and `ee_as_sf` now both support SR-ORG CRS codes.
 - `ee_users` returns a data.frame.
 - `ee_monitoring` counts the processing time.
 - Fix a bug in `ee_utils_gif_creator` which makes don't work in windows.
 - Several changes in `ee_extract`, now is faster and code is cleaner.
 - Fix a bug in name creator in `ee_imagecollection_to_local`.
 - A new message more detailed when the Python path does not have the earth-engine Python API.
+- `ee_image_info` needs support geometry.
 
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.

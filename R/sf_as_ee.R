@@ -122,6 +122,7 @@ sf_as_ee <- function(x,
                      command_line_tool_path = NULL,
                      overwrite = TRUE,
                      monitoring = TRUE,
+                     proj = "EPSG:4326",
                      evenOdd = TRUE,
                      geodesic = NULL,
                      quiet = FALSE,
@@ -152,21 +153,22 @@ sf_as_ee <- function(x,
     )
   }
 
-  # Transform x according to EPSG:4326 argument
-  proj_wkt <- sf::st_crs(proj)$Wkt
-  x <- sf::st_transform(x, "EPSG:4326")
 
   if (via == "getInfo") {
-    # sf to geojson
+    # Transform x according to proj argument
+    x <- sf::st_transform(x, proj)
     ee_sf_to_fc(
       x = x,
+      proj = proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
   } else if (via == "getInfo_to_asset") {
-    # sf to geojson
+    # Transform x according to proj argument
+    x <- sf::st_transform(x, proj)
     sf_fc <- ee_sf_to_fc(
       x = x,
+      proj = proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )

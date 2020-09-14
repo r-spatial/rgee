@@ -299,6 +299,7 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
     }
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                          sfc_class = wkt_type,
+                                         opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
     return(ee_geometry)
@@ -312,6 +313,7 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
       wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
       ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
                                            sfc_class = wkt_type,
+                                           opt_proj = proj,
                                            opt_geodesic = geodesic,
                                            opt_evenOdd = evenOdd)
       if (isFALSE(ee_geometry)) {

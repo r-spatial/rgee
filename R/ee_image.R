@@ -13,8 +13,8 @@
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Three methods
-#' are implemented: "getInfo", "drive", "gcs". See details.
+#' @param via Character. Method to fetch data about the object. Two methods
+#' are implemented: "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -24,19 +24,12 @@
 #'
 #' @details
 #' \code{ee_as_stars} supports the download of \code{ee$Image}
-#' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_as_stars} will make a
-#' REST call to retrieve all the known information about the object. The
-#' advantage of using "getInfo" is performing a quick download. However, there
-#' is a limitation of 262144 pixels by request which makes it not recommendable
-#' for large images. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large collections since they use an intermediate web store
-#' service. Before using any of these options, it is necessary previously
-#' to install the R packages
-#' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-#' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR}. For getting more information about exporting data from
-#' Earth Engine,  take a look at the
+#' by two different options: "drive" that use Google Drive and "gcs"
+#' that use Google Cloud Storage. Previously, it is necessary to install the
+#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' googleCloudStorageR} respectively. For getting more information about
+#' exporting data from Earth Engine,  take a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
@@ -65,21 +58,14 @@
 #'   geodesic = FALSE
 #' )
 #'
-#' ## getInfo - Option 01
-#' img_01 <- ee_as_stars(
-#'   image = img,
-#'   region = geometry,
-#'   via = "getInfo"
-#' )
-#'
-#' ## drive - Method 02
+#' ## drive - Method 01
 #' img_02 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
-#' ## gcs - Method 03
+#' ## gcs - Method 02
 #' # img_03 <- ee_as_stars(
 #' #   image = img,
 #' #  region = geometry,
@@ -95,7 +81,7 @@
 ee_as_stars <- function(image,
                         region = NULL,
                         dsn = NULL,
-                        via = "getInfo",
+                        via = "drive",
                         scale = NULL,
                         maxPixels = 1e9,
                         container = "rgee_backup",
@@ -106,13 +92,6 @@ ee_as_stars <- function(image,
   }
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
-  }
-
-  if (is.null(region)) {
-    if (!quiet) {
-      message("region is not specified taking the image's region...")
-    }
-    region <- image$geometry()
   }
 
   img_files <- ee_image_local(
@@ -153,8 +132,8 @@ ee_as_stars <- function(image,
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Three methods
-#' are implemented: "getInfo", "drive", "gcs". See details.
+#' @param via Character. Method to fetch data about the object. Two methods
+#' are implemented: "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -163,19 +142,12 @@ ee_as_stars <- function(image,
 #' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_as_raster} supports the download of \code{ee$Image}
-#' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_as_stars} will make a
-#' REST call to retrieve all the known information about the object. The
-#' advantage of using "getInfo" is performing a quick download. However, there
-#' is a limitation of 262144 pixels by request which makes it not recommendable
-#' for large images. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large collections since they use an intermediate web store
-#' service. Before using any of these options, it is necessary previously
-#' to install the R packages
-#' \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-#' and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR}. For getting more information about exporting data from
-#' Earth Engine,  take a look at the
+#' by two different options: "drive" that use Google Drive and "gcs"
+#' that use Google Cloud Storage. Previously, it is necessary to install the
+#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' googleCloudStorageR} respectively. For getting more information about
+#' exporting data from Earth Engine, take a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
@@ -203,21 +175,14 @@ ee_as_stars <- function(image,
 #'   geodesic = FALSE
 #' )
 #'
-#' ## getInfo - Option 01
-#' img_01 <- ee_as_raster(
-#'   image = img,
-#'   region = geometry,
-#'   via = "getInfo"
-#' )
-#'
-#' ## drive - Method 02
+#' ## drive - Method 01
 #' img_02 <- ee_as_raster(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
-#' ## gcs - Method 03
+#' ## gcs - Method 02
 #' # img_03 <- ee_as_raster(
 #' #   image = img,
 #' #   region = geometry,
@@ -233,7 +198,7 @@ ee_as_stars <- function(image,
 ee_as_raster  <- function(image,
                           region = NULL,
                           dsn = NULL,
-                          via = "getInfo",
+                          via = "drive",
                           scale = NULL,
                           maxPixels = 1e9,
                           container = "rgee_backup",
@@ -242,14 +207,6 @@ ee_as_raster  <- function(image,
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
-
-  if (is.null(region)) {
-    if (!quiet) {
-      message("region is not specified taking the image's region...")
-    }
-    region <- image$geometry()
-  }
-
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -278,7 +235,7 @@ ee_as_raster  <- function(image,
 ee_image_local <- function(image,
                            region,
                            dsn = NULL,
-                           via = "getInfo",
+                           via = "drive",
                            scale = NULL,
                            maxPixels = 1e9,
                            container = "rgee_backup",
@@ -293,9 +250,6 @@ ee_image_local <- function(image,
   if (!requireNamespace("stars", quietly = TRUE)) {
     stop("package stars required, please install it first")
   }
-  if (!requireNamespace("raster", quietly = TRUE)) {
-    stop("package raster required, please install it first")
-  }
 
   # if dsn is NULL, dsn will be a /tempfile.
   if (is.null(dsn)) {
@@ -308,7 +262,7 @@ ee_image_local <- function(image,
   }
 
   # is region an ee.geometry.Geometry?
-  if (!any(class(region) %in% "ee.geometry.Geometry")) {
+  if (!any(class(region) %in% c("ee.geometry.Geometry", "NULL"))) {
     stop("region argument is not an ee$geometry$Geometry")
   }
 
@@ -318,7 +272,6 @@ ee_image_local <- function(image,
   if (via == "getInfo") {
     ee_image_local_getInfo(image, region, dsn, scale, maxPixels,
                            container, band_names, quiet)
-
   } else if (via == "drive") {
     ee_image_local_drive(image, region, dsn, scale, maxPixels,
                          container, quiet, ...)
@@ -367,7 +320,9 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
   }
 
   # region parameter display
-  ee_geometry_message(region, quiet = quiet)
+  if (!is.null(region)) {
+    ee_geometry_message(region, quiet = quiet)
+  }
 
   # From Google Earth Engine to Google Drive
   img_task <- ee_image_to_drive(
@@ -413,6 +368,10 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
 #' @noRd
 ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
                                container, quiet, ...) {
+  # Have you loaded the necessary credentials?
+  # Relevant for either drive or gcs.
+  ee_user <- ee_exist_credentials()
+
   if (is.na(ee_user$gcs_cre)) {
     ee_Initialize(email = ee_user$email, gcs = TRUE)
     message(
@@ -421,6 +380,7 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
       " to fix it."
     )
   }
+
   if (is.null(container)) {
     stop("Cloud Storage bucket was not defined")
   } else {
@@ -433,7 +393,9 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
   }
 
   # region parameter display
-  ee_geometry_message(region, quiet = quiet)
+  if (!is.null(region)) {
+    ee_geometry_message(region, quiet = quiet)
+  }
 
   # From Earth Engine to Google Cloud Storage
   img_task <- ee_image_to_gcs(
@@ -466,155 +428,6 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
   dsn <- ee_gcs_to_local(img_task,  dsn = dsn, quiet = quiet)
   invisible(dsn)
 }
-
-#' Passing an Earth Engine Image to Local using getinfo
-#' @noRd
-ee_image_local_getInfo <- function(image, region, dsn, scale, maxPixels,
-                                   container, band_names, quiet) {
-  # If region is NULL get from images
-  if (is.null(region)) {
-    if (!quiet) {
-      message("region is not specified taking the image's region...")
-    }
-    region <- image$geometry()$bounds()
-  }
-
-  image <- image$clip(region)
-  # If region is NULL get from images
-  if (is.null(scale)) {
-    scale <- tryCatch(
-      expr = image %>%
-        ee$Image$projection() %>%
-        ee$Projection$nominalScale() %>%
-        ee$Number$getInfo(),
-      error = function(e) {
-        message(paste0(e$message, " Trying only taking the first band ...."))
-        image %>%
-          ee$Image$select(0) %>%
-          ee$Image$projection() %>%
-          ee$Projection$nominalScale() %>%
-          ee$Number$getInfo()
-      })
-    message(sprintf("scale argument was set at %s meters.", scale))
-  }
-
-  # Getting image ID if it is exist
-  image_id <- tryCatch(
-    expr = jsonlite::parse_json(image$id()$serialize())$
-      scope[[1]][[2]][["arguments"]][["id"]],
-    error = function(e) "noid_image"
-  )
-  if (is.null(image_id)) {
-    image_id <- "noid_image"
-  }
-
-  # Image info
-  init_proj <- image$projection()$wkt()$getInfo()
-  img_lonlat <- image$addBands(ee$Image$pixelLonLat())$
-    reproject(crs = "EPSG:4326", scale = scale)
-  img_info <- ee_image_info(img_lonlat, getsize = FALSE, quiet = TRUE)
-  total_pixel <- img_info[["total_pixel"]]
-  sf_wkt <- img_info[["image_wkt"]]
-  sf_region <- img_info[["image_bounds"]] %>%
-    st_transform("EPSG:4326")
-
-  # Are image larger than maxPixels?
-  if (total_pixel > maxPixels) {
-    stop(
-      "Export too large. Specified ",
-      total_pixel,
-      " pixels (max:",
-      maxPixels,
-      "). ",
-      "Specify higher maxPixels value if you",
-      "intend to export a large area."
-    )
-  }
-
-  # Warning message if your image is large than 512 * 512 * 3 pixels
-  ntile <- 512
-  maxPixels_getInfo <- 1024*1024
-  nbatch <- ceiling(sqrt(total_pixel / (ntile * ntile)))
-  if (nbatch > 3) {
-    message(
-      "Warning: getInfo is just for small images (max: ",
-      maxPixels_getInfo,
-      "). Use 'drive' or 'gcs' instead for faster download."
-    )
-  }
-
-  # Create a regular tesselation over the bounding box
-  # after that move to earth engine.
-  sf_region_gridded <- suppressMessages(
-    sf::st_make_grid(sf_region, n = nbatch)
-  )
-  sf_region_fixed <- sf_region_gridded %>%
-    sf_as_ee() %>%
-    ee$FeatureCollection()
-
-  # region parameters display
-  ee_geometry_message(region = region, quiet = quiet)
-
-  # ee$FeatureCollection to ee$List
-  region_features <- sf_region_fixed$toList(
-    length(sf_region_gridded)
-  )
-
-  # Iterate for each tessellation
-  stars_img_list <- list()
-  if (!quiet) {
-    if (nbatch * nbatch > 1) {
-      cat(
-        "region is too large ... creating ",
-        length(sf_region_gridded), " patches.\n"
-      )
-    }
-  }
-  for (r_index in seq_len(nbatch * nbatch)) {
-    if (!quiet) {
-      if (nbatch * nbatch > 1) {
-        cat(
-          sprintf(
-            "Getting data from the patch: %s/%s",
-            r_index, nbatch * nbatch
-          ), "\n"
-        )
-      }
-    }
-    index <- r_index - 1
-    feature <- ee$Feature(region_features$get(index))$geometry()
-
-    # Extracts a rectangular region of pixels from an image
-    # into a 2D array per (return a Feature)
-    ee_image_array <- img_lonlat$sampleRectangle(
-      region = feature,
-      defaultValue = 0
-    )
-    ee_image_array_local <- ee_image_array$getInfo()
-
-    # From list to raster::raster
-    band_names_latlon <- c("longitude", "latitude", band_names)
-    extract_fn <- function(x) as.numeric(unlist(ee_image_array_local$properties[x]))
-    image_as_df <- data.frame(do.call(cbind,lapply(band_names_latlon, extract_fn)))
-    colnames(image_as_df) <- band_names_latlon
-    stars_img_list[[r_index]] <- rasterFromXYZ(image_as_df)
-  }
-
-  multiple_mosaic <- function(...) {
-    nchips <- length(list(...))
-    if (nchips == 1) {
-      c(...)[[1]]
-    } else {
-      raster::mosaic(... , fun=mean)
-    }
-  }
-  img_merged <- do.call(multiple_mosaic, stars_img_list) %>%
-    stars::st_as_stars() %>%
-    sf::'st_crs<-'(4326) %>%
-    stars::st_warp(crs = init_proj)
-  write_stars(img_merged, dsn)
-}
-
 
 #' Approximate size of an EE Image object
 #'
@@ -668,7 +481,7 @@ ee_image_info <- function(image,
   geotransform <- unlist(img_proj$transform)
   img_proj_wkt <- ee_utils_get_crs(img_proj$crs)
 
-  img_totalarea <- ee_as_sf(image$geometry()$bounds()) %>%
+  img_totalarea <- ee_as_sf(image$geometry()) %>%
     sf::st_transform(img_proj_wkt)
 
   bbox <- img_totalarea %>%
@@ -733,4 +546,21 @@ ee_image_msize <- function(image, total_pixel, compression_ratio) {
   band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
   number_of_bytes <- total_pixel * band_precision / compression_ratio
   sum(number_of_bytes)
+}
+
+#' Approx number of pixels
+#' @noRd
+ee_approx_number_pixels <- function(region, geotransform) {
+  bbox <- region %>%
+    sf::st_bbox() %>%
+    as.numeric()
+
+  # necessary info
+  x_diff <- bbox[3] - bbox[1]
+  y_diff <- bbox[4] - bbox[2]
+  xScale <- geotransform$transform[[1]]
+  yScale <- geotransform$transform[[5]]
+  x_npixel <- tail(abs(x_diff / xScale))
+  y_npixel <- tail(abs(y_diff / yScale))
+  round(x_npixel * y_npixel) # approximately
 }
