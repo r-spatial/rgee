@@ -1,7 +1,6 @@
 #' Convert an sf object to an EE object
 #'
-#' Load an sf object to Earth Engine. The projection of the sf object must
-#' be EPSG:4326 if not will be forced.
+#' Load an sf object to Earth Engine.
 #'
 #' @param x object of class sf, sfc or sfg.
 #' @param via Character. Upload method for sf objects. Three methods are
