@@ -8,6 +8,8 @@
 #' @param monitoring Logical. Ignore if via is not set as
 #' \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 #' will be monitored.
+#' @param proj Integer or character. Coordinate Reference System (CRS) for the
+#' EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).
 #' @param assetId Character. Destination asset ID for the uploaded file. Ignore
 #' if \code{via} argument is "getInfo".
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.

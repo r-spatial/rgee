@@ -12,7 +12,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.6
-- Several changes in rgee examples.
 - Class method chaining were changed by pipe ({magrittr**}) in all the `rgee` functions.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
 instead of **base::system**. 

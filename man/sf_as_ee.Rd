@@ -12,6 +12,7 @@ sf_as_ee(
   command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,
+  proj = "EPSG:4326",
   evenOdd = TRUE,
   geodesic = NULL,
   quiet = FALSE,
@@ -42,6 +43,9 @@ is "getInfo". By default TRUE.}
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
 
+\item{proj}{Integer or character. Coordinate Reference System (CRS) for the
+EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
+
 \item{evenOdd}{Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 polygon interiors will be determined by the even/odd rule, where a point
 is inside if it crosses an odd number of edges to reach a point at infinity.
@@ -68,8 +72,7 @@ If \code{via} is either "getInfo_to_asset" or "gcs_to_asset" always will
 return an \code{ee$FeatureCollection}.
 }
 \description{
-Load an sf object to Earth Engine. The projection of the sf object must
-be EPSG:4326 if not will be forced.
+Load an sf object to Earth Engine.
 }
 \details{
 \code{sf_as_ee} supports the upload of \code{sf} objects by three different
