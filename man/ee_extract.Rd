@@ -8,7 +8,7 @@ ee_extract(
   x,
   y,
   fun = ee$Reducer$mean(),
-  scale = 1000,
+  scale = NULL,
   sf = FALSE,
   quiet = FALSE,
   ...

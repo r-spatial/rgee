@@ -271,3 +271,6 @@ nc
 svg
 tif
 tmp
+OGC
+processx
+magrittr
