@@ -53,10 +53,6 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
-      - name: Install Python dependencies
-        if: runner.os == 'Windows'
-        run: |
-          %PYTHON%\\python.exe -m pip install setuptools numpy earthengine-api
       - name: Cache R packages
         if: runner.os != 'Windows'
         uses: actions/cache@v1
