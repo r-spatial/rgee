@@ -15,43 +15,40 @@ tmp <- tempdir()
 
 test_that("ee_imagecollection_to_local - simple dsn", {
   ic_getinfo_files <- ee_imagecollection_to_local(
-    ic = collection,
+    ic = collection %>% ee_get(0:1),
     region = geometry,
-    scale = 250,
+    scale = 500,
     dsn = tmp,
-    via = "getInfo",
     quiet = TRUE
-    )
+  )
+  raster(ic_getinfo_files[1])
   expect_type(ic_getinfo_files, "character")
   }
 )
 
 test_that("ee_imagecollection_to_local - simple dsn", {
   ic_getinfo_files <- ee_imagecollection_to_local(
-    ic = collection,
+    ic = collection %>% ee_get(0:1),
     region = geometry,
-    scale = 250,
+    scale = 500,
     dsn = file.path(tmp, "drive_"),
-    via = "getInfo",
     quiet = FALSE
   )
   expect_type(ic_getinfo_files, "character")
  }
 )
 
-
-
 test_that("ee_imagecollection_to_local - simple dsn", {
  ic <- ee$ImageCollection(c(ee$Image(0), ee$Image(1)))
  ic_getinfo_files <- ee_imagecollection_to_local(
    ic = ic,
-   scale = 100,
+   scale = 200,
    dsn = c("lesly_01.tif", "lesly_02.tif"),
    region = geometry
  )
  ic_getinfo_files <- ee_imagecollection_to_local(
    ic = ic,
-   scale = 100,
+   scale = 200,
    region = geometry
  )
  expect_type(ic_getinfo_files, "character")
