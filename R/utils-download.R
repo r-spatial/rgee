@@ -33,7 +33,8 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
     }
   }
   counter <- 0
-  while (ee_utils_py_to_r(task$active()) & task[["state"]] != "CANCEL_REQUESTED") {
+  while (ee_utils_py_to_r(ee$batch$Task$active(task)) &
+         task[["state"]] != "CANCEL_REQUESTED") {
     if (!quiet) {
       cat(sprintf("Polling for task <id: %s, time: %ds>.\n",
                   task[["id"]], counter))
@@ -41,7 +42,7 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
     counter <- counter + task_time
     Sys.sleep(task_time)
   }
-  task_status <- ee_utils_py_to_r(task$status())
+  task_status <- ee_utils_py_to_r(ee$batch$Task$status(task))
   if (!quiet) {
     cat(sprintf("State: %s\n", task_status[["state"]]))
   }

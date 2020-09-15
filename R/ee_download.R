@@ -804,9 +804,9 @@ ee_drive_to_local <- function(task,
       )
     }
     # global parameter of a task
-    gd_folder <- basename(task$status()$destination_uris)
-    gd_ExportOptions <- task$config$fileExportOptions
-    gd_filename <- gd_ExportOptions$driveDestination$filenamePrefix
+    gd_folder <- basename(ee$batch$Task$status(task)[["destination_uris"]])
+    gd_ExportOptions <- task[["config"]][["fileExportOptions"]]
+    gd_filename <- gd_ExportOptions[["driveDestination"]][["filenamePrefix"]]
 
     # Select a google drive file considering the filename and folder
     count <- 1
@@ -825,13 +825,13 @@ ee_drive_to_local <- function(task,
     # (Problem) Google Drive support files with the same name
     if (nrow(files_gd) > 0) {
       ee_getTime <- function(x) {
-        gd_file_date <- files_gd$drive_resource[[x]]$createdTime
+        gd_file_date <- files_gd[["drive_resource"]][[x]][["createdTime"]]
         as.POSIXct(gd_file_date)
       }
       createdTime <- vapply(seq_len(nrow(files_gd)), ee_getTime, 0)
       files_gd <- files_gd[order(createdTime, decreasing = TRUE), ]
       if (isTRUE(consider)) {
-        choices <- c(files_gd$name,'last','all')
+        choices <- c(files_gd[["name"]],'last','all')
         if (nrow(files_gd) == 1) {
           file_selected <- 1
         } else {
@@ -865,7 +865,7 @@ ee_drive_to_local <- function(task,
     }
 
     # Choose the right file using the driver_resource["originalFilename"]
-    fileformat <- toupper(gd_ExportOptions$fileFormat)
+    fileformat <- toupper(gd_ExportOptions[["fileFormat"]])
 
     if (missing(dsn)) {
       ee_tempdir <- tempdir()
@@ -1002,19 +1002,19 @@ ee_gcs_to_local <- function(task,
     )
   } else {
     ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$gcs_cre)) {
+    if (is.na(ee_user[["gcs_cre"]])) {
       ee_Initialize(email = ee_user$email, gcs = TRUE)
       message(
         "Google Cloud Storage credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
+        " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
         " to fix it."
       )
     }
     # Getting bucket name and filename
-    gcs_ExportOptions <- task$config$fileExportOptions
-    gcs_bucket <- gcs_ExportOptions$gcsDestination$bucket
-    gcs_filename <- gcs_ExportOptions$gcsDestination$filenamePrefix
-    gcs_fileFormat <- gcs_ExportOptions$fileFormat
+    gcs_ExportOptions <- task[["config"]][["fileExportOptions"]]
+    gcs_bucket <- gcs_ExportOptions[["gcsDestination"]][["bucket"]]
+    gcs_filename <- gcs_ExportOptions[["gcsDestination"]][["filenamePrefix"]]
+    gcs_fileFormat <- gcs_ExportOptions[["fileFormat"]]
 
     # Select a gcs file considering the filename and bucket
     count <- 1
