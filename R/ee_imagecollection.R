@@ -21,16 +21,13 @@
 #' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_imagecollection_to_local} supports the download of \code{ee$Image}
-#' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_imagecollection_to_local} will
-#' make an REST call to retrieve all the known information about the object.
-#' The advantage of use "getInfo" is a direct and faster download. However,
-#' there is a limitation of 262144 pixels by request which makes it not
-#' recommendable for large images. Instead of "getInfo", the options: "drive"
-#' and "gcs" are suitable for large collections since they use an intermediate
-#' container. They use Google Drive and Google Cloud Storage respectively. For
-#' getting more information about exporting data from Earth Engine,  take a
-#' look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+#' by two different options: "drive" that use Google Drive and "gcs"
+#' that use Google Cloud Storage. Previously, it is necessary to install the
+#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' googleCloudStorageR} respectively. For getting more information about
+#' exporting data from Earth Engine, take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @importFrom crayon green
 #' @return Character vector containing the filename of the images downloaded.
@@ -58,8 +55,7 @@
 #'   ic = collection,
 #'   region = geometry,
 #'   scale = 100,
-#'   dsn = file.path(tmp, "drive_"),
-#'   via = "drive"
+#'   dsn = file.path(tmp, "drive_")
 #' )
 #'
 #' }
@@ -67,7 +63,7 @@
 ee_imagecollection_to_local <- function(ic,
                                         region,
                                         dsn = NULL,
-                                        via = "getInfo",
+                                        via = "drive",
                                         scale = NULL,
                                         maxPixels = 1e9,
                                         container = "rgee_backup",

@@ -397,6 +397,18 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
     ee_geometry_message(region, quiet = quiet)
   }
 
+  # Getting image ID if it is exist
+  image_id <- tryCatch(
+    expr = jsonlite::parse_json(image$id()$serialize())$
+      scope[[1]][[2]][["arguments"]][["id"]],
+    error = function(e) "noid_image"
+  )
+
+  # Relevant for either drive or gcs.
+  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+  ee_description <- paste0("ee_as_stars_task_", time_format)
+  file_name <- paste0(image_id, "_", time_format)
+
   # From Earth Engine to Google Cloud Storage
   img_task <- ee_image_to_gcs(
     image = image,

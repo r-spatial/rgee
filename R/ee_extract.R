@@ -114,11 +114,12 @@
 ee_extract <- function(x,
                        y,
                        fun = ee$Reducer$mean(),
-                       scale = 1000,
+                       scale = NULL,
                        sf = FALSE,
                        quiet = FALSE,
                        ...) {
-  if (!quiet) {
+  if (!quiet & is.null(scale)) {
+    scale <- 1000
     message(sprintf("The image scale is set to %s.", scale))
   }
   if (!requireNamespace("geojsonio", quietly = TRUE)) {
@@ -159,7 +160,7 @@ ee_extract <- function(x,
     }
     ee_y <- sf_as_ee(y[["geometry"]], quiet = TRUE)
   } else if(any("sfc" %in%  class(y))) {
-    sf_y <- st_sf(id = seq_along(y), geometry = y)
+    sf_y <- sf::st_sf(id = seq_along(y), geometry = y)
     if (!quiet) {
       message("y is an sfc object, running 'sf_as_ee(y)' to ",
               "convert it into an ee$FeatureCollection object.")
