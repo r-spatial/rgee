@@ -83,16 +83,6 @@ ee_crs <- collection$first()$projection()$getInfo()$crs
 geometry <- collection$first()$geometry(proj = ee_crs)$bounds()
 tmp <- tempdir()
 
-## Using getInfo
-ic_getinfo_files <- ee_imagecollection_to_local(
-  ic = collection,
-  region = geometry,
-  scale = 100,
-  dsn = tmp,
-  via = "getInfo",
-  quiet = TRUE
-)
-
 ## Using drive
 ic_drive_files <- ee_imagecollection_to_local(
   ic = collection,

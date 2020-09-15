@@ -121,7 +121,7 @@ arequipa_dem <- ee_as_thumbnail(
 )
 
 arequipa_dem <- arequipa_dem * 5000
-
+st_crs(arequipa_dem) <- 4326
 plot(
   x = arequipa_dem[nc], col = dem_palette, breaks = "equal",
   reset = FALSE, main = "SRTM - Arequipa"
@@ -147,7 +147,7 @@ l8_img <- ee_as_thumbnail(
   vizparams = list(min = 0, max = 5000, gamma = 1.5),
   raster = TRUE
 )
-
+crs(l8_img) <- "+proj=longlat +datum=WGS84 +no_defs"
 plotRGB(l8_img, stretch = "lin")
 }
 }

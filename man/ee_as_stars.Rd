@@ -8,7 +8,7 @@ ee_as_stars(
   image,
   region = NULL,
   dsn = NULL,
-  via = "getInfo",
+  via = "drive",
   scale = NULL,
   maxPixels = 1e+09,
   container = "rgee_backup",
@@ -26,8 +26,8 @@ forced. If not specified image bounds will be taken.}
 \item{dsn}{Character. Output filename. If missing,
 \code{ee_as_stars} will create a temporary file.}
 
-\item{via}{Character. Method to fetch data about the object. Three methods
-are implemented: "getInfo", "drive", "gcs". See details.}
+\item{via}{Character. Method to fetch data about the object. Two methods
+are implemented: "drive", "gcs". See details.}
 
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image asset.}
@@ -53,19 +53,12 @@ Convert an ee$Image into a stars object
 }
 \details{
 \code{ee_as_stars} supports the download of \code{ee$Image}
-by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the \code{via} argument, \code{ee_as_stars} will make a
-REST call to retrieve all the known information about the object. The
-advantage of using "getInfo" is performing a quick download. However, there
-is a limitation of 262144 pixels by request which makes it not recommendable
-for large images. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large collections since they use an intermediate web store
-service. Before using any of these options, it is necessary previously
-to install the R packages
-\href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-and \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-googleCloudStorageR}. For getting more information about exporting data from
-Earth Engine,  take a look at the
+by two different options: "drive" that use Google Drive and "gcs"
+that use Google Cloud Storage. Previously, it is necessary to install the
+R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+googleCloudStorageR} respectively. For getting more information about
+exporting data from Earth Engine,  take a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }
@@ -92,21 +85,14 @@ geometry <- ee$Geometry$Rectangle(
   geodesic = FALSE
 )
 
-## getInfo - Option 01
-img_01 <- ee_as_stars(
-  image = img,
-  region = geometry,
-  via = "getInfo"
-)
-
-## drive - Method 02
+## drive - Method 01
 img_02 <- ee_as_stars(
   image = img,
   region = geometry,
   via = "drive"
 )
 
-## gcs - Method 03
+## gcs - Method 02
 # img_03 <- ee_as_stars(
 #   image = img,
 #  region = geometry,
