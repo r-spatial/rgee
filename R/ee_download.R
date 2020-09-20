@@ -795,11 +795,11 @@ ee_drive_to_local <- function(task,
     )
   } else {
     ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$drive_cre)) {
-      ee_Initialize(email = ee_user$email, drive = TRUE)
+    if (is.na(ee_user[["drive_cre"]])) {
+      ee_Initialize(email = ee_user[["email"]], drive = TRUE)
       message(
         "Google Drive credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+        " Running ee_Initialize(email = '",ee_user[["email"]],"', drive = TRUE)",
         " to fix it."
       )
     }
@@ -1003,7 +1003,7 @@ ee_gcs_to_local <- function(task,
   } else {
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user[["gcs_cre"]])) {
-      ee_Initialize(email = ee_user$email, gcs = TRUE)
+      ee_Initialize(email = ee_user[["email"]], gcs = TRUE)
       message(
         "Google Cloud Storage credentials were not loaded.",
         " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
@@ -1040,19 +1040,19 @@ ee_gcs_to_local <- function(task,
     fileformat <- toupper(gcs_fileFormat)
     if (missing(dsn)) {
       ee_tempdir <- tempdir()
-      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
+      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs[["name"]]))
     } else {
       pattern <- "(.*)(\\..*)$"
-      element_len <- length(files_gcs$name)
+      element_len <- length(files_gcs[["name"]])
       # Neccesary for large GEOTIFF and TFRecord files
       if (task$task_type == "EXPORT_IMAGE" & element_len > 1) {
         file_ft <- sprintf(
           "-%04d%s",
           seq_len(element_len),
-          sub(pattern, "\\2", files_gcs$name)
+          sub(pattern, "\\2", files_gcs[["name"]])
         )
       } else {
-        file_ft <- sub(pattern, "\\2", files_gcs$name)
+        file_ft <- sub(pattern, "\\2", files_gcs[["name"]])
       }
       dsn_n <- sub(pattern,"\\1",basename(dsn))
       filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
@@ -1065,7 +1065,7 @@ ee_gcs_to_local <- function(task,
       if (isTRUE(quiet)) {
         suppressMessages(
           googleCloudStorageR::gcs_get_object(
-            object_name = to_download[index,]$name,
+            object_name = to_download[index,][["name"]],
             bucket = gcs_bucket,
             saveToDisk = filenames_local[index],
             overwrite = TRUE
@@ -1073,7 +1073,7 @@ ee_gcs_to_local <- function(task,
         )
       } else {
         googleCloudStorageR::gcs_get_object(
-            object_name = to_download[index,]$name,
+            object_name = to_download[index,][["name"]],
             bucket = gcs_bucket,
             saveToDisk = filenames_local[index],
             overwrite = TRUE

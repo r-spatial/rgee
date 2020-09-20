@@ -39,15 +39,15 @@ ee_check <- function(user = NULL, quiet = FALSE) {
 ee_check_python <- function(quiet = FALSE) {
   python_test <- py_available(initialize = TRUE)
   if (python_test) {
-    py_version <- as.numeric(py_discover_config()$version)
+    py_version <- as.numeric(py_discover_config()[["version"]])
     if (!quiet) {
       cat_line(
-        blue(symbol$circle_filled),
+        blue(symbol[["circle_filled"]]),
         blue("  Python version\n"),
-        green(symbol$tick, "[Ok]"),
+        green(symbol[["tick"]], "[Ok]"),
         blue(
           "",
-          py_discover_config()$python,
+          py_discover_config()[["python"]],
           sprintf("v%s", py_version)
         )
       )
@@ -77,15 +77,15 @@ ee_check_python_packages <- function(quiet = FALSE) {
   }
   if (!quiet) {
     cat_line(
-      blue(symbol$circle_filled),
+      blue(symbol[["circle_filled"]]),
       blue("  Python packages:\n"),
-      green(symbol$tick, "[Ok]"),
+      green(symbol[["tick"]], "[Ok]"),
       blue(" numpy\n"),
-      green(symbol$tick, "[Ok]"),
+      green(symbol[["tick"]], "[Ok]"),
       blue(" earthengine-api")
     )
   }
-  ee_current_version <- ee$'__version__'
+  ee_current_version <- ee[['__version__']]
   if (!ee_current_version == ee_version()) {
     text <- paste(
       sprintf(
@@ -144,7 +144,7 @@ ee_check_credentials <- function(quiet = FALSE) {
   # Google Earth Engine credentials
   if (!quiet) {
     cat_line(
-      blue(symbol$circle_filled),
+      blue(symbol[["circle_filled"]]),
       blue("  Credentials neccesaries for rgee:")
     )
   }
@@ -152,8 +152,8 @@ ee_check_credentials <- function(quiet = FALSE) {
   if (ex_ee_cred) {
     if (!quiet) {
       cat_line(
-        green(symbol$tick, "[Ok]"),
-        blue(symbol$check, "Earth Engine Credentials found.")
+        green(symbol[["tick"]], "[Ok]"),
+        blue(symbol[["check"]], "Earth Engine Credentials found.")
       )
     }
   } else {
@@ -167,8 +167,8 @@ ee_check_credentials <- function(quiet = FALSE) {
   if (ex_drive_cred) {
     if (!quiet) {
       cat_line(
-        green(symbol$tick, "[Ok]"),
-        blue(symbol$check, "Google Drive credentials found.")
+        green(symbol[["tick"]], "[Ok]"),
+        blue(symbol[["check"]], "Google Drive credentials found.")
       )
     }
   } else {
@@ -190,9 +190,9 @@ ee_check_credentials <- function(quiet = FALSE) {
   if (ex_gcs_cred) {
     if (!quiet) {
       cat_line(
-        green(symbol$tick, "[Ok]"),
+        green(symbol[["tick"]], "[Ok]"),
         blue(
-          symbol$check,
+          symbol[["check"]],
           "Google Cloud Storage",
           "credentials found."
         )
@@ -225,13 +225,11 @@ ee_check_credentials <- function(quiet = FALSE) {
 #' @noRd
 ee_wrong_message <- function(packages) {
   cat_line(
-    red(symbol$tick, "[X]"),
+    red(symbol[["tick"]], "[X]"),
     red(
-      symbol$check,
+      symbol[["check"]],
       bold(packages)
     ),
     red(" not installed")
   )
 }
-
-
