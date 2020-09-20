@@ -80,11 +80,15 @@ ee_imagecollection_to_local <- function(ic,
   }
 
   ic_names <- NULL
-  ic_count <- ic$size()$getInfo()
+  ic_count <-   ic %>%
+    ee$ImageCollection$size() %>%
+    ee$Number$getInfo()
 
   # if dsn is null
   if (is.null(dsn)) {
-    ic_names <- ic$aggregate_array('system:index')$getInfo()
+    ic_names <- ic %>%
+      ee$ImageCollection$aggregate_array("system:index") %>%
+      ee$List$getInfo()
     if (is.null(ic_names)) {
       stop(
         "Error: ee_imagecollection_to_local was not able to create the ",
@@ -101,13 +105,17 @@ ee_imagecollection_to_local <- function(ic,
   } else {
     # if dsn is a directory or a character
     if (tryCatch(dir.exists(dsn), error = function(e) FALSE)) {
-      ic_names <- ic$aggregate_array('system:index')$getInfo()
+      ic_names <- ic %>%
+        ee$ImageCollection$aggregate_array("system:index") %>%
+        ee$List$getInfo()
       ic_names <- sprintf("%s/%s",dsn,ic_names)
     }
 
     # if dsn is a directory or a character
     if (tryCatch(dir.exists(dirname(dsn)), error = function(e) FALSE)) {
-      ic_names <- ic$aggregate_array('system:index')$getInfo()
+      ic_names <- ic %>%
+        ee$ImageCollection$aggregate_array("system:index") %>%
+        ee$List$getInfo()
       ic_names <- sprintf("%s%s",dsn,ic_names)
     }
   }
@@ -127,11 +135,13 @@ ee_imagecollection_to_local <- function(ic,
   ic_files <- list()
   for (r_index in seq_len(ic_count)) {
     index <- r_index - 1
-    image <- ee$Image(ic$toList(count = index + 1, offset = index)$get(0))
+    image <- ic %>%
+      ee$ImageCollection$toList(count = index + 1, offset = index) %>%
+      ee$List$get(0) %>%
+      ee$Image()
     if (!quiet) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-
     ee_image_local(
       image = image,
       region = region,

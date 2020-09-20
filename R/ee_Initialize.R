@@ -102,13 +102,13 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     if (email == "ndef") {
       cat(
-        "", green(symbol$tick),
+        "", green(symbol[["tick"]]),
         blue("email:"),
         green("not_defined\n")
       )
     } else {
       cat(
-        "", green(symbol$tick),
+        "", green(symbol[["tick"]]),
         blue("email:"),
         green(email), "\n"
       )
@@ -165,7 +165,7 @@ ee_Initialize <- function(email = NULL,
     if (!quiet) {
       cat(
         "",
-        green(symbol$tick),
+        green(symbol[["tick"]]),
         blue("GCS credentials:")
       )
     }
@@ -176,10 +176,10 @@ ee_Initialize <- function(email = NULL,
       })
 
     if (!quiet) {
-      if (!is.na(gcs_credentials$path)) {
+      if (!is.na(gcs_credentials[["path"]])) {
         cat(
           "\r",
-          green(symbol$tick),
+          green(symbol[["tick"]]),
           blue("GCS credentials:"),
           # gcs_credentials,
           green(" FOUND\n")
@@ -187,7 +187,7 @@ ee_Initialize <- function(email = NULL,
       } else {
         cat(
           "\r",
-          green(symbol$tick),
+          green(symbol[["tick"]]),
           blue("GCS credentials:"),
           # gcs_credentials,
           red("NOT FOUND\n")
@@ -196,10 +196,10 @@ ee_Initialize <- function(email = NULL,
     }
   }
   ## rgee session file
-  options(rgee.gcs.auth = gcs_credentials$path)
+  options(rgee.gcs.auth = gcs_credentials[["path"]])
   if (!quiet) {
     cat(
-      "", green(symbol$tick),
+      "", green(symbol[["tick"]]),
       blue("Initializing Google Earth Engine:")
     )
   }
@@ -210,7 +210,7 @@ ee_Initialize <- function(email = NULL,
   if (!quiet) {
     cat(
       "\r",
-      green(symbol$tick),
+      green(symbol[["tick"]]),
       blue("Initializing Google Earth Engine:"),
       green(" DONE!\n")
     )
@@ -244,15 +244,15 @@ ee_Initialize <- function(email = NULL,
     email = email_clean,
     user = ee_user,
     drive_cre = drive_credentials,
-    gcs_cre = gcs_credentials$path
+    gcs_cre = gcs_credentials[["path"]]
   )
 
   if (!quiet) {
-    cat("\r", green(symbol$tick), blue("Earth Engine user:"),
+    cat("\r", green(symbol[["tick"]]), blue("Earth Engine user:"),
         green(bold(ee_user)), "\n")
     cat(rule(), "\n")
-    if (!is.na(gcs_credentials$message)) {
-     message(gcs_credentials$message)
+    if (!is.na(gcs_credentials[["message"]])) {
+     message(gcs_credentials[["message"]])
     }
   }
   # ee_check_python_packages(quiet = TRUE)
@@ -514,14 +514,14 @@ ee_users <- function(quiet = FALSE) {
 ee_user_info <- function(quiet = FALSE) {
   user_session <- ee_get_earthengine_path()
   user_session_list <- list.files(user_session,full.names = TRUE)
-  user <- ee$data$getAssetRoots()[[1]]$id
+  user <- ee$data$getAssetRoots()[[1]][["id"]]
 
   if (!quiet) {
     cat(rule(right = bold(paste0("Earth Engine user info"))))
   }
 
   # python version
-  py_used <- py_discover_config()$python
+  py_used <- py_discover_config()[["python"]]
   if (!quiet) {
     cat(blue$bold("\nReticulate python version:"))
     cat("\n - ", py_used)
@@ -635,28 +635,28 @@ create_table <- function(user, wsc, quiet = FALSE) {
 
   #google drive
   if (any(grepl("@gmail.com",credentials))) {
-    gmail_symbol <- green(symbol$tick)
+    gmail_symbol <- green(symbol[["tick"]])
     gd_count <- 1
   } else {
-    gmail_symbol <- red(symbol$cross)
+    gmail_symbol <- red(symbol[["cross"]])
     gd_count <- 0
   }
 
   #GCS
   if (any(grepl(".json",credentials))) {
-    gcs_symbol <- green(symbol$tick)
+    gcs_symbol <- green(symbol[["tick"]])
     gcs_count <- 1
   } else {
-    gcs_symbol <- red(symbol$cross)
+    gcs_symbol <- red(symbol[["cross"]])
     gcs_count <- 0
   }
 
   #Earth Engine
   if (any(grepl("credentials",credentials))) {
-    ee_symbol <- green(symbol$tick)
+    ee_symbol <- green(symbol[["tick"]])
     ee_count <- 1
   } else {
-    ee_symbol <- red(symbol$cross)
+    ee_symbol <- red(symbol[["cross"]])
     ee_count <- 0
   }
 
@@ -750,7 +750,7 @@ ee_connect_to_py <- function(path, n = 5) {
       message_con <- c(
         sprintf("The current Python PATH: %s",
                 bold(python_path[["python"]])),
-        "does not have the earthengine-api installed. Are you restarted your R session?.",
+        "does not have the earthengine-api installed. Are you restarted/terminated your R session?.",
         "If no, please try:",
         "> ee_install(): To create and set a Python environment with all rgee dependencies.",
         "> ee_install_set_pyenv(): To set a specific Python environment."
