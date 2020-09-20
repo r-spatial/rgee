@@ -139,7 +139,7 @@ mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 #   bucket = "rgee_dev",
 #   fileFormat = "GEO_TIFF",
 #   region = ee_ROI,
-#   fileNamePrefix = "my_image"
+#   fileNamePrefix = "my_image_demo"
 # )
 #
 # task_img$start()

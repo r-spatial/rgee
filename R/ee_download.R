@@ -97,7 +97,7 @@
 #'   image = mean_l5_Amarakaeri,
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI,
-#'   fileNamePrefix = "my_image"
+#'   fileNamePrefix = "my_image_demo"
 #' )
 #'
 #' task_img$start()
@@ -250,7 +250,7 @@ ee_image_to_drive <- function(image,
 #' #   bucket = "rgee_dev",
 #' #   fileFormat = "GEO_TIFF",
 #' #   region = ee_ROI,
-#' #   fileNamePrefix = "my_image"
+#' #   fileNamePrefix = "my_image_demo"
 #' # )
 #' #
 #' # task_img$start()
@@ -774,7 +774,7 @@ ee_table_to_asset <- function(collection,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI,
-#'   fileNamePrefix = paste0("my_image", Sys.time())
+#'   fileNamePrefix = "my_image_demo"
 #' )
 #'
 #' task_img$start()
@@ -980,7 +980,7 @@ ee_drive_to_local <- function(task,
 #' #     bucket = "rgee_dev",
 #' #    fileFormat = "GEO_TIFF",
 #' #     region = ee_ROI,
-#' #     fileNamePrefix = paste0("my_image", Sys.time())
+#' #     fileNamePrefix = "my_image_demo"
 #' #)
 #'
 #' # task_img$start()

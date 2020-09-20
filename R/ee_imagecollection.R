@@ -180,9 +180,13 @@ ee_geometry_message <- function(region, sf_region = NULL, quiet = FALSE) {
 
   ### Metadata ----
   #is geodesic?
-  is_geodesic <- region$geodesic()$getInfo()
+  is_geodesic <- region %>%
+    ee$Geometry$geodesic() %>%
+    ee$ComputedObject$getInfo() %>%
+    ee_utils_py_to_r()
+
   #is evenodd?
-  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
+  query_params <- unlist(jsonlite::parse_json(ee$Geometry$serialize(region))[["scope"]])
   is_evenodd <- all(as.logical(
     query_params[grepl("evenOdd", names(query_params))]
   ))

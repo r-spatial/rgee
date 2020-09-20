@@ -222,10 +222,10 @@ ee_as_raster  <- function(image,
   if (length(img_files$file) > 1) {
     message("NOTE: To avoid memory excess problems, ee_as_raster will",
             " not build Raster objects for large images.")
-    img_files$file
+    img_files[["file"]]
   } else {
-    img_raster <- raster::stack(img_files$file)
-    names(img_raster) <- img_files$band_names
+    img_raster <- raster::stack(img_files[["file"]])
+    names(img_raster) <- img_files[["band_names"]]
     img_raster
   }
 }
@@ -267,7 +267,9 @@ ee_image_local <- function(image,
   }
 
   # Get bandnames
-  band_names <- image$bandNames()$getInfo()
+  band_names <-   image %>%
+    ee$Image$bandNames() %>%
+    ee$List$getInfo()
 
   if (via == "getInfo") {
     ee_image_local_getInfo(image, region, dsn, scale, maxPixels,
@@ -295,7 +297,7 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
 
   # Getting image ID if it is exist
   image_id <- tryCatch(
-    expr = jsonlite::parse_json(image$id()$serialize())$
+    expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
       scope[[1]][[2]][["arguments"]][["id"]],
     error = function(e) "noid_image"
   )
@@ -305,7 +307,7 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
 
   # Create description (Human-readable name of the task)
   # Relevant for either drive or gcs.
-  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+  time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
   file_name <- paste0(image_id, "_", time_format)
 
@@ -405,7 +407,7 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
   )
 
   # Relevant for either drive or gcs.
-  time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+  time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
   ee_description <- paste0("ee_as_stars_task_", time_format)
   file_name <- paste0(image_id, "_", time_format)
 
