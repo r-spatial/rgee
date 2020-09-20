@@ -175,7 +175,7 @@ sf_as_ee <- function(x,
     )
 
     # Creating description name
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
     ee_description <- paste0("ee_as_sf_task_", time_format)
 
     # Verify if assetId exist and the EE asset path
@@ -198,11 +198,11 @@ sf_as_ee <- function(x,
     )
 
     if (isTRUE(monitoring)) {
-      ee_task$start()
+      ee$batch$Task$start(ee_task)
       ee_monitoring(ee_task)
       ee$FeatureCollection(assetId)
     } else {
-      ee_task$start()
+      ee$batch$Task$start(ee_task)
       ee$FeatureCollection(assetId)
     }
   } else if (via == "gcs_to_asset") {
