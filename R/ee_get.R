@@ -33,7 +33,9 @@ ee_get <- function(ee_c, index = 0) {
   if (any(class(ee_c) %in%  c("ee.imagecollection.ImageCollection"))) {
     # Index is a single value?
     if (length(index) == 1) {
-      ee$ImageCollection(ee_c$toList(count = 1, offset = index))
+      ee_c %>%
+        ee$ImageCollection$toList(count = 1, offset = index) %>%
+        ee$ImageCollection()
     } else {
       # Index is a n-length vector and consecutive?
       if (length(index) > 1 & is_consecutive) {
@@ -47,7 +49,9 @@ ee_get <- function(ee_c, index = 0) {
   } else  if (any(class(ee_c) %in%  c("ee.featurecollection.FeatureCollection"))) {
     # Index is a single value?
     if (length(index) == 1) {
-      ee$FeatureCollection(ee_c$toList(count = 1, offset = index))
+      ee_c %>%
+        ee$FeatureCollection$toList(count = 1, offset = index) %>%
+        ee$FeatureCollection()
     } else {
       # Index is a n-length vector and consecutive?
       if (length(index) > 1 & is_consecutive) {
@@ -109,19 +113,26 @@ ee_get_assethome <- function() {
 #' @export
 ee_get_date_img <- function(x, time_end = FALSE) {
   time_start <- tryCatch(
-    expr = eedate_to_rdate(x$get("system:time_start")),
+    expr =   x %>%
+      ee$Image$get("system:time_start") %>%
+      eedate_to_rdate(),
     error = function(e) NA
   )
   if (isTRUE(time_end)) {
     time_end <- tryCatch(
-      expr = eedate_to_rdate(x$get("system:time_end")),
+      expr = x %>%
+        ee$Image$get("system:time_end") %>%
+        eedate_to_rdate(),
       error = function(e) NA
     )
   } else {
     time_end <- NULL
   }
   # get id of the image
-  image_id <- x$get("system:id")$getInfo()
+  image_id <- x %>%
+    ee$Image$get("system:id") %>%
+    ee$ComputedObject$getInfo()
+
   if (is.null(image_id)) {
     image_id <- "no_id"
   }
