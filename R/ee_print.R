@@ -90,13 +90,23 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
   }
   if (!identical(past_eeobject, ee_hash(eeobject))) {
     # 2. Feature metadata
-    geometry <- eeobject$getInfo()
+    geometry <- ee$Geometry$getInfo(eeobject)
 
     # 3. Geometry metadata
-    geom_type <- toupper(geometry$type)
-    geom_info <- eeobject$projection()$getInfo()
-    geom_wkt <- sf::st_crs(eeobject$projection()$wkt()$getInfo())
-    geom_geodesic <- ee_utils_py_to_r(ee$Geometry$geodesic(eeobject)$getInfo())
+    geom_type <- toupper(geometry[["type"]])
+    geom_info <- eeobject %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$getInfo()
+    geom_wkt <- eeobject %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- eeobject %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string

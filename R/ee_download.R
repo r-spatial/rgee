@@ -123,7 +123,8 @@ ee_image_to_drive <- function(image,
                               skipEmptyTiles = NULL,
                               fileFormat = NULL,
                               formatOptions = NULL) {
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+
+  timePrefix_chr <- gsub("\\s","_",format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -280,7 +281,7 @@ ee_image_to_gcs <- function(image,
   if (is.null(bucket)) {
     stop("Cloud Storage bucket was not defined")
   }
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -510,7 +511,7 @@ ee_table_to_drive <- function(collection,
                               timePrefix = TRUE,
                               fileFormat = NULL,
                               selectors = NULL) {
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -600,7 +601,7 @@ ee_table_to_gcs <- function(collection,
     stop("Cloud Storage bucket was not defined")
   }
 
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
