@@ -600,7 +600,6 @@ ee_table_to_gcs <- function(collection,
   if (is.null(bucket)) {
     stop("Cloud Storage bucket was not defined")
   }
-
   timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {

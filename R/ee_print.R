@@ -163,15 +163,29 @@ ee_print.ee.feature.Feature <- function(eeobject,
   }
   if (!identical(past_eeobject, ee_hash(eeobject))) {
     # 2. Feature metadata
-    feature_info <- eeobject$getInfo()
+    feature_info <- ee$Feature$getInfo(eeobject)
     f_properties_names <- names(feature_info$properties)
     f_properties_length <- length(names(feature_info$properties))
 
     # 3. Geometry metadata
     geom_type <- toupper(feature_info$geometry$type)
-    geom_info <- eeobject$geometry()$projection()$getInfo()
-    geom_wkt <- sf::st_crs(eeobject$geometry()$projection()$wkt()$getInfo())
-    geom_geodesic <- ee_utils_py_to_r(eeobject$geometry()$geodesic()$getInfo())
+    geom_info <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$getInfo()
+
+    geom_wkt <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string
@@ -233,23 +247,44 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
 
   if (!identical(past_eeobject, ee_hash(eeobject, f_index))) {
     # 2. Select a specific EE Feature by EE FC index.
-    feature <- ee$Feature(eeobject$toList(f_index + 1, f_index)$get(0))
+    feature <- eeobject %>%
+      ee$FeatureCollection$toList(f_index + 1, f_index) %>%
+      ee$List$get(0) %>%
+      ee$Feature()
 
     # 3. FeatureCollection metadata
-    fc_properties_names <- eeobject$propertyNames()$getInfo()
+    fc_properties_names <- eeobject %>%
+      ee$FeatureCollection$propertyNames() %>%
+      ee$List$getInfo()
     fc_properties_length <- length(fc_properties_names)
-    fc_n_features <- eeobject$size()$getInfo()
+    fc_n_features <- eeobject %>%
+      ee$FeatureCollection$size() %>%
+      ee$Number$getInfo()
 
     # 4. Feature metadata
-    feature_info <- feature$getInfo()
+    feature_info <- ee$Feature$getInfo(feature)
     f_properties_names <- names(feature_info$properties)
     f_properties_length <- length(names(feature_info$properties))
 
     # 5. Geometry metadata
     geom_type <- toupper(feature_info$geometry$type)
-    geom_info <- feature$geometry()$projection()$getInfo()
-    geom_wkt <- sf::st_crs(feature$geometry()$projection()$wkt()$getInfo())
-    geom_geodesic <- ee_utils_py_to_r(feature$geometry()$geodesic()$getInfo())
+    geom_info <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$String$getInfo()
+
+    geom_wkt <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string
@@ -315,7 +350,9 @@ ee_print.ee.image.Image <- function(eeobject,
   }
 
   # 1. Fetch and Return bandname about ee$Image
-  img_bandNames <- eeobject$bandNames()$getInfo()
+  img_bandNames <- eeobject %>%
+    ee$Image$bandNames() %>%
+    ee$List$getInfo()
   img_nband <- length(img_bandNames)
   if (missing(img_band)) {
     img_band <- img_bandNames[1]
@@ -333,8 +370,9 @@ ee_print.ee.image.Image <- function(eeobject,
 
   if (!identical(past_eeobject, eeobject_hash)) {
     # 3. Fetch and Return metadata about an EE image band
-    selected_img <- eeobject$select(img_band)
-    band_info <- selected_img$getInfo()
+    selected_img <- eeobject %>%
+      ee$Image$select(img_band)
+    band_info <- ee$Image$getInfo(selected_img)
     band_properties <- band_info$properties
     band_metadata <- band_info$bands[[1]]
 
@@ -405,7 +443,7 @@ ee_print.ee.image.Image <- function(eeobject,
         cat(
           "\n - system:time_end            :",
           as.character(ee_metadata$img_time_end)
-          )
+        )
       }
     }
     cat("\n - Number of Bands            :", ee_metadata$img_nbands)
@@ -445,10 +483,16 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
                                                         clean = FALSE,
                                                         quiet = FALSE) {
   # 1. Select a specific EE Image by EE IC index.
-  img <- ee$Image(eeobject$toList(img_index + 1, img_index)$get(0))
+  img <- eeobject %>%
+    ee$ImageCollection$toList(img_index + 1, img_index) %>%
+    ee$List$get(0) %>%
+    ee$Image()
 
   # 2. Fetch and Return metadata about the Image
-  img_bandNames <- img$bandNames()$getInfo()
+  img_bandNames <- img %>%
+    ee$Image$bandNames() %>%
+    ee$List$getInfo()
+
   if (missing(img_band)) {
     img_band <- img_bandNames[1]
   }
@@ -469,9 +513,13 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
   ## dataset, otherwise load from /temdir
   if (!identical(past_eeobject, eeobject_hash)) {
     # 4. Fetch and Return ee$ImageCollection metadata
-    ic_properties <- eeobject$propertyNames()$getInfo()
+    ic_properties <- eeobject %>%
+      ee$ImageCollection$propertyNames() %>%
+      ee$List$getInfo()
     ic_n_properties <- length(ic_properties)
-    ic_n_img <- eeobject$size()$getInfo()
+    ic_n_img <- eeobject %>%
+      ee$ImageCollection$size() %>%
+      ee$Number$getInfo()
 
     # 3. Fetch and Return ee$Image metadata
     ee_mtd_img <- ee_print(

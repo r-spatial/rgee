@@ -199,7 +199,7 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
   if (!quiet) {
     message("1. Creating gif ... please wait ....")
   }
-  animation_url <- ic$getVideoThumbURL(parameters)
+  animation_url <- ee$ImageCollection$getVideoThumbURL(ic, parameters)
   temp_gif <- tempfile()
   if (!quiet) {
     message("1. Downloading GIF from: ", animation_url)
@@ -322,11 +322,11 @@ ee_utils_gif_annotate <- function(image,
                                     boxcolor = boxcolor)
   } else if(length(text) == length(image)) {
     image <- magick::image_annotate(image, text, gravity = gravity,
-                           location = location, degrees = degrees, size = size,
-                           font = font, style = style, weight = weight,
-                           kerning = kerning, decoration = decoration,
-                           color = color, strokecolor = strokecolor,
-                           boxcolor = boxcolor)
+                                    location = location, degrees = degrees, size = size,
+                                    font = font, style = style, weight = weight,
+                                    kerning = kerning, decoration = decoration,
+                                    color = color, strokecolor = strokecolor,
+                                    boxcolor = boxcolor)
   } else {
     stop(
       "The text argument has not the same length as the magick-image object",
