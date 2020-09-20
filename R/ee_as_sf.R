@@ -186,10 +186,11 @@ ee_as_sf <- function(x,
           maxFeatures = maxFeatures
         )
       }
-      x_sf_mosaic <- do.call(rbind, sf_list)
-      suppressWarnings(sf::st_crs(x_sf_mosaic) <- crs_sf)
-      sf::st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
-      x_sf_mosaic
+      local_sf <- do.call(rbind, sf_list)
+      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
+      suppressWarnings(
+        sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+      )
     } else {
       crs_sf <- x_fc %>%
         ee$FeatureCollection$geometry() %>%
@@ -198,7 +199,6 @@ ee_as_sf <- function(x,
         ee$String$getInfo()
       local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
       suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
-      local_sf
     }
   } else if (via == "drive") {
     # Creating name for temporal file; just for either drive or gcs
@@ -239,7 +239,7 @@ ee_as_sf <- function(x,
       cat(
         "\n- download parameters (Google Drive)\n",
         "Table ID    :", table_id,"\n",
-        "Google user :", ee_user$email,"\n",
+        "Google user :", ee_user[["email"]],"\n",
         "Folder name :", container, "\n",
         "Date        :", time_format, "\n"
       )
@@ -304,7 +304,7 @@ ee_as_sf <- function(x,
       cat(
         "\n- download parameters (Google Cloud Storage)\n",
         "Table ID    :", table_id, "\n",
-        "Google user :", ee_user$email, "\n",
+        "Google user :", ee_user[["email"]], "\n",
         "Folder name :", container, "\n",
         "Date        :", time_format, "\n"
       )
