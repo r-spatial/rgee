@@ -233,7 +233,7 @@ ee_centerObject <- function(eeObject,
                             maxError = ee$ErrorMargin(1)) {
   if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
     message("NOTE: Center obtained from the first element.")
-    eeObject <- ee$Feature(eeObject$first())
+    eeObject <- ee$Feature(ee$FeatureCollection$first(eeObject))
   }
 
   if (any(class(eeObject) %in% ee_get_spatial_objects("Nongeom"))) {
@@ -330,29 +330,30 @@ ee_addLayer <- function(eeObject,
     if (!is.null(visParams[["color"]])) {
       color <- visParams[["color"]]
     }
+    image_fill <- features %>%
+      ee$FeatureCollection$style(fillColor = color) %>%
+      ee$Image$updateMask(ee$Image$constant(0.5))
 
-    image_fill <- features$
-      style(fillColor = color)$
-      updateMask(ee$Image$constant(0.5))
-
-    image_outline <- features$style(
-      color = color,
-      fillColor = "00000000",
-      width = width
-    )
-    image <- image_fill$blend(image_outline)
+    image_outline <- features %>%
+      ee$FeatureCollection$style(
+        color = color,
+        fillColor = "00000000",
+        width = width
+      )
+    image <- ee$Image$blend(image_fill, image_outline)
   } else {
-    image <- do.call(eeObject$visualize, visParams)
+    ee_img_viz <- function(...) ee$Image$visualize(eeObject, ...)
+    image <- do.call(ee_img_viz, visParams)
   }
 
   if (is.null(name)) {
     name <- tryCatch(
-      expr = jsonlite::parse_json(eeObject$id()$serialize())$
-        scope[[1]][[2]][["arguments"]][["id"]],
-      error = function(e) "untitled"
+      expr = ee_get_system_id(eeObject),
+      error = function(e) basename(tempfile(pattern = "untitled_"))
     )
-    if (is.null(name)) name <- "untitled"
+    if (is.null(name)) name <- basename(tempfile(pattern = "untitled_"))
   }
+
   tile <- get_ee_image_url(image)
   map <- ee_addTile(tile = tile, name = name, shown = shown, opacity = opacity)
   if (legend) {
@@ -395,16 +396,22 @@ ee_addLayers <- function(eeObject,
   }
 
   # size of objects
-  eeObject_size <- eeObject$size()$getInfo()
+  eeObject_size <- eeObject %>%
+    ee$ImageCollection$size() %>%
+    ee$Number$getInfo()
+
   m_img_list <- list()
 
   if (is.null(name)) {
     name <- tryCatch(
-      expr = eeObject$aggregate_array("system:id")$getInfo(),
-      error = function(e) "untitled"
+      expr = eeObject %>%
+        ee$ImageCollection$aggregate_array("system:id") %>%
+        ee$List$getInfo() %>%
+        ee_utils_py_to_r() %>%
+        basename(),
+      error = function(e) sprintf("untitled_%02d", seq_len(eeObject_size))
     )
-    if (length(name) == 0) name <- sprintf("untitled_%02d", seq_len(eeObject_size))
-    if (is.null(name)) name <- "untitled"
+    if (length(name) == 0 | is.null(name)) name <- sprintf("untitled_%02d", seq_len(eeObject_size))
   }
 
   if (length(name) == 1) {
@@ -654,6 +661,35 @@ ee_get_boundary <- function(eeObject, maxError) {
     sf::st_bbox()
 }
 
+
+#' Get system id from an earth engine spatial object
+#' @noRd
+ee_get_system_id <- function(eeObject) {
+  if (any(class(eeObject) %in% "ee.image.Image")) {
+    eeObject %>%
+      ee$Image$get("system:id") %>%
+      ee$ComputedObject$getInfo() %>%
+      basename()
+  } else if (any(class(eeObject) %in% "ee.feature.Feature")) {
+    eeObject %>%
+      ee$Feature$get("system:id") %>%
+      ee$ComputedObject$getInfo() %>%
+      basename()
+  } else if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
+    eeObject %>%
+      ee$FeatureCollection$get("system:id") %>%
+      ee$ComputedObject$getInfo() %>%
+      basename()
+  } else if (any(class(eeObject) %in% "ee.imagecollection.ImageCollection")) {
+    eeObject %>%
+      ee$ImageCollection$get("system:id") %>%
+      ee$ComputedObject$getInfo() %>%
+      basename()
+  } else {
+    stop("Impossible to get system:id")
+  }
+}
+
 #' Convert an EarthEngineMap object into a mapview object
 #' @param x An EarthEngineMap object.
 #' @importFrom methods new
@@ -665,4 +701,3 @@ ee_as_mapview <- function(x) {
 # Create an Map env and set methods
 Map <- Map()
 ee_set_methods()
-
