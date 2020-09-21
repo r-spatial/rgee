@@ -94,6 +94,7 @@ Imports:
     methods,
     reticulate (>= 1.15),
     magrittr,
+    processx,
     crayon,
     cli
 Suggests:

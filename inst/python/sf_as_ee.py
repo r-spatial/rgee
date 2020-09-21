@@ -24,6 +24,6 @@ def sfg_as_ee_py(x, sfc_class, opt_proj, opt_geodesic, opt_evenOdd):
                            opt_geodesic = opt_geodesic)
     elif sfc_class in ["MULTIPOINT","POINT"]:
         return ee.Geometry(geo_json = eval(x),
-                           opt_proj = opt_proj)
+                           opt_proj = "EPSG:4326")
     else:
         return False

@@ -89,7 +89,7 @@ task_img <- ee_image_to_drive(
   folder = "Amarakaeri",
   fileFormat = "GEO_TIFF",
   region = ee_ROI,
-  fileNamePrefix = paste0("my_image", Sys.time())
+  fileNamePrefix = "my_image_demo"
 )
 
 task_img$start()

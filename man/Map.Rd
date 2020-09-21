@@ -34,7 +34,8 @@ See details.\cr
 layers should be on by default. \cr
 \item \strong{opacity:} The layer's opacity represented as a number
 between 0 and 1. Defaults to 1. \cr
-\item \strong{legend:} Should a legend be plotted?.
+\item \strong{legend:} Should a legend be plotted?. Only the legend of
+the first image is displayed.
 }
 \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
 view at the given coordinates with the given zoom level. If no zoom level

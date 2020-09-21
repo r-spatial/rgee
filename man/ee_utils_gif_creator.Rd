@@ -13,7 +13,7 @@ ee_utils_gif_creator(ic, parameters, quiet = FALSE, ...)
 
 \item{quiet}{Logical. Suppress info message.}
 
-\item{...}{parameter(s) passed on to \link[magick:editing]{image_read}}
+\item{...}{parameter(s) passed on to \link[utils:download.file]{download.file}}
 }
 \value{
 A magick-image object of the specified ImageCollection.
@@ -86,7 +86,7 @@ videoArgs = list(
 )
 
 ## 1.2 Download, display and save the GIF!
-animation <- ee_utils_gif_creator(basicAnimation, videoArgs)
+animation <- ee_utils_gif_creator(basicAnimation, videoArgs, mode = "wb")
 get_years <- basicAnimation$aggregate_array("year")$getInfo()
 animation \%>\%
   ee_utils_gif_annotate("Ucayali, Peru") \%>\%

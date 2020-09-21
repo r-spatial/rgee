@@ -93,6 +93,8 @@ local_to_gcs <- function(x,
 #'
 #' @return Character. The Earth Engine asset ID.
 #'
+#' @importFrom processx run
+#'
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -136,22 +138,23 @@ gcs_to_ee_table <- function(manifest,
   manifest_list <- jsonlite::read_json(manifest)
   assetId <- ee_remove_project_chr(manifest_list$name)
 
-  manifest_list$name
+  # If the command_line_tool_path does not exist
   if (is.null(command_line_tool_path)) {
     command_line_tool_path <- ""
   }
 
+  # Command to run in console
   if (command_line_tool_path == "") {
-    command <- sprintf("earthengine upload table --manifest %s", manifest)
+    command <- "earthengine"
+    command_msg <- sprintf("earthengine upload table --manifest %s", manifest)
   } else {
-    command <- sprintf(
-      "%s/earthengine upload table --manifest %s",
-      command_line_tool_path, manifest
-    )
+    command <- sprintf("%s/earthengine", command_line_tool_path)
+    command_msg <- sprintf("%s/earthengine upload table --manifest %s",
+                           command_line_tool_path, manifest)
   }
 
   if (!quiet) {
-    message("Running the OS command: ", command)
+    message("Running the OS command: ", command_msg)
   }
 
   if (isTRUE(overwrite)) {
@@ -161,23 +164,15 @@ gcs_to_ee_table <- function(manifest,
     )
   }
 
-  upload_state <- system(
+  upload_state <- run(
     command = command,
-    ignore.stdout = TRUE,
-    ignore.stderr = TRUE
+    args = c("upload", "table", "--manifest", manifest),
+    error_on_status = FALSE
   )
 
-  if (upload_state != 0) {
-    stop(
-      sprintf(
-        "An error occurs when %s try to upload",
-        bold("gcs_to_ee_table")),
-      ". Please make sure that you set the ",
-      bold("command_line_tool_path"),
-      " argument correctly."
-    )
-  }
-  assetId
+  message(upload_state$stdout)
+  message(upload_state$stderr)
+  invisible(assetId)
 }
 
 #' Move a GeoTIFF image from GCS to their EE assets
@@ -191,7 +186,7 @@ gcs_to_ee_table <- function(manifest,
 #' @param quiet Logical. Suppress info message.
 #'
 #' @return Character. The Earth Engine asset ID.
-#'
+#' @importFrom processx run
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -239,9 +234,6 @@ gcs_to_ee_image <- function(manifest,
   manifest_list <- jsonlite::read_json(manifest)
   assetId <- ee_remove_project_chr(manifest_list$name)
 
-  # Folder to save upload temporary files.
-  tempdir_gee <- tempdir()
-
   # If the command_line_tool_path does not exist
   if (is.null(command_line_tool_path)) {
     command_line_tool_path <- ""
@@ -249,15 +241,16 @@ gcs_to_ee_image <- function(manifest,
 
   #Command to run in console
   if (command_line_tool_path == "") {
-    command <- sprintf("earthengine upload image --manifest %s",
-                       manifest)
+    command <- "earthengine"
+    command_msg <- sprintf("earthengine upload image --manifest %s", manifest)
   } else {
-    command <- sprintf("%s/earthengine upload image --manifest %s",
-                       command_line_tool_path, manifest)
+    command <- sprintf("%s/earthengine", command_line_tool_path)
+    command_msg <- sprintf("%s/earthengine upload image --manifest %s",
+                           command_line_tool_path, manifest)
   }
 
   if (!quiet) {
-    message("Running the OS command: ", command)
+    message("Running the OS command: ", command_msg)
   }
 
   if (isTRUE(overwrite)) {
@@ -267,23 +260,15 @@ gcs_to_ee_image <- function(manifest,
     )
   }
 
-  upload_state <- system(
+  upload_state <- run(
     command = command,
-    ignore.stdout = TRUE,
-    ignore.stderr = TRUE
+    args = c("upload", "image", "--manifest", manifest),
+    error_on_status = FALSE
   )
 
-  if (upload_state != 0) {
-    stop(
-      sprintf(
-        "An error occurs when %s try to upload",
-        bold("gcs_to_ee_image")),
-      ". Please make sure that you set the ",
-      bold("command_line_tool_path"),
-      " argument correctly."
-    )
-  }
-  assetId
+  message(upload_state$stdout)
+  message(upload_state$stderr)
+  invisible(assetId)
 }
 
 #' From sf object to Earth Engine FeatureCollection
@@ -310,7 +295,6 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
     if (length(wkt_type) == 0) {
       stop(
         "sf_as_ee does not support objects of class ",
-        paste0(sf_obj_class,collapse = ", ")
       )
     }
     ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
@@ -595,4 +579,46 @@ ee_utils_create_manifest_table <- function(gs_uri,
   } else {
     ee_utils_create_json(manifest)
   }
+}
+
+
+#' Convert EPSG, ESRI or SR-ORG code into a OGC WKT
+#'
+#' @param code The projection code.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' ee_utils_get_crs("SR-ORG:6864")
+#' ee_utils_get_crs("EPSG:4326")
+#' ee_utils_get_crs("ESRI:37002")
+#' }
+#' @export
+ee_utils_get_crs <- function(code) {
+  codetype <- tolower(strsplit(code,":")[[1]][1])
+  if (codetype == "sr-org") {
+    ee_proj_ogcwkt <- ee_utils_get_crs_web(code = code)
+  } else {
+    ee_proj_ogcwkt <- sf::st_crs(code)$Wkt
+  }
+  ee_utils_py_to_r(ee_proj_ogcwkt)
+}
+
+#' Convert EPSG, ESRI or SR-ORG code into a OGC WKT
+#'
+#' @param code The projection code.
+#' @noRd
+ee_utils_get_crs_web <- function(code) {
+  codetype <- tolower(strsplit(code,":")[[1]][1])
+  ee_code <- strsplit(code,":")[[1]][2]
+  if (codetype == 'epsg') {
+    format <- "wkt"
+    link <- sprintf('https://epsg.io/%s.%s', ee_code, format)
+    crs_wkt <- suppressWarnings(readLines(link))
+  } else {
+    format <- "ogcwkt"
+    link <- sprintf("https://spatialreference.org/ref/%s/%s/%s/", codetype, ee_code, format)
+    crs_wkt <- suppressWarnings(readLines(link))
+  }
+  ee_utils_py_to_r(crs_wkt)
 }

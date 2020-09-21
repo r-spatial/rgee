@@ -138,7 +138,7 @@ task_img <- ee_image_to_drive(
   image = mean_l5_Amarakaeri,
   fileFormat = "GEO_TIFF",
   region = ee_ROI,
-  fileNamePrefix = "my_image"
+  fileNamePrefix = "my_image_demo"
 )
 
 task_img$start()

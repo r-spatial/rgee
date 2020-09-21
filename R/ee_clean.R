@@ -150,7 +150,7 @@ ee_clean_container <- function(name = "rgee_backup",
         call. = FALSE
       )
     }
-    if (is.na(ee_user$drive_cre)) {
+    if (is.na(ee_user[["drive_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",
         ' Run ee_Initialize(email = "myemail", drive = TRUE)',
@@ -177,7 +177,7 @@ ee_clean_container <- function(name = "rgee_backup",
         call. = FALSE
       )
     }
-    if (is.na(ee_user$gcs_cre)) {
+    if (is.na(ee_user[["gcs_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",
         ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
@@ -186,8 +186,8 @@ ee_clean_container <- function(name = "rgee_backup",
     }
     if (isFALSE(quiet)) {
       googleCloudStorageR::gcs_global_bucket(name)
-      buckets <- googleCloudStorageR::gcs_list_objects(bucket = )
-      gcs_todelete <- buckets$name
+      buckets <- googleCloudStorageR::gcs_list_objects(bucket = name)
+      gcs_todelete <- buckets[["name"]]
       mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
     } else {
       suppressMessages(
@@ -196,7 +196,7 @@ ee_clean_container <- function(name = "rgee_backup",
       suppressMessages(
         buckets <- googleCloudStorageR::gcs_list_objects()
       )
-      gcs_todelete <- buckets$name
+      gcs_todelete <- buckets[["name"]]
       suppressMessages(
         mapply(googleCloudStorageR::gcs_delete_object, gcs_todelete)
       )

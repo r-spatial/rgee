@@ -127,10 +127,16 @@ ee_as_sf <- function(x,
       if (!quiet) {
         cat("Number of features: Calculating ...")
       }
-      fc_size <- x_fc$size()$getInfo()
+
+      # number of features
+      fc_size <- x_fc %>%
+        ee$FeatureCollection$size() %>%
+        ee$Number$getInfo()
+
       if (!quiet) {
         cat(sprintf("\rNumber of features: %s              \n", fc_size))
       }
+
       if (maxFeatures < fc_size) {
         stop(
           "Export too large. Specified ",
@@ -164,19 +170,35 @@ ee_as_sf <- function(x,
             ), "\n"
           )
         }
-        x_eelist <- x_fc$toList(count = 5000, offset = 5000*index)
-        x_fc_batch <- ee$FeatureCollection(x_eelist)
+        if (r_index == 1) {
+          crs_sf <- x_fc %>%
+            ee$FeatureCollection$geometry() %>%
+            ee$Geometry$projection() %>%
+            ee$Projection$wkt() %>%
+            ee$String$getInfo()
+        }
+        x_fc_batch <- ee$FeatureCollection(x_fc) %>%
+          ee$FeatureCollection$toList(count = 5000, offset = 5000*index) %>%
+          ee$FeatureCollection()
         sf_list[[r_index]] <- ee_fc_to_sf_getInfo(
           x_fc = x_fc_batch,
           overwrite = overwrite,
           maxFeatures = maxFeatures
         )
       }
-      x_sf_mosaic <- do.call(rbind, sf_list)
-      sf::st_write(x_sf_mosaic, dsn, delete_dsn = overwrite, quiet = TRUE)
-      local_sf <- x_sf_mosaic
+      local_sf <- do.call(rbind, sf_list)
+      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
+      suppressWarnings(
+        sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+      )
     } else {
+      crs_sf <- x_fc %>%
+        ee$FeatureCollection$geometry() %>%
+        ee$Geometry$projection() %>%
+        ee$Projection$wkt() %>%
+        ee$String$getInfo()
       local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
+      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
     }
   } else if (via == "drive") {
     # Creating name for temporal file; just for either drive or gcs
@@ -185,7 +207,7 @@ ee_as_sf <- function(x,
 
     # Getting table ID if it is exist
     table_id <- tryCatch(
-      expr = jsonlite::parse_json(x$serialize())$
+      expr = jsonlite::parse_json(ee$FeatureCollection$serialize(x))$
         scope[[1]][[2]][["arguments"]][["tableId"]],
       error = function(e) "no_tableid"
     )
@@ -217,17 +239,17 @@ ee_as_sf <- function(x,
       cat(
         "\n- download parameters (Google Drive)\n",
         "Table ID    :", table_id,"\n",
-        "Google user :", ee_user$email,"\n",
+        "Google user :", ee_user[["email"]],"\n",
         "Folder name :", container, "\n",
         "Date        :", time_format, "\n"
       )
     }
 
-    table_task$start()
+    ee$batch$Task$start(table_task)
     ee_monitoring(task = table_task, quiet = quiet)
 
-    if (table_task$status()$state != "COMPLETED") {
-      stop(table_task$status()$error_message)
+    if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
+      stop(ee$batch$Task$status(table_task)[["error_message"]])
     }
 
     ee_drive_to_local(
@@ -249,7 +271,7 @@ ee_as_sf <- function(x,
 
     # Getting table ID if it is exist
     table_id <- tryCatch(
-      expr = jsonlite::parse_json(x$serialize())$
+      expr = jsonlite::parse_json(ee$FeatureCollection$serialize(x))$
         scope[[1]][[2]][["arguments"]][["tableId"]],
       error = function(e) "no_id"
     )
@@ -282,16 +304,15 @@ ee_as_sf <- function(x,
       cat(
         "\n- download parameters (Google Cloud Storage)\n",
         "Table ID    :", table_id, "\n",
-        "Google user :", ee_user$email, "\n",
+        "Google user :", ee_user[["email"]], "\n",
         "Folder name :", container, "\n",
         "Date        :", time_format, "\n"
       )
     }
-
-    table_task$start()
+    ee$batch$Task$start(table_task)
     ee_monitoring(task = table_task, quiet = quiet)
-    if (table_task$status()$state != "COMPLETED") {
-      stop(table_task$status()$error_message)
+    if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
+      stop(ee$batch$Task$status(table_task)[["error_message"]])
     }
     ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
     if (table_format == "CSV") {
@@ -302,20 +323,8 @@ ee_as_sf <- function(x,
   } else {
     stop("via argument invalid.")
   }
-
-  if (nrow(local_sf) == 0) {
-      return(local_sf)
-  } else {
-    if (is.null(crs)) {
-      ## OBS: we assume that all the featurecollection have the same crs
-      ee_proj <- x_fc$first()$geometry()$projection()$getInfo()$crs
-      ft_proj <- as.numeric(gsub("EPSG:","", ee_proj))
-    }
-    suppressWarnings(sf::st_crs(local_sf) <- ft_proj)
-    return(local_sf)
-  }
+  local_sf
 }
-
 
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
@@ -324,9 +333,10 @@ ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
     stop("package sf required, please install it first")
   }
   x_list <- tryCatch(
-    expr = x_fc$getInfo(),
+    expr = ee$FeatureCollection$getInfo(x_fc),
     error = function(e) {
-        feature_len <- x_fc$size()$getInfo()
+        feature_len <- ee$FeatureCollection$size(x_fc) %>%
+          ee$Number$getInfo()
         stop(
           "Specify higher maxFeatures value if you",
           " intend to export a large area via getInfo.",

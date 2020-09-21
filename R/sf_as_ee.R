@@ -8,10 +8,10 @@
 #' @param monitoring Logical. Ignore if via is not set as
 #' \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 #' will be monitored.
-#' @param assetId Character. Destination asset ID for the uploaded file. Ignore
-#' if \code{via} argument is "getInfo".
 #' @param proj Integer or character. Coordinate Reference System (CRS) for the
 #' EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).
+#' @param assetId Character. Destination asset ID for the uploaded file. Ignore
+#' if \code{via} argument is "getInfo".
 #' @param geodesic Logical. Ignored if \code{x} is not a Polygon or LineString.
 #' Whether line segments should be interpreted as spherical geodesics. If
 #' FALSE, indicates that line segments should be interpreted as planar lines
@@ -123,8 +123,8 @@ sf_as_ee <- function(x,
                      command_line_tool_path = NULL,
                      overwrite = TRUE,
                      monitoring = TRUE,
+                     proj = "EPSG:4326",
                      evenOdd = TRUE,
-                     proj = 4326,
                      geodesic = NULL,
                      quiet = FALSE,
                      ...) {
@@ -148,50 +148,34 @@ sf_as_ee <- function(x,
     is_geodesic <- geodesic
   }
 
-  if (is.na(sf::st_crs(x)$epsg)) {
+  if (is.na(sf::st_crs(x)$Wkt)) {
     stop(
-      "The x EPSG needs to be defined, use sf::st_set_crs to",
-      " set, replace or retrieve."
+      "The x CRS needs to be defined, use sf::st_set_crs to set."
     )
   }
 
-  # Transform x according to proj argument
-  proj <- sf::st_crs(proj)$epsg
-  if (is.na(proj)) {
-    stop(
-      "sf_as_ee only supports uploading sf objects with an SRC linked to",
-      " an EPSG code. Use rgee::local_to_gcs and rgee::gcs_to_ee_table to solve."
-    )
-  }
-  # x_proj represent the projection of x
-  x_proj <- sf::st_crs(x)$epsg
-  if (x_proj == proj) {
-    x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
-  } else {
-    message(sprintf("Transforming current coordinates to EPSG:%s", proj))
-    x <- sf::st_transform(x, proj)
-    x_proj <- sprintf("EPSG:%s", sf::st_crs(x)$epsg)
-  }
 
   if (via == "getInfo") {
-    # sf to geojson
+    # Transform x according to proj argument
+    x <- sf::st_transform(x, proj)
     ee_sf_to_fc(
       x = x,
-      proj = x_proj,
+      proj = proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
   } else if (via == "getInfo_to_asset") {
-    # sf to geojson
+    # Transform x according to proj argument
+    x <- sf::st_transform(x, proj)
     sf_fc <- ee_sf_to_fc(
       x = x,
-      proj = x_proj,
+      proj = proj,
       geodesic = is_geodesic,
       evenOdd = evenOdd
     )
 
     # Creating description name
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
+    time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
     ee_description <- paste0("ee_as_sf_task_", time_format)
 
     # Verify if assetId exist and the EE asset path
@@ -214,16 +198,23 @@ sf_as_ee <- function(x,
     )
 
     if (isTRUE(monitoring)) {
-      ee_task$start()
+      ee$batch$Task$start(ee_task)
       ee_monitoring(ee_task)
       ee$FeatureCollection(assetId)
     } else {
-      ee_task$start()
+      ee$batch$Task$start(ee_task)
       ee$FeatureCollection(assetId)
     }
   } else if (via == "gcs_to_asset") {
     if (is.null(bucket)) {
       stop("Cloud Storage bucket was not defined")
+    } else {
+      tryCatch(
+        expr = googleCloudStorageR::gcs_get_bucket(bucket),
+        error = function(e) {
+          stop(sprintf("The %s bucket was not found.", bucket))
+        }
+      )
     }
 
     if (is.null(command_line_tool_path)) {
@@ -234,7 +225,8 @@ sf_as_ee <- function(x,
 
     # From sf to .shp
     if (!quiet) {
-      message("1. Converting sf object to shapefile ... saving in /tmp")
+      message("1. Converting sf object to a compressed ZIP shapefile ",
+              "... saving in /tmp")
     }
     geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 

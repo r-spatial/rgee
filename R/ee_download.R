@@ -97,7 +97,7 @@
 #'   image = mean_l5_Amarakaeri,
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI,
-#'   fileNamePrefix = "my_image"
+#'   fileNamePrefix = "my_image_demo"
 #' )
 #'
 #' task_img$start()
@@ -123,7 +123,8 @@ ee_image_to_drive <- function(image,
                               skipEmptyTiles = NULL,
                               fileFormat = NULL,
                               formatOptions = NULL) {
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+
+  timePrefix_chr <- gsub("\\s","_",format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -250,7 +251,7 @@ ee_image_to_drive <- function(image,
 #' #   bucket = "rgee_dev",
 #' #   fileFormat = "GEO_TIFF",
 #' #   region = ee_ROI,
-#' #   fileNamePrefix = "my_image"
+#' #   fileNamePrefix = "my_image_demo"
 #' # )
 #' #
 #' # task_img$start()
@@ -280,7 +281,7 @@ ee_image_to_gcs <- function(image,
   if (is.null(bucket)) {
     stop("Cloud Storage bucket was not defined")
   }
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -510,7 +511,7 @@ ee_table_to_drive <- function(collection,
                               timePrefix = TRUE,
                               fileFormat = NULL,
                               selectors = NULL) {
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -599,8 +600,7 @@ ee_table_to_gcs <- function(collection,
   if (is.null(bucket)) {
     stop("Cloud Storage bucket was not defined")
   }
-
-  timePrefix_chr <- gsub("\\s","_",as.character(Sys.time()))
+  timePrefix_chr <- gsub("\\s","_", format(Sys.time(), "%Y_%m_%d_%H_%M_%S"))
   if (isTRUE(timePrefix)) {
     if (is.null(fileNamePrefix)) {
       fileNamePrefix <- sprintf("%s_%s", description, timePrefix_chr)
@@ -774,7 +774,7 @@ ee_table_to_asset <- function(collection,
 #'   folder = "Amarakaeri",
 #'   fileFormat = "GEO_TIFF",
 #'   region = ee_ROI,
-#'   fileNamePrefix = paste0("my_image", Sys.time())
+#'   fileNamePrefix = "my_image_demo"
 #' )
 #'
 #' task_img$start()
@@ -795,18 +795,18 @@ ee_drive_to_local <- function(task,
     )
   } else {
     ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$drive_cre)) {
-      ee_Initialize(email = ee_user$email, drive = TRUE)
+    if (is.na(ee_user[["drive_cre"]])) {
+      ee_Initialize(email = ee_user[["email"]], drive = TRUE)
       message(
         "Google Drive credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+        " Running ee_Initialize(email = '",ee_user[["email"]],"', drive = TRUE)",
         " to fix it."
       )
     }
     # global parameter of a task
-    gd_folder <- basename(task$status()$destination_uris)
-    gd_ExportOptions <- task$config$fileExportOptions
-    gd_filename <- gd_ExportOptions$driveDestination$filenamePrefix
+    gd_folder <- basename(ee$batch$Task$status(task)[["destination_uris"]])
+    gd_ExportOptions <- task[["config"]][["fileExportOptions"]]
+    gd_filename <- gd_ExportOptions[["driveDestination"]][["filenamePrefix"]]
 
     # Select a google drive file considering the filename and folder
     count <- 1
@@ -825,13 +825,13 @@ ee_drive_to_local <- function(task,
     # (Problem) Google Drive support files with the same name
     if (nrow(files_gd) > 0) {
       ee_getTime <- function(x) {
-        gd_file_date <- files_gd$drive_resource[[x]]$createdTime
+        gd_file_date <- files_gd[["drive_resource"]][[x]][["createdTime"]]
         as.POSIXct(gd_file_date)
       }
       createdTime <- vapply(seq_len(nrow(files_gd)), ee_getTime, 0)
       files_gd <- files_gd[order(createdTime, decreasing = TRUE), ]
       if (isTRUE(consider)) {
-        choices <- c(files_gd$name,'last','all')
+        choices <- c(files_gd[["name"]],'last','all')
         if (nrow(files_gd) == 1) {
           file_selected <- 1
         } else {
@@ -865,7 +865,7 @@ ee_drive_to_local <- function(task,
     }
 
     # Choose the right file using the driver_resource["originalFilename"]
-    fileformat <- toupper(gd_ExportOptions$fileFormat)
+    fileformat <- toupper(gd_ExportOptions[["fileFormat"]])
 
     if (missing(dsn)) {
       ee_tempdir <- tempdir()
@@ -980,7 +980,7 @@ ee_drive_to_local <- function(task,
 #' #     bucket = "rgee_dev",
 #' #    fileFormat = "GEO_TIFF",
 #' #     region = ee_ROI,
-#' #     fileNamePrefix = paste0("my_image", Sys.time())
+#' #     fileNamePrefix = "my_image_demo"
 #' #)
 #'
 #' # task_img$start()
@@ -1002,19 +1002,19 @@ ee_gcs_to_local <- function(task,
     )
   } else {
     ee_user <- ee_exist_credentials()
-    if (is.na(ee_user$gcs_cre)) {
-      ee_Initialize(email = ee_user$email, gcs = TRUE)
+    if (is.na(ee_user[["gcs_cre"]])) {
+      ee_Initialize(email = ee_user[["email"]], gcs = TRUE)
       message(
         "Google Cloud Storage credentials were not loaded.",
-        " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
+        " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
         " to fix it."
       )
     }
     # Getting bucket name and filename
-    gcs_ExportOptions <- task$config$fileExportOptions
-    gcs_bucket <- gcs_ExportOptions$gcsDestination$bucket
-    gcs_filename <- gcs_ExportOptions$gcsDestination$filenamePrefix
-    gcs_fileFormat <- gcs_ExportOptions$fileFormat
+    gcs_ExportOptions <- task[["config"]][["fileExportOptions"]]
+    gcs_bucket <- gcs_ExportOptions[["gcsDestination"]][["bucket"]]
+    gcs_filename <- gcs_ExportOptions[["gcsDestination"]][["filenamePrefix"]]
+    gcs_fileFormat <- gcs_ExportOptions[["fileFormat"]]
 
     # Select a gcs file considering the filename and bucket
     count <- 1
@@ -1040,19 +1040,19 @@ ee_gcs_to_local <- function(task,
     fileformat <- toupper(gcs_fileFormat)
     if (missing(dsn)) {
       ee_tempdir <- tempdir()
-      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs$name))
+      filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gcs[["name"]]))
     } else {
       pattern <- "(.*)(\\..*)$"
-      element_len <- length(files_gcs$name)
+      element_len <- length(files_gcs[["name"]])
       # Neccesary for large GEOTIFF and TFRecord files
       if (task$task_type == "EXPORT_IMAGE" & element_len > 1) {
         file_ft <- sprintf(
           "-%04d%s",
           seq_len(element_len),
-          sub(pattern, "\\2", files_gcs$name)
+          sub(pattern, "\\2", files_gcs[["name"]])
         )
       } else {
-        file_ft <- sub(pattern, "\\2", files_gcs$name)
+        file_ft <- sub(pattern, "\\2", files_gcs[["name"]])
       }
       dsn_n <- sub(pattern,"\\1",basename(dsn))
       filenames_local <- sprintf("%s/%s%s",dirname(dsn), dsn_n, file_ft)
@@ -1065,7 +1065,7 @@ ee_gcs_to_local <- function(task,
       if (isTRUE(quiet)) {
         suppressMessages(
           googleCloudStorageR::gcs_get_object(
-            object_name = to_download[index,]$name,
+            object_name = to_download[index,][["name"]],
             bucket = gcs_bucket,
             saveToDisk = filenames_local[index],
             overwrite = TRUE
@@ -1073,7 +1073,7 @@ ee_gcs_to_local <- function(task,
         )
       } else {
         googleCloudStorageR::gcs_get_object(
-            object_name = to_download[index,]$name,
+            object_name = to_download[index,][["name"]],
             bucket = gcs_bucket,
             saveToDisk = filenames_local[index],
             overwrite = TRUE

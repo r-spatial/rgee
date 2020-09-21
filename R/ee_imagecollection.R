@@ -21,16 +21,13 @@
 #' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_imagecollection_to_local} supports the download of \code{ee$Image}
-#' by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-#' is set in the \code{via} argument, \code{ee_imagecollection_to_local} will
-#' make an REST call to retrieve all the known information about the object.
-#' The advantage of use "getInfo" is a direct and faster download. However,
-#' there is a limitation of 262144 pixels by request which makes it not
-#' recommendable for large images. Instead of "getInfo", the options: "drive"
-#' and "gcs" are suitable for large collections since they use an intermediate
-#' container. They use Google Drive and Google Cloud Storage respectively. For
-#' getting more information about exporting data from Earth Engine,  take a
-#' look at the \href{https://developers.google.com/earth-engine/exporting}{Google
+#' by two different options: "drive" that use Google Drive and "gcs"
+#' that use Google Cloud Storage. Previously, it is necessary to install the
+#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
+#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' googleCloudStorageR} respectively. For getting more information about
+#' exporting data from Earth Engine, take a look at the
+#' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @importFrom crayon green
 #' @return Character vector containing the filename of the images downloaded.
@@ -53,23 +50,12 @@
 #' geometry <- collection$first()$geometry(proj = ee_crs)$bounds()
 #' tmp <- tempdir()
 #'
-#' ## Using getInfo
-#' ic_getinfo_files <- ee_imagecollection_to_local(
-#'   ic = collection,
-#'   region = geometry,
-#'   scale = 100,
-#'   dsn = tmp,
-#'   via = "getInfo",
-#'   quiet = TRUE
-#' )
-#'
 #' ## Using drive
 #' ic_drive_files <- ee_imagecollection_to_local(
 #'   ic = collection,
 #'   region = geometry,
 #'   scale = 100,
-#'   dsn = file.path(tmp, "drive_"),
-#'   via = "drive"
+#'   dsn = file.path(tmp, "drive_")
 #' )
 #'
 #' }
@@ -77,7 +63,7 @@
 ee_imagecollection_to_local <- function(ic,
                                         region,
                                         dsn = NULL,
-                                        via = "getInfo",
+                                        via = "drive",
                                         scale = NULL,
                                         maxPixels = 1e9,
                                         container = "rgee_backup",
@@ -94,11 +80,15 @@ ee_imagecollection_to_local <- function(ic,
   }
 
   ic_names <- NULL
-  ic_count <- ic$size()$getInfo()
+  ic_count <-   ic %>%
+    ee$ImageCollection$size() %>%
+    ee$Number$getInfo()
 
   # if dsn is null
   if (is.null(dsn)) {
-    ic_names <- ic$aggregate_array('system:index')$getInfo()
+    ic_names <- ic %>%
+      ee$ImageCollection$aggregate_array("system:index") %>%
+      ee$List$getInfo()
     if (is.null(ic_names)) {
       stop(
         "Error: ee_imagecollection_to_local was not able to create the ",
@@ -115,14 +105,18 @@ ee_imagecollection_to_local <- function(ic,
   } else {
     # if dsn is a directory or a character
     if (tryCatch(dir.exists(dsn), error = function(e) FALSE)) {
-      ic_names <- ic$aggregate_array('system:index')$getInfo()
+      ic_names <- ic %>%
+        ee$ImageCollection$aggregate_array("system:index") %>%
+        ee$List$getInfo()
       ic_names <- sprintf("%s/%s",dsn,ic_names)
     }
 
     # if dsn is a directory or a character
     if (tryCatch(dir.exists(dirname(dsn)), error = function(e) FALSE)) {
-      ic_names <- ic$aggregate_array('system:index')$getInfo()
-      ic_names <- sprintf("%s_%s",dsn,ic_names)
+      ic_names <- ic %>%
+        ee$ImageCollection$aggregate_array("system:index") %>%
+        ee$List$getInfo()
+      ic_names <- sprintf("%s%s",dsn,ic_names)
     }
   }
 
@@ -141,11 +135,13 @@ ee_imagecollection_to_local <- function(ic,
   ic_files <- list()
   for (r_index in seq_len(ic_count)) {
     index <- r_index - 1
-    image <- ee$Image(ic$toList(count = index + 1, offset = index)$get(0))
+    image <- ic %>%
+      ee$ImageCollection$toList(count = index + 1, offset = index) %>%
+      ee$List$get(0) %>%
+      ee$Image()
     if (!quiet) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-
     ee_image_local(
       image = image,
       region = region,
@@ -166,20 +162,41 @@ ee_imagecollection_to_local <- function(ic,
 }
 
 #' geometry message
+#' @importFrom crayon bold
 #' @noRd
-ee_geometry_message <- function(region, quiet = FALSE) {
+ee_geometry_message <- function(region, sf_region = NULL, quiet = FALSE) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
   # From geometry to sf
-  sf_region <- ee_as_sf(x = region)$geometry
-  region_crs <- sf::st_crs(sf_region)$epsg
+  if (is.null(sf_region)) {
+    sf_region <- ee_as_sf(x = region)[["geometry"]]
+  }
+
+  sfg_geom_data <- sf::st_as_text(sf_region)
+  current_lenght <- nchar(sfg_geom_data)
+  if (current_lenght > 60) {
+    sfg_geom_data <- paste0(
+      substr(sfg_geom_data,1, 27),
+      " .... ",
+      substr(sfg_geom_data, current_lenght - 27, current_lenght)
+    )
+  }
+
+  region_crs <- sf::st_crs(sf_region)[["wkt"]]
+  region_crs_summary <- strsplit(region_crs, "\n")[[1]][1:3] %>%
+    paste0(collapse = "\n") %>%
+    paste0(bold(" ....."))
 
   ### Metadata ----
   #is geodesic?
-  is_geodesic <- region$geodesic()$getInfo()
+  is_geodesic <- region %>%
+    ee$Geometry$geodesic() %>%
+    ee$ComputedObject$getInfo() %>%
+    ee_utils_py_to_r()
+
   #is evenodd?
-  query_params <- unlist(jsonlite::parse_json(region$serialize())$scope)
+  query_params <- unlist(jsonlite::parse_json(ee$Geometry$serialize(region))[["scope"]])
   is_evenodd <- all(as.logical(
     query_params[grepl("evenOdd", names(query_params))]
   ))
@@ -187,15 +204,14 @@ ee_geometry_message <- function(region, quiet = FALSE) {
     is_evenodd <- TRUE
   }
   ### ------------
-
   # geom message to display
   if (!quiet) {
     cat(
-      '- region parameters\n',
-      'WKT      :', sf::st_as_text(sf_region), "\n",
-      'CRS      :', region_crs, "\n",
-      'geodesic :', ee_utils_py_to_r(is_geodesic), "\n",
-      'evenOdd  :', is_evenodd, "\n"
+      bold("- region parameters\n"),
+      bold("sfg      :"), sfg_geom_data, "\n",
+      bold("CRS      :"), region_crs_summary, "\n",
+      bold("geodesic :"), ee_utils_py_to_r(is_geodesic), "\n",
+      bold("evenOdd  :"), is_evenodd, "\n"
     )
   }
   invisible(TRUE)

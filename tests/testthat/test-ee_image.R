@@ -25,7 +25,7 @@ test_that('Geometry consideration for "getInfo"', {
   # test01: base case
   img_01 <- ee_as_raster(image = test_image_01, region = rect_01,
                                quiet = TRUE)
-  expect_equal(extent(img_01), extent(-3,3,-3,3))
+  expect_equal(extent(img_01), extent(-3,3,-2,4))
 
   # test02: even a small increase will add a new pixel
   nominalscale <- test_image_01$projection()$nominalScale()$getInfo()
@@ -51,17 +51,18 @@ test_that("ee_as_proxystars ", {
 test_that("ee_as_stars - simple ", {
   skip_if_no_credentials()
   #getinfo
-  img_stars_01 <- ee_as_stars(
-    image = img,
-    region = geometry,
-    via = "getInfo"
-  )
-  expect_s3_class(img_stars_01,'stars')
+  # img_stars_01 <- ee_as_stars(
+  #   image = img,
+  #   region = geometry,
+  #   via = "getInfo"
+  # )
+  # expect_s3_class(img_stars_01,'stars')
 
   #drive
   img_stars_02 <- ee_as_stars(
     image = img,
     region = geometry,
+    scale = 250,
     via = "drive"
   )
   expect_s3_class(img_stars_02, 'stars')
@@ -69,15 +70,16 @@ test_that("ee_as_stars - simple ", {
   img_raster_03 <- ee_as_raster(
     image = img,
     region = geometry,
+    scale = 250,
     via = "gcs",
     container = 'rgee_dev'
   )
   expect_s4_class(img_raster_03, 'RasterStack')
 
-  getInfo <- mean(getValues(raster(img_stars_01[[1]])))
-  drive <- mean(getValues(raster(img_stars_02[[1]])),na.rm = TRUE)
+  gcs <- mean(getValues(img_raster_03))
+  drive <- mean(getValues(stack(img_stars_02[[1]])),na.rm = TRUE)
   # Equal value but some problems in the bounds
-  expect_equal(getInfo, drive, tolerance = 0.1)
+  expect_equal(gcs, drive, tolerance = 0.1)
 })
 
 
@@ -169,17 +171,16 @@ test_that("ee_image_local error 2", {
   }
 )
 
-test_that("ee_image_local error 3", {
-  expect_error(
-    rgee:::ee_image_local(
-      image = image_srtm,
-      region = geometry$centroid(maxError = 1)$buffer(100),
-      scale = 100,
-      via = "getInfo"
-    )
-  )
-}
-)
+# test_that("ee_image_local error 3", {
+#   expect_error(
+#     rgee:::ee_image_local(
+#       image = image_srtm,
+#       region = geometry$centroid(maxError = 1)$buffer(100),
+#       scale = 100
+#     )
+#   )
+# }
+# )
 
 test_that("ee_image_local error 4", {
   expect_error(
@@ -192,7 +193,6 @@ test_that("ee_image_local error 4", {
   )
 }
 )
-
 
 test_that("ee_image_local error 5", {
   expect_error(

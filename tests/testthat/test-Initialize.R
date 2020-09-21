@@ -38,7 +38,7 @@ test_that("ee_source_python - fn",{
 
 test_that("ee_users",{
   counts <- ee_users()
-  expect_true(counts)
+  expect_s3_class(counts, "data.frame")
 })
 
 test_that("ee_users",{

@@ -12,8 +12,8 @@ sf_as_ee(
   command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,
+  proj = "EPSG:4326",
   evenOdd = TRUE,
-  proj = 4326,
   geodesic = NULL,
   quiet = FALSE,
   ...
@@ -43,15 +43,15 @@ is "getInfo". By default TRUE.}
 \code{getInfo_to_asset} or \code{gcs_to_asset}. If TRUE the exportation task
 will be monitored.}
 
+\item{proj}{Integer or character. Coordinate Reference System (CRS) for the
+EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
+
 \item{evenOdd}{Logical. Ignored if \code{x} is not a Polygon. If TRUE,
 polygon interiors will be determined by the even/odd rule, where a point
 is inside if it crosses an odd number of edges to reach a point at infinity.
 Otherwise polygons use the left-inside rule, where interiors are on the
 left side of the shell's edges when walking the vertices in the given order.
 If unspecified, defaults to TRUE.}
-
-\item{proj}{Integer or character. Coordinate Reference System (CRS) for the
-EE object, defaults to "EPSG:4326" (x=longitude, y=latitude).}
 
 \item{geodesic}{Logical. Ignored if \code{x} is not a Polygon or LineString.
 Whether line segments should be interpreted as spherical geodesics. If

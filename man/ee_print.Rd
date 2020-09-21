@@ -21,7 +21,7 @@ ee_print(eeobject, ...)
   eeobject,
   ...,
   img_band,
-  time_end = FALSE,
+  time_end = TRUE,
   compression_ratio = 20,
   clean = FALSE,
   quiet = FALSE
@@ -30,7 +30,7 @@ ee_print(eeobject, ...)
 \method{ee_print}{ee.imagecollection.ImageCollection}(
   eeobject,
   ...,
-  time_end = FALSE,
+  time_end = TRUE,
   img_index = 0,
   img_band,
   compression_ratio = 20,

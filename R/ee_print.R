@@ -90,19 +90,32 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
   }
   if (!identical(past_eeobject, ee_hash(eeobject))) {
     # 2. Feature metadata
-    geometry <- eeobject$getInfo()
+    geometry <- ee$Geometry$getInfo(eeobject)
 
     # 3. Geometry metadata
-    geom_type <- toupper(geometry$type)
-    geom_info <- eeobject$projection()$getInfo()
-    geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
-    geom_geodesic <- ee_utils_py_to_r(ee$Geometry$geodesic(eeobject)$getInfo())
-    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
+    geom_type <- toupper(geometry[["type"]])
+    geom_info <- eeobject %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$getInfo()
+    geom_wkt <- eeobject %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- eeobject %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
+
+    geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
+    geom_proj4string <- geom_wkt$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
+
     ee_metadata <- list(
       name = "Geometry",
       geom_type = geom_type,
-      geom_epsg = geom_epsg,
+      geom_crs_name = geom_crs_name,
       geom_geodesic = geom_geodesic,
       geom_geotransform = geom_geotransform,
       geom_proj4string = geom_proj4string
@@ -114,15 +127,16 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
       try(save(ee_metadata, past_eeobject, file = metadata_file), silent = TRUE)
     )
   }
+
   if (!quiet) {
     # 7. Display Results
     cat(rule(right = bold(paste0("Earth Engine Geometry"))))
     cat(blue$bold("\nGeometry Metadata:"))
-    cat("\n - EPSG (SRID)                :", ee_metadata$geom_epsg)
+    cat("\n - CRS                        :", ee_metadata$geom_crs_name)
     cat("\n - proj4string                :", ee_metadata$geom_proj4string)
     cat("\n - Geotransform               :", ee_metadata$geom_geotransform)
     cat("\n - Geodesic                   :", ee_metadata$geom_geodesic)
-    cat("\n - WKT                        :", ee_metadata$geom_type)
+    cat("\n - Geo Type                   :", ee_metadata$geom_type)
     cat("\n", rule())
   }
   invisible(ee_metadata)
@@ -149,16 +163,32 @@ ee_print.ee.feature.Feature <- function(eeobject,
   }
   if (!identical(past_eeobject, ee_hash(eeobject))) {
     # 2. Feature metadata
-    feature_info <- eeobject$getInfo()
+    feature_info <- ee$Feature$getInfo(eeobject)
     f_properties_names <- names(feature_info$properties)
     f_properties_length <- length(names(feature_info$properties))
 
     # 3. Geometry metadata
     geom_type <- toupper(feature_info$geometry$type)
-    geom_info <- eeobject$geometry()$projection()$getInfo()
-    geom_geodesic <- ee_utils_py_to_r(eeobject$geometry()$geodesic()$getInfo())
-    geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
-    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
+    geom_info <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$getInfo()
+
+    geom_wkt <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- eeobject %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
+
+    geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
+    geom_proj4string <- geom_wkt$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
 
     ee_metadata <- list(
@@ -166,8 +196,8 @@ ee_print.ee.feature.Feature <- function(eeobject,
       f_properties_names = f_properties_names,
       f_properties_length = f_properties_length,
       geom_type = geom_type,
-      geom_epsg = geom_epsg,
       geom_geodesic = geom_geodesic,
+      geom_crs_name = geom_crs_name,
       geom_geotransform = geom_geotransform,
       geom_proj4string = geom_proj4string
     )
@@ -184,11 +214,11 @@ ee_print.ee.feature.Feature <- function(eeobject,
     cat(blue$bold("\nFeature Metadata:"))
     cat("\n - Number of Properties       :", ee_metadata$f_properties_length)
     cat(blue$bold("\nGeometry Metadata:"))
-    cat("\n - EPSG (SRID)                :", ee_metadata$geom_epsg)
+    cat("\n - CRS                        :", ee_metadata$geom_crs_name)
     cat("\n - proj4string                :", ee_metadata$geom_proj4string)
     cat("\n - Geotransform               :", ee_metadata$geom_geotransform)
     cat("\n - Geodesic                   :", ee_metadata$geom_geodesic)
-    cat("\n - WKT                        :", ee_metadata$geom_type)
+    cat("\n - Geo Type                   :", ee_metadata$geom_type)
     cat("\n", rule())
   }
   invisible(ee_metadata)
@@ -217,25 +247,49 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
 
   if (!identical(past_eeobject, ee_hash(eeobject, f_index))) {
     # 2. Select a specific EE Feature by EE FC index.
-    feature <- ee$Feature(eeobject$toList(f_index + 1, f_index)$get(0))
+    feature <- eeobject %>%
+      ee$FeatureCollection$toList(f_index + 1, f_index) %>%
+      ee$List$get(0) %>%
+      ee$Feature()
 
     # 3. FeatureCollection metadata
-    fc_properties_names <- eeobject$propertyNames()$getInfo()
+    fc_properties_names <- eeobject %>%
+      ee$FeatureCollection$propertyNames() %>%
+      ee$List$getInfo()
     fc_properties_length <- length(fc_properties_names)
-    fc_n_features <- eeobject$size()$getInfo()
+    fc_n_features <- eeobject %>%
+      ee$FeatureCollection$size() %>%
+      ee$Number$getInfo()
 
     # 4. Feature metadata
-    feature_info <- feature$getInfo()
+    feature_info <- ee$Feature$getInfo(feature)
     f_properties_names <- names(feature_info$properties)
     f_properties_length <- length(names(feature_info$properties))
 
     # 5. Geometry metadata
     geom_type <- toupper(feature_info$geometry$type)
-    geom_info <- feature$geometry()$projection()$getInfo()
-    geom_geodesic <- ee_utils_py_to_r(feature$geometry()$geodesic()$getInfo())
-    geom_epsg <- as.numeric(gsub("EPSG:", "", geom_info$crs))
-    geom_proj4string <- sf::st_crs(geom_epsg)$proj4string
+    geom_info <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$String$getInfo()
+
+    geom_wkt <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo() %>%
+      sf::st_crs()
+
+    geom_geodesic <- feature %>%
+      ee$Feature$geometry() %>%
+      ee$Geometry$geodesic() %>%
+      ee$ComputedObject$getInfo() %>%
+      ee_utils_py_to_r()
+
+    geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
+    geom_proj4string <- geom_wkt$proj4string
     geom_geotransform <- paste0(geom_info$transform, collapse = " ")
+
 
     ee_metadata <- list(
       name = "FeatureCollection",
@@ -246,7 +300,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
       f_properties_names = f_properties_names,
       f_properties_length = f_properties_length,
       geom_type = geom_type,
-      geom_epsg = geom_epsg,
+      geom_crs_name = geom_crs_name,
       geom_geodesic = geom_geodesic,
       geom_geotransform = geom_geotransform,
       geom_proj4string = geom_proj4string
@@ -272,11 +326,11 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
 
     cat(blue$bold(sprintf("\nGeometry Metadata (f_index = %s):",
                           ee_metadata$fc_feature_index)))
-    cat("\n - EPSG (SRID)                :", ee_metadata$geom_epsg)
+    cat("\n - CRS                        :", ee_metadata$geom_crs_name)
     cat("\n - proj4string                :", ee_metadata$geom_proj4string)
     cat("\n - Geotransform               :", ee_metadata$geom_geotransform)
     cat("\n - Geodesic                   :", ee_metadata$geom_geodesic)
-    cat("\n - WKT                        :", ee_metadata$geom_type)
+    cat("\n - Geo Type                   :", ee_metadata$geom_type)
     cat("\n", rule())
   }
   invisible(ee_metadata)
@@ -287,7 +341,7 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
 ee_print.ee.image.Image <- function(eeobject,
                                     ...,
                                     img_band,
-                                    time_end = FALSE,
+                                    time_end = TRUE,
                                     compression_ratio = 20,
                                     clean = FALSE,
                                     quiet = FALSE) {
@@ -296,7 +350,9 @@ ee_print.ee.image.Image <- function(eeobject,
   }
 
   # 1. Fetch and Return bandname about ee$Image
-  img_bandNames <- eeobject$bandNames()$getInfo()
+  img_bandNames <- eeobject %>%
+    ee$Image$bandNames() %>%
+    ee$List$getInfo()
   img_nband <- length(img_bandNames)
   if (missing(img_band)) {
     img_band <- img_bandNames[1]
@@ -314,25 +370,16 @@ ee_print.ee.image.Image <- function(eeobject,
 
   if (!identical(past_eeobject, eeobject_hash)) {
     # 3. Fetch and Return metadata about an EE image band
-    selected_img <- eeobject$select(img_band)
-    band_info <- selected_img$getInfo()
+    selected_img <- eeobject %>%
+      ee$Image$select(img_band)
+    band_info <- ee$Image$getInfo(selected_img)
     band_properties <- band_info$properties
     band_metadata <- band_info$bands[[1]]
 
-    is_EPSG <- grepl("EPSG:", band_metadata$crs)
-    if (is_EPSG) {
-      band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
-    } else {
-      message(
-        "ee_print only support EPSG codes. Reprojecting ",
-        "to EPSG:4326 ...."
-      )
-      selected_img <- selected_img$reproject(crs = "EPSG:4326")
-      band_info <- selected_img$reproject(crs = "EPSG:4326")$getInfo()
-      band_properties <- band_info$properties
-      band_metadata <- band_info$bands[[1]]
-      band_metadata_epsg <- as.numeric(gsub("EPSG:", "", band_metadata$crs))
-    }
+    geom_wkt <- sf::st_crs(ee_utils_get_crs(band_metadata$crs))
+    geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, band_metadata$crs)
+    geom_proj4string <- geom_wkt$proj4string
+    geom_geotransform <- paste0(unlist(band_metadata$crs_transform), collapse = " ")
 
     img_id_time <- ee_get_date_img(selected_img, time_end = time_end)
 
@@ -359,9 +406,9 @@ ee_print.ee.image.Image <- function(eeobject,
       img_time_start = img_id_time$time_start,
       img_time_end = img_id_time$time_end,
       band_name = img_band,
-      band_epsg = band_metadata_epsg,
-      band_proj4string = sf::st_crs(band_metadata_epsg)$proj4string,
-      band_geotransform = paste0(band_metadata$crs_transform, collapse = " "),
+      band_crs_name = geom_crs_name,
+      band_proj4string = geom_proj4string,
+      band_geotransform = geom_geotransform,
       band_scale_x = band_metadata$crs_transform[1],
       band_scale_y = band_metadata$crs_transform[5],
       band_nominal_scale = band_metadata_nominal_scale,
@@ -370,6 +417,7 @@ ee_print.ee.image.Image <- function(eeobject,
       band_pixel = band_metadata_geom$nrow * band_metadata_geom$ncol,
       band_size = band_metadata_geom$image_size
     )
+
     # 4. Save ee_metadata in /tmpdir
     past_eeobject <- ee_hash(eeobject, img_band, compression_ratio)
     suppressWarnings(
@@ -385,7 +433,7 @@ ee_print.ee.image.Image <- function(eeobject,
     if (!is.null(ee_metadata$img_time_start)) {
       if (!is.na(ee_metadata$img_time_start)) {
         cat(
-          "\n - Time start                 :",
+          "\n - system:time_start          :",
           as.character(ee_metadata$img_time_start)
         )
       }
@@ -393,9 +441,9 @@ ee_print.ee.image.Image <- function(eeobject,
     if (!is.null(ee_metadata$img_time_end)) {
       if (!is.na(ee_metadata$img_time_end)) {
         cat(
-          "\n - Time end                   :",
+          "\n - system:time_end            :",
           as.character(ee_metadata$img_time_end)
-          )
+        )
       }
     }
     cat("\n - Number of Bands            :", ee_metadata$img_nbands)
@@ -405,7 +453,7 @@ ee_print.ee.image.Image <- function(eeobject,
     cat("\n - Approximate size*          :", ee_humansize(ee_metadata$img_size))
     cat(blue$bold(sprintf("\nBand Metadata (img_band = %s):",
                           ee_metadata$band_name)))
-    cat("\n - EPSG (SRID)                :", ee_metadata$band_epsg)
+    cat("\n - EPSG (SRID)                :", ee_metadata$band_crs_name)
     cat("\n - proj4string                :", ee_metadata$band_proj4string)
     cat("\n - Geotransform               :", ee_metadata$band_geotransform)
     cat("\n - Nominal scale (meters)     :", ee_metadata$band_nominal_scale)
@@ -428,17 +476,23 @@ ee_print.ee.image.Image <- function(eeobject,
 #' @export
 ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
                                                         ...,
-                                                        time_end = FALSE,
+                                                        time_end = TRUE,
                                                         img_index = 0,
                                                         img_band,
                                                         compression_ratio = 20,
                                                         clean = FALSE,
                                                         quiet = FALSE) {
   # 1. Select a specific EE Image by EE IC index.
-  img <- ee$Image(eeobject$toList(img_index + 1, img_index)$get(0))
+  img <- eeobject %>%
+    ee$ImageCollection$toList(img_index + 1, img_index) %>%
+    ee$List$get(0) %>%
+    ee$Image()
 
   # 2. Fetch and Return metadata about the Image
-  img_bandNames <- img$bandNames()$getInfo()
+  img_bandNames <- img %>%
+    ee$Image$bandNames() %>%
+    ee$List$getInfo()
+
   if (missing(img_band)) {
     img_band <- img_bandNames[1]
   }
@@ -459,9 +513,13 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
   ## dataset, otherwise load from /temdir
   if (!identical(past_eeobject, eeobject_hash)) {
     # 4. Fetch and Return ee$ImageCollection metadata
-    ic_properties <- eeobject$propertyNames()$getInfo()
+    ic_properties <- eeobject %>%
+      ee$ImageCollection$propertyNames() %>%
+      ee$List$getInfo()
     ic_n_properties <- length(ic_properties)
-    ic_n_img <- eeobject$size()$getInfo()
+    ic_n_img <- eeobject %>%
+      ee$ImageCollection$size() %>%
+      ee$Number$getInfo()
 
     # 3. Fetch and Return ee$Image metadata
     ee_mtd_img <- ee_print(
@@ -491,7 +549,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
       img_properties_names = ee_mtd_img$img_properties_names,
       img_properties_length = ee_mtd_img$img_properties_length,
       band_name = ee_mtd_img$band_name,
-      band_epsg = ee_mtd_img$band_epsg,
+      band_crs_name = ee_mtd_img$band_crs_name,
       band_proj4string = ee_mtd_img$band_proj4string,
       band_geotransform = ee_mtd_img$band_geotransform,
       band_scale_x = ee_mtd_img$band_scale_x,
@@ -525,7 +583,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     if (!is.null(ee_metadata$img_time_start)) {
       if (!is.na(ee_metadata$img_time_start)) {
         cat(
-          "\n - Time start                 :",
+          "\n - system:time_start          :",
           as.character(ee_metadata$img_time_start)
         )
       }
@@ -533,7 +591,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
     if (!is.null(ee_metadata$img_time_end)) {
       if (!is.na(ee_metadata$img_time_end)) {
         cat(
-          "\n - Time end                   :",
+          "\n - system:time_end            :",
           as.character(ee_metadata$img_time_end)
         )
       }
@@ -546,7 +604,7 @@ ee_print.ee.imagecollection.ImageCollection <- function(eeobject,
 
     cat(blue$bold(sprintf("\nBand Metadata (img_band = '%s'):",
                           ee_metadata$band_name)))
-    cat("\n - EPSG (SRID)                :", ee_metadata$band_epsg)
+    cat("\n - EPSG (SRID)                :", ee_metadata$band_crs_name)
     cat("\n - proj4string                :", ee_metadata$band_proj4string)
     cat("\n - Geotransform               :", ee_metadata$band_geotransform)
     cat("\n - Nominal scale (meters)     :", ee_metadata$band_nominal_scale)
