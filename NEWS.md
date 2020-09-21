@@ -12,16 +12,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.6
-- Class method chaining (i.e. `x$size()$getInfo()`) were changed by pipes (i.e. ee_x %>% `ee$FeatureCollection$size() %>% ee$Number()`) in all the `rgee` functions. This eliminate OverflowError on sytems using Window OS.
+- Class method chaining (i.e. `x$size()$getInfo()`) were changed by pipes (i.e. ee_x %>% `ee$FeatureCollection$size() %>% ee$Number()`) in all the `rgee` functions. This solve the problem "OverflowError: python int too large to convert to C long" on Window systems.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
 instead of **base::system**. 
 - `rgee` I/O functions now check argument before to start to upload/download data.
 - Map operators (**+** and **|**) now support EarthEnginemap objects with the 
 same name.
 - Now `Map$addLayers` only display the legend of the first image.
-- Fix a bug in `rgee:::ee_image_local` which makes do not work when all bands have not
-the same crs and crsTransform.
-- Fix a bug in `rgee:::ee_image_local` which displaced one pixel in the 'x' and 'y' axis when the argument via = "getInfo" was set.
+- Fix a bug in `rgee:::ee_image_local` which makes do not work when all bands have not the same crs and crsTransform.
+- "getInfo" method in download raster functions was deprecated and will be removed in v.1.0.8.
 - Fix a bug in `sf_as_ee` and `ee_as_sf` now both support SR-ORG CRS codes.
 - `ee_users` returns a data.frame.
 - `ee_monitoring` counts the processing time.
@@ -29,6 +28,7 @@ the same crs and crsTransform.
 - Several changes in `ee_extract`, now is faster and code is cleaner.
 - Fix a bug in name creator in `ee_imagecollection_to_local`.
 - A new message more detailed when the Python path does not have the earth-engine Python API.
+- Earth Engine Python API updated to 0.1.235.
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
