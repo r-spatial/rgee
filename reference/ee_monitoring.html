@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -160,7 +160,7 @@
     <p>Monitoring Earth Engine task progress</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_monitoring</span>(<span class='no'>task</span>, <span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_monitoring</span>(<span class='kw'>task</span>, task_time = <span class='fl'>5</span>, eeTaskList = <span class='fl'>FALSE</span>, quiet = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -168,6 +168,10 @@
     <tr>
       <th>task</th>
       <td><p>List generated after an created an EE task.</p></td>
+    </tr>
+    <tr>
+      <th>task_time</th>
+      <td><p>Numeric. How often (in seconds) should a task be polled?</p></td>
     </tr>
     <tr>
       <th>eeTaskList</th>
@@ -187,11 +191,12 @@ listed.</p></td>
 <code><a href='ee_print.html'>ee_print</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
-<span class='fu'>ee_monitoring</span>(<span class='kw'>eeTaskList</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-}</pre>
+<span class='fu'>ee_monitoring</span>(eeTaskList = <span class='fl'>TRUE</span>)
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -207,7 +212,7 @@ listed.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -161,15 +161,15 @@
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_stars</span>(
-  <span class='no'>image</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>maxPixels</span> <span class='kw'>=</span> <span class='fl'>1e+09</span>,
-  <span class='kw'>container</span> <span class='kw'>=</span> <span class='st'>"rgee_backup"</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>image</span>,
+  region = <span class='kw'>NULL</span>,
+  dsn = <span class='kw'>NULL</span>,
+  via = <span class='st'>"drive"</span>,
+  scale = <span class='kw'>NULL</span>,
+  maxPixels = <span class='fl'>1e+09</span>,
+  container = <span class='st'>"rgee_backup"</span>,
+  quiet = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -192,8 +192,8 @@ forced. If not specified image bounds will be taken.</p></td>
     </tr>
     <tr>
       <th>via</th>
-      <td><p>Character. Method to fetch data about the object. Three methods
-are implemented: "getInfo", "drive", "gcs". See details.</p></td>
+      <td><p>Character. Method to fetch data about the object. Two methods
+are implemented: "drive", "gcs". See details.</p></td>
     </tr>
     <tr>
       <th>scale</th>
@@ -229,19 +229,12 @@ to be exported into (ignored if <code>via</code> is not defined as "drive" or
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>ee_as_stars</code> supports the download of <code>ee$Image</code>
-by three different options: "getInfo", "drive", and "gcs". When "getInfo"
-is set in the <code>via</code> argument, <code>ee_as_stars</code> will make a
-REST call to retrieve all the known information about the object. The
-advantage of using "getInfo" is performing a quick download. However, there
-is a limitation of 262144 pixels by request which makes it not recommendable
-for large images. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large collections since they use an intermediate web store
-service. Before using any of these options, it is necessary previously
-to install the R packages
-<a href=' https://CRAN.R-project.org/package=googledrive'>googledrive</a>
-and <a href='https://CRAN.R-project.org/package=googleCloudStorageR'>
-googleCloudStorageR</a>. For getting more information about exporting data from
-Earth Engine,  take a look at the
+by two different options: "drive" that use Google Drive and "gcs"
+that use Google Cloud Storage. Previously, it is necessary to install the
+R packages <a href=' https://CRAN.R-project.org/package=googledrive'>googledrive</a>
+or <a href='https://CRAN.R-project.org/package=googleCloudStorageR'>
+googleCloudStorageR</a> respectively. For getting more information about
+exporting data from Earth Engine,  take a look at the
 <a href='https://developers.google.com/earth-engine/exporting'>Google
 Earth Engine Guide - Export data</a>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -252,43 +245,36 @@ Earth Engine Guide - Export data</a>.</p>
 <code><a href='ee_imagecollection_to_local.html'>ee_imagecollection_to_local</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
 
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>drive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(drive = <span class='fl'>TRUE</span>, gcs = <span class='fl'>TRUE</span>)
 <span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span>()
 
 <span class='co'># Define an image.</span>
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)$
-  <span class='fu'>select</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>))$
+<span class='kw'>img</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)<span class='op'>$</span>
+  <span class='fu'>select</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>))<span class='op'>$</span>
   <span class='fu'>divide</span>(<span class='fl'>10000</span>)
 
 <span class='co'># OPTIONAL display it using Map</span>
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>img</span>)
-<span class='no'>Map</span>$<span class='fu'>addLayer</span>(<span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>img</span>, <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.4</span>,<span class='kw'>gamma</span><span class='kw'>=</span><span class='fl'>0.1</span>))
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(eeObject = <span class='kw'>img</span>)
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span>(eeObject = <span class='kw'>img</span>, visParams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(max = <span class='fl'>0.4</span>,gamma=<span class='fl'>0.1</span>))
 
 <span class='co'># Define an area of interest.</span>
-<span class='no'>geometry</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(
-  <span class='kw'>coords</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>110.8</span>, <span class='fl'>44.6</span>, -<span class='fl'>110.6</span>, <span class='fl'>44.7</span>),
-  <span class='kw'>proj</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>,
-  <span class='kw'>geodesic</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='kw'>geometry</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Geometry</span><span class='op'>$</span><span class='fu'>Rectangle</span>(
+  coords = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>110.8</span>, <span class='fl'>44.6</span>, <span class='op'>-</span><span class='fl'>110.6</span>, <span class='fl'>44.7</span>),
+  proj = <span class='st'>"EPSG:4326"</span>,
+  geodesic = <span class='fl'>FALSE</span>
 )
 
-<span class='co'>## getInfo - Option 01</span>
-<span class='no'>img_01</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_stars</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>geometry</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"getInfo"</span>
+<span class='co'>## drive - Method 01</span>
+<span class='kw'>img_02</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_stars</span>(
+  image = <span class='kw'>img</span>,
+  region = <span class='kw'>geometry</span>,
+  via = <span class='st'>"drive"</span>
 )
 
-<span class='co'>## drive - Method 02</span>
-<span class='no'>img_02</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_stars</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>geometry</span>,
-  <span class='kw'>via</span> <span class='kw'>=</span> <span class='st'>"drive"</span>
-)
-
-<span class='co'>## gcs - Method 03</span>
+<span class='co'>## gcs - Method 02</span>
 <span class='co'># img_03 &lt;- ee_as_stars(</span>
 <span class='co'>#   image = img,</span>
 <span class='co'>#  region = geometry,</span>
@@ -299,7 +285,8 @@ Earth Engine Guide - Export data</a>.</p>
 <span class='co'># OPTIONAL: Delete containers</span>
 <span class='co'># ee_clean_container(name = "rgee_backup", type = "drive")</span>
 <span class='co'># ee_clean_container(name = "rgee_dev", type = "gcs")</span>
-}</pre>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -315,7 +302,7 @@ Earth Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -82,7 +82,7 @@ using mapview." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -164,7 +164,7 @@ using mapview." />
 using <code>mapview</code>.</p>
     </div>
 
-    <pre class="usage"><span class='no'>Map</span></pre>
+    <pre class="usage"><span class='kw'>Map</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -195,7 +195,8 @@ See details.<br /></p></li>
 layers should be on by default. <br /></p></li>
 <li><p><strong>opacity:</strong> The layer's opacity represented as a number
 between 0 and 1. Defaults to 1. <br /></p></li>
-<li><p><strong>legend:</strong> Should a legend be plotted?.</p></li>
+<li><p><strong>legend:</strong> Should a legend be plotted?. Only the legend of
+the first image is displayed.</p></li>
 </ul></li>
 <li><p><strong>setCenter(lon = 0, lat = 0, zoom = NULL)</strong>: Centers the map
 view at the given coordinates with the given zoom level. If no zoom level
@@ -265,78 +266,79 @@ default 3.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapview</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/mapview'>mapview</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># Case 1: Geometry*</span>
-<span class='no'>geom1</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>73.53</span>, -<span class='fl'>15.75</span>))
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>geom1</span>, <span class='kw'>zoom</span> <span class='kw'>=</span> <span class='fl'>8</span>)
-<span class='no'>m1</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>geom1</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>pointRadius</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-    <span class='kw'>color</span> <span class='kw'>=</span> <span class='st'>"FF0000"</span>
+<span class='kw'>geom1</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>-</span><span class='fl'>73.53</span>, <span class='op'>-</span><span class='fl'>15.75</span>))
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(<span class='kw'>geom1</span>, zoom = <span class='fl'>8</span>)
+<span class='kw'>m1</span> <span class='op'>&lt;-</span> <span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span>(
+  eeObject = <span class='kw'>geom1</span>,
+  visParams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    pointRadius = <span class='fl'>10</span>,
+    color = <span class='st'>"FF0000"</span>
   ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Geometry-Arequipa"</span>
+  name = <span class='st'>"Geometry-Arequipa"</span>
 )
 
 <span class='co'># Case 2: Feature</span>
-<span class='no'>feature_arq</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(-<span class='fl'>72.53</span>, -<span class='fl'>15.75</span>)))
-<span class='no'>m2</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>feature_arq</span>,
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Feature-Arequipa"</span>
+<span class='kw'>feature_arq</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Feature</span>(<span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='op'>-</span><span class='fl'>72.53</span>, <span class='op'>-</span><span class='fl'>15.75</span>)))
+<span class='kw'>m2</span> <span class='op'>&lt;-</span> <span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span>(
+  eeObject = <span class='kw'>feature_arq</span>,
+  name = <span class='st'>"Feature-Arequipa"</span>
 )
-<span class='no'>m2</span> + <span class='no'>m1</span>
+<span class='kw'>m2</span> <span class='op'>+</span> <span class='kw'>m1</span>
 
 <span class='co'># Case 4: Image</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>image</span>)
-<span class='no'>m4</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-    <span class='kw'>bands</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>),
-    <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>10000</span>
+<span class='kw'>image</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(<span class='kw'>image</span>)
+<span class='kw'>m4</span> <span class='op'>&lt;-</span> <span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span>(
+  eeObject = <span class='kw'>image</span>,
+  visParams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+    bands = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>),
+    max = <span class='fl'>10000</span>
   ),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF"</span>
+  name = <span class='st'>"SF"</span>
 )
-<span class='no'>m4</span>
+<span class='kw'>m4</span>
 
 <span class='co'># Case 5: mapview + EarthEnginemap</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"rgee"</span>))
-<span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>) + <span class='no'>m2</span>
-<span class='no'>m2</span> + <span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='no'>nc</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
+<span class='kw'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, package=<span class='st'>"rgee"</span>))
+<span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='kw'>nc</span>) <span class='op'>+</span> <span class='kw'>m2</span>
+<span class='kw'>m2</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/pkg/mapview/man/mapView.html'>mapview</a></span>(<span class='kw'>nc</span>)
 
 <span class='co'># Case 6: mapedit</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mapedit</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'>mapedit</span>)
 <span class='co'># my_geometry &lt;- m2 %&gt;% ee_as_mapview() %&gt;% editMap()</span>
 
 <span class='co'># Case 7: ImageCollection</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+<span class='kw'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, package = <span class='st'>"sf"</span>)) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_transform.html'>st_transform</a></span>(<span class='fl'>4326</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
-<span class='no'>ee_s2</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"COPERNICUS/S2"</span>)$
-  <span class='fu'>filterDate</span>(<span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span>)$
-  <span class='fu'>filterBounds</span>(<span class='no'>nc</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='ee_get.html'>ee_get</a></span>(<span class='fl'>0</span>:<span class='fl'>4</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>nc</span>$<span class='fu'>geometry</span>())
-<span class='no'>Map</span>$<span class='fu'>addLayers</span>(<span class='no'>ee_s2</span>)
+<span class='kw'>ee_s2</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span>(<span class='st'>"COPERNICUS/S2"</span>)<span class='op'>$</span>
+  <span class='fu'>filterDate</span>(<span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span>)<span class='op'>$</span>
+  <span class='fu'>filterBounds</span>(<span class='kw'>nc</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ee_get.html'>ee_get</a></span>(<span class='fl'>0</span><span class='op'>:</span><span class='fl'>4</span>)
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(<span class='kw'>nc</span><span class='op'>$</span><span class='fu'>geometry</span>())
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span>(<span class='kw'>ee_s2</span>)
 
 <span class='co'># Case 8: Map comparison</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>image</span>)
-<span class='no'>m_ndvi</span> <span class='kw'>&lt;-</span> <span class='no'>Map</span>$<span class='fu'>addLayer</span>(
-  <span class='kw'>eeObject</span> <span class='kw'>=</span> <span class='no'>image</span>$<span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"B5"</span>, <span class='st'>"B4"</span>)),
-  <span class='kw'>visParams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>0.7</span>),
-  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"SF_NDVI"</span>,
-  <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>image</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span>)
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(<span class='kw'>image</span>)
+<span class='kw'>m_ndvi</span> <span class='op'>&lt;-</span> <span class='kw'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span>(
+  eeObject = <span class='kw'>image</span><span class='op'>$</span><span class='fu'>normalizedDifference</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"B5"</span>, <span class='st'>"B4"</span>)),
+  visParams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(max = <span class='fl'>0.7</span>),
+  name = <span class='st'>"SF_NDVI"</span>,
+  legend = <span class='fl'>TRUE</span>
 )
-<span class='no'>m4</span> <span class='kw'>|</span> <span class='no'>m_ndvi</span>
-}</pre>
+<span class='kw'>m4</span> <span class='op'>|</span> <span class='kw'>m_ndvi</span>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -352,7 +354,7 @@ default 3.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

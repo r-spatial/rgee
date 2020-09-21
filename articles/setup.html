@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -136,8 +136,10 @@
 <li>Interactive menu to confirm if restart the R session to see changes.</li>
 </ol>
 <p>However, the use of <code><a href="../reference/ee_install.html">ee_install()</a></code> is not mandatory. You can count on with your own custom installation. This would be also allowed.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="fu"><a href="../reference/ee_install.html">ee_install</a></span>() <span class="co"># It is just neccessary once!</span></pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
+<span class="fu"><a href="../reference/ee_install.html">ee_install</a></span>() <span class="co"># It is just neccessary once!</span>
+</pre></div>
 <p>By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are only needed to move data from Google Drive and Google Cloud Storage to your local environment. These dependencies are not mandatory. However, they will help you to create a seamless connection between R and Earth Engine. The dependencies that comprised this group are shown below:</p>
 <ul>
 <li><span style="color:#857e04"><strong>Google Cloud Storage credential</strong></span></li>
@@ -237,9 +239,11 @@
 </tbody>
 </table>
 <p>In <code>rgee</code>, all the functions from server to local side have the option to fetch data using an intermediate container (Google Drive or Google Cloud Storage) or through a REST call (“$getInfo”). Although the latter option performs a quick download, there is a request limit of 262144 pixels for ee$Image and 5000 elements for ee$FeatureCollection which makes it unsuitable for large objects. Other download functions, from server-side to others (see Table 1), are implemented to enable more customized download workflows. For example, using <code>ee_image_to_drive</code> and <code>ee_drive_to_local</code> users could create scripts which save results in the <code>.TFRecord</code> rather than the <code>.GeoTIFF</code> format. <code>rgee</code> to deal with <strong>Google Drive</strong> and <strong>Google Cloud Storage</strong> use the R package <a href="https://googledrive.tidyverse.org/">googledrive</a> and <a href="http://code.markedmondson.me/googleCloudStorageR/">googleCloudStorageR</a> respectively, so you will need to install it before.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># please try as follow</span>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># please try as follow</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googledrive'</span>)
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">'googleCloudStorageR'</span>)
+</pre></div>
 <p><strong>Google Drive</strong> is more friendly to novice Earth Engine users because the authentication process could be done without leaving R. However, if you are trying to move large images or vectors, is preferable use <strong>Google Cloud Storage</strong> instead. For using Google Cloud Storage, you will need to have your own Google Project with a credit card added to the service, charges will apply. See the <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">GCS_AUTH_FILE</a> tutorial to create your own service account key. If you want to understand why this is necessary, please have a look at <a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">Mark Edmondson</a> tutorial.</p>
 <p>Batch <strong>upload</strong> is a harder process, in <code>rgee</code> we try to make it simple. If you want to upload files in a batch way, firstly you must <strong>get authorization to read &amp; write into a Google Cloud Storage (GCS) bucket</strong>. <code>rgee</code> implement the next functions:</p>
 <table class="table">
@@ -308,23 +312,27 @@
 <li>Google Cloud Storage</li>
 </ul>
 <p>To authenticate either Google Drive or Google Cloud Storage, you just need to run as follow:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
 <span class="co">#ee_reattach() # reattach ee as a reserve word</span>
 
 <span class="co"># Initialize just Earth Engine</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>()
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="kw">email</span> <span class="kw">=</span> <span class="st">'csaybar@gmail.com'</span>) <span class="co"># Use the argument email is not mandatory</span>
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>() 
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(email = <span class="st">'csaybar@gmail.com'</span>) <span class="co"># Use the argument email is not mandatory</span>
 
 <span class="co"># Initialize Earth Engine and GD</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="kw">email</span> <span class="kw">=</span> <span class="st">'csaybar@gmail.com'</span>, <span class="kw">drive</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(email = <span class="st">'csaybar@gmail.com'</span>, drive = <span class="fl">TRUE</span>)
 
 <span class="co"># Initialize Earth Engine and GCS</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="kw">email</span> <span class="kw">=</span> <span class="st">'csaybar@gmail.com'</span>, <span class="kw">gcs</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(email = <span class="st">'csaybar@gmail.com'</span>, gcs = <span class="fl">TRUE</span>)
 
 <span class="co"># Initialize Earth Engine, GD and GCS</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(<span class="kw">email</span> <span class="kw">=</span> <span class="st">'csaybar@gmail.com'</span>, <span class="kw">drive</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">gcs</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span>(email = <span class="st">'csaybar@gmail.com'</span>, drive = <span class="fl">TRUE</span>, gcs = <span class="fl">TRUE</span>)
+</pre></div>
 <p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in the emerging GUI. Unlike Earth Engine and Google Drive, Google Cloud Storage need to set up its credential manually (<a href="http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">link1</a> and <a href="https://github.com/csaybar/GCS_AUTH_FILE.json">link2</a>). In all cases, the users credentials always will be stored in:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span>()
+</pre></div>
 <p>Remember you only have to authorize once, for next sessions it will not be necessary.</p>
 </div>
 <div id="checking" class="section level2">
@@ -339,12 +347,14 @@
 <li>
 <code><a href="../reference/ee_check-tools.html">ee_check_python_packages()</a></code> - Python packages</li>
 </ul>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check</a></span>()
 
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python</a></span>()
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check_credentials</a></span>()
-<span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python_packages</a></span>()</pre></body></html></div>
+<span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python_packages</a></span>()
+</pre></div>
 </div>
   </div>
 
@@ -363,7 +373,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

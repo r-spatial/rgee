@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -124,10 +124,11 @@
 <h3 class="hasAnchor">
 <a href="#the-map-message-error" class="anchor"></a>1) The <strong>map</strong> message error:</h3>
 <p><code>rgee</code> may show an error message when valid requests to the Earth Engine server are made. This issue happens when the <strong>map</strong> method is used under the next two cases: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="no">ee</span>$<span class="fu">Initialize</span>()
-<span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">10</span>)
-<span class="no">mylist</span>$<span class="fu">map</span>(<span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>))
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
+<span class="kw">ee</span><span class="op">$</span><span class="fu">Initialize</span>()
+<span class="kw">mylist</span> <span class="op">=</span> <span class="kw">ee</span><span class="op">$</span><span class="kw">List</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">10</span>)
+<span class="kw">mylist</span><span class="op">$</span><span class="fu">map</span>(<span class="fu">function</span>(<span class="kw">x</span>) <span class="kw">ee</span><span class="op">$</span><span class="fu">Number</span>(<span class="kw">x</span>)<span class="op">$</span><span class="fu">add</span>(<span class="fl">1</span>))
 <span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; Detailed traceback: </span>
@@ -146,18 +147,21 @@
 <span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span>
 <span class="co">#&gt;     self._body = body(*variables)</span>
 <span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
-<span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></pre></body></html></div>
+<span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span>
+</pre></div>
 <p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rgee</span>)
-<span class="no">ee</span>$<span class="fu">Initialize</span>()
-<span class="no">mylist</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="no">List</span>$<span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
-<span class="no">mynewlist</span> <span class="kw">=</span> <span class="no">mylist</span>$<span class="fu">map</span>(
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
+<span class="kw">ee</span><span class="op">$</span><span class="fu">Initialize</span>()
+<span class="kw">mylist</span> <span class="op">=</span> <span class="kw">ee</span><span class="op">$</span><span class="kw">List</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/sequence.html">sequence</a></span>(<span class="fl">0</span>,<span class="fl">10</span>)
+<span class="kw">mynewlist</span> <span class="op">=</span> <span class="kw">mylist</span><span class="op">$</span><span class="fu">map</span>(
   <span class="fu"><a href="../reference/ee_utils_pyfunc.html">ee_utils_pyfunc</a></span>(
-    <span class="kw">function</span>(<span class="no">x</span>) <span class="no">ee</span>$<span class="fu">Number</span>(<span class="no">x</span>)$<span class="fu">add</span>(<span class="fl">1</span>)
+    <span class="fu">function</span>(<span class="kw">x</span>) <span class="kw">ee</span><span class="op">$</span><span class="fu">Number</span>(<span class="kw">x</span>)<span class="op">$</span><span class="fu">add</span>(<span class="fl">1</span>)   
   )
 )
-<span class="no">mynewlist</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11</span></pre></body></html></div>
+<span class="kw">mynewlist</span><span class="op">$</span><span class="fu">getInfo</span>()
+<span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11</span>
+</pre></div>
 </div>
 <div id="do-not-forget-the-l" class="section level3">
 <h3 class="hasAnchor">
@@ -168,8 +172,10 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="bu">type</span>(<span class="dv">1</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;class 'int'&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="fl">1</span>)
-<span class="co">#&gt; [1] "numeric"</span></pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="fl">1</span>)
+<span class="co">#&gt; [1] "numeric"</span>
+</pre></div>
 <p>But why does this matter? Let’s explain it with an example:</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ee.Initialize()</span>
@@ -177,21 +183,23 @@
 <span id="cb5-3"><a href="#cb5-3"></a>and_bitwise.getInfo()</span>
 <span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; 32</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r">and_bitwise = ee$Number(32)$bitwiseAnd(100) #caution: silent error
-and_bitwise$getInfo()
-Traceback (most recent call last):
-  File "&lt;stdin&gt;", line 1, in &lt;module&gt;
-  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py", line 95, in getInfo
-    return data.computeValue(self)
-  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 490, in computeValue
-    return send_('/value', ({'json': obj.serialize(), 'json_format': 'v2'}))
-  File "/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py", line 1186, in send_
-    raise ee_exception.EEException(json_content['error']['message'])
-ee.ee_exception.EEException: Number.bitwiseAnd: Bitwise operands must be integer only.</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>and_bitwise =<span class="st"> </span>ee<span class="op">$</span><span class="kw">Number</span>(<span class="dv">32</span>)<span class="op">$</span><span class="kw">bitwiseAnd</span>(<span class="dv">100</span>) <span class="co">#caution: silent error</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>and_bitwise<span class="op">$</span><span class="kw">getInfo</span>()</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">Traceback</span> (most recent call last)<span class="op">:</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="st">  </span>File <span class="st">"&lt;stdin&gt;"</span>, line <span class="dv">1</span>, <span class="cf">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="st">  </span>File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py"</span>, line <span class="dv">95</span>, <span class="cf">in</span> getInfo</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    return <span class="kw">data.computeValue</span>(self)</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">490</span>, <span class="cf">in</span> computeValue</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    return <span class="kw">send_</span>(<span class="st">'/value'</span>, ({<span class="st">'json'</span><span class="op">:</span><span class="st"> </span><span class="kw">obj.serialize</span>(), <span class="st">'json_format'</span><span class="op">:</span><span class="st"> 'v2'</span>}))</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">1186</span>, <span class="cf">in</span> send_</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    raise <span class="kw">ee_exception.EEException</span>(json_content[<span class="st">'error'</span>][<span class="st">'message'</span>])</span>
+<span id="cb6-11"><a href="#cb6-11"></a>ee.ee_exception.EEException<span class="op">:</span><span class="st"> </span>Number.bitwiseAnd<span class="op">:</span><span class="st"> </span>Bitwise operands must be integer only.</span></code></pre></div>
 <p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple, you just need to add the letter <strong>L</strong> to the end of the specific number or employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">and_bitwise</span> <span class="kw">=</span> <span class="no">ee</span>$<span class="fu">Number</span>(<span class="fl">32L</span>)$<span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
-<span class="no">and_bitwise</span>$<span class="fu">getInfo</span>()
-<span class="co">#&gt; [1] 32</span></pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw">and_bitwise</span> <span class="op">=</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">Number</span>(<span class="fl">32L</span>)<span class="op">$</span><span class="fu">bitwiseAnd</span>(<span class="fl">100L</span>)
+<span class="kw">and_bitwise</span><span class="op">$</span><span class="fu">getInfo</span>()
+<span class="co">#&gt; [1] 32</span>
+</pre></div>
 </div>
 <div id="be-careful-with-eedate" class="section level3">
 <h3 class="hasAnchor">
@@ -203,25 +211,29 @@ ee.ee_exception.EEException: Number.bitwiseAnd: Bitwise operands must be integer
 <span id="cb8-2"><a href="#cb8-2"></a>my_date.getInfo()</span>
 <span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; {'type': 'Date', 'value': 631152000000}</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">my_date</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="st">'1990-01-01'</span>)
-<span class="no">my_date</span>$<span class="fu">getInfo</span>()
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="kw">my_date</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="st">'1990-01-01'</span>)
+<span class="kw">my_date</span><span class="op">$</span><span class="fu">getInfo</span>()
 <span class="co">#&gt; $type</span>
 <span class="co">#&gt; [1] "Date"</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -208192512</span></pre></body></html></div>
+<span class="co">#&gt; [1] -208192512</span>
+</pre></div>
 <p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and it should not be a trouble if treated with care. <code>rgee</code> implement two functions to deal with Earth Engine dates: <code>eedate_to_rdate</code> and <code>rdate_to_eedate</code>.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="co"># Era5 dataset</span>
-<span class="no">era_img</span> <span class="kw">&lt;-</span> <span class="no">ee</span>$<span class="fu">ImageCollection</span>(<span class="st">"ECMWF/ERA5/DAILY"</span>)$
-  <span class="fu">filterDate</span>(<span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span>)$
+<div class="sourceCode" id="cb10"><pre class="downlit">
+<span class="co"># Era5 dataset</span>
+<span class="kw">era_img</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">ImageCollection</span>(<span class="st">"ECMWF/ERA5/DAILY"</span>)<span class="op">$</span>
+  <span class="fu">filterDate</span>(<span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span>)<span class="op">$</span>
   <span class="fu">first</span>()
 
 <span class="co"># Extracting init date</span>
-<span class="no">ee_date</span> <span class="kw">&lt;-</span> <span class="no">era_img</span>$<span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)
-<span class="no">ee_date</span>$<span class="fu">getInfo</span>() <span class="co"># Silent error</span>
+<span class="kw">ee_date</span> <span class="op">&lt;-</span> <span class="kw">era_img</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>)
+<span class="kw">ee_date</span><span class="op">$</span><span class="fu">getInfo</span>() <span class="co"># Silent error</span>
 <span class="co">#&gt; [1] 112573440</span>
-<span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(<span class="kw">ee_date</span> <span class="kw">=</span> <span class="no">ee_date</span>, <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; [1] 1.546301e+12</span></pre></body></html></div>
+<span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span>(ee_date = <span class="kw">ee_date</span>, timestamp = <span class="fl">TRUE</span>)
+<span class="co">#&gt; [1] 1.546301e+12</span>
+</pre></div>
 </div>
   </div>
 
@@ -238,7 +250,7 @@ ee.ee_exception.EEException: Number.bitwiseAnd: Bitwise operands must be integer
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

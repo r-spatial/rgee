@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -160,27 +160,27 @@
     <p>R functions for searching in Earth Engine's public data archive.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_search_dataset</span>(<span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>upgrade</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>path_dataset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+    <pre class="usage"><span class='fu'>ee_search_dataset</span>(quiet = <span class='fl'>FALSE</span>, upgrade = <span class='fl'>FALSE</span>, path_dataset = <span class='kw'>NULL</span>)
 
-<span class='fu'>ee_search_startdate</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>stardate</span>)
+<span class='fu'>ee_search_startdate</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>stardate</span>)
 
-<span class='fu'>ee_search_enddate</span>(<span class='no'>ee_search_dataset</span>, <span class='kw'>enddate</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>())
+<span class='fu'>ee_search_enddate</span>(<span class='kw'>ee_search_dataset</span>, enddate = <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>())
 
-<span class='fu'>ee_search_type</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>type</span>)
+<span class='fu'>ee_search_type</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>type</span>)
 
-<span class='fu'>ee_search_provider</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>provider</span>)
+<span class='fu'>ee_search_provider</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>provider</span>)
 
-<span class='fu'>ee_search_provider_list</span>(<span class='no'>ee_search_dataset</span>)
+<span class='fu'>ee_search_provider_list</span>(<span class='kw'>ee_search_dataset</span>)
 
-<span class='fu'>ee_search_tags</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
+<span class='fu'>ee_search_tags</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>...</span>, logical_operator = <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_search_title</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
+<span class='fu'>ee_search_title</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>...</span>, logical_operator = <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_search_tagstitle</span>(<span class='no'>ee_search_dataset</span>, <span class='no'>...</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"OR"</span>)
+<span class='fu'>ee_search_tagstitle</span>(<span class='kw'>ee_search_dataset</span>, <span class='kw'>...</span>, logical_operator = <span class='st'>"OR"</span>)
 
-<span class='fu'>ee_search_title_list</span>(<span class='no'>ee_search_dataset</span>)
+<span class='fu'>ee_search_title_list</span>(<span class='kw'>ee_search_dataset</span>)
 
-<span class='fu'>ee_search_display</span>(<span class='no'>ee_search_dataset</span>, <span class='kw'>maxdisplay</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+<span class='fu'>ee_search_display</span>(<span class='kw'>ee_search_dataset</span>, maxdisplay = <span class='fl'>10</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -241,19 +241,20 @@ searching and 'OR' exclusiveness.</p></td>
     <p>A data.frame where rows represents public data archive.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># ee_search_provider_list()</span>
 <span class='co'># ee_search_title_list()</span>
-<span class='no'>myquery</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_search_dataset</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>ee_search_type</span>(<span class='st'>"Image"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>ee_search_provider</span>(<span class='st'>"WWF"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>ee_search_tags</span>(<span class='st'>"srtm"</span>, <span class='st'>"flow"</span>, <span class='st'>"direction"</span>, <span class='st'>"dem"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'>ee_search_title</span>(<span class='st'>"15"</span>, <span class='st'>"Flow"</span>, <span class='kw'>logical_operator</span> <span class='kw'>=</span> <span class='st'>"AND"</span>) <span class='kw'>%&gt;%</span>
+<span class='kw'>myquery</span> <span class='op'>&lt;-</span> <span class='fu'>ee_search_dataset</span>() <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_search_type</span>(<span class='st'>"Image"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_search_provider</span>(<span class='st'>"WWF"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_search_tags</span>(<span class='st'>"srtm"</span>, <span class='st'>"flow"</span>, <span class='st'>"direction"</span>, <span class='st'>"dem"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_search_title</span>(<span class='st'>"15"</span>, <span class='st'>"Flow"</span>, logical_operator = <span class='st'>"AND"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'>ee_search_display</span>()
-}</pre>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -269,7 +270,7 @@ searching and 'OR' exclusiveness.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

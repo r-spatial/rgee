@@ -82,7 +82,7 @@ EE thumbnail image." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ EE thumbnail image." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create an R spatial gridded object from an EE thumbnail image</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_as_thumbnail.R'><code>R/ee_as_thumbnail.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Deprecated.R'><code>R/Deprecated.R</code></a></small>
     <div class="hidden name"><code>ee_as_thumbnail.Rd</code></div>
     </div>
 
@@ -165,12 +165,12 @@ RasterLayer R object from a
     </div>
 
     <pre class="usage"><span class='fu'>ee_as_thumbnail</span>(
-  <span class='no'>image</span>,
-  <span class='no'>region</span>,
-  <span class='no'>dimensions</span>,
-  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>raster</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>image</span>,
+  <span class='kw'>region</span>,
+  <span class='kw'>dimensions</span>,
+  vizparams = <span class='kw'>NULL</span>,
+  raster = <span class='fl'>FALSE</span>,
+  quiet = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -244,86 +244,87 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 <code><a href='ee_imagecollection_to_local.html'>ee_imagecollection_to_local</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>raster</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://rspatial.org/raster'>raster</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/stars'>stars</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
 
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'>st_read</span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"rgee"</span>))
-<span class='no'>dem_palette</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
+<span class='kw'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shp/arequipa.shp"</span>, package = <span class='st'>"rgee"</span>))
+<span class='kw'>dem_palette</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(
   <span class='st'>"#008435"</span>, <span class='st'>"#1CAC17"</span>, <span class='st'>"#48D00C"</span>, <span class='st'>"#B3E34B"</span>, <span class='st'>"#F4E467"</span>,
   <span class='st'>"#F4C84E"</span>, <span class='st'>"#D59F3C"</span>, <span class='st'>"#A36D2D"</span>, <span class='st'>"#C6A889"</span>, <span class='st'>"#FFFFFF"</span>
 )
 
 <span class='co'>## DEM data -SRTM v4.0</span>
-<span class='no'>image</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
-<span class='no'>world_region</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(
-  <span class='kw'>coords</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>180</span>,-<span class='fl'>60</span>,<span class='fl'>180</span>,<span class='fl'>60</span>),
-  <span class='kw'>proj</span> <span class='kw'>=</span> <span class='st'>"EPSG:4326"</span>,
-  <span class='kw'>geodesic</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+<span class='kw'>image</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Image</span>(<span class='st'>"CGIAR/SRTM90_V4"</span>)
+<span class='kw'>world_region</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Geometry</span><span class='op'>$</span><span class='fu'>Rectangle</span>(
+  coords = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='op'>-</span><span class='fl'>180</span>,<span class='op'>-</span><span class='fl'>60</span>,<span class='fl'>180</span>,<span class='fl'>60</span>),
+  proj = <span class='st'>"EPSG:4326"</span>,
+  geodesic = <span class='fl'>FALSE</span>
 )
 
 <span class='co'>## world - elevation</span>
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>world_region</span>,
-  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
-  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
+<span class='kw'>world_dem</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  image = <span class='kw'>image</span>,
+  region = <span class='kw'>world_region</span>,
+  dimensions = <span class='fl'>1024</span>,
+  vizparams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(min = <span class='fl'>0</span>, max = <span class='fl'>5000</span>)
 )
 
-<span class='no'>world_dem</span>[<span class='no'>world_dem</span> <span class='kw'>&lt;=</span> <span class='fl'>0</span>] <span class='kw'>&lt;-</span> <span class='fl'>NA</span>
-<span class='no'>world_dem</span> <span class='kw'>&lt;-</span> <span class='no'>world_dem</span> * <span class='fl'>5000</span>
+<span class='kw'>world_dem</span>[<span class='kw'>world_dem</span> <span class='op'>&lt;=</span> <span class='fl'>0</span>] <span class='op'>&lt;-</span> <span class='fl'>NA</span>
+<span class='kw'>world_dem</span> <span class='op'>&lt;-</span> <span class='kw'>world_dem</span> <span class='op'>*</span> <span class='fl'>5000</span>
 
 <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>world_dem</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - World"</span>
+  x = <span class='kw'>world_dem</span>, col = <span class='kw'>dem_palette</span>, breaks = <span class='st'>"equal"</span>,
+  reset = <span class='fl'>FALSE</span>, main = <span class='st'>"SRTM - World"</span>
 )
 
 <span class='co'>## Arequipa-Peru</span>
-<span class='no'>arequipa_region</span> <span class='kw'>&lt;-</span> <span class='no'>nc</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_bbox</span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'>st_as_sfc</span>() <span class='kw'>%&gt;%</span>
+<span class='kw'>arequipa_region</span> <span class='op'>&lt;-</span> <span class='kw'>nc</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_bbox.html'>st_bbox</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_as_sfc.html'>st_as_sfc</a></span>() <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
-<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>image</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>arequipa_region</span>$<span class='fu'><a href='https://rdrr.io/pkg/raster/man/buffer.html'>buffer</a></span>(<span class='fl'>1000</span>)$<span class='fu'>bounds</span>(),
-  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>512</span>,
-  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>)
+<span class='kw'>arequipa_dem</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  image = <span class='kw'>image</span>,
+  region = <span class='kw'>arequipa_region</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/buffer.html'>buffer</a></span>(<span class='fl'>1000</span>)<span class='op'>$</span><span class='fu'>bounds</span>(),
+  dimensions = <span class='fl'>512</span>,
+  vizparams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(min = <span class='fl'>0</span>, max = <span class='fl'>5000</span>)
 )
 
-<span class='no'>arequipa_dem</span> <span class='kw'>&lt;-</span> <span class='no'>arequipa_dem</span> * <span class='fl'>5000</span>
-
+<span class='kw'>arequipa_dem</span> <span class='op'>&lt;-</span> <span class='kw'>arequipa_dem</span> <span class='op'>*</span> <span class='fl'>5000</span>
+<span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_crs</a></span>(<span class='kw'>arequipa_dem</span>) <span class='op'>&lt;-</span> <span class='fl'>4326</span>
 <span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>arequipa_dem</span>[<span class='no'>nc</span>], <span class='kw'>col</span> <span class='kw'>=</span> <span class='no'>dem_palette</span>, <span class='kw'>breaks</span> <span class='kw'>=</span> <span class='st'>"equal"</span>,
-  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"SRTM - Arequipa"</span>
+  x = <span class='kw'>arequipa_dem</span>[<span class='kw'>nc</span>], col = <span class='kw'>dem_palette</span>, breaks = <span class='st'>"equal"</span>,
+  reset = <span class='fl'>FALSE</span>, main = <span class='st'>"SRTM - Arequipa"</span>
 )
 
 <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plot.html'>plot</a></span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>nc</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>border</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>1.5</span>
+  x = <span class='kw'>nc</span>, col = <span class='fl'>NA</span>, border = <span class='st'>"black"</span>, add = <span class='fl'>TRUE</span>,
+  lwd = <span class='fl'>1.5</span>
 ))
 <span class='fu'><a href='https://rdrr.io/r/grDevices/dev.html'>dev.off</a></span>()
 
 <span class='co'>## LANDSAT 8</span>
-<span class='no'>img</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)$
+<span class='kw'>img</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Image</span>(<span class='st'>"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span>)<span class='op'>$</span>
   <span class='fu'><a href='https://rdrr.io/pkg/raster/man/select.html'>select</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span>))
-<span class='no'>Map</span>$<span class='fu'>centerObject</span>(<span class='no'>img</span>)
-<span class='no'>Map</span>$<span class='fu'><a href='https://rdrr.io/pkg/raster/man/addLayer.html'>addLayer</a></span>(<span class='no'>img</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>))
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span>(<span class='kw'>img</span>)
+<span class='kw'>Map</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/addLayer.html'>addLayer</a></span>(<span class='kw'>img</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(min = <span class='fl'>0</span>, max = <span class='fl'>5000</span>, gamma = <span class='fl'>1.5</span>))
 
 <span class='co'>## Teton Wilderness</span>
-<span class='no'>l8_img</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
-  <span class='kw'>image</span> <span class='kw'>=</span> <span class='no'>img</span>,
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>img</span>$<span class='fu'>geometry</span>()$<span class='fu'>bounds</span>(),
-  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>1024</span>,
-  <span class='kw'>vizparams</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>5000</span>, <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>1.5</span>),
-  <span class='kw'>raster</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>l8_img</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span>(
+  image = <span class='kw'>img</span>,
+  region = <span class='kw'>img</span><span class='op'>$</span><span class='fu'>geometry</span>()<span class='op'>$</span><span class='fu'>bounds</span>(),
+  dimensions = <span class='fl'>1024</span>,
+  vizparams = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(min = <span class='fl'>0</span>, max = <span class='fl'>5000</span>, gamma = <span class='fl'>1.5</span>),
+  raster = <span class='fl'>TRUE</span>
 )
-
-<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plotRGB.html'>plotRGB</a></span>(<span class='no'>l8_img</span>, <span class='kw'>stretch</span> <span class='kw'>=</span> <span class='st'>"lin"</span>)
-}</pre>
+<span class='fu'><a href='https://rdrr.io/pkg/raster/man/projection.html'>crs</a></span>(<span class='kw'>l8_img</span>) <span class='op'>&lt;-</span> <span class='st'>"+proj=longlat +datum=WGS84 +no_defs"</span>
+<span class='fu'><a href='https://rdrr.io/pkg/raster/man/plotRGB.html'>plotRGB</a></span>(<span class='kw'>l8_img</span>, stretch = <span class='st'>"lin"</span>)
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -339,7 +340,7 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

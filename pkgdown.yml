@@ -1,11 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 1.5.1
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   BestPractices: BestPractices.html
   considerations: considerations.html
   setup: setup.html
-last_built: 2020-08-27T05:17Z
+last_built: 2020-09-21T23:46Z
 urls:
   reference: http://r-spatial.github.io/rgee/reference
   article: http://r-spatial.github.io/rgee/articles

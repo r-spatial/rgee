@@ -82,7 +82,7 @@ ee$batch$Export$table$toCloudStorage(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -165,13 +165,13 @@ This function is a wrapper around
     </div>
 
     <pre class="usage"><span class='fu'>ee_table_to_gcs</span>(
-  <span class='no'>collection</span>,
-  <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"myExportTableTask"</span>,
-  <span class='kw'>bucket</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fileNamePrefix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>timePrefix</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>fileFormat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>selectors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>collection</span>,
+  description = <span class='st'>"myExportTableTask"</span>,
+  bucket = <span class='kw'>NULL</span>,
+  fileNamePrefix = <span class='kw'>NULL</span>,
+  timePrefix = <span class='fl'>TRUE</span>,
+  fileFormat = <span class='kw'>NULL</span>,
+  selectors = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -222,31 +222,31 @@ that may have been deprecated such as 'outputBucket'.</p></td>
 <code><a href='ee_table_to_drive.html'>ee_table_to_drive</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>stars</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/stars'>stars</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
 
 <span class='fu'><a href='ee_users.html'>ee_users</a></span>()
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(<span class='kw'>gcs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>(gcs = <span class='fl'>TRUE</span>)
 
 <span class='co'># Define study area (local -&gt; earth engine)</span>
 <span class='co'># Communal Reserve Amarakaeri - Peru</span>
-<span class='no'>rlist</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>xmin</span> <span class='kw'>=</span> -<span class='fl'>71.13</span>, <span class='kw'>xmax</span> <span class='kw'>=</span> -<span class='fl'>70.95</span>,<span class='kw'>ymin</span> <span class='kw'>=</span> -<span class='fl'>12.89</span>, <span class='kw'>ymax</span> <span class='kw'>=</span> -<span class='fl'>12.73</span>)
-<span class='no'>ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>,
-         <span class='no'>rlist</span>$<span class='no'>xmax</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>,
-         <span class='no'>rlist</span>$<span class='no'>xmax</span>, <span class='no'>rlist</span>$<span class='no'>ymax</span>,
-         <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymax</span>,
-         <span class='no'>rlist</span>$<span class='no'>xmin</span>, <span class='no'>rlist</span>$<span class='no'>ymin</span>)
-<span class='no'>ee_ROI</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='no'>ROI</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='kw'>%&gt;%</span>
+<span class='kw'>rlist</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(xmin = <span class='op'>-</span><span class='fl'>71.13</span>, xmax = <span class='op'>-</span><span class='fl'>70.95</span>,ymin = <span class='op'>-</span><span class='fl'>12.89</span>, ymax = <span class='op'>-</span><span class='fl'>12.73</span>)
+<span class='kw'>ROI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>xmin</span>, <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>ymin</span>,
+         <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>xmax</span>, <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>ymin</span>,
+         <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>xmax</span>, <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>ymax</span>,
+         <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>xmin</span>, <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>ymax</span>,
+         <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>xmin</span>, <span class='kw'>rlist</span><span class='op'>$</span><span class='kw'>ymin</span>)
+<span class='kw'>ee_ROI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='kw'>ROI</span>, ncol = <span class='fl'>2</span>, byrow = <span class='fl'>TRUE</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st.html'>st_polygon</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/sfc.html'>st_sfc</a></span>() <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_crs.html'>st_set_crs</a></span>(<span class='fl'>4326</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span>()
 
-<span class='no'>amk_fc</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>FeatureCollection</span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>ee</span>$<span class='fu'>Feature</span>(<span class='no'>ee_ROI</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Amarakaeri"</span>)))
+<span class='kw'>amk_fc</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span>(
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ee</span><span class='op'>$</span><span class='fu'>Feature</span>(<span class='kw'>ee_ROI</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name = <span class='st'>"Amarakaeri"</span>)))
 )
 
 <span class='co'>#task_vector &lt;- ee_table_to_gcs(</span>
@@ -259,7 +259,8 @@ that may have been deprecated such as 'outputBucket'.</p></td>
 <span class='co'>#ee_monitoring(task_vector) # optional</span>
 <span class='co'>#amk_geom &lt;- ee_gcs_to_local(task = task_vector)</span>
 <span class='co'>#plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)</span>
-}</pre>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -275,7 +276,7 @@ that may have been deprecated such as 'outputBucket'.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

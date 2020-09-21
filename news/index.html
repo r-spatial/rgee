@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -154,16 +154,34 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rgee-105" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.5">
-<a href="#rgee-105" class="anchor"></a>rgee 1.0.5</h1>
+    <div id="rgee-106" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.6">
+<a href="#rgee-106" class="anchor"></a>rgee 1.0.6</h1>
 <ul>
-<li>Important changes in the low level API to upload raster and vector with GCS. However, high upload API (<code>sf_as_ee</code>, <code>stars_as_ee</code>, and <code>raster_as_ee</code>) continue working in the same way.</li>
-<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see <a href="https://developers.google.com/earth-engine/image_manifest" class="uri">https://developers.google.com/earth-engine/image_manifest</a>).</li>
-<li>Add the functions: <code>ee_utils_gif_creator</code>, <code>ee_utils_gif_annotate</code> and <code>ee_utils_gif_save</code> to help users to read, add text, and save gif files.</li>
-<li>New | operator inspired in mapview 2.9.0! try: m4 | m5</li>
-<li>Fix several typos.</li>
-<li>Earth Engine Python API updated to 0.1.232.</li>
+<li><p>Class method chaining (i.e. <code>x$size()$getInfo()</code>) were changed by pipes (i.e. ee_x %&gt;% <code>ee$FeatureCollection$size() %&gt;% ee$Number()</code>) in all the <code>rgee</code> functions. This solve the problem “OverflowError: python int too large to convert to C long” on Window systems.</p></li>
+<li><p>rgee functions has a cleaner method to run system processes, {<strong>processx</strong>} instead of <strong>base::system</strong>.</p></li>
+<li><p><code>rgee</code> I/O functions now check argument before to start to upload/download data.</p></li>
+<li><p>Map operators (<strong>+</strong> and <strong>|</strong>) now support EarthEnginemap objects with the same name.</p></li>
+<li><p>Now <code>Map$addLayers</code> only display the legend of the first image.</p></li>
+<li><p>Fix a bug in <code>rgee:::ee_image_local</code> which makes do not work when all bands have not the same crs and crsTransform.</p></li>
+<li><p>“getInfo” method in download raster functions was deprecated and will be removed in v.1.0.8.</p></li>
+<li><p>Fix a bug in <code>sf_as_ee</code> and <code>ee_as_sf</code> now both support SR-ORG CRS codes.</p></li>
+<li><p><code>ee_users</code> returns a data.frame.</p></li>
+<li><p><code>ee_monitoring</code> counts the processing time.</p></li>
+<li><p>Fix a bug in <code>ee_utils_gif_creator</code> which makes don’t work in windows.</p></li>
+<li><p>Several changes in <code>ee_extract</code>, now is faster and code is cleaner.</p></li>
+<li><p>Fix a bug in name creator in <code>ee_imagecollection_to_local</code>.</p></li>
+<li><p>A new message more detailed when the Python path does not have the earth-engine Python API.</p></li>
+<li>
+<p>Earth Engine Python API updated to 0.1.235.</p>
+<h1 id="rgee-105" class="page-header" data-toc-text="1.0.6">rgee 1.0.5</h1>
+</li>
+<li><p>Important changes in the low level API to upload raster and vector with GCS. However, high upload API (<code>sf_as_ee</code>, <code>stars_as_ee</code>, and <code>raster_as_ee</code>) continue working in the same way.</p></li>
+<li><p>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see <a href="https://developers.google.com/earth-engine/image_manifest" class="uri">https://developers.google.com/earth-engine/image_manifest</a>).</p></li>
+<li><p>Add the functions: <code>ee_utils_gif_creator</code>, <code>ee_utils_gif_annotate</code> and <code>ee_utils_gif_save</code> to help users to read, add text, and save gif files.</p></li>
+<li><p>New | operator inspired in mapview 2.9.0! try: m4 | m5</p></li>
+<li><p>Fix several typos.</p></li>
+<li><p>Earth Engine Python API updated to 0.1.232.</p></li>
 </ul>
 </div>
     <div id="rgee-104" class="section level1">
@@ -387,7 +405,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

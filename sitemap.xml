@@ -130,6 +130,9 @@
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_table.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_get_crs.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_gif_annotate.html</loc>
   </url>
   <url>

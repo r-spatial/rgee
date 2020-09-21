@@ -81,7 +81,7 @@ function is a wrapper around image_write." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -159,18 +159,18 @@ function is a wrapper around image_write." />
 
     <div class="ref-description">
     <p>Write a magick-image object as a GIF file using magick package. This
-function is a wrapper around image_write.</p>
+function is a wrapper around <a href='https://docs.ropensci.org/magick/reference/editing.html'>image_write</a>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_utils_gif_save</span>(
-  <span class='no'>image</span>,
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>format</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>quality</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>depth</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>density</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>comment</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>flatten</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>image</span>,
+  path = <span class='kw'>NULL</span>,
+  format = <span class='kw'>NULL</span>,
+  quality = <span class='kw'>NULL</span>,
+  depth = <span class='kw'>NULL</span>,
+  density = <span class='kw'>NULL</span>,
+  comment = <span class='kw'>NULL</span>,
+  flatten = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -178,7 +178,7 @@ function is a wrapper around image_write.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>image</th>
-      <td><p>magick image object returned by image_read.</p></td>
+      <td><p>magick image object returned by <a href='https://docs.ropensci.org/magick/reference/editing.html'>image_read</a>.</p></td>
     </tr>
     <tr>
       <th>path</th>
@@ -216,59 +216,63 @@ transparency with background color.</p></td>
     <div class='dont-index'><p>Other GIF functions: 
 <code><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a>()</code>,
 <code><a href='ee_utils_gif_creator.html'>ee_utils_gif_creator</a>()</code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Jeroen Ooms</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
 
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
-<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"JRC/GSW1_1/YearlyHistory"</span>)$<span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>img</span>) {
-  <span class='no'>year</span> <span class='kw'>&lt;-</span> <span class='no'>img</span>$<span class='fu'><a href='https://rdrr.io/r/base/date.html'>date</a></span>()$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"year"</span>)
-  <span class='no'>yearImg</span> <span class='kw'>&lt;-</span> <span class='no'>img</span>$<span class='fu'>gte</span>(<span class='fl'>2</span>)$<span class='fu'>multiply</span>(<span class='no'>year</span>)
-  <span class='no'>despeckle</span> <span class='kw'>&lt;-</span> <span class='no'>yearImg</span>$<span class='fu'>connectedPixelCount</span>(<span class='fl'>15</span>, <span class='fl'>TRUE</span>)$<span class='fu'>eq</span>(<span class='fl'>15</span>)
-  <span class='no'>yearImg</span>$<span class='fu'>updateMask</span>(<span class='no'>despeckle</span>)$<span class='fu'>selfMask</span>()$<span class='fu'>set</span>(<span class='st'>"year"</span>, <span class='no'>year</span>)
+<span class='kw'>col</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span>(<span class='st'>"JRC/GSW1_1/YearlyHistory"</span>)<span class='op'>$</span><span class='fu'>map</span>(<span class='fu'>function</span>(<span class='kw'>img</span>) {
+  <span class='kw'>year</span> <span class='op'>&lt;-</span> <span class='kw'>img</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/date.html'>date</a></span>()<span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"year"</span>)
+  <span class='kw'>yearImg</span> <span class='op'>&lt;-</span> <span class='kw'>img</span><span class='op'>$</span><span class='fu'>gte</span>(<span class='fl'>2</span>)<span class='op'>$</span><span class='fu'>multiply</span>(<span class='kw'>year</span>)
+  <span class='kw'>despeckle</span> <span class='op'>&lt;-</span> <span class='kw'>yearImg</span><span class='op'>$</span><span class='fu'>connectedPixelCount</span>(<span class='fl'>15</span>, <span class='fl'>TRUE</span>)<span class='op'>$</span><span class='fu'>eq</span>(<span class='fl'>15</span>)
+  <span class='kw'>yearImg</span><span class='op'>$</span><span class='fu'>updateMask</span>(<span class='kw'>despeckle</span>)<span class='op'>$</span><span class='fu'>selfMask</span>()<span class='op'>$</span><span class='fu'>set</span>(<span class='st'>"year"</span>, <span class='kw'>year</span>)
 })
 
-<span class='no'>appendReverse</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>col</span>) <span class='no'>col</span>$<span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>col</span>$<span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='st'>'year'</span>, <span class='fl'>FALSE</span>))
+<span class='kw'>appendReverse</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>col</span>) <span class='kw'>col</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/merge.html'>merge</a></span>(<span class='kw'>col</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/sort.html'>sort</a></span>(<span class='st'>'year'</span>, <span class='fl'>FALSE</span>))
 
 <span class='co'># -----------------------------------</span>
 <span class='co'># 1 Basic Animation - Ucayali Peru</span>
 <span class='co'># -----------------------------------</span>
 
-<span class='no'>bgColor</span> <span class='kw'>=</span> <span class='st'>"FFFFFF"</span> <span class='co'># Assign white to background pixels.</span>
-<span class='no'>riverColor</span> <span class='kw'>=</span> <span class='st'>"0D0887"</span> <span class='co'># Assign blue to river pixels.</span>
+<span class='kw'>bgColor</span> <span class='op'>=</span> <span class='st'>"FFFFFF"</span> <span class='co'># Assign white to background pixels.</span>
+<span class='kw'>riverColor</span> <span class='op'>=</span> <span class='st'>"0D0887"</span> <span class='co'># Assign blue to river pixels.</span>
 
 <span class='co'>## 1.1 Create the dataset</span>
-<span class='no'>annualCol</span> <span class='kw'>=</span> <span class='no'>col</span>$<span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>img</span>) {
-  <span class='no'>img</span>$<span class='fu'>unmask</span>(<span class='fl'>0</span>)$
-    <span class='fu'>visualize</span>(<span class='kw'>min</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>palette</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='no'>bgColor</span>, <span class='no'>riverColor</span>))$
-    <span class='fu'>set</span>(<span class='st'>"year"</span>, <span class='no'>img</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"year"</span>))
+<span class='kw'>annualCol</span> <span class='op'>=</span> <span class='kw'>col</span><span class='op'>$</span><span class='fu'>map</span>(<span class='fu'>function</span>(<span class='kw'>img</span>) {
+  <span class='kw'>img</span><span class='op'>$</span><span class='fu'>unmask</span>(<span class='fl'>0</span>)<span class='op'>$</span>
+    <span class='fu'>visualize</span>(min = <span class='fl'>0</span>, max = <span class='fl'>1</span>, palette = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>bgColor</span>, <span class='kw'>riverColor</span>))<span class='op'>$</span>
+    <span class='fu'>set</span>(<span class='st'>"year"</span>, <span class='kw'>img</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"year"</span>))
 })
-<span class='no'>basicAnimation</span> <span class='kw'>&lt;-</span> <span class='fu'>appendReverse</span>(<span class='no'>annualCol</span>)
+<span class='kw'>basicAnimation</span> <span class='op'>&lt;-</span> <span class='fu'>appendReverse</span>(<span class='kw'>annualCol</span>)
 
 
 <span class='co'>## 1.2 Set video arguments</span>
-<span class='no'>aoi</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>Geometry</span>$<span class='fu'>Rectangle</span>(-<span class='fl'>74.327</span>, -<span class='fl'>10.087</span>, -<span class='fl'>73.931</span>, -<span class='fl'>9.327</span>)
-<span class='no'>videoArgs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='kw'>dimensions</span> <span class='kw'>=</span> <span class='fl'>600</span>, <span class='co'># Max dimension (pixels), min dimension is proportionally scaled.</span>
-  <span class='kw'>region</span> <span class='kw'>=</span> <span class='no'>aoi</span>,
-  <span class='kw'>framesPerSecond</span> <span class='kw'>=</span> <span class='fl'>10</span>
+<span class='kw'>aoi</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Geometry</span><span class='op'>$</span><span class='fu'>Rectangle</span>(<span class='op'>-</span><span class='fl'>74.327</span>, <span class='op'>-</span><span class='fl'>10.087</span>, <span class='op'>-</span><span class='fl'>73.931</span>, <span class='op'>-</span><span class='fl'>9.327</span>)
+<span class='kw'>videoArgs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
+  dimensions = <span class='fl'>600</span>, <span class='co'># Max dimension (pixels), min dimension is proportionally scaled.</span>
+  region = <span class='kw'>aoi</span>,
+  framesPerSecond = <span class='fl'>10</span>
 )
 
 <span class='co'>## 1.2 Download, display and save the GIF!</span>
-<span class='no'>animation</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ee_utils_gif_creator.html'>ee_utils_gif_creator</a></span>(<span class='no'>basicAnimation</span>, <span class='no'>videoArgs</span>)
-<span class='no'>get_years</span> <span class='kw'>&lt;-</span> <span class='no'>basicAnimation</span>$<span class='fu'>aggregate_array</span>(<span class='st'>"year"</span>)$<span class='fu'>getInfo</span>()
-<span class='no'>animation</span> <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span>(<span class='st'>"Ucayali, Peru"</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span>(<span class='no'>get_years</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>location</span> <span class='kw'>=</span> <span class='st'>"+90+40"</span>,
-                        <span class='kw'>boxcolor</span> <span class='kw'>=</span> <span class='st'>"#FFFFFF"</span>) <span class='kw'>%&gt;%</span>
+<span class='kw'>animation</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_gif_creator.html'>ee_utils_gif_creator</a></span>(<span class='kw'>basicAnimation</span>, <span class='kw'>videoArgs</span>, mode = <span class='st'>"wb"</span>)
+<span class='kw'>get_years</span> <span class='op'>&lt;-</span> <span class='kw'>basicAnimation</span><span class='op'>$</span><span class='fu'>aggregate_array</span>(<span class='st'>"year"</span>)<span class='op'>$</span><span class='fu'>getInfo</span>()
+<span class='kw'>animation</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span>(<span class='st'>"Ucayali, Peru"</span>) <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span>(<span class='kw'>get_years</span>, size = <span class='fl'>15</span>, location = <span class='st'>"+90+40"</span>,
+                        boxcolor = <span class='st'>"#FFFFFF"</span>) <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span>(<span class='st'>"created using {magick} + {rgee}"</span>,
-                        <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>15</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='st'>"sans"</span>,<span class='kw'>location</span> <span class='kw'>=</span> <span class='st'>"+70+20"</span>) <span class='kw'>-&gt;</span>
-  <span class='no'>animation_wtxt</span>
-<span class='no'>animation_wtxt</span>
-<span class='fu'>ee_utils_gif_save</span>(<span class='no'>animation_wtxt</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"raster_as_ee.gif"</span>)
-}</pre>
+                        size = <span class='fl'>15</span>, font = <span class='st'>"sans"</span>,location = <span class='st'>"+70+20"</span>) <span class='op'>-&gt;</span>
+  <span class='kw'>animation_wtxt</span>
+<span class='kw'>animation_wtxt</span>
+<span class='fu'>ee_utils_gif_save</span>(<span class='kw'>animation_wtxt</span>, path = <span class='st'>"raster_as_ee.gif"</span>)
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -284,7 +288,7 @@ transparency with background color.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

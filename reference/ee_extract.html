@@ -47,9 +47,9 @@
 
 
 <meta property="og:title" content="Extract values from EE Images or ImageCollections objects — ee_extract" />
-<meta property="og:description" content="Extract values from a ee$Image or ImageCollection at the
+<meta property="og:description" content="Extract values from a ee$Image at the
 locations of a geometry object. You can use ee$Geometry$*,
-ee$Feature, ee$FeatureCollection or sf objects. This function
+ee$Feature, ee$FeatureCollection, sf  or sfc objects. This function
 mimicking how extract currently works." />
 <meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
 
@@ -83,7 +83,7 @@ mimicking how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
       </span>
     </div>
 
@@ -160,24 +160,32 @@ mimicking how extract currently works." />
     </div>
 
     <div class="ref-description">
-    <p>Extract values from a <code>ee$Image</code> or <code>ImageCollection</code> at the
+    <p>Extract values from a <code>ee$Image</code> at the
 locations of a geometry object. You can use <code>ee$Geometry$*</code>,
-<code>ee$Feature</code>, <code>ee$FeatureCollection</code> or sf objects. This function
+<code>ee$Feature</code>, <code>ee$FeatureCollection</code>, sf  or sfc objects. This function
 mimicking how <a href='https://rdrr.io/pkg/raster/man/extract.html'>extract</a> currently works.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_extract</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(), <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>ee_extract</span>(
+  <span class='kw'>x</span>,
+  <span class='kw'>y</span>,
+  fun = <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Reducer</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(),
+  scale = <span class='kw'>NULL</span>,
+  sf = <span class='fl'>FALSE</span>,
+  quiet = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>ee$Image or a ee$ImageCollection with a single band.</p></td>
+      <td><p>ee$Image.</p></td>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>ee$Geometry$*, ee$Feature, ee$FeatureCollection or sf objects.</p></td>
+      <td><p>ee$Geometry$*, ee$Feature, ee$FeatureCollection, sfc or sf objects.</p></td>
     </tr>
     <tr>
       <th>fun</th>
@@ -192,8 +200,11 @@ By default 1000.</p></td>
     </tr>
     <tr>
       <th>sf</th>
-      <td><p>Logical. Should the extracted values be added to the data.frame of
-the sf object y?</p></td>
+      <td><p>Logical. Should return a sf object?</p></td>
+    </tr>
+    <tr>
+      <th>quiet</th>
+      <td><p>Logical. Suppress info message.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -205,11 +216,8 @@ the sf object y?</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data.frame or an sf object depending on the sf argument.
-If <code>x</code> is an image, column names will be extracted from the
-band names of the image (use <code>ee$Image$rename</code> to change the
-band names). Otherwise, if <code>x</code> is an <code>ee$ImageCollection</code>,
-column names are extracted from the "RGEE_NAME" property and if it
-does not exist from "system:index".</p>
+Column names are extracted from band names, use <code>ee$Image$rename</code> to
+rename the bands of an <code>ee$Image</code>. See <code><a href='ee_help.html'>ee_help(ee$Image$rename)</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The reducer functions that return one value are:</p><ul>
@@ -263,44 +271,45 @@ of its inputs.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>rgee</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>sf</span>)
+    <pre class="examples"><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/r-spatial/rgee'>rgee</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://r-spatial.github.io/sf'>sf</a></span>)
 
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span>()
 
 <span class='co'># Define a Image or ImageCollection: Terraclimate</span>
-<span class='no'>terraclimate</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)$
-  <span class='fu'>filterDate</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span>)$
-  <span class='fu'>map</span>(<span class='kw'>function</span>(<span class='no'>x</span>){
-    <span class='no'>date</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='no'>x</span>$<span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"system:time_start"</span>))$<span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='st'>'YYYY_MM_dd'</span>)
-    <span class='no'>name</span> <span class='kw'>&lt;-</span> <span class='no'>ee</span>$<span class='no'>String</span>$<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Terraclimate_pp_"</span>, <span class='no'>date</span>)
-    <span class='no'>x</span>$<span class='fu'>select</span>(<span class='st'>"pr"</span>)$<span class='fu'>reproject</span>(<span class='st'>"EPSG:4326"</span>)$<span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='no'>name</span>)
+<span class='kw'>terraclimate</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span>(<span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span>)<span class='op'>$</span>
+  <span class='fu'>filterDate</span>(<span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span>)<span class='op'>$</span>
+  <span class='fu'>map</span>(<span class='fu'>function</span>(<span class='kw'>x</span>){
+    <span class='kw'>date</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/Dates.html'>Date</a></span>(<span class='kw'>x</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/get.html'>get</a></span>(<span class='st'>"system:time_start"</span>))<span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span>(<span class='st'>'YYYY_MM_dd'</span>)
+    <span class='kw'>name</span> <span class='op'>&lt;-</span> <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>String</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Terraclimate_pp_"</span>, <span class='kw'>date</span>)
+    <span class='kw'>x</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/pkg/raster/man/select.html'>select</a></span>(<span class='st'>"pr"</span>)<span class='op'>$</span><span class='fu'>reproject</span>(<span class='st'>"EPSG:4326"</span>)<span class='op'>$</span><span class='fu'>set</span>(<span class='st'>"RGEE_NAME"</span>, <span class='kw'>name</span>)
   })
 
 <span class='co'># Define a geometry</span>
-<span class='no'>nc</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(
-  <span class='kw'>dsn</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"sf"</span>),
-  <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/sf/man/st_read.html'>st_read</a></span>(
+  dsn = <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"shape/nc.shp"</span>, package = <span class='st'>"sf"</span>),
+  stringsAsFactors = <span class='fl'>FALSE</span>,
+  quiet = <span class='fl'>TRUE</span>
 )
 
 <span class='co'># Extract values</span>
-<span class='no'>ee_nc_rain</span> <span class='kw'>&lt;-</span> <span class='fu'>ee_extract</span>(
-  <span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>terraclimate</span>,
-  <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>nc</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>250</span>,
-  <span class='kw'>fun</span> <span class='kw'>=</span> <span class='no'>ee</span>$<span class='no'>Reducer</span>$<span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(),
-  <span class='kw'>sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+<span class='kw'>ee_nc_rain</span> <span class='op'>&lt;-</span> <span class='fu'>ee_extract</span>(
+  x = <span class='kw'>terraclimate</span>,
+  y = <span class='kw'>nc</span>,
+  scale = <span class='fl'>250</span>,
+  fun = <span class='kw'>ee</span><span class='op'>$</span><span class='kw'>Reducer</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/mean.html'>mean</a></span>(),
+  sf = <span class='fl'>TRUE</span>
 )
 
 <span class='co'># Spatial plot</span>
 <span class='fu'><a href='https://rdrr.io/pkg/sf/man/plot.html'>plot</a></span>(
-  <span class='no'>ee_nc_rain</span>[<span class='st'>"Terraclimate_pp_2001_01_01"</span>],
-  <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
-  <span class='kw'>reset</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>ee_nc_rain</span>[<span class='st'>"X200110_pr"</span>],
+  main = <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
+  reset = <span class='fl'>FALSE</span>
 )
-}</pre>
+}
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -316,7 +325,7 @@ of its inputs.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
