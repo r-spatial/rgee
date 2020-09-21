@@ -12,6 +12,13 @@ jobs:
         with:
           r-version: '3.6.1'
       - uses: r-lib/actions/setup-pandoc@master
+      
+      - name: INSTALL SYSTEM DEPENDENCIES [macOS]
+        if: runner.os == 'macOS'
+        env:
+          RHUB_PLATFORM: osx-x86_64-clang
+        run: |
+          brew install freetype                
 
       - name: Query dependencies
         run: |
@@ -19,7 +26,7 @@ jobs:
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = "Imports"), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
-
+          
       - name: Cache R packages
         uses: actions/cache@v1
         with:

@@ -81,6 +81,7 @@ reference:
       - show,EarthEngineMap-method
       - mapview-class
       - +,EarthEngineMap,mapview-method
+      - slider
 
   - title: "Image download"
     contents:
@@ -152,6 +153,13 @@ reference:
       - ee_utils_py_to_r
       - ee_utils_pyfunc
       - ee_utils_shp_to_zip
+      - ee_utils_create_json
+      - ee_utils_create_manifest_image
+      - ee_utils_create_manifest_table
+      - ee_utils_get_crs
+      - ee_utils_gif_annotate
+      - ee_utils_gif_creator
+      - ee_utils_gif_save
 
   - title: "Search dataset"
     contents:
