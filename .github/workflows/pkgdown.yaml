@@ -18,7 +18,7 @@ jobs:
         env:
           RHUB_PLATFORM: osx-x86_64-clang
         run: |
-          brew install freetype                
+          brew cask install xquartz               
 
       - name: Query dependencies
         run: |
