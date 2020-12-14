@@ -1,4 +1,0 @@
-Name: ee_help
-Description: Return documentation of Earth Engine modules, methods and classes
-Binding: ee_help_addins
-Interactive: false
