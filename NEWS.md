@@ -12,7 +12,17 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # rgee 1.0.7
-- rgee follows
+
+- Unit testing enhanced.
+- ee_clean needs regex support.
+- Smoother connection with Python (reticulate).
+- More documentation related to credentials.
+- Now Map$... functions only depend of {leaflet}.
+- COG and STAC support.
+- Bugs in ee_as_raster and ee_as_stars.
+- change ee_as_thumbnail API :)
+- Earth Engine Python API test updated to 0.1.245.
+
 # rgee 1.0.6
 - Class method chaining (i.e. `x$size()$getInfo()`) were changed by pipes (i.e. ee_x %>% `ee$FeatureCollection$size() %>% ee$Number()`) in all the `rgee` functions. This solve the problem "OverflowError: python int too large to convert to C long" on Window systems.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
