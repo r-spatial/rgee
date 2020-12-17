@@ -100,7 +100,6 @@ Imports:
 Suggests:
     leaflet (>= 2.0.2),
     leaflet.extras2,
-    mapview,
     magick,
     geojsonio,
     sf,

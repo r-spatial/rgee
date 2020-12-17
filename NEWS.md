@@ -14,12 +14,12 @@ vignette: >
 # rgee 1.0.7
 
 - Unit testing enhanced.
-- ee_clean needs regex support.
 - Smoother connection with Python (reticulate).
 - More documentation related to credentials.
 - Now Map$... functions only depend of {leaflet}.
+- ee_clean needs regex support.
 - COG and STAC support.
-- Bugs in ee_as_raster and ee_as_stars.
+- Bugs in ee_as_raster and ee_as_stars and async coding! :).
 - change ee_as_thumbnail API :)
 - Earth Engine Python API test updated to 0.1.245.
 

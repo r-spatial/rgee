@@ -65,6 +65,11 @@ requested result projection or geodesic state.
 \usage{
 Map
 }
+\value{
+Object of class leaflet, with the following extra parameters: tokens, name,
+opacity, shown, min, max, palette, and legend. Use the $ method to retrieve
+the data (e.g. m$rgee$min).
+}
 \description{
 Create interactive visualizations of spatial EE objects
 (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
@@ -75,7 +80,7 @@ using \code{mapview}.
 \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 getMapId} to fetch and return an ID dictionary being used to create
 layers in a \code{mapview} object. Users can specify visualization
-parameters to Map\$addLayer by using the visParams argument. Each Earth
+parameters to Map$addLayer by using the visParams argument. Each Earth
 Engine spatial object has a specific format. For
 \code{ee$Image}, the
 \href{https://developers.google.com/earth-engine/image_visualization}{
@@ -101,11 +106,12 @@ three numbers, one for each band \cr
 and 1.0 is fully opaque) \tab  number \cr
 }
 
-If you add an \code{ee$Image} to the map without any additional parameters,
-by default \code{Map$addLayer()} assigns the first three bands to red,
+If you add an \code{ee$Image} to Map$addLayer without any additional
+parameters, by default it assigns the first three bands to red,
 green, and blue bands, respectively. The default stretch is based on the
-min-max range. By the other hand, for \code{ee$Geometry}, \code{ee$Feature},
-and \code{ee$FeatureCollection} the available parameters are:
+min-max range. On the other hand, the available parameters for
+\code{ee$Geometry}, \code{ee$Feature}, and \code{ee$FeatureCollection}
+are:
 
 \itemize{
 \item \strong{color}: A hex string in the format RRGGBB specifying the
@@ -117,7 +123,6 @@ default 3.
 }
 \examples{
 \dontrun{
-library(mapview)
 library(rgee)
 library(sf)
 ee_Initialize()
@@ -153,17 +158,16 @@ m4 <- Map$addLayer(
   ),
   name = "SF"
 )
-m4
 
 # Case 5: mapview + EarthEnginemap
+library(mapview)
 library(sf)
 nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-mapview(nc) + m2
-m2 + mapview(nc)
+mapview(nc, m2)
 
 # Case 6: mapedit
 library(mapedit)
-# my_geometry <- m2 \%>\% ee_as_mapview() \%>\% editMap()
+# my_geometry <- m4 \%>\% editMap()
 
 # Case 7: ImageCollection
 nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
@@ -175,7 +179,8 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterBounds(nc) \%>\%
   ee_get(0:4)
 Map$centerObject(nc$geometry())
-Map$addLayers(ee_s2)
+m5 <- Map$addLayers(ee_s2, legend = TRUE)
+m5
 
 # Case 8: Map comparison
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -186,7 +191,12 @@ m_ndvi <- Map$addLayer(
   name = "SF_NDVI",
   legend = TRUE
 )
-m4 | m_ndvi
+m6 <- m4 | m_ndvi
+m6
+
+# Case 9: digging up the metadata
+m6$rgee$tokens
+m5$rgee$tokens
 }
 }
 \keyword{datasets}

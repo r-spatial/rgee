@@ -2,15 +2,24 @@
 % Please edit documentation in R/Map_operators.R
 \name{slider}
 \alias{slider}
-\alias{|,EarthEngineMap,EarthEngineMap-method}
+\alias{|}
+\alias{|,}
+\alias{EarthEngineMap,}
+\alias{EarthEngineMap-method}
+\alias{|.default}
+\alias{|.EarthEngineMap}
 \title{EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.}
 \usage{
-\S4method{|}{EarthEngineMap,EarthEngineMap}(e1, e2)
+`|`(e1, e2)
+
+\method{|}{default}(e1, e2)
+
+\method{|}{EarthEngineMap}(e1, e2)
 }
 \arguments{
-\item{e1}{a leaflet or mapview map, or NULL.}
+\item{e1}{an EarthEngineMap object.}
 
-\item{e2}{a leaflet or mapview map, or NULL.}
+\item{e2}{an EarthEngineMap object.}
 }
 \description{
 EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
