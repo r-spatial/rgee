@@ -12,6 +12,7 @@ ee_as_raster(
   scale = NULL,
   maxPixels = 1e+09,
   container = "rgee_backup",
+  timePrefix = TRUE,
   quiet = FALSE,
   ...
 )
@@ -39,6 +40,9 @@ more pixels in the specified projection. Defaults to 100,000,000.}
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
+
+\item{timePrefix}{Logical. Add current date and time as a prefix to files to export.
+This parameter helps to avoid exported files with the same name. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}
 

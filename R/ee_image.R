@@ -18,6 +18,8 @@
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
+#' @param timePrefix Logical. Add current date and time as a prefix to files to export.
+#' This parameter helps to avoid exported files with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' \link{ee_image_to_gcs}.
@@ -85,6 +87,7 @@ ee_as_stars <- function(image,
                         scale = NULL,
                         maxPixels = 1e9,
                         container = "rgee_backup",
+                        timePrefix = TRUE,
                         quiet = FALSE,
                         ...) {
   if (!requireNamespace("stars", quietly = TRUE)) {
@@ -137,6 +140,8 @@ ee_as_stars <- function(image,
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
+#' @param timePrefix Logical. Add current date and time as a prefix to files to export.
+#' This parameter helps to avoid exported files with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' \link{ee_image_to_gcs}.
@@ -202,11 +207,13 @@ ee_as_raster  <- function(image,
                           scale = NULL,
                           maxPixels = 1e9,
                           container = "rgee_backup",
+                          timePrefix = TRUE,
                           quiet = FALSE,
                           ...) {
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
+
   img_files <- ee_image_local(
     image = image,
     region = region,
@@ -215,6 +222,7 @@ ee_as_raster  <- function(image,
     scale = scale,
     maxPixels = maxPixels,
     container = container,
+    timePrefix = timePrefix,
     quiet = quiet,
     ...
   )
@@ -239,6 +247,7 @@ ee_image_local <- function(image,
                            scale = NULL,
                            maxPixels = 1e9,
                            container = "rgee_backup",
+                           timePrefix = TRUE,
                            quiet = FALSE,
                            ...) {
   if (!requireNamespace("sf", quietly = TRUE)) {
@@ -249,11 +258,6 @@ ee_image_local <- function(image,
   }
   if (!requireNamespace("stars", quietly = TRUE)) {
     stop("package stars required, please install it first")
-  }
-
-  # if dsn is NULL, dsn will be a /tempfile.
-  if (is.null(dsn)) {
-    dsn <- paste0(tempfile(),".tif")
   }
 
   # is image an ee.image.Image?
@@ -267,7 +271,7 @@ ee_image_local <- function(image,
   }
 
   # Get bandnames
-  band_names <-   image %>%
+  band_names <- image %>%
     ee$Image$bandNames() %>%
     ee$List$getInfo()
 
@@ -276,10 +280,10 @@ ee_image_local <- function(image,
                            container, band_names, quiet)
   } else if (via == "drive") {
     ee_image_local_drive(image, region, dsn, scale, maxPixels,
-                         container, quiet, ...)
+                         container, timePrefix, quiet, ...)
   } else if (via == "gcs") {
     ee_image_local_gcs(image, region, dsn, scale, maxPixels,
-                       container, quiet, ...)
+                       container, timePrefix, quiet, ...)
   } else {
     stop("via argument invalid")
   }
@@ -289,27 +293,45 @@ ee_image_local <- function(image,
 #' Passing an Earth Engine Image to Local using drive
 #' @noRd
 ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
-                                 container, quiet, ...) {
+                                 container, timePrefix, quiet, ...) {
+  extras <- list(...)
+
+  # folder is container
+  if (any(names(extras) %in%  "folder")) {
+    stop(
+      "To specify the folder where to export files",
+      " use the argument container instead of folder."
+    )
+  }
 
   # Have you loaded the necessary credentials?
   # Relevant for either drive or gcs.
   ee_user <- ee_exist_credentials()
 
-  # Getting image ID if it is exist
-  image_id <- tryCatch(
-    expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
-      scope[[1]][[2]][["arguments"]][["id"]],
-    error = function(e) "noid_image"
-  )
-  if (is.null(image_id)) {
-    image_id <- "noid_image"
+  if (is.null(dsn)) {
+    # Getting image ID if it is exist
+    image_id <- tryCatch(
+      expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
+        scope[[1]][[2]][["arguments"]][["id"]],
+      error = function(e) "noid_image"
+    )
+    if (is.null(image_id)) {
+      image_id <- "noid_image"
+    }
+    dsn <- sprintf("%s/%s.tif",tempdir(), image_id)
+  } else {
+    image_id <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(dsn))
   }
 
   # Create description (Human-readable name of the task)
   # Relevant for either drive or gcs.
   time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
-  ee_description <- paste0("ee_as_stars_task_", time_format)
-  file_name <- paste0(image_id, "_", time_format)
+  ee_description <- paste0("rgeeImage_", time_format)
+  if (timePrefix) {
+    file_name <- paste0(image_id, "_", time_format)
+  } else {
+    file_name <- image_id
+  }
 
   # Are GD credentials loaded?
   if (is.na(ee_user$drive_cre)) {
@@ -329,6 +351,7 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
   # From Google Earth Engine to Google Drive
   img_task <- ee_image_to_drive(
     image = image,
+    timePrefix = FALSE,
     description = ee_description,
     scale = scale,
     folder = container,
@@ -369,10 +392,20 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
 #' Passing an Earth Engine Image to Local using gcs
 #' @noRd
 ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
-                               container, quiet, ...) {
+                               container, timePrefix, quiet, ...) {
+  extras <- list(...)
+
   # Have you loaded the necessary credentials?
   # Relevant for either drive or gcs.
   ee_user <- ee_exist_credentials()
+
+  # bucket is container
+  if (any(names(extras) %in%  "bucket")) {
+    stop(
+      "To specify the bucket where to export files",
+      " use the argument container instead of bucket."
+    )
+  }
 
   if (is.na(ee_user$gcs_cre)) {
     ee_Initialize(email = ee_user$email, gcs = TRUE)
@@ -400,21 +433,35 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
   }
 
   # Getting image ID if it is exist
-  image_id <- tryCatch(
-    expr = jsonlite::parse_json(image$id()$serialize())$
-      scope[[1]][[2]][["arguments"]][["id"]],
-    error = function(e) "noid_image"
-  )
+  if (is.null(dsn)) {
+    # Getting image ID if it is exist
+    image_id <- tryCatch(
+      expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
+        scope[[1]][[2]][["arguments"]][["id"]],
+      error = function(e) "noid_image"
+    )
+    if (is.null(image_id)) {
+      image_id <- "noid_image"
+    }
+    dsn <- sprintf("%s/%s.tif",tempdir(), image_id)
+  } else {
+    image_id <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(dsn))
+  }
 
   # Relevant for either drive or gcs.
   time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
-  ee_description <- paste0("ee_as_stars_task_", time_format)
-  file_name <- paste0(image_id, "_", time_format)
+  ee_description <- paste0("rgeeImage_", time_format)
+  if (timePrefix) {
+    file_name <- paste0(image_id, "_", time_format)
+  } else {
+    file_name <- image_id
+  }
 
   # From Earth Engine to Google Cloud Storage
   img_task <- ee_image_to_gcs(
     image = image,
     description = ee_description,
+    timePrefix = FALSE,
     bucket = container,
     fileFormat = "GEO_TIFF",
     region = region,

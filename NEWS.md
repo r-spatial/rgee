@@ -17,11 +17,14 @@ vignette: >
 - Smoother connection with Python (reticulate).
 - More documentation related to credentials.
 - Now Map$... functions only depend of {leaflet}.
-- ee_clean needs regex support.
+- Fix a bug (#112) that do not permit to `ee_as_raster` and `ee_as_stars` change
+the fileNamePrefix.
+- Now `ee_as_raster` and `ee_as_stars` save export metadata inside the class 
+(See examples).
+- asynchronous export support to `ee_as_raster`, `ee_as_stars` and `ee_as_sf`.
 - COG and STAC support.
-- Bugs in ee_as_raster and ee_as_stars and async coding! :).
 - change ee_as_thumbnail API :)
-- Earth Engine Python API test updated to 0.1.245.
+- Earth Engine Python API test updated to 0.1.246.
 
 # rgee 1.0.6
 - Class method chaining (i.e. `x$size()$getInfo()`) were changed by pipes (i.e. ee_x %>% `ee$FeatureCollection$size() %>% ee$Number()`) in all the `rgee` functions. This solve the problem "OverflowError: python int too large to convert to C long" on Window systems.
