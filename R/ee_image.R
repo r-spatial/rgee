@@ -15,6 +15,8 @@
 #' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param via Character. Method to fetch data about the object. Two methods
 #' are implemented: "drive", "gcs". See details.
+#' @param lazy Logical. If TRUE,  a \code{future::\link[future:sequential]{
+#' sequential}} object is created to evaluate the task in the future.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -84,8 +86,11 @@ ee_as_stars <- function(image,
                         region = NULL,
                         dsn = NULL,
                         via = "drive",
+                        lazy = FALSE,
                         scale = NULL,
                         maxPixels = 1e9,
+                        add_metadata = TRUE,
+                        make_public = TRUE,
                         container = "rgee_backup",
                         timePrefix = TRUE,
                         quiet = FALSE,
@@ -97,7 +102,7 @@ ee_as_stars <- function(image,
     stop("package sf required, please install it first")
   }
 
-  img_files <- ee_image_local(
+  ee_task <- ee_init_task(
     image = image,
     region = region,
     dsn = dsn,
@@ -105,19 +110,45 @@ ee_as_stars <- function(image,
     scale = scale,
     maxPixels = maxPixels,
     container = container,
+    timePrefix = timePrefix,
     quiet = quiet,
     ...
   )
 
-  img_stars <- stars::read_stars(img_files$file, proxy = TRUE)
+  to_evaluate <- function() {
+    img_dsn <- ee_image_local(
+      task = ee_task$task,
+      dsn = ee_task$dsn,
+      via = via,
+      quiet = quiet
+    )
 
-  # It's a single image?
-  if (length(stars::st_dimensions(img_stars)) < 3) {
-    img_stars
+    band_names <- image %>%
+      ee$Image$bandNames() %>%
+      ee$List$getInfo()
+
+    if (metadata) {
+      metadata <- list(
+        eetaskid = ee_task$task$id,
+        container = ee_container_metadata(task)
+      )
+    }
+
+    ee_read_stars(img_dsn, band_names, metadata)
+  }
+
+
+  if (lazy) {
+    prev_plan <- future::plan(future::sequential, .skip = TRUE)
+    on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+    future::future({
+      to_evaluate()
+    }, lazy = TRUE)
   } else {
-    stars::st_set_dimensions(img_stars, 3, values = img_files$band_names)
+    to_evaluate()
   }
 }
+
 
 
 #' Convert an Earth Engine (EE) image into a raster object
@@ -137,6 +168,8 @@ ee_as_stars <- function(image,
 #' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param via Character. Method to fetch data about the object. Two methods
 #' are implemented: "drive", "gcs". See details.
+#' @param lazy Logical. If TRUE,  a \code{future::\link[future:sequential]{
+#' sequential}} object is created to evaluate the task in the future.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
@@ -204,52 +237,72 @@ ee_as_raster  <- function(image,
                           region = NULL,
                           dsn = NULL,
                           via = "drive",
+                          lazy = FALSE,
                           scale = NULL,
                           maxPixels = 1e9,
+                          add_metadata = TRUE,
+                          make_public = TRUE,
                           container = "rgee_backup",
                           timePrefix = TRUE,
                           quiet = FALSE,
                           ...) {
+
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
   }
 
-  img_files <- ee_image_local(
+  ee_task <- ee_init_task(
     image = image,
     region = region,
     dsn = dsn,
     via = via,
     scale = scale,
-    maxPixels = maxPixels,
     container = container,
+    maxPixels = maxPixels,
     timePrefix = timePrefix,
     quiet = quiet,
     ...
   )
 
-  if (length(img_files$file) > 1) {
-    message("NOTE: To avoid memory excess problems, ee_as_raster will",
-            " not build Raster objects for large images.")
-    img_files[["file"]]
+  to_evaluate <- function() {
+    img_dsn <- ee_image_local(
+      task = ee_task$task,
+      dsn = ee_task$dsn,
+      via = via,
+      quiet = quiet
+    )
+
+    band_names <- image %>%
+      ee$Image$bandNames() %>%
+      ee$List$getInfo()
+
+    ee_read_raster(img_dsn, band_names)
+  }
+
+  if (lazy) {
+    prev_plan <- future::plan(future::sequential, .skip = TRUE)
+    on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+    future::future({
+      to_evaluate()
+    }, lazy = TRUE)
   } else {
-    img_raster <- raster::stack(img_files[["file"]])
-    names(img_raster) <- img_files[["band_names"]]
-    img_raster
+    to_evaluate()
   }
 }
 
+
 #' Passing an Earth Engine Image to Local
 #' @noRd
-ee_image_local <- function(image,
-                           region,
-                           dsn = NULL,
-                           via = "drive",
-                           scale = NULL,
-                           maxPixels = 1e9,
-                           container = "rgee_backup",
-                           timePrefix = TRUE,
-                           quiet = FALSE,
-                           ...) {
+ee_init_task <- function(image,
+                         region,
+                         dsn = NULL,
+                         via = "drive",
+                         scale = NULL,
+                         maxPixels = 1e9,
+                         timePrefix = TRUE,
+                         container = "rgee_backup",
+                         quiet = FALSE,
+                         ...) {
   if (!requireNamespace("sf", quietly = TRUE)) {
     stop("package sf required, please install it first")
   }
@@ -275,25 +328,22 @@ ee_image_local <- function(image,
     ee$Image$bandNames() %>%
     ee$List$getInfo()
 
-  if (via == "getInfo") {
-    ee_image_local_getInfo(image, region, dsn, scale, maxPixels,
-                           container, band_names, quiet)
-  } else if (via == "drive") {
-    ee_image_local_drive(image, region, dsn, scale, maxPixels,
-                         container, timePrefix, quiet, ...)
+  if (via == "drive") {
+    ee_init_task_drive(image, region, dsn, scale, maxPixels,
+                       timePrefix, container, quiet, ...)
   } else if (via == "gcs") {
-    ee_image_local_gcs(image, region, dsn, scale, maxPixels,
-                       container, timePrefix, quiet, ...)
+    ee_init_task_gcs(image, region, dsn, scale, maxPixels,
+                     timePrefix, container, quiet, ...)
   } else {
     stop("via argument invalid")
   }
-  list(file = dsn, band_names = band_names)
 }
 
-#' Passing an Earth Engine Image to Local using drive
+#' Create a Export task to GD
 #' @noRd
-ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
-                                 container, timePrefix, quiet, ...) {
+ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
+                               container, quiet, ...) {
+
   extras <- list(...)
 
   # folder is container
@@ -335,11 +385,13 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
 
   # Are GD credentials loaded?
   if (is.na(ee_user$drive_cre)) {
-    ee_Initialize(email = ee_user$email, drive = TRUE)
+    drive_credential <- ee_create_credentials_drive(ee_user$email)
+    ee_save_credential(pdrive = drive_credential)
+    # ee_Initialize(email = ee_user$email, drive = TRUE)
     message(
-      "Google Drive credentials were not loaded.",
+      "\nNOTE: Google Drive credentials were not loaded.",
       " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
-      " to fix it."
+      " to fix."
     )
   }
 
@@ -373,31 +425,15 @@ ee_image_local_drive <- function(image, region, dsn, scale, maxPixels,
     )
   }
   ee$batch$Task$start(img_task)
-  ee_monitoring(task = img_task, quiet = quiet)
-
-  # From Google Drive to local
-  if (isFALSE(quiet)) {
-    cat('Moving image from Google Drive to Local ... Please wait  \n')
-  }
-
-  dsn <- ee_drive_to_local(
-    task = img_task,
-    dsn = dsn,
-    consider = 'all',
-    quiet = quiet
-  )
-  invisible(dsn)
+  list(task = img_task, dsn = dsn)
 }
 
-#' Passing an Earth Engine Image to Local using gcs
-#' @noRd
-ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
-                               container, timePrefix, quiet, ...) {
-  extras <- list(...)
 
-  # Have you loaded the necessary credentials?
-  # Relevant for either drive or gcs.
-  ee_user <- ee_exist_credentials()
+#' Create a Export task to GCS
+#' @noRd
+ee_init_task_gcs <- function(image, region, dsn, scale, maxPixels,
+                             timePrefix, container, quiet, ...) {
+  extras <- list(...)
 
   # bucket is container
   if (any(names(extras) %in%  "bucket")) {
@@ -407,12 +443,17 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
     )
   }
 
+  # Have you loaded the necessary credentials?
+  # Relevant for either drive or gcs.
+  ee_user <- ee_exist_credentials()
+
   if (is.na(ee_user$gcs_cre)) {
-    ee_Initialize(email = ee_user$email, gcs = TRUE)
+    gcs_credential <- ee_create_credentials_gcs(ee_user$email)
+    ee_save_credential(pgcs = gcs_credential$path)
     message(
-      "Google Cloud Storage credentials were not loaded.",
+      "\nGoogle Cloud Storage credentials were not loaded.",
       " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
-      " to fix it."
+      " to fix."
     )
   }
 
@@ -482,11 +523,51 @@ ee_image_local_gcs <- function(image, region, dsn, scale, maxPixels,
     )
   }
   img_task$start()
-  ee_monitoring(task = img_task, quiet = quiet)
+  list(task = img_task, dsn = dsn)
+}
+
+#' Passing an Earth Engine Image to Local
+#' @noRd
+ee_image_local <- function(task, dsn, via, quiet) {
+  if (via == "drive") {
+    dsn <- ee_image_local_drive(task, dsn, quiet)
+  } else if (via == "gcs") {
+    dsn <- ee_image_local_gcs(task, dsn, quiet)
+  } else {
+    stop("via argument invalid")
+  }
+}
+
+
+#' Passing an Earth Engine Image from GD to Local
+#' @noRd
+ee_image_local_drive <- function(task, dsn, quiet) {
+  ee_monitoring(task = task, quiet = quiet)
+  # From Google Drive to local
+  if (isFALSE(quiet)) {
+    cat('Moving image from Google Drive to Local ... Please wait  \n')
+  }
+  dsn <- ee_drive_to_local(
+    task = task,
+    dsn = dsn,
+    consider = 'all',
+    quiet = quiet
+  )
+  invisible(dsn)
+}
+
+
+#' Passing an Earth Engine Image from GCS to Local
+#' @noRd
+ee_image_local_gcs <- function(task, dsn, quiet) {
+  # earth engine monitoring
+  ee_monitoring(task = task, quiet = quiet)
 
   # From Google Cloud Storage to local
-  cat('Moving image from GCS to Local ... Please wait  \n')
-  dsn <- ee_gcs_to_local(img_task,  dsn = dsn, quiet = quiet)
+  if(isFALSE(quiet)) {
+    cat('Moving image from GCS to Local ... Please wait  \n')
+  }
+  dsn <- ee_gcs_to_local(task,  dsn = dsn, quiet = quiet)
   invisible(dsn)
 }
 
@@ -624,4 +705,182 @@ ee_approx_number_pixels <- function(region, geotransform) {
   x_npixel <- tail(abs(x_diff / xScale))
   y_npixel <- tail(abs(y_diff / yScale))
   round(x_npixel * y_npixel) # approximately
+}
+
+#' The value of a future or the values of all elements in a container
+#'
+#' Gets the value of a future or the values of all elements (including futures)
+#' in a container such as a list, an environment, or a list environment.
+#' If one or more futures is unresolved, then this function blocks until all
+#' queried futures are resolved.
+#'
+#' @author Henrik Bengtsson <https://github.com/HenrikBengtsson>
+#'
+#' @param future, x A Future, an environment, a list, or a list environment.
+#'
+#' @param stdout If TRUE, standard output captured while resolving futures
+#' is relayed, otherwise not.
+#'
+#' @param signal If TRUE, \link[base]{conditions} captured while resolving
+#' futures are relayed, otherwise not.
+#'
+#' @param \dots All arguments used by the S3 methods.
+#'
+#' @return
+#' `value()` of a Future object returns the value of the future, which can
+#' be any type of \R object.
+#'
+#' `value()` of a list, an environment, or a list environment returns an
+#' object with the same number of elements and of the same class.
+#' Names and dimension attributes are preserved, if available.
+#' All future elements are replaced by their corresponding `value()` values.
+#' For all other elements, the existing object is kept as-is.
+#'
+#' If `signal` is TRUE and one of the futures produces an error, then
+#' that error is produced.
+#'
+#' @export
+ee_utils_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
+  future %>% future::value(stdout = TRUE, signal = TRUE, ...)
+}
+
+#' helper function to read raster (ee_read_stars)
+ee_read_stars <- function(img_dsn, band_names, metadata) {
+  img_stars <- stars::read_stars(img_dsn, proxy = TRUE)
+  if (length(stars::st_dimensions(img_stars)) < 3) {
+    img_stars
+  } else {
+    stars::st_set_dimensions(img_stars, 3, values = band_names)
+  }
+}
+
+#' helper function to read raster (ee_as_raster)
+ee_read_raster <- function(img_dsn, band_names, metadata) {
+  if (length(img_dsn) > 1) {
+    message("NOTE: To avoid memory excess problems, ee_as_raster will",
+            " not build Raster objects for large images.")
+    img_dsn
+  } else {
+    dsn_raster <- stars::read_stars(img_dsn, proxy = TRUE) %>%
+      as("Raster") %>%
+      as("EERasterBrick") %>%
+      `names<-`(band_names)
+    dsn_raster@metadata <- metadata
+    dsn_raster
+  }
+}
+
+ee_container_metadata <- function(task, via, quiet = FALSE){
+  if (via == "drive") {
+    metadata_list <- ee_drive_metadata(task, quiet)
+  } else if (via == "gcs") {
+    metadata_list <- ee_gcs_metadata(task, quiet)
+  } else {
+    stop("via argument invalid")
+  }
+  metadata_list
+}
+
+ee_drive_metadata <- function(task, quiet) {
+  if (!requireNamespace("googledrive", quietly = TRUE)) {
+    stop("The googledrive package is required to use rgee::ee_download_drive",
+         call. = FALSE
+    )
+  }
+  ee_user <- ee_exist_credentials()
+  if (is.na(ee_user[["drive_cre"]])) {
+    drive_credential <- ee_create_credentials_drive(ee_user$email)
+    ee_save_credential(pdrive = drive_credential)
+    message(
+      "Google Drive credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user[["email"]],"', drive = TRUE)",
+      " to fix."
+    )
+  }
+  # global parameter of a task
+  gd_folder <- basename(ee$batch$Task$status(task)[["destination_uris"]])
+  gd_ExportOptions <- task[["config"]][["fileExportOptions"]]
+  gd_filename <- gd_ExportOptions[["driveDestination"]][["filenamePrefix"]]
+
+  # Select a google drive file considering the filename and folder
+  count <- 1
+  files_gd <- try(googledrive::drive_find(
+    q = sprintf("'%s' in parents", gd_folder),
+    q = sprintf("name contains '%s'", gd_filename)
+  ), silent = TRUE)
+  while (any(class(files_gd) %in% "try-error") & count < 5) {
+    files_gd <- try(googledrive::drive_find(
+      q = sprintf("'%s' in parents", gd_folder),
+      q = sprintf("name contains '%s'", gd_filename)
+    ), silent = TRUE)
+    count <- count + 1
+  }
+  files_gd
+}
+
+
+ee_gcs_metadata <- function(task, dsn, quiet = FALSE) {
+  if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+    stop(
+      "The googleCloudStorageR package is required to use",
+      " rgee::ee_download_gcs",
+      call. = FALSE
+    )
+  }
+  ee_user <- ee_exist_credentials()
+  if (is.na(ee_user[["gcs_cre"]])) {
+    gcs_credential <- ee_create_credentials_gcs(ee_user$email)
+    ee_save_credential(pgcs = gcs_credential[["path"]])
+    message(
+      "Google Cloud Storage credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
+      " to fix."
+    )
+  }
+  # Getting bucket name and filename
+  gcs_ExportOptions <- task[["config"]][["fileExportOptions"]]
+  gcs_bucket <- gcs_ExportOptions[["gcsDestination"]][["bucket"]]
+  gcs_filename <- gcs_ExportOptions[["gcsDestination"]][["filenamePrefix"]]
+  gcs_fileFormat <- gcs_ExportOptions[["fileFormat"]]
+
+  # Select a gcs file considering the filename and bucket
+  count <- 1
+  files_gcs <- try(
+    expr = googleCloudStorageR::gcs_list_objects(
+      bucket = gcs_bucket,
+      prefix = gcs_filename
+    ),
+    silent = TRUE
+  )
+  while (any(class(files_gcs) %in% "try-error") & count < 5) {
+    files_gcs <- try(
+      expr = googleCloudStorageR::gcs_list_objects(
+        bucket = gcs_bucket,
+        prefix = gcs_filename
+      ),
+      silent = TRUE
+    )
+    count <- count + 1
+  }
+
+  gcs_public_url <- sprintf(
+    "https://storage.googleapis.com/%s/%s",
+    gcs_bucket, files_gcs$name
+  )
+
+  gcs_authenticated_URL  <- sprintf(
+    "https://storage.cloud.google.com/%s/%s",
+    gcs_bucket, files_gcs$name
+  )
+
+  gcs_URI <- sprintf("gs://%s/%s", gcs_bucket, files_gcs$name)
+
+  list(
+    gcs_bucket = gcs_bucket,
+    gcs_filename = gcs_filename,
+    gcs_fileFormat = gcs_fileFormat,
+    gcs_public_url = gcs_public_url,
+    gcs_authenticated_URL = gcs_authenticated_URL,
+    gcs_URI = gcs_URI
+  )
 }

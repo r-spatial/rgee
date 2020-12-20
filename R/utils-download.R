@@ -16,10 +16,24 @@
 #' }
 #' @export
 ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE) {
+  # if task is missing
   if (missing(task)) {
     all_task <- ee_utils_py_to_r(ee$batch$Task$list())
     task <- all_task[[1]]
   }
+
+  # if task is character(ID)
+  if (is.character(task)) {
+    all_task <- ee_utils_py_to_r(ee$batch$Task$list())
+    id_tasks <- lapply(all_task, function(task) task[["id"]]) %>% unlist()
+    if (any(id_tasks %in% task)) {
+      task <- all_task[[which(id_tasks %in% task)]]
+    } else {
+      stop("Undefined Task ID entered")
+    }
+  }
+
+  # List all the EE tasks
   if (eeTaskList) {
     if (!quiet) {
       cat("EETaskList:\n")
@@ -32,6 +46,8 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
       cat("\n")
     }
   }
+
+  # Start to monitoring the task ...
   counter <- 0
   while (ee_utils_py_to_r(ee$batch$Task$active(task)) &
          task[["state"]] != "CANCEL_REQUESTED") {
@@ -53,6 +69,7 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
     )
     stop("ee_monitoring was forced to stop before getting results")
   }
+  invisible(task)
 }
 
 #' Sort google drives files
@@ -84,7 +101,7 @@ ee_sort_localfiles <- function(filenames, fileformat) {
 }
 
 
-#' GCS or Google Drive Exist credentials?
+#' (GCS or Google Drive) Exist external credentials?
 #' @noRd
 ee_exist_credentials <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
@@ -95,6 +112,26 @@ ee_exist_credentials <- function() {
     header = TRUE,
     stringsAsFactors = FALSE
   )
+}
+
+#' Save external credentials
+#' @noRd
+ee_save_credential <- function(pdrive = NULL, pgcs = NULL) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
+  cre_table <- read.table(
+    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+    header = TRUE,
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(pdrive)) {
+    cre_table[["drive_cre"]] <- pdrive
+  } else if (!is.null(pgcs)) {
+    cre_table[["gcs_cre"]] <- pgcs
+  }
+  write.table(cre_table, sessioninfo, row.names = FALSE)
 }
 
 

@@ -790,16 +790,17 @@ ee_drive_to_local <- function(task,
                               quiet = FALSE) {
   if (!requireNamespace("googledrive", quietly = TRUE)) {
     stop("The googledrive package is required to use rgee::ee_download_drive",
-      call. = FALSE
+         call. = FALSE
     )
   } else {
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user[["drive_cre"]])) {
-      ee_Initialize(email = ee_user[["email"]], drive = TRUE)
+      drive_credential <- ee_create_credentials_drive(ee_user$email)
+      ee_save_credential(pdrive = drive_credential)
       message(
         "Google Drive credentials were not loaded.",
         " Running ee_Initialize(email = '",ee_user[["email"]],"', drive = TRUE)",
-        " to fix it."
+        " to fix."
       )
     }
     # global parameter of a task
@@ -871,8 +872,8 @@ ee_drive_to_local <- function(task,
       filenames_local <- sprintf("%s/%s", ee_tempdir, basename(files_gd$name))
     } else {
       pattern <- "(.*)(\\..*)$"
-        element_len <- length(files_gd$name)
-        # Neccesary for large GEOTIFF and TFRecord files
+      element_len <- length(files_gd$name)
+      # Neccesary for large GEOTIFF and TFRecord files
       if (task$task_type == "EXPORT_IMAGE" & element_len > 1) {
         file_ft <- sprintf(
           "-%04d%s",
@@ -1002,11 +1003,12 @@ ee_gcs_to_local <- function(task,
   } else {
     ee_user <- ee_exist_credentials()
     if (is.na(ee_user[["gcs_cre"]])) {
-      ee_Initialize(email = ee_user[["email"]], gcs = TRUE)
+      gcs_credential <- ee_create_credentials_gcs(ee_user$email)
+      ee_save_credential(pgcs = gcs_credential[["path"]])
       message(
         "Google Cloud Storage credentials were not loaded.",
         " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
-        " to fix it."
+        " to fix."
       )
     }
     # Getting bucket name and filename
@@ -1072,10 +1074,10 @@ ee_gcs_to_local <- function(task,
         )
       } else {
         googleCloudStorageR::gcs_get_object(
-            object_name = to_download[index,][["name"]],
-            bucket = gcs_bucket,
-            saveToDisk = filenames_local[index],
-            overwrite = TRUE
+          object_name = to_download[index,][["name"]],
+          bucket = gcs_bucket,
+          saveToDisk = filenames_local[index],
+          overwrite = TRUE
         )
       }
     }

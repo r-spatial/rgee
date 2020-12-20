@@ -9,6 +9,7 @@ ee_as_raster(
   region = NULL,
   dsn = NULL,
   via = "drive",
+  lazy = FALSE,
   scale = NULL,
   maxPixels = 1e+09,
   container = "rgee_backup",
@@ -29,6 +30,9 @@ forced. If not specified image bounds will be taken.}
 
 \item{via}{Character. Method to fetch data about the object. Two methods
 are implemented: "drive", "gcs". See details.}
+
+\item{lazy}{Logical. If TRUE,  a \code{future::\link[future:sequential]{
+sequential}} object is created to evaluate the task in the future.}
 
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image asset.}

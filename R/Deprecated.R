@@ -228,6 +228,7 @@ ee_image_local_getInfo <- function(image, region, dsn, scale, maxPixels,
     # Save results in dsn
     stars::write_stars(mosaic, dsn)
   }
+  invisible(dsn)
 }
 
 

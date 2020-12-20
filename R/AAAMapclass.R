@@ -1,27 +1,12 @@
-#' Class EarthEngineMap
+#' Class EERasterBrick
 #'
-#' @slot object the spatial object
-#' @slot map the leaflet map object
+#' A subclass from RasterBrick that adds the metadata slot.
 #'
-#' @exportClass EarthEngineMap
-setClass('EarthEngineMap',
-         slots = c(object = 'list',
-                   map = 'ANY'))
-NULL
-
-#' Class mapview
+#' @slot metadata A list with metadata related to the download process.
 #'
-#' @slot object the spatial object
-#' @slot map the leaflet map object
-#'
-#' @exportClass mapview
-setClass('mapview',
-         slots = c(object = 'list',
-                   map = 'ANY'))
-NULL
-
-
-if ( !isGeneric('EarthEngineMap') ) {
-  setGeneric('EarthEngineMap', function(x, ...)
-    standardGeneric('EarthEngineMap'))
-}
+#' @exportClass EERasterBrick
+setClass(
+  "EERasterBrick",
+  contains="RasterBrick",
+  slots=c(metadata="list")
+)
