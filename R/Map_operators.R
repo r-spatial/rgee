@@ -3,11 +3,11 @@
 #' @author tim-salabim. Adapted from mapview code.
 #' @param e1 a EarthEngineMap map to which e2 should be added.
 #' @param e2 a EarthEngineMap map from which the objects should be added to e1.
-#'
+#' @name null-default
 #' @export
 '+.EarthEngineMap' <- function(e1, e2) {
   if (!any(class(e2) %in% "EarthEngineMap")) {
-    stop("e2 is not an EarthEngineMap object")
+    stop("right map is not an EarthEngineMap object")
   }
 
   # e1 metadata
@@ -77,20 +77,13 @@
 }
 
 #' EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
+#'
 #' @author tim-salabim. Adapted from mapview code.
 #' @param e1 an EarthEngineMap object.
 #' @param e2 an EarthEngineMap object.
-#' @name slider
+#' @name null-default
 #' @aliases |, EarthEngineMap, EarthEngineMap-method
 #' @export
-`|` <- function (e1, e2) UseMethod("|")
-
-#' @export
-#' @name slider
-`|.default` <- function (e1, e2) .Primitive("|")(e1, e2)
-
-#' @export
-#' @name slider
 '|.EarthEngineMap' <- function(e1, e2) {
   if (!requireNamespace("leaflet", quietly = TRUE)) {
     stop("package leaflet required, please install it first")
@@ -99,7 +92,7 @@
     stop("package leaflet.extras2 required, please install it first")
   }
   if (!any(class(e2) %in% "EarthEngineMap")) {
-    stop("e2 is not an EarthEngineMap object")
+    stop("right map is not an EarthEngineMap object")
   }
 
   # e1 metadata

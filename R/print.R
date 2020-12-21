@@ -14,13 +14,3 @@ print.ee.computedobject.ComputedObject <-
       ee_print(x)
     }
   }
-
-
-#' Method for printing EarthEngineMap objects (show)
-#' @param object a EarthEngineMap object
-setMethod("show", signature(object = "EarthEngineMap"),
-          function(object)
-          {
-            print(methods::slot(object, "map"))
-          }
-)

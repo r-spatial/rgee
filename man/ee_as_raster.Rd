@@ -12,6 +12,8 @@ ee_as_raster(
   lazy = FALSE,
   scale = NULL,
   maxPixels = 1e+09,
+  add_metadata = TRUE,
+  make_public = TRUE,
   container = "rgee_backup",
   timePrefix = TRUE,
   quiet = FALSE,

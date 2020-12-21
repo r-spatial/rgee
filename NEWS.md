@@ -15,6 +15,7 @@ vignette: >
 
 - Unit testing enhanced.
 - Smoother connection with Python (reticulate).
+- Bug in addins.
 - More documentation related to credentials.
 - Now Map$... functions only depend of {leaflet}.
 - Fix a bug (#112) that do not permit to `ee_as_raster` and `ee_as_stars` change

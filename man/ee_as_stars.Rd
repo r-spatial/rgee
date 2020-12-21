@@ -2,17 +2,19 @@
 % Please edit documentation in R/ee_image.R
 \name{ee_as_stars}
 \alias{ee_as_stars}
-\title{Convert an Earth Engine (EE) image into a stars object}
+\title{Convert an Earth Engine (EE) image in a stars object}
 \usage{
 ee_as_stars(
   image,
   region = NULL,
   dsn = NULL,
   via = "drive",
-  lazy = FALSE,
+  container = "rgee_backup",
   scale = NULL,
   maxPixels = 1e+09,
-  container = "rgee_backup",
+  lazy = FALSE,
+  public = TRUE,
+  add_metadata = TRUE,
   timePrefix = TRUE,
   quiet = FALSE,
   ...
@@ -22,28 +24,31 @@ ee_as_stars(
 \item{image}{ee$Image to be converted into a stars object}
 
 \item{region}{EE Geometry (ee$Geometry$Polygon) which specify the region
-to export. CRS needs to be the same that the x argument otherwise it will be
-forced. If not specified image bounds will be taken.}
+to export. CRS needs to be the same that the argument \code{image},
+otherwise, it will be forced. If not specified image bounds will be taken.}
 
-\item{dsn}{Character. Output filename. If missing,
-\code{ee_as_stars} will create a temporary file.}
+\item{dsn}{Character. Output filename. If missing, a temporary file will be
+created.}
 
-\item{via}{Character. Method to fetch data about the object. Two methods
-are implemented: "drive", "gcs". See details.}
+\item{via}{Character. Method to export the image. Two method are
+implemented: "drive", "gcs". See details.}
 
-\item{lazy}{Logical. If TRUE,  a \code{future::\link[future:sequential]{
-sequential}} object is created to evaluate the task in the future.}
+\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
+to be exported into.}
 
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
-to the native resolution of the image asset.}
+to the native resolution of the image.}
 
 \item{maxPixels}{Numeric. The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
 
-\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignored if \code{via} is not defined as "drive" or
-"gcs").}
+\item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
+future::sequential}} object is created to evaluate the task in the future.}
+
+\item{public}{Logical. If TRUE, a public link to the image will be created.}
+
+\item{add_metadata}{Add export metadata to the stars_proxy object. See details.}
 
 \item{timePrefix}{Logical. Add current date and time as a prefix to files to export.
 This parameter helps to avoid exported files with the same name. By default TRUE.}
@@ -57,16 +62,30 @@ This parameter helps to avoid exported files with the same name. By default TRUE
 A stars-proxy object
 }
 \description{
-Convert an ee$Image into a stars object
+Convert an ee$Image in a stars object.
 }
 \details{
-\code{ee_as_stars} supports the download of \code{ee$Image}
-by two different options: "drive" that use Google Drive and "gcs"
-that use Google Cloud Storage. Previously, it is necessary to install the
-R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-googleCloudStorageR} respectively. For getting more information about
-exporting data from Earth Engine,  take a look at the
+\code{ee_as_stars} supports the download of \code{ee$Images}
+by two different options: "drive" that use
+\href{https://CRAN.R-project.org/package=googledrive}{googledrive} and "gcs"
+that use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+googleCloudStorageR}. \code{ee_as_stars} realize the following steps:
+\itemize{
+\item{1. }{A task will be started (i.e. \code{ee$Task$start()}) to move the
+\code{ee$Image} from Earth Engine to the intermediate container specified in argument
+\code{via}.}
+\item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+monitored. This is useful to lunch several tasks at the same time and
+call them later using \code{\link{ee_utils_value}} or
+\code{\link[future:value]{future::value}}. At the end of this step,
+the \code{ee$Image} will be stored on the path specified in the argument
+\code{dsn}.}
+\item{3. }{Finally if the argument \code{add_metadata} is TRUE, the following
+metadata will be added to the stars-proxy object.}
+}
+
+For getting more information about exporting data from Earth Engine, take
+a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }

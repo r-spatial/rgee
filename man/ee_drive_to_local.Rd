@@ -4,7 +4,15 @@
 \alias{ee_drive_to_local}
 \title{Move results from Google Drive to a local directory}
 \usage{
-ee_drive_to_local(task, dsn, overwrite = TRUE, consider = TRUE, quiet = FALSE)
+ee_drive_to_local(
+  task,
+  dsn,
+  overwrite = TRUE,
+  consider = TRUE,
+  public = FALSE,
+  metadata = FALSE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
@@ -17,10 +25,16 @@ whether "filename" should be overwritten. By default TRUE.}
 
 \item{consider}{Interactive. See details.}
 
+\item{public}{Logical. If TRUE, a public link to the image will be created.}
+
+\item{metadata}{Logical. If TRUE, export the metadata related to the image.}
+
 \item{quiet}{logical. Suppress info message}
 }
 \value{
-filename character vector.
+If \code{metadata} is FALSE will return the filename of the image.
+Otherwise, a list with two elements (\code{dns} and \code{metadata}) will
+be returned.
 }
 \description{
 Move results of an EE task saved in Google Drive to a local directory.

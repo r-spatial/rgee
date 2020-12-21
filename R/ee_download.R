@@ -702,6 +702,8 @@ ee_table_to_asset <- function(collection,
 #' @param overwrite A boolean argument which indicates indicating
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param consider Interactive. See details.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param metadata Logical. If TRUE, export the metadata related to the image.
 #' @param quiet logical. Suppress info message
 #'
 #' @details
@@ -717,7 +719,10 @@ ee_table_to_asset <- function(collection,
 #'
 #' @importFrom utils menu
 #'
-#' @return filename character vector.
+#' @return If \code{metadata} is FALSE will return the filename of the image.
+#' Otherwise, a list with two elements (\code{dns} and \code{metadata}) will
+#' be returned.
+#'
 #' @family generic download functions
 #'
 #' @examples
@@ -787,7 +792,10 @@ ee_drive_to_local <- function(task,
                               dsn,
                               overwrite = TRUE,
                               consider = TRUE,
+                              public = FALSE,
+                              metadata = FALSE,
                               quiet = FALSE) {
+
   if (!requireNamespace("googledrive", quietly = TRUE)) {
     stop("The googledrive package is required to use rgee::ee_download_drive",
          call. = FALSE
@@ -814,12 +822,17 @@ ee_drive_to_local <- function(task,
       q = sprintf("'%s' in parents", gd_folder),
       q = sprintf("name contains '%s'", gd_filename)
     ), silent = TRUE)
+
     while (any(class(files_gd) %in% "try-error") & count < 5) {
       files_gd <- try(googledrive::drive_find(
         q = sprintf("'%s' in parents", gd_folder),
         q = sprintf("name contains '%s'", gd_filename)
       ), silent = TRUE)
       count <- count + 1
+    }
+
+    if (public) {
+      files_gd <- googledrive::drive_share_anyone(files_gd, verbose = FALSE)
     }
 
     # (Problem) Google Drive support files with the same name
@@ -906,6 +919,22 @@ ee_drive_to_local <- function(task,
     }
     filenames_local
   }
+
+  if (metadata) {
+    list(
+      dsn = filenames_local,
+      metadata = list(
+        ee_id = task$id,
+        drive_name = to_download$name,
+        drive_id = to_download$id,
+        download_link = sprintf(
+          "https://drive.google.com/uc?id=%s&export=download",
+          to_download$id)
+      )
+    )
+  } else {
+    filenames_local
+  }
 }
 
 #' Move results from Google Cloud Storage to a local directory
@@ -916,8 +945,8 @@ ee_drive_to_local <- function(task,
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
-#' @param overwrite Logical. A boolean indicating whether the file should
-#' be overwritten.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param metadata Logical. If TRUE, export the metadata related to the image.
 #' @param quiet Logical. Suppress info message
 #' @details
 #'
@@ -992,7 +1021,8 @@ ee_drive_to_local <- function(task,
 #' @export
 ee_gcs_to_local <- function(task,
                             dsn,
-                            overwrite = TRUE,
+                            public = FALSE,
+                            metadata = FALSE,
                             quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
     stop(
@@ -1035,6 +1065,16 @@ ee_gcs_to_local <- function(task,
         silent = TRUE
       )
       count <- count + 1
+    }
+
+    if (public) {
+      for (name in files_gcs$name) {
+        googleCloudStorageR::gcs_update_object_acl(
+          object_name = name,
+          bucket = gcs_bucket,
+          entity_type = "allUsers"
+        )
+      }
     }
 
     # Choose the right file using the driver_resource["originalFilename"]
@@ -1081,6 +1121,24 @@ ee_gcs_to_local <- function(task,
         )
       }
     }
+  }
+
+  if (metadata) {
+    list(
+      dsn = filenames_local,
+      metadata = list(
+        ee_id = task$id,
+        gcs_name = to_download$name,
+        gcs_bucket = gcs_bucket,
+        gcs_fileFormat = gcs_fileFormat,
+        public_link = sprintf(
+          "https://storage.googleapis.com/%s/%s",
+          gcs_bucket, to_download$name
+        ),
+        gcs_URI = sprintf("gs://%s/%s", gcs_bucket, to_download$name)
+      )
+    )
+  } else {
     filenames_local
   }
 }
