@@ -927,7 +927,7 @@ ee_drive_to_local <- function(task,
         ee_id = task$id,
         drive_name = to_download$name,
         drive_id = to_download$id,
-        download_link = sprintf(
+        drive_download_link = sprintf(
           "https://drive.google.com/uc?id=%s&export=download",
           to_download$id)
       )
@@ -945,6 +945,8 @@ ee_drive_to_local <- function(task,
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
+#' @param overwrite A boolean argument which indicates indicating
+#' whether "filename" should be overwritten. By default TRUE.
 #' @param public Logical. If TRUE, a public link to the image will be created.
 #' @param metadata Logical. If TRUE, export the metadata related to the image.
 #' @param quiet Logical. Suppress info message
@@ -1023,6 +1025,7 @@ ee_gcs_to_local <- function(task,
                             dsn,
                             public = FALSE,
                             metadata = FALSE,
+                            overwrite = TRUE,
                             quiet = FALSE) {
   if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
     stop(
@@ -1109,7 +1112,7 @@ ee_gcs_to_local <- function(task,
             object_name = to_download[index,][["name"]],
             bucket = gcs_bucket,
             saveToDisk = filenames_local[index],
-            overwrite = TRUE
+            overwrite = overwrite
           )
         )
       } else {
@@ -1117,7 +1120,7 @@ ee_gcs_to_local <- function(task,
           object_name = to_download[index,][["name"]],
           bucket = gcs_bucket,
           saveToDisk = filenames_local[index],
-          overwrite = TRUE
+          overwrite = overwrite
         )
       }
     }
@@ -1131,7 +1134,7 @@ ee_gcs_to_local <- function(task,
         gcs_name = to_download$name,
         gcs_bucket = gcs_bucket,
         gcs_fileFormat = gcs_fileFormat,
-        public_link = sprintf(
+        gcs_public_link = sprintf(
           "https://storage.googleapis.com/%s/%s",
           gcs_bucket, to_download$name
         ),

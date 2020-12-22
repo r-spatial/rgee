@@ -21,11 +21,11 @@ ee_as_stars(
 )
 }
 \arguments{
-\item{image}{ee$Image to be converted into a stars object}
+\item{image}{ee$Image to be converted into a stars object.}
 
 \item{region}{EE Geometry (ee$Geometry$Polygon) which specify the region
 to export. CRS needs to be the same that the argument \code{image},
-otherwise, it will be forced. If not specified image bounds will be taken.}
+otherwise, it will be forced. If not specified, image bounds will be taken.}
 
 \item{dsn}{Character. Output filename. If missing, a temporary file will be
 created.}
@@ -44,14 +44,16 @@ exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
 
 \item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
-future::sequential}} object is created to evaluate the task in the future.}
+future::sequential}} object is created to evaluate the task in the future.
+See details.}
 
 \item{public}{Logical. If TRUE, a public link to the image will be created.}
 
-\item{add_metadata}{Add export metadata to the stars_proxy object. See details.}
+\item{add_metadata}{Add metadata to the stars_proxy object. See details.}
 
-\item{timePrefix}{Logical. Add current date and time as a prefix to files to export.
-This parameter helps to avoid exported files with the same name. By default TRUE.}
+\item{timePrefix}{Logical. Add current date and time (\code{Sys.time()}) as
+a prefix to files to export. This parameter helps to avoid exported files
+with the same name. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}
 
@@ -66,22 +68,44 @@ Convert an ee$Image in a stars object.
 }
 \details{
 \code{ee_as_stars} supports the download of \code{ee$Images}
-by two different options: "drive" that use
-\href{https://CRAN.R-project.org/package=googledrive}{googledrive} and "gcs"
-that use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-googleCloudStorageR}. \code{ee_as_stars} realize the following steps:
+by two different options: "drive"
+(\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
+(\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
 \itemize{
-\item{1. }{A task will be started (i.e. \code{ee$Task$start()}) to move the
-\code{ee$Image} from Earth Engine to the intermediate container specified in argument
-\code{via}.}
+\item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+move the \code{ee$Image} from Earth Engine to the intermediate container
+specified in argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 monitored. This is useful to lunch several tasks at the same time and
-call them later using \code{\link{ee_utils_value}} or
+call them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
 the \code{ee$Image} will be stored on the path specified in the argument
 \code{dsn}.}
-\item{3. }{Finally if the argument \code{add_metadata} is TRUE, the following
-metadata will be added to the stars-proxy object.}
+\item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+with the following elements will be added to the stars-proxy object.
+\itemize{
+\item{\bold{if via is "drive":}}
+\itemize{
+\item{\bold{ee_id: }}{Name of the Earth Engine task.}
+\item{\bold{drive_name: }}{Name of the Image in Google Drive.}
+\item{\bold{drive_id: }}{Id of the Image in Google Drive.}
+\item{\bold{drive_download_link: }}{Download link to the image.}
+}
+}
+\itemize{
+\item{\bold{if via is "gcs":}}
+\itemize{
+\item{\bold{ee_id: }}{Name of the Earth Engine task.}
+\item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
+\item{\bold{gcs_bucket: }}{Name of the bucket.}
+\item{\bold{gcs_fileFormat: }}{Format of the image.}
+\item{\bold{gcs_public_link: }}{Download link to the image.}
+\item{\bold{gcs_URI: }}{gs:// link to the image.}
+}
+}
+Run \code{attr(eeimg01, "metadata")} to get the list.
+}
 }
 
 For getting more information about exporting data from Earth Engine, take
@@ -113,21 +137,47 @@ geometry <- ee$Geometry$Rectangle(
 )
 
 ## drive - Method 01
+# Simple
 img_02 <- ee_as_stars(
   image = img,
   region = geometry,
   via = "drive"
 )
 
-## gcs - Method 02
+# Lazy
+img_02 <- ee_as_stars(
+  image = img,
+  region = geometry,
+  via = "drive",
+  lazy = TRUE
+)
+
+img_02_result <- img_02 \%>\% ee_utils_future_value()
+attr(img_02_result, "metadata") # metadata
+
+# ## gcs - Method 02
+# # Simple
 # img_03 <- ee_as_stars(
 #   image = img,
-#  region = geometry,
+#   region = geometry,
 #   container = "rgee_dev",
-#  via = "gcs"
-#)
-
-# OPTIONAL: Delete containers
+#   via = "gcs"
+# )
+#
+# # Lazy
+# img_03 <- ee_as_stars(
+#   image = img,
+#   region = geometry,
+#   container = "rgee_dev",
+#   lazy = TRUE,
+#   via = "gcs"
+# )
+#
+# img_03_result <- img_03 \%>\% ee_utils_future_value()
+# attr(img_03_result, "metadata") # metadata
+#
+#
+# # OPTIONAL: clean containers
 # ee_clean_container(name = "rgee_backup", type = "drive")
 # ee_clean_container(name = "rgee_dev", type = "gcs")
 }

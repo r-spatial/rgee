@@ -4,7 +4,14 @@
 \alias{ee_gcs_to_local}
 \title{Move results from Google Cloud Storage to a local directory}
 \usage{
-ee_gcs_to_local(task, dsn, public = FALSE, metadata = FALSE, quiet = FALSE)
+ee_gcs_to_local(
+  task,
+  dsn,
+  public = FALSE,
+  metadata = FALSE,
+  overwrite = TRUE,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{task}{List generated after finished correctly a EE task. See details.}
@@ -15,6 +22,9 @@ file will be assigned.}
 \item{public}{Logical. If TRUE, a public link to the image will be created.}
 
 \item{metadata}{Logical. If TRUE, export the metadata related to the image.}
+
+\item{overwrite}{A boolean argument which indicates indicating
+whether "filename" should be overwritten. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}
 }

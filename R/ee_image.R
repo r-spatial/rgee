@@ -2,10 +2,10 @@
 #'
 #' Convert an ee$Image in a stars object.
 #'
-#' @param image ee$Image to be converted into a stars object
+#' @param image ee$Image to be converted into a stars object.
 #' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
 #' to export. CRS needs to be the same that the argument \code{image},
-#' otherwise, it will be forced. If not specified image bounds will be taken.
+#' otherwise, it will be forced. If not specified, image bounds will be taken.
 #' @param dsn Character. Output filename. If missing, a temporary file will be
 #' created.
 #' @param via Character. Method to export the image. Two method are
@@ -19,32 +19,56 @@
 #' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
+#' See details.
 #' @param public Logical. If TRUE, a public link to the image will be created.
-#' @param add_metadata Add export metadata to the stars_proxy object. See details.
-#' @param timePrefix Logical. Add current date and time as a prefix to files to export.
-#' This parameter helps to avoid exported files with the same name. By default TRUE.
+#' @param add_metadata Add metadata to the stars_proxy object. See details.
+#' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
+#' a prefix to files to export. This parameter helps to avoid exported files
+#' with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' \link{ee_image_to_gcs}.
 #'
 #' @details
 #' \code{ee_as_stars} supports the download of \code{ee$Images}
-#' by two different options: "drive" that use
-#' \href{https://CRAN.R-project.org/package=googledrive}{googledrive} and "gcs"
-#' that use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR}. \code{ee_as_stars} realize the following steps:
+#' by two different options: "drive"
+#' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
+#' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
 #' \itemize{
-#'   \item{1. }{A task will be started (i.e. \code{ee$Task$start()}) to move the
-#'    \code{ee$Image} from Earth Engine to the intermediate container specified in argument
-#'   \code{via}.}
+#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   move the \code{ee$Image} from Earth Engine to the intermediate container
+#'   specified in argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks at the same time and
-#'   call them later using \code{\link{ee_utils_value}} or
+#'   call them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the \code{ee$Image} will be stored on the path specified in the argument
 #'   \code{dsn}.}
-#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, the following
-#'    metadata will be added to the stars-proxy object.}
+#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   with the following elements will be added to the stars-proxy object.
+#'   \itemize{
+#'     \item{\bold{if via is "drive":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{drive_name: }}{Name of the Image in Google Drive.}
+#'         \item{\bold{drive_id: }}{Id of the Image in Google Drive.}
+#'         \item{\bold{drive_download_link: }}{Download link to the image.}
+#'     }
+#'   }
+#'   \itemize{
+#'     \item{\bold{if via is "gcs":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
+#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
+#'         \item{\bold{gcs_fileFormat: }}{Format of the image.}
+#'         \item{\bold{gcs_public_link: }}{Download link to the image.}
+#'         \item{\bold{gcs_URI: }}{gs:// link to the image.}
+#'     }
+#'   }
+#'   Run \code{attr(stars, "metadata")} to get the list.
+#'  }
 #' }
 #'
 #' For getting more information about exporting data from Earth Engine, take
@@ -78,21 +102,47 @@
 #' )
 #'
 #' ## drive - Method 01
+#' # Simple
 #' img_02 <- ee_as_stars(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
-#' ## gcs - Method 02
+#' # Lazy
+#' img_02 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive",
+#'   lazy = TRUE
+#' )
+#'
+#' img_02_result <- img_02 %>% ee_utils_future_value()
+#' attr(img_02_result, "metadata") # metadata
+#'
+#' # ## gcs - Method 02
+#' # # Simple
 #' # img_03 <- ee_as_stars(
 #' #   image = img,
-#' #  region = geometry,
+#' #   region = geometry,
 #' #   container = "rgee_dev",
-#' #  via = "gcs"
-#' #)
-#'
-#' # OPTIONAL: Delete containers
+#' #   via = "gcs"
+#' # )
+#' #
+#' # # Lazy
+#' # img_03 <- ee_as_stars(
+#' #   image = img,
+#' #   region = geometry,
+#' #   container = "rgee_dev",
+#' #   lazy = TRUE,
+#' #   via = "gcs"
+#' # )
+#' #
+#' # img_03_result <- img_03 %>% ee_utils_future_value()
+#' # attr(img_03_result, "metadata") # metadata
+#' #
+#' #
+#' # # OPTIONAL: clean containers
 #' # ee_clean_container(name = "rgee_backup", type = "drive")
 #' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
@@ -173,35 +223,74 @@ ee_as_stars <- function(image,
 #'
 #' @param image ee$Image to be converted into a raster object
 #' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
-#' to export. CRS needs to be the same that the x argument otherwise it will be
-#' forced. If not specified image bounds will be taken.
-#' @param dsn Character. Output filename. If missing,
-#' \code{ee_as_raster} will create a temporary file.
+#' to export. CRS needs to be the same that the argument \code{image},
+#' otherwise, it will be forced. If not specified, image bounds will be taken.
+#' @param dsn Character. Output filename. If missing, a temporary file will be
+#' created.
+#' @param via Character. Method to export the image. Two method are
+#' implemented: "drive", "gcs". See details.
+#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
+#' to be exported into.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
-#' to the native resolution of the image asset.
+#' to the native resolution of the image.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Two methods
-#' are implemented: "drive", "gcs". See details.
-#' @param lazy Logical. If TRUE,  a \code{future::\link[future:sequential]{
-#' sequential}} object is created to evaluate the task in the future.
-#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into (ignored if \code{via} is not defined as "drive" or
-#' "gcs").
-#' @param timePrefix Logical. Add current date and time as a prefix to files to export.
-#' This parameter helps to avoid exported files with the same name. By default TRUE.
+#' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
+#' future::sequential}} object is created to evaluate the task in the future.
+#' See details.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param add_metadata Add metadata to the stars_proxy object. See details.
+#' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
+#' a prefix to files to export. This parameter helps to avoid exported files
+#' with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' \link{ee_image_to_gcs}.
 #' @details
-#' \code{ee_as_raster} supports the download of \code{ee$Image}
-#' by two different options: "drive" that use Google Drive and "gcs"
-#' that use Google Cloud Storage. Previously, it is necessary to install the
-#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR} respectively. For getting more information about
-#' exporting data from Earth Engine, take a look at the
+#' \code{ee_as_raster} supports the download of \code{ee$Images}
+#' by two different options: "drive"
+#' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
+#' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
+#' \itemize{
+#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   move the \code{ee$Image} from Earth Engine to the intermediate container
+#'   specified in argument \code{via}.}
+#'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+#'   monitored. This is useful to lunch several tasks at the same time and
+#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   \code{\link[future:value]{future::value}}. At the end of this step,
+#'   the \code{ee$Image} will be stored on the path specified in the argument
+#'   \code{dsn}.}
+#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   with the following elements will be added to the stars-proxy object.
+#'   \itemize{
+#'     \item{\bold{if via is "drive":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{drive_name: }}{Name of the Image in Google Drive.}
+#'         \item{\bold{drive_id: }}{Id of the Image in Google Drive.}
+#'         \item{\bold{drive_download_link: }}{Download link to the image.}
+#'     }
+#'   }
+#'   \itemize{
+#'     \item{\bold{if via is "gcs":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
+#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
+#'         \item{\bold{gcs_fileFormat: }}{Format of the image.}
+#'         \item{\bold{gcs_public_link: }}{Download link to the image.}
+#'         \item{\bold{gcs_URI: }}{gs:// link to the image.}
+#'     }
+#'   }
+#'   Run \code{raster@history@metadata} to get the list.
+#'  }
+#' }
+#'
+#' For getting more information about exporting data from Earth Engine, take
+#' a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
@@ -230,38 +319,63 @@ ee_as_stars <- function(image,
 #' )
 #'
 #' ## drive - Method 01
+#' # Simple
 #' img_02 <- ee_as_raster(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
-#' ## gcs - Method 02
+#' # Lazy
+#' img_02 <- ee_as_raster(
+#'   image = img,
+#'   region = geometry,
+#'   via = "drive",
+#'   lazy = TRUE
+#' )
+#'
+#' img_02_result <- img_02 %>% ee_utils_future_value()
+#' img_02_result@history$metadata # metadata
+#'
+#' # ## gcs - Method 02
+#' # # Simple
 #' # img_03 <- ee_as_raster(
 #' #   image = img,
 #' #   region = geometry,
 #' #   container = "rgee_dev",
 #' #   via = "gcs"
 #' # )
+#' #
+#' # # Lazy
+#' # img_03 <- ee_as_raster(
+#' #   image = img,
+#' #   region = geometry,
+#' #   container = "rgee_dev",
+#' #   lazy = TRUE,
+#' #   via = "gcs"
+#' # )
+#' #
+#' # img_03_result <- img_03 %>% ee_utils_future_value()
+#' # img_03_result@history$metadata # metadata
 #'
-#' # OPTIONAL: Delete containers
+#' # OPTIONAL: clean containers
 #' # ee_clean_container(name = "rgee_backup", type = "drive")
 #' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
-ee_as_raster  <- function(image,
-                          region = NULL,
-                          dsn = NULL,
-                          via = "drive",
-                          lazy = FALSE,
-                          scale = NULL,
-                          maxPixels = 1e9,
-                          add_metadata = TRUE,
-                          make_public = TRUE,
-                          container = "rgee_backup",
-                          timePrefix = TRUE,
-                          quiet = FALSE,
-                          ...) {
+ee_as_raster <- function(image,
+                         region = NULL,
+                         dsn = NULL,
+                         via = "drive",
+                         container = "rgee_backup",
+                         scale = NULL,
+                         maxPixels = 1e9,
+                         lazy = FALSE,
+                         public = TRUE,
+                         add_metadata = TRUE,
+                         timePrefix = TRUE,
+                         quiet = FALSE,
+                         ...) {
 
   if (!requireNamespace("raster", quietly = TRUE)) {
     stop("package raster required, please install it first")
@@ -281,18 +395,23 @@ ee_as_raster  <- function(image,
   )
 
   to_evaluate <- function() {
+    # 2. From the container to the client-side.
     img_dsn <- ee_image_local(
       task = ee_task$task,
       dsn = ee_task$dsn,
       via = via,
+      metadata = add_metadata,
+      public = public,
       quiet = quiet
     )
 
+    # Copy band names
     band_names <- image %>%
       ee$Image$bandNames() %>%
       ee$List$getInfo()
 
-    ee_read_raster(img_dsn, band_names)
+    # Create a proxy-star object
+    ee_read_raster(img_dsn$dsn, band_names, img_dsn$metadata)
   }
 
   if (lazy) {
@@ -773,11 +892,12 @@ ee_approx_number_pixels <- function(region, geotransform) {
 #' that error is produced.
 #'
 #' @export
-ee_utils_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
+ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
   future %>% future::value(stdout = TRUE, signal = TRUE, ...)
 }
 
 #' helper function to read raster (ee_read_stars)
+#' @noRd
 ee_read_stars <- function(img_dsn, band_names, metadata) {
   img_stars <- stars::read_stars(img_dsn, proxy = TRUE)
   attr(img_stars, "metadata") <- metadata
@@ -789,17 +909,15 @@ ee_read_stars <- function(img_dsn, band_names, metadata) {
 }
 
 #' helper function to read raster (ee_as_raster)
+#' @noRd
 ee_read_raster <- function(img_dsn, band_names, metadata) {
   if (length(img_dsn) > 1) {
     message("NOTE: To avoid memory excess problems, ee_as_raster will",
             " not build Raster objects for large images.")
     img_dsn
   } else {
-    dsn_raster <- stars::read_stars(img_dsn, proxy = TRUE) %>%
-      as("Raster") %>%
-      as("EERasterBrick") %>%
-      `names<-`(band_names)
-    dsn_raster@metadata <- metadata
+    dsn_raster <- raster::stack(img_dsn)
+    dsn_raster@history <- list(metadata = metadata)
     dsn_raster
   }
 }
