@@ -22,10 +22,16 @@ vignette: >
 - Fix a bug in Rstudio `ee_help` addins.
 - Fix a bug in `ee_extract` which does not permit to users change the name of the columns.
 - Fix a bug (#112) that does not permit to `ee_as_raster` and `ee_as_stars` change the fileNamePrefix.
+- Add a stop (#113) in `sf_as_ee` since {geojsonio} does not support POSIXt objects.
+  Now `sf_as_ee` shows the columns of class POSIXt.   
 - Lazy evaluation support to `ee_imagecollection_to_local`, `ee_as_sf`, `ee_as_raster` and `ee_as_stars`.
 - Important changes in the ee_as_thumbnail API (from getInfo to drive/gcs).
 - The 'getInfo' support for the export `ee$Images` was removed to avoid problems related to geometric offset.
 - `ee_monitoring` support EE ID task as character.
+- `ee_search` module deprecated, it will removed of rgee in the version 1.0.8.
+- New functions: `ee_utils_search_display` that display the website related to the
+Earth Engine dataset, and `ee_utils_future_value` that helps to display the future
+of a container.
 - Earth Engine Python API test updated to 0.1.246.
 
 # rgee 1.0.6

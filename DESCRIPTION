@@ -112,6 +112,7 @@ Suggests:
     googleCloudStorageR (>= 0.5.1),
     rstudioapi (>= 0.7),
     jsonlite,
+    leafem,
     raster,
     rgdal,
     httr,

@@ -419,7 +419,7 @@ ee_init_task_drive_fc <- function(x_fc, dsn, container, table_id,
   if (timePrefix) {
     file_name <- paste0(table_id, "_", time_format)
   } else {
-    file_name <- image_id
+    file_name <- table_id
   }
 
   # Are GD credentials loaded?
@@ -518,7 +518,7 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
   if (timePrefix) {
     file_name <- paste0(table_id, "_", time_format)
   } else {
-    file_name <- image_id
+    file_name <- table_id
   }
 
   # Are GCS credentials loaded?

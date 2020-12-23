@@ -148,13 +148,13 @@
 #' )
 #'
 #' # Case 5: mapview + EarthEnginemap
-#' library(mapview)
-#' library(sf)
-#' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-#' mapview(nc, m2)
+#' # library(mapview)
+#' # library(sf)
+#' # nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
+#' # mapview(nc, m2)
 #'
 #' # Case 6: mapedit
-#' library(mapedit)
+#' # library(mapedit)
 #' # my_geometry <- m4 %>% editMap()
 #'
 #' # Case 7: ImageCollection

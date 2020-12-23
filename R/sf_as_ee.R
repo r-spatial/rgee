@@ -135,6 +135,21 @@ sf_as_ee <- function(x,
     stop("x needs to be an object of class sf, sfc, sfg")
   }
 
+  # sf_as_ee does not support POSIXlt, POSIXct and POSIXt columns
+  df_classes <- as.character(x %>% lapply(class) %>% unlist())
+  is_POSIX <- df_classes %in% c("POSIXlt", "POSIXct", "POSIXt")
+  if (any(is_POSIX)) {
+    posix_column_names <- paste0(names(x)[is_POSIX], collapse = ", ")
+    pos_msg <- sprintf(
+      "%s does not support %s. Convert the %s: %s to character.",
+      "sf_as_ee",
+      "POSIXt, POSIXct or POSIXlt",
+      if (sum(is_POSIX) == 1) "column" else "columns",
+      bold(posix_column_names)
+    )
+    stop(pos_msg)
+  }
+
   if (any(class(x) %in%  "sfg")) {
     x <- sf::st_sfc(x, crs = proj)
   }
