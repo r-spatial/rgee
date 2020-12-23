@@ -14,17 +14,18 @@ vignette: >
 # rgee 1.0.7
 
 - Unit testing enhanced.
-- Smoother connection with Python (reticulate).
-- Bug in addins.
 - More documentation related to credentials.
+- Smoother connection with Python (reticulate).
 - Now Map$... functions only depend of {leaflet}.
-- Fix a bug (#112) that do not permit to `ee_as_raster` and `ee_as_stars` change
-the fileNamePrefix.
-- Now `ee_as_raster` and `ee_as_stars` save export metadata inside the class 
-(See examples).
-- asynchronous export support to `ee_as_raster`, `ee_as_stars` and `ee_as_sf`.
-- COG and STAC support.
-- change ee_as_thumbnail API :)
+- Public argument added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_imagecollection_to_local`, `ee_drive_to_local` and `ee_gcs_to_local` which permit to create a public link to the resources generated.
+- Metadata argument added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_drive_to_local`, `ee_imagecollection_to_local`, and `ee_gcs_to_local`. If TRUE, the metadata related to the export of the images will be added to raster/stars objects. 
+- Fix a bug in Rstudio `ee_help` addins.
+- Fix a bug in `ee_extract` which does not permit to users change the name of the columns.
+- Fix a bug (#112) that does not permit to `ee_as_raster` and `ee_as_stars` change the fileNamePrefix.
+- Lazy evaluation support to `ee_imagecollection_to_local`, `ee_as_sf`, `ee_as_raster` and `ee_as_stars`.
+- Important changes in the ee_as_thumbnail API (from getInfo to drive/gcs).
+- The 'getInfo' support for the export `ee$Images` was removed to avoid problems related to geometric offset.
+- `ee_monitoring` support EE ID task as character.
 - Earth Engine Python API test updated to 0.1.246.
 
 # rgee 1.0.6
@@ -45,6 +46,7 @@ same name.
 - Fix a bug in name creator in `ee_imagecollection_to_local`.
 - A new message more detailed when the Python path does not have the earth-engine Python API.
 - Earth Engine Python API updated to 0.1.235.
+
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`

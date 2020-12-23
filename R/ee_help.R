@@ -98,9 +98,8 @@ ee_help <- function(eeobject, browser = FALSE) {
 
   # Are you in Rstudio?
   if (.Platform$GUI == "RStudio" & isFALSE(browser)) {
-    if (!requireNamespace("rstudioapi", quietly = TRUE)) {
-      stop("package rstudioapi required, please install it first")
-    }
+    # check rstudioapi
+    ee_check_packages("ee_help", "rstudioapi")
     writeLines(
       text = c(
         ee_html_head_rstudio(doc_to_display$qualified_name),

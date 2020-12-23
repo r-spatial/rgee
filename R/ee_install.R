@@ -35,9 +35,8 @@
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
                        confirm = interactive()) {
-  if (!requireNamespace("rstudioapi", quietly = TRUE)) {
-    stop("package rstudioapi required, please install it first")
-  }
+  #check packages
+  ee_check_packages("ee_install", "rstudioapi")
 
   # If Python not found install miniconda
   if ((!reticulate::py_available(initialize = TRUE))) {

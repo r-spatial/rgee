@@ -85,12 +85,9 @@
 #' @aliases |, EarthEngineMap, EarthEngineMap-method
 #' @export
 '|.EarthEngineMap' <- function(e1, e2) {
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
-  if (!requireNamespace("leaflet.extras2", quietly = TRUE)) {
-    stop("package leaflet.extras2 required, please install it first")
-  }
+  #check packages
+  ee_check_packages("| operator", c("leaflet", "leaflet.extras2"))
+
   if (!any(class(e2) %in% "EarthEngineMap")) {
     stop("right map is not an EarthEngineMap object")
   }

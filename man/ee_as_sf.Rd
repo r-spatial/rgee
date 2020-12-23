@@ -8,44 +8,60 @@ ee_as_sf(
   x,
   dsn,
   overwrite = TRUE,
-  crs = NULL,
   via = "getInfo",
-  maxFeatures = 5000,
   container = "rgee_backup",
+  crs = NULL,
+  maxFeatures = 5000,
   selectors = NULL,
+  lazy = FALSE,
+  public = TRUE,
+  add_metadata = TRUE,
+  timePrefix = TRUE,
   quiet = FALSE
 )
 }
 \arguments{
-\item{x}{Earth Engine table (ee$FeatureCollection) to be converted into a sf
+\item{x}{Earth Engine table (ee$FeatureCollection) to be converted in a sf
 object.}
 
 \item{dsn}{Character. Output filename; in case \code{dsn} is missing
-\code{ee_as_sf} will create a shapefile file in tmp() directory.}
+a shapefile will be created in the \code{tmp()} directory.}
 
 \item{overwrite}{Logical. Delete data source \code{dsn} before attempting
 to write?.}
 
-\item{crs}{Integer or character. coordinate reference system
-for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
-the first element.}
-
-\item{via}{Character. Method to fetch data about the object. Multiple
-options supported. See details.}
-
-\item{maxFeatures}{Numeric. The maximum allowed number of features to
-export (ignore if \code{via} is not set as "getInfo"). The task will fail
-if the exported region covers more features. Defaults to 5000.}
+\item{via}{Character. Method to export the image. Three method are
+implemented: "getInfo", "drive", "gcs". See details.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported into (ignore if \code{via} is not defined as "drive" or
 "gcs").}
 
+\item{crs}{Integer or character. coordinate reference system
+for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
+the first element.}
+
+\item{maxFeatures}{Numeric. The maximum allowed number of features to
+export (ignore if \code{via} is not set as "getInfo"). The task will fail
+if the exported region covers more features. Defaults to 5000.}
+
 \item{selectors}{The list of properties to include in the output, as a
 list of strings or a comma-separated string. By default, all properties are
 included.}
 
-\item{quiet}{logical. Suppress info message}
+\item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
+future::sequential}} object is created to evaluate the task in the future.
+Ignore if \code{via} is set as "getInfo". See details.}
+
+\item{public}{Logical. If TRUE, a public link to the image will be created.}
+
+\item{add_metadata}{Add metadata to the sf object. See details.}
+
+\item{timePrefix}{Logical. Add current date and time (\code{Sys.time()}) as
+a prefix to files to export. This parameter helps to avoid exported files
+with the same name. By default TRUE.}
+
+\item{quiet}{logical. Suppress info message.}
 }
 \value{
 An sf object.
@@ -54,17 +70,55 @@ An sf object.
 Convert an Earth Engine table in a sf object
 }
 \details{
-\code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
-\code{ee$Feature} and \code{ee$Geometry} by three different options:
-"getInfo", "drive", and "gcs". When "getInfo" is set in the \code{via}
-argument, \code{ee_as_sf} will make an REST call to retrieve
-all the known information about the object. The advantage of use
-"getInfo" is a direct and faster download. However, there is a limitation of
+\code{ee_as_sf} supports the download of \code{ee$Geometry}, \code{ee$Feature},
+and \code{ee$FeatureCollection} by three different options:
+"getInfo" (which make an REST call to retrieve the data), "drive"
+(which use \href{https://CRAN.R-project.org/package=googledrive}{Google Drive})
+and "gcs" (which use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+Google Cloud Storage}). The advantage of use "getInfo" is a
+direct and faster download. However, there is a limitation of
 5000 features by request which makes it not recommendable for large
-collections. Instead of "getInfo", the options: "drive" and "gcs" are
-suitable for large collections since they use an intermediate container,
-which may be Google Drive and Google Cloud Storage respectively. For getting
-more information about exporting data from Earth Engine, take a look at the
+FeatureCollections. Instead of "getInfo", the options: "drive" and "gcs"
+are suitable for large FeatureCollections since the use of an intermediate
+container. They work as follow:
+\itemize{
+\item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+move the EE Table from Earth Engine to the intermediate container
+specified in argument \code{via}.}
+\item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+monitored. This is useful to lunch several tasks at the same time and
+call them later using \code{\link{ee_utils_future_value}} or
+\code{\link[future:value]{future::value}}. At the end of this step,
+the EE Table will be stored on the path specified in the argument
+\code{dsn}.}
+\item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+with the following elements will be added to the sf object.
+\itemize{
+\item{\bold{if via is "drive":}}
+\itemize{
+\item{\bold{ee_id: }}{Name of the Earth Engine task.}
+\item{\bold{drive_name: }}{Name of the Table in Google Drive.}
+\item{\bold{drive_id: }}{Id of the Table in Google Drive.}
+\item{\bold{drive_download_link: }}{Download link to the table.}
+}
+}
+\itemize{
+\item{\bold{if via is "gcs":}}
+\itemize{
+\item{\bold{ee_id: }}{Name of the Earth Engine task.}
+\item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
+\item{\bold{gcs_bucket: }}{Name of the bucket.}
+\item{\bold{gcs_fileFormat: }}{Format of the table.}
+\item{\bold{gcs_public_link: }}{Download link to the table.}
+\item{\bold{gcs_URI: }}{gs:// link to the table.}
+}
+}
+Run \code{attr(sf, "metadata")} to get the list.
+}
+}
+
+For getting more information about exporting data from Earth Engine, take
+a look at the
 \href{https://developers.google.com/earth-engine/exporting}{Google
 Earth Engine Guide - Export data}.
 }

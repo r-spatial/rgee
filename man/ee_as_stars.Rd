@@ -104,7 +104,7 @@ with the following elements will be added to the stars-proxy object.
 \item{\bold{gcs_URI: }}{gs:// link to the image.}
 }
 }
-Run \code{attr(eeimg01, "metadata")} to get the list.
+Run \code{attr(stars, "metadata")} to get the list.
 }
 }
 

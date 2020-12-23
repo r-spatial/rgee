@@ -6,19 +6,26 @@
 #' forced.
 #' @param dsn Character. Output filename. If missing,
 #' \code{ee_imagecollection_to_local} will create a temporary file.
-#' @param scale Numeric. The resolution in meters per pixel. Defaults
-#' to the native resolution of the image assset.
-#' @param maxPixels Numeric. The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers
-#' more pixels in the specified projection. Defaults to 100,000,000.
 #' @param via Character. Method to fetch data about the object. Multiple
 #' options supported. See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param quiet logical. Suppress info message
+#' @param scale Numeric. The resolution in meters per pixel. Defaults
+#' to the native resolution of the image assset.
+#' @param maxPixels Numeric. The maximum allowed number of pixels in the
+#' exported image. The task will fail if the exported region covers
+#' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
+#' future::sequential}} object is created to evaluate the task in the future.
+#' See details.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param add_metadata Add metadata to the stars_proxy object. See details.
+#' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
+#' a prefix to files to export. This parameter helps to avoid exported files
+#' with the same name. By default TRUE.
+#' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
-#' \link{ee_image_to_gcs}.
 #' @details
 #' \code{ee_imagecollection_to_local} supports the download of \code{ee$Image}
 #' by two different options: "drive" that use Google Drive and "gcs"
@@ -64,11 +71,18 @@ ee_imagecollection_to_local <- function(ic,
                                         region,
                                         dsn = NULL,
                                         via = "drive",
+                                        container = "rgee_backup",
                                         scale = NULL,
                                         maxPixels = 1e9,
-                                        container = "rgee_backup",
+                                        lazy = FALSE,
+                                        public = TRUE,
+                                        add_metadata = TRUE,
+                                        timePrefix = TRUE,
                                         quiet = FALSE,
                                         ...) {
+  # check packages
+  ee_check_packages("ee_imagecollection_to_local", "sf")
+
   # is image an ee.image.Image?
   if (!any(class(ic) %in% "ee.imagecollection.ImageCollection")) {
     stop("ic argument is not an ee$imagecollection$ImageCollection")
@@ -80,7 +94,7 @@ ee_imagecollection_to_local <- function(ic,
   }
 
   ic_names <- NULL
-  ic_count <-   ic %>%
+  ic_count <- ic %>%
     ee$ImageCollection$size() %>%
     ee$Number$getInfo()
 
@@ -142,16 +156,19 @@ ee_imagecollection_to_local <- function(ic,
     if (!quiet) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-    ee_image_local(
+    ee_as_stars(
       image = image,
       region = region,
       dsn = ic_names[r_index],
       via = via,
+      container = container,
       scale = scale,
       maxPixels = maxPixels,
-      container = container,
-      quiet = TRUE,
-      ...
+      lazy = lazy,
+      public = public,
+      add_metadata = add_metadata,
+      timePrefix = timePrefix,
+      quiet = TRUE
     )
     ic_files[[r_index]] <- ic_names[r_index]
   }
@@ -165,9 +182,6 @@ ee_imagecollection_to_local <- function(ic,
 #' @importFrom crayon bold
 #' @noRd
 ee_geometry_message <- function(region, sf_region = NULL, quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
   # From geometry to sf
   if (is.null(sf_region)) {
     sf_region <- ee_as_sf(x = region)[["geometry"]]

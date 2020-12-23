@@ -1,5 +1,4 @@
 library(testthat)
-library(mapview)
 library(raster)
 library(stars)
 library(rgee)

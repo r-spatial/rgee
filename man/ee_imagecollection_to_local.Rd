@@ -9,9 +9,13 @@ ee_imagecollection_to_local(
   region,
   dsn = NULL,
   via = "drive",
+  container = "rgee_backup",
   scale = NULL,
   maxPixels = 1e+09,
-  container = "rgee_backup",
+  lazy = FALSE,
+  public = TRUE,
+  add_metadata = TRUE,
+  timePrefix = TRUE,
   quiet = FALSE,
   ...
 )
@@ -29,6 +33,10 @@ forced.}
 \item{via}{Character. Method to fetch data about the object. Multiple
 options supported. See details.}
 
+\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
+to be exported into (ignored if \code{via} is not defined as "drive" or
+"gcs").}
+
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image assset.}
 
@@ -36,14 +44,21 @@ to the native resolution of the image assset.}
 exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.}
 
-\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignored if \code{via} is not defined as "drive" or
-"gcs").}
+\item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
+future::sequential}} object is created to evaluate the task in the future.
+See details.}
 
-\item{quiet}{logical. Suppress info message}
+\item{public}{Logical. If TRUE, a public link to the image will be created.}
 
-\item{...}{Extra exporting argument. See \link{ee_image_to_drive} and
-\link{ee_image_to_gcs}.}
+\item{add_metadata}{Add metadata to the stars_proxy object. See details.}
+
+\item{timePrefix}{Logical. Add current date and time (\code{Sys.time()}) as
+a prefix to files to export. This parameter helps to avoid exported files
+with the same name. By default TRUE.}
+
+\item{quiet}{Logical. Suppress info message}
+
+\item{...}{Extra exporting argument. See \link{ee_image_to_drive} and}
 }
 \value{
 Character vector containing the filename of the images downloaded.

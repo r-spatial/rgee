@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -118,6 +118,7 @@ Suggests:
     digest,
     spelling,
     testthat,
+    future,
     covr,
     knitr,
     rmarkdown,

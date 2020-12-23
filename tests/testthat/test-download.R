@@ -30,7 +30,6 @@ fc_test <- ee_geom %>%
   ee$Feature(list("test" = "feature")) %>%
   ee$FeatureCollection()
 
-
 image_test <- mean_srtm_Amarakaeri
 imageExportFormatOptions_1 <- list(
   patchDimensions = c(10L, 10L),
@@ -66,10 +65,13 @@ test_that("GEOTIFF_DRIVE", {
     fileNamePrefix = "test_image_GEOTIFF"
   )
   task_img$start()
-  ee_monitoring(task_img)
+  ee_monitoring(task_img$id)
+  full_list <- ee_monitoring(eeTaskList = TRUE)
   img <- ee_drive_to_local(
     task = task_img,
     consider = 'last',
+    public = TRUE,
+    metadata = TRUE,
     dsn = tempfile()
   )
   expect_is(img, "character")
@@ -127,7 +129,9 @@ test_that("GEOTIFF_GCS", {
   )
   task_img$start()
   ee_monitoring(task_img)
-  img <- ee_gcs_to_local(task = task_img, dsn = tempfile())
+  img <- ee_gcs_to_local(task = task_img, dsn = tempfile(),
+                         public = TRUE,
+                         metadata = TRUE)
   img <- ee_gcs_to_local(task = task_img, dsn = tempfile(), quiet = TRUE)
   expect_is(img, "character")
 })
@@ -334,7 +338,9 @@ test_that("KMZ_VECTOR_GCS",{
   )
   task_vector$start()
   ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
+  vector <- ee_gcs_to_local(task = task_vector,
+                            public = TRUE,
+                            metadata = TRUE)
   expect_is(vector, "character")
 })
 
@@ -349,7 +355,9 @@ test_that("GEOJSON_VECTOR_GCS",{
   )
   task_vector$start()
   ee_monitoring(task_vector)
-  vector <- ee_gcs_to_local(task = task_vector)
+  vector <- ee_gcs_to_local(task = task_vector,
+                            public = TRUE,
+                            metadata = TRUE)
   expect_is(vector, "character")
 })
 # # 19. CTFRECORD_VECTOR - GCS
@@ -374,6 +382,11 @@ test_that("table to asset",{
     collection = fc_test,
     assetId = assetid
   )
+  task_vector <- ee_table_to_asset(
+    collection = fc_test,
+    assetId = assetid,
+    overwrite = TRUE
+  )
   task_vector$start()
   ee_monitoring(task_vector)
   mess <- ee_manage_delete(assetid)
@@ -385,6 +398,11 @@ test_that("image to asset",{
   task_img <- ee_image_to_asset(
     image = image_test,
     assetId = assetid
+  )
+  task_img <- ee_image_to_asset(
+    image = image_test,
+    assetId = assetid,
+    overwrite = TRUE
   )
   task_img$start()
   ee_monitoring(task_img)

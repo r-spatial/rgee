@@ -299,12 +299,8 @@ ee_addLayer <- function(eeObject,
                         shown = TRUE,
                         opacity = 1,
                         legend = FALSE) {
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem"))
   if (is.null(visParams)) {
     visParams <- list()
   }
@@ -375,14 +371,8 @@ ee_addLayers <- function(eeObject,
                          shown = TRUE,
                          opacity = 1,
                          legend = FALSE) {
-
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
-
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("Map$addLayers", c("jsonlite", "leaflet"))
 
   # is an ee.imagecollection.ImageCollection?
   if (!any(class(eeObject) %in% "ee.imagecollection.ImageCollection")) {
@@ -450,9 +440,8 @@ ee_addLayers <- function(eeObject,
 #' Basic base mapview object
 #' @noRd
 ee_mapview <- function() {
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("ee_mapview", "leaflet")
   m <- leaflet_default()
   m$x$setView[[1]] <- c(Map$lat, Map$lon)
   m$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
@@ -462,9 +451,9 @@ ee_mapview <- function() {
 #' Add a mapview object based on a tile_fetcher
 #' @noRd
 ee_addTile <- function(tile, name, shown, opacity) {
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("Map$addLayer", c("leaflet"))
+
   m <- ee_mapview()
   m <- m %>%
     leaflet::addTiles(

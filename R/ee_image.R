@@ -160,12 +160,7 @@ ee_as_stars <- function(image,
                         timePrefix = TRUE,
                         quiet = FALSE,
                         ...) {
-  if (!requireNamespace("stars", quietly = TRUE)) {
-    stop("package stars required, please install it first")
-  }
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  ee_check_packages("ee_as_stars", c("stars", "sf", "future"))
 
   # 1. From Earth Engine to the container (drive or gcs)
   # Initialize the task! depending of the argument "via", the arguments
@@ -217,9 +212,9 @@ ee_as_stars <- function(image,
 
 
 
-#' Convert an Earth Engine (EE) image into a raster object
+#' Convert an Earth Engine (EE) image in a raster object
 #'
-#' Convert an ee$Image into a raster object
+#' Convert an ee$Image in a raster object
 #'
 #' @param image ee$Image to be converted into a raster object
 #' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
@@ -376,10 +371,7 @@ ee_as_raster <- function(image,
                          timePrefix = TRUE,
                          quiet = FALSE,
                          ...) {
-
-  if (!requireNamespace("raster", quietly = TRUE)) {
-    stop("package raster required, please install it first")
-  }
+  ee_check_packages("ee_as_raster", c("raster"))
 
   ee_task <- ee_init_task(
     image = image,
@@ -438,15 +430,7 @@ ee_init_task <- function(image,
                          container = "rgee_backup",
                          quiet = FALSE,
                          ...) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
-  if (!requireNamespace("stars", quietly = TRUE)) {
-    stop("package stars required, please install it first")
-  }
+  ee_check_packages("ee_init_task", c("sf", "jsonlite", "stars"))
 
   # is image an ee.image.Image?
   if (!any(class(image) %in% "ee.image.Image")) {
@@ -496,9 +480,12 @@ ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
   if (is.null(dsn)) {
     # Getting image ID if it is exist
     image_id <- tryCatch(
-      expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
-        scope[[1]][[2]][["arguments"]][["id"]],
-      error = function(e) "noid_image"
+      expr = {
+        image %>%
+          ee$Image$get("system:id") %>%
+          ee$ComputedObject$getInfo() %>%
+          basename()
+      }, error = function(e) "noid_image"
     )
     if (is.null(image_id)) {
       image_id <- "noid_image"
@@ -612,9 +599,12 @@ ee_init_task_gcs <- function(image, region, dsn, scale, maxPixels,
   if (is.null(dsn)) {
     # Getting image ID if it is exist
     image_id <- tryCatch(
-      expr = jsonlite::parse_json(ee$String$serialize(ee$Image$id(image)))$
-        scope[[1]][[2]][["arguments"]][["id"]],
-      error = function(e) "noid_image"
+      expr = {
+        image %>%
+          ee$Image$get("system:id") %>%
+          ee$ComputedObject$getInfo() %>%
+          basename()
+      }, error = function(e) "noid_image"
     )
     if (is.null(image_id)) {
       image_id <- "noid_image"
@@ -756,9 +746,9 @@ ee_image_info <- function(image,
                           getsize = TRUE,
                           compression_ratio = 20,
                           quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  #check packages
+  ee_check_packages("ee_image_info", "sf")
+
   band_length <- length(image$bandNames()$getInfo())
 
   # if (band_length != 1) {
@@ -921,16 +911,3 @@ ee_read_raster <- function(img_dsn, band_names, metadata) {
     dsn_raster
   }
 }
-
-ee_container_metadata <- function(task, via, quiet = FALSE){
-  if (via == "drive") {
-    metadata_list <- ee_drive_metadata(task, quiet)
-  } else if (via == "gcs") {
-    metadata_list <- ee_gcs_metadata(task, quiet)
-  } else {
-    stop("via argument invalid")
-  }
-  metadata_list
-}
-
-

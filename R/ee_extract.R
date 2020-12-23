@@ -118,16 +118,14 @@ ee_extract <- function(x,
                        sf = FALSE,
                        quiet = FALSE,
                        ...) {
+  ee_check_packages("ee_extract", c("geojsonio", "sf"))
+
+  # print scale
   if (!quiet & is.null(scale)) {
     scale <- 1000
     message(sprintf("The image scale is set to %s.", scale))
   }
-  if (!requireNamespace("geojsonio", quietly = TRUE)) {
-    stop("package geojsonio required, please install it first")
-  }
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+
   # Is x a Image or ImageCollection?
   if (!any(class(x) %in% ee_get_spatial_objects("i+ic"))) {
     stop("x is neither an ee$Image nor ee$ImageCollection")

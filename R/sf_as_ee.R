@@ -128,10 +128,8 @@ sf_as_ee <- function(x,
                      geodesic = NULL,
                      quiet = FALSE,
                      ...) {
-
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  # check packages
+  ee_check_packages("sf_as_ee", "sf")
 
   if (!any(class(x) %in%  c("sf", "sfc", "sfg"))) {
     stop("x needs to be an object of class sf, sfc, sfg")

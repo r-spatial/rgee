@@ -144,12 +144,7 @@ ee_clean_container <- function(name = "rgee_backup",
   ee_user <- ee_exist_credentials()
 
   if (type == "drive") {
-    if (!requireNamespace("googledrive", quietly = TRUE)) {
-      stop(
-        "The googledrive package is required to use rgee::ee_download_drive",
-        call. = FALSE
-      )
-    }
+    ee_check_packages("ee_download_drive", "googledrive")
     if (is.na(ee_user[["drive_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",
@@ -170,13 +165,9 @@ ee_clean_container <- function(name = "rgee_backup",
       count <- count + 1
     }
   } else if (type == "gcs") {
-    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-      stop(
-        "The googleCloudStorageR package is required to use",
-        " rgee::ee_download_gcs",
-        call. = FALSE
-      )
-    }
+    # check if googleCloudStorageR is installed
+    ee_check_packages("ee_download_gcs", "googleCloudStorageR")
+
     if (is.na(ee_user[["gcs_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",

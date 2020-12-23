@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_image.R
 \name{ee_as_raster}
 \alias{ee_as_raster}
-\title{Convert an Earth Engine (EE) image into a raster object}
+\title{Convert an Earth Engine (EE) image in a raster object}
 \usage{
 ee_as_raster(
   image,
@@ -64,7 +64,7 @@ with the same name. By default TRUE.}
 A RasterStack object
 }
 \description{
-Convert an ee$Image into a raster object
+Convert an ee$Image in a raster object
 }
 \details{
 \code{ee_as_raster} supports the download of \code{ee$Images}
@@ -104,7 +104,7 @@ with the following elements will be added to the stars-proxy object.
 \item{\bold{gcs_URI: }}{gs:// link to the image.}
 }
 }
-Run \code{eeimg01@history@metadata)} to get the list.
+Run \code{raster@history@metadata} to get the list.
 }
 }
 
