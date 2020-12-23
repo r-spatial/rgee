@@ -883,7 +883,38 @@ ee_approx_number_pixels <- function(region, geotransform) {
 #'
 #' @export
 ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
-  future %>% future::value(stdout = TRUE, signal = TRUE, ...)
+  ee_check_packages("ee_utils_future_value", "future")
+  if (is.list(future)) {
+    # if all the elements in a list are of the class SequentialFuture.
+    condition1 <- all(
+      sapply(future, function(x) any(class(x) %in% "SequentialFuture"))
+    )
+    if (condition1) {
+      lazy_batch_extract <- future %>%
+        future::value(stdout = stdout, signal = signal, ...)
+      # Is the list a results of run ee_imagecollection_to_local?
+      if(is(future, "ee_imagecollection")) {
+        dsn <- lapply(lazy_batch_extract, '[[', 1)
+        metadata <- lapply(lazy_batch_extract, function(x) attr(x, "metadata"))
+        # If metadata is NULL means that the user run:
+        # ee_imagecollection_to_local(..., add_metadata=FALSE)
+        if (any(sapply(metadata, is.null))) {
+           unlist(dsn)
+        } else {
+          mapply(
+            function(x, y) list(dsn = x, metadata = y),
+            dsn, metadata,
+            SIMPLIFY=FALSE
+          )
+        }
+      }
+    } else {
+      stop("Impossible to use ee_utils_future_value in a list ",
+           "with elements of a class different from SequentialFuture.")
+    }
+  } else {
+    future %>% future::value(stdout = stdout, signal = signal, ...)
+  }
 }
 
 #' helper function to read raster (ee_read_stars)

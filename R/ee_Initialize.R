@@ -395,7 +395,7 @@ ee_create_credentials_gcs <- function(email) {
       sprintf("Unable to find a service account key (SAK) file in: %s",  bold(ee_path_user)),
       "Please, download and save the key manually on the path mentioned",
       "before. A compressible tutorial to obtain their SAK file is available in:",
-      "> https://github.com/csaybar/GCS_AUTH_FILE.json",
+      "> https://github.com/r-spatial/rgee/tree/help/gcs",
       "> https://cloud.google.com/iam/docs/creating-managing-service-account-keys",
       "> https://console.cloud.google.com/apis/credentials/serviceaccountkey",
       bold("Until you do not save a SKA file, the following functions will not work:"),
