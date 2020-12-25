@@ -1,7 +1,8 @@
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after an created an EE task or a character that
-#' represent the ID of a EE task.
+#' @param task List generated after a task is started (i.e. after run
+#' `ee$batch$Task$start()`) or a character that represents the ID of a EE
+#' task started.
 #' @param task_time Numeric. How often (in seconds) should a task be polled?
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.

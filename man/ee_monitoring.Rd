@@ -7,8 +7,9 @@
 ee_monitoring(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{task}{List generated after an created an EE task or a character that
-represent the ID of a EE task.}
+\item{task}{List generated after a task is started (i.e. after run
+\code{ee$batch$Task$start()}) or a character that represents the ID of a EE
+task started.}
 
 \item{task_time}{Numeric. How often (in seconds) should a task be polled?}
 
