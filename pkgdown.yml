@@ -5,8 +5,5 @@ articles:
   BestPractices: BestPractices.html
   considerations: considerations.html
   setup: setup.html
-last_built: 2020-09-21T23:46Z
-urls:
-  reference: http://r-spatial.github.io/rgee/reference
-  article: http://r-spatial.github.io/rgee/articles
+last_built: 2020-12-25T19:01Z
 

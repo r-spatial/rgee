@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -22,7 +22,7 @@
     modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
     See &lt;https://r-spatial.github.io/rgee/&gt; for further details.">
-<meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png">
+<meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
       </span>
     </div>
 
@@ -49,54 +49,40 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="reference/index.html">Reference</a>
+</li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa fas fa-book"></span>
-     
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/setup.html">Setup and details</a>
-    </li>
-    <li>
-      <a href="articles/considerations.html">Consideration</a>
-    </li>
-    <li>
       <a href="articles/BestPractices.html">Best Practices</a>
     </li>
     <li>
-      <a href="http://csaybar.github.io/rgee-examples/">rgee examples</a>
+      <a href="articles/considerations.html">Considerations</a>
+    </li>
+    <li>
+      <a href="articles/setup.html">Setup and Details</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="news/index.html">
-    <span class="fa fa-newspaper-o"></span>
-     
-    news
-  </a>
+  <a href="news/index.html">Changelog</a>
 </li>
-<li>
-  <a href="reference/index.html">
-    <span class="fa fa-file-code-o"></span>
-     
-    functions
-  </a>
-</li>
+      </ul>
+<ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
-    github
   </a>
 </li>
       </ul>
@@ -169,14 +155,13 @@ R
 <span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; [u'elevation']</span></span></code></pre></div>
 </td>
 <td>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
-<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
-<span class="kw">db</span> <span class="op">&lt;-</span> <span class="st">'CGIAR/SRTM90_V4'</span>
-<span class="kw">image</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">Image</span>(<span class="kw">db</span>)
-<span class="kw">image</span><span class="op">$</span><span class="fu">bandNames</span>()<span class="op">$</span><span class="fu">getInfo</span>()
-<span class="co">#&gt; [1] "elevation"</span>
-</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee">rgee</a></span><span class="op">)</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">db</span> <span class="op">&lt;-</span> <span class="st">'CGIAR/SRTM90_V4'</span>
+<span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">db</span><span class="op">)</span>
+<span class="va">image</span><span class="op">$</span><span class="fu">bandNames</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] "elevation"</span></code></pre></div>
 </td>
 </tr>
 </table>
@@ -186,9 +171,8 @@ R
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Install the <code>rgee</code> package from GitHub is quite simple, you just have to run in your R console as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"r-spatial/rgee"</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></code></pre></div>
 <p><strong><code>rgee</code> depends on <a href="https://github.com/r-spatial/sf">sf</a></strong>. Therefore, is necessary to install its external libraries, follow the installation steps specified <a href="https://github.com/r-spatial/sf#installing">here</a>. If you are using a Debian-based operating system, you probably need to install <strong>virtualenv</strong> as well.</p>
 <pre><code>sudo pip3 install virtualenv</code></pre>
 <div id="docker-image" class="section level4">
@@ -204,21 +188,19 @@ R
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>setup</h2>
 <p>Prior to using <code>rgee</code> you will need to install a <strong>Python version higher than 3.5</strong> in their system. <code>rgee</code> counts with an installation function (ee_install) which helps to setup <code>rgee</code> correctly:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee">rgee</a></span><span class="op">)</span>
 
 <span class="co">## It is necessary just once</span>
-<span class="fu"><a href="reference/ee_install.html">ee_install</a></span>()
+<span class="fu"><a href="reference/ee_install.html">ee_install</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># Initialize Earth Engine!</span>
-<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
-</pre></div>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Additionally, you might use the functions below for checking the status of rgee dependencies and delete credentials.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="reference/ee_check-tools.html">ee_check</a></span>() <span class="co"># Check non-R dependencies</span>
-<span class="fu"><a href="reference/ee_clean_credentials.html">ee_clean_credentials</a></span>() <span class="co"># Remove credentials of a specific user</span>
-<span class="fu"><a href="reference/ee_clean_pyenv.html">ee_clean_pyenv</a></span>() <span class="co"># Remove reticulate system variables</span>
-</pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/ee_check-tools.html">ee_check</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check non-R dependencies</span>
+<span class="fu"><a href="reference/ee_clean_credentials.html">ee_clean_credentials</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Remove credentials of a specific user</span>
+<span class="fu"><a href="reference/ee_clean_pyenv.html">ee_clean_pyenv</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Remove reticulate system variables</span></code></pre></div>
 <p>Also, consider looking at the <a href="https://r-spatial.github.io/rgee/articles/setup.html">setup section</a> for more information on customizing your Python installation.</p>
 </div>
 <div id="package-conventions" class="section level2">
@@ -239,85 +221,75 @@ R
 <h3 class="hasAnchor">
 <a href="#1-compute-the-trend-of-night-time-lights-js-version" class="anchor"></a>1. Compute the trend of night-time lights (<a href="https://github.com/google/earthengine-api">JS version</a>)</h3>
 <p>Authenticate and Initialize the Earth Engine R API.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
-<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
-<span class="co">#ee_reattach() # reattach ee as a reserve word</span>
-</pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee">rgee</a></span><span class="op">)</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#ee_reattach() # reattach ee as a reserve word</span></code></pre></div>
 <p>Adds a band containing image date as years since 1991.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">createTimeBand</span> <span class="op">&lt;-</span><span class="fu">function</span>(<span class="kw">img</span>) {
-  <span class="kw">year</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="kw">img</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>))<span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'year'</span>)<span class="op">$</span><span class="fu">subtract</span>(<span class="fl">1991L</span>)
-  <span class="kw">ee</span><span class="op">$</span><span class="fu">Image</span>(<span class="kw">year</span>)<span class="op">$</span><span class="fu">byte</span>()<span class="op">$</span><span class="fu">addBands</span>(<span class="kw">img</span>)
-}
-</pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">createTimeBand</span> <span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">year</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'year'</span><span class="op">)</span><span class="op">$</span><span class="fu">subtract</span><span class="op">(</span><span class="fl">1991L</span><span class="op">)</span>
+  <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">$</span><span class="fu">byte</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">addBands</span><span class="op">(</span><span class="va">img</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>Map the time band creation helper over the <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS">night-time lights collection</a>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="kw">collection</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span>
-  <span class="fu">ImageCollection</span>(<span class="st">'NOAA/DMSP-OLS/NIGHTTIME_LIGHTS'</span>)<span class="op">$</span>
-  <span class="fu">select</span>(<span class="st">'stable_lights'</span>)<span class="op">$</span>
-  <span class="fu">map</span>(<span class="kw">createTimeBand</span>)
-</pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">collection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span>
+  <span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'NOAA/DMSP-OLS/NIGHTTIME_LIGHTS'</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu">select</span><span class="op">(</span><span class="st">'stable_lights'</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu">map</span><span class="op">(</span><span class="va">createTimeBand</span><span class="op">)</span></code></pre></div>
 <p>Compute a linear fit over the series of values at each pixel, visualizing the y-intercept in green, and positive/negative slopes as red/blue.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">col_reduce</span> <span class="op">&lt;-</span> <span class="kw">collection</span><span class="op">$</span><span class="fu">reduce</span>(<span class="kw">ee</span><span class="op">$</span><span class="kw">Reducer</span><span class="op">$</span><span class="fu">linearFit</span>())
-<span class="kw">col_reduce</span> <span class="op">&lt;-</span> <span class="kw">col_reduce</span><span class="op">$</span><span class="fu">addBands</span>(
-  <span class="kw">col_reduce</span><span class="op">$</span><span class="fu">select</span>(<span class="st">'scale'</span>))
-<span class="fu"><a href="reference/ee_print.html">ee_print</a></span>(<span class="kw">col_reduce</span>)
-</pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">col_reduce</span> <span class="op">&lt;-</span> <span class="va">collection</span><span class="op">$</span><span class="fu">reduce</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">linearFit</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">col_reduce</span> <span class="op">&lt;-</span> <span class="va">col_reduce</span><span class="op">$</span><span class="fu">addBands</span><span class="op">(</span>
+  <span class="va">col_reduce</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'scale'</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="reference/ee_print.html">ee_print</a></span><span class="op">(</span><span class="va">col_reduce</span><span class="op">)</span></code></pre></div>
 <p>Create a interactive visualization!</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">Map</span><span class="op">$</span><span class="fu">setCenter</span>(<span class="fl">9.08203</span>, <span class="fl">47.39835</span>, <span class="fl">3</span>)
-<span class="kw">Map</span><span class="op">$</span><span class="fu">addLayer</span>(
-  eeObject = <span class="kw">col_reduce</span>,
-  visParams = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-    bands = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"scale"</span>, <span class="st">"offset"</span>, <span class="st">"scale"</span>),
-    min = <span class="fl">0</span>,
-    max = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.18</span>, <span class="fl">20</span>, <span class="op">-</span><span class="fl">0.18</span>)
-  ),
-  name = <span class="st">"stable lights trend"</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span><span class="fl">9.08203</span>, <span class="fl">47.39835</span>, <span class="fl">3</span><span class="op">)</span>
+<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span>
+  eeObject <span class="op">=</span> <span class="va">col_reduce</span>,
+  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"scale"</span>, <span class="st">"offset"</span>, <span class="st">"scale"</span><span class="op">)</span>,
+    min <span class="op">=</span> <span class="fl">0</span>,
+    max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.18</span>, <span class="fl">20</span>, <span class="op">-</span><span class="fl">0.18</span><span class="op">)</span>
+  <span class="op">)</span>,
+  name <span class="op">=</span> <span class="st">"stable lights trend"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png" alt="rgee_01"></p>
 </div>
 <div id="2-extract-precipitation-values" class="section level3">
 <h3 class="hasAnchor">
 <a href="#2-extract-precipitation-values" class="anchor"></a>2. Extract precipitation values</h3>
 <p>Install and load <code>tidyverse</code> and <code>sf</code> R package, after that, initialize the Earth Engine R API.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">tidyverse</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee">rgee</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sf</span><span class="op">)</span>
 
 <span class="co"># ee_reattach() # reattach ee as a reserve word</span>
-<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
-</pre></div>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Read the <code>nc</code> shapefile.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shape/nc.shp"</span>, package = <span class="st">"sf"</span>), quiet = <span class="fl">TRUE</span>)
-</pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu">st_read</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE">Terraclimate dataset</a></p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="kw">terraclimate</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">ImageCollection</span>(<span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span>)<span class="op">$</span>
-  <span class="fu">filterDate</span>(<span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span>)<span class="op">$</span>
-  <span class="fu">map</span>(<span class="fu">function</span>(<span class="kw">x</span>) <span class="kw">x</span><span class="op">$</span><span class="fu">reproject</span>(<span class="st">"EPSG:4326"</span>)<span class="op">$</span><span class="fu">select</span>(<span class="st">"pr"</span>))
-</pre></div>
-<p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/raster/man/extract.html">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="kw">ee_nc_rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span>(x = <span class="kw">terraclimate</span>, y = <span class="kw">nc</span>, sf = <span class="fl">FALSE</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span>(<span class="kw">ee_nc_rain</span>) <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>)
-<span class="kw">ee_nc_rain</span><span class="op">$</span><span class="kw">name</span> <span class="op">&lt;-</span> <span class="kw">nc</span><span class="op">$</span><span class="kw">NAME</span>
-</pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">terraclimate</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="fu">reproject</span><span class="op">(</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">"pr"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code>raster::extract</code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ee_nc_rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">terraclimate</span>, y <span class="op">=</span> <span class="va">nc</span>, sf <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">ee_nc_rain</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span>
+<span class="va">ee_nc_rain</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="va">nc</span><span class="op">$</span><span class="va">NAME</span></code></pre></div>
 <p>Use ggplot2 to generate a beautiful static plot!</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="kw">ee_nc_rain</span> <span class="op">%&gt;%</span>
-  <span class="fu">pivot_longer</span>(<span class="op">-</span><span class="kw">name</span>, names_to = <span class="st">"month"</span>, values_to = <span class="st">"pr"</span>) <span class="op">%&gt;%</span>
-  <span class="fu">ggplot</span>(<span class="fu">aes</span>(x = <span class="kw">month</span>, y = <span class="kw">pr</span>, group = <span class="kw">name</span>, color = <span class="kw">pr</span>)) <span class="op">+</span>
-  <span class="fu">geom_line</span>(alpha = <span class="fl">0.4</span>) <span class="op">+</span>
-  <span class="fu">xlab</span>(<span class="st">"Month"</span>) <span class="op">+</span>
-  <span class="fu">ylab</span>(<span class="st">"Precipitation (mm)"</span>) <span class="op">+</span>
-  <span class="fu">theme_minimal</span>()
-</pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ee_nc_rain</span> <span class="op">%&gt;%</span>
+  <span class="fu">pivot_longer</span><span class="op">(</span><span class="op">-</span><span class="va">name</span>, names_to <span class="op">=</span> <span class="st">"month"</span>, values_to <span class="op">=</span> <span class="st">"pr"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">pr</span>, group <span class="op">=</span> <span class="va">name</span>, color <span class="op">=</span> <span class="va">pr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">xlab</span><span class="op">(</span><span class="st">"Month"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">ylab</span><span class="op">(</span><span class="st">"Precipitation (mm)"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width="80%"></p>
 </div>
@@ -325,83 +297,72 @@ R
 <h3 class="hasAnchor">
 <a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation">JS version</a>)</h3>
 <p>Install and load <code>sf</code>, after that, initialize the Earth Engine R API.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/r-spatial/rgee">rgee</a></span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://r-spatial.github.io/sf">sf</a></span>)
-<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span>()
-<span class="co"># ee_reattach() # reattach ee as a reserve word</span>
-</pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee">rgee</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">sf</span><span class="op">)</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co"># ee_reattach() # reattach ee as a reserve word</span></code></pre></div>
 <p>Define the regional bounds of animation frames and a mask to clip the NDVI data by.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"shp/arequipa.shp"</span>, package = <span class="st">"rgee"</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://rdrr.io/pkg/sf/man/st_read.html">st_read</a></span>(quiet = <span class="fl">TRUE</span>) <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="reference/sf_as_ee.html">sf_as_ee</a></span>()
-<span class="kw">region</span> <span class="op">&lt;-</span> <span class="kw">mask</span><span class="op">$</span><span class="fu">geometry</span>()<span class="op">$</span><span class="fu">bounds</span>()
-</pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shp/arequipa.shp"</span>, package <span class="op">=</span> <span class="st">"rgee"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">st_read</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="reference/sf_as_ee.html">sf_as_ee</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">region</span> <span class="op">&lt;-</span> <span class="va">mask</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">bounds</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an <code>ee.ImageCollection</code> and select the NDVI band.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="kw">col</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">ImageCollection</span>(<span class="st">'MODIS/006/MOD13A2'</span>)<span class="op">$</span><span class="fu">select</span>(<span class="st">'NDVI'</span>)
-</pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">col</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'MODIS/006/MOD13A2'</span><span class="op">)</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'NDVI'</span><span class="op">)</span></code></pre></div>
 <p>Group images by composite date</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw">col</span> <span class="op">&lt;-</span> <span class="kw">col</span><span class="op">$</span><span class="fu">map</span>(<span class="fu">function</span>(<span class="kw">img</span>) {
-  <span class="kw">doy</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/Dates.html">Date</a></span>(<span class="kw">img</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'system:time_start'</span>))<span class="op">$</span><span class="fu">getRelative</span>(<span class="st">'day'</span>, <span class="st">'year'</span>)
-  <span class="kw">img</span><span class="op">$</span><span class="fu">set</span>(<span class="st">'doy'</span>, <span class="kw">doy</span>)
-})
-<span class="kw">distinctDOY</span> <span class="op">&lt;-</span> <span class="kw">col</span><span class="op">$</span><span class="fu">filterDate</span>(<span class="st">'2013-01-01'</span>, <span class="st">'2014-01-01'</span>)
-</pre></div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">col</span> <span class="op">&lt;-</span> <span class="va">col</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">doy</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">getRelative</span><span class="op">(</span><span class="st">'day'</span>, <span class="st">'year'</span><span class="op">)</span>
+  <span class="va">img</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">'doy'</span>, <span class="va">doy</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span>
+<span class="va">distinctDOY</span> <span class="op">&lt;-</span> <span class="va">col</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">'2013-01-01'</span>, <span class="st">'2014-01-01'</span><span class="op">)</span></code></pre></div>
 <p>Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="kw">filter</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="kw">Filter</span><span class="op">$</span><span class="fu">equals</span>(leftField = <span class="st">'doy'</span>, rightField = <span class="st">'doy'</span>);
-</pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">filter</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">equals</span><span class="op">(</span>leftField <span class="op">=</span> <span class="st">'doy'</span>, rightField <span class="op">=</span> <span class="st">'doy'</span><span class="op">)</span>;</code></pre></div>
 <p>Define a join; convert the resulting FeatureCollection to an ImageCollection.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="kw">join</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="kw">Join</span><span class="op">$</span><span class="fu">saveAll</span>(<span class="st">'doy_matches'</span>)
-<span class="kw">joinCol</span> <span class="op">&lt;-</span> <span class="kw">ee</span><span class="op">$</span><span class="fu">ImageCollection</span>(<span class="kw">join</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span>(<span class="kw">distinctDOY</span>, <span class="kw">col</span>, <span class="kw">filter</span>))
-</pre></div>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">join</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Join</span><span class="op">$</span><span class="fu">saveAll</span><span class="op">(</span><span class="st">'doy_matches'</span><span class="op">)</span>
+<span class="va">joinCol</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="va">join</span><span class="op">$</span><span class="fu">apply</span><span class="op">(</span><span class="va">distinctDOY</span>, <span class="va">col</span>, <span class="va">filter</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Apply median reduction among matching DOY collections.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit">
-<span class="kw">comp</span> <span class="op">&lt;-</span> <span class="kw">joinCol</span><span class="op">$</span><span class="fu">map</span>(<span class="fu">function</span>(<span class="kw">img</span>) {
-  <span class="kw">doyCol</span> <span class="op">=</span> <span class="kw">ee</span><span class="op">$</span><span class="kw">ImageCollection</span><span class="op">$</span><span class="fu">fromImages</span>(
-    <span class="kw">img</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/base/get.html">get</a></span>(<span class="st">'doy_matches'</span>)
-  )
-  <span class="kw">doyCol</span><span class="op">$</span><span class="fu">reduce</span>(<span class="kw">ee</span><span class="op">$</span><span class="kw">Reducer</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span>())
-})
-</pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">comp</span> <span class="op">&lt;-</span> <span class="va">joinCol</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">doyCol</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">fromImages</span><span class="op">(</span>
+    <span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'doy_matches'</span><span class="op">)</span>
+  <span class="op">)</span>
+  <span class="va">doyCol</span><span class="op">$</span><span class="fu">reduce</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">median</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>Define RGB visualization parameters.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit">
-<span class="kw">visParams</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  min = <span class="fl">0.0</span>,
-  max = <span class="fl">9000.0</span>,
-  bands = <span class="st">"NDVI_median"</span>,
-  palette = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">visParams</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  min <span class="op">=</span> <span class="fl">0.0</span>,
+  max <span class="op">=</span> <span class="fl">9000.0</span>,
+  bands <span class="op">=</span> <span class="st">"NDVI_median"</span>,
+  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
     <span class="st">'FFFFFF'</span>, <span class="st">'CE7E45'</span>, <span class="st">'DF923D'</span>, <span class="st">'F1B555'</span>, <span class="st">'FCD163'</span>, <span class="st">'99B718'</span>, <span class="st">'74A901'</span>,
     <span class="st">'66A000'</span>, <span class="st">'529400'</span>, <span class="st">'3E8601'</span>, <span class="st">'207401'</span>, <span class="st">'056201'</span>, <span class="st">'004C00'</span>, <span class="st">'023B01'</span>,
     <span class="st">'012E01'</span>, <span class="st">'011D01'</span>, <span class="st">'011301'</span>
-    )
-)
-</pre></div>
+    <span class="op">)</span>
+<span class="op">)</span></code></pre></div>
 <p>Create RGB visualization images for use as animation frames.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit">
-<span class="kw">rgbVis</span> <span class="op">&lt;-</span> <span class="kw">comp</span><span class="op">$</span><span class="fu">map</span>(<span class="fu">function</span>(<span class="kw">img</span>) {
-  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span>(<span class="kw">img</span><span class="op">$</span><span class="kw">visualize</span>, <span class="kw">visParams</span>) <span class="op">%&gt;%</span> 
-    <span class="kw">ee</span><span class="op">$</span><span class="kw">Image</span><span class="op">$</span><span class="fu"><a href="https://rdrr.io/r/graphics/clip.html">clip</a></span>(<span class="kw">mask</span>)
-})
-</pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rgbVis</span> <span class="op">&lt;-</span> <span class="va">comp</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="va">visualize</span>, <span class="va">visParams</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+    <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">clip</span><span class="op">(</span><span class="va">mask</span><span class="op">)</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>Define GIF visualization parameters.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit">
-<span class="kw">gifParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  region = <span class="kw">region</span>,
-  dimensions = <span class="fl">600</span>,
-  crs = <span class="st">'EPSG:3857'</span>,
-  framesPerSecond = <span class="fl">10</span>
-)
-</pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gifParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  region <span class="op">=</span> <span class="va">region</span>,
+  dimensions <span class="op">=</span> <span class="fl">600</span>,
+  crs <span class="op">=</span> <span class="st">'EPSG:3857'</span>,
+  framesPerSecond <span class="op">=</span> <span class="fl">10</span>
+<span class="op">)</span></code></pre></div>
 <p>Render the GIF animation in the console.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">rgbVis</span><span class="op">$</span><span class="fu">getVideoThumbURL</span>(<span class="kw">gifParams</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span>(<span class="kw">rgbVis</span><span class="op">$</span><span class="fu">getVideoThumbURL</span>(<span class="kw">gifParams</span>))
-</pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">rgbVis</span><span class="op">$</span><span class="fu">getVideoThumbURL</span><span class="op">(</span><span class="va">gifParams</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html">browseURL</a></span><span class="op">(</span><span class="va">rgbVis</span><span class="op">$</span><span class="fu">getVideoThumbURL</span><span class="op">(</span><span class="va">gifParams</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p align="center">
 <img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif"></p>
 </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Convert a R list into a JSON file — ee_utils_create_json • rgee</title>
+<title>EarthEngineMap + EarthEngineMap; adds data from the second map to the first — null-default • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Convert a R list into a JSON file — ee_utils_create_json" />
-<meta property="og:description" content="Convert a R list into a JSON file" />
+<meta property="og:title" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first — null-default" />
+<meta property="og:description" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first
+EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,34 +138,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Convert a R list into a JSON file</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/utils-upload.R'><code>R/utils-upload.R</code></a></small>
-    <div class="hidden name"><code>ee_utils_create_json.Rd</code></div>
+    <h1>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Map_operators.R'><code>R/Map_operators.R</code></a></small>
+    <div class="hidden name"><code>null-default.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Convert a R list into a JSON file</p>
+    <p>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</p>
+<p>EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_utils_create_json</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
+    <pre class="usage"># S3 method for EarthEngineMap
++(e1, e2)
+
+# S3 method for EarthEngineMap
+|(e1, e2)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>List to convert into a JSON file.</p></td>
+      <th>e1</th>
+      <td><p>an EarthEngineMap object.</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>an EarthEngineMap object.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>A JSON file saved in a /tmp dir.</p>
+    <p>tim-salabim. Adapted from mapview code.</p>
+<p>tim-salabim. Adapted from mapview code.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee'>rgee</a></span><span class='op'>)</span>
-<span class='fu'>ee_utils_create_json</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>a<span class='op'>=</span><span class='fl'>10</span>,b<span class='op'>=</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
