@@ -103,13 +103,15 @@ library(sf)
 ee_Initialize()
 
 # Define a Image or ImageCollection: Terraclimate
-terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2001-01-01", "2002-01-01")$
-  map(function(x){
-    date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
-    name <- ee$String$cat("Terraclimate_pp_", date)
-    x$select("pr")$reproject("EPSG:4326")$set("RGEE_NAME", name)
-  })
+terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") \%>\%
+  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") \%>\%
+  ee$ImageCollection$map(
+    function(x) {
+      date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+      name <- ee$String$cat("Terraclimate_pp_", date)
+      x$select("pr")$rename(name)
+    }
+  )
 
 # Define a geometry
 nc <- st_read(
@@ -118,7 +120,9 @@ nc <- st_read(
   quiet = TRUE
 )
 
+
 # Extract values
+
 ee_nc_rain <- ee_extract(
   x = terraclimate,
   y = nc,
@@ -129,7 +133,7 @@ ee_nc_rain <- ee_extract(
 
 # Spatial plot
 plot(
-  ee_nc_rain["X200110_pr"],
+  ee_nc_rain["Terraclimate_pp_2001_11_01"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )
