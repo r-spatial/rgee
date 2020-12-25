@@ -20,11 +20,10 @@ vignette: >
 - Public argument added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_imagecollection_to_local`, `ee_drive_to_local` and `ee_gcs_to_local` which permit to create a public link to the resources generated.
 - A new argument "**metadata**" is added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_drive_to_local`, `ee_imagecollection_to_local`, and `ee_gcs_to_local`. If TRUE, the metadata related to the export of the images will be added to raster/stars objects.
 - Fix a bug in Rstudio `ee_help` addins.
-- Fix a bug in `ee_extract` which does not permit to users change the name of the columns.
+- Fix a bug in `ee_extract` which adds the `system:index` to the colnames when the `x` argument is an `ee$ImageCollection`. 
 - Fix a bug that does not permit to `ee_as_raster` and `ee_as_stars` change the fileNamePrefix (#112).
 - a stop added in `sf_as_ee` since {geojsonio} does not support POSIXt objects (#113).
 - Lazy evaluation support to `ee_imagecollection_to_local`, `ee_as_sf`, `ee_as_raster` and `ee_as_stars`.
-- Important changes in the `ee_as_thumbnail` API (from getInfo to drive/gcs).
 - Export images via 'getInfo' was removed from `ee_as_raster` and `ee_as_stars` to avoid problems related to geometric offset.
 - Now `ee_monitoring` can also be invoked with the ID of a EE task started.
 - `ee_search` module deprecated, it will be removed of rgee in version 1.0.8.
