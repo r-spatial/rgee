@@ -74,7 +74,7 @@ test_that("GEOTIFF_DRIVE", {
     metadata = TRUE,
     dsn = tempfile()
   )
-  expect_is(img, "character")
+  expect_is(img, "list")
 })
 
 # # 2. CTFRECORD_IMAGE - DRIVE
@@ -341,7 +341,7 @@ test_that("KMZ_VECTOR_GCS",{
   vector <- ee_gcs_to_local(task = task_vector,
                             public = TRUE,
                             metadata = TRUE)
-  expect_is(vector, "character")
+  expect_is(vector, "list")
 })
 
 # # 18. GEOJSON_VECTOR - GCS
@@ -358,7 +358,7 @@ test_that("GEOJSON_VECTOR_GCS",{
   vector <- ee_gcs_to_local(task = task_vector,
                             public = TRUE,
                             metadata = TRUE)
-  expect_is(vector, "character")
+  expect_is(vector, "list")
 })
 # # 19. CTFRECORD_VECTOR - GCS
 # test_that("CTFRECORD_VECTOR_GCS",{

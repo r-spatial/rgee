@@ -342,6 +342,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
     suppressWarnings(
       sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
     )
+    local_sf
   } else {
     crs_sf <- x_fc %>%
       ee$FeatureCollection$geometry() %>%
