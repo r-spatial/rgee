@@ -130,12 +130,7 @@ ee_Initialize <- function(email = NULL,
   gcs_credentials <- list(path = NA, message = NA)
 
   if (drive) {
-    if (!requireNamespace("googledrive", quietly = TRUE)) {
-      stop("The googledrive package is not installed. Try",
-           ' install.packages("googledrive")',
-           call. = FALSE
-      )
-    }
+    ee_check_packages("ee_Initialize", "googledrive")
     if (!quiet) {
       cat(
         "",
@@ -156,12 +151,7 @@ ee_Initialize <- function(email = NULL,
   }
 
   if (gcs) {
-    if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-      stop("The googleCloudStorageR package is not installed. Try",
-           ' install.packages("googleCloudStorageR")',
-           call. = FALSE
-      )
-    }
+    ee_check_packages("ee_Initialize", "googleCloudStorageR")
     if (!quiet) {
       cat(
         "",
@@ -328,12 +318,7 @@ ee_save_eecredentials <- function(url, code_verifier, main_ee_credential, user_e
 #' Create credentials - Google Drive
 #' @noRd
 ee_create_credentials_drive <- function(email) {
-  if (!requireNamespace("googledrive", quietly = TRUE)) {
-    stop("The googledrive package is not installed. ",
-      'Try install.packages("googledrive")',
-      call. = FALSE
-    )
-  }
+  ee_check_packages("ee_Initialize", "googledrive")
   # Set folder to save Google Drive Credentials
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
@@ -390,27 +375,27 @@ ee_create_credentials_drive <- function(email) {
 #' Is necessary to save it (manually) inside the folder ~/.R/earthengine/USER/.
 #' @noRd
 ee_create_credentials_gcs <- function(email) {
-  if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
-    stop("The googleCloudStorageR package is not installed. Try",
-      ' install.packages("googleCloudStorageR")',
-      call. = FALSE
-    )
-  }
+  # check packages
+  ee_check_packages("ee_Initialize", "googleCloudStorageR")
+
+  #get ee path
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+
   # setting gcs folder
   email_clean <- gsub("@gmail.com", "", email)
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
+
   # gcs_credentials
   full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
   gcs_condition <- grepl(".json", full_credentials)
   if (!any(gcs_condition)) {
     gcs_text <- paste(
       sprintf("Unable to find a service account key (SAK) file in: %s",  bold(ee_path_user)),
-      "Please, download and save it manually on the path mentioned",
-      "above. A compressible tutorial to obtain a SAK file are available at:",
-      "> https://github.com/csaybar/GCS_AUTH_FILE.json",
+      "Please, download and save the key manually on the path mentioned",
+      "before. A compressible tutorial to obtain their SAK file is available in:",
+      "> https://github.com/r-spatial/rgee/tree/help/gcs",
       "> https://cloud.google.com/iam/docs/creating-managing-service-account-keys",
       "> https://console.cloud.google.com/apis/credentials/serviceaccountkey",
       bold("Until you do not save a SKA file, the following functions will not work:"),
@@ -761,3 +746,27 @@ ee_connect_to_py <- function(path, n = 5) {
   return(ee_utils)
 }
 
+
+#' Display required packages error message
+#' @noRd
+ee_check_packages <- function(fn_name, packages) {
+  pkg_exists <- rep(NA, length(packages))
+  counter <- 0
+  for(package in packages) {
+    counter <- counter + 1
+    pkg_exists[counter] <- requireNamespace(package, quietly = TRUE)
+  }
+
+  if (!all(pkg_exists)) {
+    to_install <- packages[!pkg_exists]
+    to_install_len <- length(to_install)
+    error_msg <- sprintf(
+      "%s required the %s: %s. Please install %s first.",
+      bold(fn_name),
+      if (to_install_len == 1) "package" else "packages",
+      paste0(bold(to_install), collapse = ", "),
+      if (to_install_len == 1) "it" else "them"
+    )
+    stop(error_msg)
+  }
+}

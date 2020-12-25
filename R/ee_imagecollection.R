@@ -1,36 +1,81 @@
 #' Save an EE ImageCollection in their local system
 #'
 #' @param ic ee$ImageCollection to be saved in the system.
-#' @param region EE Geometry Rectangle (ee$Geometry$Rectangle). The
-#' CRS needs to be the same that the ic argument otherwise it will be
+#' @param region EE Geometry (ee$Geometry$Polygon). The
+#' CRS needs to be the same that the \code{ic} argument otherwise it will be
 #' forced.
-#' @param dsn Character. Output filename. If missing,
-#' \code{ee_imagecollection_to_local} will create a temporary file.
-#' @param scale Numeric. The resolution in meters per pixel. Defaults
-#' to the native resolution of the image assset.
-#' @param maxPixels Numeric. The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers
-#' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param via Character. Method to fetch data about the object. Multiple
-#' options supported. See details.
+#' @param dsn Character. Output filename. If missing, a temporary file will
+#' be created for each image.
+#' @param via Character. Method to export the image. Two method are implemented:
+#' "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param quiet logical. Suppress info message
+#' @param scale Numeric. The resolution in meters per pixel. Defaults
+#' to the native resolution of the image.
+#' @param maxPixels Numeric. The maximum allowed number of pixels in the
+#' exported image. The task will fail if the exported region covers
+#' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
+#' future::sequential}} object is created to evaluate the task in the future.
+#' See details.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param add_metadata Add metadata to the stars_proxy object. See details.
+#' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
+#' a prefix to files to export. This parameter helps to avoid exported files
+#' with the same name. By default TRUE.
+#' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
-#' \link{ee_image_to_gcs}.
 #' @details
-#' \code{ee_imagecollection_to_local} supports the download of \code{ee$Image}
-#' by two different options: "drive" that use Google Drive and "gcs"
-#' that use Google Cloud Storage. Previously, it is necessary to install the
-#' R packages \href{ https://CRAN.R-project.org/package=googledrive}{googledrive}
-#' or \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' googleCloudStorageR} respectively. For getting more information about
-#' exporting data from Earth Engine, take a look at the
+#' \code{ee_imagecollection_to_local} supports the download of \code{ee$Images}
+#' by two different options: "drive"
+#' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
+#' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' Google Cloud Storage}). In both cases \code{ee_imagecollection_to_local}
+#' works as follow:
+#' \itemize{
+#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   move the \code{ee$Image} from Earth Engine to the intermediate container
+#'   specified in argument \code{via}.}
+#'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+#'   monitored. This is useful to lunch several tasks at the same time and
+#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   \code{\link[future:value]{future::value}}. At the end of this step,
+#'   the \code{ee$Images} will be stored on the path specified in the argument
+#'   \code{dsn}.}
+#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   with the following elements will be added to the argument \code{dsn}.
+#'   \itemize{
+#'     \item{\bold{if via is "drive":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{drive_name: }}{Name of the Image in Google Drive.}
+#'         \item{\bold{drive_id: }}{Id of the Image in Google Drive.}
+#'         \item{\bold{drive_download_link: }}{Download link to the image.}
+#'     }
+#'   }
+#'   \itemize{
+#'     \item{\bold{if via is "gcs":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
+#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
+#'         \item{\bold{gcs_fileFormat: }}{Format of the image.}
+#'         \item{\bold{gcs_public_link: }}{Download link to the image.}
+#'         \item{\bold{gcs_URI: }}{gs:// link to the image.}
+#'     }
+#'   }
+#'  }
+#' }
+#'
+#' For getting more information about exporting data from Earth Engine, take
+#' a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @importFrom crayon green
-#' @return Character vector containing the filename of the images downloaded.
+#' @return If add_metadata is FALSE, a character vector containing the filename
+#' of the images downloaded. Otherwise a list adding information related to
+#' the exportation (see details).
 #' @family image download functions
 #' @examples
 #' \dontrun{
@@ -51,24 +96,44 @@
 #' tmp <- tempdir()
 #'
 #' ## Using drive
-#' ic_drive_files <- ee_imagecollection_to_local(
+#' # one by once
+#' ic_drive_files_1 <- ee_imagecollection_to_local(
 #'   ic = collection,
 #'   region = geometry,
-#'   scale = 100,
+#'   scale = 250,
 #'   dsn = file.path(tmp, "drive_")
 #' )
 #'
+#' # all at once
+#' ic_drive_files_2 <- ee_imagecollection_to_local(
+#'   ic = collection,
+#'   region = geometry,
+#'   scale = 250,
+#'   lazy = TRUE,
+#'   dsn = file.path(tmp, "drive_")
+#' )
+#'
+#' # From Google Drive to client-side
+#' doqq_dsn <- ic_drive_files_2 %>% ee_utils_future_value()
+#' sapply(doqq_dsn, '[[', 1)
 #' }
 #' @export
 ee_imagecollection_to_local <- function(ic,
                                         region,
                                         dsn = NULL,
                                         via = "drive",
+                                        container = "rgee_backup",
                                         scale = NULL,
                                         maxPixels = 1e9,
-                                        container = "rgee_backup",
+                                        lazy = FALSE,
+                                        public = TRUE,
+                                        add_metadata = TRUE,
+                                        timePrefix = TRUE,
                                         quiet = FALSE,
                                         ...) {
+  # check packages
+  ee_check_packages("ee_imagecollection_to_local", "sf")
+
   # is image an ee.image.Image?
   if (!any(class(ic) %in% "ee.imagecollection.ImageCollection")) {
     stop("ic argument is not an ee$imagecollection$ImageCollection")
@@ -80,7 +145,7 @@ ee_imagecollection_to_local <- function(ic,
   }
 
   ic_names <- NULL
-  ic_count <-   ic %>%
+  ic_count <- ic %>%
     ee$ImageCollection$size() %>%
     ee$Number$getInfo()
 
@@ -142,32 +207,44 @@ ee_imagecollection_to_local <- function(ic,
     if (!quiet) {
       cat(blue$bold("\nDownloading:"), green(ic_names[r_index]))
     }
-    ee_image_local(
+
+    img_stars <- ee_as_stars(
       image = image,
       region = region,
       dsn = ic_names[r_index],
       via = via,
+      container = container,
       scale = scale,
       maxPixels = maxPixels,
-      container = container,
-      quiet = TRUE,
-      ...
+      lazy = lazy,
+      public = public,
+      add_metadata = add_metadata,
+      timePrefix = timePrefix,
+      quiet = TRUE
     )
-    ic_files[[r_index]] <- ic_names[r_index]
+
+    if (!lazy) {
+      if (add_metadata) {
+        ic_files[[r_index]] <- list(dsn = img_stars[[1]],
+                                    metadata = attr(img_stars, "metadata"))
+      } else {
+        ic_files[[r_index]] <- img_stars[[1]]
+      }
+    } else {
+      ic_files[[r_index]] <- img_stars
+      class(ic_files) <- append(class(ic_files), "ee_imagecollection")
+    }
   }
   if (!quiet) {
     cat("\n", rule())
   }
-  as.character(ic_files)
+  ic_files
 }
 
 #' geometry message
 #' @importFrom crayon bold
 #' @noRd
 ee_geometry_message <- function(region, sf_region = NULL, quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
   # From geometry to sf
   if (is.null(sf_region)) {
     sf_region <- ee_as_sf(x = region)[["geometry"]]

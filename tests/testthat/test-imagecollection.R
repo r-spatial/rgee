@@ -21,8 +21,8 @@ test_that("ee_imagecollection_to_local - simple dsn", {
     dsn = tmp,
     quiet = TRUE
   )
-  raster(ic_getinfo_files[1])
-  expect_type(ic_getinfo_files, "character")
+  raster(ic_getinfo_files[[1]]$dsn)
+  expect_type(ic_getinfo_files, "list")
   }
 )
 
@@ -34,7 +34,7 @@ test_that("ee_imagecollection_to_local - simple dsn", {
     dsn = file.path(tmp, "drive_"),
     quiet = FALSE
   )
-  expect_type(ic_getinfo_files, "character")
+  expect_type(ic_getinfo_files, "list")
  }
 )
 
@@ -44,13 +44,14 @@ test_that("ee_imagecollection_to_local - simple dsn", {
    ic = ic,
    scale = 200,
    dsn = c("lesly_01.tif", "lesly_02.tif"),
-   region = geometry
+   region = geometry,
+   add_metadata = FALSE
  )
  ic_getinfo_files <- ee_imagecollection_to_local(
    ic = ic,
    scale = 200,
    region = geometry
  )
- expect_type(ic_getinfo_files, "character")
+ expect_type(ic_getinfo_files, "list")
  }
 )

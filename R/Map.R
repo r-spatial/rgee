@@ -65,7 +65,7 @@
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
 #' getMapId} to fetch and return an ID dictionary being used to create
 #' layers in a \code{mapview} object. Users can specify visualization
-#' parameters to Map\$addLayer by using the visParams argument. Each Earth
+#' parameters to Map$addLayer by using the visParams argument. Each Earth
 #' Engine spatial object has a specific format. For
 #' \code{ee$Image}, the
 #' \href{https://developers.google.com/earth-engine/image_visualization}{
@@ -91,11 +91,12 @@
 #' and 1.0 is fully opaque) \tab  number \cr
 #' }
 #'
-#' If you add an \code{ee$Image} to the map without any additional parameters,
-#' by default `Map$addLayer()` assigns the first three bands to red,
+#' If you add an \code{ee$Image} to Map$addLayer without any additional
+#' parameters, by default it assigns the first three bands to red,
 #' green, and blue bands, respectively. The default stretch is based on the
-#' min-max range. By the other hand, for \code{ee$Geometry}, \code{ee$Feature},
-#' and \code{ee$FeatureCollection} the available parameters are:
+#' min-max range. On the other hand, the available parameters for
+#' \code{ee$Geometry}, \code{ee$Feature}, and \code{ee$FeatureCollection}
+#' are:
 #'
 #' \itemize{
 #'  \item \strong{color}: A hex string in the format RRGGBB specifying the
@@ -104,9 +105,12 @@
 #'  \item \strong{strokeWidth}: The width of lines and polygon borders. By
 #'  default 3.
 #' }
+#' @returns Object of class leaflet, with the following extra parameters: tokens, name,
+#' opacity, shown, min, max, palette, and legend. Use the $ method to retrieve
+#' the data (e.g. m$rgee$min).
+#'
 #' @examples
 #' \dontrun{
-#' library(mapview)
 #' library(rgee)
 #' library(sf)
 #' ee_Initialize()
@@ -142,17 +146,16 @@
 #'   ),
 #'   name = "SF"
 #' )
-#' m4
 #'
 #' # Case 5: mapview + EarthEnginemap
-#' library(sf)
-#' nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-#' mapview(nc) + m2
-#' m2 + mapview(nc)
+#' # library(mapview)
+#' # library(sf)
+#' # nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
+#' # mapview(nc, m2)
 #'
 #' # Case 6: mapedit
-#' library(mapedit)
-#' # my_geometry <- m2 %>% ee_as_mapview() %>% editMap()
+#' # library(mapedit)
+#' # my_geometry <- m4 %>% editMap()
 #'
 #' # Case 7: ImageCollection
 #' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
@@ -164,7 +167,8 @@
 #'   filterBounds(nc) %>%
 #'   ee_get(0:4)
 #' Map$centerObject(nc$geometry())
-#' Map$addLayers(ee_s2)
+#' m5 <- Map$addLayers(ee_s2, legend = TRUE)
+#' m5
 #'
 #' # Case 8: Map comparison
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
@@ -175,7 +179,12 @@
 #'   name = "SF_NDVI",
 #'   legend = TRUE
 #' )
-#' m4 | m_ndvi
+#' m6 <- m4 | m_ndvi
+#' m6
+#'
+#' # Case 9: digging up the metadata
+#' m6$rgee$tokens
+#' m5$rgee$tokens
 #' }
 #' @export
 Map <- function() {
@@ -188,10 +197,6 @@ ee_set_methods <- function() {
   Map$setCenter <- ee_setCenter
   Map$setZoom <- ee_setZoom
   Map$centerObject <- ee_centerObject
-  # Map$getBounds <- ee_getBounds
-  # Map$getScale <- getScale
-  # Map$getCenter <- getCenter
-  # Map$getZoom <- getZoom
 
   # Init environment
   Map$setCenter()
@@ -294,16 +299,8 @@ ee_addLayer <- function(eeObject,
                         shown = TRUE,
                         opacity = 1,
                         legend = FALSE) {
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    stop("package mapview required, please install it first")
-  }
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
-
+  # check packages
+  ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem"))
   if (is.null(visParams)) {
     visParams <- list()
   }
@@ -356,6 +353,7 @@ ee_addLayer <- function(eeObject,
 
   tile <- get_ee_image_url(image)
   map <- ee_addTile(tile = tile, name = name, shown = shown, opacity = opacity)
+
   if (legend) {
     ee_add_legend(map, eeObject, visParams, name)
   } else {
@@ -373,18 +371,8 @@ ee_addLayers <- function(eeObject,
                          shown = TRUE,
                          opacity = 1,
                          legend = FALSE) {
-
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
-
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    stop("package mapview required, please install it first")
-  }
-
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("Map$addLayers", c("jsonlite", "leaflet"))
 
   # is an ee.imagecollection.ImageCollection?
   if (!any(class(eeObject) %in% "ee.imagecollection.ImageCollection")) {
@@ -452,26 +440,22 @@ ee_addLayers <- function(eeObject,
 #' Basic base mapview object
 #' @noRd
 ee_mapview <- function() {
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    stop("package mapview required, please install it first")
-  }
-  m <- mapview::mapview()
-  m@map$x$setView[[1]] <- c(Map$lat, Map$lon)
-  m@map$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
+  # check packages
+  ee_check_packages("ee_mapview", "leaflet")
+  m <- leaflet_default()
+  m$x$setView[[1]] <- c(Map$lat, Map$lon)
+  m$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
   m
 }
 
 #' Add a mapview object based on a tile_fetcher
 #' @noRd
 ee_addTile <- function(tile, name, shown, opacity) {
-  if (!requireNamespace("mapview", quietly = TRUE)) {
-    stop("package mapview required, please install it first")
-  }
-  if (!requireNamespace("leaflet", quietly = TRUE)) {
-    stop("package leaflet required, please install it first")
-  }
+  # check packages
+  ee_check_packages("Map$addLayer", c("leaflet"))
+
   m <- ee_mapview()
-  m@map <- m@map %>%
+  m <- m %>%
     leaflet::addTiles(
       urlTemplate = tile,
       layerId = name,
@@ -481,11 +465,17 @@ ee_addTile <- function(tile, name, shown, opacity) {
     ee_mapViewLayersControl(names = name) %>%
     leaflet::hideGroup(if (!shown) name else NULL)
 
-  m@object$tokens <- tile
-  m@object$name <- name
-  m@object$opacity <- opacity
-  m@object$shown <- shown
-  m <- new("EarthEngineMap", object = m@object, map = m@map)
+  # map parameters
+  m$rgee$tokens <- tile
+  m$rgee$name <- name
+  m$rgee$opacity <- opacity
+  m$rgee$shown <- shown
+
+  # legend parameters
+  m$rgee$min <- NA
+  m$rgee$max <- NA
+  m$rgee$palette <-  list(NA)
+  m$rgee$legend <-  FALSE
   m
 }
 
@@ -520,7 +510,7 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
       }
       visParams$palette <- sprintf("#%s", gsub("#", "",visParams$palette))
       pal <- leaflet::colorNumeric(visParams$palette, c(visParams$min, visParams$max))
-      map <- m@map %>%
+      m <- m %>%
         leaflet::addLegend(
           position = "bottomright",
           pal = pal,
@@ -531,12 +521,10 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
 
       # Extra parameters to EarthEngineMap objects that inherit from
       # one single-band ee$Image and active legend = TRUE
-      m@object$min <- visParams$min
-      m@object$max <- visParams$max
-      m@object$palette <-  pal
-      m@object$legend <-  TRUE
-
-      m <- new("EarthEngineMap", object = m@object, map = map)
+      m$rgee$min <- visParams$min
+      m$rgee$max <- visParams$max
+      m$rgee$palette <-  list(pal)
+      m$rgee$legend <-  TRUE
       m
     } else {
       m
@@ -544,11 +532,6 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
   } else {
     m
   }
-}
-
-if (!isGeneric("+")) {
-  setGeneric("+", function(x, y, ...)
-    standardGeneric("+"))
 }
 
 #' Get the tile_fetcher to display into ee_map
@@ -690,13 +673,65 @@ ee_get_system_id <- function(eeObject) {
   }
 }
 
-#' Convert an EarthEngineMap object into a mapview object
-#' @param x An EarthEngineMap object.
-#' @importFrom methods new
-#' @export
-ee_as_mapview <- function(x) {
-  methods::new('mapview', object = x@object, map = x@map)
+
+#' Create a default leaflet
+#' @noRd
+leaflet_default <- function (default_maps = NULL) {
+  if (is.null(default_maps)) {
+    default_maps <- c(
+      "CartoDB.Positron", "OpenStreetMap",
+      "CartoDB.DarkMatter", "Esri.WorldImagery",
+      "OpenTopoMap"
+    )
+  }
+  m <- initBaseMaps(default_maps)
+  m <- leaflet::setView(map = m, -76.942478, -12.172116, zoom = 18)
+  m <- leaflet::addLayersControl(
+    map = m,
+    baseGroups = default_maps,
+    position = "topleft"
+  )
+  m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  m <- leafem::addMouseCoordinates(m)
+  m <- leafem::addCopyExtent(m)
+  class(m) <- append(class(m),"EarthEngineMap")
+  m
 }
+
+#' Create a default leaflet with initBaseMaps
+#' @noRd
+initBaseMaps <- function (map.types, canvas = FALSE, viewer.suppress = FALSE) {
+  lid <- seq_along(map.types)
+  m <- leaflet::leaflet(
+    height = NULL,
+    width = NULL,
+    options = leaflet::leafletOptions(
+      minZoom = 1, maxZoom = 52,
+      bounceAtZoomLimits = FALSE,
+      maxBounds = list(list(c(-90,-370)), list(c(90, 370))),
+      preferCanvas = canvas),
+    sizingPolicy = leaflet::leafletSizingPolicy(
+      viewer.suppress = viewer.suppress,
+      browser.external = viewer.suppress))
+  # add Tiles
+  m <- leaflet::addProviderTiles(
+    map = m,
+    provider = map.types[1],
+    layerId = map.types[1],
+    group = map.types[1],
+    options = leaflet::providerTileOptions(pane = "tilePane")
+  )
+  for (i in 2:length(map.types)) {
+    m <- leaflet::addProviderTiles(
+      map = m,
+      provider = map.types[i],
+      layerId = map.types[i],
+      group = map.types[i],
+      options = leaflet::providerTileOptions(pane = "tilePane"))
+  }
+  return(m)
+}
+
 
 # Create an Map env and set methods
 Map <- Map()

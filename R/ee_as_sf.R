@@ -1,39 +1,85 @@
 #' Convert an Earth Engine table in a sf object
 #'
-#' @param x Earth Engine table (ee$FeatureCollection) to be converted into a sf
+#' @param x Earth Engine table (ee$FeatureCollection) to be converted in a sf
 #' object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
-#' \code{ee_as_sf} will create a shapefile file in tmp() directory.
+#' a shapefile will be created in the \code{tmp()} directory.
+#' @param overwrite Logical. Delete data source \code{dsn} before attempting
+#' to write?.
+#' @param via Character. Method to export the image. Three method are
+#' implemented: "getInfo", "drive", "gcs". See details.
+#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
+#' to be exported into (ignore if \code{via} is not defined as "drive" or
+#' "gcs").
 #' @param crs Integer or character. coordinate reference system
 #' for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
 #' export (ignore if \code{via} is not set as "getInfo"). The task will fail
 #' if the exported region covers more features. Defaults to 5000.
-#' @param overwrite Logical. Delete data source \code{dsn} before attempting
-#' to write?.
-#' @param via Character. Method to fetch data about the object. Multiple
-#' options supported. See details.
-#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into (ignore if \code{via} is not defined as "drive" or
-#' "gcs").
 #' @param selectors The list of properties to include in the output, as a
 #' list of strings or a comma-separated string. By default, all properties are
 #' included.
-#' @param quiet logical. Suppress info message
+#' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
+#' future::sequential}} object is created to evaluate the task in the future.
+#' Ignore if \code{via} is set as "getInfo". See details.
+#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param add_metadata Add metadata to the sf object. See details.
+#' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
+#' a prefix to files to export. This parameter helps to avoid exported files
+#' with the same name. By default TRUE.
+#' @param quiet logical. Suppress info message.
 #' @importFrom methods as setMethod new is setGeneric
 #' @details
-#' \code{ee_as_sf} supports the download of \code{ee$FeatureCollection},
-#' \code{ee$Feature} and \code{ee$Geometry} by three different options:
-#' "getInfo", "drive", and "gcs". When "getInfo" is set in the \code{via}
-#' argument, \code{ee_as_sf} will make an REST call to retrieve
-#' all the known information about the object. The advantage of use
-#' "getInfo" is a direct and faster download. However, there is a limitation of
+#' \code{ee_as_sf} supports the download of \code{ee$Geometry}, \code{ee$Feature},
+#' and \code{ee$FeatureCollection} by three different options:
+#' "getInfo" (which make an REST call to retrieve the data), "drive"
+#' (which use \href{https://CRAN.R-project.org/package=googledrive}{Google Drive})
+#' and "gcs" (which use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
+#' Google Cloud Storage}). The advantage of use "getInfo" is a
+#' direct and faster download. However, there is a limitation of
 #' 5000 features by request which makes it not recommendable for large
-#' collections. Instead of "getInfo", the options: "drive" and "gcs" are
-#' suitable for large collections since they use an intermediate container,
-#' which may be Google Drive and Google Cloud Storage respectively. For getting
-#'  more information about exporting data from Earth Engine, take a look at the
+#' FeatureCollections. Instead of "getInfo", the options: "drive" and "gcs"
+#' are suitable for large FeatureCollections since the use of an intermediate
+#' container. They work as follow:
+#' \itemize{
+#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   move the EE Table from Earth Engine to the intermediate container
+#'   specified in argument \code{via}.}
+#'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+#'   monitored. This is useful to lunch several tasks at the same time and
+#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   \code{\link[future:value]{future::value}}. At the end of this step,
+#'   the EE Table will be stored on the path specified in the argument
+#'   \code{dsn}.}
+#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   with the following elements will be added to the sf object.
+#'   \itemize{
+#'     \item{\bold{if via is "drive":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{drive_name: }}{Name of the Table in Google Drive.}
+#'         \item{\bold{drive_id: }}{Id of the Table in Google Drive.}
+#'         \item{\bold{drive_download_link: }}{Download link to the table.}
+#'     }
+#'   }
+#'   \itemize{
+#'     \item{\bold{if via is "gcs":}}
+#'       \itemize{
+#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'         \item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
+#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
+#'         \item{\bold{gcs_fileFormat: }}{Format of the table.}
+#'         \item{\bold{gcs_public_link: }}{Download link to the table.}
+#'         \item{\bold{gcs_URI: }}{gs:// link to the table.}
+#'     }
+#'   }
+#'   Run \code{attr(sf, "metadata")} to get the list.
+#'  }
+#' }
+#'
+#' For getting more information about exporting data from Earth Engine, take
+#' a look at the
 #' \href{https://developers.google.com/earth-engine/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return An sf object.
@@ -84,265 +130,248 @@
 ee_as_sf <- function(x,
                      dsn,
                      overwrite = TRUE,
-                     crs = NULL,
                      via = "getInfo",
-                     maxFeatures = 5000,
                      container = "rgee_backup",
+                     crs = NULL,
+                     maxFeatures = 5000,
                      selectors = NULL,
+                     lazy = FALSE,
+                     public = TRUE,
+                     add_metadata = TRUE,
+                     timePrefix = TRUE,
                      quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  #check packages
+  ee_check_packages("ee_as_sf", c("sf", "geojsonio"))
 
-  if (!requireNamespace("geojsonio", quietly = TRUE)) {
-    stop("package geojsonio required, please install it first")
-  }
-
+  # Is  a geometry, feature, or fc?
   sp_eeobjects <- ee_get_spatial_objects('Table')
-
-  if (missing(dsn)) {
-    dsn <- paste0(tempfile(),".shp")
-  }
-
   if (!any(class(x) %in% sp_eeobjects)) {
     stop("x is not a Earth Engine table\n")
   }
 
-  # Load ee_Initialize() session; just for either drive or gcs
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-  ee_user <- read.table(
-    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
-    header = TRUE,
-    stringsAsFactors = FALSE
-  )
-
-  # Geometry or Feature --> FeatureCollection
+  # From ee$Geometry or ee$Feature to ee$FeatureCollection
   x_fc <- ee$FeatureCollection(x)
 
-  if (via == "getInfo") {
-    fc_size <- 5000
-    if (maxFeatures > 5000) {
-      if (!quiet) {
-        cat("Number of features: Calculating ...")
-      }
-
-      # number of features
-      fc_size <- x_fc %>%
-        ee$FeatureCollection$size() %>%
-        ee$Number$getInfo()
-
-      if (!quiet) {
-        cat(sprintf("\rNumber of features: %s              \n", fc_size))
-      }
-
-      if (maxFeatures < fc_size) {
-        stop(
-          "Export too large. Specified ",
-          fc_size,
-          " features (max: ",
-          maxFeatures,
-          "). Specify a higher maxFeatures value",
-          " if you intend to export a large area."
-        )
-      }
-    }
-
-    nbatch <- ceiling(fc_size / 5000)
-    if (nbatch >= 3) {
-      message(
-        "Warning: getInfo is just for small tables (max: ",
-        5000*3,
-        "). Use 'drive' or 'gcs' instead for faster download."
-      )
-    }
-
-    if (fc_size > 5000) {
-      sf_list <- list()
-      for (r_index in seq_len(nbatch)) {
-        index <- r_index - 1
-        if (!quiet) {
-          cat(
-            sprintf(
-              "Getting data from the patch: %s/%s",
-              r_index, nbatch
-            ), "\n"
-          )
-        }
-        if (r_index == 1) {
-          crs_sf <- x_fc %>%
-            ee$FeatureCollection$geometry() %>%
-            ee$Geometry$projection() %>%
-            ee$Projection$wkt() %>%
-            ee$String$getInfo()
-        }
-        x_fc_batch <- ee$FeatureCollection(x_fc) %>%
-          ee$FeatureCollection$toList(count = 5000, offset = 5000*index) %>%
-          ee$FeatureCollection()
-        sf_list[[r_index]] <- ee_fc_to_sf_getInfo(
-          x_fc = x_fc_batch,
-          overwrite = overwrite,
-          maxFeatures = maxFeatures
-        )
-      }
-      local_sf <- do.call(rbind, sf_list)
-      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
-      suppressWarnings(
-        sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
-      )
-    } else {
-      crs_sf <- x_fc %>%
-        ee$FeatureCollection$geometry() %>%
-        ee$Geometry$projection() %>%
-        ee$Projection$wkt() %>%
-        ee$String$getInfo()
-      local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
-      suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
-    }
-  } else if (via == "drive") {
-    # Creating name for temporal file; just for either drive or gcs
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
-    ee_description <- paste0("ee_as_stars_task_", time_format)
-
-    # Getting table ID if it is exist
+  # Getting image ID if it is exist
+  # table_id is the name of the table in the container
+  if (missing(dsn)) {
     table_id <- tryCatch(
-      expr = jsonlite::parse_json(ee$FeatureCollection$serialize(x))$
-        scope[[1]][[2]][["arguments"]][["tableId"]],
-      error = function(e) "no_tableid"
+      expr = {
+        x %>%
+          ee$FeatureCollection$get("system:id") %>%
+          ee$ComputedObject$getInfo() %>%
+          basename()
+      }, error = function(e) "no_tableid"
     )
     if (is.null(table_id)) {
-      table_id <- "no_id"
+      table_id <- "no_tableid"
     }
-    file_name <- paste0(table_id, "_", time_format)
+    dsn <- sprintf("%s/%s.shp",tempdir(), table_id)
+  } else {
+    table_id <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(dsn))
+  }
 
-    # table to drive
-    table_format <- ee_get_table_format(dsn)
-    if (is.na(table_format)) {
-      stop(
-        'sf_as_ee(..., via = \"drive\"), only support the ',
-        'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
-        '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
-      )
-    }
+  # Have you loaded the necessary credentials?
+  # Only important for drive or gcs.
+  ee_user <- ee_exist_credentials()
 
-    table_task <- ee_table_to_drive(
-      collection = x_fc,
-      description = ee_description,
-      folder = container,
-      fileNamePrefix = file_name,
-      fileFormat = table_format,
-      selectors = selectors
-    )
-
-    if (!quiet) {
-      cat(
-        "\n- download parameters (Google Drive)\n",
-        "Table ID    :", table_id,"\n",
-        "Google user :", ee_user[["email"]],"\n",
-        "Folder name :", container, "\n",
-        "Date        :", time_format, "\n"
-      )
-    }
-
-    ee$batch$Task$start(table_task)
-    ee_monitoring(task = table_task, quiet = quiet)
-
-    if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
-      stop(ee$batch$Task$status(table_task)[["error_message"]])
-    }
-
-    ee_drive_to_local(
-      table_task,
+  if (via == "getInfo") {
+    ee_fc_to_sf_getInfo_batch(
+      x_fc = x_fc,
       dsn = dsn,
+      maxFeatures = maxFeatures,
       overwrite = overwrite,
-      consider = 'all'
+      quiet = quiet
+    )
+  } else if (via == "drive") {
+    # From Earth Engine to drive
+    table_task <- ee_init_task_drive_fc(
+      x_fc = x_fc,
+      dsn = dsn,
+      container = container,
+      table_id = table_id,
+      ee_user = ee_user,
+      selectors =  selectors,
+      timePrefix = timePrefix,
+      quiet = quiet
     )
 
-    if (table_format == "CSV") {
-      return(read.csv(dsn, stringsAsFactors = FALSE))
+    if(lazy) {
+      prev_plan <- future::plan(future::sequential, .skip = TRUE)
+      on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+      future::future({
+        # From googledrive to the client-side
+        ee_sf_drive_local(
+          table_task = table_task,
+          dsn = dsn,
+          metadata = add_metadata,
+          public = public,
+          overwrite = overwrite,
+          quiet = quiet
+        )
+      }, lazy = TRUE)
     } else {
-      local_sf <- sf::read_sf(dsn, quiet = TRUE)
+      # From googledrive to the client-side
+      ee_sf_drive_local(
+        table_task = table_task,
+        dsn = dsn,
+        metadata = add_metadata,
+        public = public,
+        overwrite = overwrite,
+        quiet = quiet
+      )
     }
   } else if (via == 'gcs') {
-    # Creating name for temporal file; just for either drive or gcs
-    time_format <- format(Sys.time(), "%Y-%m-%d-%H:%M:%S")
-    ee_description <- paste0("ee_as_stars_task_", time_format)
-
-    # Getting table ID if it is exist
-    table_id <- tryCatch(
-      expr = jsonlite::parse_json(ee$FeatureCollection$serialize(x))$
-        scope[[1]][[2]][["arguments"]][["tableId"]],
-      error = function(e) "no_id"
-    )
-    if (is.null(table_id)) {
-      table_id <- "no_id"
-    }
-
-    file_name <- paste0(table_id, "_", time_format)
-
-    # table to gcs
-    table_format <- ee_get_table_format(dsn)
-    if (is.na(table_format)) {
-      stop(
-        'sf_as_ee(..., via = \"gcs\"), only support the ',
-        'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
-        '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
-      )
-    }
-
-    table_task <- ee_table_to_gcs(
-      collection = x_fc,
-      description = ee_description,
-      bucket = container,
-      fileNamePrefix = file_name,
-      fileFormat = table_format,
-      selectors = selectors
+    # From Earth Engine to gcs
+    table_task <- ee_init_task_gcs_fc(
+      x_fc = x_fc,
+      dsn = dsn,
+      container = container,
+      table_id = table_id,
+      ee_user = ee_user,
+      selectors =  selectors,
+      timePrefix = timePrefix,
+      quiet = quiet
     )
 
-    if (!quiet) {
-      cat(
-        "\n- download parameters (Google Cloud Storage)\n",
-        "Table ID    :", table_id, "\n",
-        "Google user :", ee_user[["email"]], "\n",
-        "Folder name :", container, "\n",
-        "Date        :", time_format, "\n"
-      )
-    }
-    ee$batch$Task$start(table_task)
-    ee_monitoring(task = table_task, quiet = quiet)
-    if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
-      stop(ee$batch$Task$status(table_task)[["error_message"]])
-    }
-    ee_gcs_to_local(task = table_task,dsn = dsn, overwrite = overwrite)
-    if (table_format == "CSV") {
-      return(read.csv(dsn, stringsAsFactors = FALSE))
+    if(lazy) {
+      prev_plan <- future::plan(future::sequential, .skip = TRUE)
+      on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+      future::future({
+        # From gcs to the client-side
+        ee_sf_gcs_local(
+          table_task = table_task,
+          dsn = dsn,
+          metadata = add_metadata,
+          public = public,
+          overwrite = overwrite,
+          quiet = quiet
+        )
+      }, lazy = TRUE)
     } else {
-      local_sf <- sf::read_sf(dsn, quiet = TRUE)
+      # From gcs to the client-side
+      ee_sf_gcs_local(
+        table_task = table_task,
+        dsn = dsn,
+        metadata = add_metadata,
+        public = public,
+        overwrite = overwrite,
+        quiet = quiet
+      )
     }
   } else {
     stop("via argument invalid.")
   }
-  local_sf
+}
+
+
+#' Convert a FeatureCollection to sf via getInfo (support batch)
+#' @noRd
+ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) {
+  # fc_size is the number of elements in the collection
+  # If the users does not change the maxFeatures argument
+  # by a value greater than 5000 rgee assume a initial value
+  # of 5000 for fc_size.
+  fc_size <- 5000
+
+  # If maxFeatures is greather than 5000 estimate the number of elements.
+  if (maxFeatures > 5000) {
+    if (!quiet) {
+      cat("Number of features: Calculating ...")
+    }
+    # get the number of features
+    fc_size <- x_fc %>%
+      ee$FeatureCollection$size() %>%
+      ee$Number$getInfo()
+    if (!quiet) {
+      cat(sprintf("\rNumber of features: %s \n", fc_size))
+    }
+  }
+
+  if (maxFeatures < fc_size) {
+    stop(
+      "Export too large. Specified ",
+      fc_size,
+      " features (max: ",
+      maxFeatures,
+      "). Specify a higher maxFeatures value",
+      " if you intend to export a large area."
+    )
+  }
+
+  # Only three batches it is recommended with getInfo
+  nbatch <- ceiling(fc_size / 5000)
+  if (nbatch >= 3) {
+    message(
+      "Warning: getInfo is just for small tables (max: ",
+      5000*3,
+      "). Use 'drive' or 'gcs' instead for a faster download."
+    )
+  }
+
+  if (fc_size > 5000) {
+    sf_list <- list()
+    for (r_index in seq_len(nbatch)) {
+      index <- r_index - 1
+      if (!quiet) {
+        cat(
+          sprintf(
+            "Getting data from the patch: %s/%s",
+            r_index, nbatch
+          ), "\n"
+        )
+      }
+      if (r_index == 1) {
+        crs_sf <- x_fc %>%
+          ee$FeatureCollection$geometry() %>%
+          ee$Geometry$projection() %>%
+          ee$Projection$wkt() %>%
+          ee$String$getInfo()
+      }
+      x_fc_batch <- ee$FeatureCollection(x_fc) %>%
+        ee$FeatureCollection$toList(count = 5000, offset = 5000*index) %>%
+        ee$FeatureCollection()
+      sf_list[[r_index]] <- ee_fc_to_sf_getInfo(
+        x_fc = x_fc_batch,
+        overwrite = overwrite,
+        maxFeatures = maxFeatures
+      )
+    }
+    local_sf <- do.call(rbind, sf_list)
+    suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
+    suppressWarnings(
+      sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+    )
+    local_sf
+  } else {
+    crs_sf <- x_fc %>%
+      ee$FeatureCollection$geometry() %>%
+      ee$Geometry$projection() %>%
+      ee$Projection$wkt() %>%
+      ee$String$getInfo()
+    local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
+    suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
+    local_sf
+  }
 }
 
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
 ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  # check packages
+  ee_check_packages("ee_fc_to_sf_getInfo", "sf")
+
   x_list <- tryCatch(
     expr = ee$FeatureCollection$getInfo(x_fc),
     error = function(e) {
-        feature_len <- ee$FeatureCollection$size(x_fc) %>%
-          ee$Number$getInfo()
-        stop(
-          "Specify higher maxFeatures value if you",
-          " intend to export a large area via getInfo.",
-          "\nEntered: ", feature_len,
-          "\nmaxFeatures: ", maxFeatures
-        )
+      feature_len <- ee$FeatureCollection$size(x_fc) %>%
+        ee$Number$getInfo()
+      stop(
+        "Specify higher maxFeatures value if you",
+        " intend to export a large area via getInfo.",
+        "\nEntered: ", feature_len,
+        "\nmaxFeatures: ", maxFeatures
+      )
     }
   )
   class(x_list) <- "geo_list"
@@ -377,5 +406,202 @@ ee_get_table_format <- function(dsn) {
     "CSV"
   } else {
     NA
+  }
+}
+
+#' Create a Export task to GD
+#' @noRd
+ee_init_task_drive_fc <- function(x_fc, dsn, container, table_id,
+                                  ee_user, selectors, timePrefix, quiet) {
+  # Create description (Human-readable name of the task)
+  # Relevant for either drive or gcs.
+  time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
+  ee_description <- paste0("rgeeTable_", time_format)
+  if (timePrefix) {
+    file_name <- paste0(table_id, "_", time_format)
+  } else {
+    file_name <- table_id
+  }
+
+  # Are GD credentials loaded?
+  if (is.na(ee_user$drive_cre)) {
+    drive_credential <- ee_create_credentials_drive(ee_user$email)
+    ee_save_credential(pdrive = drive_credential)
+    # ee_Initialize(email = ee_user$email, drive = TRUE)
+    message(
+      "\nNOTE: Google Drive credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user$email,"', drive = TRUE)",
+      " to fix."
+    )
+  }
+
+  # The file format specified in dsn exist is suppoted by GEE?
+  table_format <- ee_get_table_format(dsn)
+  if (is.na(table_format)) {
+    stop(
+      'sf_as_ee(..., via = \"drive\"), only support the ',
+      'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+      '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+    )
+  }
+
+  table_task <- ee_table_to_drive(
+    collection = x_fc,
+    description = ee_description,
+    folder = container,
+    fileNamePrefix = file_name,
+    fileFormat = table_format,
+    selectors = selectors,
+    timePrefix =  FALSE
+  )
+
+  if (!quiet) {
+    cat(
+      "\n- download parameters (Google Drive)\n",
+      "Table ID    :", table_id,"\n",
+      "Google user :", ee_user[["email"]],"\n",
+      "Folder name :", container, "\n",
+      "Date        :", time_format, "\n"
+    )
+  }
+  ee$batch$Task$start(table_task)
+  table_task
+}
+
+#' from drive to local
+#' @noRd
+ee_sf_drive_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
+  ee_monitoring(task = table_task, quiet = quiet)
+
+  if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
+    stop(ee$batch$Task$status(table_task)[["error_message"]])
+  }
+
+  local_files <- ee_drive_to_local(
+    task = table_task,
+    dsn = dsn,
+    overwrite = overwrite,
+    consider = 'all',
+    metadata = metadata,
+    public = public,
+    quiet = quiet
+  )
+  if (is.character(local_files)) {
+    local_files <- list(dsn = local_files)
+  }
+
+  table_format <- ee_get_table_format(dsn)
+  if (is.na(table_format)) {
+    stop(
+      'sf_as_ee(..., via = \"gcs\"), only support the ',
+      'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+      '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+    )
+  }
+
+  if (table_format == "CSV") {
+    local_files
+  } else {
+    local_sf <- sf::read_sf(dsn, quiet = TRUE)
+    attr(local_sf, "metadata") <- local_files$metadata
+    local_sf
+  }
+}
+
+#' Create a Export task to GCS
+#' @noRd
+ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
+                                ee_user, selectors, timePrefix, quiet) {
+  # Create description (Human-readable name of the task)
+  # Relevant for either drive or gcs.
+  time_format <- format(Sys.time(), "%Y_%m_%d_%H_%M_%S")
+  ee_description <- paste0("rgeeTable_", time_format)
+  if (timePrefix) {
+    file_name <- paste0(table_id, "_", time_format)
+  } else {
+    file_name <- table_id
+  }
+
+  # Are GCS credentials loaded?
+  if (is.na(ee_user$gcs_cre)) {
+    gcs_credential <- ee_create_credentials_gcs(ee_user$email)
+    ee_save_credential(pgcs = gcs_credential$path)
+    message(
+      "\nGoogle Cloud Storage credentials were not loaded.",
+      " Running ee_Initialize(email = '",ee_user$email,"', gcs = TRUE)",
+      " to fix."
+    )
+  }
+
+
+  # The file format specified in dsn exist is suppoted by GEE?
+  table_format <- ee_get_table_format(dsn)
+  if (is.na(table_format)) {
+    stop(
+      'sf_as_ee(..., via = \"drive\"), only support the ',
+      'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+      '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+    )
+  }
+
+  table_task <- ee_table_to_gcs(
+    collection = x_fc,
+    description = ee_description,
+    bucket = container,
+    fileNamePrefix = file_name,
+    fileFormat = table_format,
+    selectors = selectors,
+    timePrefix =  FALSE
+  )
+
+  if (!quiet) {
+    cat(
+      "\n- download parameters (Google Drive)\n",
+      "Table ID    :", table_id,"\n",
+      "Google user :", ee_user[["email"]],"\n",
+      "Folder name :", container, "\n",
+      "Date        :", time_format, "\n"
+    )
+  }
+  ee$batch$Task$start(table_task)
+  table_task
+}
+
+#' from GCS to local
+#' @noRd
+ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
+  ee_monitoring(task = table_task, quiet = quiet)
+
+  if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
+    stop(ee$batch$Task$status(table_task)[["error_message"]])
+  }
+
+  local_files <- ee_gcs_to_local(
+    task = table_task,
+    dsn = dsn,
+    metadata = metadata,
+    public = public,
+    overwrite = overwrite,
+    quiet = quiet
+  )
+  if (is.character(local_files)) {
+    local_files <- list(dsn = local_files)
+  }
+
+  table_format <- ee_get_table_format(dsn)
+  if (is.na(table_format)) {
+    stop(
+      'sf_as_ee(..., via = \"gcs\"), only support the ',
+      'following output format: "CSV", "GeoJSON", "KML", "KMZ", "SHP"',
+      '. Use ee_table_to_drive and ee_drive_to_local to save in a TFRecord format.'
+    )
+  }
+
+  if (table_format == "CSV") {
+    local_files
+  } else {
+    local_sf <- sf::read_sf(dsn, quiet = TRUE)
+    attr(local_sf, "metadata") <- local_files$metadata
+    local_sf
   }
 }

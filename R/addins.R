@@ -3,8 +3,10 @@
 ee_help_addins <- function() {
   context <- rstudioapi::getSourceEditorContext()
   selected_content <- context$selection[[1]]$text
+  # If press Ctrl + Enter
   if (selected_content == "") {
     try(ee_help(ee_get_eefunc()), silent = TRUE)
+    # If first select the text and after that Ctrl + Enter
   } else {
     selected_content_filtered <- gsub("\n|[[:space:]]","", selected_content)
     try(ee_help(selected_content_filtered), silent = TRUE)
@@ -44,7 +46,7 @@ ee_get_funname <- function(text, cursor) {
 forward <- function(x, cursor) {
   forward_range <- cursor:length(x)
   for (index in forward_range) {
-    is_letter <- grepl("[a-zA-Z]", x[index])
+    is_letter <- grepl("[a-zA-Z_]", x[index])
     if (!is_letter) {
       index <- index - 1
       break
@@ -65,7 +67,6 @@ backward <- function(x, cursor) {
     if (index == 1) {
       break
     }
-
     # Just pass the letter if is inside a ()
     if (x[index] == ")") {
       count_par <- 1
@@ -86,7 +87,7 @@ backward <- function(x, cursor) {
       index <- index - 1
     }
 
-    if (grepl("[a-zA-Z]|\\$|\\)", x[index])) {
+    if (grepl("[a-zA-Z_]|\\$|\\)", x[index])) {
       index <- index - 1
     } else {
       index <- index + 1
@@ -158,3 +159,4 @@ ee_get_eefunc <- function() {
     ee_get_funname(text = context$contents[line], cursor =  cursor)
   }
 }
+

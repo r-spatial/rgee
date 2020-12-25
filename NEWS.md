@@ -11,6 +11,25 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.7
+
+- Unit testing enhanced.
+- More documentation related to credentials.
+- Smoother connection with Python (reticulate).
+- Now Map$... functions only depend on {leaflet}.
+- Public argument added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_imagecollection_to_local`, `ee_drive_to_local` and `ee_gcs_to_local` which permit to create a public link to the resources generated.
+- A new argument "**metadata**" is added to `ee_as_sf`, `ee_as_raster`, `ee_as_stars`, `ee_drive_to_local`, `ee_imagecollection_to_local`, and `ee_gcs_to_local`. If TRUE, the metadata related to the export of the images will be added to raster/stars objects.
+- Fix a bug in Rstudio `ee_help` addins.
+- Fix a bug in `ee_extract` which adds the `system:index` to the colnames when the `x` argument is an `ee$ImageCollection`. 
+- Fix a bug that does not permit to `ee_as_raster` and `ee_as_stars` change the fileNamePrefix (#112).
+- a stop added in `sf_as_ee` since {geojsonio} does not support POSIXt objects (#113).
+- Lazy evaluation support to `ee_imagecollection_to_local`, `ee_as_sf`, `ee_as_raster` and `ee_as_stars`.
+- Export images via 'getInfo' was removed from `ee_as_raster` and `ee_as_stars` to avoid problems related to geometric offset.
+- Now `ee_monitoring` can also be invoked with the ID of a EE task started.
+- `ee_search` module deprecated, it will be removed of rgee in version 1.0.8.
+- New functions: `ee_utils_search_display` that display the website related to the Earth Engine dataset, and `ee_utils_future_value` that helps to run a {future} container.
+- Earth Engine Python API test updated to 0.1.246.
+
 # rgee 1.0.6
 - Class method chaining (i.e. `x$size()$getInfo()`) were changed by pipes (i.e. ee_x %>% `ee$FeatureCollection$size() %>% ee$Number()`) in all the `rgee` functions. This solve the problem "OverflowError: python int too large to convert to C long" on Window systems.
 - rgee functions has a cleaner method to run system processes, {**processx**} 
@@ -29,6 +48,7 @@ same name.
 - Fix a bug in name creator in `ee_imagecollection_to_local`.
 - A new message more detailed when the Python path does not have the earth-engine Python API.
 - Earth Engine Python API updated to 0.1.235.
+
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`

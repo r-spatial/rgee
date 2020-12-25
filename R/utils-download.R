@@ -1,6 +1,8 @@
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after an created an EE task.
+#' @param task List generated after a task is started (i.e. after run
+#' `ee$batch$Task$start()`) or a character that represents the ID of a EE
+#' task started.
 #' @param task_time Numeric. How often (in seconds) should a task be polled?
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.
@@ -16,10 +18,24 @@
 #' }
 #' @export
 ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE) {
+  # if task is missing
   if (missing(task)) {
     all_task <- ee_utils_py_to_r(ee$batch$Task$list())
     task <- all_task[[1]]
   }
+
+  # if task is character(ID)
+  if (is.character(task)) {
+    all_task <- ee_utils_py_to_r(ee$batch$Task$list())
+    id_tasks <- lapply(all_task, function(task) task[["id"]]) %>% unlist()
+    if (any(id_tasks %in% task)) {
+      task <- all_task[[which(id_tasks %in% task)]]
+    } else {
+      stop("Undefined Task ID entered")
+    }
+  }
+
+  # List all the EE tasks
   if (eeTaskList) {
     if (!quiet) {
       cat("EETaskList:\n")
@@ -32,6 +48,8 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
       cat("\n")
     }
   }
+
+  # Start to monitoring the task ...
   counter <- 0
   while (ee_utils_py_to_r(ee$batch$Task$active(task)) &
          task[["state"]] != "CANCEL_REQUESTED") {
@@ -53,6 +71,7 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
     )
     stop("ee_monitoring was forced to stop before getting results")
   }
+  invisible(task)
 }
 
 #' Sort google drives files
@@ -84,7 +103,7 @@ ee_sort_localfiles <- function(filenames, fileformat) {
 }
 
 
-#' GCS or Google Drive Exist credentials?
+#' (GCS or Google Drive) Exist external credentials?
 #' @noRd
 ee_exist_credentials <- function() {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
@@ -97,71 +116,24 @@ ee_exist_credentials <- function() {
   )
 }
 
-
-
-#' Fix offset of stars object
+#' Save external credentials
 #' @noRd
-ee_fix_offset <- function(img_transform, sf_region) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
+ee_save_credential <- function(pdrive = NULL, pgcs = NULL) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+  sessioninfo <- sprintf("%s/rgee_sessioninfo.txt", ee_path)
+  cre_table <- read.table(
+    file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+    header = TRUE,
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(pdrive)) {
+    cre_table[["drive_cre"]] <- pdrive
+  } else if (!is.null(pgcs)) {
+    cre_table[["gcs_cre"]] <- pgcs
   }
-  if (all(img_transform %in% c(1, 0, 0, 0, 1, 0))) {
-    sf::st_bbox(sf_region)
-  } else {
-    rectangle_coord <- sf::st_coordinates(sf_region)
-    # image spatial parameters
-    img_x_scale <- img_transform[1][[1]]
-    img_x_offset <- img_transform[3][[1]]
-    img_y_scale <- img_transform[5][[1]]
-    img_y_offset <- img_transform[6][[1]]
-    # X offset fixed
-    sf_x_min <- min(rectangle_coord[, "X"])
-    x_min <- ee_fix_x_coord(img_x_offset, sf_x_min, img_x_scale, option = 'min')
-    sf_x_max <- max(rectangle_coord[, "X"])
-    x_max <- ee_fix_x_coord(img_x_offset, sf_x_max, img_x_scale, option = 'max')
-
-    # Y offset fixed
-    sf_y_min <- min(rectangle_coord[, "Y"])
-    y_min <- ee_fix_y_coord(img_y_offset, sf_y_min, img_y_scale, option = 'min')
-    sf_y_max <- max(rectangle_coord[, "Y"])
-    y_max <- ee_fix_y_coord(img_y_offset, sf_y_max, img_y_scale, option = 'max')
-    c(xmin = x_min, ymin = y_min, xmax = x_max, ymax = y_max)
-  }
-}
-
-#' Fix x coordinates
-#' @noRd
-ee_fix_x_coord <- function(img_offset, sf_offset, scale, option) {
-  # fix the offset
-  if (img_offset <= sf_offset) {
-    if (option == "min") {
-      n <- floor(abs((img_offset - sf_offset)/scale))
-    } else if (option == "max") {
-      n <- ceiling(abs((img_offset - sf_offset)/scale))
-    }
-    img_offset + n * scale
-  } else {
-    n <- ceiling(abs((img_offset - sf_offset)/scale))
-    img_offset - n * scale
-  }
-}
-
-
-#' Fix y coordinates
-#' @noRd
-ee_fix_y_coord <- function(img_offset, sf_offset, scale, option) {
-  # fix the offset
-  if (img_offset > sf_offset) {
-    if (option == "min") {
-      n <- ceiling(abs((sf_offset - img_offset)/scale))
-    } else if (option == "max") {
-      n <- floor(abs((sf_offset - img_offset)/scale))
-    }
-    img_offset + n * scale
-  } else {
-    n <- ceiling(abs((sf_offset - img_offset)/scale))
-    img_offset - n * scale
-  }
+  write.table(cre_table, sessioninfo, row.names = FALSE)
 }
 
 #' type of an Earth Engine Image

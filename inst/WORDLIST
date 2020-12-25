@@ -274,3 +274,9 @@ tmp
 OGC
 processx
 magrittr
+ee_as_raster
+ee_as_sf
+ee_as_stars
+ee_imagecollection_to_local
+fileNamePrefix
+fileFormat

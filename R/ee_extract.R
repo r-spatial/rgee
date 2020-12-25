@@ -79,13 +79,15 @@
 #' ee_Initialize()
 #'
 #' # Define a Image or ImageCollection: Terraclimate
-#' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-#'   filterDate("2001-01-01", "2002-01-01")$
-#'   map(function(x){
-#'     date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
-#'     name <- ee$String$cat("Terraclimate_pp_", date)
-#'     x$select("pr")$reproject("EPSG:4326")$set("RGEE_NAME", name)
-#'   })
+#' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
+#'   ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>%
+#'   ee$ImageCollection$map(
+#'     function(x) {
+#'       date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+#'       name <- ee$String$cat("Terraclimate_pp_", date)
+#'       x$select("pr")$rename(name)
+#'     }
+#'   )
 #'
 #' # Define a geometry
 #' nc <- st_read(
@@ -94,7 +96,9 @@
 #'   quiet = TRUE
 #' )
 #'
+#'
 #' # Extract values
+#'
 #' ee_nc_rain <- ee_extract(
 #'   x = terraclimate,
 #'   y = nc,
@@ -105,7 +109,7 @@
 #'
 #' # Spatial plot
 #' plot(
-#'   ee_nc_rain["X200110_pr"],
+#'   ee_nc_rain["Terraclimate_pp_2001_11_01"],
 #'   main = "2001 Jan Precipitation - Terraclimate",
 #'   reset = FALSE
 #' )
@@ -118,28 +122,28 @@ ee_extract <- function(x,
                        sf = FALSE,
                        quiet = FALSE,
                        ...) {
+  ee_check_packages("ee_extract", c("geojsonio", "sf"))
+
+  # print scale
   if (!quiet & is.null(scale)) {
     scale <- 1000
     message(sprintf("The image scale is set to %s.", scale))
   }
-  if (!requireNamespace("geojsonio", quietly = TRUE)) {
-    stop("package geojsonio required, please install it first")
-  }
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+
   # Is x a Image or ImageCollection?
   if (!any(class(x) %in% ee_get_spatial_objects("i+ic"))) {
     stop("x is neither an ee$Image nor ee$ImageCollection")
   }
+
   # Is x a ImageCollection?
   if (any(class(x) %in%  "ee.imagecollection.ImageCollection")) {
-    if (!quiet) {
-      message("x is an ImageCollection, running 'x$toBands()' to ",
-              "convert it into an Image")
-    }
+    # if (!quiet) {
+    #   message("x is an ImageCollection, running 'x$toBands()' to ",
+    #           "convert it into an Image")
+    # }
     x <- ee$ImageCollection$toBands(x)
   }
+
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)
@@ -154,17 +158,17 @@ ee_extract <- function(x,
   # If y is a sf object convert into a ee$FeatureCollection object
   if (any("sf" %in% class(y))) {
     sf_y <- y
-    if (!quiet) {
-      message("y is an sf object, running 'sf_as_ee(y$geometry)' to ",
-              "convert it into an ee$FeatureCollection object.")
-    }
+    # if (!quiet) {
+    #   message("NOTE: y is an sf object, running 'sf_as_ee(y$geometry)' to ",
+    #           "convert in an ee$FeatureCollection object.")
+    # }
     ee_y <- sf_as_ee(y[["geometry"]], quiet = TRUE)
   } else if(any("sfc" %in%  class(y))) {
     sf_y <- sf::st_sf(id = seq_along(y), geometry = y)
-    if (!quiet) {
-      message("y is an sfc object, running 'sf_as_ee(y)' to ",
-              "convert it into an ee$FeatureCollection object.")
-    }
+    # if (!quiet) {
+    #   message("y is an sfc object, running 'sf_as_ee(y)' to ",
+    #           "convert it into an ee$FeatureCollection object.")
+    # }
     ee_y <- sf_as_ee(y, quiet = TRUE)
     # If y is a ee$FeatureCollection object and 'sf' arg is TRUE convert it to an
     # sf object
@@ -230,6 +234,9 @@ ee_extract <- function(x,
   # Removing helper index's
   table_sf["id"] <- NULL
   table_sf["ee_ID"] <- NULL
+
+  # Remove system:index prefix
+  colnames(table_sf) <- gsub("^[^_]*_","", colnames(table_sf))
 
   if (isTRUE(sf)) {
     table_geometry  <- sf::st_geometry(sf_y)

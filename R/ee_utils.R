@@ -39,9 +39,9 @@ ee_utils_shp_to_zip <- function(x,
                                 filename,
                                 SHP_EXTENSIONS = c("dbf", "prj", "shp",
                                                    "shx")) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
+  # check packages
+  ee_check_packages("ee_utils_shp_to_zip", "sf")
+
   if (missing(filename)) {
     filename <- sprintf("%s%s",tempfile(),'.shp')
   }
@@ -193,9 +193,9 @@ ee_utils_pyfunc <- reticulate::py_func
 #' @family GIF functions
 #' @export
 ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
-  if (!requireNamespace("magick", quietly = TRUE)) {
-    stop("package magick required, please install it first")
-  }
+  # check packages
+  ee_check_packages("ee_utils_gif_creator", "magick")
+
   if (!quiet) {
     message("1. Creating gif ... please wait ....")
   }
@@ -310,9 +310,9 @@ ee_utils_gif_annotate <- function(image,
                                   color = NULL,
                                   strokecolor = NULL,
                                   boxcolor = NULL) {
-  if (!requireNamespace("magick", quietly = TRUE)) {
-    stop("package magick required, please install it first")
-  }
+  # check packages
+  ee_check_packages("ee_utils_gif_annotate", "magick")
+
   if (length(text) == 1) {
     image <- magick::image_annotate(image, text, gravity = gravity,
                                     location = location, degrees = degrees, size = size,
@@ -416,10 +416,35 @@ ee_utils_gif_save <- function(image,
                               density = NULL,
                               comment = NULL,
                               flatten = FALSE) {
-  if (!requireNamespace("magick", quietly = TRUE)) {
-    stop("package magick required, please install it first")
-  }
+
+  # check packages
+  ee_check_packages("ee_utils_gif_save", "magick")
   magick::image_write(image = image, path = path, format = format,
                       quality = quality, depth = depth, density = density,
                       comment = comment, flatten = flatten)
 }
+
+
+#' Search into the Earth Engine Data Catalog
+#'
+#' @param ee_search_dataset character which represents the EE dataset ID.
+#' @examples
+#' \dontrun{
+#'  library(rgee)
+#'
+#'  ee_datasets <- c("WWF/HydroSHEDS/15DIR", "WWF/HydroSHEDS/03DIR")
+#'  ee_utils_search_display(ee_datasets)
+#' }
+#' @export
+ee_utils_search_display <- function(ee_search_dataset) {
+  tag_name <- gsub("\\/", "_", ee_search_dataset)
+  db_catalog <- "https://developers.google.com/earth-engine/datasets/catalog/"
+  catalog_uri <- paste0(db_catalog, tag_name) %>%
+    na.omit() %>%
+    as.character()
+  for (uri in catalog_uri) {
+    browseURL(uri)
+  }
+  invisible(TRUE)
+}
+

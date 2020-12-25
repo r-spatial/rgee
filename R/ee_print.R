@@ -65,9 +65,7 @@
 #' }
 #' @export
 ee_print <- function(eeobject, ...) {
-  if (!requireNamespace("digest", quietly = TRUE)) {
-    stop("package digest required, please install it first")
-  }
+  ee_check_packages("ee_install", c("digest", "sf"))
   UseMethod("ee_print")
 }
 
@@ -77,9 +75,6 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
                                           ...,
                                           clean = FALSE,
                                           quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
   # 1. Search if Geometry metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -149,9 +144,6 @@ ee_print.ee.feature.Feature <- function(eeobject,
                                         ...,
                                         clean = FALSE,
                                         quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject))
@@ -231,10 +223,6 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
                                                             f_index = 0,
                                                             clean = FALSE,
                                                             quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-
   # 1. Search if FeatureCollection metadata exist in the /tempdir
   past_eeobject <- NULL
   metadata_file <- sprintf("%s/%s", tempdir(), ee_hash(eeobject, f_index))
@@ -345,10 +333,6 @@ ee_print.ee.image.Image <- function(eeobject,
                                     compression_ratio = 20,
                                     clean = FALSE,
                                     quiet = FALSE) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-
   # 1. Fetch and Return bandname about ee$Image
   img_bandNames <- eeobject %>%
     ee$Image$bandNames() %>%

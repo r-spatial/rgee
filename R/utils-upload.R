@@ -25,60 +25,67 @@
 local_to_gcs <- function(x,
                          bucket = NULL,
                          quiet = FALSE) {
-  if (!requireNamespace("googleCloudStorageR", quietly = TRUE)) {
+  # check packages
+  ee_check_packages("rgee::ee_download_gcs", "googleCloudStorageR")
+
+  if (is.null(bucket)) {
+    stop("Cloud Storage bucket was not defined")
+  }
+
+  if (is.na(getOption("rgee.gcs.auth"))) {
     stop(
-      "The googleCloudStorageR package is required to use ",
-      "rgee::ee_download_gcs",
-      call. = FALSE
+      "Google Cloud Storage credentials were not loaded.",
+      ' Run ee_Initialize(..., gcs = TRUE)',
+      " to fix."
     )
-  } else {
-    if (is.null(bucket)) {
-      stop("Cloud Storage bucket was not defined")
-    }
+  }
+  count <- 1
 
-    if (is.na(getOption("rgee.gcs.auth"))) {
-      stop(
-        "Google Cloud Storage credentials were not loaded.",
-        ' Run ee_Initialize(..., gcs = TRUE)',
-        " to fix it"
-      )
-    }
-    count <- 1
-
-    googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth"))
-    if (isFALSE(quiet)) {
-      files_gcs <- try(
-        googleCloudStorageR::gcs_upload(file = x,
-                                        bucket = bucket,
-                                        name = basename(x)),
+  googleCloudStorageR::gcs_auth(getOption("rgee.gcs.auth"))
+  if (isFALSE(quiet)) {
+    files_gcs <- try(
+      googleCloudStorageR::gcs_upload(
+        file = x,
+        bucket = bucket,
+        name = basename(x)),
         silent = TRUE
-      )
-      while (any(class(files_gcs) %in% "try-error") & count < 5) {
-        files_gcs <- try(
-          googleCloudStorageR::gcs_upload(file = x,
-                                          bucket = bucket,
-                                          name = basename(x)),
+    )
+    while (any(class(files_gcs) %in% "try-error") & count < 5) {
+      files_gcs <- try(
+        googleCloudStorageR::gcs_upload(
+          file = x,
+          bucket = bucket,
+          name = basename(x)),
           silent = TRUE
         )
-        count <- count + 1
-      }
-    } else {
-      files_gcs <- try(suppressMessages(
-        googleCloudStorageR::gcs_upload(file = x,
-                                        bucket = bucket,
-                                        name = basename(x))
-      ), silent = TRUE)
-      while (any(class(files_gcs) %in% "try-error") & count < 5) {
-        files_gcs <- try(suppressMessages(
-          googleCloudStorageR::gcs_upload(file = x,
-                                          bucket = bucket,
-                                          name = basename(x))
-        ), silent = TRUE)
-        count <- count + 1
-      }
+      count <- count + 1
     }
-    sprintf("gs://%s/%s", bucket, basename(x))
+  } else {
+    files_gcs <- try(
+      suppressMessages(
+        googleCloudStorageR::gcs_upload(
+          file = x,
+          bucket = bucket,
+          name = basename(x)
+        )
+      ),
+      silent = TRUE
+    )
+    while (any(class(files_gcs) %in% "try-error") & count < 5) {
+      files_gcs <- try(
+        suppressMessages(
+          googleCloudStorageR::gcs_upload(
+            file = x,
+            bucket = bucket,
+            name = basename(x)
+          )
+        ),
+        silent = TRUE
+      )
+      count <- count + 1
+    }
   }
+  sprintf("gs://%s/%s", bucket, basename(x))
 }
 
 #' Move a zipped shapefile from GCS to their EE Assets
@@ -131,9 +138,8 @@ gcs_to_ee_table <- function(manifest,
                             command_line_tool_path = NULL,
                             overwrite = FALSE,
                             quiet = FALSE) {
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
+  # check packages
+  ee_check_packages("gcs_to_ee_table", "jsonlite")
 
   manifest_list <- jsonlite::read_json(manifest)
   assetId <- ee_remove_project_chr(manifest_list$name)
@@ -227,9 +233,8 @@ gcs_to_ee_image <- function(manifest,
                             overwrite = FALSE,
                             command_line_tool_path = NULL,
                             quiet = FALSE) {
-  if (!requireNamespace("jsonlite", quietly = TRUE)) {
-    stop("package jsonlite required, please install it first")
-  }
+  # check packages
+  ee_check_packages("gcs_to_ee_image", "jsonlite")
 
   manifest_list <- jsonlite::read_json(manifest)
   assetId <- ee_remove_project_chr(manifest_list$name)
@@ -274,12 +279,8 @@ gcs_to_ee_image <- function(manifest,
 #' From sf object to Earth Engine FeatureCollection
 #' @noRd
 ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
-  if (!requireNamespace("sf", quietly = TRUE)) {
-    stop("package sf required, please install it first")
-  }
-  if (!requireNamespace("geojsonio", quietly = TRUE)) {
-    stop("package geojsonio required, please install it first")
-  }
+  # check packages
+  ee_check_packages("sf_as_ee", c("sf", "geojsonio"))
 
   # Load python module
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
@@ -340,10 +341,8 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
 #' Pass a character or stars object to stars-proxy
 #' @noRd
 ee_as_proxystars <- function(x, temp_dir = tempdir()) {
-
-  if (!requireNamespace("stars", quietly = TRUE)) {
-    stop("package stars required, please install it first")
-  }
+  # check packages
+  ee_check_packages("stars_as_ee", "stars")
 
   if (is.character(x)) {
     stars::read_stars(x, proxy = TRUE)
@@ -354,9 +353,8 @@ ee_as_proxystars <- function(x, temp_dir = tempdir()) {
     stars::write_stars(x, tiff_filename)
     stars::read_stars(tiff_filename, proxy = TRUE)
   } else if (is(x,"Raster")) {
-    if (!requireNamespace("raster", quietly = TRUE)) {
-      stop("package raster required, please install it first")
-    }
+    # check packages
+    ee_check_packages("raster_as_ee", "raster")
     time_format <- format(Sys.time(), "%Y-%m-%d-%H%M%S")
     ee_description <- paste0("ee_as_stars_task_", time_format)
     tiff_filename <- sprintf("%s/%s.tif", temp_dir, ee_description)

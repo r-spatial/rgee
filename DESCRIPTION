@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -62,6 +62,10 @@ Authors@R:
              role = c("ctb"),
              email = "gabriel.carrasco@upch.pe",
              comment = c(ORCID = "0000-0002-6945-0419")),
+      person(given = "Henrik",
+             family = "Bengtsson",
+             role = c("ctb"),
+             email = "henrikb@braju.com"),
       person(given = "Jeffrey",
              family = "Hollister",
              role = c("rev"),
@@ -100,7 +104,6 @@ Imports:
 Suggests:
     leaflet (>= 2.0.2),
     leaflet.extras2,
-    mapview,
     magick,
     geojsonio,
     sf,
@@ -109,12 +112,14 @@ Suggests:
     googleCloudStorageR (>= 0.5.1),
     rstudioapi (>= 0.7),
     jsonlite,
+    leafem,
     raster,
     rgdal,
     httr,
     digest,
     spelling,
     testthat,
+    future,
     covr,
     knitr,
     rmarkdown,

@@ -114,16 +114,6 @@ test_that("ee_as_stars - simple ", {
 #   expect_type(ee_image_03,'character')
 # })
 
-test_that("ee_as_raster", {
-  img_01 <- ee_as_raster(
-    image = image_srtm,
-    region = geometry,
-    scale = 10,
-    via = "getInfo"
-  )
-  expect_s4_class(img_01, "RasterStack")
-})
-
 # world image thumbnail -----------------------------------------------
 region <- ee$Geometry$Rectangle(
   coords = c(-180,-60,180,60),
@@ -157,7 +147,6 @@ test_that("ee_image_local error 1", {
     )
   }
 )
-
 
 test_that("ee_image_local error 2", {
   expect_error(
