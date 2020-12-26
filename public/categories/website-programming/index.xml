@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Website Programming on </title>
+    <link>https://example.com/categories/website-programming/</link>
+    <description>Recent content in Website Programming on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Nov 2018 07:26:15 +1300</lastBuildDate><atom:link href="https://example.com/categories/website-programming/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo W3 Simple Theme Shortcodes Demo</title>
+      <link>https://example.com/w3-simple-shortcodes-demo/</link>
+      <pubDate>Fri, 09 Nov 2018 07:26:15 +1300</pubDate>
+      
+      <guid>https://example.com/w3-simple-shortcodes-demo/</guid>
+      <description>This article is about the demo of these shortcodes.
+ Info Shortcodes We can easily display info with this code below on markdown file Code for info shortcodes {{&amp;lt; info &amp;gt;}}
+Blue often indicates a neutral informative change or action. {{&amp;lt;/info &amp;gt;}}   It will display default title with Information!:
+Information!  Blue often indicates a neutral informative change or action.  You can set title with the following code:</description>
+    </item>
+    
+    <item>
+      <title>Eighth</title>
+      <link>https://example.com/posts/eighth/</link>
+      <pubDate>Sun, 07 Oct 2018 11:40:11 +0200</pubDate>
+      
+      <guid>https://example.com/posts/eighth/</guid>
+      <description>This is another post Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean semper libero quis dictum dapibus. Nulla egestas vitae augue eu rutrum. Duis ullamcorper dictum ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse tortor dui, fermentum non dapibus id, volutpat non odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Maecenas fringilla tempus urna ac laoreet. Curabitur sed bibendum lectus.</description>
+    </item>
+    
+  </channel>
+</rss>

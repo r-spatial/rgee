@@ -1,0 +1,32 @@
+<script>
+  shareurl=encodeURIComponent(location.protocol + '//' + location.host + location.pathname);
+  sharetitle=encodeURIComponent(document.title);
+    
+  </script>
+<div class="icon-bar">
+<script>
+document.write( '<a href="javascript:bookmark();" class="bookmark w3-tooltip"><i class="fa fa-bookmark"></i><span style="position:absolute;left:40px;bottom:18px" class="w3-text w3-small w3-tag w3-round w3-green ">Bookmark this page</span></a> ');
+
+document.write( '<a href="http://www.facebook.com/sharer.php?u='+shareurl+'" onclick="window.open(this.href, \'mywin\',\'left=20,top=20,width=500,height=500,toolbar=1,resizable=0\'); return false;" class="facebook w3-tooltip"><i class="fa fa-facebook "></i><span style="position:absolute;left:40px;bottom:18px" class="w3-text w3-small w3-tag w3-round w3-green">Share to Facebook</span></a> ');
+
+document.write( '<a href="https://twitter.com/share?url='+shareurl+'&amp;text='+sharetitle+'" onclick="window.open(this.href, \'mywin\',\'left=20,top=20,width=500,height=500,toolbar=1,resizable=0\'); return false;" class="twitter w3-tooltip"><i class="fa fa-twitter"></i><span style="position:absolute;left:40px;bottom:18px" class="w3-text w3-small w3-tag w3-round w3-green">Share to Twitter</span></a> ');
+document.write( '<a href="https://plus.google.com/share?url='+shareurl+'" onclick="window.open(this.href, \'mywin\',\'left=20,top=20,width=500,height=500,toolbar=1,resizable=0\'); return false;" class="google w3-tooltip"><i class="fa fa-google"></i><span style="position:absolute;left:40px;bottom:18px" class="w3-text w3-small w3-tag w3-round w3-green">Share to Google Plus</span></a>');
+
+document.write( '<a href="http://www.linkedin.com/shareArticle?mini=true&amp;url='+shareurl+'" onclick="window.open(this.href, \'mywin\',\'left=20,top=20,width=500,height=500,toolbar=1,resizable=0\'); return false;" class="linkedin w3-tooltip"><i class="fa fa-linkedin"></i><span style="position:absolute;left:40px;bottom:18px" class="w3-text w3-small w3-tag w3-round w3-green">Share to Linkedin</span></a>');
+
+</script>
+
+<script>
+function bookmark(){
+// Mozilla Firefox Bookmark
+if ('sidebar' in window && 'addPanel' in window.sidebar) { 
+                window.sidebar.addPanel(location.href,document.title,"");
+            } else if( /*@cc_on!@*/false) { // IE Favorite
+                window.external.AddFavorite(location.href,document.title); 
+            } else { // webkit - safari/chrome
+                alert('Press ' + (navigator.userAgent.toLowerCase().indexOf('mac') != - 1 ? 'Command/Cmd' : 'CTRL') + ' + D to bookmark this page.');
+            }
+        }
+
+</script>
+</div>

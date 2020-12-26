@@ -1,0 +1,206 @@
+{{ define "main" -}}
+ <!-- TOC -->
+    {{ if and (ge (len .TableOfContents) 100) (ne .Params.toc "false")  }}
+
+      <div id="toc" class="w3-dropdown-hover w3-hide-small w3-hide-medium">
+    <button class="w3-button w3-teal w3-xlarge">&#9776;</button>
+    <div class="w3-dropdown-content w3-bar-block w3-border" style="right:0">
+         
+          <h3 class="w3-center">{{T "toc"}} </h3>
+            {{.TableOfContents}}
+         
+      </div>
+
+     
+      </div>
+    {{ end }}
+
+ 
+     
+
+
+  <div class="w3-content w3-card-4" >
+    <!-- post-header -->
+    <header class="w3-container w3-center w3-padding-32">
+      <h1>{{ .Title }}</h1>
+
+      <div >
+        <p> {{ .Date.Format (.Site.Params.dateFormatToUse | default "2006-01-02") }} 
+          {{ if .Site.Params.readingtime }}
+             <code> {{ T ("wordCount") .WordCount }}  </code>
+             <code> {{ T "readingTime" .ReadingTime }} </code>
+          {{ end }}
+        </p>
+        {{ with .Params.categories -}}
+          <div >
+            {{ range . }}
+              <a class="w3-btn w3-small w3-round w3-green" href="{{ "categories" | relLangURL }}/{{ . | urlize }}/"> {{ . }} </a>
+            {{ end }}
+          </div>
+        {{- end }}
+       
+        
+      </div>
+    </header>
+
+   
+    <!-- Content -->
+    <div class="w3-container">
+      {{ if .Site.Params.lazyload }}
+        
+
+        {{ $regex := "(?i)src\\s*=\\s*\"([^\"]*(png|jpg|jpeg|gif|bmp|svg))\"" }}
+        {{ $img := findRE $regex .Content }}
+
+        {{ if gt (len $img) 0 }}
+          {{ $placeholder := resources.Get "placeholder.svg" }}
+          {{ $replacement := print "src=\"" $placeholder.RelPermalink "\" data-src=\"$1\"" }}
+          {{ .Content | replaceRE $regex $replacement | safeHTML }}
+        {{ else }}
+          {{ .Content }}
+        {{ end }}         
+                
+         
+      {{ else }}
+        {{ .Content }}
+      {{ end }}
+    </div>
+
+    
+   
+
+    <div class="w3-container">
+    	
+      {{ with .Params.tags -}}
+        <div class="w3-container">
+        	<hr class = "tag">
+        Tags: 
+          {{ range . }}
+          <a class="w3-btn w3-small w3-round w3-green" href="{{ "tags" | relLangURL }}/{{ . | urlize }}/">{{ . }}</a>
+          {{ end }}
+          <hr class = "tag">
+       
+        </div>
+      {{- end }}
+     
+	</div>
+
+
+
+  
+
+
+    {{ if .Site.Params.relatedPosts }}
+    {{ $related := .Site.RegularPages.Related . | first 5 }}
+    {{ with $related }}
+    <div class="w3-container">
+        <!-- related content -->
+        <h2>{{ T "relatedposts" }}</h2>
+        <ul class="w3-ul w3-hoverable">
+            
+            {{ range . }}
+
+              <li class="w3-padding-large"><span class="date">{{ .Date.Format "2006/01/02" }}</span> &nbsp; <a href="{{ .RelPermalink }}">{{ .Title | markdownify }}</a></li>
+            {{ end }}
+        </ul>
+    </div>
+    {{ end }}
+    {{ end }}
+    <br>  
+</div>
+
+<!-- Author and License -->
+{{ if .Site.Params.authorandlicense }}
+<div class="w3-container w3-card-2 w3-black">
+<div class="w3-row">
+  <div class="w3-col l2 m2 s12 w3-center">
+  
+    <img src="{{ .Site.Params.authorimgurl }}" width ="100px" class="w3-circle w3-center w3-margin-top w3-margin-bottom" alt="author" >
+   
+  </div>
+  <div class="w3-col l10 m10 s12 ">
+  <div class = "w3-container w3-margin-top">
+    {{ .Site.Params.authorinfo | safeHTML }}
+    {{ .Site.Params.licenseinfo | safeHTML  }}
+  </div>
+  </div>
+  </div>
+</div>
+{{ end }}
+      <!-- Post Pagination -->
+    <div class="w3-content" > 
+      <div class="w3-bar w3-section">
+	     {{ with .NextInSection }}
+	      <a  href="{{ .Permalink }}" class="w3-btn w3-text-indigo w3-hover-green">
+	          &#10094; {{ .Title }}
+	      </a>
+	    {{- end }}
+	    {{ with .PrevInSection }}
+	      <a class="w3-btn w3-right w3-text-indigo w3-hover-green" href="{{ .Permalink }}">
+	       {{ .Title }} &#10095;
+	      </a>
+	    {{- end }}
+  	  </div>
+    </div>
+	
+ 
+
+  <!-- w3colorjs -->
+  {{ if  (.Params.w3codecolor) }}
+      
+      <script src="{{ "/js/w3codecolor-min.js" | relURL }}"></script>
+
+      <script>
+      w3CodeColor();
+      </script>
+  {{- end -}}
+
+   <!-- allowads -->
+  {{ if  (.Site.Params.allowads) }}
+
+      <div id="wrapads">
+        <div class="adBanner">
+         
+        </div>
+       </div>
+      
+      <div id="allowads" class="allowads-overlay">
+  
+        <div class="allowads-overlay-content">
+        <div class="w3-panel w3-pink w3-large">
+        
+
+         <p> We notice you're using an adblocker.  If you like our webite please keep us running by whitelisting this site in your ad blocker. We’re serving quality, related ads only. Thank you!</p>
+         
+          <div class="w3-btn w3-green"  onclick="closeOverlay()">I've whitelisted your website.</div><br>
+          <div class="w3-button w3-small"  onclick="closeOverlay()">Not now</div>
+        </div>
+        </div>
+      </div>
+
+      <script>
+      function closeOverlay() {
+        document.getElementById("allowads").style.width = "0%";
+        document.getElementById("wrapads").style.height="1px";
+      }
+
+      function detectads() {
+      var h = document.getElementById("wrapads").clientHeight;
+
+      if (h==0){ document.getElementById("allowads").style.width = "100%";
+      }
+      }
+      
+
+     
+      
+      </script>
+
+  {{- end -}}
+
+
+
+
+{{- end }}
+
+

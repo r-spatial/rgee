@@ -1,0 +1,114 @@
+<div class="w3-right ">
+<div class="w3-bar w3-light-grey  ">
+  {{ if .Site.Params.googletranslate }}
+  <span class="w3-bar-item w3-left " id="google_translate_element"></span>
+<script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement(
+      {
+          pageLanguage: 'en'
+        , layout: google.translate.TranslateElement.FloatPosition.TOP_RIGHT
+        , multilanguagePage: true
+      }
+      , 'google_translate_element'
+    );
+  }
+</script>
+<script async src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+{{ end }}
+
+  {{ if .Site.Params.searchfunction }}
+       <a href="javascript:void(0)" class="w3-bar-item w3-button w3-hover-green" title="Search" onclick="displaysearch()"><i class="fa fa-search"></i></a>
+  {{ end }}
+      <span class="w3-hide-small">
+  {{- range $name, $path := .Site.Params.social }}
+      {{- if $path }}
+      {{- $realName := slicestr $name 2 }}
+        
+        <a href="{{ $path | safeURL }}" class="w3-bar-item w3-button w3-hover-green"><i class="fa fa-{{ $realName }}"></i></a>
+      {{- end }}
+  {{- end }}
+
+      </span>
+  
+</div>
+</div>
+<br><br><br><br>
+  <div class="w3-content">  
+  <div class="w3-container w3-center w3-padding-32 w3-hide-small">
+      <div class="rgee-text-wrapper">
+      <img src={{.Site.Params.rgee_img}} alt="logo" class="rgee-img-responsive"></img>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="rgee-svg"><path d="M18 2l6 10.5-6 10.5h-12l-6-10.5 6-10.5z"/></svg>    
+      </div>         
+      <br><br><br><br><br>   
+      <h1 class="rgee-title">
+        {{ with .Site.Params.logotext }}
+          {{ . }}
+        {{ else }}
+            W3 SIMPLE
+        {{ end }}
+      </h1>
+      
+    </div>
+    <div class="w3-content w3-center">
+    <div class="w3-bar w3-light-grey w3-border">
+    <a href="{{ "/" | relLangURL  }}" class="w3-bar-item w3-button w3-large w3-green"><i class="fa fa-home"></i></a>
+    {{ range .Site.Menus.main }}
+      <a href="{{ .URL |  relURL }}" class="w3-bar-item w3-button w3-hide-small">{{ .Name }}</a>
+    {{ end }}
+   
+    
+    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="displaymenu()">&#9776;</a>
+  </div>
+
+<div id="mobilemenu" class="w3-bar-block w3-light-grey w3-hide w3-hide-large w3-hide-medium">
+  {{ range .Site.Menus.main }}
+      <a href="{{ .URL | relURL }}" class="w3-bar-item w3-button">{{ .Name }}</a>
+      {{ end }}
+  
+</div>
+</div>
+</div>
+<script>
+function displaymenu() {
+    var x = document.getElementById("mobilemenu");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else { 
+        x.className = x.className.replace(" w3-show", "");
+    }
+}
+</script>
+
+{{ if .Site.Params.searchfunction }}
+
+  <div id="searchOverlay" class="overlay w3-hide">
+    <span class="closebtn" onclick="displaysearch()" title="Close Overlay">×</span>
+    <div class="overlay-content">
+        <form action="/search/">
+          <input type="text" placeholder="Search.." name="q">
+          <button type="submit"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+  </div>
+
+  <script>
+  function displaysearch() {
+    var x = document.getElementById("searchOverlay");
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+    } else { 
+        x.className = x.className.replace(" w3-show", "");
+    }
+      
+  }
+
+ 
+  </script>
+
+  
+{{ end }}
+
+    
+    <hr class="headfoot">
+   

@@ -1,0 +1,8 @@
+<div class="w3-panel w3-card w3-light-grey"> 
+  {{ with .Get "title"}} <h4>{{.}}</h4>{{ end }}
+
+  <div class="w3-code {{ .Get "mode" | default "bashHigh" }} notranslate">
+    {{ .Inner }}
+  </div>
+</div>
+

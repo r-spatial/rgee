@@ -1,0 +1,8 @@
+<div class="w3-container w3-center w3-padding-32"> 
+  {{ with .Site.Params.footer }}
+  <hr class="headfoot">
+  <p>Powered by <a href="https://gohugo.io">Hugo</a> | Theme - <a href="https://github.com/jesselau76/hugo-w3-simple">Hugo W3 Simple</a>
+  </p>
+  {{ . | markdownify }}
+  {{ end }}
+</div>

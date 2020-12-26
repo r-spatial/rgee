@@ -1,0 +1,63 @@
+baseurl = "https://example.com/"
+languageCode = "en-us"
+defaultContentLanguage = "en" # en / zh-CN / ... (This field determines which i18n file to use)
+
+theme = "hugo-w3-simple"
+disqusShortname = ""      # disqus_shortname
+googleAnalytics = ""      # UA-XXXXXXXX-X
+paginate = 100 #gridstyle use 3 column. so should be 3,6,9,12,15....
+hasCJKLanguage = false # has chinese/japanese/korean ?
+[markup.goldmark.renderer]
+unsafe= true
+[languages.en]
+weight = 0
+languageName = "English"
+contentDir = "content/english"
+[languages.en.params]
+      title = "rgee Theme"
+      authorinfo = "<h4>Authored By csaybar</h4>"
+      licenseinfo = "<p class=\"w3-small\">This article is licensed under a <a rel=\"license\" href=\"https://creativecommons.org/licenses/by/4.0/\" class=\"w3-text-white\">Creative Commons Attribution 4.0 International License</a>.</p>"
+      logotext = "Google Earth Engine with R" # logo text
+      rgee_img = "https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png"
+      isso_baseurl=""  #if you want to use isso as comment system,set your isso js baseurl here. It is like "https://isso.yourwebsite.com/" or "https://yourwebsite.com/isso/"
+      isso_langcode="en"
+      cookie_info = "This website uses cookies to ensure you get the best experience on our website. [Learn more](/privacy-policy/)"
+
+[[languages.en.menu.main]]
+    name = "Categories"
+    url = "/categories/"
+    weight = 3
+[[languages.en.menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 4
+
+[[languages.en.menu.main]]
+    name = "All Posts"
+    url = "/allposts/"
+    weight = 5
+
+[params]
+    welcomemessage = false #if set true. The home page will display the content of _index.md
+    authorandlicense = true
+    authorimgurl = "https://raw.githubusercontent.com/jesselau76/hugo-w3-simple/master/exampleSite/images/johndoe.jpg" #if authorandlicense set true, this one must be set too
+
+    relatedPosts = true
+    backtotop = true
+    lazyload = true  #if set true, lazy load images on websites asynchronously — that is, after the above-the-fold content is fully loaded, or even conditionally, only when they appear in the browser's viewport.
+    glowlogo = true # if want logo to have glowing style, set true.
+    scrollindicator = true # if need scroll indicator on the top, set true
+    allliststyle = false  # list post with sortable all list style. If false then gridstyle or simple style
+    gridstyle = true  # list post with grid style. If false then simple list
+    readingtime = true  #display reading time
+    firstpic = true  # display first picture as thumbnail if no thumbnail set. For gridstyle only
+    socialshare = true
+    socialicon = true
+    googletranslate = false
+    searchfunction = false #If true, it will only display search button but real search function is not included in example site because it need server-side app. To see the demo please visit https://jesselau.com
+    description = "rgee Theme"
+    onesignalid = ""  #one signal push app id
+    # adsenseid="ca-pub-123456789"
+    allowads = true
+    logotext = "HUGO W3 SIMPLE" # logo text
+    footer = "&copy; [Cesar Aybar](https://csaybar.github.io/) 2020 | [Github](https://github.com/csaybar) | [Twitter](https://twitter.com/csaybar)  | [RSS](/index.xml)"

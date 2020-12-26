@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on </title>
+    <link>https://example.com/tags/</link>
+    <description>Recent content in Tags on </description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 09 Nov 2018 07:26:15 +1300</lastBuildDate><atom:link href="https://example.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>hugo</title>
+      <link>https://example.com/tags/hugo/</link>
+      <pubDate>Fri, 09 Nov 2018 07:26:15 +1300</pubDate>
+      
+      <guid>https://example.com/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>drink</title>
+      <link>https://example.com/tags/drink/</link>
+      <pubDate>Sun, 07 Oct 2018 11:40:14 +0200</pubDate>
+      
+      <guid>https://example.com/tags/drink/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>interesting</title>
+      <link>https://example.com/tags/interesting/</link>
+      <pubDate>Sun, 07 Oct 2018 11:40:14 +0200</pubDate>
+      
+      <guid>https://example.com/tags/interesting/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

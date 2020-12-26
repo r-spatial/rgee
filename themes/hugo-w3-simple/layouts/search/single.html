@@ -1,0 +1,122 @@
+{{ define "customphp" -}}
+  {{ "<?php" | safeHTML }}
+  $q = '';
+  if (isset($_GET['q']) && $_GET['q'] != '') {
+  
+  $q =$_GET['q'];
+} 
+  
+ 
+  $manticore = new mysqli("127.0.0.1", "", "", "", 9306);
+  $q=$manticore->real_escape_string($q);
+  $sphinxQl="SELECT * ,SNIPPET(content,'".$q."','limit=200') as snippet FROM hugo WHERE MATCH('".$q."')";
+  $result = $manticore->query($sphinxQl);
+  
+ 
+  ?>
+  
+  
+{{- end }}
+
+{{ define "customheader" -}}
+
+  <div class="w3-container w3-center w3-padding-32 w3-hide-small"> 
+        <h1 class="w3-xxxlarge w3-text-blue w3-wide w3-allerta {{ if .Site.Params.glowlogo }} glow {{ end }}" style="text-shadow:1px 1px 0 #444" ><u>
+        {{ with .Site.Params.logotext }}
+           {{ . }}
+        {{ else }}
+            W3 SIMPLE
+        {{ end }}
+  </u></h1>
+        
+  </div>
+  <div class="w3-content w3-center">
+      <div class="w3-bar w3-light-grey w3-border w3-padding">
+        <a href="{{ "/" | relURL }}" class="w3-bar-item w3-button w3-large w3-green w3-mobile"><i class="fa fa-home"></i></a>
+        <input id="searchinput" name="search" type="text" style="width: 600px;" class="w3-bar-item w3-input w3-white w3-mobile" placeholder="Search.." value="<?php echo  $q;?>">
+        <button type="button" onclick="gosearch()" class="w3-bar-item w3-button w3-green w3-mobile">Go</button>
+      </div>
+
+     
+  </div>
+<script>
+var input = document.getElementById("searchinput");
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        gosearch();
+    }
+});
+</script>
+  <script>
+function gosearch() {
+    var x;
+
+    // Get the value of the input field with id="numb"
+    x = document.getElementById("searchinput").value;
+
+    window.location.replace("https://jesselau.com/q/"+x);
+}
+</script>
+
+{{- end }}
+
+{{ define "main" -}}
+{{ "<?php" | safeHTML }}
+  {{ "if ($q<>'')" | safeHTML }}
+   {
+    ?>
+
+ <div id="searchresult" class="w3-content w3-card-4" >
+  {{ "<?php" | safeHTML }}
+  if (mysqli_num_rows($result)==0)
+  { 
+  	?>
+  	<div class="w3-panel w3-pale-yellow w3-display-container">
+	  <span onclick="this.parentElement.style.display='none'"
+	  class="w3-button w3-large w3-display-topright">&times;</span>
+	  <h3>No Results!</h3>
+	  <p>There are no posts about <b>{{ "<?php echo $q;?> " | safeHTML }}</b>. Please try another keywords.</p>
+	</div>
+  {{ "<?php" | safeHTML }}
+   }
+   else
+   {
+    foreach($result as $row)
+    {
+      ?>
+      <div class ="w3-container" >
+      <div class="w3-panel  w3-card-2"  >
+          <div class="w3-container">
+            <h4> <a href="<?php echo  $row['link'];?>" > {{ "<?php echo $row['title'];?> " | safeHTML }} </a></h4>
+          </div>
+
+          <div class="w3-container">
+            <p> {{ "<?php echo strip_tags($row['snippet'],'<b>');?> " | safeHTML }} </p>
+          </div>
+
+         
+        </div>
+        
+       </div>
+    {{ "<?php" | safeHTML }}
+     
+    }
+}
+    ?>
+  
+</div>
+{{ "<?php" | safeHTML }}
+}
+?>
+{{- end }}
+
+{{ define "commentornotes" -}}
+	<div class="w3-container w3-center w3-padding-32"> 
+	  
+	  <p>Search function is powered by <a href="https://manticoresearch.com/">Manticoresearch</a> |  <a href="https://jesselau.com/tags/manticore/">tutorials Here</a>
+	  </p>
+	  
+	</div>
+{{- end }}
+

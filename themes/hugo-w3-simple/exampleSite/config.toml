@@ -1,0 +1,130 @@
+baseurl = "https://example.com/"
+languageCode = "en-us"
+defaultContentLanguage = "en" # en / zh-CN / ... (This field determines which i18n file to use)
+
+theme = "hugo-w3-simple"
+disqusShortname = ""      # disqus_shortname
+googleAnalytics = ""      # UA-XXXXXXXX-X
+paginate = 12 #gridstyle use 3 column. so should be 3,6,9,12,15....
+hasCJKLanguage = true # has chinese/japanese/korean ? 
+[markup.goldmark.renderer]
+unsafe= true
+[languages.en]
+weight = 0
+languageName = "English"
+contentDir = "content/english"
+[languages.en.params]
+      title = "Hugo W3 Simple Theme"
+      authorinfo = "<h4>Authored By John Doe</h4>"
+      licenseinfo = "<p class=\"w3-small\">John Doe, a good man living on the earth, loving making website with hugo. This article is licensed under a <a rel=\"license\" href=\"https://creativecommons.org/licenses/by/4.0/\" class=\"w3-text-white\">Creative Commons Attribution 4.0 International License</a>.</p>"
+      logotext = "HUGO W3 SIMPLE" # logo text
+      isso_baseurl=""  #if you want to use isso as comment system,set your isso js baseurl here. It is like "https://isso.yourwebsite.com/" or "https://yourwebsite.com/isso/"
+      isso_langcode="en"
+      cookie_info = "This website uses cookies to ensure you get the best experience on our website. [Learn more](/privacy-policy/)"
+   
+[[languages.en.menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 2
+[[languages.en.menu.main]]
+    name = "Categories"
+    url = "/categories/"
+    weight = 3
+[[languages.en.menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 4
+
+[[languages.en.menu.main]]
+    name = "All Posts"
+    url = "/allposts/"
+    weight = 5
+[[languages.en.menu.main]]
+    name = "Chinese"
+    url = "/zh-cn/"
+    weight = 6
+
+
+
+[languages.zh-cn]
+weight = 10
+languageName = "Chinese"
+contentDir = "content/chinese"
+
+[languages.zh-cn.params]
+      title = "王一贴的博客"
+      authorinfo = "<h4>本文由王一贴原创</h4>"
+      licenseinfo = '<p class="w3-small">王一贴，曾记录于《红楼梦》第八十回人物。任何问题，一贴搞定.<br>本文采用<a rel="license" href="http://creativecommons.org/licenses/by/4.0/" class="w3-text-white">知识共享署名 4.0 国际许可协议</a>进行许可。</p>'
+      logotext = "王一贴的博客" # logo text
+      isso_baseurl=""  ##if you want to use isso as comment system,set your isso js baseurl here. It is like "https://isso.yourwebsite.com/" or "https://yourwebsite.com/isso/"
+      isso_langcode="zh"
+[[languages.zh-cn.menu.main]]
+    name = "关于"
+    url = "/zh-cn/about/"
+    weight = 2
+[[languages.zh-cn.menu.main]]
+    name = "分类"
+    url = "/zh-cn/categories/"
+    weight = 3
+[[languages.zh-cn.menu.main]]
+    name = "标签"
+    url = "/zh-cn/tags/"
+    weight = 4
+
+[[languages.zh-cn.menu.main]]
+    name = "全部帖子"
+    url = "/zh-cn/allposts/"
+    weight = 5
+
+[[languages.zh-cn.menu.main]]
+    name = "English"
+    url = "/"
+    weight = 6
+
+
+[params]
+    welcomemessage = false #if set true. The home page will display the content of _index.md 
+    authorandlicense = true 
+    authorimgurl = "https://raw.githubusercontent.com/jesselau76/hugo-w3-simple/master/exampleSite/images/johndoe.jpg" #if authorandlicense set true, this one must be set too
+    
+    relatedPosts = true
+    backtotop = true
+    lazyload = true  #if set true, lazy load images on websites asynchronously — that is, after the above-the-fold content is fully loaded, or even conditionally, only when they appear in the browser's viewport. 
+    glowlogo = true # if want logo to have glowing style, set true.
+    scrollindicator = true # if need scroll indicator on the top, set true
+    allliststyle = false  # list post with sortable all list style. If false then gridstyle or simple style
+    gridstyle = true  # list post with grid style. If false then simple list
+    readingtime = true  #display reading time
+    firstpic = true  # display first picture as thumbnail if no thumbnail set. For gridstyle only
+    socialshare = true
+    socialicon = true
+    googletranslate = true
+    searchfunction = true #If true, it will only display search button but real search function is not included in example site because it need server-side app. To see the demo please visit https://jesselau.com
+    description = "Hugo W3 Simple Theme"
+    onesignalid = ""  #one signal push app id
+    # adsenseid="ca-pub-123456789"
+    allowads = true
+    logotext = "HUGO W3 SIMPLE" # logo text
+    footer = "&copy; [John Doe](https://johndoe.com) 2018 | [Github](https://github.com/johndoe) | [Twitter](https://twitter.com/johndoe)  | [RSS](/index.xml)"
+
+
+[params.social]  # Set your social account here, if you don't have some accounts just comment them
+    a-envelope = "mailto:your@email.com"
+    b-stack-overflow ="https://stackoverflow.com/users/12345678/john-doe"
+    c-twitter = "https://twitter.com/johndoe"
+    d-facebook = "https://www.facebook.com/johndoe"
+    e-github = "https://github.com/johndoe"
+    f-youtube = "https://www.youtube.com/channel/12345678"
+    g-linkedin = "https://www.linkedin.com/johndoe"
+    h-google = "https://plus.google.com/12345678"
+    i-github = "https://github.com/johndoe"
+    j-weibo = "https://weibo.com" 
+    k-weixin = "http://localhost:1313" 
+    l-tumblr = "https://www.tumblr.com/blog/johndoe"
+    m-instagram = "https://instagram.com/johndoe"
+    n-gitlab = "https://gitlab.com/johndoe"
+    o-pinterest = "https://www.pinterest.com/johndoe/"
+   
+    
+    
+

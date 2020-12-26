@@ -1,0 +1,33 @@
+
+{{ define "main" }}
+
+
+<script src="{{ "/js/w3.js" | relURL }}"></script>
+<div class="w3-container w3-card-4">
+{{ .Content | markdownify }}
+
+
+
+<p>
+<input oninput="w3.filterHTML('#id01', '.item', this.value)" class="w3-input" placeholder="{{ T "postssearch"}}">
+</p>
+<div style="overflow-x:auto;">
+<table id="id01" class="w3-table-all w3-hoverable">
+  <tr class="w3-green" style="white-space:nowrap;">
+    <th onclick="w3.sortHTML('#id01', '.item', 'td:nth-child(1)')" style="cursor:pointer">{{ T "poststitle"}} <i class="fa fa-sort" style="font-size:13px;"></i></th>
+    <th onclick="w3.sortHTML('#id01', '.item', 'td:nth-child(2)')" style="cursor:pointer">{{ T "postsdate"}} <i class="fa fa-sort" style="font-size:13px;"></i>&nbsp;&nbsp;</th>
+    <th onclick="w3.sortHTMLbyNumber('#id01', '.item', 'td:nth-child(3)')" style="cursor:pointer">{{ T "postsword"}} <i class="fa fa-sort" style="font-size:13px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+  </tr>
+  {{range where .Site.RegularPages "Section" "posts"}}
+  <tr class="item ">
+    <td><a href="{{.Permalink}}">{{.Title}}</a></td>
+    <td>{{ .Date.Format "2006/01/02" }}</td>
+    <td>{{.WordCount}}</td>
+  </tr>
+  {{end}}
+  
+</table>
+</div>
+</div>
+{{ end }}
+

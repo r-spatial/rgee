@@ -1,0 +1,10 @@
+<div class="w3-panel w3-card-4 w3-light-grey"{{ with .Get "width"}} style="width:{{.}}"{{ end }}>
+    <i class="fa fa-quote-right w3-xxlarge w3-text-red"></i><br>
+    <p class=" w3-large">
+	{{ .Inner  }}
+	</p>
+	{{ with .Get "author"}}
+	<p class="w3-right">--- {{.}}</p>
+	{{ end }}
+    
+  </div>

@@ -1,0 +1,44 @@
+{{ define "main" -}}
+ <div class="w3-content w3-card-4" >
+{{ $name := .Data.Plural -}}
+  {{ $terms := .Data.Terms.ByCount -}}
+  {{ $length := len $terms -}}
+  {{ if eq $name "categories" }}
+    <div class="w3-container w3-center">
+      <h2 class="w3-text-blue" style="text-shadow:1px 1px 0 #444">
+        <u>Categories</u>
+      </h2>
+      <div class="w3-container  w3-section w3-center">
+        {{ range $key, $value := $terms }}
+          <a  href="{{ $name | relLangURL }}/{{ $value.Term | urlize }}/">
+          	<button class="w3-btn w3-round w3-green w3-section">
+          	 {{ $value.Term }}
+			<span class="w3-badge w3-red w3-margin-left">{{ len $value.Pages }}</span>
+			</button>
+           
+          </a>
+           &nbsp; &nbsp;
+        {{ end }}
+      </div>
+    </div>
+  {{ else if eq $name "tags" }}
+    <div class="w3-container  w3-section w3-center">
+     <h2 class="w3-text-blue" style="text-shadow:1px 1px 0 #444">
+        <u>Tags</u>
+      </h2>
+      <div class="w3-container w3-center">
+        {{ range $key, $value := $terms }}
+          <a href="{{ $name | relLangURL }}/{{ $value.Term | urlize }}/">
+            <button class="w3-btn w3-round w3-green w3-section">
+          	 {{ $value.Term }}
+			<span class="w3-badge w3-red w3-margin-left">{{ len $value.Pages }}</span>
+			</button>
+            
+          </a>
+           &nbsp; &nbsp;
+        {{ end }}
+      </div>
+    </div>
+  {{ end }}
+</div>
+{{- end }}

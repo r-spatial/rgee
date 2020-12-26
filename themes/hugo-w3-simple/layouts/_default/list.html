@@ -1,0 +1,161 @@
+{{ define "main" -}}
+ <div class="w3-content w3-card-4" >
+{{ if not .IsHome }}
+    <h1 class="w3-center">{{ .Title | markdownify }}</h1>
+    
+   
+{{ end }}
+{{ $paginator := .Paginate (where .RegularPages "Section" "!=" "") }}
+
+
+
+{{ if  .Site.Params.allliststyle }}
+  <script src="{{ "/js/w3.js" | relURL }}"></script>
+  <p>
+  <input oninput="w3.filterHTML('#id01', '.item', this.value)" class="w3-input" placeholder="{{ T "postssearch"}}">
+  </p>
+  <div style="overflow-x:auto;">
+  <table id="id01" class="w3-table-all w3-hoverable">
+    <tr class="w3-green" style="white-space:nowrap;">
+      <th onclick="w3.sortHTML('#id01', '.item', 'td:nth-child(1)')" style="cursor:pointer">{{ T "poststitle"}} <i class="fa fa-sort" style="font-size:13px;"></i></th>
+      <th onclick="w3.sortHTML('#id01', '.item', 'td:nth-child(2)')" style="cursor:pointer">{{ T "postsdate"}} <i class="fa fa-sort" style="font-size:13px;"></i>&nbsp;&nbsp;</th>
+      <th onclick="w3.sortHTMLbyNumber('#id01', '.item', 'td:nth-child(3)')" style="cursor:pointer">{{ T "postsword"}} <i class="fa fa-sort" style="font-size:13px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    </tr>
+    {{ if .IsHome }}
+      {{range where .Site.RegularPages "Section" "posts"}}
+      <tr class="item ">
+        <td><a href="{{.Permalink}}">{{.Title}}</a></td>
+        <td>{{ .Date.Format "2006/01/02" }}</td>
+        <td>{{.WordCount}}</td>
+      </tr>
+      {{end}}
+
+    {{ else }}
+      {{range  .Pages }}
+      <tr class="item ">
+        <td><a href="{{.Permalink}}">{{.Title}}</a></td>
+        <td>{{ .Date.Format "2006/01/02" }}</td>
+        <td>{{.WordCount}}</td>
+      </tr>
+      {{end}}
+    {{ end }}
+    
+  </table>
+  </div>
+
+{{ else }}
+
+  {{ if  .Site.Params.gridstyle }}
+  <!-- grid list style -->
+
+
+  {{ range $i, $e:= $paginator.Pages }}
+    {{ if modBool $i 3 }}
+      <div class="w3-row  w3-section">
+    {{ end }}
+    {{ if .Site.Params.lazyload | and (gt $i 1) }}
+      {{ $.Scratch.Set "novisual" 1 }}
+    {{ end }}
+    <div class="w3-col w3-container w3-section m12 l4 ">
+      <div class="w3-card-2 w3-hover-shadow " >
+
+        {{ with .Params.thumbnail }}
+        <div class="w3-hover-opacity thumb">
+           {{ if eq ( $.Scratch.Get "novisual") 1 }}
+          
+            <img src="{{ "/placeholder.svg" | relURL }}" data-src="{{ relURL . }}" alt="Thumbnail" />
+            {{ else }}
+             
+              <img src="{{ relURL . }}" alt="Thumbnail" />
+            {{ end }}
+        </div>
+        {{ else }}
+          {{ if .Site.Params.firstpic}}
+            
+             {{ $img := findRE "(?i)<img .*?src\\s*=\\s*\"([^\"]*(png|jpg|jpeg|gif|bmp|svg))\".*?>" .Content 1 }}
+             {{ range $img }}
+                  
+                  <div class="w3-hover-opacity thumb ">
+                     {{ if eq ( $.Scratch.Get "novisual") 1 }}
+
+                        <img src="{{ "/placeholder.svg" | relURL }}" data-src="{{ replaceRE "<img .*?src=\"(.*?)\".*?>" "$1" . }}" alt="Thumbnail"/></div>
+                      
+                      {{ else }}
+                        <img src="{{ replaceRE "<img .*?src=\"(.*?)\".*?>" "$1" . }}" alt="Thumbnail" /></div>
+                      {{ end }}
+                  
+            {{ end }}
+          {{ end }}
+        {{ end }}
+   
+      <header class="w3-container wraptext w3-text-indigo">
+        <h4><a href="{{ .Permalink }}">{{ .Title | markdownify }}</a></h4>
+        
+               
+      </header>
+
+
+    <div class="w3-container wraptext w3-white">
+      <code> {{ .Date.Format "2006/01/02" }} </code>
+      
+      <p>
+        {{ with .Description }}
+        {{ $.Scratch.Set "summary" (markdownify .) }}
+      {{ else }}
+        {{ $.Scratch.Set "summary" ((delimit (findRE "(<p.*?>(.|\n)*?</p>\\s*)+" .Content) "[&hellip;] ") | plainify | truncate (default 200 .Site.Params.summary_length) (default " &hellip;" .Site.Params.text.truncated ) | replaceRE "&amp;" "&" | safeHTML) }}
+      {{ end }}
+      {{ $.Scratch.Get "summary" }}
+      </p>
+
+    </div>
+
+     
+
+      <footer >
+        <a href="{{ .Permalink }}"><button class="w3-button w3-blue w3-block w3-hover-green">{{ T "readMore" }}</button></a>
+      </footer>
+    </div>
+    </div>
+    {{ if or (modBool (add $i 1) 3) (ge (add $i 1) $paginator.Pages) }}
+      </div>
+    {{ end }}
+
+  {{ end }} 
+
+  {{ else }}  
+
+  <!-- simple list style -->
+
+  <ul class="w3-ul w3-hoverable">
+
+
+
+  {{ range $paginator.Pages }}
+    <li>
+      <span class="date">{{ .Date.Format "2006/01/02" }}</span> &nbsp; 
+      <a href="{{ .Permalink }}">{{ .Title | markdownify }}</a>
+    </li>
+  {{ end }} 
+  {{ end }}
+  </ul>
+
+  </div>
+
+  <br>
+  <div class="w3-content" > 
+    <div class="w3-bar w3-section w3-hide-large w3-hide-medium">
+          
+    {{ with $paginator.Prev -}}
+    <a href="{{ .URL }}" class="w3-btn w3-text-indigo w3-hover-green">&#10094; Previous</a>
+      {{- end }}
+      {{ with $paginator.Next -}}
+    <a href="{{ .URL }}" class="w3-btn w3-right w3-text-indigo w3-hover-green">Next &#10095;</a>
+      {{- end }}
+  </div>
+  <nav class="w3-center w3-hide-small">{{ template "_internal/pagination.html" . }}</nav>
+  
+
+  {{- end }}
+</div>
+{{ end }}
+

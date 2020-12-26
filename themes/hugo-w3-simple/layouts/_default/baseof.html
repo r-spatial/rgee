@@ -1,0 +1,259 @@
+{{ block "customphp" . }}{{ end }}
+<!DOCTYPE html>
+<html lang="{{ .Site.Language }}">
+<head>
+  
+  {{ partial "head.html" . }}
+  {{ block "customseo" . }}{{ end }}
+  {{ with .Params.customheader }}
+{{ . | safeHTML }}
+{{ end }}
+</head>
+<body class="w3-light-grey">
+
+
+    
+    <header id="header">
+      {{ block "customheader" . }}   
+        {{ partial "header.html" . }}
+      {{ end }}
+    </header>
+    
+<div class="w3-content">
+    
+      <div>
+        {{ if and .IsHome .Site.Params.welcomemessage }}
+          <div class="w3-card-4 w3-container" >
+            {{ .Content | markdownify }}
+          </div>
+        {{ end }}
+        <div id="content" >
+          {{ block "main" . }}{{ end }}
+        </div>
+        {{ if .Site.Params.socialshare }}
+          {{ partial "socialshare.html" . }}
+        {{ end }}
+        {{ block "commentornotes" . }}   
+          {{ partial "comments.html" . }}
+        {{ end }}
+        
+      </div>
+    
+
+   
+    <footer id="footer" >
+      {{ partial "footer.html" . }}
+    </footer>
+    
+
+    
+  </div>
+<!-- cookie bar -->
+  {{ with .Site.Params.cookie_info }} 
+  <div id="cookiebar" class="w3-bar w3-top w3-black w3-border   " >
+  
+  <span class="w3-bar-item w3-small">{{ . | markdownify  }}</span>
+  <span onclick="gotitcookiebar()"
+  class="w3-button w3-small w3-green w3-right">{{ T "gotit" }}</span>
+   </div>
+
+    
+<script>
+function gotitcookiebar() {
+    var x =document.getElementById("cookiebar");
+    x.style.display = "none";
+var x = document.getElementsByTagName("BODY")[0];
+    x.style.paddingTop = "0px";
+    
+
+}
+
+
+    
+function checkCookie() {
+    var user=getCookie("cookiebardisplayed");
+    if (user == "") {
+      setCookie("cookiebardisplayed","0",365);}
+
+    user=getCookie("cookiebardisplayed");
+    if (user =="0")
+    {
+
+        var x =document.getElementById("cookiebar");
+    x.style.display = "block";
+    var h = document.getElementById('cookiebar').clientHeight;
+    
+    var x = document.getElementsByTagName("BODY")[0];
+    x.style.paddingTop = h+"px";
+    setCookie("cookiebardisplayed","1",365);
+    } 
+    
+}
+function setCookie(cname,cvalue,exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires=" + d.toGMTString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+document.addEventListener('DOMContentLoaded', function() {
+    checkCookie();
+}, false);
+
+</script>   
+{{ end }}
+
+  <!-- Back to top -->
+    {{ if .Site.Params.backtotop }}
+      <div id="backtotop" class="w3-hide-small w3-hide-medium">
+  
+        <button onclick="topFunction()" class="w3-btn w3-red w3-large" style="width:160px">{{ T "backtotop"}}
+        &rarr;</button>
+        
+      </div>
+
+      <script>
+        function topFunction() {
+          document.body.scrollTop = 0;
+          document.documentElement.scrollTop = 0;
+      }
+      </script>
+
+
+    {{ end }}
+ <!-- lazy load -->
+    {{ if .Site.Params.lazyload }}
+    <script>
+    
+    function isVisible(elem) {
+
+      let coords = elem.getBoundingClientRect();
+
+      let windowHeight = document.documentElement.clientHeight;
+
+      // top elem edge is visible OR bottom elem edge is visible
+      let topVisible = coords.top > 0 && coords.top < windowHeight;
+      let bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+
+      return topVisible || bottomVisible;
+    }
+
+    
+
+    function showVisible() {
+      for (let img of document.querySelectorAll('img')) {
+        let realSrc = img.dataset.src;
+        if (!realSrc) continue;
+
+        if (isVisible(img)) {
+          
+
+          img.src = realSrc;
+
+          img.dataset.src = '';
+        }
+      }
+      if ( Array.from(document.querySelectorAll('[data-src]')).every(
+        img => img.getAttribute('data-src') === '') ) {
+        window.removeEventListener('scroll', showVisible)
+      }
+
+    }
+
+    window.addEventListener('scroll', showVisible);
+    showVisible();
+  </script>
+{{ end }}
+
+    <!-- scroll indicator -->
+    {{ if .Site.Params.scrollindicator }}
+      <div class="progress-container" id="scrollbar">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>  
+
+
+    {{ end }}
+<script>
+// When the user scrolls down 50px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  <!-- TOC -->
+    {{ if not .IsHome }}
+    {{ if and (ge (len .TableOfContents) 100) (ne .Params.toc "false")  }}
+    
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        document.getElementById("toc").style.display = "block";
+    } else {
+        document.getElementById("toc").style.display = "none";
+    }
+    {{ end }}
+    {{ end }}
+    <!-- cookie bar -->
+    {{ if .Site.Params.cookie_info }}
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        var x =document.getElementById("cookiebar");
+        x.style.display = "none";
+        var x = document.getElementsByTagName("BODY")[0];
+        x.style.paddingTop = "0px";
+
+    } 
+    {{ end }}
+<!-- Back to top -->
+    {{ if .Site.Params.backtotop }}
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        document.getElementById("backtotop").style.display = "block";
+    } else {
+        document.getElementById("backtotop").style.display = "none";
+    }
+    {{ end }}
+    <!-- scroll indicator -->
+    {{ if .Site.Params.scrollindicator }}
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("progress-bar").style.width = scrolled + "%";
+      if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("scrollbar").style.display = "block";
+        } else {
+            document.getElementById("scrollbar").style.display = "none";
+        }
+    
+
+    {{ end }}
+
+    <!-- allowads -->
+    {{ if and (.Site.Params.allowads) (.IsPage) }}
+       if (document.body.scrollTop > 2000 || document.documentElement.scrollTop > 2000) {
+          detectads();
+       } 
+
+    {{ end }}
+}
+
+
+</script>
+
+
+
+  {{ with .Params.customfooter }}
+{{ . | safeHTML }}
+{{ end }}
+
+</body>
+</html>

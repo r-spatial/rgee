@@ -1,0 +1,75 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+{{ if .IsPage }}
+  <meta http-equiv="Cache-Control" content="public" />
+{{else}}
+  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+
+
+{{ end }} 
+{{ "<!-- Enable responsiveness on mobile devices -->" | safeHTML }}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+{{ .Hugo.Generator }}
+{{ if .IsHome }}
+
+    {{ $.Scratch.Set "theTitle" .Site.Params.Title }}
+{{else}}
+    {{ $.Scratch.Set "theTitle" .Title}}
+    {{ $.Scratch.Add "theTitle" " • "}}
+    {{ $.Scratch.Add "theTitle" .Site.Params.Title}}
+{{ end }}
+<title>{{ $.Scratch.Get "theTitle" }}</title>
+{{ with .Site.Params.meta.description }}<meta name="description" content="{{ . }}">{{ end }}
+{{ with .Site.Params.meta.keywords }}<meta name="keywords" content="{{.}}">{{ end }}
+{{ template "_internal/twitter_cards.html" . }}
+{{ template "_internal/opengraph.html" . }}
+
+<!-- Permalink & RSSlink -->
+<link rel="canonical" href="{{ .Permalink }}" />
+{{ if .RSSLink -}}
+  <link href="{{ .RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
+  <link href="{{ .RSSLink }}" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
+{{ end -}}
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="{{ "/favicon.ico" | relURL }}" type="image/x-icon">
+<link rel="icon" href="{{ "/favicon.ico" | relURL }}" type="image/x-icon">
+
+
+
+
+<!-- Styles -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allerta+Stencil">
+
+<link rel="stylesheet" href="{{ "/css/w3.css" | relURL }}" />
+<!-- custom css -->
+
+<link rel="stylesheet" href="{{ "/css/style.css" | relURL }}" />
+
+<!-- One Signal Push -->
+{{ with .Site.Params.onesignalid }}        
+      
+      
+	<link rel="manifest" href="{{ "/manifest.json" | relURL }}" />
+	<script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
+	<script>
+	  var OneSignal = window.OneSignal || [];
+	  OneSignal.push(function() {
+	    OneSignal.init({
+	      appId: "{{ . }}",
+	    });
+	  });
+</script>
+{{ end }}
+<!-- Google Adsense -->
+{{ with .Site.Params.adsenseid }}        
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "{{ . }}",
+          enable_page_level_ads: true
+     });
+</script>
+{{ end }}
+{{ template "_internal/google_analytics_async.html" . }}

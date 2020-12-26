@@ -1,0 +1,17 @@
+# theme.toml template for a Hugo theme
+# See https://github.com/gohugoio/hugoThemes#themetoml for an example
+
+name = "Hugo W3 Simple"
+license = "MIT"
+licenselink = "https://github.com/jesselau76/hugo-w3-simple/blob/master/LICENSE"
+description = "A simple theme for Hugo, powered by W3.css"
+homepage = "https://github.com/jesselau76/hugo-w3-simple"
+tags = ["minimal", "blog", "search", "clean", "simple", "starter", "minimalist","Responsive", "Disqus", "font-awesome","syntax highlighting", "Multilingual", "Google Analytics"]
+features = ["blog", "syntax highlighting"]
+min_version = "0.57"
+
+[author]
+  name = "Jesse Lau"
+  homepage = "https://jesselau.com/"
+
+

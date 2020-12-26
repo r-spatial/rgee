@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sphinx:docset>
+    <sphinx:schema>
+      <sphinx:field name="title"/>
+      <sphinx:attr name="title" type="string"/>
+      <sphinx:attr name="link" type="string"/>
+      <sphinx:field name="content"/>
+      <sphinx:attr name="content" type="string"/>
+      <sphinx:attr name="pubDate" type="timestamp"/>
+      
+    </sphinx:schema>
+    {{ range $i, $e:= where .Site.AllPages "Kind" "page" }}
+    <sphinx:document id="{{ add $i 1080 }} ">
+      <title><![CDATA[{{ .Title }}]]></title>
+      <link><![CDATA[{{ .Permalink }}]]></link>
+      <pubDate>{{ (time ( .Date)).Unix }}</pubDate>
+      <content><![CDATA[{{ .Plain }}]]></content>
+     </sphinx:document>
+    {{ end }}
+  
+</sphinx:docset>
