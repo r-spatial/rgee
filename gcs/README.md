@@ -20,8 +20,22 @@
 
 ![](p5.png)
 
-**PSS! You can use the same service account key for multiple users!**
+## 6. PSS! You can use the same service account key for multiple users! ... but first give permision to the users :) (Go to Bucket details)
 
-## 6. That's all!
+![](rgee_add_1.png)
 
-![](p6.png)
+## 7. Click in permissions and add
+
+![](rgee_add_2.png)
+
+## 8. Add a new menber a give privileges to manipulate GCS resources.
+
+![](rgee_add_3.png)
+
+## 9. Click in save
+
+![](rgee_add_4.png)
+
+## 10. That's all now ee_Initialize(gcs=TRUE) will work with no problems!
+
+![](rgee_add_5.png)
