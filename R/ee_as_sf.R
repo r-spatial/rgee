@@ -200,6 +200,7 @@ ee_as_sf <- function(x,
       prev_plan <- future::plan(future::sequential, .skip = TRUE)
       on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
       future::future({
+        ee_create_credentials_drive(ee_user$email)
         # From googledrive to the client-side
         ee_sf_drive_local(
           table_task = table_task,
@@ -238,6 +239,7 @@ ee_as_sf <- function(x,
       prev_plan <- future::plan(future::sequential, .skip = TRUE)
       on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
       future::future({
+        ee_create_credentials_gcs(ee_user$email)
         # From gcs to the client-side
         ee_sf_gcs_local(
           table_task = table_task,
