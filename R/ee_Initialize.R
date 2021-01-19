@@ -746,8 +746,9 @@ ee_connect_to_py <- function(path, n = 5) {
       message_con <- c(
         sprintf("The current Python PATH: %s",
                 bold(python_path[["python"]])),
-        "does not have the earthengine-api installed. Are you restarted/terminated your R session?.",
-        "If no, please try:",
+        "does not have the Python package \"earthengine-api\" installed. Are you restarted/terminated.",
+        "your R session after install miniconda or run ee_install()?",
+        "If no do it, please try again:",
         "> ee_install(): To create and set a Python environment with all rgee dependencies.",
         "> ee_install_set_pyenv(): To set a specific Python environment."
       )
