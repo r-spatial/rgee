@@ -1,54 +1,58 @@
-**Adapted from [Google Earth Engine
-Documentation](https://developers.google.com/earth-engine/best_practices).**
+---
+title: "Best Practices"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{3. Best Practices}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}    
+---
 
-This doc describes coding practices that are intended to maximize the
-chance of success for complex or expensive Earth Engine computations.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
 
-Avoid mixing client functions and objects with server functions and objects
----------------------------------------------------------------------------
 
-Earth Engine server objects are objects with constructors that start
-with `ee` (e.g. ee\$Image, ee\$Reducer) and any methods on such objects
-are server functions. Any object not constructed in this manner is a
-client object. Client objects may come from the R Earth Engine client
-(e.g. Map) or the R language (e.g. date, data.frame, c(), list()).
+**Adapted from [Google Earth Engine Documentation](https://developers.google.com/earth-engine/best_practices).**
 
-To avoid unintended behavior, do not mix client and server functions in
-your script as discussed
-[here](https://developers.google.com/earth-engine/debugging#avoid-mixing)
-and
-[here](https://developers.google.com/earth-engine/debugging#browser-lock)
-and
-[here](https://developers.google.com/earth-engine/debugging#mapped-functions).
-See [this
-page](https://developers.google.com/earth-engine/client_server) and/or
-[this
-tutorial](https://developers.google.com/earth-engine/tutorial_js_01) for
-in-depth explanation of client vs. server in Earth Engine. The following
-example illustrates the dangers of mixing client and server
-functionality:
+This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations. 
 
-<img src="thumb_down.png" width=25px>   **Error** — This code doesn’t
-work!
+## Avoid mixing client functions and objects with server functions and objects
 
-``` r
+Earth Engine server objects are objects with constructors that start with `ee` (e.g. ee\$Image, ee\$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).
+
+To avoid unintended behavior, do not mix client and server functions in your script as discussed [here](https://developers.google.com/earth-engine/debugging#avoid-mixing) and [here](https://developers.google.com/earth-engine/debugging#browser-lock) and [here](https://developers.google.com/earth-engine/debugging#mapped-functions). See [this page](https://developers.google.com/earth-engine/client_server) and/or [this tutorial](https://developers.google.com/earth-engine/tutorial_js_01) for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:
+
+
+<img src="thumb_down.png" width=25px>
+&nbsp; **Error** — This code doesn't work!
+
+
+
+```{r}
 # Won't work.
 for (i in seq_len(table$size())) {
   print('No!') 
 }
 ```
 
-Can you spot the error? Note that `table$size()` is a server method on a
-server object and can not be used with client-side functionality such as
-the `seq_len` function.
 
-A situation in which you may want to use for-loops is with to display
-results with `Map`, since the Map object and methods are client-side.
+Can you spot the error? Note that `table$size()` is a server method on a server
+object and can not be used with client-side functionality such as the `seq_len` function.
 
-<img src="thumb_up.png" width=25px>   **Good** — Use client functions
-for display Earth Engine spatial objects.
+A situation in which you may want to use for-loops is with to display results 
+with `Map`, since the Map object and methods are client-side.
 
-``` r
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Use client functions for display Earth Engine spatial objects.
+
+
+```{r}
 l8_ts <- sprintf(
   "LANDSAT/LC08/C01/T1/LC08_044034_%s",
   c("20140318", "20140403","20140419","20140505")
@@ -64,13 +68,13 @@ Map$centerObject(ee_l8)
 Reduce('+', display_l8ts)
 ```
 
-Conversely, `map()` is a server function and client functionality won’t
-work inside the function passed to map(). For example:
+Conversely, `map()` is a server function and client functionality won't work 
+inside the function passed to map(). For example:
 
-<img src="thumb_down.png" width=25px>   **Error** — This code doesn’t
-work!
+<img src="thumb_down.png" width=25px>
+&nbsp; **Error** — This code doesn't work!
 
-``` r
+```{r}
 table <- ee$FeatureCollection('USDOS/LSIB_SIMPLE/2017')
 
 # Error:
@@ -80,9 +84,10 @@ foobar <- table$map(function(f) {
 })
 ```
 
-<img src="thumb_up.png" width=25px>   **Good** — Use `map()` `set()`.
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Use `map()` `set()`.
 
-``` r
+```{r}
 table <- ee$FeatureCollection('USDOS/LSIB_SIMPLE/2017')
 
 # Do something to every element of a collection.
@@ -93,27 +98,20 @@ withMoreProperties = table$map(function(f) {
 print(withMoreProperties$first()$get("area_sq_meters")$getInfo())
 ```
 
-You can also `filter()` the collection based on computed or existing
-properties and `print()` the result. Note that you can not print a
-collection with more 5000 elements. If you get the “Collection query
-aborted after accumulating over 5000 elements” error, `filter()` or
-`limit()` the collection before printing.
+You can also `filter()` the collection based on computed or existing properties 
+and `print()` the result. Note that you can not print a collection with more 
+5000 elements. If you get the "Collection query aborted after accumulating over
+5000 elements" error, `filter()` or `limit()` the collection before printing.
 
-Avoid converting to list unnecessarily
---------------------------------------
 
-Collections in Earth Engine are processed using optimizations that are
-broken by converting the collection to a `List` or `Array` type. Unless
-you need random access to collection elements (i.e. you need to get the
-i’th element of a collection), use filters on the collection to access
-individual collection elements. The following example illustrates the
-difference between type conversion (not recommended) and filtering
-(recommended) to access an element in a collection:
+## Avoid converting to list unnecessarily
 
-<img src="thumb_down.png" width=25px>   **Bad** — Don’t convert to list
-unnecessarily!
+Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a `List` or `Array` type. Unless you need random access to collection elements (i.e. you need to get the i'th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:
 
-``` r
+<img src="thumb_down.png" width=25px>
+&nbsp; **Bad** — Don't convert to list unnecessarily!
+
+```{r}
 table <- ee$FeatureCollection('USDOS/LSIB_SIMPLE/2017');
 
 # Do NOT do this!!
@@ -121,28 +119,25 @@ list <- table$toList(table$size())
 print(list$get(13)$getInfo()) # User memory limit exceeded.
 ```
 
-Note that you can easily trigger errors by converting a collection to a
-list unnecessarily. The safer way is to use `filter()`:
+Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use `filter()`:
 
-<img src="thumb_up.png" width=25px>   **Good** — Use `filter()`.
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Use `filter()`.
 
-``` r
+```{r}
 print(table$filter(ee$Filter$eq('country_na', 'Niger'))$first()$getInfo())
 ```
 
-Note that you should [use filters as early as possible in your
-analysis](https://developers.google.com/earth-engine/best_practices#filter-and-select-first).
+Note that you should [use filters as early as possible in your analysis](https://developers.google.com/earth-engine/best_practices#filter-and-select-first).
 
-Avoid **ee.Algorithms.If()**
-----------------------------
+## Avoid **ee.Algorithms.If()**
 
-Do not use `ee.Algorithms.If()` to implement branching logic, especially
-in a mapped function. As the following example illustrates,
-`ee.Algorithms.If()` can be memory intensive and is not recommended:
+Do not use `ee.Algorithms.If()` to implement branching logic, especially in a mapped function. As the following example illustrates, `ee.Algorithms.If()` can be memory intensive and is not recommended:
 
-<img src="thumb_down.png" width=25px>   **Bad** — Don’t use `If()`:
+<img src="thumb_down.png" width=25px>
+&nbsp; **Bad** — Don't use `If()`:
 
-``` r
+```{r}
 table <- ee.FeatureCollection('USDOS/LSIB_SIMPLE/2017')
 
 # Do NOT do this!
@@ -158,35 +153,26 @@ print(veryBad$getInfo()) # User memory limit exceeded.
 # If() may evaluate both the true and false cases.
 ```
 
-Note that the second argument to `map()` is `TRUE`. This means that the
-mapped function may return nulls and they will be dropped in the
-resultant collection. That can be useful (without `If()`), but here the
-easiest solution is to use a filter:
 
-<img src="thumb_up.png" width=25px>   **Good** — Use `filter()`.
+Note that the second argument to `map()` is `TRUE`. This means that the mapped 
+function may return nulls and they will be dropped in the resultant collection. 
+That can be useful (without `If()`), but here the easiest solution is to use a
+filter:
 
-``` r
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Use `filter()`.
+
+```{r}
 print(table$filter(ee$Filter$eq('country_na', 'Chad')))
 ```
 
-As shown in [this
-tutorial](https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions),
-a functional programming approach using filters is the correct way to
-apply one logic to some elements of a collection and another logic to
-the other elements of the collection.
+As shown in [this tutorial](https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions), a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.
 
-Avoid **reproject()**
----------------------
+## Avoid **reproject()**
 
-Don’t use `reproject` unless absolutely necessary. One reason you might
-want to use reproject() is to force `Map` display computations to happen
-at a specific scale so you can examine the results at your desired scale
-of analysis. In the next example, patches of hot pixels are computed and
-the count of pixels in each patch is computed. Run the example and click
-on one of the patches. Note that the count of pixels differs between the
-reprojected data the data that has not been reprojected.
+Don't use `reproject` unless absolutely necessary. One reason you might want to use reproject() is to force `Map` display computations to happen at a specific scale so you can examine the results at your desired scale of analysis. In the next example, patches of hot pixels are computed and the count of pixels in each patch is computed. Run the example and click on one of the patches. Note that the count of pixels differs between the reprojected data the data that has not been reprojected.
 
-``` r
+```{r}
 l8sr <- ee$ImageCollection("LANDSAT/LC08/C01/T1_SR")
 sf <- ee$Geometry$Point(c(-122.405, 37.786))
 Map$centerObject(sf, 13)
@@ -209,23 +195,14 @@ Map$addLayer(objectSize, list(min = 1, max = 256), "Size No Reproject", FALSE) +
 Map$addLayer(reprojected, list(min = 1, max = 256), "Size Reproject", FALSE)
 ```
 
-The reason for the discrepancy is because the [scale of
-analysis](https://developers.google.com/earth-engine/scale#scale-of-analysis)
-is set by the Code Editor zoom level. By calling `reproject()` you set
-the scale of the computation instead of the Map display. Use
-`reproject()` with extreme caution for reasons described in [this
-doc](https://developers.google.com/earth-engine/projections#reprojecting).
+The reason for the discrepancy is because the [scale of analysis](https://developers.google.com/earth-engine/scale#scale-of-analysis) is set by the Code Editor zoom level. By calling `reproject()` you set the scale of the computation instead of the Map display. Use `reproject()` with extreme caution for reasons described in [this doc](https://developers.google.com/earth-engine/projections#reprojecting).
 
-Filter and **select()** first
------------------------------
 
-In general, filter input collections by time, location and/or metadata
-prior to doing anything else with the collection. Apply more selective
-filters before less selective filters. Spatial and/or temporal filters
-are often more selective. For example, note that `select()` and
-`filter()` are applied before `map()`:
+## Filter and **select()** first
 
-``` r
+In general, filter input collections by time, location and/or metadata prior to doing anything else with the collection. Apply more selective filters before less selective filters. Spatial and/or temporal filters are often more selective. For example, note that `select()` and `filter()` are applied before `map()`:
+
+```{r}
 images <- ee$ImageCollection("COPERNICUS/S2_SR")
 sf <- ee$Geometry$Point(c(-122.463, 37.768))
 
@@ -252,19 +229,11 @@ viz <- list(bands = bands, min = 0, max = 10000)
 Map$addLayer(reasonableComputation, viz, "resonableComputation")
 ```
 
-Use **updateMask()** instead of **mask()**
-------------------------------------------
+## Use **updateMask()** instead of **mask()**
 
-The difference between `updateMask()` and `mask()` is that the former
-does a logical `and()` of the argument (the new mask) and the existing
-image mask whereas `mask()` simply replaces the image mask with the
-argument. The danger of the latter is that you can unmask pixels
-unintentionally. In this example, the goal is to mask pixels less than
-or equal to 300 meters elevation. As you can see (zoom out), using
-`mask()` causes a lot of pixels to become unmasked, pixels that don’t
-belong in the image of interest:
+The difference between `updateMask()` and `mask()` is that the former does a logical `and()` of the argument (the new mask) and the existing image mask whereas `mask()` simply replaces the image mask with the argument. The danger of the latter is that you can unmask pixels unintentionally. In this example, the goal is to mask pixels less than or equal to 300 meters elevation. As you can see (zoom out), using `mask()` causes a lot of pixels to become unmasked, pixels that don't belong in the image of interest:
 
-``` r
+```{r}
 l8sr <- ee$ImageCollection("LANDSAT/LC08/C01/T1_SR")
 sf <- ee$Geometry$Point(c(-122.40554461769182, 37.786807309873716))
 aw3d30 <- ee$Image("JAXA/ALOS/AW3D30_V1_1")
@@ -287,15 +256,11 @@ goodMask <- image.updateMask(mask)
 Map$addLayer(goodMask, vis, "goodMask", FALSE)
 ```
 
-Combine reducers
-----------------
+## Combine reducers
 
-If you need multiple statistics (e.g. mean and standard deviation) from
-a single input (e.g. an image region), it is more efficient to combine
-reducers. For example, to get image statistics, combine reducers as
-follows:
+If you need multiple statistics (e.g. mean and standard deviation) from a single input (e.g. an image region), it is more efficient to combine reducers. For example, to get image statistics, combine reducers as follows:
 
-``` r
+```{r}
 image <- ee$Image('COPERNICUS/S2/20150821T111616_20160314T094808_T30UWU')
 
 # Get mean and SD in every band by combining reducers.
@@ -316,27 +281,13 @@ meansImage <- stats$toImage()$select('.*_mean')
 sdsImage <- stats$toImage()$select('.*_stdDev')
 ```
 
-In this example, note that the mean reducer is combined with the
-standard deviation reducer and `sharedInputs` is true to enable a single
-pass through the input pixels. In the output dictionary, the name of the
-reducer is appended to the band name. To get mean and SD images (for
-example to normalize the input image), you can turn the values into an
-image and use regexes to extract means and SDs individually as
-demonstrated in the example.
+In this example, note that the mean reducer is combined with the standard deviation reducer and `sharedInputs` is true to enable a single pass through the input pixels. In the output dictionary, the name of the reducer is appended to the band name. To get mean and SD images (for example to normalize the input image), you can turn the values into an image and use regexes to extract means and SDs individually as demonstrated in the example.
 
-Use **Export**
---------------
+## Use **Export**
 
-For computations that result in “User memory limit exceeded” or
-“Computation timed out” errors in the Code Editor, the same computations
-may be able to succeed by using `Export`. This is because the timeouts
-are longer and the allowable memory footprint is larger when running in
-the batch system (where exports run). (There are other approaches you
-may want to try first as detailed in the debugging doc). Continuing the
-previous example, suppose that dictionary returned an error. You could
-obtain the results by doing something like:
+For computations that result in "User memory limit exceeded" or "Computation timed out" errors in the Code Editor, the same computations may be able to succeed by using `Export`. This is because the timeouts are longer and the allowable memory footprint is larger when running in the batch system (where exports run). (There are other approaches you may want to try first as detailed in the debugging doc). Continuing the previous example, suppose that dictionary returned an error. You could obtain the results by doing something like:
 
-``` r
+```{r}
 link <- '86836482971a35a5e735a17e93c23272'
 task <- ee$batch$Export$table$toDrive(
   collection = ee$FeatureCollection(ee$Feature(NULL, stats)),
@@ -357,30 +308,19 @@ exported_stats <- ee_drive_to_local(task = task,dsn = "exported_stats.csv")
 read.csv(exported_stats)
 ```
 
-Note that the link is embedded into the asset name, for reproducibility.
-Also note that if you want to export `toAsset`, you will need to supply
-a geometry, which can be anything, for example the image centroid, which
-is small and cheap to compute. (i.e. don’t use a complex geometry if you
-don’t need it).
 
-See the debugging page for examples of using `Export` to resolve
-[Computation](https://developers.google.com/earth-engine/debugging#timed-out)
-timed out and [Too many concurrent
-aggregations](https://developers.google.com/earth-engine/debugging#too-many).
-See [this doc](https://developers.google.com/earth-engine/exporting) for
-details on exporting in general.
+Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export `toAsset`, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don't use a complex geometry if you don't need it).
 
-If you don’t need to clip, don’t use clip()
--------------------------------------------
+See the debugging page for examples of using `Export` to resolve [Computation](https://developers.google.com/earth-engine/debugging#timed-out) timed out and [Too many concurrent aggregations](https://developers.google.com/earth-engine/debugging#too-many). See [this doc](https://developers.google.com/earth-engine/exporting) for details on exporting in general.
 
-Using `clip()` unnecessarily will increase computation time. Avoid
-`clip()` unless it’s necessary to your analysis. If you’re not sure,
-don’t clip. An example of a bad use of clip:
+## If you don't need to clip, don't use clip() 
 
-<img src="thumb_down.png" width=25px>   **Bad** — Don’t clip inputs
-unnecessarily!
+Using `clip()` unnecessarily will increase computation time. Avoid `clip()` unless it's necessary to your analysis. If you're not sure, don't clip. An example of a bad use of clip:
 
-``` r
+<img src="thumb_down.png" width=25px>
+&nbsp; **Bad** — Don't clip inputs unnecessarily!
+
+```{r}
 table <- ee$FeatureCollection('USDOS/LSIB_SIMPLE/2017')
 l8sr <- ee$ImageCollection('LANDSAT/LC08/C01/T1_SR')
 
@@ -404,13 +344,12 @@ unnecessaryClip <- l8sr$
 print(unnecessaryClip$getInfo())
 ```
 
-Clipping the input images can be skipped entirely, because the region is
-specified in the `reduceRegion()` call:
+Clipping the input images can be skipped entirely, because the region is specified in the `reduceRegion()` call:
 
-<img src="thumb_up.png" width=25px>   **Good** — Specify the region on
-the output.
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Specify the region on the output.
 
-``` r
+```{r}
 noClipNeeded <- l8sr$
   select('B4')$                          # Good.
   filterBounds(chad$geometry())$          # Good.
@@ -425,16 +364,13 @@ noClipNeeded <- l8sr$
 print(noClipNeeded$getInfo())
 ```
 
-If this computation times out, `Export` it as in [this
-example](https://developers.google.com/earth-engine/best_practices#use-export).
+If this computation times out, `Export` it as in [this example](https://developers.google.com/earth-engine/best_practices#use-export).
 
-If you need to clip with a complex collection, use **clipToCollection()**
--------------------------------------------------------------------------
+## If you need to clip with a complex collection, use **clipToCollection()**
 
-If you really need to clip something, and the geometries you want to use
-for clipping are in a collection, use `clipToCollection()`:
+If you really need to clip something, and the geometries you want to use for clipping are in a collection, use `clipToCollection()`:
 
-``` r
+```{r}
 ecoregions <- ee$FeatureCollection('RESOLVE/ECOREGIONS/2017')
 image <- ee$Image('JAXA/ALOS/AW3D30_V1_1')
 
@@ -454,19 +390,15 @@ clippedTheRightWay <- image$select('AVE')$
 Map$addLayer(clippedTheRightWay, {}, 'clippedTheRightWay', FALSE)
 ```
 
-Do NOT use `featureCollection.geometry()` or `featureCollection.union()`
-on large and/or complex collections, which can be more memory intensive.
+Do NOT use `featureCollection.geometry()` or `featureCollection.union()` on 
+large and/or complex collections, which can be more memory intensive.
 
-Don’t use a complex collection as the region for a reducer
-----------------------------------------------------------
+## Don't use a complex collection as the region for a reducer 
 
-If you need to do a spatial reduction such that the reducer pools inputs
-from multiple regions in a `FeatureCollection`, don’t supply
-`featureCollection.geometry()` as the `geometry` input to the reducer.
-Instead, use `clipToCollection()` and a region large enough to encompass
-the bounds of the collection. For example:
+If you need to do a spatial reduction such that the reducer pools inputs from multiple regions in a `FeatureCollection`, don't supply `featureCollection.geometry()` as the `geometry` input to the reducer. Instead, use `clipToCollection()` and a region large enough to encompass the bounds of the collection. For example:
 
-``` r
+
+```{r}
 ecoregions <- ee$FeatureCollection('RESOLVE/ECOREGIONS/2017')
 image <- ee$Image('JAXA/ALOS/AW3D30_V1_1')
 complexCollection <- ecoregions$filter(
@@ -489,18 +421,11 @@ reduction <- clippedTheRightWay$reduceRegion(
 print(reduction$getInfo()) # If this times out, export it.
 ```
 
-Use a non-zero **errorMargin**
-------------------------------
+## Use a non-zero **errorMargin**
 
-For possibly expensive geometry operations, use the largest error margin
-possible given the required precision of the computation. The error
-margin specifies the maximum allowable error (in meters) permitted
-during operations on geometries (e.g. during reprojection). Specifying a
-small error margin can result in the need to densify geometries (with
-coordinates), which can be memory intensive. It’s good practice to
-specify as large an error margin as possible for your computation:
+For possibly expensive geometry operations, use the largest error margin possible given the required precision of the computation. The error margin specifies the maximum allowable error (in meters) permitted during operations on geometries (e.g. during reprojection). Specifying a small error margin can result in the need to densify geometries (with coordinates), which can be memory intensive. It's good practice to specify as large an error margin as possible for your computation:
 
-``` r
+```{r}
 ecoregions <- ee$FeatureCollection("RESOLVE/ECOREGIONS/2017")
 complexCollection <- ecoregions$limit(10)
 
@@ -514,15 +439,12 @@ expensiveOps <- complexCollection$map(function(f) {
 Map$addLayer(expensiveOps, {}, 'expensiveOps')
 ```
 
-Don’t use a ridiculously small scale with **reduceToVectors()**
----------------------------------------------------------------
 
-If you want to convert a raster to a vector, use an appropriate scale.
-Specifying a very small scale can substantially increase computation
-cost. Set scale as high as possible give the required precision. For
-example, to get polygons representing global land masses:
+## Don't use a ridiculously small scale with **reduceToVectors()**
 
-``` r
+If you want to convert a raster to a vector, use an appropriate scale. Specifying a very small scale can substantially increase computation cost. Set scale as high as possible give the required precision. For example, to get polygons representing global land masses:
+
+```{r}
 etopo <- ee$Image('NOAA/NGDC/ETOPO1')
 
 # Approximate land boundary.
@@ -553,18 +475,13 @@ vectors <- bounds$selfMask()$reduceToVectors(
 
 Map$addLayer(vectors, {}, "vectors")
 ```
+In the previous example, note the use of a non-geodesic polygon for use in global reductions.
 
-In the previous example, note the use of a non-geodesic polygon for use
-in global reductions.
+## Don't use **reduceToVectors()** with **reduceRegions()**
 
-Don’t use **reduceToVectors()** with **reduceRegions()**
---------------------------------------------------------
+Don't use a `FeatureCollection` returned by `reduceToVectors()` as an input to `reduceRegions()`. Instead, add the bands you want to reduce before calling `reduceToVectors()`:
 
-Don’t use a `FeatureCollection` returned by `reduceToVectors()` as an
-input to `reduceRegions()`. Instead, add the bands you want to reduce
-before calling `reduceToVectors()`:
-
-``` r
+```{r}
 etopo <- ee$Image('NOAA/NGDC/ETOPO1')
 mod11a1 <- ee$ImageCollection('MODIS/006/MOD11A1')
 
@@ -588,20 +505,13 @@ means <- bounds$selfMask()$addBands(lst)$reduceToVectors(
 print(means$limit(10)$getInfo())
 ```
 
-Note that other ways of reducing pixels of one image within zones of
-another include
-[reduceConnectedCommponents](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents)
-and/or [grouping
-reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents).
+Note that other ways of reducing pixels of one image within zones of another include [reduceConnectedCommponents()](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents) and/or [grouping reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents).
 
-Use **fastDistanceTransform()** for neighborhood operations
------------------------------------------------------------
+## Use **fastDistanceTransform()** for neighborhood operations 
 
-For some convolution operations, `fastDistanceTransform()` may be more
-efficient than `reduceNeighborhood()` or `convolve()`. For example, to
-do erosion and/or dilation of binary inputs:
+For some convolution operations, `fastDistanceTransform()` may be more efficient than `reduceNeighborhood()` or `convolve()`. For example, to do erosion and/or dilation of binary inputs:
 
-``` r
+```{r}
 aw3d30 <- ee$Image("JAXA/ALOS/AW3D30_V1_1")
 
 # Make a simple binary layer from a threshold on elevation.
@@ -621,14 +531,11 @@ erosion <- notDistance$gt(3)
 Map$addLayer(erosion, {}, 'erosion')
 ```
 
-Use the optimizations in **reduceNeighborhood()**
--------------------------------------------------
+## Use the optimizations in **reduceNeighborhood()**
 
-If you need to perform a convolution and can’t use
-`fastDistanceTransform()`, use the optimizations in
-`reduceNeighborhood()`.
+If you need to perform a convolution and can't use `fastDistanceTransform()`, use the optimizations in `reduceNeighborhood()`.
 
-``` r
+```{r}
 l8raw <- ee$ImageCollection('LANDSAT/LC08/C01/T1_RT')
 composite <- ee$Algorithms$Landsat$simpleComposite(l8raw)
 
@@ -646,22 +553,14 @@ Map$addLayer(composite, viz, "composite") +
 Map$addLayer(optimizedConvolution, viz, "optimizedConvolution")
 ```
 
-Don’t sample more data than you need
-------------------------------------
+## Don't sample more data than you need
 
-Resist the urge to increase your training dataset size unnecessarily.
-Although increasing the amount of training data is an effective machine
-learning strategy in some circumstances, it can also increase
-computational cost with no corresponding increase in accuracy. (For an
-understanding of when to increase training dataset size, see [this
-reference](https://www.deeplearning.ai/machine-learning-yearning/)). The
-following example demonstrates how requesting too much training data can
-result in the dreaded “Computed value is too large” error:
+Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see [this reference](https://www.deeplearning.ai/machine-learning-yearning/)). The following example demonstrates how requesting too much training data can result in the dreaded "Computed value is too large" error:
 
-<img src="thumb_down.png" width=25px>   **Bad** — Don’t sample too much
-data!
+<img src="thumb_down.png" width=25px>
+&nbsp; **Bad** — Don't sample too much data!
 
-``` r
+```{r}
 l8raw <- ee$ImageCollection('LANDSAT/LC08/C01/T1_RT')
 composite <- ee$Algorithms$Landsat$simpleComposite(l8raw)
 labels <- ee$FeatureCollection('projects/google/demo_landcover_labels')
@@ -686,13 +585,12 @@ classifier <- ee$Classifier$smileCart()$train(
 print(classifier$explain()) # Computed value is too large
 ```
 
-The better approach is to start with a moderate amount of data and tune
-the hyperparameters of the classifier to determine if you can achieve
-your desired accuracy:
+The better approach is to start with a moderate amount of data and tune the hyperparameters of the classifier to determine if you can achieve your desired accuracy:
 
-<img src="thumb_up.png" width=25px>   **Good** — Tune hyperparameters.
+<img src="thumb_up.png" width=25px>
+&nbsp; **Good** — Tune hyperparameters.
 
-``` r
+```{r}
 l8raw <- ee$ImageCollection("LANDSAT/LC08/C01/T1_RT")
 composite <- ee$Algorithms$Landsat$simpleComposite(l8raw)
 labels <- ee$FeatureCollection("projects/google/demo_landcover_labels")
@@ -747,20 +645,16 @@ plot(
   xlab = "value",
   main = "Hyperparameter tunning (minLeafPopulation)"
 )
+
 ```
 
-In this example, the classifier is already very accurate, so there’s not
-much tuning to do. You might want to choose the smallest tree possible
-(i.e. largest `minLeafPopulation`) that still has the required accuracy.
+In this example, the classifier is already very accurate, so there's not much tuning to do. You might want to choose the smallest tree possible (i.e. largest `minLeafPopulation`) that still has the required accuracy.
 
-**Export** intermediate results
--------------------------------
+## **Export** intermediate results 
 
-Suppose your objective is to take samples from a relatively complex
-computed image. It is often more efficient to `Export` the image
-`toAsset()`, load the exported image, then sample. For example:
+Suppose your objective is to take samples from a relatively complex computed image. It is often more efficient to `Export` the image `toAsset()`, load the exported image, then sample. For example:
 
-``` r
+```{r}
 image <- ee$Image('UMD/hansen/global_forest_change_2018_v1_6')
 geometry <- ee$Geometry$Polygon(
   coords = list(
@@ -853,26 +747,15 @@ sample <- exportedStack$addBands(loss16)$stratifiedSample(
 # Export the large sample...
 ```
 
-In this example, note that the imagery is exported as float. Don’t
-export at double precision unless absolutely necessary.
+In this example, note that the imagery is exported as float. Don't export at double precision unless absolutely necessary.
 
-Once the export is completed, reload the asset and proceed with sampling
-from it. Note that a very small sample over a very small test area is
-run first, for debugging. When that is shown to succeed, take a larger
-sample and export it. Such large samples typically need to be exported.
-Do not expect such samples to be available interactively (for example
-through `print()`) or useable (for example as input to a classifier)
-without exporting them first.
+Once the export is completed, reload the asset and proceed with sampling from it. Note that a very small sample over a very small test area is run first, for debugging. When that is shown to succeed, take a larger sample and export it. Such large samples typically need to be exported. Do not expect such samples to be available interactively (for example through `print()`) or useable (for example as input to a classifier) without exporting them first.
 
-Join vs. map-filter
--------------------
+## Join vs. map-filter
 
-Suppose you want to join collections based on time, location or some
-metadata property. Generally, this is most efficiently accomplished with
-a join. The following example does a spatio-temporal join between the
-Landsat 8 and Sentinel-2 collections:
+Suppose you want to join collections based on time, location or some metadata property. Generally, this is most efficiently accomplished with a join. The following example does a spatio-temporal join between the Landsat 8 and Sentinel-2 collections:
 
-``` r
+```{r}
 s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterBounds(ee$Geometry$Point(c(-2.0205, 48.647)))
 
@@ -897,11 +780,10 @@ joined <- ee$Join$saveAll("landsat")$apply(
 print(joined$first()$getInfo())
 ```
 
-Although you should try a join first (`Export` if needed), occasionally
-a `filter()` within a `map()` can also be effective, particularly for
-very large collections.
+Although you should try a join first (`Export` if needed), occasionally a `filter()` within a `map()` can also be effective, particularly for very large collections.
 
-``` r
+
+```{r}
 s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterBounds(ee$Geometry$Point(c(-2.0205, 48.647)))
 
@@ -924,8 +806,8 @@ mappedFilter <- s2$map(function(image) {
 print(mappedFilter$first()$getInfo())
 ```
 
-**reduceRegion() vs. reduceRegions()** vs. for-loop
----------------------------------------------------
+
+## **reduceRegion() vs. reduceRegions()** vs. for-loop
 
 Calling `reduceRegions()` with a very large or complex
 `FeatureCollection` as input may result in the dreaded “Computed value
@@ -934,12 +816,9 @@ over the `FeatureCollection` instead. Another potential solution is to
 use a (gasp) for-loop. Although this is strongly discouraged in Earth
 Engine as described [here](https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop), [here](https://developers.google.com/earth-engine/tutorial_js_03#for-loops) and [here](https://developers.google.com/earth-engine/client_server#looping), `reduceRegion()` can be implemented in a for-loop to perform large reductions.
 
-Suppose your objective is to obtain the mean of pixels (or any
-statistic) in each feature in a `FeatureCollection` for each image in an
-`ImageCollection`. The following example compares the three approaches
-previously described:
+Suppose your objective is to obtain the mean of pixels (or any statistic) in each feature in a `FeatureCollection` for each image in an `ImageCollection`. The following example compares the three approaches previously described:
 
-``` r
+```{r}
 # Table of countries.
 countriesTable <- ee$FeatureCollection("USDOS/LSIB_SIMPLE/2017")
 
@@ -1027,25 +906,13 @@ for (j in (seq_len(countriesList$length()$getInfo()) - 1)) {
 print(data$first()$getInfo())
 ```
 
-Note that the `first()` thing from each collection is printed, for
-debugging purposes. You should not expect that the complete result will
-be available interactively: you’ll need to `Export`. Also note that
-for-loops should be used with extreme caution and only as a last resort.
-Finally, the for-loop requires manually obtaining the size of the input
-collection and hardcoding that in the appropriate locations. If any of
-that sounds unclear to you, don’t use a for-loop.
+Note that the `first()` thing from each collection is printed, for debugging purposes. You should not expect that the complete result will be available interactively: you'll need to `Export`. Also note that for-loops should be used with extreme caution and only as a last resort. Finally, the for-loop requires manually obtaining the size of the input collection and hardcoding that in the appropriate locations. If any of that sounds unclear to you, don't use a for-loop.
 
-Use forward differencing for neighbors in time
-----------------------------------------------
+## Use forward differencing for neighbors in time 
 
-Suppose you have a temporally sorted `ImageCollection` (i.e. a time
-series) and you want to compare each image to the previous (or next)
-image. Rather than use `iterate()` for this purpose, it may be more
-efficient to use an array-based forward differencing. The following
-example uses this method to de-duplicate the Sentinel-2 collection,
-where duplicates are defined as images with the same day of year:
+Suppose you have a temporally sorted `ImageCollection` (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use `iterate()` for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:
 
-``` r
+```{r}
 sentinel2 <- ee$ImageCollection("COPERNICUS/S2")
 sf <- ee$Geometry$Point(c(-122.47555371521855, 37.76884708376152))
 s2 <- sentinel2$
@@ -1088,3 +955,4 @@ deduped <- dedup(array)
 print(array$reduceRegion("first", sf, 10)$getInfo())
 print(deduped$reduceRegion("first", sf, 10)$getInfo())
 ```
+

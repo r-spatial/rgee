@@ -244,6 +244,10 @@ ee_extract <- function(x,
       sf::st_drop_geometry() %>%
       cbind(table_sf) %>%
       sf::st_sf(geometry = table_geometry)
+  } else {
+    table_sf <- sf_y %>%
+      sf::st_drop_geometry() %>%
+      cbind(table_sf)
   }
   table_sf
 }

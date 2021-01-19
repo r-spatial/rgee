@@ -10,3 +10,5 @@ static
 pkgdown/favicon
 revdep
 build_package.R
+doc
+Meta

@@ -1,20 +1,30 @@
 ---
-title: "Considerations"
-output: rmarkdown::html_vignette
+title: "2. Considerations"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Considerations}
-  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{2. Considerations}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}    
 ---
 
-`rgee` and the [Earth Engine Python
-API](https://pypi.org/project/earthengine-api/) share the same classes, functions, and methods. Therefore, is expected that works identical to all user requests. However, differences in the language design of R and Python might cause some problems. We identify **three** bug-potential scenarios. Each of them are explained in-depth below.
+Thanks to **reticulate** embedding a Python session within an R session, **rgee** and the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) **share the same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **three** bug-potential cases. Each of them are explained in-depth below.
 
 
-### 1) The **map** message error:
+```{r, setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = '', fig.width = 6, fig.height = 6
+)
+```
 
-`rgee` may show an error message when valid requests to the Earth Engine
-server are made. This issue happens when the **map** method is used
+## 1. The **map** message error:
+
+This issue happens when the **map** method is used
 under the next two cases: (1) users employing a reticulate version
 lower than &lt; 1.14 (please update it!); and (2) if you are leading
 with **ee$List** objects. For instance:
@@ -62,7 +72,7 @@ mynewlist$getInfo()
 #>  [1]  1  2  3  4  5  6  7  8  9 10 11
 ```
 
-### 2) Do not forget the **L**
+### 2. Do not forget the **L**
 
 By default, when you define a number in R it will produce a **double
 precision** value. This does not happen in Python because, by default it
@@ -121,22 +131,21 @@ and_bitwise$getInfo()
 #> [1] 32
 ```
 
-### 3) Be careful with **ee$Date**
+### 3. Be careful with **ee$Date**
 
 This problem also appears due to differences between the design of R and
-Python as programming languages. Currently, R’s only integer data type
-is a 32 bit signed integer. Such integers can only count up to about 2
-billion. This range is extremely insufficient to deal with [Google Earth
+Python as programming languages. Currently, R only support integer data 
+type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, 
+this range is extremely insufficient to deal with [Google Earth
 Engine timestamp](https://developers.google.com/earth-engine/glossary)
-which is saved in milliseconds since the [UNIX
-epoch](https://en.wikipedia.org/wiki/Unix_time).
+which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **Python**
 
 ``` python
 my_date = ee.Date('1990-01-01')
 my_date.getInfo()
-#> {'type': 'Date', 'value': 631152000000}
+#> {'type': 'Date', 'value': 631152000000} # greater than 2 billion
 ```
 
 **R**
@@ -161,7 +170,6 @@ dates: `eedate_to_rdate` and `rdate_to_eedate`.
 era_img <- ee$ImageCollection("ECMWF/ERA5/DAILY")$
   filterDate("2019-01-01", "2019-12-31")$
   first()
-
 # Extracting init date
 ee_date <- era_img$get('system:time_start')
 ee_date$getInfo() # Silent error
