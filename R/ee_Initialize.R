@@ -73,6 +73,15 @@ ee_Initialize <- function(email = NULL,
 
   # get the path of earth engine credentials
   ee_current_version <- system.file("python/ee_utils.py", package = "rgee")
+  if (!file.exists(ee_current_version)) {
+    stop(
+      sprintf(
+        "The file %s does not exist in their system. Please re-install rgee: %s",
+        ee_current_version,
+        "remotes::install_github(\"r-spatial/rgee\")."
+      )
+    )
+  }
   ee_utils <- ee_connect_to_py(ee_current_version, n = 5)
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
