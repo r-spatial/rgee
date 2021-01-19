@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - master
+      - v.1.0.8
   pull_request:
     branches:
       - master
@@ -48,7 +48,6 @@ jobs:
         env:
           RHUB_PLATFORM: osx-x86_64-clang
         run: |
-          rm '/usr/local/bin/gfortran'
           brew install udunits
           brew install gdal
           brew install freetype

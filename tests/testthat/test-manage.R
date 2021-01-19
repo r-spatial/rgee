@@ -1,7 +1,6 @@
 context("rgee: ee_manage test")
 skip_if_no_pypkg()
 # -------------------------------------------------------------------------
-
 try(ee_manage_delete(path_asset = sprintf("%s/rgee/",ee_get_assethome())))
 
 test_that("ee_manage_create", {
@@ -63,6 +62,7 @@ test_that("ee_manage_move", {
 # })
 
 test_that("ee_manage_set_properties", {
+  ee_manage_create(sprintf("%s/rgee_test",ee_get_assethome()),"ImageCollection")
   ee_manage_copy(path_asset = sprintf("%s/rgee_test",ee_get_assethome()),
                  final_path = sprintf("%s/rgee/rgee_test",ee_get_assethome()))
   ee_manage_set_properties(path_asset = sprintf("%s/rgee/rgee_test",ee_get_assethome()),

@@ -188,7 +188,7 @@ ee_utils_pyfunc <- reticulate::py_func
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
 #' animation_wtxt
-#' ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
 #' }
 #' @family GIF functions
 #' @export
@@ -292,7 +292,7 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
 #' animation_wtxt
-#' ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
 #' }
 #' @family GIF functions
 #' @export
@@ -404,7 +404,7 @@ ee_utils_gif_annotate <- function(image,
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
 #' animation_wtxt
-#' ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
 #' }
 #' @family GIF functions
 #' @export

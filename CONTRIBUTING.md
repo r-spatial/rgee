@@ -35,7 +35,7 @@ Want to ask a question in private? Contact the package maintainer by [email][ema
 
 ### Propose an idea 💡
 
-Have an idea for a new our_package feature? Take a look at the [documentation][website] and [issue list][issues] to see if it isn't included or suggested yet. If not, suggest your idea as an [issue on GitHub][new_issue]. While we can't promise to implement your idea, it helps to:
+Have an idea for a new rgee feature? Take a look at the [documentation][website] and [issue list][issues] to see if it isn't included or suggested yet. If not, suggest your idea as an [issue on GitHub][new_issue]. While we can't promise to implement your idea, it helps to:
 
   * Explain in detail how it would work.
   * Keep the scope as narrow as possible.
@@ -44,7 +44,7 @@ See below if you want to contribute code for your idea as well.
 
 ### Report a bug 🐛
 
-Using our_package and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub][new_issue] so we can fix it. A good bug report makes it easier for us to do so, so please include:
+Using rgee and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub][new_issue] so we can fix it. A good bug report makes it easier for us to do so, so please include:
 
   * Your operating system name and version (e.g. Mac OS 10.13.6).
   * Any details about your local setup that might be helpful in troubleshooting.

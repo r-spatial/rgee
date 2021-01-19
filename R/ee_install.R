@@ -159,7 +159,7 @@ ee_install <- function(py_env = "rgee",
         bold("EARTHENGINE_ENV"),
         bold(".Renviron file")
       ),
-      sprintf("%s in future sessions.", py_path),
+      sprintf("%s in future sessions.", bold(py_path)),
       sep = "\n"
     )
   )

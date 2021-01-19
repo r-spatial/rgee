@@ -494,9 +494,16 @@ ee_add_legend <- function(m, eeObject, visParams, name) {
         if (is.null(eeimage_type_min)) {
           eeimage_type_min <- 0
         }
+
         eeimage_type_max <- eeimage_type[[1]]$max
         if (is.null(eeimage_type_max)) {
           eeimage_type_max <- 1
+        }
+
+        # This happens in constant images ee.Image(0) with no vizparams
+        if (eeimage_type_min == eeimage_type_max) {
+          eeimage_type_min <- eeimage_type_min
+          eeimage_type_max <- eeimage_type_max*2
         }
       }
       if (is.null(visParams$max)) {

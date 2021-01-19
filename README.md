@@ -1,58 +1,39 @@
-<a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img align="left" src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
-[![R build status](https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg)](https://github.com/r-spatial/rgee/actions)
-[![Project Status: Active – The project has reached a stable, usable
+<h1 align="center">
+  <br>
+  <a href="https://r-spatial.github.io/rgee/"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" alt="Markdownify" width="187"></a>
+  <a href="http://r-earthengine.github.io/"><img src="https://user-images.githubusercontent.com/16768318/105011770-a0127080-5a3d-11eb-961c-623b23399b01.png" alt="Markdownify" width="200"></a>
+  <br>
+  Google Earth Engine for R
+  <br>
+</h1>
+
+<h4 align="center">An R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Several functions</a> have been implemented to make simple the connection with the R spatial ecosystem.</h4>
+
+<p align="center">
+<a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
+<a href="https://github.com/r-spatial/rgee/actions"><img src="https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg" alt="R build status"></a>
+<a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable
 state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![codecov](https://codecov.io/gh/r-spatial/rgee/branch/master/graph/badge.svg)](https://codecov.io/gh/r-spatial/rgee)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![status](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg)](https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/rgee)](https://cran.r-project.org/package=rgee)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3945409.svg)](https://doi.org/10.5281/zenodo.3945409)
+developed."></a>
+<a href="https://codecov.io/gh/r-spatial/rgee"><img src="https://codecov.io/gh/r-spatial/rgee/branch/master/graph/badge.svg" alt="codecov"></a>
+<a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+<a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a>
+<a href="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc"><img src="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg" alt="status"></a>
+<a href="https://cran.r-project.org/package=rgee"><img src="https://www.r-pkg.org/badges/version/rgee" alt="CRAN
+status"></a>
+<a href="https://doi.org/10.5281/zenodo.3945409"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3945409.svg" alt="DOI"></a>
+</p>
 
-# Google Earth Engine for R
-
-<a href="http://r-spatial.github.io/rgee"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" align="left" hspace="10" vspace="0" width="15%"></a>
-
-`rgee` is a binding package for calling [Google Earth Engine
-API](https://developers.google.com/earth-engine/) from within R.
-Additionally, several functions have been implemented to make simple the connection with the R spatial ecosystem. The current version of rgee has been built considering the 
-[earthengine-api 0.1.246](https://pypi.org/project/earthengine-api/0.1.246/).
-**Note that access to Google Earth Engine is only available to [registered users](https://earthengine.google.com/)**.
-
-
-### More than 250+ examples using GEE with R are available [here](http://csaybar.github.io/rgee-examples/)
-
-<a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/search_by_buffer_distance.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_01_search_by_buffer_distance.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/image/convolutions.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_02_convolutions.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/FeatureCollection/idw_interpolation.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_03_idw_interpolation.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/image/spectral_unmixing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_04_spectral_unmixing.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/CloudMasking/sentinel-2.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_05_sentinel2.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/image/canny_edge_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_06_canny_edge_detector.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/image/cumulative_cost_mapping.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_07_cumulative_cost_mapping.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/image/zero_crossing.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_08_zero_crossing.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples//Visualization/hillshade.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_09_hillshade.png" height="100" hspace="5"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/styled_layer_descriptors.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_10_styled_layer_descriptors.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/terrain_visualization.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_11_terrain_visualization.png" height="100" hspace="5"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/us_census_counties.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_12_us_census_counties.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/global_power_plant_database.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_13_global_power_plant_database.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Vectors/landsat_wrs2_grid.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_14_landsat_wr2_grid.png" height="100" hspace="4"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Datasets/Water/jrc_metadata.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_15_jrc_metadata.png" height="100"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples//Visualization/visualizing_geometries.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_16_visualizing_geometries.png" height="100" hspace="1"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Algorithms/center_pivot_irrigation_detector.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_17_center_pivot_irrigation_detector.png" height="100" hspace="2"/></a>
-<a href="https://github.com/r-spatial/rgee/blob/examples/Visualization/image_color_ramp.R"><img src="https://raw.githubusercontent.com/ryali93/rgee_readme_icons/master/images/img_18_image_color_ramp.png" height="100"/></a>
-
-### Quick Start User's Guide for rgee 
-<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1eng.pdf"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a>
-<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
-<a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
-
-**Created by:**
-- EN and POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
-- SPA: Antony Barja Ingaruca <https://barja8.github.io/>
-### 
-
+<p align="center">  
+  • 
+  <a href="#installation">Installation</a> &nbsp;•  
+  <a href="#hello-world">Hello World</a> &nbsp;•
+  <a href="#how-does-rgee-work">How does rgee work?</a> &nbsp;•
+  <a href="#quick-start-users-guide-for-rgee">Guides</a> &nbsp;•
+  <a href="#contributing-guide">Contributing</a> &nbsp;•
+  <a href="#share-the-love">Citation</a> &nbsp;•
+  <a href="#credits">Credits</a>  
+</p>
 
 ## What is Google Earth Engine?
 
@@ -111,41 +92,18 @@ Install the `rgee` package from GitHub is quite simple, you just have to run in 
 remotes::install_github("r-spatial/rgee")
 ```
 
-**`rgee` depends on [sf](https://github.com/r-spatial/sf)**. Therefore, is necessary to install its external libraries, follow the installation steps specified [here](https://github.com/r-spatial/sf#installing). If you are using a Debian-based operating system, you probably need to install **virtualenv** as well.
+**`rgee` depends on [reticulate](https://rstudio.github.io/reticulate/articles/package.html)** because it has some Python dependencies (i.e. [numpy](https://pypi.org/project/numpy/) and [ee](https://pypi.org/project/earthengine-api/)), run as follows to install them:
 
-```
-sudo pip3 install virtualenv
-```
-
-#### Docker image
-    
-    docker pull csaybar/rgee
-    docker run -d -p 8787:8787 -e USER=rgee -e PASSWORD=rgee --name rgee-dev csaybar/rgee
-
-After that, in your preferred browser, run:
-
-    127.0.0.1:8787
-
-## setup
-
-Prior to using `rgee` you will need to install a **Python version higher than 3.5** in their system. `rgee` counts with an installation function (ee_install) which helps to setup `rgee` correctly:
-
-```r
-library(rgee)
-
-## It is necessary just once
-ee_install()
-
-# Initialize Earth Engine!
-ee_Initialize()
+``` r
+rgee::ee_install()
 ```
 
-Additionally, you might use the functions below for checking the status of rgee dependencies and delete credentials.
+If you are a Windows user **reticulate requires that uses miniconda/anaconda**. **The use of `rgee::ee_install()` is not mandatory,** you can count on with your own custom installation. This would be also allowed. If you are a Rstudio v.1.4 > user, this [tutorial](https://github.com/r-spatial/rgee/tree/help/rstudio) will help you to properly set a Python Environment with your R session without use `rgee::ee_install()`. Take into account that the Python Environment you set must have installed the Earth Engine Python API and Numpy.
+
+After install `rgee`, you might use the function below for checking the status of rgee.
 
 ```r
 ee_check() # Check non-R dependencies
-ee_clean_credentials() # Remove credentials of a specific user
-ee_clean_pyenv() # Remove reticulate system variables
 ```
 
 Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/articles/setup.html) for more information on customizing your Python installation.
@@ -160,7 +118,7 @@ Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/a
     [**ee\_Initialize**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html). It is necessary once by session!.
   - `rgee` is “pipe-friendly”, we re-exports %\>%, but `rgee` does not require its use.
 
-## Quick Demo
+## Hello World
 
 ### 1. Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
 
@@ -169,7 +127,6 @@ Authenticate and Initialize the Earth Engine R API.
 ``` r
 library(rgee)
 ee_Initialize()
-#ee_reattach() # reattach ee as a reserve word
 ```
 
 Adds a band containing image date as years since 1991.
@@ -226,7 +183,6 @@ library(tidyverse)
 library(rgee)
 library(sf)
 
-# ee_reattach() # reattach ee as a reserve word
 ee_Initialize()
 ```
 
@@ -240,9 +196,11 @@ Map each image from 2001 to extract the monthly precipitation (Pr) from the [Ter
 dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE)
 
 ``` r
-terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE")$
-  filterDate("2001-01-01", "2002-01-01")$
-  map(function(x) x$reproject("EPSG:4326")$select("pr"))
+terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>% 
+  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>% 
+  ee$ImageCollection$map(function(x) x$select("pr")) %>% # Select only precipitation bands
+  ee$ImageCollection$toBands() %>% # from imagecollection to image
+  ee$Image$rename(sprintf("%02d",1:12)) # rename the bands of an image
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works
@@ -250,17 +208,16 @@ similar to `raster::extract`, you just need to define: the ImageCollection objec
 summarize the values (fun).
 
 ``` r
-ee_nc_rain <- ee_extract(x = terraclimate, y = nc, sf = FALSE)
-colnames(ee_nc_rain) <- sprintf("%02d", 1:12)
-ee_nc_rain$name <- nc$NAME
+ee_nc_rain <- ee_extract(x = terraclimate, y = nc["NAME"], sf = FALSE)
 ```
 
 Use ggplot2 to generate a beautiful static plot!
 
 ``` r
 ee_nc_rain %>%
-  pivot_longer(-name, names_to = "month", values_to = "pr") %>%
-  ggplot(aes(x = month, y = pr, group = name, color = pr)) +
+  pivot_longer(-NAME, names_to = "month", values_to = "pr") %>%
+  mutate(month, month=gsub("X", "", month)) %>% 
+  ggplot(aes(x = month, y = pr, group = NAME, color = pr)) +
   geom_line(alpha = 0.4) +
   xlab("Month") +
   ylab("Precipitation (mm)") +
@@ -271,16 +228,16 @@ ee_nc_rain %>%
   <img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width=80%>
 </p>
 
-
 ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
 
 Install and load `sf`, after that, initialize the Earth Engine R API.
 
 ``` r
+library(magick)
 library(rgee)
 library(sf)
+
 ee_Initialize()
-# ee_reattach() # reattach ee as a reserve word
 ```
 
 Define the regional bounds of animation frames and a mask to clip the NDVI data by.
@@ -313,7 +270,7 @@ Define a filter that identifies which images from the complete collection match 
 from the distinct DOY collection.
 
 ``` r
-filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy');
+filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy')
 ```
 
 Define a join; convert the resulting FeatureCollection to an ImageCollection.
@@ -369,11 +326,26 @@ gifParams <- list(
 )
 ```
 
-Render the GIF animation in the console.
+Use ee_utils_gif_* functions to render the GIF animation and add some texts.
 
 ```r
-print(rgbVis$getVideoThumbURL(gifParams))
-browseURL(rgbVis$getVideoThumbURL(gifParams))
+animation <- ee_utils_gif_creator(rgbVis, gifParams, mode = "wb")
+animation %>% 
+  ee_utils_gif_annotate(
+    text = "NDVI: MODIS/006/MOD13A2",
+    size = 15, color = "white",
+    location = "+10+10"
+  ) %>% 
+  ee_utils_gif_annotate(
+    text = dates_modis_mabbr, 
+    size = 30, 
+    location = "+290+350",
+    color = "white", 
+    font = "arial",
+    boxcolor = "#000000"
+  ) # -> animation_wtxt
+
+# ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
 ```
 
 <p align="center">
@@ -386,6 +358,16 @@ browseURL(rgbVis$getVideoThumbURL(gifParams))
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
+## Quick Start User's Guide for rgee 
+
+<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1eng.pdf"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a>
+<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
+<a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
+
+**Created by:**
+- EN and POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
+- SPA: Antony Barja Ingaruca <https://barja8.github.io/>
+
 ## Code of Conduct
 
 Please note that the `rgee` project is released with a [Contributor Code
@@ -395,7 +377,9 @@ of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to a
 
 👍 Thanks for taking the time to contribute\! 🎉👍 Please review our [Contributing Guide](CONTRIBUTING.md).
 
-## Share the love  ❤️
+
+## Share the love
+
 Think **rgee** is useful? Let others discover it, by telling them in
 person via Twitter or a blog post.
 
@@ -419,7 +403,7 @@ A BibTeX entry for LaTeX users is
   }
 ``` 
 
-## Credits :bow:
+## Credits
 
 First off, we would like to offer an **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
@@ -433,5 +417,3 @@ First off, we would like to offer an **special thanks** :raised_hands: :clap: to
   - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf)**
   - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars)**
   - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes)**
-
-#### Readme template obtained from [dbparser](https://github.com/Dainanahan/dbparser)

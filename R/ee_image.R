@@ -178,10 +178,13 @@ ee_as_stars <- function(image,
     ...
   )
 
+  user_email <- ee_get_current_email()
+
   to_evaluate <- function() {
     # 2. From the container to the client-side.
     img_dsn <- ee_image_local(
       task = ee_task$task,
+      user_email = user_email,
       dsn = ee_task$dsn,
       via = via,
       metadata = add_metadata,
@@ -386,10 +389,13 @@ ee_as_raster <- function(image,
     ...
   )
 
+  user_email <- ee_get_current_email()
+
   to_evaluate <- function() {
     # 2. From the container to the client-side.
     img_dsn <- ee_image_local(
       task = ee_task$task,
+      user_email = user_email,
       dsn = ee_task$dsn,
       via = via,
       metadata = add_metadata,
@@ -653,10 +659,12 @@ ee_init_task_gcs <- function(image, region, dsn, scale, maxPixels,
 
 #' Passing an Earth Engine Image to Local
 #' @noRd
-ee_image_local <- function(task, dsn, via, metadata, public, quiet) {
+ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet) {
   if (via == "drive") {
+    ee_create_credentials_drive(user_email)
     ee_image_local_drive(task, dsn, metadata, public, quiet)
   } else if (via == "gcs") {
+    ee_create_credentials_gcs(user_email)
     ee_image_local_gcs(task, dsn, metadata, public, quiet)
   } else {
     stop("via argument invalid")
@@ -907,6 +915,8 @@ ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
             SIMPLIFY=FALSE
           )
         }
+      } else {
+        lazy_batch_extract
       }
     } else {
       stop("Impossible to use ee_utils_future_value in a list ",
@@ -941,4 +951,16 @@ ee_read_raster <- function(img_dsn, band_names, metadata) {
     dsn_raster@history <- list(metadata = metadata)
     dsn_raster
   }
+}
+
+
+#' Get the current image
+#' @noRd
+ee_get_current_email <- function() {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+  read.table(file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
+             header = TRUE,
+             stringsAsFactors = FALSE)[["email"]]
 }
