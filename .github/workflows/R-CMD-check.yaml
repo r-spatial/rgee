@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - v.1.0.8
+      - master
   pull_request:
     branches:
       - master
