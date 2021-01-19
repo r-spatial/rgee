@@ -377,8 +377,10 @@ ee_sf_comp <- function(){
 #' @param x List to convert into a JSON file.
 #' @return A JSON file saved in a /tmp dir.
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' ee_utils_create_json(list(a=10,b=10))
+#' }
 #' @export
 ee_utils_create_json <- function(x) {
   tmpf <- tempfile()

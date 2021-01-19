@@ -16,6 +16,8 @@ A JSON file saved in a /tmp dir.
 Convert a R list into a JSON file
 }
 \examples{
+\dontrun{
 library(rgee)
 ee_utils_create_json(list(a=10,b=10))
+}
 }

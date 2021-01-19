@@ -71,7 +71,7 @@ A short comparison based on [Tyler Erickson presentation](https://docs.google.co
 
 ## 6. Installation
 
-**rgee** only depends on [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) and [processx](https://cran.r-project.org/web/packages/processx/index.html). Therefore, users should ensure 
+**rgee** only depends on [reticulate](https://cran.r-project.org/package=reticulate) and [processx](https://cran.r-project.org/package=processx). Therefore, users should ensure 
 that both packages can be installed on their system. To install **rgee** run as follow:
 
 ```{r eval = FALSE}
