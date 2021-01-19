@@ -700,18 +700,20 @@ ee_init_message <- function() {
             bold("only available to registered users")),
     sprintf("official website %s to get more information.",
             bold("https://earthengine.google.com/")),
-    "Before start coding is necessary to set up a Python environment. Run",
+    "\nBefore start coding is necessary to set up a Python environment. Run",
     sprintf(
       "%s to set up automatically, after that, restart the R",
       bold("rgee::ee_install()")
     ),
-    "session to see changes. See more than 250+ examples of rgee at",
-    crayon::bold("https://csaybar.github.io/rgee-examples/"),
+    "session to see changes. See more than 300+ examples of rgee at",
+    crayon::bold("http://r-earthengine.github.io/."),
+    "\nrgee will need to create the environmental variable \"EARTHENGINE_INIT_MESSAGE\"",
+    "in your system to avoid you recieve this message again.",
     "",
     sep = "\n"
   )
   message(text)
-  response <- readline("Would you like to stop to receive this message? [Y/n]: ")
+  response <- readline("Would you like to stop to receive this message? [Y/n]:")
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
