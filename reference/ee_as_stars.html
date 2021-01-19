@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -48,7 +48,9 @@
 
 <meta property="og:title" content="Convert an Earth Engine (EE) image in a stars object — ee_as_stars" />
 <meta property="og:description" content="Convert an ee$Image in a stars object." />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
+
+
 
 
 
@@ -88,40 +90,54 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-book"></span>
+     
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/BestPractices.html">Best Practices</a>
+      <a href="../articles/rgee01.html">Setup and details</a>
     </li>
     <li>
-      <a href="../articles/considerations.html">Considerations</a>
+      <a href="../articles/rgee02.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/setup.html">Setup and Details</a>
+      <a href="../articles/rgee03.html">Best Practices</a>
+    </li>
+    <li>
+      <a href="http://r-earthengine.github.io/">rgee examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/r-spatial/rgee/">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="../news/index.html">
+    <span class="fas fa-newspaper-o"></span>
      
+    news
+  </a>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fas fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li>
+  <a href="https://github.com/r-spatial/rgee/">
+    <span class="fas fa-github fa-lg"></span>
+     
+    github
   </a>
 </li>
       </ul>
@@ -203,8 +219,8 @@ more pixels in the specified projection. Defaults to 100,000,000.</p></td>
     </tr>
     <tr>
       <th>lazy</th>
-      <td><p>Logical. If TRUE, a <code>
-future::sequential</code> object is created to evaluate the task in the future.
+      <td><p>Logical. If TRUE, a <code><a href='https://rdrr.io/pkg/future/man/sequential.html'>
+future::sequential</a></code> object is created to evaluate the task in the future.
 See details.</p></td>
     </tr>
     <tr>
@@ -248,7 +264,7 @@ specified in argument <code>via</code>.</p></li>
 <li><p>2. If the argument <code>lazy</code> is TRUE, the task will not be
 monitored. This is useful to lunch several tasks at the same time and
 call them later using <code><a href='ee_utils_future_value.html'>ee_utils_future_value</a></code> or
-<code>future::value</code>. At the end of this step,
+<code><a href='https://rdrr.io/pkg/future/man/value.html'>future::value</a></code>. At the end of this step,
 the <code>ee$Image</code> will be stored on the path specified in the argument
 <code>dsn</code>.</p></li>
 <li><p>3. Finally if the argument <code>add_metadata</code> is TRUE, a list
@@ -286,7 +302,7 @@ Earth Engine Guide - Export data</a>.</p>
 <code><a href='ee_imagecollection_to_local.html'>ee_imagecollection_to_local</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee'>rgee</a></span><span class='op'>)</span>
 
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>drive <span class='op'>=</span> <span class='cn'>TRUE</span>, gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -353,7 +369,7 @@ Earth Engine Guide - Export data</a>.</p>
 <span class='co'># ee_clean_container(name = "rgee_backup", type = "drive")</span>
 <span class='co'># ee_clean_container(name = "rgee_dev", type = "gcs")</span>
 <span class='op'>}</span>
-</pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -369,7 +385,7 @@ Earth Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

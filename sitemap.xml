@@ -4,9 +4,6 @@
     <loc>http://r-spatial.github.io/rgee/index.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/reference/EarthEngineMap-class.html</loc>
-  </url>
-  <url>
     <loc>http://r-spatial.github.io/rgee/reference/Map.html</loc>
   </url>
   <url>
@@ -14,9 +11,6 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/ee_as_mapview.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_as_raster.html</loc>
@@ -130,6 +124,9 @@
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_table.html</loc>
   </url>
   <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_future_value.html</loc>
+  </url>
+  <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_get_crs.html</loc>
   </url>
   <url>
@@ -146,6 +143,9 @@
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_pyfunc.html</loc>
+  </url>
+  <url>
+    <loc>http://r-spatial.github.io/rgee/reference/ee_utils_search_display.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc>
@@ -166,19 +166,10 @@
     <loc>http://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/reference/mapview-class.html</loc>
+    <loc>http://r-spatial.github.io/rgee/reference/null-default.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/plus-EarthEngineMap-EarthEngineMap-method.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/plus-EarthEngineMap-mapview-method.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/plus-mapview-EarthEngineMap-method.html</loc>
   </url>
   <url>
     <loc>http://r-spatial.github.io/rgee/reference/print.ee.computedobject.ComputedObject.html</loc>
@@ -196,21 +187,15 @@
     <loc>http://r-spatial.github.io/rgee/reference/sf_as_ee.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/reference/show-EarthEngineMap-method.html</loc>
-  </url>
-  <url>
-    <loc>http://r-spatial.github.io/rgee/reference/slider.html</loc>
-  </url>
-  <url>
     <loc>http://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/articles/BestPractices.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/rgee01.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/articles/considerations.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/rgee02.html</loc>
   </url>
   <url>
-    <loc>http://r-spatial.github.io/rgee/articles/setup.html</loc>
+    <loc>http://r-spatial.github.io/rgee/articles/rgee03.html</loc>
   </url>
 </urlset>

@@ -19,8 +19,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -47,7 +47,9 @@
 
 
 <meta property="og:title" content="Changelog" />
-<meta property="og:image" content="/logo.png" />
+<meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png" />
+
+
 
 
 
@@ -87,40 +89,54 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fas fa-home"></span>
      
   </a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-book"></span>
+     
     Articles
      
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/BestPractices.html">Best Practices</a>
+      <a href="../articles/rgee01.html">Setup and details</a>
     </li>
     <li>
-      <a href="../articles/considerations.html">Considerations</a>
+      <a href="../articles/rgee02.html">Consideration</a>
     </li>
     <li>
-      <a href="../articles/setup.html">Setup and Details</a>
+      <a href="../articles/rgee03.html">Best Practices</a>
+    </li>
+    <li>
+      <a href="http://r-earthengine.github.io/">rgee examples</a>
     </li>
   </ul>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
-</li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li>
-  <a href="https://github.com/r-spatial/rgee/">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="../news/index.html">
+    <span class="fas fa-newspaper-o"></span>
      
+    news
+  </a>
+</li>
+<li>
+  <a href="../reference/index.html">
+    <span class="fas fa-file-code-o"></span>
+     
+    functions
+  </a>
+</li>
+<li>
+  <a href="https://github.com/r-spatial/rgee/">
+    <span class="fas fa-github fa-lg"></span>
+     
+    github
   </a>
 </li>
       </ul>
@@ -140,6 +156,17 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rgee-108" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.8">
+<a href="#rgee-108" class="anchor"></a>rgee 1.0.8</h1>
+<ul>
+<li>Unit testing enhanced.</li>
+<li>Fix a bug in Map$addLayer(…, legend=TRUE) when <code>eeobject</code> is an constant image (i.e. ee$Image(0)).</li>
+<li>Add a stop message in <code>ee_Initialize</code> to stop the use when “…/rgee/python/” folder does not exist.</li>
+<li>Add a message when rgee make changes to .Renviron.</li>
+<li>Earth Engine Python API test updated to 0.1.247.</li>
+</ul>
+</div>
     <div id="rgee-107" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.7">
 <a href="#rgee-107" class="anchor"></a>rgee 1.0.7</h1>
@@ -420,7 +447,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
