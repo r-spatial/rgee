@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">An R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Several functions</a> have been implemented to make simple the connection with the R spatial ecosystem.
+<h4 align="center">An R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Several functions</a> have been implemented to make simple the connection with the R spatial ecosystem.</h4>
 
 <p align="center">
 <a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
