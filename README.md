@@ -1,9 +1,6 @@
 <h1 align="center">
   <br>
   <a href="https://r-spatial.github.io/rgee/"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" alt="Markdownify" width="187"></a>
-  &nbsp;
-  &nbsp;
-  &nbsp;
   <a href="http://r-earthengine.github.io/"><img src="https://user-images.githubusercontent.com/16768318/105011770-a0127080-5a3d-11eb-961c-623b23399b01.png" alt="Markdownify" width="200"></a>
   <br>
   Google Earth Engine for R
