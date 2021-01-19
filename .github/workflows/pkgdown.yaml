@@ -2,53 +2,43 @@ on:
   push:
     branches: v.1.0.8
 name: pkgdown
-
 jobs:
   pkgdown:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: r-lib/actions/setup-r@v1
-        with:
-          r-version: '3.6.1'
-      - uses: r-lib/actions/setup-pandoc@master
 
-      - name: INSTALL SYSTEM DEPENDENCIES [macOS]
-        if: runner.os == 'macOS'
-        env:
-          RHUB_PLATFORM: osx-x86_64-clang
-        run: |
-          brew cask install xquartz
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: 'release'
+
+      - uses: r-lib/actions/setup-pandoc@master
 
       - name: Query dependencies
         run: |
-          install.packages("Rcpp")
           install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = "Imports"), ".github/depends.Rds", version = 2)
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: macOS-r-3.6-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: macOS-r-3.6-
-
-      - name: git config
-        run: |
-          git config --global user.email "csaybar@gmail.com"
-          git config --global user.name "csaybar"
+          key: macOS-r-4.0-2-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: macOS-r-4.0-2-
 
       - name: Install dependencies
         run: |
           install.packages("remotes")
-          remotes::install_deps(dependencies = "Imports")
-          remotes::install_cran("pkgdown")
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_dev("pkgdown")
         shell: Rscript {0}
 
       - name: Install package
         run: R CMD INSTALL .
 
       - name: Deploy package
-        run: pkgdown::deploy_to_branch(examples = FALSE, new_process = FALSE)
-        shell: Rscript {0}
+        run: |
+          git config --local user.email "csaybar@gmail.com"
+          git config --local user.name "csaybar"
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
