@@ -115,7 +115,7 @@ This function will realize the following six tasks:
   rgee is loaded. 
   
   5. Install rgee Python dependencies: [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and
-  [Numpy](https://pypi.org/project/numpy/).
+  [numpy](https://pypi.org/project/numpy/).
   
   6. Interactive menu to confirm if restart the R session to see changes.
 
