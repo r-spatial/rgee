@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Best Practices">
 <meta property="og:description" content="rgee">
-<meta property="og:image" content="http://r-spatial.github.io/rgee/logo.png">
+<meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -71,7 +71,7 @@
       <a href="../articles/rgee03.html">Best Practices</a>
     </li>
     <li>
-      <a href="http://r-earthengine.github.io/">rgee examples</a>
+      <a href="https://r-earthengine.github.io/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -119,13 +119,13 @@
 
     
     
-<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/best_practices">Google Earth Engine Documentation</a>.</strong></p>
+<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/best_practices/">Google Earth Engine Documentation</a>.</strong></p>
 <p>This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations.</p>
 <div id="avoid-mixing-client-functions-and-objects-with-server-functions-and-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#avoid-mixing-client-functions-and-objects-with-server-functions-and-objects" class="anchor"></a>Avoid mixing client functions and objects with server functions and objects</h2>
 <p>Earth Engine server objects are objects with constructors that start with <code>ee</code> (e.g. ee$Image, ee$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).</p>
-<p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/debugging#avoid-mixing">here</a> and <a href="https://developers.google.com/earth-engine/debugging#browser-lock">here</a> and <a href="https://developers.google.com/earth-engine/debugging#mapped-functions">here</a>. See <a href="https://developers.google.com/earth-engine/client_server">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
+<p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/debugging#avoid-mixing/">here</a> and <a href="https://developers.google.com/earth-engine/debugging#browser-lock/">here</a> and <a href="https://developers.google.com/earth-engine/debugging#mapped-functions/">here</a>. See <a href="https://developers.google.com/earth-engine/client_server/">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Won't work.</span>
@@ -186,7 +186,7 @@
 <p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Niger'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Note that you should <a href="https://developers.google.com/earth-engine/best_practices#filter-and-select-first">use filters as early as possible in your analysis</a>.</p>
+<p>Note that you should <a href="https://developers.google.com/earth-engine/best_practices#filter-and-select-first/">use filters as early as possible in your analysis</a>.</p>
 </div>
 <div id="avoid-ee-algorithms-if" class="section level2">
 <h2 class="hasAnchor">
@@ -212,7 +212,7 @@
 <p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Chad'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>As shown in <a href="https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
+<p>As shown in <a href="https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions/">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
 </div>
 <div id="avoid-reproject" class="section level2">
 <h2 class="hasAnchor">
@@ -240,7 +240,7 @@
 <span class="va">reprojected</span> <span class="op">&lt;-</span> <span class="va">objectSize</span><span class="op">$</span><span class="fu">reproject</span><span class="op">(</span><span class="va">hotspots</span><span class="op">$</span><span class="fu">projection</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">objectSize</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size No Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">reprojected</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/scale#scale-of-analysis">scale of analysis</a> is set by the Code Editor zoom level. By calling <code>reproject()</code> you set the scale of the computation instead of the Map display. Use <code>reproject()</code> with extreme caution for reasons described in <a href="https://developers.google.com/earth-engine/projections#reprojecting">this doc</a>.</p>
+<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/scale#scale-of-analysis/">scale of analysis</a> is set by the Code Editor zoom level. By calling <code>reproject()</code> you set the scale of the computation instead of the Map display. Use <code>reproject()</code> with extreme caution for reasons described in <a href="https://developers.google.com/earth-engine/projections#reprojecting/">this doc</a>.</p>
 </div>
 <div id="filter-and-select-first" class="section level2">
 <h2 class="hasAnchor">
@@ -349,7 +349,7 @@
 <span class="va">exported_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_drive_to_local.html">ee_drive_to_local</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,dsn <span class="op">=</span> <span class="st">"exported_stats.csv"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">exported_stats</span><span class="op">)</span></code></pre></div>
 <p>Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export <code>toAsset</code>, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don’t use a complex geometry if you don’t need it).</p>
-<p>See the debugging page for examples of using <code>Export</code> to resolve <a href="https://developers.google.com/earth-engine/debugging#timed-out">Computation</a> timed out and <a href="https://developers.google.com/earth-engine/debugging#too-many">Too many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/exporting">this doc</a> for details on exporting in general.</p>
+<p>See the debugging page for examples of using <code>Export</code> to resolve <a href="https://developers.google.com/earth-engine/debugging#timed-out/">Computation</a> timed out and <a href="https://developers.google.com/earth-engine/debugging#too-many/">Too many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/exporting/">this doc</a> for details on exporting in general.</p>
 </div>
 <div id="if-you-dont-need-to-clip-dont-use-clip" class="section level2">
 <h2 class="hasAnchor">
@@ -393,7 +393,7 @@
     maxPixels <span class="op">=</span> <span class="fl">1e10</span>
   <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">noClipNeeded</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/best_practices#use-export">this example</a>.</p>
+<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/best_practices#use-export/">this example</a>.</p>
 </div>
 <div id="if-you-need-to-clip-with-a-complex-collection-use-cliptocollection" class="section level2">
 <h2 class="hasAnchor">
@@ -528,7 +528,7 @@
   maxPixels <span class="op">=</span> <span class="fl">1e10</span>
 <span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">means</span><span class="op">$</span><span class="fu">limit</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Note that other ways of reducing pixels of one image within zones of another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents">reduceConnectedCommponents()</a> and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents">grouping reducers</a>.</p>
+<p>Note that other ways of reducing pixels of one image within zones of another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/">reduceConnectedCommponents()</a> and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/">grouping reducers</a>.</p>
 </div>
 <div id="use-fastdistancetransform-for-neighborhood-operations" class="section level2">
 <h2 class="hasAnchor">
@@ -813,7 +813,7 @@
 <div id="reduceregion-vs--reduceregions-vs--for-loop" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reduceregion-vs--reduceregions-vs--for-loop" class="anchor"></a><strong>reduceRegion() vs. reduceRegions()</strong> vs. for-loop</h2>
-<p>Calling <code>reduceRegions()</code> with a very large or complex <code>FeatureCollection</code> as input may result in the dreaded “Computed value is too large” error. One potential solution is to map <code>reduceRegion()</code> over the <code>FeatureCollection</code> instead. Another potential solution is to use a (gasp) for-loop. Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop">here</a>, <a href="https://developers.google.com/earth-engine/tutorial_js_03#for-loops">here</a> and <a href="https://developers.google.com/earth-engine/client_server#looping">here</a>, <code>reduceRegion()</code> can be implemented in a for-loop to perform large reductions.</p>
+<p>Calling <code>reduceRegions()</code> with a very large or complex <code>FeatureCollection</code> as input may result in the dreaded “Computed value is too large” error. One potential solution is to map <code>reduceRegion()</code> over the <code>FeatureCollection</code> instead. Another potential solution is to use a (gasp) for-loop. Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop/">here</a>, <a href="https://developers.google.com/earth-engine/tutorial_js_03#for-loops/">here</a> and <a href="https://developers.google.com/earth-engine/client_server#looping/">here</a>, <code>reduceRegion()</code> can be implemented in a for-loop to perform large reductions.</p>
 <p>Suppose your objective is to obtain the mean of pixels (or any statistic) in each feature in a <code>FeatureCollection</code> for each image in an <code>ImageCollection</code>. The following example compares the three approaches previously described:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Table of countries.</span>
