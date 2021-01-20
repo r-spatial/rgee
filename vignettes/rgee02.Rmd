@@ -138,7 +138,7 @@ Python as programming languages. Currently, R only support integer data
 type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, 
 this range is extremely insufficient to deal with [Google Earth
 Engine timestamp](https://developers.google.com/earth-engine/glossary/)
-which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time/).
+which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
 
 **Python**
 

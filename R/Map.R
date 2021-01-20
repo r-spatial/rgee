@@ -68,7 +68,7 @@
 #' parameters to Map$addLayer by using the visParams argument. Each Earth
 #' Engine spatial object has a specific format. For
 #' \code{ee$Image}, the
-#' \href{https://developers.google.com/earth-engine/image_visualization/}{
+#' \href{https://developers.google.com/earth-engine/guides/image_visualization}{
 #' parameters} available are:
 #'
 #' \tabular{lll}{

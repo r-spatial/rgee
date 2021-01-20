@@ -37,5 +37,5 @@ If one or more futures is unresolved, then this function blocks until all
 queried futures are resolved.
 }
 \author{
-Henrik Bengtsson \url{https://github.com/HenrikBengtsson}
+Henrik Bengtsson \url{https://github.com/HenrikBengtsson/}
 }

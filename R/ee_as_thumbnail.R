@@ -3,7 +3,7 @@
 #'
 #' Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
 #' RasterLayer R object from a
-#' \href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images/}{EE thumbnail image}.
+#' \href{ https://developers.google.com/earth-engine/guides/image_visualization}{EE thumbnail image}.
 #'
 #' @param image EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying

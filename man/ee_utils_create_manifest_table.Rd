@@ -41,7 +41,7 @@ If \code{returnList} is TRUE a list otherwise a JSON file.
 \description{
 Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
 "manifest" is simply a JSON file which describe all the upload parameters. See
-\url{https://developers.google.com/earth-engine/image_manifest} to get more
+\url{https://developers.google.com/earth-engine/guides/image_manifest} to get more
 details.
 }
 \examples{

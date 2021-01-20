@@ -73,7 +73,7 @@
 #'
 #' For getting more information about exporting data from Earth Engine, take
 #' a look at the
-#' \href{https://developers.google.com/earth-engine/exporting/}{Google
+#' \href{https://developers.google.com/earth-engine/guides/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
 #' @family image download functions
@@ -289,7 +289,7 @@ ee_as_stars <- function(image,
 #'
 #' For getting more information about exporting data from Earth Engine, take
 #' a look at the
-#' \href{https://developers.google.com/earth-engine/exporting/}{Google
+#' \href{https://developers.google.com/earth-engine/guides/exporting}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
 #' @family image download functions

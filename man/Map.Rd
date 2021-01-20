@@ -77,13 +77,13 @@ using \code{mapview}.
 }
 \details{
 \code{Map} use the Earth Engine method
-\href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
+\href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{
 getMapId} to fetch and return an ID dictionary being used to create
 layers in a \code{mapview} object. Users can specify visualization
 parameters to Map$addLayer by using the visParams argument. Each Earth
 Engine spatial object has a specific format. For
 \code{ee$Image}, the
-\href{https://developers.google.com/earth-engine/image_visualization}{
+\href{https://developers.google.com/earth-engine/guides/image_visualization}{
 parameters} available are:
 
 \tabular{lll}{

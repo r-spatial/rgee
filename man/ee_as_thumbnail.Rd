@@ -39,7 +39,7 @@ An stars or Raster object depending on the \code{raster} argument.
 \description{
 Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
 RasterLayer R object from a
-\href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images}{EE thumbnail image}.
+\href{ https://developers.google.com/earth-engine/guides/image_visualization}{EE thumbnail image}.
 }
 \details{
 \code{vizparams} set up the details of the thumbnail image. With

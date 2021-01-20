@@ -16,10 +16,10 @@ Earth Engine <https://earthengine.google.com/> client library for R. All of the 
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/r-spatial/rgee}
+  \item \url{https://github.com/r-spatial/rgee/}
   \item \url{https://r-spatial.github.io/rgee/}
-  \item \url{https://github.com/google/earthengine-api}
-  \item Report bugs at \url{https://github.com/r-spatial/rgee/issues}
+  \item \url{https://github.com/google/earthengine-api/}
+  \item Report bugs at \url{https://github.com/r-spatial/rgee/issues/}
 }
 
 }
@@ -42,11 +42,11 @@ Other contributors:
   \item Gabriel Carrasco \email{gabriel.carrasco@upch.pe} (\href{https://orcid.org/0000-0002-6945-0419}{ORCID}) [contributor]
   \item Henrik Bengtsson \email{henrikb@braju.com} [contributor]
   \item Jeffrey Hollister \email{hollister.jeff@epa.gov} (Hollister reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
+                        https://github.com/openjournals/joss-reviews/issues/2272/) [reviewer]
   \item Gennadii Donchyts (Gena reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
+                        https://github.com/openjournals/joss-reviews/issues/2272/) [reviewer]
   \item Marius Appel \email{marius.appel@uni-muenster.de} (Appel reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272) [reviewer]
+                        https://github.com/openjournals/joss-reviews/issues/2272/) [reviewer]
 }
 
 }
