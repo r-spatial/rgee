@@ -123,5 +123,5 @@ jobs:
           path: check
 
       - name: Test coverage
-        run: covr::codecov(token = "${{ secrets.CODECOV_TOKEN }}", path = "tests", clean = TRUE, quiet = FALSE)
+        run: covr::codecov()
         shell: Rscript {0}
