@@ -74,6 +74,7 @@ reference:
   - title: "Visualization"
     contents:
       - Map
+      - null-default
 
   - title: "Image download"
     contents:
@@ -154,7 +155,6 @@ reference:
       - ee_utils_gif_save
       - ee_utils_future_value
       - ee_utils_search_display
-      - null-default
 
   - title: "Search dataset"
     contents:

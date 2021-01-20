@@ -15,8 +15,8 @@ vignette: >
 
 - Unit testing enhanced.
 - Fix a bug in Map\$addLayer(..., legend=TRUE) when `eeobject` is an constant image  (i.e. ee\$Image(0)).
-- Add a stop message in `ee_Initialize` to stop the use when ".../rgee/python/" folder does not exist.
-- Add a message when rgee make changes to .Renviron.
+- Stop message in `ee_Initialize` to does not allow the use of rgee when the folder ".../rgee/python/" does not exist.
+- Info messages when rgee make changes to.Renviron.
 - Earth Engine Python API test updated to 0.1.247.
 
 # rgee 1.0.7
