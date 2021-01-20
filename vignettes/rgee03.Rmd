@@ -18,7 +18,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ```
 
 
-**Adapted from [Google Earth Engine Documentation](https://developers.google.com/earth-engine/best_practices).**
+**Adapted from [Google Earth Engine Documentation](https://developers.google.com/earth-engine/best_practices/).**
 
 This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations. 
 
@@ -26,7 +26,7 @@ This doc describes coding practices that are intended to maximize the chance of 
 
 Earth Engine server objects are objects with constructors that start with `ee` (e.g. ee\$Image, ee\$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).
 
-To avoid unintended behavior, do not mix client and server functions in your script as discussed [here](https://developers.google.com/earth-engine/debugging#avoid-mixing) and [here](https://developers.google.com/earth-engine/debugging#browser-lock) and [here](https://developers.google.com/earth-engine/debugging#mapped-functions). See [this page](https://developers.google.com/earth-engine/client_server) for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:
+To avoid unintended behavior, do not mix client and server functions in your script as discussed [here](https://developers.google.com/earth-engine/debugging#avoid-mixing/) and [here](https://developers.google.com/earth-engine/debugging#browser-lock/) and [here](https://developers.google.com/earth-engine/debugging#mapped-functions/). See [this page](https://developers.google.com/earth-engine/client_server/) for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:
 
 
 <img src="thumb_down.png" width=25px>
@@ -128,7 +128,7 @@ Note that you can easily trigger errors by converting a collection to a list unn
 print(table$filter(ee$Filter$eq('country_na', 'Niger'))$first()$getInfo())
 ```
 
-Note that you should [use filters as early as possible in your analysis](https://developers.google.com/earth-engine/best_practices#filter-and-select-first).
+Note that you should [use filters as early as possible in your analysis](https://developers.google.com/earth-engine/best_practices#filter-and-select-first/).
 
 ## Avoid **ee.Algorithms.If()**
 
@@ -166,7 +166,7 @@ filter:
 print(table$filter(ee$Filter$eq('country_na', 'Chad')))
 ```
 
-As shown in [this tutorial](https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions), a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.
+As shown in [this tutorial](https://developers.google.com/earth-engine/tutorial_js_03#ifelse-conditions/), a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.
 
 ## Avoid **reproject()**
 
@@ -195,7 +195,7 @@ Map$addLayer(objectSize, list(min = 1, max = 256), "Size No Reproject", FALSE) +
 Map$addLayer(reprojected, list(min = 1, max = 256), "Size Reproject", FALSE)
 ```
 
-The reason for the discrepancy is because the [scale of analysis](https://developers.google.com/earth-engine/scale#scale-of-analysis) is set by the Code Editor zoom level. By calling `reproject()` you set the scale of the computation instead of the Map display. Use `reproject()` with extreme caution for reasons described in [this doc](https://developers.google.com/earth-engine/projections#reprojecting).
+The reason for the discrepancy is because the [scale of analysis](https://developers.google.com/earth-engine/scale#scale-of-analysis/) is set by the Code Editor zoom level. By calling `reproject()` you set the scale of the computation instead of the Map display. Use `reproject()` with extreme caution for reasons described in [this doc](https://developers.google.com/earth-engine/projections#reprojecting/).
 
 
 ## Filter and **select()** first
@@ -311,7 +311,7 @@ read.csv(exported_stats)
 
 Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export `toAsset`, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don't use a complex geometry if you don't need it).
 
-See the debugging page for examples of using `Export` to resolve [Computation](https://developers.google.com/earth-engine/debugging#timed-out) timed out and [Too many concurrent aggregations](https://developers.google.com/earth-engine/debugging#too-many). See [this doc](https://developers.google.com/earth-engine/exporting) for details on exporting in general.
+See the debugging page for examples of using `Export` to resolve [Computation](https://developers.google.com/earth-engine/debugging#timed-out/) timed out and [Too many concurrent aggregations](https://developers.google.com/earth-engine/debugging#too-many/). See [this doc](https://developers.google.com/earth-engine/exporting/) for details on exporting in general.
 
 ## If you don't need to clip, don't use clip() 
 
@@ -364,7 +364,7 @@ noClipNeeded <- l8sr$
 print(noClipNeeded$getInfo())
 ```
 
-If this computation times out, `Export` it as in [this example](https://developers.google.com/earth-engine/best_practices#use-export).
+If this computation times out, `Export` it as in [this example](https://developers.google.com/earth-engine/best_practices#use-export/).
 
 ## If you need to clip with a complex collection, use **clipToCollection()**
 
@@ -505,7 +505,7 @@ means <- bounds$selfMask()$addBands(lst)$reduceToVectors(
 print(means$limit(10)$getInfo())
 ```
 
-Note that other ways of reducing pixels of one image within zones of another include [reduceConnectedCommponents()](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents) and/or [grouping reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents).
+Note that other ways of reducing pixels of one image within zones of another include [reduceConnectedCommponents()](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/) and/or [grouping reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/).
 
 ## Use **fastDistanceTransform()** for neighborhood operations 
 
@@ -814,7 +814,7 @@ Calling `reduceRegions()` with a very large or complex
 is too large” error. One potential solution is to map `reduceRegion()`
 over the `FeatureCollection` instead. Another potential solution is to
 use a (gasp) for-loop. Although this is strongly discouraged in Earth
-Engine as described [here](https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop), [here](https://developers.google.com/earth-engine/tutorial_js_03#for-loops) and [here](https://developers.google.com/earth-engine/client_server#looping), `reduceRegion()` can be implemented in a for-loop to perform large reductions.
+Engine as described [here](https://developers.google.com/earth-engine/getstarted#mapping-what-to-do-instead-of-a-for-loop/), [here](https://developers.google.com/earth-engine/tutorial_js_03#for-loops/) and [here](https://developers.google.com/earth-engine/client_server#looping/), `reduceRegion()` can be implemented in a for-loop to perform large reductions.
 
 Suppose your objective is to obtain the mean of pixels (or any statistic) in each feature in a `FeatureCollection` for each image in an `ImageCollection`. The following example compares the three approaches previously described:
 

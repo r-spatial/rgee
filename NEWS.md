@@ -60,7 +60,7 @@ same name.
 # rgee 1.0.5
 - Important changes in the low level API to upload raster and vector with GCS. However, high upload API (`sf_as_ee`, `stars_as_ee`, and `raster_as_ee`) continue working in the same way.
 - Add the functions: `ee_utils_create_manifest_image` and `ee_utils_create_manifest_table`
-to help users to create a JSON file with all the upload parameters ("manifest", see https://developers.google.com/earth-engine/image_manifest).
+to help users to create a JSON file with all the upload parameters ("manifest", see https://developers.google.com/earth-engine/image_manifest/).
 - Add the functions: `ee_utils_gif_creator`, `ee_utils_gif_annotate` and
 `ee_utils_gif_save` to help users to read, add text, and save gif files.
 - New | operator inspired in mapview 2.9.0! try: m4 | m5

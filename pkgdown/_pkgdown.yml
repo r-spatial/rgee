@@ -1,5 +1,5 @@
 title: rgee
-url: http://r-spatial.github.io/rgee
+url: https://r-spatial.github.io/rgee/
 template:
   params:
       bootswatch: flatly
@@ -19,7 +19,7 @@ navbar:
       -  text: Best Practices
          href: articles/rgee03.html
       -  text: rgee examples
-         href: http://r-earthengine.github.io/
+         href: https://r-earthengine.github.io/
     - icon: fa-newspaper-o
       text: "news"
       href: news/index.html

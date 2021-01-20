@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
   <a href="https://r-spatial.github.io/rgee/"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" alt="Markdownify" width="187"></a>
-  <a href="http://r-earthengine.github.io/"><img src="https://user-images.githubusercontent.com/16768318/105011770-a0127080-5a3d-11eb-961c-623b23399b01.png" alt="Markdownify" width="200"></a>
+  <a href="https://r-earthengine.github.io/"><img src="https://user-images.githubusercontent.com/16768318/105011770-a0127080-5a3d-11eb-961c-623b23399b01.png" alt="Markdownify" width="200"></a>
   <br>
   Google Earth Engine for R
   <br>
@@ -11,14 +11,14 @@
 
 <p align="center">
 <a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
-<a href="https://github.com/r-spatial/rgee/actions"><img src="https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg" alt="R build status"></a>
-<a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable
+<a href="https://github.com/r-spatial/rgee/actions/"><img src="https://github.com/r-spatial/rgee/workflows/R-CMD-check/badge.svg" alt="R build status"></a>
+<a href="https://www.repostatus.org/#active/"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed."></a>
-<a href="https://codecov.io/gh/r-spatial/rgee"><img src="https://codecov.io/gh/r-spatial/rgee/branch/master/graph/badge.svg" alt="codecov"></a>
-<a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-<a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a>
-<a href="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc"><img src="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg" alt="status"></a>
+<a href="https://codecov.io/gh/r-spatial/rgee/"><img src="https://codecov.io/gh/r-spatial/rgee/branch/master/graph/badge.svg" alt="codecov"></a>
+<a href="https://opensource.org/licenses/Apache-2.0/"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+<a href="https://www.tidyverse.org/lifecycle/#maturing/"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a>
+<a href="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/"><img src="https://joss.theoj.org/papers/aea42ddddd79df480a858bc1e51857fc/status.svg" alt="status"></a>
 <a href="https://cran.r-project.org/package=rgee"><img src="https://www.r-pkg.org/badges/version/rgee" alt="CRAN
 status"></a>
 <a href="https://doi.org/10.5281/zenodo.3945409"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.3945409.svg" alt="DOI"></a>
@@ -98,7 +98,7 @@ remotes::install_github("r-spatial/rgee")
 rgee::ee_install()
 ```
 
-If you are a Windows user **reticulate requires that uses miniconda/anaconda**. **The use of `rgee::ee_install()` is not mandatory,** you can count on with your own custom installation. This would be also allowed. If you are a Rstudio v.1.4 > user, this [tutorial](https://github.com/r-spatial/rgee/tree/help/rstudio) will help you to properly set a Python Environment with your R session without use `rgee::ee_install()`. Take into account that the Python Environment you set must have installed the Earth Engine Python API and Numpy.
+If you are a Windows user **reticulate requires that uses miniconda/anaconda**. **The use of `rgee::ee_install()` is not mandatory,** you can count on with your own custom installation. This would be also allowed. If you are a Rstudio v.1.4 > user, this [tutorial](https://github.com/r-spatial/rgee/tree/help/rstudio/) will help you to properly set a Python Environment with your R session without use `rgee::ee_install()`. Take into account that the Python Environment you set must have installed the Earth Engine Python API and Numpy.
 
 After install `rgee`, you might use the function below for checking the status of rgee.
 
@@ -120,7 +120,7 @@ Also, consider looking at the [setup section](https://r-spatial.github.io/rgee/a
 
 ## Hello World
 
-### 1. Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api))
+### 1. Compute the trend of night-time lights ([JS version](https://github.com/google/earthengine-api/))
 
 Authenticate and Initialize the Earth Engine R API.
 
@@ -138,7 +138,7 @@ createTimeBand <-function(img) {
 }
 ```
 
-Map the time band creation helper over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS).
+Map the time band creation helper over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/).
 
 ``` r
 collection <- ee$
@@ -193,7 +193,7 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 ```
 
 Map each image from 2001 to extract the monthly precipitation (Pr) from the [Terraclimate
-dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE)
+dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/)
 
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>% 
@@ -228,7 +228,7 @@ ee_nc_rain %>%
   <img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width=80%>
 </p>
 
-### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation))
+### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/))
 
 Install and load `sf`, after that, initialize the Earth Engine R API.
 
@@ -360,12 +360,12 @@ animation %>%
 
 ## Quick Start User's Guide for rgee 
 
-<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1eng.pdf"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a>
-<a href="http://amazeone.com.br/barebra/pandora/rgeebookT1.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
+<a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a>
+<a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a>
 <a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
 
 **Created by:**
-- EN and POR: Andres Luiz Lima Costa <http://amazeone.com.br/index.php>
+- EN and POR: Andres Luiz Lima Costa <https://bit.ly/3p1DFm9>
 - SPA: Antony Barja Ingaruca <https://barja8.github.io/>
 
 ## Code of Conduct
@@ -407,13 +407,14 @@ A BibTeX entry for LaTeX users is
 
 First off, we would like to offer an **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
 
-  - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager)** 
-  - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup)**
-  - **[geeadd - Samapriya Roy](https://github.com/samapriya/gee_asset_manager_addon)**  
-  - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee)**
-  - **[geetools - Rodrigo E. Principe](https://github.com/gee-community/gee_tools)**
-  - **[landsat-extract-gee - Loïc Dutrieux](https://github.com/loicdtx/landsat-extract-gee)**
-  - **[earthEngineGrabR - JesJehle](https://github.com/JesJehle/earthEngineGrabR)**
-  - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf)**
-  - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars)**
-  - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes)**
+  - **[gee\_asset\_manager - Lukasz Tracewski](https://github.com/tracek/gee_asset_manager/)** 
+  - **[geeup - Samapriya Roy](https://github.com/samapriya/geeup/)**
+  - **[geeadd - Samapriya Roy](https://github.com/samapriya/gee_asset_manager_addon/)**  
+  - **[cartoee - Kel Markert](https://github.com/KMarkert/cartoee/)**
+  - **[geetools - Rodrigo E. Principe](https://github.com/gee-community/gee_tools/)**
+  - **[landsat-extract-gee - Loïc Dutrieux](https://github.com/loicdtx/landsat-extract-gee/)**
+  - **[earthEngineGrabR - JesJehle](https://github.com/JesJehle/earthEngineGrabR/)**
+  - **[sf - Edzer Pebesma](https://github.com/r-spatial/sf/)**
+  - **[stars - Edzer Pebesma](https://github.com/r-spatial/stars/)**
+  - **[gdalcubes - Marius Appel](https://github.com/appelmar/gdalcubes/)**
+/

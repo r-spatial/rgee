@@ -1,15 +1,15 @@
 # Contributing to rgee
 
-<!-- This CONTRIBUTING.md is adapted from https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c -->
+<!-- This CONTRIBUTING.md is adapted from https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c/ -->
 
 First of all, thanks for considering contributing to rgee! 👍 It's people like you that make it rewarding for us - the project maintainers - to work on rgee. 😊
 
 rgee is an open source project, maintained by people who care. We are not directly funded to do so.
 
-[repo]: https://github.com/r-spatial/rgee
-[issues]: https://github.com/r-spatial/rgee/issues
-[new_issue]: https://github.com/r-spatial/rgee/issues/new
-[website]: https://r-spatial.github.io/rgee
+[repo]: https://github.com/r-spatial/rgee/
+[issues]: https://github.com/r-spatial/rgee/issues/
+[new_issue]: https://github.com/r-spatial/rgee/issues/new/
+[website]: https://r-spatial.github.io/rgee/
 [citation]: https://r-spatial.github.io/rgee/authors.html
 [email]: csaybar@gmail.com
 
@@ -56,7 +56,7 @@ Noticed a typo on the website? Think a function could use a better example? Good
 
 #### The website
 
-[This website][website] is generated with [`pkgdown`](http://pkgdown.r-lib.org/). That means we don't have to write any html: content is pulled together from documentation in the code, vignettes, [Markdown](https://guides.github.com/features/mastering-markdown/) files, the package `DESCRIPTION` and `_pkgdown.yml` settings. If you know your way around `pkgdown`, you can [propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to improve documentation. If not, [report an issue][new_issue] and we can point you in the right direction.
+[This website][website] is generated with [`pkgdown`](https://pkgdown.r-lib.org/). That means we don't have to write any html: content is pulled together from documentation in the code, vignettes, [Markdown](https://guides.github.com/features/mastering-markdown/) files, the package `DESCRIPTION` and `_pkgdown.yml` settings. If you know your way around `pkgdown`, you can [propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to improve documentation. If not, [report an issue][new_issue] and we can point you in the right direction.
 
 #### Function documentation
 
@@ -83,4 +83,4 @@ We try to follow the [GitHub flow](https://guides.github.com/introduction/flow/)
 * Document your code (see function documentation above).
 * Check your code with `devtools::check()` and aim for 0 errors and warnings.
 5. Commit and push your changes.
-6. Submit a [pull request](https://guides.github.com/activities/forking/#making-a-pull-request).
+6. Submit a [pull request](https://guides.github.com/activities/forking/#making-a-pull-request/).

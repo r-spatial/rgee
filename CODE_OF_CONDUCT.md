@@ -1,7 +1,7 @@
 # Contributor Covenant Code of Conduct
 
 <!-- This CODE_OF_CONDUCT.md is adapted from 
-https://github.com/Dainanahan/dbparser/commit/474e50a10bb1e3e23ce6e5ec703ca7ba8ebd4adf#diff-a1ee87dafebc22cbd96979f1b2b7e837-->
+https://github.com/ropensci/dbparser/commit/474e50a10bb1e3e23ce6e5ec703ca7ba8ebd4adf#diff-a1ee87dafebc22cbd96979f1b2b7e837/-->
 
 ## Our Pledge
 
@@ -52,6 +52,6 @@ Project maintainers who do not follow or enforce the Code of Conduct in good fai
 This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4,
 available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.html 
 
-[homepage]: https://www.contributor-covenant.org
+[homepage]: https://www.contributor-covenant.org/
 
-For answers to common questions about this code of conduct, see https://www.contributor-covenant.org/faq
+For answers to common questions about this code of conduct, see https://www.contributor-covenant.org/faq/

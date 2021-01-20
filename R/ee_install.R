@@ -57,7 +57,7 @@ ee_install <- function(py_env = "rgee",
       "2. rgee::ee_install_set_pyenv(py_path = \"YOUR_PYTHON_PATH_GOES_HERE\")",
       "3. Restart your system.",
       bold("- Using Rstudio 1.4:"),
-      "   https://github.com/r-spatial/rgee/tree/help/rstudio",
+      "   https://github.com/r-spatial/rgee/tree/help/rstudio/",
       sep = "\n"
     )
     message(text)

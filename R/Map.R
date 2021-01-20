@@ -62,13 +62,13 @@
 #'
 #' @details
 #' `Map` use the Earth Engine method
-#' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid}{
+#' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{
 #' getMapId} to fetch and return an ID dictionary being used to create
 #' layers in a \code{mapview} object. Users can specify visualization
 #' parameters to Map$addLayer by using the visParams argument. Each Earth
 #' Engine spatial object has a specific format. For
 #' \code{ee$Image}, the
-#' \href{https://developers.google.com/earth-engine/image_visualization}{
+#' \href{https://developers.google.com/earth-engine/image_visualization/}{
 #' parameters} available are:
 #'
 #' \tabular{lll}{
@@ -231,7 +231,7 @@ ee_setCenter <- function(lon = 0, lat = 0, zoom = NULL) {
 #' level is specified, it will be predicted according to the
 #' bounds of the specified Earth Engine object.
 #'
-#' https://developers.google.com/earth-engine/api_docs#map.centerobject
+#' https://developers.google.com/earth-engine/api_docs#map.centerobject/
 #' @noRd
 ee_centerObject <- function(eeObject,
                             zoom = NULL,
@@ -291,7 +291,7 @@ ee_centerObject <- function(eeObject,
 }
 
 #' Adds a given EE object to the map as a layer.
-#' https://developers.google.com/earth-engine/api_docs#map.addlaye
+#' https://developers.google.com/earth-engine/api_docs#map.addlayer/
 #' @noRd
 ee_addLayer <- function(eeObject,
                         visParams = NULL,
@@ -362,7 +362,7 @@ ee_addLayer <- function(eeObject,
 }
 
 #' Adds a given ee$ImageCollection to the map as a layer.
-#' https://developers.google.com/earth-engine/api_docs#map.addlayer
+#' https://developers.google.com/earth-engine/api_docs#map.addlayer/
 #' @noRd
 ee_addLayers <- function(eeObject,
                          visParams = NULL,

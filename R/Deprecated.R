@@ -292,7 +292,7 @@ find_eedataset <- function() {
   if (!requireNamespace("httr", quietly = TRUE)) {
     stop("package httr required, please install it first")
   }
-  git_repo <- "https://api.github.com/repos/csaybar/Earth-Engine-Datasets-List"
+  git_repo <- "https://api.github.com/repos/csaybar/Earth-Engine-Datasets-List/"
   req <- httr::GET(sprintf("%s/git/trees/master?recursive=1", git_repo))
   httr::stop_for_status(req)
   filelist <- lapply(httr::content(req)$tree, "[", "path")

@@ -402,7 +402,7 @@ ee_utils_create_json <- function(x) {
 #'
 #' Create a manifest to upload a GeoTIFF to Earth Engine assets folder. The
 #' "manifest" is simply a JSON file which describe all the upload parameters. See
-#' \url{https://developers.google.com/earth-engine/image_manifest} to get more
+#' \url{https://developers.google.com/earth-engine/image_manifest/} to get more
 #' details.
 #'
 #' @param gs_uri Character. GCS full path of the image to upload to Earth Engine assets
@@ -496,7 +496,7 @@ ee_utils_create_manifest_image <- function(gs_uri,
 #'
 #' Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
 #' "manifest" is simply a JSON file which describe all the upload parameters. See
-#' \url{https://developers.google.com/earth-engine/image_manifest} to get more
+#' \url{https://developers.google.com/earth-engine/image_manifest/} to get more
 #' details.
 #'
 #' @param gs_uri Character. GCS full path of the table to upload to Earth Engine assets

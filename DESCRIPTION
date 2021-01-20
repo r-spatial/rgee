@@ -71,18 +71,18 @@ Authors@R:
              role = c("rev"),
              email = "hollister.jeff@epa.gov",
              comment = "Hollister reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272"),
+                        https://github.com/openjournals/joss-reviews/issues/2272/"),
       person(given = "Gennadii",
              family = "Donchyts",
              role = c("rev"),
              comment = "Gena reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272"),
+                        https://github.com/openjournals/joss-reviews/issues/2272/"),
       person(given = "Marius",
              family = "Appel",
              role = c("rev"),
              email = "marius.appel@uni-muenster.de",
              comment = "Appel reviewed the package for JOSS, see 
-                        https://github.com/openjournals/joss-reviews/issues/2272"))
+                        https://github.com/openjournals/joss-reviews/issues/2272/"))
 Description: Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
     modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
     spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
@@ -124,8 +124,8 @@ Suggests:
     knitr,
     rmarkdown,
     png
-URL: https://github.com/r-spatial/rgee, https://r-spatial.github.io/rgee/, https://github.com/google/earthengine-api
-BugReports: https://github.com/r-spatial/rgee/issues
+URL: https://github.com/r-spatial/rgee/, https://r-spatial.github.io/rgee/, https://github.com/google/earthengine-api/
+BugReports: https://github.com/r-spatial/rgee/issues/
 VignetteBuilder: knitr
 Language: en-US
 Config/reticulate:

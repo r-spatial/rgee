@@ -1,25 +1,25 @@
 #' Convenience functions for working with spatial objects and leaflet maps
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_getCallMethods <- function(map) {
   vapply(map$x$calls, "[[", "method", FUN.VALUE = "")
 }
 
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_getLayerControlEntriesFromMap <- function(map) {
   grep(pattern = "addLayersControl", x = ee_getCallMethods(map), fixed = TRUE,
        useBytes = TRUE)
 }
 
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_getCallEntryFromMap <- function(map, call) {
   grep(call, ee_getCallMethods(map), fixed = TRUE, useBytes = TRUE)
 }
 
 # Add leaflet control button to map ---------------------------------------
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   ind <- ee_getCallEntryFromMap(map, call = "addLayersControl")
@@ -49,7 +49,7 @@ ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
 
 
 #' Get layer names of leaflet map ------------------------------------------
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_getLayerNamesFromMap <- function(map) {
   len <- ee_getLayerControlEntriesFromMap(map)
@@ -60,7 +60,7 @@ ee_getLayerNamesFromMap <- function(map) {
 
 
 # Add leaflet control button to map ---------------------------------------
-#' @author \href{https://github.com/tim-salabim}{Tim Appelhans}
+#' @author \href{https://github.com/tim-salabim/}{Tim Appelhans}
 #' @noRd
 ee_getLayerControlEntriesFromMap <- function(map) {
   grep(

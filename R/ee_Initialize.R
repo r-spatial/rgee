@@ -380,7 +380,7 @@ ee_create_credentials_drive <- function(email) {
 #' @details
 #' *.json is the authentication file you have downloaded
 #' from your Google Project
-#' (https://console.cloud.google.com/apis/credentials/serviceaccountkey).
+#' (https://console.cloud.google.com/apis/credentials/serviceaccountkey/).
 #' Is necessary to save it (manually) inside the folder ~/.R/earthengine/USER/.
 #' @noRd
 ee_create_credentials_gcs <- function(email) {
@@ -404,9 +404,9 @@ ee_create_credentials_gcs <- function(email) {
       sprintf("Unable to find a service account key (SAK) file in: %s",  bold(ee_path_user)),
       "Please, download and save the key manually on the path mentioned",
       "before. A compressible tutorial to obtain their SAK file is available in:",
-      "> https://github.com/r-spatial/rgee/tree/help/gcs",
-      "> https://cloud.google.com/iam/docs/creating-managing-service-account-keys",
-      "> https://console.cloud.google.com/apis/credentials/serviceaccountkey",
+      "> https://github.com/r-spatial/rgee/tree/help/gcs/",
+      "> https://cloud.google.com/iam/docs/creating-managing-service-account-keys/",
+      "> https://console.cloud.google.com/apis/credentials/serviceaccountkey/",
       bold("Until you do not save a SKA file, the following functions will not work:"),
       "- rgee::ee_gcs_to_local()",
       "- ee_as_raster(..., via = \"gcs\")",
@@ -706,7 +706,7 @@ ee_init_message <- function() {
       bold("rgee::ee_install()")
     ),
     "session to see changes. See more than 300+ examples of rgee at",
-    crayon::bold("http://r-earthengine.github.io/."),
+    crayon::bold("https://r-earthengine.github.io/."),
     "\nrgee will need to create the environmental variable \"EARTHENGINE_INIT_MESSAGE\"",
     "in your system to avoid you recieve this message again.",
     "",

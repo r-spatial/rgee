@@ -184,7 +184,7 @@ ee_html_title_rstudio <- function(title) {
 #' Create description - R Documentation Simple
 #' @noRd
 ee_html_description_simple <- function(descrp) {
-  api_ref <- "https://developers.google.com/earth-engine/api_docs"
+  api_ref <- "https://developers.google.com/earth-engine/api_docs/"
   gee_message <- sprintf(
     ' Documentation obtained from this <a href="%s">link</a>.',
     api_ref
@@ -200,7 +200,7 @@ ee_html_description_simple <- function(descrp) {
 #' Create description - R Documentation Simple
 #' @noRd
 ee_html_description_rstudio <- function(descrp) {
-  api_ref <- "https://developers.google.com/earth-engine/api_docs"
+  api_ref <- "https://developers.google.com/earth-engine/api_docs/"
   gee_message <- sprintf(
     ' Documentation obtained from this <a href="%s">link</a>.',
     api_ref

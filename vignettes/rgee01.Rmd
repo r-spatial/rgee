@@ -23,7 +23,7 @@ vignette: >
  * **Python client library**
  * **R client library**   
 
-This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and development [web applications](https://github.com/MVanDenburg92/RGEE_Shiny). 
+This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and development [web applications](https://github.com/MVanDenburg92/RGEE_Shiny/). 
 
 
 ```{r, setup, include=FALSE}
@@ -59,11 +59,11 @@ The main components of Earth Engine are:
 
 Users must considerate that the Earth Engine API and advanced Earth Engine functionality **are experimental and subject to change**. Access is limited and requires requesting access via the [form](https://earthengine.google.com/signup/). See [Earth Engine official website](https://earthengine.google.com/) to obtain more information.
 
-<iframe src="https://www.youtube.com/embed/gKGOeTFHnKY" styles="max-width: 70%;height: 500px;" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://www.youtube.com/embed/gKGOeTFHnKY/" styles="max-width: 70%;height: 500px;" frameborder="0" allowfullscreen></iframe>
 
 ## 5. Why rgee instead of code editor (Javascript)?
 
-A short comparison based on [Tyler Erickson presentation](https://docs.google.com/presentation/d/1MVVeyCdm-FrMVRPop6wB3iyd85TAlwB-F9ygTQZ8S1w/pub?slide=id.g1e419debf0_1_205).
+A short comparison based on [Tyler Erickson presentation](https://docs.google.com/presentation/d/1MVVeyCdm-FrMVRPop6wB3iyd85TAlwB-F9ygTQZ8S1w/pub?slide=id.g1e419debf0_1_205/).
 
 <center>
 <table style="border-collapse:collapse;border-color:#ccc;border-spacing:0;border:none" class="tg"><thead><tr><th style="background-color:#f0f0f0;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;font-weight:bold;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">Code Editor</th><th style="background-color:#f0f0f0;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;font-weight:bold;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">R</th></tr></thead><tbody><tr><td style="background-color:#fff;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Easy to get started</td><td style="background-color:#f9f9f9;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Easy to share code between scripts.</td></tr><tr><td style="background-color:#fff;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Trivial to share scripts</td><td style="background-color:#f9f9f9;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Easier transition to a web application (<span style="font-weight:bold">Shiny</span>).</td></tr><tr><td style="background-color:#fff;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Built in authentication</td><td style="background-color:#f9f9f9;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">An I/O API more friendly with R users.</td></tr><tr><td style="background-color:#fff;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal"><span style="font-weight:bold;color:#FE0000">Limited input/output functionality</span></td><td style="background-color:#f9f9f9;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal">Many, many plotting options</td></tr><tr><td style="background-color:#fff;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal"><span style="font-weight:bold;color:#FE0000">Integration with other JS libraries is not possible</span></td><td style="background-color:#f9f9f9;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;text-align:left;vertical-align:top;word-break:normal"><span style="font-weight:bold;color:#FE0000">Some assembly (&amp; maintenance) required!.</span></td></tr></tbody></table>
@@ -119,7 +119,7 @@ This function will realize the following six tasks:
   
   6. Interactive menu to confirm if restart the R session to see changes.
 
-**However, the use of rgee::ee_install() is not mandatory. You can count on with your own custom installation. This would be also allowed.** If you are a Rstudio v.1.4 > user, this [**tutorial**](https://github.com/r-spatial/rgee/tree/help/rstudio) will help you to properly set a Python Environment with your R session without **rgee::ee_install()**.  Take into account that the Python Environment you set must have installed the  [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and [Numpy](https://pypi.org/project/numpy/).
+**However, the use of rgee::ee_install() is not mandatory. You can count on with your own custom installation. This would be also allowed.** If you are a Rstudio v.1.4 > user, this [**tutorial**](https://github.com/r-spatial/rgee/tree/help/rstudio/) will help you to properly set a Python Environment with your R session without **rgee::ee_install()**.  Take into account that the Python Environment you set must have installed the  [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and [Numpy](https://pypi.org/project/numpy/).
 
 By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span>
 are only needed to move data from Google Drive and Google Cloud Storage to your local environment.
@@ -162,7 +162,7 @@ ee_Initialize(email = 'csaybar@gmail.com', drive = TRUE, gcs = TRUE)
 If the Google account is verified and the permission is granted, you
 will be directed to an authentication token. Copy this token and paste
 it in the emerging GUI. Unlike Earth Engine and Google Drive, Google Cloud 
-Storage need to set up its credential manually ([link1](http://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) and [link2](https://github.com/r-spatial/rgee/tree/help/gcs)). In all cases, the users credentials always will be stored in: 
+Storage need to set up its credential manually ([link1](https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) and [link2](https://github.com/r-spatial/rgee/tree/help/gcs/)). In all cases, the users credentials always will be stored in: 
 
 ``` {r eval = FALSE}
 ee_get_earthengine_path()

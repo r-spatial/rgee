@@ -94,7 +94,7 @@ ee_get_assethome <- function() {
 #' @details
 #' \code{system:time_start} set the start period of data acquisition while
 #' \code{system:time_end} does the same for the end period. See the
-#' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+#' \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 #' for getting more information.
 #'
 #' @return An List object with the elements: id, time_start and time_end
@@ -152,7 +152,7 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #' @details
 #' \code{system:time_start} set the start period of data acquisition while
 #' \code{system:time_end} does the same for the end period. See the
-#' \href{https://developers.google.com/earth-engine/glossary}{Earth Engine glossary}
+#' \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 #' for getting more information.
 #'
 #' @return A data.frame with the columns: \code{id} (ID of the image),

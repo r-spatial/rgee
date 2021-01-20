@@ -73,7 +73,7 @@
 #'
 #' For getting more information about exporting data from Earth Engine, take
 #' a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google
+#' \href{https://developers.google.com/earth-engine/exporting/}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
 #' @family image download functions
@@ -289,7 +289,7 @@ ee_as_stars <- function(image,
 #'
 #' For getting more information about exporting data from Earth Engine, take
 #' a look at the
-#' \href{https://developers.google.com/earth-engine/exporting}{Google
+#' \href{https://developers.google.com/earth-engine/exporting/}{Google
 #' Earth Engine Guide - Export data}.
 #' @return A RasterStack object
 #' @family image download functions
@@ -864,7 +864,7 @@ ee_approx_number_pixels <- function(region, geotransform) {
 #' If one or more futures is unresolved, then this function blocks until all
 #' queried futures are resolved.
 #'
-#' @author Henrik Bengtsson <https://github.com/HenrikBengtsson>
+#' @author Henrik Bengtsson <https://github.com/HenrikBengtsson/>
 #'
 #' @param future, x A Future, an environment, a list, or a list environment.
 #'

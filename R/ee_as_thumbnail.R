@@ -3,7 +3,7 @@
 #'
 #' Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
 #' RasterLayer R object from a
-#' \href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images}{EE thumbnail image}.
+#' \href{https://developers.google.com/earth-engine/image_visualization#thumbnail-images/}{EE thumbnail image}.
 #'
 #' @param image EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
@@ -141,7 +141,7 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
     message_deprecated <- c(
       "NOTE: ee_as_thumbnail can not determine the level of the scale. Is ",
       "possible that the results present geometric offset. ",
-      "See https://developers.google.com/earth-engine/guides/scale to get ",
+      "See https://developers.google.com/earth-engine/guides/scale/ to get ",
       "more details."
     )
     message(message_deprecated)
