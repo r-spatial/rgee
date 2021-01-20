@@ -200,7 +200,7 @@
 <h3 class="hasAnchor">
 <a href="#be-careful-with-eedate" class="anchor"></a>3. Be careful with <strong>ee$Date</strong>
 </h3>
-<p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R only support integer data type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, this range is extremely insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time/">UNIX epoch</a>.</p>
+<p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R only support integer data type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, this range is extremely insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX epoch</a>.</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a>my_date.getInfo()</span>
