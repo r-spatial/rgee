@@ -208,7 +208,7 @@ R
   <span class="va">year</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'year'</span><span class="op">)</span><span class="op">$</span><span class="fu">subtract</span><span class="op">(</span><span class="fl">1991L</span><span class="op">)</span>
   <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">$</span><span class="fu">byte</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">addBands</span><span class="op">(</span><span class="va">img</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p>Map the time band creation helper over the <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS">night-time lights collection</a>.</p>
+<p>Map the time band creation helper over the <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/">night-time lights collection</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">collection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span>
   <span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'NOAA/DMSP-OLS/NIGHTTIME_LIGHTS'</span><span class="op">)</span><span class="op">$</span>
@@ -247,7 +247,7 @@ R
 <p>Read the <code>nc</code> shapefile.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE">Terraclimate dataset</a></p>
+<p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/">Terraclimate dataset</a></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">terraclimate</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -272,7 +272,7 @@ R
 </div>
 <div id="3-create-an-ndvi-animation-js-version" class="section level3">
 <h3 class="hasAnchor">
-<a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation">JS version</a>)</h3>
+<a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/">JS version</a>)</h3>
 <p>Install and load <code>sf</code>, after that, initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span>
@@ -414,18 +414,19 @@ R
 <a href="#credits" class="anchor"></a>Credits</h2>
 <p>First off, we would like to offer an <strong>special thanks</strong> <span class="emoji" data-emoji="raised_hands">🙌</span> <span class="emoji" data-emoji="clap">👏</span> to <a href="https://github.com/jdbcode"><strong>Justin Braaten</strong></a> for his wise and helpful comments in the whole development of <strong>rgee</strong>. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:</p>
 <ul>
-<li><strong><a href="https://github.com/tracek/gee_asset_manager">gee_asset_manager - Lukasz Tracewski</a></strong></li>
-<li><strong><a href="https://github.com/samapriya/geeup">geeup - Samapriya Roy</a></strong></li>
+<li><strong><a href="https://github.com/tracek/gee_asset_manager/">gee_asset_manager - Lukasz Tracewski</a></strong></li>
+<li><strong><a href="https://github.com/samapriya/geeup/">geeup - Samapriya Roy</a></strong></li>
 <li>
-<strong><a href="https://github.com/samapriya/gee_asset_manager_addon">geeadd - Samapriya Roy</a></strong><br>
+<strong><a href="https://github.com/samapriya/gee_asset_manager_addon/">geeadd - Samapriya Roy</a></strong><br>
 </li>
-<li><strong><a href="https://github.com/KMarkert/cartoee">cartoee - Kel Markert</a></strong></li>
-<li><strong><a href="https://github.com/gee-community/gee_tools">geetools - Rodrigo E. Principe</a></strong></li>
-<li><strong><a href="https://github.com/loicdtx/landsat-extract-gee">landsat-extract-gee - Loïc Dutrieux</a></strong></li>
-<li><strong><a href="https://github.com/JesJehle/earthEngineGrabR">earthEngineGrabR - JesJehle</a></strong></li>
-<li><strong><a href="https://github.com/r-spatial/sf">sf - Edzer Pebesma</a></strong></li>
-<li><strong><a href="https://github.com/r-spatial/stars">stars - Edzer Pebesma</a></strong></li>
-<li><strong><a href="https://github.com/appelmar/gdalcubes">gdalcubes - Marius Appel</a></strong></li>
+<li><strong><a href="https://github.com/KMarkert/cartoee/">cartoee - Kel Markert</a></strong></li>
+<li><strong><a href="https://github.com/gee-community/gee_tools/">geetools - Rodrigo E. Principe</a></strong></li>
+<li><strong><a href="https://github.com/loicdtx/landsat-extract-gee/">landsat-extract-gee - Loïc Dutrieux</a></strong></li>
+<li><strong><a href="https://github.com/JesJehle/earthEngineGrabR/">earthEngineGrabR - JesJehle</a></strong></li>
+<li><strong><a href="https://github.com/r-spatial/sf/">sf - Edzer Pebesma</a></strong></li>
+<li><strong><a href="https://github.com/r-spatial/stars/">stars - Edzer Pebesma</a></strong></li>
+<li>
+<strong><a href="https://github.com/appelmar/gdalcubes/">gdalcubes - Marius Appel</a></strong> /</li>
 </ul>
 </div>
 
