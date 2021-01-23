@@ -263,20 +263,20 @@ necessaries to locate the file into google cloud storage are obtained from
 <span class='va'>mean_l5</span> <span class='op'>&lt;-</span> <span class='va'>mean_l5</span><span class='op'>$</span><span class='fu'>reproject</span><span class='op'>(</span>crs <span class='op'>=</span> <span class='st'>"EPSG:4326"</span>, scale <span class='op'>=</span> <span class='fl'>500</span><span class='op'>)</span>
 <span class='va'>mean_l5_Amarakaeri</span> <span class='op'>&lt;-</span> <span class='va'>mean_l5</span><span class='op'>$</span><span class='fu'>clip</span><span class='op'>(</span><span class='va'>ee_ROI</span><span class='op'>)</span>
 
-<span class='co'>## Move results from Earth Engine to Drive</span>
-<span class='co'># task_img &lt;- ee_image_to_gcs(</span>
-<span class='co'>#     image = mean_l5_Amarakaeri,</span>
-<span class='co'>#     bucket = "rgee_dev",</span>
-<span class='co'>#    fileFormat = "GEO_TIFF",</span>
-<span class='co'>#     region = ee_ROI,</span>
-<span class='co'>#     fileNamePrefix = "my_image_demo"</span>
-<span class='co'>#)</span>
+<span class='co'># Move results from Earth Engine to Drive</span>
+<span class='va'>task_img</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_image_to_gcs.html'>ee_image_to_gcs</a></span><span class='op'>(</span>
+   image <span class='op'>=</span> <span class='va'>mean_l5_Amarakaeri</span>,
+   bucket <span class='op'>=</span> <span class='st'>"rgee_dev"</span>,
+   fileFormat <span class='op'>=</span> <span class='st'>"GEO_TIFF"</span>,
+   region <span class='op'>=</span> <span class='va'>ee_ROI</span>,
+   fileNamePrefix <span class='op'>=</span> <span class='st'>"my_image_demo"</span>
+<span class='op'>)</span>
 
-<span class='co'># task_img$start()</span>
-<span class='co'># ee_monitoring(task_img)</span>
+<span class='va'>task_img</span><span class='op'>$</span><span class='fu'>start</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='va'>task_img</span><span class='op'>)</span>
 
-<span class='co'>## Move results from Drive to local</span>
-<span class='co'># img &lt;- ee_gcs_to_local(task = task_img)</span>
+<span class='co'># Move results from Drive to local</span>
+<span class='va'>img</span> <span class='op'>&lt;-</span> <span class='fu'>ee_gcs_to_local</span><span class='op'>(</span>task <span class='op'>=</span> <span class='va'>task_img</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

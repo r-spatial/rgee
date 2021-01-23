@@ -311,17 +311,7 @@ default 3.</p></li>
   name <span class='op'>=</span> <span class='st'>"SF"</span>
 <span class='op'>)</span>
 
-<span class='co'># Case 5: mapview + EarthEnginemap</span>
-<span class='co'># library(mapview)</span>
-<span class='co'># library(sf)</span>
-<span class='co'># nc &lt;- st_read(system.file("shp/arequipa.shp", package="rgee"))</span>
-<span class='co'># mapview(nc, m2)</span>
-
-<span class='co'># Case 6: mapedit</span>
-<span class='co'># library(mapedit)</span>
-<span class='co'># my_geometry &lt;- m4 %&gt;% editMap()</span>
-
-<span class='co'># Case 7: ImageCollection</span>
+<span class='co'># Case 5: ImageCollection</span>
 <span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
@@ -334,7 +324,7 @@ default 3.</p></li>
 <span class='va'>m5</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span><span class='va'>ee_s2</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>m5</span>
 
-<span class='co'># Case 8: Map comparison</span>
+<span class='co'># Case 6: Map comparison</span>
 <span class='va'>image</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>Image</span><span class='op'>(</span><span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class='op'>)</span>
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
 <span class='va'>m_ndvi</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
@@ -346,7 +336,7 @@ default 3.</p></li>
 <span class='va'>m6</span> <span class='op'>&lt;-</span> <span class='va'>m4</span> <span class='op'>|</span> <span class='va'>m_ndvi</span>
 <span class='va'>m6</span>
 
-<span class='co'># Case 9: digging up the metadata</span>
+<span class='co'># Case 7: digging up the metadata</span>
 <span class='va'>m6</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
 <span class='va'>m5</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
 <span class='op'>}</span>

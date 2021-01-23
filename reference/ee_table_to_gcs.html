@@ -251,16 +251,16 @@ that may have been deprecated such as 'outputBucket'.</p></td>
   <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='fu'>Feature</span><span class='op'>(</span><span class='va'>ee_ROI</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name <span class='op'>=</span> <span class='st'>"Amarakaeri"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>)</span>
 
-<span class='co'>#task_vector &lt;- ee_table_to_gcs(</span>
-<span class='co'>#    collection = amk_fc,</span>
-<span class='co'>#    bucket = "rgee_dev",</span>
-<span class='co'>#    fileFormat = "SHP",</span>
-<span class='co'>#    fileNamePrefix = "geom_Amarakaeri"</span>
-<span class='co'>#)</span>
-<span class='co'>#task_vector$start()</span>
-<span class='co'>#ee_monitoring(task_vector) # optional</span>
-<span class='co'>#amk_geom &lt;- ee_gcs_to_local(task = task_vector)</span>
-<span class='co'>#plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)</span>
+<span class='va'>task_vector</span> <span class='op'>&lt;-</span> <span class='fu'>ee_table_to_gcs</span><span class='op'>(</span>
+  collection <span class='op'>=</span> <span class='va'>amk_fc</span>,
+  bucket <span class='op'>=</span> <span class='st'>"rgee_dev"</span>,
+  fileFormat <span class='op'>=</span> <span class='st'>"SHP"</span>,
+  fileNamePrefix <span class='op'>=</span> <span class='st'>"geom_Amarakaeri"</span>
+<span class='op'>)</span>
+<span class='va'>task_vector</span><span class='op'>$</span><span class='fu'>start</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='va'>task_vector</span><span class='op'>)</span> <span class='co'># optional</span>
+<span class='va'>amk_geom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_gcs_to_local.html'>ee_gcs_to_local</a></span><span class='op'>(</span>task <span class='op'>=</span> <span class='va'>task_vector</span><span class='op'>)</span>
+<span class='fu'><a href='https://r-spatial.github.io/stars/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='fu'>sf</span><span class='fu'>::</span><span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>read_sf</a></span><span class='op'>(</span><span class='va'>amk_geom</span><span class='op'>[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>)</span>, border <span class='op'>=</span> <span class='st'>"red"</span>, lwd <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

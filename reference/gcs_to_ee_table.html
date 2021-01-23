@@ -211,22 +211,22 @@ it exists.</p></td>
 <span class='va'>shp_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s.shp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>geozip_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>shp_dir</span><span class='op'>)</span>
 
-<span class='co'># # 3. From local to gcs</span>
-<span class='co'># gcs_filename &lt;- local_to_gcs(</span>
-<span class='co'>#   x = geozip_dir,</span>
-<span class='co'>#   bucket = "rgee_dev" # Insert your own bucket here!</span>
-<span class='co'># )</span>
-<span class='co'>#</span>
-<span class='co'># # 4. Create Table Manifest</span>
-<span class='co'># manifest &lt;- ee_utils_create_manifest_table(</span>
-<span class='co'>#   gs_uri = gcs_filename,</span>
-<span class='co'>#   assetId = assetId</span>
-<span class='co'># )</span>
-<span class='co'>#</span>
-<span class='co'># # 5. From GCS to Earth Engine</span>
-<span class='co'># ee_nc &lt;- gcs_to_ee_table(manifest, overwrite = TRUE)</span>
-<span class='co'># ee_monitoring()</span>
-<span class='co'># Map$addLayer(ee$FeatureCollection(ee_nc))</span>
+<span class='co'># 3. From local to gcs</span>
+<span class='va'>gcs_filename</span> <span class='op'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span><span class='op'>(</span>
+ x <span class='op'>=</span> <span class='va'>geozip_dir</span>,
+ bucket <span class='op'>=</span> <span class='st'>"rgee_dev"</span> <span class='co'># Insert your own bucket here!</span>
+<span class='op'>)</span>
+
+<span class='co'># 4. Create Table Manifest</span>
+<span class='va'>manifest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></span><span class='op'>(</span>
+ gs_uri <span class='op'>=</span> <span class='va'>gcs_filename</span>,
+ assetId <span class='op'>=</span> <span class='va'>assetId</span>
+<span class='op'>)</span>
+
+<span class='co'># 5. From GCS to Earth Engine</span>
+<span class='va'>ee_nc</span> <span class='op'>&lt;-</span> <span class='fu'>gcs_to_ee_table</span><span class='op'>(</span><span class='va'>manifest</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span><span class='va'>ee_nc</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

@@ -308,25 +308,25 @@ table data</a> documentation for more details.</p>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>holePoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>evenOddPoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># # 2. Upload small geometries to EE asset</span>
-<span class='co'># assetId &lt;- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')</span>
-<span class='co'># eex &lt;- sf_as_ee(</span>
-<span class='co'>#   x = toy_poly,</span>
-<span class='co'>#   overwrite = TRUE,</span>
-<span class='co'>#   assetId = assetId,</span>
-<span class='co'>#   via = "getInfo_to_asset")</span>
-<span class='co'># # 3. Upload large geometries to EE asset</span>
-<span class='co'># ee_Initialize(gcs = TRUE)</span>
-<span class='co'># assetId &lt;- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')</span>
-<span class='co'>#  eex &lt;- sf_as_ee(</span>
-<span class='co'>#  x = toy_poly,</span>
-<span class='co'>#  overwrite = TRUE,</span>
-<span class='co'>#  assetId = assetId,</span>
-<span class='co'>#  bucket = 'rgee_dev',</span>
-<span class='co'>#  monitoring = FALSE,</span>
-<span class='co'>#  via = 'gcs_to_asset'</span>
-<span class='co'>#  )</span>
-<span class='co'># ee_monitoring()</span>
+<span class='co'># 2. Upload small geometries to EE asset</span>
+<span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly'</span><span class='op'>)</span>
+<span class='va'>eex</span> <span class='op'>&lt;-</span> <span class='fu'>sf_as_ee</span><span class='op'>(</span>
+ x <span class='op'>=</span> <span class='va'>toy_poly</span>,
+ overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+ assetId <span class='op'>=</span> <span class='va'>assetId</span>,
+ via <span class='op'>=</span> <span class='st'>"getInfo_to_asset"</span><span class='op'>)</span>
+<span class='co'># 3. Upload large geometries to EE asset</span>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly_gcs'</span><span class='op'>)</span>
+<span class='va'>eex</span> <span class='op'>&lt;-</span> <span class='fu'>sf_as_ee</span><span class='op'>(</span>
+  x <span class='op'>=</span> <span class='va'>toy_poly</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  assetId <span class='op'>=</span> <span class='va'>assetId</span>,
+  bucket <span class='op'>=</span> <span class='st'>'rgee_dev'</span>,
+  monitoring <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  via <span class='op'>=</span> <span class='st'>'gcs_to_asset'</span>
+<span class='op'>)</span>
+<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

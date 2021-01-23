@@ -207,6 +207,9 @@ credential will be cached in the path <code>~/.config/earthengine/</code>.</p></
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>No return value, called for initializing the earthengine-api.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>ee_Initialize(...)</code> can manage Google drive and Google
@@ -230,14 +233,6 @@ called <code>~/.config/earthengine/ndef</code>.</p>
 
 <span class='co'># Simple init - Load just the Earth Engine credential</span>
 <span class='fu'>ee_Initialize</span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='co'># Advanced init - Load full credentials</span>
-<span class='co'># ee_Initialize(</span>
-<span class='co'>#   email = "your_email@gmail.com",</span>
-<span class='co'>#   drive = TRUE,</span>
-<span class='co'>#   gcs = TRUE</span>
-<span class='co'># )</span>
-
 <span class='fu'><a href='ee_user_info.html'>ee_user_info</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>

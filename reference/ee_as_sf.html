@@ -340,11 +340,11 @@ Earth Engine Guide - Export data</a>.</p>
 <span class='op'>)</span>
 
 <span class='co'># Download via GCS</span>
-<span class='co'># sf_randomPoints_gcs &lt;- ee_as_sf(</span>
-<span class='co'>#   x = subset,</span>
-<span class='co'>#   via = 'gcs',</span>
-<span class='co'>#   container = 'rgee_dev' #GCS bucket name</span>
-<span class='co'># )</span>
+<span class='va'>sf_randomPoints_gcs</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span>
+ x <span class='op'>=</span> <span class='va'>subset</span>,
+ via <span class='op'>=</span> <span class='st'>'gcs'</span>,
+ container <span class='op'>=</span> <span class='st'>'rgee_dev'</span> <span class='co'>#GCS bucket name</span>
+<span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>

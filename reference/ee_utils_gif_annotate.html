@@ -308,8 +308,8 @@ for background color that annotation text is rendered on.</p></td>
   <span class='fu'>ee_utils_gif_annotate</span><span class='op'>(</span><span class='st'>"created using {magick} + {rgee}"</span>,
                         size <span class='op'>=</span> <span class='fl'>15</span>, font <span class='op'>=</span> <span class='st'>"sans"</span>,location <span class='op'>=</span> <span class='st'>"+70+20"</span><span class='op'>)</span> <span class='op'>-&gt;</span>
   <span class='va'>animation_wtxt</span>
-<span class='va'>animation_wtxt</span>
-<span class='co'># ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")</span>
+<span class='fu'><a href='https://rdrr.io/r/base/gc.html'>gc</a></span><span class='op'>(</span>reset <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='ee_utils_gif_save.html'>ee_utils_gif_save</a></span><span class='op'>(</span><span class='va'>animation_wtxt</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>".gif"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
