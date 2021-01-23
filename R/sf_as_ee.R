@@ -93,27 +93,27 @@
 #' print(holePoly$contains(pt)$getInfo() %>% ee_utils_py_to_r())
 #' print(evenOddPoly$contains(pt)$getInfo() %>% ee_utils_py_to_r())
 #'
-#' # # 2. Upload small geometries to EE asset
-#' # assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')
-#' # eex <- sf_as_ee(
-#' #   x = toy_poly,
-#' #   overwrite = TRUE,
-#' #   assetId = assetId,
-#' #   via = "getInfo_to_asset")
+#' # 2. Upload small geometries to EE asset
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly')
+#' eex <- sf_as_ee(
+#'  x = toy_poly,
+#'  overwrite = TRUE,
+#'  assetId = assetId,
+#'  via = "getInfo_to_asset")
 
-#' # # 3. Upload large geometries to EE asset
-#' # ee_Initialize(gcs = TRUE)
+#' # 3. Upload large geometries to EE asset
+#' ee_Initialize(gcs = TRUE)
 
-#' # assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
-#' #  eex <- sf_as_ee(
-#' #  x = toy_poly,
-#' #  overwrite = TRUE,
-#' #  assetId = assetId,
-#' #  bucket = 'rgee_dev',
-#' #  monitoring = FALSE,
-#' #  via = 'gcs_to_asset'
-#' #  )
-#' # ee_monitoring()
+#' assetId <- sprintf("%s/%s", ee_get_assethome(), 'toy_poly_gcs')
+#' eex <- sf_as_ee(
+#'   x = toy_poly,
+#'   overwrite = TRUE,
+#'   assetId = assetId,
+#'   bucket = 'rgee_dev',
+#'   monitoring = FALSE,
+#'   via = 'gcs_to_asset'
+#' )
+#' ee_monitoring()
 #' }
 #' @export
 sf_as_ee <- function(x,

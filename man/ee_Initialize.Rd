@@ -27,6 +27,9 @@ credential will be cached in the path \code{~/.config/earthengine/}.}
 
 \item{quiet}{Logical. Suppress info messages.}
 }
+\value{
+No return value, called for initializing the earthengine-api.
+}
 \description{
 Authorize rgee to manage Earth Engine resources, Google
 Drive, and Google Cloud Storage. The \code{ee_initialize()} via
@@ -50,14 +53,6 @@ library(rgee)
 
 # Simple init - Load just the Earth Engine credential
 ee_Initialize()
-
-# Advanced init - Load full credentials
-# ee_Initialize(
-#   email = "your_email@gmail.com",
-#   drive = TRUE,
-#   gcs = TRUE
-# )
-
 ee_user_info()
 }
 }

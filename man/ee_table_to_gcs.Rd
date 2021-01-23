@@ -70,16 +70,16 @@ amk_fc <- ee$FeatureCollection(
   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
 )
 
-#task_vector <- ee_table_to_gcs(
-#    collection = amk_fc,
-#    bucket = "rgee_dev",
-#    fileFormat = "SHP",
-#    fileNamePrefix = "geom_Amarakaeri"
-#)
-#task_vector$start()
-#ee_monitoring(task_vector) # optional
-#amk_geom <- ee_gcs_to_local(task = task_vector)
-#plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)
+task_vector <- ee_table_to_gcs(
+  collection = amk_fc,
+  bucket = "rgee_dev",
+  fileFormat = "SHP",
+  fileNamePrefix = "geom_Amarakaeri"
+)
+task_vector$start()
+ee_monitoring(task_vector) # optional
+amk_geom <- ee_gcs_to_local(task = task_vector)
+plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)
 }
 }
 \seealso{

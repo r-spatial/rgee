@@ -15,6 +15,9 @@ and 'gcs' are supported.}
 
 \item{quiet}{logical. Suppress info message}
 }
+\value{
+No return value, called for cleaning Google Drive or Google Cloud Storage container.
+}
 \description{
 Delete all files from a folder (Google Drive) or a bucket
 (Google Cloud Storage). Caution: This will permanently delete

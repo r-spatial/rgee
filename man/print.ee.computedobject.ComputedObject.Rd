@@ -14,6 +14,9 @@
 \item{type}{Character. What to show about the x object?. Three options are
 supported: "json", "simply", "ee_print". By default "simply".}
 }
+\value{
+No return value, called for displaying Earth Engine objects.
+}
 \description{
 print Earth Engine object
 }

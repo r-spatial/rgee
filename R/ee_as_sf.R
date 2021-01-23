@@ -120,11 +120,11 @@
 #' )
 #'
 #' # Download via GCS
-#' # sf_randomPoints_gcs <- ee_as_sf(
-#' #   x = subset,
-#' #   via = 'gcs',
-#' #   container = 'rgee_dev' #GCS bucket name
-#' # )
+#' sf_randomPoints_gcs <- ee_as_sf(
+#'  x = subset,
+#'  via = 'gcs',
+#'  container = 'rgee_dev' #GCS bucket name
+#' )
 #' }
 #' @export
 ee_as_sf <- function(x,

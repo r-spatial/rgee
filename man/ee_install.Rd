@@ -19,6 +19,9 @@ to install. By default \code{rgee::ee_version()}.}
 
 \item{confirm}{Logical. Confirm before restarting R?.}
 }
+\value{
+No return value, called for installing non-R dependencies.
+}
 \description{
 Create an isolated Python virtual environment with all rgee dependencies.
 \code{ee_install} realize the following six (6) tasks:
@@ -38,12 +41,6 @@ for further details.
 \code{reticulate::py_install}.}
 \item{6. }{Interactive menu to confirm if restart the R session to see
 changes.}
-}
-}
-\examples{
-\dontrun{
-# library(rgee)
-# ee_install() #It is just necessary once
 }
 }
 \seealso{

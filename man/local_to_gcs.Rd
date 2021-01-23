@@ -30,8 +30,8 @@ library(stars)
 ee_Initialize(gcs = TRUE)
 
 # # Define an image.
-# tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-# local_to_gcs(x = tif, bucket = 'rgee_dev')
+tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+local_to_gcs(x = tif, bucket = 'rgee_dev')
 }
 }
 \seealso{

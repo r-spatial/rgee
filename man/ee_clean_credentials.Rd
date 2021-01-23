@@ -11,20 +11,15 @@ ee_clean_credentials(email = "not_defined", quiet = FALSE)
 
 \item{quiet}{Logical. Suppress info messages.}
 }
+\value{
+No return value, called for cleaning Google Drive, Google Cloud Storage,
+and/or Earth Engine credentials.
+}
 \description{
 Delete all the credentials according to a specific user. The credentials
 (Google Earth Engine, Google Drive and Google Cloud Storage) are created
 after running successfully \code{ee_Initialize(...)}. They are saved in
 the path \code{rgee::ee_get_earthengine_path()}.
-}
-\examples{
-\dontrun{
-library(rgee)
-
-# ee_clean_credentials()
-# ee_clean_credentials('data.colec.fbf@gmail.com')
-
-}
 }
 \seealso{
 Other ee_clean functions: 

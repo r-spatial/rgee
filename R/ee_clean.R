@@ -7,15 +7,9 @@
 #'
 #' @param email Character. Earth Engine user (e.g. `data.colec.fbf`).
 #' @param quiet Logical. Suppress info messages.
+#' @return No return value, called for cleaning Google Drive, Google Cloud Storage,
+#' and/or Earth Engine credentials.
 #' @family ee_clean functions
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#'
-#' # ee_clean_credentials()
-#' # ee_clean_credentials('data.colec.fbf@gmail.com')
-#'
-#' }
 #' @export
 ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
@@ -53,11 +47,7 @@ ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
 #' Remove rgee system variables from .Renviron
 #'
 #' @family ee_clean functions
-#' @examples
-#' \dontrun{
-#' # library(rgee)
-#' # ee_clean_pyenv()
-#' }
+#' @return No return value, called for cleaning environmental variables in their system.
 #' @export
 ee_clean_pyenv <- function() {
   # Read line by line .Renviron
@@ -135,6 +125,7 @@ ee_clean_message <- function() {
 #' @param type Character. Name of the file storage web service. 'drive'
 #' and 'gcs' are supported.
 #' @param quiet logical. Suppress info message
+#' @return No return value, called for cleaning Google Drive or Google Cloud Storage container.
 #' @family ee_clean functions
 #'
 #' @export

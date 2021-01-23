@@ -158,11 +158,11 @@ sf_randomPoints_drive <- ee_as_sf(
 )
 
 # Download via GCS
-# sf_randomPoints_gcs <- ee_as_sf(
-#   x = subset,
-#   via = 'gcs',
-#   container = 'rgee_dev' #GCS bucket name
-# )
+sf_randomPoints_gcs <- ee_as_sf(
+ x = subset,
+ via = 'gcs',
+ container = 'rgee_dev' #GCS bucket name
+)
 }
 }
 \concept{vector download functions}

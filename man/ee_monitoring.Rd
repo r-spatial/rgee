@@ -18,6 +18,10 @@ listed.}
 
 \item{quiet}{Logical. Suppress info message}
 }
+\value{
+An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"
+according to the response of the Earth Engine server.
+}
 \description{
 Monitoring Earth Engine task progress
 }

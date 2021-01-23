@@ -134,20 +134,20 @@ mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 
 # Move results from Earth Engine to GCS
-# task_img <- ee_image_to_gcs(
-#   image = mean_l5_Amarakaeri,
-#   bucket = "rgee_dev",
-#   fileFormat = "GEO_TIFF",
-#   region = ee_ROI,
-#   fileNamePrefix = "my_image_demo"
-# )
-#
-# task_img$start()
-# ee_monitoring(task_img)
+task_img <- ee_image_to_gcs(
+ image = mean_l5_Amarakaeri,
+ bucket = "rgee_dev",
+ fileFormat = "GEO_TIFF",
+ region = ee_ROI,
+ fileNamePrefix = "my_image_demo"
+)
+
+task_img$start()
+ee_monitoring(task_img)
 
 # Move results from GCS to local
-# ee_gcs_to_local(task = task_img)
-# plot(img)
+ee_gcs_to_local(task = task_img)
+
 }
 }
 \seealso{

@@ -13,6 +13,9 @@ ee_install_set_pyenv(py_path = NULL, py_env = NULL, quiet = FALSE)
 
 \item{quiet}{Logical. Suppress info message}
 }
+\value{
+no return value, called for setting EARTHENGINE_PYTHON in .Renviron
+}
 \description{
 This function create a new environment variable called 'EARTHENGINE_PYTHON'.
 It is used to set the Python environment to be used by rgee.

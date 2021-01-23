@@ -16,6 +16,9 @@ By default \code{rgee::ee_version()}.}
 \item{earthengine_env}{Character. The name, or full path, of the
 environment in which the earthengine-api packages are to be installed.}
 }
+\value{
+no return value, called to upgrade the earthengine-api Python package
+}
 \description{
 Upgrade the Earth Engine Python API
 }

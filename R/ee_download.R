@@ -245,20 +245,20 @@ ee_image_to_drive <- function(image,
 #' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 #'
 #' # Move results from Earth Engine to GCS
-#' # task_img <- ee_image_to_gcs(
-#' #   image = mean_l5_Amarakaeri,
-#' #   bucket = "rgee_dev",
-#' #   fileFormat = "GEO_TIFF",
-#' #   region = ee_ROI,
-#' #   fileNamePrefix = "my_image_demo"
-#' # )
-#' #
-#' # task_img$start()
-#' # ee_monitoring(task_img)
+#' task_img <- ee_image_to_gcs(
+#'  image = mean_l5_Amarakaeri,
+#'  bucket = "rgee_dev",
+#'  fileFormat = "GEO_TIFF",
+#'  region = ee_ROI,
+#'  fileNamePrefix = "my_image_demo"
+#' )
+#'
+#' task_img$start()
+#' ee_monitoring(task_img)
 #'
 #' # Move results from GCS to local
-#' # ee_gcs_to_local(task = task_img)
-#' # plot(img)
+#' ee_gcs_to_local(task = task_img)
+#'
 #' }
 #' @export
 ee_image_to_gcs <- function(image,
@@ -577,16 +577,16 @@ ee_table_to_drive <- function(collection,
 #'   list(ee$Feature(ee_ROI, list(name = "Amarakaeri")))
 #' )
 #'
-#' #task_vector <- ee_table_to_gcs(
-#' #    collection = amk_fc,
-#' #    bucket = "rgee_dev",
-#' #    fileFormat = "SHP",
-#' #    fileNamePrefix = "geom_Amarakaeri"
-#' #)
-#' #task_vector$start()
-#' #ee_monitoring(task_vector) # optional
-#' #amk_geom <- ee_gcs_to_local(task = task_vector)
-#' #plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)
+#' task_vector <- ee_table_to_gcs(
+#'   collection = amk_fc,
+#'   bucket = "rgee_dev",
+#'   fileFormat = "SHP",
+#'   fileNamePrefix = "geom_Amarakaeri"
+#' )
+#' task_vector$start()
+#' ee_monitoring(task_vector) # optional
+#' amk_geom <- ee_gcs_to_local(task = task_vector)
+#' plot(sf::read_sf(amk_geom[3]), border = "red", lwd = 10)
 #' }
 #' @export
 ee_table_to_gcs <- function(collection,
@@ -1002,20 +1002,20 @@ ee_drive_to_local <- function(task,
 #' mean_l5 <- mean_l5$reproject(crs = "EPSG:4326", scale = 500)
 #' mean_l5_Amarakaeri <- mean_l5$clip(ee_ROI)
 #'
-#' ## Move results from Earth Engine to Drive
-#' # task_img <- ee_image_to_gcs(
-#' #     image = mean_l5_Amarakaeri,
-#' #     bucket = "rgee_dev",
-#' #    fileFormat = "GEO_TIFF",
-#' #     region = ee_ROI,
-#' #     fileNamePrefix = "my_image_demo"
-#' #)
+#' # Move results from Earth Engine to Drive
+#' task_img <- ee_image_to_gcs(
+#'    image = mean_l5_Amarakaeri,
+#'    bucket = "rgee_dev",
+#'    fileFormat = "GEO_TIFF",
+#'    region = ee_ROI,
+#'    fileNamePrefix = "my_image_demo"
+#' )
 #'
-#' # task_img$start()
-#' # ee_monitoring(task_img)
+#' task_img$start()
+#' ee_monitoring(task_img)
 #'
-#' ## Move results from Drive to local
-#' # img <- ee_gcs_to_local(task = task_img)
+#' # Move results from Drive to local
+#' img <- ee_gcs_to_local(task = task_img)
 #' }
 #' @export
 ee_gcs_to_local <- function(task,

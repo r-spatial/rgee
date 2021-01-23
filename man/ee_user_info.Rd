@@ -9,6 +9,9 @@ ee_user_info(quiet = FALSE)
 \arguments{
 \item{quiet}{Logical. Suppress info messages.}
 }
+\value{
+A list with information about the Earth Engine user.
+}
 \description{
 Display the credentials and general info of the initialized user
 }

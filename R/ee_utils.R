@@ -187,8 +187,8 @@ ee_utils_pyfunc <- reticulate::py_func
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
-#' animation_wtxt
-#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' gc(reset = TRUE)
+#' ee_utils_gif_save(animation_wtxt, path = paste0(tempfile(), ".gif"))
 #' }
 #' @family GIF functions
 #' @export
@@ -291,8 +291,8 @@ ee_utils_gif_creator <- function(ic, parameters, quiet = FALSE, ...) {
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
-#' animation_wtxt
-#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' gc(reset = TRUE)
+#' ee_utils_gif_save(animation_wtxt, path = paste0(tempfile(), ".gif"))
 #' }
 #' @family GIF functions
 #' @export
@@ -403,10 +403,11 @@ ee_utils_gif_annotate <- function(image,
 #'   ee_utils_gif_annotate("created using {magick} + {rgee}",
 #'                         size = 15, font = "sans",location = "+70+20") ->
 #'   animation_wtxt
-#' animation_wtxt
-#' # ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+#' gc(reset = TRUE)
+#' ee_utils_gif_save(animation_wtxt, path = paste0(tempfile(), ".gif"))
 #' }
 #' @family GIF functions
+#' @return No return value, called to write a GIF file.
 #' @export
 ee_utils_gif_save <- function(image,
                               path = NULL,
@@ -428,6 +429,7 @@ ee_utils_gif_save <- function(image,
 #' Search into the Earth Engine Data Catalog
 #'
 #' @param ee_search_dataset character which represents the EE dataset ID.
+#' @return No return value, called for displaying the Earth Engine dataset in the browser.
 #' @examples
 #' \dontrun{
 #'  library(rgee)

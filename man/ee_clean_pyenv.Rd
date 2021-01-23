@@ -6,14 +6,11 @@
 \usage{
 ee_clean_pyenv()
 }
+\value{
+No return value, called for cleaning environmental variables in their system.
+}
 \description{
 Remove rgee system variables from .Renviron
-}
-\examples{
-\dontrun{
-# library(rgee)
-# ee_clean_pyenv()
-}
 }
 \seealso{
 Other ee_clean functions: 

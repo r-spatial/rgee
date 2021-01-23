@@ -25,12 +25,8 @@
 #' @param earthengine_version Character. The Earth Engine Python API version
 #' to install. By default \code{rgee::ee_version()}.
 #' @param confirm Logical. Confirm before restarting R?.
+#' @return No return value, called for installing non-R dependencies.
 #' @family ee_install functions
-#' @examples
-#' \dontrun{
-#' # library(rgee)
-#' # ee_install() #It is just necessary once
-#' }
 #' @export
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
@@ -252,6 +248,7 @@ ee_install <- function(py_env = "rgee",
 #' @param py_path The path to a Python interpreter
 #' @param py_env The name of the environment
 #' @param quiet Logical. Suppress info message
+#' @return no return value, called for setting EARTHENGINE_PYTHON in .Renviron
 #' @family ee_install functions
 #' @export
 ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL, quiet = FALSE) {
@@ -396,6 +393,7 @@ is_windows <- function() {
 #' By default \code{rgee::ee_version()}.
 #' @param earthengine_env Character. The name, or full path, of the
 #' environment in which the earthengine-api packages are to be installed.
+#' @return no return value, called to upgrade the earthengine-api Python package
 #' @family ee_install functions
 #' @export
 ee_install_upgrade <- function(version = NULL,

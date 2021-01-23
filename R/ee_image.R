@@ -120,31 +120,30 @@
 #' img_02_result <- img_02 %>% ee_utils_future_value()
 #' attr(img_02_result, "metadata") # metadata
 #'
-#' # ## gcs - Method 02
-#' # # Simple
-#' # img_03 <- ee_as_stars(
-#' #   image = img,
-#' #   region = geometry,
-#' #   container = "rgee_dev",
-#' #   via = "gcs"
-#' # )
-#' #
-#' # # Lazy
-#' # img_03 <- ee_as_stars(
-#' #   image = img,
-#' #   region = geometry,
-#' #   container = "rgee_dev",
-#' #   lazy = TRUE,
-#' #   via = "gcs"
-#' # )
-#' #
-#' # img_03_result <- img_03 %>% ee_utils_future_value()
-#' # attr(img_03_result, "metadata") # metadata
-#' #
-#' #
-#' # # OPTIONAL: clean containers
-#' # ee_clean_container(name = "rgee_backup", type = "drive")
-#' # ee_clean_container(name = "rgee_dev", type = "gcs")
+#' ## gcs - Method 02
+#' # Simple
+#' img_03 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   via = "gcs"
+#' )
+#'
+#' # Lazy
+#' img_03 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   container = "rgee_dev",
+#'   lazy = TRUE,
+#'   via = "gcs"
+#' )
+#'
+#' img_03_result <- img_03 %>% ee_utils_future_value()
+#' attr(img_03_result, "metadata") # metadata
+#'
+#' # OPTIONAL: clean containers
+#' ee_clean_container(name = "rgee_backup", type = "drive")
+#' ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_stars <- function(image,
@@ -335,30 +334,30 @@ ee_as_stars <- function(image,
 #' img_02_result <- img_02 %>% ee_utils_future_value()
 #' img_02_result@history$metadata # metadata
 #'
-#' # ## gcs - Method 02
-#' # # Simple
-#' # img_03 <- ee_as_raster(
-#' #   image = img,
-#' #   region = geometry,
-#' #   container = "rgee_dev",
-#' #   via = "gcs"
-#' # )
-#' #
-#' # # Lazy
-#' # img_03 <- ee_as_raster(
-#' #   image = img,
-#' #   region = geometry,
-#' #   container = "rgee_dev",
-#' #   lazy = TRUE,
-#' #   via = "gcs"
-#' # )
-#' #
-#' # img_03_result <- img_03 %>% ee_utils_future_value()
-#' # img_03_result@history$metadata # metadata
+#' ## gcs - Method 02
+#' # Simple
+#' img_03 <- ee_as_raster(
+#'  image = img,
+#'  region = geometry,
+#'  container = "rgee_dev",
+#'  via = "gcs"
+#' )
+#'
+#' # Lazy
+#' img_03 <- ee_as_raster(
+#'  image = img,
+#'  region = geometry,
+#'  container = "rgee_dev",
+#'  lazy = TRUE,
+#'  via = "gcs"
+#' )
+#'
+#' img_03_result <- img_03 %>% ee_utils_future_value()
+#' img_03_result@history$metadata # metadata
 #'
 #' # OPTIONAL: clean containers
-#' # ee_clean_container(name = "rgee_backup", type = "drive")
-#' # ee_clean_container(name = "rgee_dev", type = "gcs")
+#' ee_clean_container(name = "rgee_backup", type = "drive")
+#' ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_raster <- function(image,

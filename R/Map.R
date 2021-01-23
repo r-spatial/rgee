@@ -147,17 +147,7 @@
 #'   name = "SF"
 #' )
 #'
-#' # Case 5: mapview + EarthEnginemap
-#' # library(mapview)
-#' # library(sf)
-#' # nc <- st_read(system.file("shp/arequipa.shp", package="rgee"))
-#' # mapview(nc, m2)
-#'
-#' # Case 6: mapedit
-#' # library(mapedit)
-#' # my_geometry <- m4 %>% editMap()
-#'
-#' # Case 7: ImageCollection
+#' # Case 5: ImageCollection
 #' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
 #'   st_transform(4326) %>%
 #'   sf_as_ee()
@@ -170,7 +160,7 @@
 #' m5 <- Map$addLayers(ee_s2, legend = TRUE)
 #' m5
 #'
-#' # Case 8: Map comparison
+#' # Case 6: Map comparison
 #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 #' Map$centerObject(image)
 #' m_ndvi <- Map$addLayer(
@@ -182,7 +172,7 @@
 #' m6 <- m4 | m_ndvi
 #' m6
 #'
-#' # Case 9: digging up the metadata
+#' # Case 7: digging up the metadata
 #' m6$rgee$tokens
 #' m5$rgee$tokens
 #' }

@@ -33,6 +33,9 @@ ee_utils_gif_save(
 \item{flatten}{should image be flattened before writing? This also replaces
 transparency with background color.}
 }
+\value{
+No return value, called to write a GIF file.
+}
 \description{
 Write a magick-image object as a GIF file using magick package. This
 function is a wrapper around \link[magick:editing]{image_write}.
@@ -86,8 +89,8 @@ animation \%>\%
   ee_utils_gif_annotate("created using {magick} + {rgee}",
                         size = 15, font = "sans",location = "+70+20") ->
   animation_wtxt
-animation_wtxt
-# ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+gc(reset = TRUE)
+ee_utils_gif_save(animation_wtxt, path = paste0(tempfile(), ".gif"))
 }
 }
 \seealso{

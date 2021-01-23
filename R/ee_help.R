@@ -4,6 +4,7 @@
 #' @importFrom reticulate py_function_docs
 #' @importFrom utils tail
 #' @family helper functions
+#' @return No return value, called for displaying Earth Engine documentation.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -137,16 +138,15 @@ ee_help <- function(eeobject, browser = FALSE) {
 #' Create init table - R Documentation Simple
 #' @noRd
 ee_html_head_simple <- function(fun_name) {
-  '<table width="100%" summary="page for fun_rgee {rgee}">
+  message <- '<table width="100%" summary="page for fun_rgee {rgee}">
      <tbody>
      <tr>
        <td align="left"> fun_rgee {rgee}</td>
        <td align="right">R Documentation</td>
      </tr>
      </tbody>
-   </table>' -> message
-  message <- gsub("
-", "", message)
+   </table>'
+  message <- gsub("\n", "", message)
   gsub("fun_rgee", fun_name, message)
 }
 
@@ -154,16 +154,15 @@ ee_html_head_simple <- function(fun_name) {
 #' @noRd
 ee_html_head_rstudio <- function(fun_name) {
   td_style <- "font-family: sans-serif;font-size: 10pt;"
-  '<table width="100%" summary="page for fun_rgee {rgee}">
+  message <- '<table width="100%" summary="page for fun_rgee {rgee}">
      <tbody>
      <tr>
        <td align="left" style="td_style"> fun_rgee {rgee} </td>
        <td align="right" style="td_style"> R Documentation </td>
      </tr>
      </tbody>
-   </table>' -> message
-  message <- gsub("
-", "", message)
+   </table>'
+  message <- gsub("\n", "", message)
   message_norgee <- gsub("fun_rgee", fun_name, message)
   gsub("td_style", td_style, message_norgee)
 }

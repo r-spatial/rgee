@@ -22,6 +22,9 @@ ee_check will skip the check of credentials.}
 
 \item{quiet}{Logical. Suppress info message}
 }
+\value{
+No return value, called for checking non-R rgee dependencies.
+}
 \description{
 R functions for checking Google credentials (Google Earth Engine,
 Google Drive and Google Cloud Storage), Python environment and the

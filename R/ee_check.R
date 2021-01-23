@@ -15,6 +15,7 @@
 #' @importFrom crayon yellow
 #' @importFrom cli cat_line
 #' @family ee_check functions
+#' @return No return value, called for checking non-R rgee dependencies.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -31,6 +32,7 @@ ee_check <- function(user = NULL, quiet = FALSE) {
   if (!is.null(user)) {
     ee_check_credentials(quiet = quiet)
   }
+  invisible(TRUE)
 }
 
 #' @rdname ee_check-tools

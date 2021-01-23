@@ -7,7 +7,8 @@
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.
 #' @param quiet Logical. Suppress info message
-#'
+#' @return An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"
+#' according to the response of the Earth Engine server.
 #' @family helper functions
 #' @export
 #' @examples

@@ -43,5 +43,5 @@ test_that("ee_users",{
 
 test_that("ee_users",{
   counts <- ee_user_info()
-  expect_true(counts)
+  expect_type(counts, "list")
 })

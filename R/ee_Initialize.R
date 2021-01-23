@@ -36,21 +36,13 @@
 #' called \code{~/.config/earthengine/ndef}.
 #'
 #' @family session management functions
-#'
+#' @return No return value, called for initializing the earthengine-api.
 #' @examples
 #' \dontrun{
 #' library(rgee)
 #'
 #' # Simple init - Load just the Earth Engine credential
 #' ee_Initialize()
-#'
-#' # Advanced init - Load full credentials
-#' # ee_Initialize(
-#' #   email = "your_email@gmail.com",
-#' #   drive = TRUE,
-#' #   gcs = TRUE
-#' # )
-#'
 #' ee_user_info()
 #' }
 #' @export
@@ -495,7 +487,7 @@ ee_users <- function(quiet = FALSE) {
 
 #' Display the credentials and general info of the initialized user
 #' @family session management functions
-#'
+#' @return A list with information about the Earth Engine user.
 #' @param quiet Logical. Suppress info messages.
 #'
 #' @examples
@@ -557,8 +549,8 @@ ee_user_info <- function(quiet = FALSE) {
     cat("\n - ",basename(gcs))
     cat("\n", rule(), "\n")
   }
-  ee_user <- ee_exist_credentials()
 
+  # ee_user <- ee_exist_credentials()
   # if (isFALSE(grepl(email_drive, ee_user$email)) & ee_user$email != "ndef") {
   #   message(
   #     "\nNOTE: Google Drive credential does not match with your Google",
@@ -568,7 +560,12 @@ ee_user_info <- function(quiet = FALSE) {
   # }
 
   ee_check_python_packages(quiet = TRUE)
-  invisible(TRUE)
+  list(
+    asset_home = asset_home,
+    user_session = user_session,
+    gd_id = basename(gd),
+    gcs_file = gcs
+  )
 }
 
 #' Create session info of the last init inside the

@@ -9,6 +9,9 @@ ee_utils_get_crs(code)
 \arguments{
 \item{code}{The projection code.}
 }
+\value{
+A character which represents the same projection in WKT2 string.
+}
 \description{
 Convert EPSG, ESRI or SR-ORG code into a OGC WKT
 }

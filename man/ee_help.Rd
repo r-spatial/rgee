@@ -11,6 +11,9 @@ ee_help(eeobject, browser = FALSE)
 
 \item{browser}{Logical. Display documentation in the browser.}
 }
+\value{
+No return value, called for displaying Earth Engine documentation.
+}
 \description{
 Documentation for Earth Engine Objects
 }

@@ -43,21 +43,21 @@ assetId <- sprintf("\%s/\%s", ee_get_assethome(), 'toy_poly_gcs')
 shp_dir <- sprintf("\%s.shp", tempfile())
 geozip_dir <- ee_utils_shp_to_zip(x, shp_dir)
 
-# # 3. From local to gcs
-# gcs_filename <- local_to_gcs(
-#   x = geozip_dir,
-#   bucket = "rgee_dev" # Insert your own bucket here!
-# )
-#
-# # 4. Create Table Manifest
-# manifest <- ee_utils_create_manifest_table(
-#   gs_uri = gcs_filename,
-#   assetId = assetId
-# )
-#
-# # 5. From GCS to Earth Engine
-# ee_nc <- gcs_to_ee_table(manifest, overwrite = TRUE)
-# ee_monitoring()
-# Map$addLayer(ee$FeatureCollection(ee_nc))
+# 3. From local to gcs
+gcs_filename <- local_to_gcs(
+ x = geozip_dir,
+ bucket = "rgee_dev" # Insert your own bucket here!
+)
+
+# 4. Create Table Manifest
+manifest <- ee_utils_create_manifest_table(
+ gs_uri = gcs_filename,
+ assetId = assetId
+)
+
+# 5. From GCS to Earth Engine
+ee_nc <- gcs_to_ee_table(manifest, overwrite = TRUE)
+ee_monitoring()
+Map$addLayer(ee$FeatureCollection(ee_nc))
 }
 }

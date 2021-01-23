@@ -95,8 +95,8 @@ animation \%>\%
   ee_utils_gif_annotate("created using {magick} + {rgee}",
                         size = 15, font = "sans",location = "+70+20") ->
   animation_wtxt
-animation_wtxt
-# ee_utils_gif_save(animation_wtxt, path = "raster_as_ee.gif")
+gc(reset = TRUE)
+ee_utils_gif_save(animation_wtxt, path = paste0(tempfile(), ".gif"))
 }
 }
 \seealso{
