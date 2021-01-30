@@ -12,7 +12,7 @@ navbar:
     - text: "Articles"
       icon: fas fa-book
       menu:
-      -  text: Setup and details
+      -  text: Introduction
          href: articles/rgee01.html
       -  text: Consideration
          href: articles/rgee02.html
