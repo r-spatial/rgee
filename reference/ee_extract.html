@@ -85,7 +85,7 @@ mimicking how extract currently works." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@ mimicking how extract currently works." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/rgee01.html">Setup and details</a>
+      <a href="../articles/rgee01.html">Introduction</a>
     </li>
     <li>
       <a href="../articles/rgee02.html">Consideration</a>
@@ -302,7 +302,7 @@ of its inputs.</p></li>
 
 <span class='va'>ee_nc_rain</span> <span class='op'>&lt;-</span> <span class='fu'>ee_extract</span><span class='op'>(</span>
   x <span class='op'>=</span> <span class='va'>terraclimate</span>,
-  y <span class='op'>=</span> <span class='va'>nc</span>,
+  y <span class='op'>=</span> <span class='va'>nc</span><span class='op'>[</span><span class='st'>"NAME"</span><span class='op'>]</span>,
   scale <span class='op'>=</span> <span class='fl'>250</span>,
   fun <span class='op'>=</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Reducer</span><span class='op'>$</span><span class='fu'>mean</span><span class='op'>(</span><span class='op'>)</span>,
   sf <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -310,7 +310,7 @@ of its inputs.</p></li>
 
 <span class='co'># Spatial plot</span>
 <span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span>
-  <span class='va'>ee_nc_rain</span><span class='op'>[</span><span class='st'>"Terraclimate_pp_2001_11_01"</span><span class='op'>]</span>,
+  <span class='va'>ee_nc_rain</span><span class='op'>[</span><span class='st'>"X200101_Terraclimate_pp_2001_01_01"</span><span class='op'>]</span>,
   main <span class='op'>=</span> <span class='st'>"2001 Jan Precipitation - Terraclimate"</span>,
   reset <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span>

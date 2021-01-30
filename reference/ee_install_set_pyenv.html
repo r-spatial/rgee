@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set the Python environment to be used by rgee — ee_install_set_pyenv • rgee</title>
+<title>Configure which version of Python to use with rgee — ee_install_set_pyenv • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,10 +46,10 @@
 
 
 
-<meta property="og:title" content="Set the Python environment to be used by rgee — ee_install_set_pyenv" />
-<meta property="og:description" content="This function create a new environment variable called 'EARTHENGINE_PYTHON'.
-It is used to set the Python environment to be used by rgee.
-EARTHENGINE_PYTHON is saved into the file .Renviron." />
+<meta property="og:title" content="Configure which version of Python to use with rgee — ee_install_set_pyenv" />
+<meta property="og:description" content="Configure which version of Python to use with rgee. This function creates two
+environment variables: 'EARTHENGINE_PYTHON' and 'EARTHENGINE_ENV' both will be
+saved into the file .Renviron." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -84,7 +84,7 @@ EARTHENGINE_PYTHON is saved into the file .Renviron." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
       </span>
     </div>
 
@@ -108,7 +108,7 @@ EARTHENGINE_PYTHON is saved into the file .Renviron." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/rgee01.html">Setup and details</a>
+      <a href="../articles/rgee01.html">Introduction</a>
     </li>
     <li>
       <a href="../articles/rgee02.html">Consideration</a>
@@ -155,15 +155,15 @@ EARTHENGINE_PYTHON is saved into the file .Renviron." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Set the Python environment to be used by rgee</h1>
+    <h1>Configure which version of Python to use with rgee</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_install.R'><code>R/ee_install.R</code></a></small>
     <div class="hidden name"><code>ee_install_set_pyenv.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function create a new environment variable called 'EARTHENGINE_PYTHON'.
-It is used to set the Python environment to be used by rgee.
-EARTHENGINE_PYTHON is saved into the file .Renviron.</p>
+    <p>Configure which version of Python to use with rgee. This function creates two
+environment variables: 'EARTHENGINE_PYTHON' and 'EARTHENGINE_ENV' both will be
+saved into the file .Renviron.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_install_set_pyenv</span><span class='op'>(</span>py_path <span class='op'>=</span> <span class='cn'>NULL</span>, py_env <span class='op'>=</span> <span class='cn'>NULL</span>, quiet <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
