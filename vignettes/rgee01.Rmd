@@ -1,5 +1,5 @@
 ---
-title: "1. Introduction to rgee"
+title: "Introduction to rgee"
 output:
   html_document:
     toc: true

@@ -11,6 +11,11 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.8.9999
+
+- Fix a bug in `ee_extract` that changes names in column names when starts with numbers (#119, thanks @joshualerickson).
+- Fix a bug in `ee_install_set_pyenv` when py_env=NULL (#118, thanks @MatthieuStigler).
+
 # rgee 1.0.8
 
 - Unit testing enhanced.

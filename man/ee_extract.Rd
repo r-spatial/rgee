@@ -125,7 +125,7 @@ nc <- st_read(
 
 ee_nc_rain <- ee_extract(
   x = terraclimate,
-  y = nc,
+  y = nc["NAME"],
   scale = 250,
   fun = ee$Reducer$mean(),
   sf = TRUE
@@ -133,7 +133,7 @@ ee_nc_rain <- ee_extract(
 
 # Spatial plot
 plot(
-  ee_nc_rain["Terraclimate_pp_2001_11_01"],
+  ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
   main = "2001 Jan Precipitation - Terraclimate",
   reset = FALSE
 )

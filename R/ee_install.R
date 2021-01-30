@@ -163,17 +163,19 @@ ee_install <- function(py_env = "rgee",
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
-      ee_install_set_pyenv(py_path = py_path, py_env = py_env, quiet = TRUE)
+      renv <- ee_install_set_pyenv(py_path = py_path, py_env = py_env, quiet = TRUE)
       message(
         "\n",
         paste(
           sprintf(
-            bold("3. The Environment Variable 'EARTHENGINE_PYTHON=%s' "),
-            py_path
+            bold("3. The Environment Variables: 'EARTHENGINE_PYTHON=%s' and 'EARTHENGINE_ENV=%s'"),
+            py_path, py_env
           ),
-          "was stored in the .Renviron file. Remember that you",
-          "could remove EARTHENGINE_PYTHON and EARTHENGINE_ENV using",
-          bold("rgee::ee_clean_pyenv()."),
+          sprintf("were saved in the .Renviron (%s) file. Remember that you", bold(renv)),
+          sprintf(
+            "could remove EARTHENGINE_PYTHON and EARTHENGINE_ENV using %s",
+            bold("rgee::ee_clean_pyenv().")
+          ),
           sep = "\n"
         )
       )
@@ -239,11 +241,12 @@ ee_install <- function(py_env = "rgee",
   invisible(TRUE)
 }
 
-#' Set the Python environment to be used by rgee
+
+#' Configure which version of Python to use with rgee
 #'
-#' This function create a new environment variable called 'EARTHENGINE_PYTHON'.
-#' It is used to set the Python environment to be used by rgee.
-#' EARTHENGINE_PYTHON is saved into the file .Renviron.
+#' Configure which version of Python to use with rgee. This function creates two
+#' environment variables: 'EARTHENGINE_PYTHON' and 'EARTHENGINE_ENV' both will be
+#' saved into the file .Renviron.
 #'
 #' @param py_path The path to a Python interpreter
 #' @param py_env The name of the environment
@@ -252,52 +255,63 @@ ee_install <- function(py_env = "rgee",
 #' @family ee_install functions
 #' @export
 ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL, quiet = FALSE) {
-  ee_clean_pyenv()
-  # Trying to get the env from the py_path
+
+  # Get the .Renviron on their system
   home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")
 
+  # Backup original .Renviron before doing anything else here.
   if (file.exists(renv)) {
-    # Backup original .Renviron before doing anything else here.
     file.copy(renv, file.path(home, ".Renviron_backup"), overwrite = TRUE)
   }
 
+  # If .Renviron does not exist, create the file.
   if (!file.exists(renv)) {
     file.create(renv)
   }
 
-  con  <- file(renv, open = "r+")
-  lines <- as.character()
-  ii <- 1
-
-  while (TRUE) {
-    line <- readLines(con, n = 1, warn = FALSE)
-    if (length(line) == 0) {
-      break()
-    }
-    lines[ii] <- line
-    ii <- ii + 1
+  if (is.null(py_path)) {
+    py_path <- ee_get_python_path()
   }
 
-  # Set EARTHENGINE_PYTHON and EARTHENGINE_ENV in .Renviron if
-  # exists.
-  to_remote <- as.character()
-  if (!is.null(py_path)) {
-    ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
-    to_remote <- c(to_remote, ret_python)
-  }
+  # Remove rgee environmental variables
+  # (EARTHENGINE_PYTHON | EARTHENGINE_ENV) from .Renviron
+  ee_clean_pyenv()
 
-  if (!is.null(py_env)) {
-    ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
-    to_remote <- c(to_remote, ret_python)
-  }
-  system_vars <- c(lines, ret_python, ret_env)
+  # Set EARTHENGINE_PYTHON and EARTHENGINE_ENV in .Renviron.
+  python_path <- ee_install_set_pyenv_path(
+    py_path = py_path,
+    renv = renv
+  )
+
+  python_env <- ee_install_set_pyenv_env(
+    py_env = py_env,
+    py_path = python_path,
+    renv = renv ,
+    quiet = quiet
+  )
+
   if (!quiet) {
-    message("rgee needs to restart the R session to see changes.\n")
+    if (length(python_env) == 0) {
+      message(
+        sprintf(
+          "%s='%s'\nsaved in: %s",
+          bold("EARTHENGINE_PYTHON"), python_path,
+          bold(renv)
+        )
+      )
+    } else {
+      message(
+        sprintf(
+          "%s='%s'\n%s='%s'\nsaved in: %s",
+          bold("EARTHENGINE_PYTHON"), python_path,
+          bold("EARTHENGINE_ENV"), python_env,
+          bold(renv)
+        )
+      )
+    }
   }
-  writeLines(system_vars, con)
-  close(con)
-  invisible(TRUE)
+  renv
 }
 
 #' Set EARTHENGINE_INIT_MESSAGE as an environment variable
@@ -335,7 +349,7 @@ ee_install_set_init_message <- function() {
   system_vars <- c(lines, ret_python)
 
   writeLines(system_vars, con)
-  close(con)
+  on.exit(close(con), add = TRUE)
   invisible(TRUE)
 }
 
@@ -453,7 +467,125 @@ ee_search_init_message <- function() {
     lines[ii] <- line
     ii <- ii + 1
   }
-  close(con)
+  on.exit(close(con), add = TRUE)
   # Find if EARTHENGINE_INIT_MESSAGE is set
   any(grepl("EARTHENGINE_INIT_MESSAGE", lines))
+}
+
+#' Set a Python PATH
+#' @noRd
+ee_install_set_pyenv_path <- function(py_path, renv) {
+  # Open & read .Renviron
+  con <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+
+  to_remote <- NULL
+  if (!is.null(py_path)) {
+    ret_python <- sprintf('EARTHENGINE_PYTHON="%s"', py_path)
+    to_remote <- c(to_remote, ret_python)
+  }
+  system_vars <- c(lines, to_remote)
+  writeLines(system_vars, con)
+  on.exit(close(con), add = TRUE)
+  # return the python path
+  ee_p <- system_vars[grepl("EARTHENGINE_PYTHON=", system_vars)]
+  gsub("EARTHENGINE_PYTHON=|\"","",ee_p)
+}
+
+#' Set a Python ENV
+#' @noRd
+ee_install_set_pyenv_env <- function(py_env, py_path, renv, quiet) {
+  # Open & read .Renviron
+  con <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+
+  to_remote <- NULL
+  if (!is.null(py_env)) {
+    ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
+    to_remote <- c(to_remote, ret_env)
+    if (is_windows()) {
+      stop(
+        sprintf("%s install miniconda/anaconda to use rgee. %s %s",
+                bold("Windows users must"),
+                "The use of a Python environment is",
+                bold("mandatory."))
+      )
+    } else {
+      if (length(py_path) == 0) {
+        stop(
+          "Impossible to set a Python ENV without a Python PATH. py_path can not be NULL."
+        )
+      }
+    }
+  } else {
+    text_msg <- paste(
+      sprintf(
+        "rgee will work if the Python PATH: %s", bold(py_path)
+      ),
+      sprintf(
+        "has installed the Python packages %s and %s", bold("earth-engine"), bold("numpy.")
+      ),
+      "The following functions will not work until you set a ",
+      sprintf("Python environment: %s and %s.\n",
+              bold("rgee::ee_install_upgrade"),
+              bold("reticulate::py_install")),
+      sep = "\n"
+    )
+    if (!quiet) {
+      message(text_msg)
+    }
+  }
+  system_vars <- c(lines, to_remote)
+  writeLines(system_vars, con)
+  on.exit(close(con), add = TRUE)
+  # return the python path
+  ee_p <- system_vars[grepl("EARTHENGINE_ENV=", system_vars)]
+  gsub("EARTHENGINE_ENV=|\"","",ee_p)
+}
+
+
+#' Set a Python ENV
+#' @noRd
+ee_get_python_path <- function() {
+  home <- Sys.getenv("HOME")
+  renv <- file.path(home, ".Renviron")
+  if (!file.exists(renv)) {
+    return(FALSE)
+  }
+
+  con  <- file(renv, open = "r+")
+  lines <- as.character()
+  ii <- 1
+
+  while (TRUE) {
+    line <- readLines(con, n = 1, warn = FALSE)
+    if (length(line) == 0) {
+      break()
+    }
+    lines[ii] <- line
+    ii <- ii + 1
+  }
+  on.exit(close(con), add = TRUE)
+  # Find if EARTHENGINE_INIT_MESSAGE is set
+  gsub("EARTHENGINE_PYTHON=|\"", "", lines[grepl("EARTHENGINE_PYTHON", lines)])
 }

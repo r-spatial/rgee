@@ -101,7 +101,7 @@
 #'
 #' ee_nc_rain <- ee_extract(
 #'   x = terraclimate,
-#'   y = nc,
+#'   y = nc["NAME"],
 #'   scale = 250,
 #'   fun = ee$Reducer$mean(),
 #'   sf = TRUE
@@ -109,7 +109,7 @@
 #'
 #' # Spatial plot
 #' plot(
-#'   ee_nc_rain["Terraclimate_pp_2001_11_01"],
+#'   ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
 #'   main = "2001 Jan Precipitation - Terraclimate",
 #'   reset = FALSE
 #' )
@@ -174,9 +174,7 @@ ee_extract <- function(x,
     # sf object
   } else if(any(ee_get_spatial_objects('Table') %in%  class(y))) {
     ee_y <- ee$FeatureCollection(y)
-    if (isTRUE(sf)) {
-      sf_y <- ee_as_sf(y, quiet = TRUE)
-    }
+    sf_y <- ee_as_sf(y, quiet = TRUE)
   }
 
   #set ee_ID for identify rows in the data.frame
@@ -236,7 +234,7 @@ ee_extract <- function(x,
   table_sf["ee_ID"] <- NULL
 
   # Remove system:index prefix
-  colnames(table_sf) <- gsub("^[^_]*_","", colnames(table_sf))
+  #colnames(table_sf) <- gsub("^[^_]*_","", colnames(table_sf))
 
   if (isTRUE(sf)) {
     table_geometry  <- sf::st_geometry(sf_y)

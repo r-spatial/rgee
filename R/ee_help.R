@@ -113,7 +113,8 @@ ee_help <- function(eeobject, browser = FALSE) {
       ),
       con = fileConn
     )
-    close(fileConn)
+
+    on.exit(close(fileConn), add = TRUE)
     rstudioapi::viewer(temp_file)
   } else {
     writeLines(
@@ -128,7 +129,7 @@ ee_help <- function(eeobject, browser = FALSE) {
       ),
       con = fileConn
     )
-    close(fileConn)
+    on.exit(close(fileConn), add = TRUE)
     browseURL(temp_file)
   }
   invisible(temp_file)

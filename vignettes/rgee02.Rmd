@@ -1,5 +1,5 @@
 ---
-title: "2. Considerations"
+title: "Considerations"
 output:
   html_document:
     toc: true
@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## 1. The **map** message error:
+### 1. The **map** message error:
 
 This issue happens when the **map** method is used
 under the next two cases: (1) users employing a reticulate version

@@ -69,13 +69,13 @@ ee_clean_pyenv <- function() {
       lines[ii] <- line
       ii <- ii + 1
     }
-    close(con)
+    on.exit(close(con), add = TRUE)
 
     # Remove system variables EARTHENGINE_PYTHON
     system_vars <- lines[!grepl("EARTHENGINE_PYTHON|EARTHENGINE_ENV", lines)]
     fileConn <- file(renv)
     writeLines(system_vars, fileConn)
-    close(fileConn)
+    on.exit(close(fileConn), add = TRUE)
   }
   invisible(TRUE)
 }
@@ -103,13 +103,13 @@ ee_clean_message <- function() {
       lines[ii] <- line
       ii <- ii + 1
     }
-    close(con)
+    on.exit(close(con), add = TRUE)
 
     # Remove system variables EARTHENGINE_PYTHON
     system_vars <- lines[!grepl("EARTHENGINE_INIT_MESSAGE", lines)]
     fileConn <- file(renv)
     writeLines(system_vars, fileConn)
-    close(fileConn)
+    on.exit(close(fileConn), add = TRUE)
   }
   invisible(TRUE)
 }
