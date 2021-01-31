@@ -30,11 +30,49 @@ status"/></a> <a href="https://doi.org/10.5281/zenodo.3945409"><img src="https:/
 
 [Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R!**. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
 
-+------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
-| JS (Code Editor)                                                                                                       | Python                                                                                                                                     | R                                                                                                                                                 |
-+========================================================================================================================+============================================================================================================================================+===================================================================================================================================================+
-| \`\`\` javascript var db = 'CGIAR/SRTM90_V4' var image = ee.Image(db) print(image.bandNames()) \#\> 'elevation' \`\`\` | \`\`\` python import ee ee.Initialize() db = 'CGIAR/SRTM90_V4' image = ee.Image(db) image.bandNames().getInfo() \#\> [u'elevation'] \`\`\` | \`\`\` r library(rgee) ee_Initialize() db \<- 'CGIAR/SRTM90_V4' image \<- ee\$Image(db) image\$bandNames()\$getInfo() \#\> [1] "elevation" \`\`\` |
-+------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------+
+<table>
+<tr>
+<th> JS (Code Editor) </th>
+<th> Python </th>
+<th> R </th>
+</tr>
+<tr>
+<td>
+  
+``` javascript
+var db = 'CGIAR/SRTM90_V4'
+var image = ee.Image(db)
+print(image.bandNames())
+#> 'elevation'
+```
+
+</td>
+<td>
+
+``` python
+import ee
+ee.Initialize()
+db = 'CGIAR/SRTM90_V4'
+image = ee.Image(db)
+image.bandNames().getInfo()
+#> [u'elevation']
+```
+
+</td>
+<td>
+
+``` r
+library(rgee)
+ee_Initialize()
+db <- 'CGIAR/SRTM90_V4'
+image <- ee$Image(db)
+image$bandNames()$getInfo()
+#> [1] "elevation"
+```
+</td>
+</tr>
+</table>
+
 
 **Quite similar, isn't it?**. However, there are additional smaller changes should consider when using Google Earth Engine with R. Please check the [consideration section](https://r-spatial.github.io/rgee/articles/rgee02.html) before you start coding!
 
@@ -72,7 +110,7 @@ rgee::ee_install_set_pyenv(
 
 Take into account that the Python PATH you set must have installed the Earth Engine Python API and numpy. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
-Other option only possible for MacOS and Linux is just set the Python PATH:
+Other option, only possible for MacOS and Linux, is just set the Python PATH:
 
 ``` {.r}
 rgee::ee_install_set_pyenv(
