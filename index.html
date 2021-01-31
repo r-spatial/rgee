@@ -136,7 +136,44 @@ status"></a> <a href="https://doi.org/10.5281/zenodo.3945409"><img src="https://
 <h2 class="hasAnchor">
 <a href="#what-is-google-earth-engine" class="anchor"></a>What is Google Earth Engine?</h2>
 <p><a href="https://earthengine.google.com/">Google Earth Engine</a> is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. <code>rgee</code> will fill the gap <strong>starting to provide support to R!</strong>. Below you will find the comparison between the syntax of <code>rgee</code> and the two Google-supported client libraries.</p>
-<p>+————————————————————————————————————————+——————————————————————————————————————————————–+—————————————————————————————————————————————————+ | JS (Code Editor) | Python | R | +========================================================================================================================+============================================================================================================================================+===================================================================================================================================================+ | ``` javascript var db = ‘CGIAR/SRTM90_V4’ var image = ee.Image(db) print(image.bandNames()) #&gt; ‘elevation’ ``` | ``` python import ee ee.Initialize() db = ‘CGIAR/SRTM90_V4’ image = ee.Image(db) image.bandNames().getInfo() #&gt; [u’elevation’] ``` | ``` r library(rgee) ee_Initialize() db &lt;- ‘CGIAR/SRTM90_V4’ image &lt;- ee$Image(db) image$bandNames()$getInfo() #&gt; [1] “elevation” ``` | +————————————————————————————————————————+——————————————————————————————————————————————–+—————————————————————————————————————————————————+</p>
+<table class="table">
+<tr>
+<th>
+JS (Code Editor)
+</th>
+<th>
+Python
+</th>
+<th>
+R
+</th>
+</tr>
+<tr>
+<td>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">var</span> db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">var</span> image <span class="op">=</span> <span class="va">ee</span>.<span class="at">Image</span>(db)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="at">print</span>(<span class="va">image</span>.<span class="at">bandNames</span>())</span>
+<span id="cb1-4"><a href="#cb1-4"></a>#<span class="op">&gt;</span> <span class="st">'elevation'</span></span></code></pre></div>
+</td>
+<td>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> ee</span>
+<span id="cb2-2"><a href="#cb2-2"></a>ee.Initialize()</span>
+<span id="cb2-3"><a href="#cb2-3"></a>db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>image <span class="op">=</span> ee.Image(db)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>image.bandNames().getInfo()</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; [u'elevation']</span></span></code></pre></div>
+</td>
+<td>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">db</span> <span class="op">&lt;-</span> <span class="st">'CGIAR/SRTM90_V4'</span>
+<span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">db</span><span class="op">)</span>
+<span class="va">image</span><span class="op">$</span><span class="fu">bandNames</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] "elevation"</span></code></pre></div>
+</td>
+</tr>
+</table>
 <p><strong>Quite similar, isn’t it?</strong>. However, there are additional smaller changes should consider when using Google Earth Engine with R. Please check the <a href="https://r-spatial.github.io/rgee/articles/rgee02.html">consideration section</a> before you start coding!</p>
 </div>
 <div id="installation" class="section level2">
@@ -160,7 +197,7 @@ install_github("r-spatial/rgee")</a></code></pre>
   py_env = "rgee" # Change it for your own Python ENV
 )</a></code></pre>
 <p>Take into account that the Python PATH you set must have installed the Earth Engine Python API and numpy. The use of <strong>miniconda/anaconda is mandatory for Windows users,</strong> Linux and MacOS users could also use virtualenv. See <a href="https://rstudio.github.io/reticulate/articles/python_packages.html">reticulate</a> documentation for more details.</p>
-<p>Other option only possible for MacOS and Linux is just set the Python PATH:</p>
+<p>Other option, only possible for MacOS and Linux, is just set the Python PATH:</p>
 <pre class="{.r}"><code><a href="reference/ee_install_set_pyenv.html">rgee::ee_install_set_pyenv(
   py_path = "/usr/bin/python3", 
   py_env = NULL
