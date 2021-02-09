@@ -177,12 +177,12 @@ R
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span>
 <span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></code></pre></div>
 <p>Additionally, <code>rgee</code> depends on the <a href="https://rstudio.github.io/reticulate/articles/package.html">Python packages</a>: <a href="https://pypi.org/project/numpy/">numpy</a> and <a href="https://pypi.org/project/earthengine-api/">ee</a>. To install them, users can follow any of these three methods:</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Use <a href="https://r-spatial.github.io/rgee/reference/ee_install.html"><strong>ee_install</strong></a> (Highly recommend for users with no experience with Python environments)</li>
 </ol>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">rgee</span><span class="fu">::</span><span class="fu"><a href="reference/ee_install.html">ee_install</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<ol>
+<ol start="2" style="list-style-type: decimal">
 <li>Use <a href="https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html"><strong>ee_install_set_pyenv</strong></a> (Recommend for users with experience with Python environments)</li>
 </ol>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -198,7 +198,7 @@ R
   py_env <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
 <p>However, <a href="https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html"><strong>rgee::ee_install_upgrade</strong></a> and <a href="https://rstudio.github.io/reticulate/reference/py_install.html"><strong>reticulate::py_install</strong></a> will not work until you set a Python ENV.</p>
-<ol>
+<ol start="3" style="list-style-type: decimal">
 <li>Use the Python PATH setting support that offer <a href="https://blog.rstudio.com/2020/10/07/rstudio-v1-4-preview-python-support/">Rstudio v.1.4 &gt;</a>. See this <a href="https://github.com/r-spatial/rgee/tree/help/rstudio/">tutorial</a>.</li>
 </ol>
 <p>After install <code>Python dependencies</code> (and Restart R!!), you might use the function below for checking the status of rgee.</p>
@@ -276,7 +276,9 @@ R
   <span class="op">)</span>,
   name <span class="op">=</span> <span class="st">"stable lights trend"</span>
 <span class="op">)</span></code></pre></div>
-<p><img src="https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png" alt="rgee_01"></p>
+<div class="figure">
+<img src="https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png" alt=""><p class="caption">rgee_01</p>
+</div>
 </div>
 <div id="2-extract-precipitation-values" class="section level3">
 <h3 class="hasAnchor">
@@ -412,7 +414,9 @@ R
 <h2 class="hasAnchor">
 <a href="#how-does-rgee-work" class="anchor"></a>How does rgee work?</h2>
 <p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece into Python. Once the Python code is obtained, the <code>Earth Engine Python API</code> transform the request to a <code>JSON</code> format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The <strong>response</strong> will follow the same path.</p>
-<p><img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt="workflow"></p>
+<div class="figure">
+<img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt=""><p class="caption">workflow</p>
+</div>
 </div>
 <div id="quick-start-users-guide-for-rgee" class="section level2">
 <h2 class="hasAnchor">
@@ -454,12 +458,12 @@ R
 <div id="credits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#credits" class="anchor"></a>Credits</h2>
-<p>First off, we would like to offer an <strong>special thanks</strong> <span class="emoji" data-emoji="raised_hands">🙌</span> <span class="emoji" data-emoji="clap">👏</span> to <a href="https://github.com/jdbcode"><strong>Justin Braaten</strong></a> for his wise and helpful comments in the whole development of <strong>rgee</strong>. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:</p>
+<p>First off, we would like to offer an <strong>special thanks</strong> :raised_hands: :clap: to <a href="https://github.com/jdbcode"><strong>Justin Braaten</strong></a> for his wise and helpful comments in the whole development of <strong>rgee</strong>. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:</p>
 <ul>
 <li><a href="https://github.com/tracek/gee_asset_manager/"><strong>gee_asset_manager - Lukasz Tracewski</strong></a></li>
 <li><a href="https://github.com/samapriya/geeup/"><strong>geeup - Samapriya Roy</strong></a></li>
 <li>
-<a href="https://github.com/samapriya/gee_asset_manager_addon/"><strong>geeadd - Samapriya Roy</strong></a>
+<a href="https://github.com/samapriya/gee_asset_manager_addon/"><strong>geeadd - Samapriya Roy</strong></a><br>
 </li>
 <li><a href="https://github.com/KMarkert/cartoee/"><strong>cartoee - Kel Markert</strong></a></li>
 <li><a href="https://github.com/gee-community/gee_tools/"><strong>geetools - Rodrigo E. Principe</strong></a></li>

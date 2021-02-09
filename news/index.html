@@ -232,7 +232,7 @@
 </h1>
 <ul>
 <li>Important changes in the low level API to upload raster and vector with GCS. However, high upload API (<code>sf_as_ee</code>, <code>stars_as_ee</code>, and <code>raster_as_ee</code>) continue working in the same way.</li>
-<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see <a href="https://developers.google.com/earth-engine/image_manifest/" class="uri">https://developers.google.com/earth-engine/image_manifest/</a>).</li>
+<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see https://developers.google.com/earth-engine/image_manifest/).</li>
 <li>Add the functions: <code>ee_utils_gif_creator</code>, <code>ee_utils_gif_annotate</code> and <code>ee_utils_gif_save</code> to help users to read, add text, and save gif files.</li>
 <li>New | operator inspired in mapview 2.9.0! try: m4 | m5</li>
 <li>Fix several typos.</li>
@@ -246,7 +246,7 @@
 <ul>
 <li>Add <code>ee_help</code> a new Rstudio addins that mimics the help Rstudio interface (F1).</li>
 <li>Fix a bug that makes that <code>ee_as_sf</code> only supports <code>GeoJSON</code> format.</li>
-<li>If <code>dsn</code> is not specified in <code>ee_as_sf</code>, it will create a temporary shapefile (in \tmp dir).</li>
+<li>If <code>dsn</code> is not specified in <code>ee_as_sf</code>, it will create a temporary shapefile (in dir).</li>
 <li>Fix a bug in <code>ee_imagecollection_to_local</code> (<a href='https://github.com/r-spatial/rgee/issues/87'>#87</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
 <li>Fix a bug in <code>ee_image_local</code> (<a href='https://github.com/r-spatial/rgee/issues/88'>#88</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
 <li>Fix a bug in <code>ee_create_credentials_drive</code> (<a href='https://github.com/r-spatial/rgee/issues/90'>#90</a> <a href='https://github.com/r-spatial/rgee/issues/78'>#78</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
@@ -389,7 +389,7 @@
 </h1>
 <ul>
 <li>Fix a bug in ee_check_python_packages.</li>
-<li>\donttest changed by \dontrun in the documentation.</li>
+<li>changed by in the documentation.</li>
 <li>gdal and v8 system dependencies added to GH actions.</li>
 <li>Fix a bug in the paper (<code>ee_extract</code> example).</li>
 <li>Fix a minor bug in <code>ee_extract</code>, now the argument … works.</li>
@@ -410,7 +410,7 @@
 <li>DESCRIPTION: single quotes in title and description.</li>
 <li>DESCRIPTION: A more compressible description of what rgee does.</li>
 <li>DESCRIPTION: Added web reference to the Earth Engine API.</li>
-<li>\dontrun changed by \donttest in all our examples.</li>
+<li>changed by in all our examples.</li>
 <li>Added “#’ <a href='https://github.com/return'>@return</a>” to several functions.</li>
 <li>Added “#’ <a href='https://github.com/family'>@family</a>” to all the functions.</li>
 <li>Added ‘quiet’ argument to all the functions that needed.</li>
