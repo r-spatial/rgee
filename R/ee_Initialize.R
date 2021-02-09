@@ -74,7 +74,7 @@ ee_Initialize <- function(email = NULL,
       )
     )
   }
-  ee_utils <- ee_connect_to_py(ee_current_version, n = 5)
+  ee_utils <- ee_connect_to_py(path = ee_current_version, n = 5)
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   if (!quiet) {
@@ -732,7 +732,7 @@ ee_init_message <- function() {
 #' env, before to display a error message.
 #' @noRd
 ee_connect_to_py <- function(path, n = 5) {
-  ee_utils <- try(ee_source_python(path), silent = TRUE)
+  ee_utils <- try(ee_source_python(oauth_func_path = path), silent = TRUE)
   # counter added to prevent problems with reticulate
   con_reticulate_counter <- 1
   while (any(class(ee_utils) %in%  "try-error")) {

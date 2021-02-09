@@ -523,36 +523,38 @@ ee_install_set_pyenv_env <- function(py_env, py_path, renv, quiet) {
   if (!is.null(py_env)) {
     ret_env <- sprintf('EARTHENGINE_ENV="%s"', py_env)
     to_remote <- c(to_remote, ret_env)
-    if (is_windows()) {
+    if (length(py_path) == 0) {
       stop(
-        sprintf("%s install miniconda/anaconda to use rgee. %s %s",
-                bold("Windows users must"),
-                "The use of a Python environment is",
-                bold("mandatory."))
+        "Impossible to set a Python ENV without a Python PATH. py_path can not be NULL."
       )
-    } else {
-      if (length(py_path) == 0) {
-        stop(
-          "Impossible to set a Python ENV without a Python PATH. py_path can not be NULL."
-        )
-      }
     }
   } else {
-    text_msg <- paste(
-      sprintf(
-        "rgee will work if the Python PATH: %s", bold(py_path)
-      ),
-      sprintf(
-        "has installed the Python packages %s and %s", bold("earth-engine"), bold("numpy.")
-      ),
-      "The following functions will not work until you set a ",
-      sprintf("Python environment: %s and %s.\n",
-              bold("rgee::ee_install_upgrade"),
-              bold("reticulate::py_install")),
-      sep = "\n"
-    )
-    if (!quiet) {
-      message(text_msg)
+    if (is_windows()) {
+      stop_message <- sprintf(
+        "%s install miniconda/anaconda to use rgee. %s %s",
+        bold("Windows users must"),
+        "The use of a Python environment is",
+        bold("mandatory.")
+      )
+      stop(stop_message)
+    } else {
+
+      text_msg <- paste(
+        sprintf(
+          "rgee will work if the Python PATH: %s", bold(py_path)
+        ),
+        sprintf(
+          "has installed the Python packages %s and %s", bold("earth-engine"), bold("numpy.")
+        ),
+        "The following functions will not work until you set a ",
+        sprintf("Python environment: %s and %s.\n",
+                bold("rgee::ee_install_upgrade"),
+                bold("reticulate::py_install")),
+        sep = "\n"
+      )
+      if (!quiet) {
+        message(text_msg)
+      }
     }
   }
   system_vars <- c(lines, to_remote)
