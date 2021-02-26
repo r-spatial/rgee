@@ -98,10 +98,14 @@ ee_print.ee.geometry.Geometry <- function(eeobject,
       ee$String$getInfo() %>%
       sf::st_crs()
 
-    geom_geodesic <- eeobject %>%
-      ee$Geometry$geodesic() %>%
-      ee$ComputedObject$getInfo() %>%
-      ee_utils_py_to_r()
+    geom_geodesic <- suppressWarnings(
+      {
+        eeobject %>%
+          ee$Geometry$geodesic() %>%
+          ee$ComputedObject$getInfo() %>%
+          ee_utils_py_to_r()
+      }
+    )
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string
@@ -173,11 +177,16 @@ ee_print.ee.feature.Feature <- function(eeobject,
       ee$String$getInfo() %>%
       sf::st_crs()
 
-    geom_geodesic <- eeobject %>%
-      ee$Feature$geometry() %>%
-      ee$Geometry$geodesic() %>%
-      ee$ComputedObject$getInfo() %>%
-      ee_utils_py_to_r()
+    geom_geodesic <- suppressWarnings(
+      {
+        eeobject %>%
+          ee$Feature$geometry() %>%
+          ee$Geometry$geodesic() %>%
+          ee$ComputedObject$getInfo() %>%
+          ee_utils_py_to_r()
+      }
+    )
+
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string
@@ -268,11 +277,15 @@ ee_print.ee.featurecollection.FeatureCollection <- function(eeobject,
       ee$String$getInfo() %>%
       sf::st_crs()
 
-    geom_geodesic <- feature %>%
-      ee$Feature$geometry() %>%
-      ee$Geometry$geodesic() %>%
-      ee$ComputedObject$getInfo() %>%
-      ee_utils_py_to_r()
+    geom_geodesic <- suppressWarnings(
+      {
+        feature %>%
+          ee$Feature$geometry() %>%
+          ee$Geometry$geodesic() %>%
+          ee$ComputedObject$getInfo() %>%
+          ee_utils_py_to_r()
+      }
+    )
 
     geom_crs_name <- sprintf("%s (%s)",geom_wkt$Name, geom_info$crs)
     geom_proj4string <- geom_wkt$proj4string
