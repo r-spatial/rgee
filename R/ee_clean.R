@@ -46,12 +46,31 @@ ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
 
 #' Remove rgee system variables from .Renviron
 #'
+#' @param Renviron Character. If is "global" the environment variables are set in
+#' the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
+#' is "local" the environment variables are set in the .Renviron on the
+#' working directory (getwd()). Finally, users can also enter a specific path
+#' (See examples).
+#'
 #' @family ee_clean functions
 #' @return No return value, called for cleaning environmental variables in their system.
 #' @export
-ee_clean_pyenv <- function() {
+ee_clean_pyenv <- function(Renviron) {
+
+  # Get the .Renviron on their system
+  if (tolower(Renviron) == "global") {
+    home <- Sys.getenv("HOME")
+  } else if(tolower(Renviron) == "local") {
+    home <- getwd()
+  } else {
+    if (dir.exists(Renviron)) {
+      home <- Renviron
+    } else {
+      stop(sprintf("The directory %s does not exist!", Renviron))
+    }
+  }
+
   # Read line by line .Renviron
-  home <- Sys.getenv("HOME")
   renv <- file.path(home, ".Renviron")
   if (file.exists(renv)) {
     # Backup original .Renviron before doing anything else here.

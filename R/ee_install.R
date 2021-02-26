@@ -250,14 +250,39 @@ ee_install <- function(py_env = "rgee",
 #'
 #' @param py_path The path to a Python interpreter
 #' @param py_env The name of the environment
+#' @param Renviron Character. If is "global" the environment variables are set in
+#' the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
+#' is "local" the environment variables are set in the .Renviron on the
+#' working directory (getwd()). Finally, users can also enter a specific path
+#' (See examples).
 #' @param quiet Logical. Suppress info message
 #' @return no return value, called for setting EARTHENGINE_PYTHON in .Renviron
 #' @family ee_install functions
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
+#' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+#' }
 #' @export
-ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL, quiet = FALSE) {
+ee_install_set_pyenv <- function(py_path = NULL,
+                                 py_env = NULL,
+                                 Renviron = "global",
+                                 quiet = FALSE) {
 
   # Get the .Renviron on their system
-  home <- Sys.getenv("HOME")
+  if (tolower(Renviron) == "global") {
+    home <- Sys.getenv("HOME")
+  } else if(tolower(Renviron) == "local") {
+    home <- getwd()
+  } else {
+    if (dir.exists(Renviron)) {
+      home <- Renviron
+    } else {
+      stop(sprintf("The directory %s does not exist!", Renviron))
+    }
+  }
+
   renv <- file.path(home, ".Renviron")
 
   # Backup original .Renviron before doing anything else here.
@@ -271,12 +296,12 @@ ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL, quiet = FALSE) {
   }
 
   if (is.null(py_path)) {
-    py_path <- ee_get_python_path()
+    py_path <- ee_get_python_path(home)
   }
 
   # Remove rgee environmental variables
   # (EARTHENGINE_PYTHON | EARTHENGINE_ENV) from .Renviron
-  ee_clean_pyenv()
+  ee_clean_pyenv(home)
 
   # Set EARTHENGINE_PYTHON and EARTHENGINE_ENV in .Renviron.
   python_path <- ee_install_set_pyenv_path(
@@ -311,7 +336,7 @@ ee_install_set_pyenv <- function(py_path = NULL, py_env = NULL, quiet = FALSE) {
       )
     }
   }
-  renv
+  invisible(renv)
 }
 
 #' Set EARTHENGINE_INIT_MESSAGE as an environment variable
@@ -568,8 +593,7 @@ ee_install_set_pyenv_env <- function(py_env, py_path, renv, quiet) {
 
 #' Set a Python ENV
 #' @noRd
-ee_get_python_path <- function() {
-  home <- Sys.getenv("HOME")
+ee_get_python_path <- function(home) {
   renv <- file.path(home, ".Renviron")
   if (!file.exists(renv)) {
     return(FALSE)

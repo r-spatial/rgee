@@ -4,7 +4,7 @@
 \alias{ee_clean_pyenv}
 \title{Remove rgee system variables from .Renviron}
 \usage{
-ee_clean_pyenv()
+ee_clean_pyenv(home)
 }
 \value{
 No return value, called for cleaning environmental variables in their system.
