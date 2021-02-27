@@ -4,7 +4,14 @@
 \alias{ee_clean_pyenv}
 \title{Remove rgee system variables from .Renviron}
 \usage{
-ee_clean_pyenv(home)
+ee_clean_pyenv(Renviron = "global")
+}
+\arguments{
+\item{Renviron}{Character. If is "global" the environment variables are set in
+the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
+is "local" the environment variables are set in the .Renviron on the
+working directory (getwd()). Finally, users can also enter a specific path
+(See examples).}
 }
 \value{
 No return value, called for cleaning environmental variables in their system.

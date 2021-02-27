@@ -55,7 +55,7 @@ ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
 #' @family ee_clean functions
 #' @return No return value, called for cleaning environmental variables in their system.
 #' @export
-ee_clean_pyenv <- function(Renviron) {
+ee_clean_pyenv <- function(Renviron = "global") {
 
   # Get the .Renviron on their system
   if (tolower(Renviron) == "global") {
