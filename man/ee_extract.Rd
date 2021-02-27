@@ -10,6 +10,9 @@ ee_extract(
   fun = ee$Reducer$mean(),
   scale = NULL,
   sf = FALSE,
+  via = "getInfo",
+  container = "rgee_backup",
+  lazy = FALSE,
   quiet = FALSE,
   ...
 )
@@ -27,6 +30,17 @@ See details.}
 By default 1000.}
 
 \item{sf}{Logical. Should return a sf object?}
+
+\item{via}{Character. Method to export the image. Three method are
+implemented: "getInfo", "drive", "gcs".}
+
+\item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
+to be exported into (ignore if \code{via} is not defined as "drive" or
+"gcs").}
+
+\item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
+future::sequential}} object is created to evaluate the task in the future.
+Ignore if \code{via} is set as "getInfo". See details.}
 
 \item{quiet}{Logical. Suppress info message.}
 

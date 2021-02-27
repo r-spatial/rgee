@@ -13,6 +13,14 @@
 #' @param scale A nominal scale in meters of the Image projection to work in.
 #' By default 1000.
 #' @param sf Logical. Should return a sf object?
+#' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
+#' future::sequential}} object is created to evaluate the task in the future.
+#' Ignore if \code{via} is set as "getInfo". See details.
+#' @param via Character. Method to export the image. Three method are
+#' implemented: "getInfo", "drive", "gcs".
+#' @param container Character. Name of the folder ('drive') or bucket ('gcs')
+#' to be exported into (ignore if \code{via} is not defined as "drive" or
+#' "gcs").
 #' @param quiet Logical. Suppress info message.
 #' @param ... ee$Image$reduceRegions additional parameters. See
 #' \code{ee_help(ee$Image$reduceRegions)} for more details.
@@ -120,6 +128,9 @@ ee_extract <- function(x,
                        fun = ee$Reducer$mean(),
                        scale = NULL,
                        sf = FALSE,
+                       via = "getInfo",
+                       container = "rgee_backup",
+                       lazy = FALSE,
                        quiet = FALSE,
                        ...) {
   ee_check_packages("ee_extract", c("geojsonio", "sf"))
@@ -221,33 +232,143 @@ ee_extract <- function(x,
     })
 
   # Extracting data and passing to sf
-  table_geojson <- table %>%
-    ee$FeatureCollection$getInfo() %>%
-    ee_utils_py_to_r()
-  class(table_geojson) <- "geo_list"
-  table_sf <- geojsonio::geojson_sf(table_geojson)
-  sf::st_geometry(table_sf) <- NULL
-  table_sf <- table_sf[, order(names(table_sf))]
+  if (via == "drive") {
 
-  # Removing helper index's
-  table_sf["id"] <- NULL
-  table_sf["ee_ID"] <- NULL
+    # Getting image ID if it is exist
+    # table_id is the name of the table in the container
+    table_id <- basename(tempfile("rgee_file_"))
 
-  # Remove system:index prefix
-  #colnames(table_sf) <- gsub("^[^_]*_","", colnames(table_sf))
+    # Have you loaded the necessary credentials?
+    # Only important for drive or gcs.
+    ee_user <- ee_exist_credentials()
+    dsn <- sprintf("%s/%s.csv", tempdir(), table_id)
+    # From Earth Engine to drive
+    table_task <- ee_init_task_drive_fc(
+      x_fc = table,
+      dsn = dsn,
+      container = container,
+      table_id = table_id,
+      ee_user = ee_user,
+      selectors =  NULL,
+      timePrefix = TRUE,
+      quiet = quiet
+    )
 
-  if (isTRUE(sf)) {
-    table_geometry  <- sf::st_geometry(sf_y)
-    table_sf <- sf_y %>%
-      sf::st_drop_geometry() %>%
-      cbind(table_sf) %>%
-      sf::st_sf(geometry = table_geometry)
+    if(lazy) {
+      prev_plan <- future::plan(future::sequential, .skip = TRUE)
+      on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+      future::future({
+
+        table_csv <- ee_sf_drive_local(
+          table_task = table_task,
+          dsn = dsn,
+          metadata = FALSE,
+          public = TRUE,
+          overwrite = TRUE,
+          quiet = quiet
+        )
+
+        # Removing helper index's
+        table_sf <- read.csv(table_csv$dsn)
+        table_sf["system.index"] <- NULL
+        table_sf["ee_ID"] <- NULL
+        table_sf[".geo"] <- NULL
+
+        if (isTRUE(sf)) {
+          table_geometry  <- sf::st_geometry(sf_y)
+          table_sf <- sf_y %>%
+            sf::st_drop_geometry() %>%
+            cbind(table_sf) %>%
+            sf::st_sf(geometry = table_geometry)
+        } else {
+          table_sf <- sf_y %>%
+            sf::st_drop_geometry() %>%
+            cbind(table_sf)
+        }
+        table_sf
+      }, lazy = TRUE)
+    }
+  } else if(via == "gcs") {
+
+    # Getting image ID if it is exist
+    # table_id is the name of the table in the container
+    table_id <- basename(tempfile("rgee_file_"))
+
+    # Have you loaded the necessary credentials?
+    # Only important for drive or gcs.
+    ee_user <- ee_exist_credentials()
+    dsn <- sprintf("%s/%s.csv", tempdir(), table_id)
+    # From Earth Engine to drive
+    table_task <- ee_init_task_gcs_fc(
+      x_fc = table,
+      dsn = dsn,
+      container = container,
+      table_id = table_id,
+      ee_user = ee_user,
+      selectors =  NULL,
+      timePrefix = TRUE,
+      quiet = quiet
+    )
+
+    if(lazy) {
+      prev_plan <- future::plan(future::sequential, .skip = TRUE)
+      on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
+      future::future({
+
+        table_csv <- ee_sf_gcs_local(
+          table_task = table_task,
+          dsn = dsn,
+          metadata = FALSE,
+          public = TRUE,
+          overwrite = TRUE,
+          quiet = quiet
+        )
+
+        # Removing helper index's
+        table_sf <- read.csv(table_csv$dsn)
+        table_sf["system.index"] <- NULL
+        table_sf["ee_ID"] <- NULL
+        table_sf[".geo"] <- NULL
+
+        if (isTRUE(sf)) {
+          table_geometry  <- sf::st_geometry(sf_y)
+          table_sf <- sf_y %>%
+            sf::st_drop_geometry() %>%
+            cbind(table_sf) %>%
+            sf::st_sf(geometry = table_geometry)
+        } else {
+          table_sf <- sf_y %>%
+            sf::st_drop_geometry() %>%
+            cbind(table_sf)
+        }
+        table_sf
+      }, lazy = TRUE)
+    }
   } else {
-    table_sf <- sf_y %>%
-      sf::st_drop_geometry() %>%
-      cbind(table_sf)
+    table_geojson <- table %>%
+      ee$FeatureCollection$getInfo() %>%
+      ee_utils_py_to_r()
+    class(table_geojson) <- "geo_list"
+    table_sf <- geojsonio::geojson_sf(table_geojson)
+    sf::st_geometry(table_sf) <- NULL
+    table_sf <- table_sf[, order(names(table_sf))]
+
+    # Removing helper index's
+    table_sf["id"] <- NULL
+    table_sf["ee_ID"] <- NULL
+    if (isTRUE(sf)) {
+      table_geometry  <- sf::st_geometry(sf_y)
+      table_sf <- sf_y %>%
+        sf::st_drop_geometry() %>%
+        cbind(table_sf) %>%
+        sf::st_sf(geometry = table_geometry)
+    } else {
+      table_sf <- sf_y %>%
+        sf::st_drop_geometry() %>%
+        cbind(table_sf)
+    }
+    table_sf
   }
-  table_sf
 }
 
 #' Converts all bands in an image to an image collection.
