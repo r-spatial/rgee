@@ -13,59 +13,56 @@ collection <- ee$ImageCollection("LANDSAT/LC08/C01/T1_TOA")$
 
 # testing -----------------------------------------------------------------
 test_that("Map default", {
-  expect_s3_class(rgee:::ee_mapview(),'EarthEngineMap')
+  expect_s3_class(Map,'EarthEngineMap')
 })
 
-test_that("Map default", {
-  Map <- new.env(parent = emptyenv())
-  Map <- rgee:::ee_set_methods()
-  expect_type(Map, "environment")
-})
 
 test_that("Map ee_setZoom", {
-  zoom <- rgee:::ee_setZoom(10)
+  zoom <- Map$setZoom()
   expect_type(zoom, "double")
 })
 
 test_that("Map ee_setZoom", {
-  eeCenter <- rgee:::ee_setCenter(-10,-20,10)
-  expect_type(eeCenter, "environment")
+  eeCenter <- Map$setCenter(-10,-20,10)
+  # return zoom
+  expect_equal(eeCenter, 10)
 })
 
 test_that("Map ee_centerObject", {
-  eeCenter <- rgee:::ee_centerObject(
+  eeCenter <- Map$centerObject(
     eeObject = geom,
     zoom = 5,
     maxError = ee$ErrorMargin(1))
-  expect_type(eeCenter$zoom, "double")
-  eeCenter <- rgee:::ee_centerObject(
+  expect_type(eeCenter, "double")
+  eeCenter <- Map$centerObject(
     eeObject = image,
     zoom = 7,
-    maxError = ee$ErrorMargin(1))
-  expect_equal(eeCenter$zoom, 7)
+    maxError = ee$ErrorMargin(1)
+  )
+  expect_equal(eeCenter, 7)
 })
 
 test_that("Map geometry", {
-  m1 <- rgee:::ee_addLayer(
+  m1 <- Map$addLayer(
     geom,
     list(pointRadius = 10, color = "FF0000"),
     "Geometry-Arequipa-test")
-  m1_noviz <- rgee:::ee_addLayer(geom, name =  "Geometry-Arequipa")
+  m1_noviz <- Map$addLayer(geom, name =  "Geometry-Arequipa")
   expect_equal(m1$rgee$name, "Geometry-Arequipa-test")
   expect_equal(m1_noviz$rgee$name, "Geometry-Arequipa")
 })
 
 test_that("Map geometry", {
-  m1 <- rgee:::ee_addLayer(geom,
-                           list(pointRadius = 10, color = "FF0000"),
-                           "Geometry-Arequipa-test")
-  m1_noviz <- rgee:::ee_addLayer(geom, name =  "Geometry-Arequipa")
+  m1 <- Map$addLayer(geom,
+                     list(pointRadius = 10, color = "FF0000"),
+                     "Geometry-Arequipa-test")
+  m1_noviz <- Map$addLayer(geom, name =  "Geometry-Arequipa")
   expect_equal(m1$rgee$name, "Geometry-Arequipa-test")
   expect_equal(m1_noviz$rgee$name, "Geometry-Arequipa")
 })
 
 test_that("Map feature", {
-  m2 <- rgee:::ee_addLayer(
+  m2 <- Map$addLayer(
     ee$Feature(geom),
     name = "Feature-Arequipa-test"
   )
@@ -74,7 +71,7 @@ test_that("Map feature", {
 
 # Case: FeatureCollection
 test_that("Map FeatureCollection", {
-  m3 <- rgee:::ee_addLayer(
+  m3 <- Map$addLayer(
     eeObject = eeobject_fc,
     name = "FeatureCollection"
   )
@@ -94,17 +91,17 @@ test_that("Map FeatureCollection", {
   # expect_equal(m4@object$names,"SF")
 #})
 test_that("Map$centerObject", {
-  rgee:::ee_centerObject(eeObject = image)
+  Map$centerObject(eeObject = image)
   expect_equal(Map$lat, 37.4716,tolerance = .001)
 })
 
 test_that("Map$centerObject", {
-  rgee:::ee_setZoom(zoom = 10)
+  Map$setZoom(zoom = 10)
   expect_equal(Map$zoom, 10)
 })
 
 test_that("Map$centerObject", {
-  rgee:::ee_setCenter(lon = 10,lat = 10)
+  Map$setCenter(lon = 10,lat = 10)
   expect_equal(Map$lon, 10)
   expect_equal(Map$lat, 10)
 })
@@ -136,31 +133,31 @@ test_that("ERROR 01", {
 
 # Case: FeatureCollection
 test_that("messages 01", {
-  message <- rgee:::ee_centerObject(
+  message <- Map$centerObject(
       eeObject = eeobject_fc)
-  expect_type(message,"environment")
-  message <- rgee:::ee_centerObject(
+  expect_equal(message, 18)
+  message <- Map$centerObject(
     eeObject = ee$Image(0))
-  expect_type(message,"environment")
-  message <- rgee:::ee_centerObject(
+  expect_equal(message, 0)
+  message <- Map$centerObject(
     eeObject = eeobject_fc$first()$geometry())
-  expect_type(message,"environment")
+  expect_equal(message, 18)
 })
 
 # Test impossible to get center
 test_that("Map ee$Image(0)", {
   img <- ee$Image(0)
-  m1 <- rgee:::ee_centerObject(img)
-  expect_equal(m1$lat,0)
-  expect_equal(m1$lon,0)
+  m1 <- Map$centerObject(img)
+  expect_equal(m1, 0)
 })
 
 # Test viz Map
 test_that("Map ee$Image", {
-  img <- image
-  Map$centerObject(img)
-  m1 <- rgee:::ee_addLayer(img$normalizedDifference(c("B5", "B4")),
-                           legend = TRUE)
+  Map$centerObject(image)
+  m1 <- Map$addLayer(
+    image$normalizedDifference(c("B5", "B4")),
+    legend = TRUE
+  )
   expect_s3_class(m1, "leaflet")
 })
 
@@ -168,17 +165,17 @@ test_that("Map ee$Image", {
 test_that("Map ee$Image", {
   # img
   img <- ee$Image(0)$set("system:id", "cesar")
-  img_name <- ee_get_system_id(img)
+  img_name <- rgee:::ee_get_system_id(img)
   # feat
   ft <- ee$Feature(ee$Geometry$Rectangle(0,0,0,0))$set("system:id", "cesar")
-  ft_name <- ee_get_system_id(ft)
+  ft_name <- rgee:::ee_get_system_id(ft)
   # fc
   fc <- ee$FeatureCollection(ft)$set("system:id", "cesar")
-  fc_name <- ee_get_system_id(fc)
+  fc_name <- rgee:::ee_get_system_id(fc)
   # ic
   ic <- ee$ImageCollection(list(ee$Image(0), ee$Image(0)))$
     set("system:id", "cesar")
-  ic_name <- ee_get_system_id(ic)
+  ic_name <- rgee:::ee_get_system_id(ic)
 
   expect_equal(ic_name, "cesar")
   expect_equal(img_name, "cesar")
