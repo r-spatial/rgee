@@ -1,27 +1,3 @@
-#' Create a default leaflet
-#' @noRd
-leaflet_default <- function (lon = -76.942478, lat = -12.172116, zoom  = 18, default_maps = NULL) {
-  if (is.null(default_maps)) {
-    default_maps <- c(
-      "CartoDB.Positron", "OpenStreetMap",
-      "CartoDB.DarkMatter", "Esri.WorldImagery",
-      "OpenTopoMap"
-    )
-  }
-  m <- initBaseMaps(default_maps)
-  m <- leaflet::setView(map = m, lon, lat, zoom)
-  m <- leaflet::addLayersControl(
-    map = m,
-    baseGroups = default_maps,
-    position = "topleft"
-  )
-  m <- leaflet::addScaleBar(map = m, position = "bottomleft")
-  m <- leafem::addMouseCoordinates(m)
-  m <- leafem::addCopyExtent(m)
-  class(m) <- append(class(m),"EarthEngineMap")
-  m
-}
-
 #' Estimates the zoom level for a given bounds
 #' Adapted from Python to R
 #' https://github.com/fitoprincipe/ipygee/
@@ -62,48 +38,6 @@ get_ee_image_url <- function(image) {
   url
 }
 
-
-#' Add a mapview object based on a tile_fetcher
-#' @noRd
-ee_addTile <- function(tile, name, visParams, shown, opacity) {
-  # check packages
-  ee_check_packages("Map$addLayer", c("leaflet"))
-
-  m <- ee_mapview()
-  m <- m %>%
-    leaflet::addTiles(
-      urlTemplate = tile,
-      layerId = name,
-      group = name,
-      options = leaflet::tileOptions(opacity = opacity)
-    ) %>%
-    ee_mapViewLayersControl(names = name) %>%
-    leaflet::hideGroup(if (!shown) name else NULL)
-
-  # map parameters
-  m$rgee$tokens <- tile
-  m$rgee$name <- name
-  m$rgee$opacity <- opacity
-  m$rgee$shown <- shown
-
-  # legend parameters
-  m$rgee$min <- if (is.null(visParams$min)) NA else visParams$min
-  m$rgee$max <- if (is.null(visParams$max)) NA else visParams$max
-  m$rgee$palette <-  if (is.null(visParams$palette)) list(NA) else visParams$palette
-  m$rgee$legend <-  FALSE
-  m
-}
-
-#' Basic base mapview object
-#' @noRd
-ee_mapview <- function() {
-  # check packages
-  ee_check_packages("ee_mapview", "leaflet")
-  m <- leaflet_default()
-  m$x$setView[[1]] <- c(Map$lat, Map$lon)
-  m$x$setView[[2]] <- if (is.null(Map$zoom)) 1 else Map$zoom
-  m
-}
 
 
 #' Add legend to EarthEngineMap objects
@@ -265,39 +199,4 @@ ee_get_system_id <- function(eeObject) {
   } else {
     stop("Impossible to get system:id")
   }
-}
-
-
-#' Create a default leaflet with initBaseMaps
-#' @noRd
-initBaseMaps <- function (map.types, canvas = FALSE, viewer.suppress = FALSE) {
-  lid <- seq_along(map.types)
-  m <- leaflet::leaflet(
-    height = NULL,
-    width = NULL,
-    options = leaflet::leafletOptions(
-      minZoom = 1, maxZoom = 52,
-      bounceAtZoomLimits = FALSE,
-      maxBounds = list(list(c(-90,-370)), list(c(90, 370))),
-      preferCanvas = canvas),
-    sizingPolicy = leaflet::leafletSizingPolicy(
-      viewer.suppress = viewer.suppress,
-      browser.external = viewer.suppress))
-  # add Tiles
-  m <- leaflet::addProviderTiles(
-    map = m,
-    provider = map.types[1],
-    layerId = map.types[1],
-    group = map.types[1],
-    options = leaflet::providerTileOptions(pane = "tilePane")
-  )
-  for (i in 2:length(map.types)) {
-    m <- leaflet::addProviderTiles(
-      map = m,
-      provider = map.types[i],
-      layerId = map.types[i],
-      group = map.types[i],
-      options = leaflet::providerTileOptions(pane = "tilePane"))
-  }
-  return(m)
 }

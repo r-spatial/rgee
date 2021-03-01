@@ -98,8 +98,9 @@ Imports:
     methods,
     reticulate (>= 1.15),
     magrittr,
+    R6,
     processx,
-    crayon,
+    crayon,    
     cli
 Suggests:
     leaflet (>= 2.0.2),

@@ -1,4 +1,4 @@
-#' R6 object to display Earth Engine (EE) spatial objects
+#' R6 class to display Earth Engine (EE) spatial objects
 #'
 #' @description Create interactive visualizations of spatial EE objects
 #' (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
@@ -52,9 +52,7 @@
 #' @returns Object of class leaflet, with the following extra parameters: tokens, name,
 #' opacity, shown, min, max, palette, and legend. Use the $ method to retrieve
 #' the data (e.g. m$rgee$min).
-#' @name Map
-#' @aliases Map
-#' @noRd
+#' @export
 R6Map <- R6::R6Class(
   classname = "EarthEngineMap",
   public = list(
@@ -67,15 +65,28 @@ R6Map <- R6::R6Class(
     #' @field zoom The zoom level, from 1 to 24.
     zoom = NULL,
 
-    #' @description Ignore.
+    #' @field save_maps Should `R6Map` save the previous maps?.
+    save_maps = NULL,
+
+    #' @field previous_map_left Should `R6Map` save the previous maps?.
+    previous_map_left = NULL,
+
+    #' @field previous_map_right Should `R6Map` save the previous maps?.
+    previous_map_right = NULL,
+
+    #' @description Constructor of R6Map.
     #' @param lon The longitude of the center, in degrees. By default -76.942478.
     #' @param lat The latitude of the center, in degrees. By default -12.172116.
     #' @param zoom The zoom level, from 1 to 24. By default 18.
-    #' @return A new `Map` object.
-    initialize = function(lon = -76.942478, lat = -12.172116 , zoom = 18) {
+    #' @param save_maps Should `R6Map` save the previous maps?.
+    #' @return A new `EarthEngineMap` object.
+    initialize = function(lon = -76.942478, lat = -12.172116 , zoom = 18, save_maps = TRUE) {
       self$lon <- lon
       self$lat <- lat
       self$zoom <- zoom
+      self$save_maps <- save_maps
+      self$previous_map_left = private$leaflet_default(self$lon, self$lat, self$zoom)
+      self$previous_map_right = private$leaflet_default(self$lon, self$lat, self$zoom)
     },
 
     #' @description
@@ -85,8 +96,20 @@ R6Map <- R6::R6Class(
     #' Map
     #' @return A `EarthEngineMap` object.
     print = function() {
-      m <- leaflet_default(self$lon, self$lat, self$zoom)
-      print(m)
+      m1 <- private$get_previous_map_right()
+      m2 <- private$get_previous_map_left()
+      if (is.null(m1$rgee$position) & is.null(m2$rgee$position)) {
+        m3 <- m1
+      } else {
+        if (is.null(m1$rgee$position)) {
+          m3 <- private$ee_mapview() | m2
+        } else if (is.null(m2$rgee$position)) {
+          m3 <- m1 | private$ee_mapview()
+        } else {
+          m3 <- m1 | m2
+        }
+      }
+      print(m3)
     },
 
     #' @description
@@ -101,9 +124,12 @@ R6Map <- R6::R6Class(
     #' Map$setCenter(lon = -76, lat = 0, zoom = 6)
     #' Map
     setCenter = function(lon = 0, lat = 0, zoom = 10) {
+      private$upgrade_center_right(lon, lat, zoom)
+      private$upgrade_center_left(lon, lat, zoom)
       private$set_lat(lat)
       private$set_lon(lon)
       private$set_zoom(zoom)
+
     },
 
     #' @description
@@ -138,9 +164,7 @@ R6Map <- R6::R6Class(
                             zoom = NULL,
                             maxError = ee$ErrorMargin(1)) {
       viewer_params <- private$get_center(eeObject, zoom, maxError)
-      private$set_lat(viewer_params$lat)
-      private$set_lon(viewer_params$lon)
-      private$set_zoom(viewer_params$zoom)
+      self$setCenter(viewer_params$lon, viewer_params$lat, viewer_params$zoom)
     },
 
     #' @description
@@ -169,6 +193,7 @@ R6Map <- R6::R6Class(
                         name = NULL,
                         shown = TRUE,
                         opacity = 1,
+                        position = NULL,
                         legend = FALSE) {
       # check packages
       ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem"))
@@ -223,16 +248,22 @@ R6Map <- R6::R6Class(
       }
 
       tile <- get_ee_image_url(image)
-      map <- ee_addTile(
+
+      map <- private$ee_addTile(
         tile = tile,
         name = name,
         visParams = visParams,
         shown = shown,
-        opacity = opacity
+        opacity = opacity,
+        position = position
       )
 
       if (legend) {
-        ee_add_legend(map, eeObject, visParams, name)
+        map <- ee_add_legend(map, eeObject, visParams, name)
+      }
+
+      if (isTRUE(self$save_maps)) {
+        private$save_map(map, position = position)
       } else {
         map
       }
@@ -278,6 +309,7 @@ R6Map <- R6::R6Class(
                          nmax = 5,
                          name = NULL,
                          shown = TRUE,
+                         position = NULL,
                          opacity = 1,
                          legend = FALSE) {
       # check packages
@@ -322,7 +354,7 @@ R6Map <- R6::R6Class(
       for (index in seq_len(eeObject_size)) {
         py_index <- index - 1
         if (py_index == 0) {
-          m_img <- Map$addLayer(
+          m_img <- self$addLayer(
             eeObject = ee_get(eeObject, index = py_index)$first(),
             visParams = visParams,
             name = name[index],
@@ -331,7 +363,7 @@ R6Map <- R6::R6Class(
             legend = legend
           )
         } else {
-          m_img <- Map$addLayer(
+          m_img <- self$addLayer(
             eeObject = ee_get(eeObject, index = py_index)$first(),
             visParams = visParams,
             name = name[index],
@@ -342,22 +374,56 @@ R6Map <- R6::R6Class(
         }
         m_img_list[[index]] <- m_img
       }
-      Reduce('+', m_img_list)
+      maps <- Reduce('+', m_img_list)
+
+      if (isTRUE(self$save_maps)) {
+        if (is.null(private$previous_map)) {
+          private$set_previous_map(maps)
+        } else {
+          private$set_previous_map(private$previous_map + maps)
+        }
+        invisible(maps)
+      } else {
+        maps
+      }
     }
   ),
   private = list(
+    #' Getter method to obtain right container map
+    get_previous_map_right = function() {
+      self$previous_map_right
+    },
+
+    #' Setter method (right container map)
+    set_previous_map_right = function(val) {
+        self$previous_map_right <- val
+    },
+
+    #' Getter method to obtain left container map
+    get_previous_map_left = function() {
+      self$previous_map_left
+    },
+
+    #' Setter method (left container map)
+    set_previous_map_left = function(val) {
+      self$previous_map_left <- val
+    },
+
     #' Setter method (latitude)
     set_lat = function(val) {
       self$lat <- val
     },
+
     #' Setter method (longitude)
     set_lon = function(val) {
       self$lon <- val
     },
+
     #' Setter method (zoom)
     set_zoom = function(val) {
       self$zoom <- val
     },
+
     #' Predict the latitude, longitude and zoom of a specific Earth Engine Object
     get_center = function(eeObject, zoom, maxError) {
       if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
@@ -414,6 +480,144 @@ R6Map <- R6::R6Class(
 
       # Set new initial view
       list(lon = center[1], lat = center[2], zoom = zoom)
+    },
+
+    #' Basic base mapview object
+    #' @noRd
+    ee_mapview = function() {
+      # check packages
+      ee_check_packages("ee_mapview", "leaflet")
+      m <- private$leaflet_default()
+      m$x$setView[[1]] <- c(self$lat, self$lon)
+      m$x$setView[[2]] <- if (is.null(self$zoom)) 1 else self$zoom
+
+      # EarthEngine Map parameters
+      m$rgee$tokens <- NULL
+      m$rgee$name <- NULL
+      m$rgee$opacity <- 1
+      m$rgee$shown <- TRUE
+      m$rgee$position <- NULL
+      # legend parameters
+      m$rgee$min <- NA
+      m$rgee$max <- NA
+      m$rgee$palette <-  list(NA)
+      m$rgee$legend <-  FALSE
+      m
+    },
+
+    #' Add a mapview object based on a tile_fetcher
+    #' @noRd
+    ee_addTile = function(tile, name, visParams, shown, opacity, position) {
+      # check packages
+      ee_check_packages("Map$addLayer", c("leaflet"))
+      m <- private$ee_mapview() %>%
+        leaflet::addTiles(
+          urlTemplate = tile,
+          layerId = name,
+          group = name,
+          options = leaflet::tileOptions(opacity = opacity)
+        ) %>%
+        ee_mapViewLayersControl(names = name) %>%
+        leaflet::hideGroup(if (!shown) name else NULL)
+
+      # map parameters
+      m$rgee$tokens <- tile
+      m$rgee$name <- name
+      m$rgee$opacity <- opacity
+      m$rgee$shown <- shown
+      m$rgee$position <- position
+
+      # legend parameters
+      m$rgee$min <- if (is.null(visParams$min)) NA else visParams$min
+      m$rgee$max <- if (is.null(visParams$max)) NA else visParams$max
+      m$rgee$palette <-  if (is.null(visParams$palette)) list(NA) else list(visParams$palette)
+      m$rgee$legend <-  FALSE
+      m
+    },
+
+    #' Add a mapview object based on a tile_fetcher considering position
+    #' @noRd
+    save_map = function(map, position = NULL) {
+      if (is.null(position)) {
+        private$set_previous_map_right(self$previous_map_right + map)
+      } else {
+        if (tolower(position) == "right") {
+          private$set_previous_map_right(self$previous_map_right + map)
+        } else if (tolower(position) == "left") {
+          private$set_previous_map_left(self$previous_map_left + map)
+        } else {
+          stop("position should be a character either 'right' or 'left'")
+        }
+      }
+    },
+
+    # Create a default map
+    leaflet_default = function(lon = -76.942478, lat = -12.172116, zoom  = 18, default_maps = NULL) {
+      if (is.null(default_maps)) {
+        default_maps <- c(
+          "CartoDB.Positron", "OpenStreetMap",
+          "CartoDB.DarkMatter", "Esri.WorldImagery",
+          "OpenTopoMap"
+        )
+      }
+      m <- private$initBaseMaps(default_maps)
+      m <- leaflet::setView(map = m, lon, lat, zoom)
+      m <- leaflet::addLayersControl(
+        map = m,
+        baseGroups = default_maps,
+        position = "topleft"
+      )
+      m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+      m <- leafem::addMouseCoordinates(m)
+      m <- leafem::addCopyExtent(m)
+      class(m) <- append(class(m),"EarthEngineMap")
+      m
+    },
+
+    #' Create a default leaflet with initBaseMaps
+    #' @noRd
+    initBaseMaps = function (map.types, canvas = FALSE, viewer.suppress = FALSE) {
+      lid <- seq_along(map.types)
+      m <- leaflet::leaflet(
+        height = NULL,
+        width = NULL,
+        options = leaflet::leafletOptions(
+          minZoom = 1, maxZoom = 52,
+          bounceAtZoomLimits = FALSE,
+          maxBounds = list(list(c(-90,-370)), list(c(90, 370))),
+          preferCanvas = canvas),
+        sizingPolicy = leaflet::leafletSizingPolicy(
+          viewer.suppress = viewer.suppress,
+          browser.external = viewer.suppress))
+      # add Tiles
+      m <- leaflet::addProviderTiles(
+        map = m,
+        provider = map.types[1],
+        layerId = map.types[1],
+        group = map.types[1],
+        options = leaflet::providerTileOptions(pane = "tilePane")
+      )
+      for (i in 2:length(map.types)) {
+        m <- leaflet::addProviderTiles(
+          map = m,
+          provider = map.types[i],
+          layerId = map.types[i],
+          group = map.types[i],
+          options = leaflet::providerTileOptions(pane = "tilePane"))
+      }
+      return(m)
+    },
+
+    #' Upgrade left right
+    upgrade_center_right = function(lon = 0, lat = 0, zoom = 10) {
+      self$previous_map_right <- self$previous_map_right %>%
+        leaflet::setView(lon, lat, zoom = zoom)
+    },
+
+    #' Upgrade left center
+    upgrade_center_left = function(lon = 0, lat = 0, zoom = 10) {
+      self$previous_map_left <- self$previous_map_left %>%
+        leaflet::setView(lon, lat, zoom = zoom)
     }
   )
 )
@@ -600,4 +804,4 @@ R6Map <- R6::R6Class(
 #' m5$rgee$tokens
 #' }
 #' @export
-Map <- R6Map$new()
+Map <- R6Map$new(save_maps = FALSE)
