@@ -114,42 +114,64 @@ of its inputs.
 library(rgee)
 library(sf)
 
-ee_Initialize()
+ee_Initialize(gcs = TRUE, drive = TRUE)
 
 # Define a Image or ImageCollection: Terraclimate
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") \%>\%
-  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") \%>\%
-  ee$ImageCollection$map(
-    function(x) {
-      date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
-      name <- ee$String$cat("Terraclimate_pp_", date)
-      x$select("pr")$rename(name)
-    }
-  )
+ ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") \%>\%
+ee$ImageCollection$map(
+   function(x) {
+     date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+     name <- ee$String$cat("Terraclimate_pp_", date)
+     x$select("pr")$rename(name)
+   }
+ )
 
 # Define a geometry
 nc <- st_read(
-  dsn = system.file("shape/nc.shp", package = "sf"),
-  stringsAsFactors = FALSE,
-  quiet = TRUE
+ dsn = system.file("shape/nc.shp", package = "sf"),
+ stringsAsFactors = FALSE,
+ quiet = TRUE
 )
 
 
-# Extract values
-
+#Extract values - getInfo
 ee_nc_rain <- ee_extract(
-  x = terraclimate,
-  y = nc["NAME"],
-  scale = 250,
-  fun = ee$Reducer$mean(),
-  sf = TRUE
+ x = terraclimate,
+ y = nc["NAME"],
+ scale = 250,
+ fun = ee$Reducer$mean(),
+ sf = TRUE
+)
+
+# Extract values - drive (lazy = TRUE)
+ee_nc_rain <- ee_extract(
+ x = terraclimate,
+ y = nc["NAME"],
+ scale = 250,
+ fun = ee$Reducer$mean(),
+ via = "drive",
+ lazy = TRUE,
+ sf = TRUE
+)
+ee_nc_rain <- ee_nc_rain \%>\% ee_utils_future_value()
+
+# Extract values - gcs (lazy = FALSE)
+ee_nc_rain <- ee_extract(
+ x = terraclimate,
+ y = nc["NAME"],
+ scale = 250,
+ fun = ee$Reducer$mean(),
+ via = "gcs",
+ container = "rgee_dev",
+ sf = TRUE
 )
 
 # Spatial plot
 plot(
-  ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
-  main = "2001 Jan Precipitation - Terraclimate",
-  reset = FALSE
+ ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
+ main = "2001 Jan Precipitation - Terraclimate",
+ reset = FALSE
 )
 }
 }

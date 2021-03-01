@@ -84,42 +84,64 @@
 #' library(rgee)
 #' library(sf)
 #'
-#' ee_Initialize()
+#' ee_Initialize(gcs = TRUE, drive = TRUE)
 #'
 #' # Define a Image or ImageCollection: Terraclimate
 #' terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
-#'   ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>%
-#'   ee$ImageCollection$map(
-#'     function(x) {
-#'       date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
-#'       name <- ee$String$cat("Terraclimate_pp_", date)
-#'       x$select("pr")$rename(name)
-#'     }
-#'   )
+#'  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>%
+#' ee$ImageCollection$map(
+#'    function(x) {
+#'      date <- ee$Date(x$get("system:time_start"))$format('YYYY_MM_dd')
+#'      name <- ee$String$cat("Terraclimate_pp_", date)
+#'      x$select("pr")$rename(name)
+#'    }
+#'  )
 #'
 #' # Define a geometry
 #' nc <- st_read(
-#'   dsn = system.file("shape/nc.shp", package = "sf"),
-#'   stringsAsFactors = FALSE,
-#'   quiet = TRUE
+#'  dsn = system.file("shape/nc.shp", package = "sf"),
+#'  stringsAsFactors = FALSE,
+#'  quiet = TRUE
 #' )
 #'
 #'
-#' # Extract values
-#'
+#' #Extract values - getInfo
 #' ee_nc_rain <- ee_extract(
-#'   x = terraclimate,
-#'   y = nc["NAME"],
-#'   scale = 250,
-#'   fun = ee$Reducer$mean(),
-#'   sf = TRUE
+#'  x = terraclimate,
+#'  y = nc["NAME"],
+#'  scale = 250,
+#'  fun = ee$Reducer$mean(),
+#'  sf = TRUE
+#' )
+#'
+#' # Extract values - drive (lazy = TRUE)
+#' ee_nc_rain <- ee_extract(
+#'  x = terraclimate,
+#'  y = nc["NAME"],
+#'  scale = 250,
+#'  fun = ee$Reducer$mean(),
+#'  via = "drive",
+#'  lazy = TRUE,
+#'  sf = TRUE
+#' )
+#' ee_nc_rain <- ee_nc_rain %>% ee_utils_future_value()
+#'
+#' # Extract values - gcs (lazy = FALSE)
+#' ee_nc_rain <- ee_extract(
+#'  x = terraclimate,
+#'  y = nc["NAME"],
+#'  scale = 250,
+#'  fun = ee$Reducer$mean(),
+#'  via = "gcs",
+#'  container = "rgee_dev",
+#'  sf = TRUE
 #' )
 #'
 #' # Spatial plot
 #' plot(
-#'   ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
-#'   main = "2001 Jan Precipitation - Terraclimate",
-#'   reset = FALSE
+#'  ee_nc_rain["X200101_Terraclimate_pp_2001_01_01"],
+#'  main = "2001 Jan Precipitation - Terraclimate",
+#'  reset = FALSE
 #' )
 #' }
 #' @export
@@ -258,35 +280,10 @@ ee_extract <- function(x,
       prev_plan <- future::plan(future::sequential, .skip = TRUE)
       on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
       future::future({
-
-        table_csv <- ee_sf_drive_local(
-          table_task = table_task,
-          dsn = dsn,
-          metadata = FALSE,
-          public = TRUE,
-          overwrite = TRUE,
-          quiet = quiet
-        )
-
-        # Removing helper index's
-        table_sf <- read.csv(table_csv$dsn)
-        table_sf["system.index"] <- NULL
-        table_sf["ee_ID"] <- NULL
-        table_sf[".geo"] <- NULL
-
-        if (isTRUE(sf)) {
-          table_geometry  <- sf::st_geometry(sf_y)
-          table_sf <- sf_y %>%
-            sf::st_drop_geometry() %>%
-            cbind(table_sf) %>%
-            sf::st_sf(geometry = table_geometry)
-        } else {
-          table_sf <- sf_y %>%
-            sf::st_drop_geometry() %>%
-            cbind(table_sf)
-        }
-        table_sf
+        ee_extract_to_lazy_exp_drive(table_task, dsn, quiet, sf, sf_y)
       }, lazy = TRUE)
+    } else {
+      ee_extract_to_lazy_exp_drive(table_task, dsn, quiet, sf, sf_y)
     }
   } else if(via == "gcs") {
 
@@ -314,35 +311,10 @@ ee_extract <- function(x,
       prev_plan <- future::plan(future::sequential, .skip = TRUE)
       on.exit(future::plan(prev_plan, .skip = TRUE), add = TRUE)
       future::future({
-
-        table_csv <- ee_sf_gcs_local(
-          table_task = table_task,
-          dsn = dsn,
-          metadata = FALSE,
-          public = TRUE,
-          overwrite = TRUE,
-          quiet = quiet
-        )
-
-        # Removing helper index's
-        table_sf <- read.csv(table_csv$dsn)
-        table_sf["system.index"] <- NULL
-        table_sf["ee_ID"] <- NULL
-        table_sf[".geo"] <- NULL
-
-        if (isTRUE(sf)) {
-          table_geometry  <- sf::st_geometry(sf_y)
-          table_sf <- sf_y %>%
-            sf::st_drop_geometry() %>%
-            cbind(table_sf) %>%
-            sf::st_sf(geometry = table_geometry)
-        } else {
-          table_sf <- sf_y %>%
-            sf::st_drop_geometry() %>%
-            cbind(table_sf)
-        }
-        table_sf
+        ee_extract_to_lazy_exp_gcs(table_task, dsn, quiet, sf, sf_y)
       }, lazy = TRUE)
+    } else {
+      ee_extract_to_lazy_exp_gcs(table_task, dsn, quiet, sf, sf_y)
     }
   } else {
     table_geojson <- table %>%
@@ -387,4 +359,73 @@ bands_to_image_collection <- function(img) {
     ee$Image$bandNames() %>%
     ee$List$map(ee_utils_pyfunc(bname_to_image)) %>%
     ee$ImageCollection()
+}
+
+
+#' From drive to local (sf). Function to be evaluated in future::plan
+#' @noRd
+ee_extract_to_lazy_exp_drive <- function(table_task, dsn, quiet, sf, sf_y) {
+  # From drive to local
+  table_csv <- ee_sf_drive_local(
+    table_task = table_task,
+    dsn = dsn,
+    metadata = FALSE,
+    public = FALSE,
+    overwrite = TRUE,
+    quiet = quiet
+  )
+
+  # Removing helper index's
+  table_sf <- read.csv(table_csv$dsn)
+  table_sf["system.index"] <- NULL
+  table_sf["ee_ID"] <- NULL
+  table_sf[".geo"] <- NULL
+
+  if (isTRUE(sf)) {
+    table_geometry  <- sf::st_geometry(sf_y)
+    table_sf <- sf_y %>%
+      sf::st_drop_geometry() %>%
+      cbind(table_sf) %>%
+      sf::st_sf(geometry = table_geometry)
+  } else {
+    table_sf <- sf_y %>%
+      sf::st_drop_geometry() %>%
+      cbind(table_sf)
+  }
+  table_sf
+}
+
+
+
+#' From GCS to local (sf). Function to be evaluated in future::plan
+#' @noRd
+ee_extract_to_lazy_exp_gcs <- function(table_task, dsn, quiet, sf, sf_y) {
+  # From GCS to local
+  table_csv <- ee_sf_gcs_local(
+    table_task = table_task,
+    dsn = dsn,
+    metadata = FALSE,
+    public = FALSE,
+    overwrite = TRUE,
+    quiet = quiet
+  )
+
+  # Removing helper index's
+  table_sf <- read.csv(table_csv$dsn)
+  table_sf["system.index"] <- NULL
+  table_sf["ee_ID"] <- NULL
+  table_sf[".geo"] <- NULL
+
+  if (isTRUE(sf)) {
+    table_geometry  <- sf::st_geometry(sf_y)
+    table_sf <- sf_y %>%
+      sf::st_drop_geometry() %>%
+      cbind(table_sf) %>%
+      sf::st_sf(geometry = table_geometry)
+  } else {
+    table_sf <- sf_y %>%
+      sf::st_drop_geometry() %>%
+      cbind(table_sf)
+  }
+  table_sf
 }

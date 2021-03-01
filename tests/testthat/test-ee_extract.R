@@ -35,6 +35,19 @@ test_that("ee_extract sf = FALSE",{
   expect_equal(mean(ee_nc_rain$X200012_pr), 53.29)
 })
 
+
+
+test_that("ee_extract lazy = TRUE",{
+  ee_nc_rain <- ee_extract(x = terraclimate$toBands(),
+                           y = nc["CRESS_ID"],
+                           fun = ee$Reducer$max(),
+                           via = "drive",
+                           lazy = TRUE,
+                           sf = FALSE)
+  ee_nc_rain <- ee_nc_rain %>% ee_utils_future_value()
+  expect_equal(mean(ee_nc_rain$X200012_pr), 53.29)
+})
+
 test_that("ee_extract extra_test", {
   aoi <- ee$Geometry$Point(-115.2899, 48.2898)
   aoi_sf <- aoi
