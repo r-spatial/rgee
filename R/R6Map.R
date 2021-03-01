@@ -223,7 +223,13 @@ R6Map <- R6::R6Class(
       }
 
       tile <- get_ee_image_url(image)
-      map <- ee_addTile(tile = tile, name = name, shown = shown, opacity = opacity)
+      map <- ee_addTile(
+        tile = tile,
+        name = name,
+        visParams = visParams,
+        shown = shown,
+        opacity = opacity
+      )
 
       if (legend) {
         ee_add_legend(map, eeObject, visParams, name)

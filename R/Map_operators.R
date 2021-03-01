@@ -32,10 +32,21 @@
 
   # If e1 and e2 have the same name add to $rgee$name the suffix _duplicated
   if (any(e1_name %in% e2_name)) {
-    positions <- which(e1_name %in% e2_name)
-    for (index in positions) {
-      e2_name[index] <- paste0(e1_name[index],"_duplicated")
-    }
+    warning(
+      paste0(
+        "EarthEngineMap objects with the same name ...",
+        " Adding a random sufix to the second map."
+      ),
+    )
+    # Index of the duplicated name.
+    positions_in_e1 <- which(e1_name %in% e2_name)
+    e2_name <- basename(
+      tempfile(
+        paste0(
+          e1_name[positions_in_e1], "_"
+        )
+      )
+    )
   }
 
   # Add all the tokens in the same leaflet map

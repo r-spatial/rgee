@@ -65,7 +65,7 @@ get_ee_image_url <- function(image) {
 
 #' Add a mapview object based on a tile_fetcher
 #' @noRd
-ee_addTile <- function(tile, name, shown, opacity) {
+ee_addTile <- function(tile, name, visParams, shown, opacity) {
   # check packages
   ee_check_packages("Map$addLayer", c("leaflet"))
 
@@ -87,9 +87,9 @@ ee_addTile <- function(tile, name, shown, opacity) {
   m$rgee$shown <- shown
 
   # legend parameters
-  m$rgee$min <- NA
-  m$rgee$max <- NA
-  m$rgee$palette <-  list(NA)
+  m$rgee$min <- if (is.null(visParams$min)) NA else visParams$min
+  m$rgee$max <- if (is.null(visParams$max)) NA else visParams$max
+  m$rgee$palette <-  if (is.null(visParams$palette)) list(NA) else visParams$palette
   m$rgee$legend <-  FALSE
   m
 }
