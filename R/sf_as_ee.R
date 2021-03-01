@@ -150,6 +150,15 @@ sf_as_ee <- function(x,
     stop(pos_msg)
   }
 
+  # There is point in the name?
+  x_point_condition <- grepl("\\.",colnames(x))
+  if (any(x_point_condition)) {
+    stop(
+      "Invalid column name(s). Earth Engine does not support the following column names:\n",
+      bold(paste0(colnames(x)[x_point_condition], collapse = ", "))
+    )
+  }
+
   if (any(class(x) %in%  "sfg")) {
     x <- sf::st_sfc(x, crs = proj)
   }
