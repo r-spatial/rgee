@@ -1,5 +1,5 @@
 ---
-title: "Best Practices"
+title: "**Best Practices**"
 output:
   html_document:
     toc: true
@@ -13,6 +13,23 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}    
 ---
 
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<style type="text/css">
+  body{
+    font-size: 15pt;
+    font-family: 'Roboto', sans-serif;
+  }
+  pre code{
+    font-size: 12pt;
+  }
+  .list-group-item:last-child{
+    font-size: 11pt;
+    font-weight: bold;
+  }
+</style>
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
@@ -22,7 +39,7 @@ knitr::opts_chunk$set(eval = FALSE)
 
 This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations. 
 
-## Avoid mixing client functions and objects with server functions and objects
+## **Avoid mixing client functions and objects with server functions and objects**
 
 Earth Engine server objects are objects with constructors that start with `ee` (e.g. ee\$Image, ee\$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).
 
@@ -104,7 +121,7 @@ and `print()` the result. Note that you can not print a collection with more
 5000 elements" error, `filter()` or `limit()` the collection before printing.
 
 
-## Avoid converting to list unnecessarily
+## **Avoid converting to list unnecessarily**
 
 Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a `List` or `Array` type. Unless you need random access to collection elements (i.e. you need to get the i'th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:
 
@@ -130,7 +147,7 @@ print(table$filter(ee$Filter$eq('country_na', 'Niger'))$first()$getInfo())
 
 Note that you should [use filters as early as possible in your analysis](https://developers.google.com/earth-engine/guides/best_practices).
 
-## Avoid **ee.Algorithms.If()**
+## **Avoid ee.Algorithms.If()**
 
 Do not use `ee.Algorithms.If()` to implement branching logic, especially in a mapped function. As the following example illustrates, `ee.Algorithms.If()` can be memory intensive and is not recommended:
 
@@ -168,7 +185,7 @@ print(table$filter(ee$Filter$eq('country_na', 'Chad')))
 
 As shown in [this tutorial](https://developers.google.com/earth-engine/tutorials/tutorial_js_03), a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.
 
-## Avoid **reproject()**
+## **Avoid reproject()**
 
 Don't use `reproject` unless absolutely necessary. One reason you might want to use reproject() is to force `Map` display computations to happen at a specific scale so you can examine the results at your desired scale of analysis. In the next example, patches of hot pixels are computed and the count of pixels in each patch is computed. Run the example and click on one of the patches. Note that the count of pixels differs between the reprojected data the data that has not been reprojected.
 
@@ -198,7 +215,7 @@ Map$addLayer(reprojected, list(min = 1, max = 256), "Size Reproject", FALSE)
 The reason for the discrepancy is because the [scale of analysis](https://developers.google.com/earth-engine/guides/scale) is set by the Code Editor zoom level. By calling `reproject()` you set the scale of the computation instead of the Map display. Use `reproject()` with extreme caution for reasons described in [this doc](https://developers.google.com/earth-engine/guides/projections).
 
 
-## Filter and **select()** first
+## **Filter and select() first**
 
 In general, filter input collections by time, location and/or metadata prior to doing anything else with the collection. Apply more selective filters before less selective filters. Spatial and/or temporal filters are often more selective. For example, note that `select()` and `filter()` are applied before `map()`:
 
@@ -229,7 +246,7 @@ viz <- list(bands = bands, min = 0, max = 10000)
 Map$addLayer(reasonableComputation, viz, "resonableComputation")
 ```
 
-## Use **updateMask()** instead of **mask()**
+## **Use updateMask() instead of mask()**
 
 The difference between `updateMask()` and `mask()` is that the former does a logical `and()` of the argument (the new mask) and the existing image mask whereas `mask()` simply replaces the image mask with the argument. The danger of the latter is that you can unmask pixels unintentionally. In this example, the goal is to mask pixels less than or equal to 300 meters elevation. As you can see (zoom out), using `mask()` causes a lot of pixels to become unmasked, pixels that don't belong in the image of interest:
 
@@ -256,7 +273,7 @@ goodMask <- image.updateMask(mask)
 Map$addLayer(goodMask, vis, "goodMask", FALSE)
 ```
 
-## Combine reducers
+## **Combine reducers**
 
 If you need multiple statistics (e.g. mean and standard deviation) from a single input (e.g. an image region), it is more efficient to combine reducers. For example, to get image statistics, combine reducers as follows:
 
@@ -283,7 +300,7 @@ sdsImage <- stats$toImage()$select('.*_stdDev')
 
 In this example, note that the mean reducer is combined with the standard deviation reducer and `sharedInputs` is true to enable a single pass through the input pixels. In the output dictionary, the name of the reducer is appended to the band name. To get mean and SD images (for example to normalize the input image), you can turn the values into an image and use regexes to extract means and SDs individually as demonstrated in the example.
 
-## Use **Export**
+## **Use Export**
 
 For computations that result in "User memory limit exceeded" or "Computation timed out" errors in the Code Editor, the same computations may be able to succeed by using `Export`. This is because the timeouts are longer and the allowable memory footprint is larger when running in the batch system (where exports run). (There are other approaches you may want to try first as detailed in the debugging doc). Continuing the previous example, suppose that dictionary returned an error. You could obtain the results by doing something like:
 
@@ -313,7 +330,7 @@ Note that the link is embedded into the asset name, for reproducibility. Also no
 
 See the debugging page for examples of using `Export` to resolve [Computation](https://developers.google.com/earth-engine/guides/debugging) timed out and [Too many concurrent aggregations](https://developers.google.com/earth-engine/guides/debugging). See [this doc](https://developers.google.com/earth-engine/guides/exporting) for details on exporting in general.
 
-## If you don't need to clip, don't use clip() 
+## **If you don't need to clip, don't use clip() **
 
 Using `clip()` unnecessarily will increase computation time. Avoid `clip()` unless it's necessary to your analysis. If you're not sure, don't clip. An example of a bad use of clip:
 
@@ -366,7 +383,7 @@ print(noClipNeeded$getInfo())
 
 If this computation times out, `Export` it as in [this example](https://developers.google.com/earth-engine/guides/best_practices).
 
-## If you need to clip with a complex collection, use **clipToCollection()**
+## **If you need to clip with a complex collection, use clipToCollection()**
 
 If you really need to clip something, and the geometries you want to use for clipping are in a collection, use `clipToCollection()`:
 
@@ -393,7 +410,7 @@ Map$addLayer(clippedTheRightWay, {}, 'clippedTheRightWay', FALSE)
 Do NOT use `featureCollection.geometry()` or `featureCollection.union()` on 
 large and/or complex collections, which can be more memory intensive.
 
-## Don't use a complex collection as the region for a reducer 
+## **Don't use a complex collection as the region for a reducer**
 
 If you need to do a spatial reduction such that the reducer pools inputs from multiple regions in a `FeatureCollection`, don't supply `featureCollection.geometry()` as the `geometry` input to the reducer. Instead, use `clipToCollection()` and a region large enough to encompass the bounds of the collection. For example:
 
@@ -421,7 +438,7 @@ reduction <- clippedTheRightWay$reduceRegion(
 print(reduction$getInfo()) # If this times out, export it.
 ```
 
-## Use a non-zero **errorMargin**
+## **Use a non-zero errorMargin**
 
 For possibly expensive geometry operations, use the largest error margin possible given the required precision of the computation. The error margin specifies the maximum allowable error (in meters) permitted during operations on geometries (e.g. during reprojection). Specifying a small error margin can result in the need to densify geometries (with coordinates), which can be memory intensive. It's good practice to specify as large an error margin as possible for your computation:
 
@@ -440,7 +457,7 @@ Map$addLayer(expensiveOps, {}, 'expensiveOps')
 ```
 
 
-## Don't use a ridiculously small scale with **reduceToVectors()**
+## **Don't use a ridiculously small scale with reduceToVectors()**
 
 If you want to convert a raster to a vector, use an appropriate scale. Specifying a very small scale can substantially increase computation cost. Set scale as high as possible give the required precision. For example, to get polygons representing global land masses:
 
@@ -477,7 +494,7 @@ Map$addLayer(vectors, {}, "vectors")
 ```
 In the previous example, note the use of a non-geodesic polygon for use in global reductions.
 
-## Don't use **reduceToVectors()** with **reduceRegions()**
+## **Don't use reduceToVectors() with reduceRegions()**
 
 Don't use a `FeatureCollection` returned by `reduceToVectors()` as an input to `reduceRegions()`. Instead, add the bands you want to reduce before calling `reduceToVectors()`:
 
@@ -507,7 +524,7 @@ print(means$limit(10)$getInfo())
 
 Note that other ways of reducing pixels of one image within zones of another include [reduceConnectedCommponents()](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/) and/or [grouping reducers](https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/).
 
-## Use **fastDistanceTransform()** for neighborhood operations 
+## **Use fastDistanceTransform() for neighborhood operations**
 
 For some convolution operations, `fastDistanceTransform()` may be more efficient than `reduceNeighborhood()` or `convolve()`. For example, to do erosion and/or dilation of binary inputs:
 
@@ -531,7 +548,7 @@ erosion <- notDistance$gt(3)
 Map$addLayer(erosion, {}, 'erosion')
 ```
 
-## Use the optimizations in **reduceNeighborhood()**
+## **Use the optimizations in reduceNeighborhood()**
 
 If you need to perform a convolution and can't use `fastDistanceTransform()`, use the optimizations in `reduceNeighborhood()`.
 
@@ -553,7 +570,7 @@ Map$addLayer(composite, viz, "composite") +
 Map$addLayer(optimizedConvolution, viz, "optimizedConvolution")
 ```
 
-## Don't sample more data than you need
+## **Don't sample more data than you need**
 
 Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see [this reference](https://www.deeplearning.ai/machine-learning-yearning/)). The following example demonstrates how requesting too much training data can result in the dreaded "Computed value is too large" error:
 
@@ -650,7 +667,7 @@ plot(
 
 In this example, the classifier is already very accurate, so there's not much tuning to do. You might want to choose the smallest tree possible (i.e. largest `minLeafPopulation`) that still has the required accuracy.
 
-## **Export** intermediate results 
+## **Export intermediate results**
 
 Suppose your objective is to take samples from a relatively complex computed image. It is often more efficient to `Export` the image `toAsset()`, load the exported image, then sample. For example:
 
@@ -751,7 +768,7 @@ In this example, note that the imagery is exported as float. Don't export at dou
 
 Once the export is completed, reload the asset and proceed with sampling from it. Note that a very small sample over a very small test area is run first, for debugging. When that is shown to succeed, take a larger sample and export it. Such large samples typically need to be exported. Do not expect such samples to be available interactively (for example through `print()`) or useable (for example as input to a classifier) without exporting them first.
 
-## Join vs. map-filter
+## **Join vs. map-filter**
 
 Suppose you want to join collections based on time, location or some metadata property. Generally, this is most efficiently accomplished with a join. The following example does a spatio-temporal join between the Landsat 8 and Sentinel-2 collections:
 
@@ -807,7 +824,7 @@ print(mappedFilter$first()$getInfo())
 ```
 
 
-## **reduceRegion() vs. reduceRegions()** vs. for-loop
+## **reduceRegion() vs. reduceRegions() vs. for-loop**
 
 Calling `reduceRegions()` with a very large or complex
 `FeatureCollection` as input may result in the dreaded “Computed value
@@ -908,7 +925,7 @@ print(data$first()$getInfo())
 
 Note that the `first()` thing from each collection is printed, for debugging purposes. You should not expect that the complete result will be available interactively: you'll need to `Export`. Also note that for-loops should be used with extreme caution and only as a last resort. Finally, the for-loop requires manually obtaining the size of the input collection and hardcoding that in the appropriate locations. If any of that sounds unclear to you, don't use a for-loop.
 
-## Use forward differencing for neighbors in time 
+## **Use forward differencing for neighbors in time**
 
 Suppose you have a temporally sorted `ImageCollection` (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use `iterate()` for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:
 

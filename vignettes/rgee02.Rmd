@@ -1,5 +1,5 @@
 ---
-title: "Considerations"
+title: "**Considerations**"
 output:
   html_document:
     toc: true
@@ -13,7 +13,23 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}    
 ---
 
-Thanks to **reticulate** embedding a Python session within an R session, **rgee** and the [Earth Engine Python API](https://pypi.org/project/earthengine-api/) **share the same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **three** bug-potential cases. Each of them are explained in-depth below.
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+<style type="text/css">
+  body{
+    font-size: 15pt;
+    font-family: 'Roboto', sans-serif;
+  }
+  pre code{
+    font-size: 12pt;
+  }
+  .list-group-item:last-child{
+    font-size: 11pt;
+    font-weight: bold;
+  }
+</style>
+
+Thanks to **reticulate** is it possible embedding a Python session within an R session. The **[Earth Engine Python API](https://pypi.org/project/earthengine-api/)** and **rgee** share the **same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **four** bug-potential cases. Each of them is explained in-depth below.
 
 
 ```{r, setup, include=FALSE}
@@ -22,7 +38,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-### 1. The **map** message error:
+### **1. The map message error:**
 
 This issue happens when the **map** method is used
 under the next two cases: (1) users employing a reticulate version
@@ -72,7 +88,7 @@ mynewlist$getInfo()
 #>  [1]  1  2  3  4  5  6  7  8  9 10 11
 ```
 
-### 2. Do not forget the **L**
+### **2. Do not forget the L**
 
 By default, when you define a number in R it will produce a **double
 precision** value. This does not happen in Python because, by default it
@@ -131,7 +147,7 @@ and_bitwise$getInfo()
 #> [1] 32
 ```
 
-### 3. Be careful with **ee$Date**
+### **3. Be careful with ee$Date**
 
 This problem also appears due to differences between the design of R and
 Python as programming languages. Currently, R only support integer data 
@@ -176,4 +192,33 @@ ee_date$getInfo() # Silent error
 #> [1] 112573440
 eedate_to_rdate(ee_date = ee_date, timestamp = TRUE)
 #> [1] 1.546301e+12
+```
+
+### **4. Take into consideration reserved words in R**
+
+A reserved word is a word that cannot be used as an identifier, such as the name
+of a variable or a function. According with `?reserved`, the reserved words in R's parser
+are: `if`, `else`, **`repeat`**, `while`, `function`, `for`, `in`, `next`, `break`, `TRUE`, `FALSE`, `NULL`,
+`Inf`, `NaN`, `NA`, `NA_integer_`, `NA_real_`, `NA_complex_`, `NA_character_`. From all these words,
+the only one that is part of the Earth Engine API is **repeat**.
+
+We can find **repeat** as a
+method for an Earth Engine List object. See **[`ee$List$repeat(value, count)`](https://developers.google.com/earth-engine/apidocs/ee-list-repeat)**:
+
+``` r
+library(rgee)
+ee_Initialize()
+ee_list <- ee$List(1:10)
+ee_list$repeat(10,2)$getInfo()
+#> Error: unexpected 'repeat' in "ee_list$repeat"
+```
+
+To avoid this error use backticks/quotation marks:
+
+``` r
+library(rgee)
+ee_Initialize()
+ee_list <- ee$List(1:10)
+ee_list$'repeat'(10,2)$getInfo()
+#> 10 10
 ```
