@@ -376,6 +376,16 @@ ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
       )
     }
   )
+
+  # Remove system:index (id camp)
+  x_list$features <-lapply(
+    X = x_list$features,
+    FUN = function(x) {
+      x$id = NULL
+      x
+    }
+  )
+
   class(x_list) <- "geo_list"
   x_sf <- geojsonio::geojson_sf(x_list, stringsAsFactors = FALSE)
   if (missing(dsn)) {
