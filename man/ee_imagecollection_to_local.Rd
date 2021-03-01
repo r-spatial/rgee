@@ -48,7 +48,7 @@ more pixels in the specified projection. Defaults to 100,000,000.}
 future::sequential}} object is created to evaluate the task in the future.
 See details.}
 
-\item{public}{Logical. If TRUE, a public link to the image will be created.}
+\item{public}{Logical. If TRUE, a public link to the image is created.}
 
 \item{add_metadata}{Add metadata to the stars_proxy object. See details.}
 
@@ -76,14 +76,14 @@ by two different options: "drive"
 Google Cloud Storage}). In both cases \code{ee_imagecollection_to_local}
 works as follow:
 \itemize{
-\item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+\item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
 move the \code{ee$Image} from Earth Engine to the intermediate container
 specified in argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 monitored. This is useful to lunch several tasks at the same time and
 call them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
-the \code{ee$Images} will be stored on the path specified in the argument
+the \code{ee$Images} are stored on the path specified in the argument
 \code{dsn}.}
 \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
 with the following elements will be added to the argument \code{dsn}.

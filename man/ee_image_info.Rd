@@ -10,7 +10,7 @@ ee_image_info(image, getsize = TRUE, compression_ratio = 20, quiet = FALSE)
 \item{image}{Single-band EE Image object.}
 
 \item{getsize}{Logical. If TRUE, the size of the object
-will be estimated.}
+is estimated.}
 
 \item{compression_ratio}{Numeric. Measurement of the relative reduction
 in size of data representation produced by a data compression algorithm

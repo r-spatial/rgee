@@ -11,10 +11,10 @@
 #' that save all credentials for a specific Google identity.
 #'
 #' @param drive Logical (optional). If TRUE, the drive credential
-#' will be cached in the path \code{~/.config/earthengine/}.
+#' is cached in the path \code{~/.config/earthengine/}.
 #'
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
-#' credential will be cached in the path \code{~/.config/earthengine/}.
+#' credential is cached in the path \code{~/.config/earthengine/}.
 #'
 #' @param display Logical. If TRUE display the earthengine authentication URL.
 #'
@@ -32,7 +32,7 @@
 #' them, these are only necessary to enable rgee I/O functionality.
 #' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specify the email
-#' argument all user credentials will be saved in a subdirectory
+#' argument all user credentials are saved in a subdirectory
 #' called \code{~/.config/earthengine/ndef}.
 #'
 #' @family session management functions
@@ -258,7 +258,7 @@ ee_Initialize <- function(email = NULL,
 #' \item Second, use the file.copy function to set up the
 #' "credentials" file, so that the Earth Engine Python API can read it.
 #' \item Finally, if the file.copy fails at copy it, the credentials
-#' will download from Internet, you will be directed to a web browser.
+#' will download from Internet. You will be directed to a web browser.
 #' Sign in to your Google account to be granted rgee
 #' permission to operate on your behalf with Google Earth Engine.
 #' These user credentials are cached in a folder below your

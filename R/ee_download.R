@@ -699,29 +699,43 @@ ee_table_to_asset <- function(collection,
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
-#' @param overwrite A boolean argument which indicates indicating
+#' @param overwrite A boolean argument which indicates
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param consider Interactive. See details.
-#' @param public Logical. If TRUE, a public link to the image will be created.
-#' @param metadata Logical. If TRUE, export the metadata related to the image.
-#' @param quiet logical. Suppress info message
+#' @param public Logical. If TRUE, a public link to the Google Drive resource is
+#' created.
+#' @param metadata Logical. If TRUE, export the metadata related to the Google
+#' Drive resource. See details.
+#' @param quiet logical. Suppress info message.
 #'
 #' @details
-#' The task argument needs a status as task "COMPLETED" to work, since the
-#' parameters necessary to identify EE objects into google drive are obtained
+#'
+#' The task argument needs a status as task "COMPLETED" to work, due that the
+#' parameters necessary to identify EE objects into Google Drive are obtained
 #' from \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
-#' \code{consider} argument is necessary since Google Drive permits users to
+#'
+#' \code{consider} argument is necessary due that Google Drive permits users to
 #' create files with the same name. \code{consider} uses an interactive R
 #' session by default to help users identify just the files that they want to
 #' download. Additionally, the options "last" and "all" are implemented. "last"
 #' will download just the last file saved in Google Drive while with "all" all
 #' files will be downloaded.
 #'
+#' Finally if the argument \code{metadata} is TRUE, a list with the
+#' following elements are exported join with the output filename (dsn):
+#'
+#' \itemize{
+#'  \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'  \item{\bold{drive_name: }}{Name of the Table in Google Drive.}
+#'  \item{\bold{drive_id: }}{Id of the Table in Google Drive.}
+#'  \item{\bold{drive_download_link: }}{Download link to the table.}
+#' }
+#'
 #' @importFrom utils menu
 #'
-#' @return If \code{metadata} is FALSE will return the filename of the image.
-#' Otherwise, a list with two elements (\code{dns} and \code{metadata}) will
-#' be returned.
+#' @return If \code{metadata} is FALSE will return the filename of the Google
+#' Drive resource on their system. Otherwise, a list with two elements
+#' (\code{dns} and \code{metadata}) is returned.
 #'
 #' @family generic download functions
 #'
@@ -941,11 +955,13 @@ ee_drive_to_local <- function(task,
 #'
 #' @param task List generated after finished correctly a EE task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
-#' file will be assigned.
+#' file (i.e. \code{tempfile()}) is assigned.
 #' @param overwrite A boolean argument which indicates indicating
 #' whether "filename" should be overwritten. By default TRUE.
-#' @param public Logical. If TRUE, a public link to the image will be created.
-#' @param metadata Logical. If TRUE, export the metadata related to the image.
+#' @param public Logical. If TRUE, a public link to Google Cloud Storage
+#' resource is created.
+#' @param metadata Logical. If TRUE, export the metadata related to the Google
+#' Cloud Storage resource. See details.
 #' @param quiet Logical. Suppress info message
 #' @details
 #'
@@ -953,7 +969,22 @@ ee_drive_to_local <- function(task,
 #' necessaries to locate the file into google cloud storage are obtained from
 #' \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 #'
-#' @return filename character vector.
+#' If the argument \code{metadata} is TRUE, a list with the
+#' following elements are exported join with the output filename (dsn):
+#'
+#' \itemize{
+#'   \item{\bold{ee_id: }}{Name of the Earth Engine task.}
+#'   \item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
+#'   \item{\bold{gcs_bucket: }}{Name of the bucket.}
+#'   \item{\bold{gcs_fileFormat: }}{Format of the table.}
+#'   \item{\bold{gcs_public_link: }}{Download link to the table.}
+#'   \item{\bold{gcs_URI: }}{gs:// link to the table.}
+#' }
+#'
+#' @return If \code{metadata} is FALSE will return the filename of the Google
+#' Cloud Storage resource on their system. Otherwise, a list with two elements
+#' (\code{dns} and \code{metadata}) is returned.
+#'
 #' @family generic download functions
 #'
 #' @examples

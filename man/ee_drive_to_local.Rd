@@ -20,35 +20,48 @@ ee_drive_to_local(
 \item{dsn}{Character. Output filename. If missing, a temporary
 file will be assigned.}
 
-\item{overwrite}{A boolean argument which indicates indicating
+\item{overwrite}{A boolean argument which indicates
 whether "filename" should be overwritten. By default TRUE.}
 
 \item{consider}{Interactive. See details.}
 
-\item{public}{Logical. If TRUE, a public link to the image will be created.}
+\item{public}{Logical. If TRUE, a public link to the Google Drive resource is
+created.}
 
-\item{metadata}{Logical. If TRUE, export the metadata related to the image.}
+\item{metadata}{Logical. If TRUE, export the metadata related to the Google
+Drive resource. See details.}
 
-\item{quiet}{logical. Suppress info message}
+\item{quiet}{logical. Suppress info message.}
 }
 \value{
-If \code{metadata} is FALSE will return the filename of the image.
-Otherwise, a list with two elements (\code{dns} and \code{metadata}) will
-be returned.
+If \code{metadata} is FALSE will return the filename of the Google
+Drive resource on their system. Otherwise, a list with two elements
+(\code{dns} and \code{metadata}) is returned.
 }
 \description{
 Move results of an EE task saved in Google Drive to a local directory.
 }
 \details{
-The task argument needs a status as task "COMPLETED" to work, since the
-parameters necessary to identify EE objects into google drive are obtained
+The task argument needs a status as task "COMPLETED" to work, due that the
+parameters necessary to identify EE objects into Google Drive are obtained
 from \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
-\code{consider} argument is necessary since Google Drive permits users to
+
+\code{consider} argument is necessary due that Google Drive permits users to
 create files with the same name. \code{consider} uses an interactive R
 session by default to help users identify just the files that they want to
 download. Additionally, the options "last" and "all" are implemented. "last"
 will download just the last file saved in Google Drive while with "all" all
 files will be downloaded.
+
+Finally if the argument \code{metadata} is TRUE, a list with the
+following elements are exported join with the output filename (dsn):
+
+\itemize{
+\item{\bold{ee_id: }}{Name of the Earth Engine task.}
+\item{\bold{drive_name: }}{Name of the Table in Google Drive.}
+\item{\bold{drive_id: }}{Id of the Table in Google Drive.}
+\item{\bold{drive_download_link: }}{Download link to the table.}
+}
 }
 \examples{
 \dontrun{

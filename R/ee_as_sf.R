@@ -3,7 +3,7 @@
 #' @param x Earth Engine table (ee$FeatureCollection) to be converted in a sf
 #' object.
 #' @param dsn Character. Output filename; in case \code{dsn} is missing
-#' a shapefile will be created in the \code{tmp()} directory.
+#' a shapefile is created in the \code{tmp()} directory.
 #' @param overwrite Logical. Delete data source \code{dsn} before attempting
 #' to write?.
 #' @param via Character. Method to export the image. Three method are
@@ -23,7 +23,7 @@
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' Ignore if \code{via} is set as "getInfo". See details.
-#' @param public Logical. If TRUE, a public link to the file will be created.
+#' @param public Logical. If TRUE, a public link to the file is created.
 #' See details.
 #' @param add_metadata Add metadata to the sf object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
@@ -45,17 +45,17 @@
 #' container. When via is set as "drive" or "gcs" \code{ee_as_sf} perform
 #' the following steps:
 #' \itemize{
-#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
 #'   move the EE Table from Earth Engine to the file storage system (Google Drive
 #'   or Google Cloud Storage) specified in the argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks at the same time and
 #'   call them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
-#'   the EE Table will be stored on the path specified in the argument
+#'   the EE Table is stored on the path specified in the argument
 #'   \code{dsn}.}
 #'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
-#'   with the following elements will be added to the sf object.
+#'   with the following elements is added to the sf object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
 #'       \itemize{

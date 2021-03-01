@@ -18,10 +18,10 @@ argument is used to create a folder inside the path \code{~/.config/earthengine/
 that save all credentials for a specific Google identity.}
 
 \item{drive}{Logical (optional). If TRUE, the drive credential
-will be cached in the path \code{~/.config/earthengine/}.}
+is cached in the path \code{~/.config/earthengine/}.}
 
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
-credential will be cached in the path \code{~/.config/earthengine/}.}
+credential is cached in the path \code{~/.config/earthengine/}.}
 
 \item{display}{Logical. If TRUE display the earthengine authentication URL.}
 
@@ -44,7 +44,7 @@ googlecloudStorageR, respectively. By default, rgee does not require
 them, these are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specify the email
-argument all user credentials will be saved in a subdirectory
+argument all user credentials are saved in a subdirectory
 called \code{~/.config/earthengine/ndef}.
 }
 \examples{

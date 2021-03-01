@@ -5,8 +5,8 @@
 #' @param image ee$Image to be converted into a stars object.
 #' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
 #' to export. CRS needs to be the same that the argument \code{image},
-#' otherwise, it will be forced. If not specified, image bounds will be taken.
-#' @param dsn Character. Output filename. If missing, a temporary file will be
+#' otherwise, it will be forced. If not specified, image bounds are taken.
+#' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
 #' @param via Character. Method to export the image. Two method are
 #' implemented: "drive", "gcs". See details.
@@ -20,7 +20,7 @@
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' See details.
-#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param public Logical. If TRUE, a public link to the image is created.
 #' @param add_metadata Add metadata to the stars_proxy object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
 #' a prefix to files to export. This parameter helps to avoid exported files
@@ -36,17 +36,17 @@
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
 #' \itemize{
-#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
 #'   move the \code{ee$Image} from Earth Engine to the intermediate container
 #'   specified in argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks at the same time and
 #'   call them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
-#'   the \code{ee$Image} will be stored on the path specified in the argument
+#'   the \code{ee$Image} is stored on the path specified in the argument
 #'   \code{dsn}.}
 #'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
-#'   with the following elements will be added to the stars-proxy object.
+#'   with the following elements is added to the stars-proxy object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
 #'       \itemize{
@@ -221,8 +221,8 @@ ee_as_stars <- function(image,
 #' @param image ee$Image to be converted into a raster object
 #' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
 #' to export. CRS needs to be the same that the argument \code{image},
-#' otherwise, it will be forced. If not specified, image bounds will be taken.
-#' @param dsn Character. Output filename. If missing, a temporary file will be
+#' otherwise, it will be forced. If not specified, image bounds are taken.
+#' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
 #' @param via Character. Method to export the image. Two method are
 #' implemented: "drive", "gcs". See details.
@@ -236,7 +236,7 @@ ee_as_stars <- function(image,
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' See details.
-#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param public Logical. If TRUE, a public link to the image is created.
 #' @param add_metadata Add metadata to the stars_proxy object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
 #' a prefix to files to export. This parameter helps to avoid exported files
@@ -251,17 +251,17 @@ ee_as_stars <- function(image,
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
 #' \itemize{
-#'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
+#'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
 #'   move the \code{ee$Image} from Earth Engine to the intermediate container
 #'   specified in argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks at the same time and
 #'   call them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
-#'   the \code{ee$Image} will be stored on the path specified in the argument
+#'   the \code{ee$Image} is stored on the path specified in the argument
 #'   \code{dsn}.}
 #'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
-#'   with the following elements will be added to the stars-proxy object.
+#'   with the following elements is added to the stars-proxy object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
 #'       \itemize{
@@ -727,7 +727,7 @@ ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
 #'
 #' @param image Single-band EE Image object.
 #' @param getsize Logical. If TRUE, the size of the object
-#' will be estimated.
+#' is estimated.
 #' @param compression_ratio Numeric. Measurement of the relative reduction
 #' in size of data representation produced by a data compression algorithm
 #' (ignored if \code{getsize} is FALSE). By default is 20
