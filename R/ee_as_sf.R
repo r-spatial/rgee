@@ -23,7 +23,8 @@
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' Ignore if \code{via} is set as "getInfo". See details.
-#' @param public Logical. If TRUE, a public link to the image will be created.
+#' @param public Logical. If TRUE, a public link to the file will be created.
+#' See details.
 #' @param add_metadata Add metadata to the sf object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
 #' a prefix to files to export. This parameter helps to avoid exported files
@@ -40,12 +41,13 @@
 #' direct and faster download. However, there is a limitation of
 #' 5000 features by request which makes it not recommendable for large
 #' FeatureCollections. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large FeatureCollections since the use of an intermediate
-#' container. They work as follow:
+#' are suitable for large FeatureCollections due the use of an intermediate
+#' container. When via is set as "drive" or "gcs" \code{ee_as_sf} perform
+#' the following steps:
 #' \itemize{
 #'   \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
-#'   move the EE Table from Earth Engine to the intermediate container
-#'   specified in argument \code{via}.}
+#'   move the EE Table from Earth Engine to the file storage system (Google Drive
+#'   or Google Cloud Storage) specified in the argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks at the same time and
 #'   call them later using \code{\link{ee_utils_future_value}} or
@@ -166,7 +168,7 @@ ee_as_sf <- function(x,
     if (is.null(table_id)) {
       table_id <- "no_tableid"
     }
-    dsn <- sprintf("%s/%s.shp",tempdir(), table_id)
+    dsn <- sprintf("%s/%s.geojson",tempdir(), table_id)
   } else {
     table_id <- sub(pattern = "(.*)\\..*$", replacement = "\\1", basename(dsn))
   }
@@ -176,6 +178,7 @@ ee_as_sf <- function(x,
   ee_user <- ee_exist_credentials()
 
   if (via == "getInfo") {
+    # Create a sf object using ee$FeatureCollection$getInfo method
     ee_fc_to_sf_getInfo_batch(
       x_fc = x_fc,
       dsn = dsn,
@@ -273,7 +276,8 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
   # fc_size is the number of elements in the collection
   # If the users does not change the maxFeatures argument
   # by a value greater than 5000 rgee assume a initial value
-  # of 5000 for fc_size.
+  # of 5000 for fc_size (5000 is the maximum number of elements to download
+  # using getInfo).
   fc_size <- 5000
 
   # If maxFeatures is greather than 5000 estimate the number of elements.
@@ -301,7 +305,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
     )
   }
 
-  # Only three batches it is recommended with getInfo
+  # Only three batches it is recommended with getInfo. If not display this warning.
   nbatch <- ceiling(fc_size / 5000)
   if (nbatch >= 3) {
     message(
@@ -312,6 +316,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
   }
 
   if (fc_size > 5000) {
+    # If the number of elements is greater than 5000 downloads by batches
     sf_list <- list()
     for (r_index in seq_len(nbatch)) {
       index <- r_index - 1
@@ -324,26 +329,39 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
         )
       }
       if (r_index == 1) {
+        # Estimate the CRS for the first element (we suppose that all the
+        # features have the same CRS).
         crs_sf <- x_fc %>%
           ee$FeatureCollection$geometry() %>%
           ee$Geometry$projection() %>%
           ee$Projection$wkt() %>%
           ee$String$getInfo()
       }
+      # Split the Feature on batches of 5000 elements.
       x_fc_batch <- ee$FeatureCollection(x_fc) %>%
         ee$FeatureCollection$toList(count = 5000, offset = 5000*index) %>%
         ee$FeatureCollection()
+
+      # ee_fc_to_sf_getInfo is a auxiliary function that using geojsonio
+      # convert a ee$FeatureCollection -> list -> sf object.
       sf_list[[r_index]] <- ee_fc_to_sf_getInfo(
         x_fc = x_fc_batch,
         overwrite = overwrite,
-        maxFeatures = maxFeatures
+        maxFeatures = maxFeatures,
+        dsn = dsn
       )
     }
+
+    # the final sf object should have the same CRS than the ee$FeatureCollection object.
     local_sf <- do.call(rbind, sf_list)
     suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
-    suppressWarnings(
-      sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
-    )
+
+    # If dsn is not NULL write the sf object in their system
+    if (is.null(dsn)) {
+      suppressWarnings(
+        sf::st_write(local_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+      )
+    }
     local_sf
   } else {
     crs_sf <- x_fc %>%
@@ -351,7 +369,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
       ee$Geometry$projection() %>%
       ee$Projection$wkt() %>%
       ee$String$getInfo()
-    local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, overwrite)
+    local_sf <- ee_fc_to_sf_getInfo(x_fc, dsn, maxFeatures, dsn = dsn, overwrite)
     suppressWarnings(sf::st_crs(local_sf) <- crs_sf)
     local_sf
   }
@@ -359,7 +377,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
 
 #' Convert a FeatureCollection to sf via getInfo
 #' @noRd
-ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
+ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, dns = NULL, overwrite = TRUE) {
   # check packages
   ee_check_packages("ee_fc_to_sf_getInfo", "sf")
 
@@ -391,9 +409,11 @@ ee_fc_to_sf_getInfo <- function(x_fc, dsn, maxFeatures, overwrite = TRUE) {
   if (missing(dsn)) {
     x_sf
   } else {
-    suppressWarnings(
-      sf::write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
-    )
+    if (is.null(dns)) {
+      suppressWarnings(
+        sf::write_sf(x_sf, dsn, delete_dsn = overwrite, quiet = TRUE)
+      )
+    }
     x_sf
   }
 }
@@ -447,7 +467,7 @@ ee_init_task_drive_fc <- function(x_fc, dsn, container, table_id,
     )
   }
 
-  # The file format specified in dsn exist is suppoted by GEE?
+  # The file format specified in dsn exist and it is suppoted by GEE?
   table_format <- ee_get_table_format(dsn)
   if (is.na(table_format)) {
     stop(
@@ -502,6 +522,7 @@ ee_sf_drive_local <- function(table_task, dsn, metadata, public, overwrite, quie
     local_files <- list(dsn = local_files)
   }
 
+  # The file format specified in dsn exist and it is supported by GEE?
   table_format <- ee_get_table_format(dsn)
   if (is.na(table_format)) {
     stop(
@@ -515,7 +536,7 @@ ee_sf_drive_local <- function(table_task, dsn, metadata, public, overwrite, quie
     local_files
   } else {
     local_sf <- sf::read_sf(dsn, quiet = TRUE)
-    attr(local_sf, "metadata") <- local_files$metadata
+    attr(local_sf, "metadata") <- local_files
     local_sf
   }
 }
@@ -546,7 +567,7 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
   }
 
 
-  # The file format specified in dsn exist is suppoted by GEE?
+  # The file format specified in dsn exist and it is supported by GEE?
   table_format <- ee_get_table_format(dsn)
   if (is.na(table_format)) {
     stop(
@@ -600,6 +621,7 @@ ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet)
     local_files <- list(dsn = local_files)
   }
 
+  # The file format specified in dsn exist and it is supported by GEE?
   table_format <- ee_get_table_format(dsn)
   if (is.na(table_format)) {
     stop(
@@ -612,8 +634,9 @@ ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet)
   if (table_format == "CSV") {
     local_files
   } else {
+    # Read sf and load metadata
     local_sf <- sf::read_sf(dsn, quiet = TRUE)
-    attr(local_sf, "metadata") <- local_files$metadata
+    attr(local_sf, "metadata") <- local_files
     local_sf
   }
 }

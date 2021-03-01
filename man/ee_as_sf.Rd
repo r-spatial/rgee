@@ -53,7 +53,8 @@ included.}
 future::sequential}} object is created to evaluate the task in the future.
 Ignore if \code{via} is set as "getInfo". See details.}
 
-\item{public}{Logical. If TRUE, a public link to the image will be created.}
+\item{public}{Logical. If TRUE, a public link to the file will be created.
+See details.}
 
 \item{add_metadata}{Add metadata to the sf object. See details.}
 
@@ -79,12 +80,13 @@ Google Cloud Storage}). The advantage of use "getInfo" is a
 direct and faster download. However, there is a limitation of
 5000 features by request which makes it not recommendable for large
 FeatureCollections. Instead of "getInfo", the options: "drive" and "gcs"
-are suitable for large FeatureCollections since the use of an intermediate
-container. They work as follow:
+are suitable for large FeatureCollections due the use of an intermediate
+container. When via is set as "drive" or "gcs" \code{ee_as_sf} perform
+the following steps:
 \itemize{
 \item{1. }{A task will be started (i.e. \code{ee$batch$Task$start()}) to
-move the EE Table from Earth Engine to the intermediate container
-specified in argument \code{via}.}
+move the EE Table from Earth Engine to the file storage system (Google Drive
+or Google Cloud Storage) specified in the argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 monitored. This is useful to lunch several tasks at the same time and
 call them later using \code{\link{ee_utils_future_value}} or
