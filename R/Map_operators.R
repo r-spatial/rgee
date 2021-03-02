@@ -19,6 +19,7 @@
   e1_shown <- e1$rgee$shown
   e1_token <- e1$rgee$tokens
   e1_opacity <- e1$rgee$opacity
+  e1_position <- e1$rgee$position
 
   # e2 metadata
   e2_max <- e2$rgee$max
@@ -29,21 +30,22 @@
   e2_token <- e2$rgee$tokens
   e2_opacity <- e2$rgee$opacity
   e2_legend <- e2$rgee$legend
+  e2_position <- e2$rgee$position
 
   # If e1 and e2 have the same name add to $rgee$name the suffix _duplicated
   if (any(e1_name %in% e2_name)) {
-    warning(
-      paste0(
-        "EarthEngineMap objects with the same name ...",
-        " Adding a random sufix to the second map."
-      )
-    )
+    # warning(
+    #   paste0(
+    #     "EarthEngineMap objects with the same name ...",
+    #     " Adding a random sufix to the second map."
+    #   )
+    # )
     # Index of the duplicated name.
-    positions_in_e1 <- which(e1_name %in% e2_name)
+    positions_in_e2 <- which(e2_name %in% e1_name)
     e2_name <- basename(
       tempfile(
         paste0(
-          e2_name[positions_in_e1], "_"
+          e2_name[positions_in_e2], "_"
         )
       )
     )
@@ -79,6 +81,7 @@
   e1$rgee$name <- c(e1_name, e2_name)
   e1$rgee$opacity <- c(e1_opacity, e2_opacity)
   e1$rgee$shown <- c(e1_shown, e2_shown)
+  e1$rgee$position <- c(e1_position, e2_position)
 
   e1$rgee$min <- c(e1_min, e2_min)
   e1$rgee$max <- c(e1_max, e2_max)
@@ -108,64 +111,57 @@
   e1_min <- e1$rgee$min
   e1_name <- e1$rgee$name
   e1_pal <- e1$rgee$palette
-  e1_legend <- e1$rgee$legend
+  e1_legend <- if (is.null(e1$rgee$legend)) FALSE else e1$rgee$legend
   e1_shown <- e1$rgee$shown
   e1_token <- e1$rgee$tokens
   e1_opacity <- e1$rgee$opacity
   e1_position <-  e1$rgee$position
 
   # e2 metadata
+  e2_token <- e2$rgee$tokens
   e2_max <- e2$rgee$max
   e2_min <- e2$rgee$min
   e2_name <- e2$rgee$name
   e2_pal <- e2$rgee$palette
   e2_shown <- e2$rgee$shown
-  e2_token <- e2$rgee$tokens
   e2_opacity <- e2$rgee$opacity
-  e2_legend <- e2$rgee$legend
+  e2_legend <- if (is.null(e2$rgee$legend)) FALSE else e2$rgee$legend
   e2_position <-  e2$rgee$position
+
   # If e1 and e2 have the same name add to $rgee$name the suffix _duplicated
   if (any(e1_name %in% e2_name)) {
-    warning(
-      paste0(
-        "EarthEngineMap objects with the same name ...",
-        " Adding a random sufix to the second map."
-      )
-    )
+    # warning(
+    #   paste0(
+    #     "EarthEngineMap objects with the same name ...",
+    #     " Adding a random sufix to the second map."
+    #   )
+    # )
     # Index of the duplicated name.
-    positions_in_e1 <- which(e1_name %in% e2_name)
-    e2_name[positions_in_e1] <- basename(
+    positions_in_e2 <- which(e2_name %in% e1_name)
+    e2_name <- basename(
       tempfile(
         paste0(
-          e2_name[positions_in_e1], "_"
+          e2_name[positions_in_e2], "_"
         )
       )
     )
   }
 
   # Create map with addSidebyside
+  lon <- e1$x$setView[[1]][2]
+  lat <- e1$x$setView[[1]][1]
+  zoom <- e1$x$setView[[2]]
+
   m <- leaflet_default() %>%
-    leaflet::setView(self$lon, self$lat, zoom = self$zoom) %>%
+    leaflet::setView(lon, lat, zoom = zoom) %>%
     leaflet::addMapPane("right", zIndex = 402) %>%
     leaflet::addMapPane("left", zIndex = 403) %>%
-    addTiles_batch(e2_token, e2_name, e2_opacity, position = "right") %>%
     addTiles_batch(e1_token, e1_name, e1_opacity, position = "left") %>%
+    addTiles_batch(e2_token, e2_name, e2_opacity, position = "right") %>%
     leaflet.extras2::addSidebyside(
       layerId = "e3",
-      leftId = e2_name[1],
-      rightId = e1_name[2])
-  m
-  # Add the legend of e2
-  if (isTRUE(e2_legend)) {
-    e1 <- e1 %>%
-      leaflet::addLegend(
-        position = "bottomright",
-        pal = e2_pal[[1]],
-        values = c(e2_min, e2_max),
-        opacity = 1,
-        title = e2_name
-      )
-  }
+      leftId = e1_name[1],
+      rightId = e2_name[1])
 
   # Save metadata
   m$rgee$tokens <- c(e1_token, e2_token)
@@ -210,97 +206,3 @@
   m
 }
 
-
-#' Create map with addSidebyside
-#' @noRd
-create_sidebyside_map <- function(map, e1_token, e1_name, e1_opacity,
-                                  e2_token, e2_name, e2_opacity) {
-  if (is.na(e2_token)) {
-    m <- map %>%
-      leaflet::setView(self$lon, self$lat, zoom = self$zoom) %>%
-      leaflet::addMapPane("right", zIndex = 402) %>%
-      leaflet::addMapPane("left", zIndex = 403) %>%
-      leaflet::addTiles(
-        urlTemplate = e1_token,
-        layerId = e1_name,
-        group = e1_name,
-        options = c(
-          leaflet::pathOptions(pane = "left"),
-          leaflet::tileOptions(opacity = e1_opacity)
-        )
-      ) %>%
-      ee_mapViewLayersControl(names = e1_name) %>%
-      leaflet.extras2::addSidebyside(
-        layerId = "e3",
-        leftId = e1_name,
-        rightId = e2_name)
-  } else if (is.na(e1_token)) {
-    m <- map %>%
-      leaflet::setView(self$lon, self$lat, zoom = self$zoom) %>%
-      leaflet::addMapPane("right", zIndex = 402) %>%
-      leaflet::addMapPane("left", zIndex = 403) %>%
-      leaflet::addTiles(
-        urlTemplate = e2_token,
-        layerId = e2_name,
-        group = e2_name,
-        options = c(
-          leaflet::pathOptions(pane = "right"),
-          leaflet::tileOptions(opacity = e2_opacity)
-        )
-      ) %>%
-      ee_mapViewLayersControl(names = e2_name) %>%
-      leaflet.extras2::addSidebyside(
-        layerId = "e3",
-        leftId = e1_name,
-        rightId = e2_name)
-  } else {
-    m <- map %>%
-      leaflet::setView(self$lon, self$lat, zoom = self$zoom) %>%
-      leaflet::addMapPane("right", zIndex = 402) %>%
-      leaflet::addMapPane("left", zIndex = 403) %>%
-      leaflet::addTiles(
-        urlTemplate = e2_token,
-        layerId = e2_name,
-        group = e2_name,
-        options = c(
-          leaflet::pathOptions(pane = "right"),
-          leaflet::tileOptions(opacity = e2_opacity)
-        )
-      ) %>%
-      leaflet::addTiles(
-        urlTemplate = e1_token,
-        layerId = e1_name,
-        group = e1_name,
-        options = c(
-          leaflet::pathOptions(pane = "left"),
-          leaflet::tileOptions(opacity = e1_opacity)
-        )
-      ) %>%
-      ee_mapViewLayersControl(names = e1_name) %>%
-      ee_mapViewLayersControl(names = e2_name) %>%
-      leaflet.extras2::addSidebyside(
-        layerId = "e3",
-        leftId = e1_name,
-        rightId = e2_name)
-  }
-  m
-}
-
-
-#' leaflet::addTiles in a batch way
-#' @noRd
-addTiles_batch <- function(map_default, e2_token, e2_name, e2_opacity, position = "right") {
-  for (index in seq_along(e2_token)) {
-    map_default <- map_default %>% leaflet::addTiles(
-      urlTemplate = e2_token[index],
-      layerId = e2_name[index],
-      group = e2_name[index],
-      options = c(
-        leaflet::pathOptions(pane = position),
-        leaflet::tileOptions(opacity = e2_opacity[index])
-      )
-    ) %>%
-      ee_mapViewLayersControl(names = e2_name[index])
-  }
-  map_default
-}

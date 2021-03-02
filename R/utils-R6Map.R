@@ -200,3 +200,82 @@ ee_get_system_id <- function(eeObject) {
     stop("Impossible to get system:id")
   }
 }
+
+
+#' leaflet::addTiles in a batch way
+#' @noRd
+addTiles_batch <- function(map_default, e2_token, e2_name, e2_opacity, position = "right") {
+  for (index in seq_along(e2_token)) {
+    map_default <- map_default %>% leaflet::addTiles(
+      urlTemplate = e2_token[index],
+      layerId = e2_name[index],
+      group = e2_name[index],
+      options = c(
+        leaflet::pathOptions(pane = position),
+        leaflet::tileOptions(opacity = e2_opacity[index])
+      )
+    ) %>%
+      ee_mapViewLayersControl(names = e2_name[index])
+  }
+  map_default
+}
+
+
+#' Create a default map
+#' @noRd
+leaflet_default <- function(lon = -76.942478, lat = -12.172116, zoom  = 18, default_maps = NULL) {
+  if (is.null(default_maps)) {
+    default_maps <- c(
+      "CartoDB.Positron", "OpenStreetMap",
+      "CartoDB.DarkMatter", "Esri.WorldImagery",
+      "OpenTopoMap"
+    )
+  }
+  m <- initBaseMaps(default_maps)
+  m <- leaflet::setView(map = m, lon, lat, zoom)
+  m <- leaflet::addLayersControl(
+    map = m,
+    baseGroups = default_maps,
+    position = "topleft"
+  )
+  m <- leaflet::addScaleBar(map = m, position = "bottomleft")
+  m <- leafem::addMouseCoordinates(m)
+  m <- leafem::addCopyExtent(m)
+  class(m) <- append(class(m),"EarthEngineMap")
+  m
+}
+
+
+#' Create a default leaflet with initBaseMaps
+#' @noRd
+initBaseMaps <- function (map.types, canvas = FALSE, viewer.suppress = FALSE) {
+  lid <- seq_along(map.types)
+  m <- leaflet::leaflet(
+    height = NULL,
+    width = NULL,
+    options = leaflet::leafletOptions(
+      minZoom = 1, maxZoom = 52,
+      bounceAtZoomLimits = FALSE,
+      maxBounds = list(list(c(-90,-370)), list(c(90, 370))),
+      preferCanvas = canvas),
+    sizingPolicy = leaflet::leafletSizingPolicy(
+      viewer.suppress = viewer.suppress,
+      browser.external = viewer.suppress))
+  # add Tiles
+  m <- leaflet::addProviderTiles(
+    map = m,
+    provider = map.types[1],
+    layerId = map.types[1],
+    group = map.types[1],
+    options = leaflet::providerTileOptions(pane = "tilePane")
+  )
+  for (i in 2:length(map.types)) {
+    m <- leaflet::addProviderTiles(
+      map = m,
+      provider = map.types[i],
+      layerId = map.types[i],
+      group = map.types[i],
+      options = leaflet::providerTileOptions(pane = "tilePane"))
+  }
+  return(m)
+}

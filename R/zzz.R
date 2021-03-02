@@ -9,5 +9,6 @@
   #   Sys.setenv(RETICULATE_PYTHON = earthengine_python)
 
   # delay load earthengine-api
+  Map <<- R6Map$new(save_maps = FALSE)
   ee <<- reticulate::import("ee", delay_load = TRUE)
 }

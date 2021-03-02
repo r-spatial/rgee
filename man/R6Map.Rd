@@ -4,9 +4,9 @@
 \alias{R6Map}
 \title{R6 class to display Earth Engine (EE) spatial objects}
 \value{
-Object of class leaflet, with the following extra parameters: tokens, name,
-opacity, shown, min, max, palette, and legend. Use the $ method to retrieve
-the data (e.g. m$rgee$min).
+Object of class \code{leaflet} and \code{EarthEngineMap}, with the
+following extra parameters: tokens, name, opacity, shown, min, max, palette,
+position, and legend. Use the $ method to retrieve the data (e.g. m$rgee$min).
 }
 \description{
 Create interactive visualizations of spatial EE objects
@@ -62,10 +62,24 @@ default 3.
 \examples{
 
 ## ------------------------------------------------
-## Method `R6Map$print`
+## Method `R6Map$reset`
 ## ------------------------------------------------
 
 library(rgee)
+ee_Initialize()
+
+# Load an Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+
+# Create
+Map <- R6Map$new()
+Map$centerObject(image)
+
+# Simple display: Map just will
+Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
+Map # display map
+
+Map$reset() # Reset arguments
 Map
 
 ## ------------------------------------------------
@@ -73,48 +87,83 @@ Map
 ## ------------------------------------------------
 
 library(rgee)
-Map$setCenter(lon = -76, lat = 0, zoom = 6)
+
+ee_Initialize()
+
+Map <- R6Map$new()
+Map$setCenter(lon = -76, lat = 0, zoom = 5)
 Map
+
+# Map$lat
+# Map$lon
+# Map$zoom
 
 ## ------------------------------------------------
 ## Method `R6Map$setZoom`
 ## ------------------------------------------------
 
 library(rgee)
-Map$setZoom(zoom = 3)
+
+ee_Initialize()
+
+Map <- R6Map$new()
+Map$setZoom(zoom = 4)
 Map
+
+# Map$lat
+# Map$lon
+# Map$zoom
 
 ## ------------------------------------------------
 ## Method `R6Map$centerObject`
 ## ------------------------------------------------
 
-\dontrun{
 library(rgee)
+
 ee_Initialize()
+
+Map <- R6Map$new()
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 Map$centerObject(image)
-}
+Map
 
 ## ------------------------------------------------
 ## Method `R6Map$addLayer`
 ## ------------------------------------------------
 
-\dontrun{
+
 library(rgee)
 ee_Initialize()
+
+# Load an Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+
+# Create
+Map <- R6Map$new()
 Map$centerObject(image)
-Map$addLayer(image)
-}
+
+# Simple display: Map just will
+Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
+Map$addLayer(image, list(min=0, max = 20000, bands = c("B4", "B3", "B2")), name = "l8_02")
+
+# Simple display: Map just will (if the position is not specified it will
+# be saved on the right side)
+Map$reset() # Reset Map to the initial arguments.
+Map$centerObject(image)
+Map$addLayer(image, list(min=0, max=10000, bands = c("B4", "B3", "B2")), name = "l8_left", position = "left")
+Map$addLayer(image, list(min=0, max=20000, bands = c("B4", "B3", "B2")), name = "l8_right")
+
 
 ## ------------------------------------------------
 ## Method `R6Map$addLayers`
 ## ------------------------------------------------
 
-\dontrun{
+library(sf)
 library(rgee)
 
 ee_Initialize()
+
+Map <- R6Map$new()
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
   st_transform(4326) \%>\%
@@ -123,23 +172,14 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
   filterBounds(nc) \%>\%
-  ee_get(0:4)
-Map$centerObject(nc$geometry())
+  ee_get(0:2)
 
-m5 <- Map$addLayers(ee_s2, legend = TRUE)
-m5
+Map$centerObject(nc$geometry())
+Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
+Map$reset()
 
 # digging up the metadata
-m5$rgee$tokens
-}
-Getter method to obtain right container map
-Getter method to obtain left container map
-Setter method (latitude)
-Setter method (longitude)
-Setter method (zoom)
-Setter method (previous_map_right)
-Setter method (previous_map_left)
-Predict the latitude, longitude and zoom of a specific Earth Engine Object
+Map$previous_map_right$rgee$tokens
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -150,11 +190,12 @@ Predict the latitude, longitude and zoom of a specific Earth Engine Object
 
 \item{\code{zoom}}{The zoom level, from 1 to 24.}
 
-\item{\code{save_maps}}{Should \code{R6Map} save the previous maps?.}
+\item{\code{save_maps}}{Should \code{R6Map} save the previous maps?. If TRUE, Map
+will work in a OOP style, otherwise will be functional programming style.}
 
-\item{\code{previous_map_left}}{Should \code{R6Map} save the previous maps?.}
+\item{\code{previous_map_left}}{Container of maps in the left side.}
 
-\item{\code{previous_map_right}}{Should \code{R6Map} save the previous maps?.}
+\item{\code{previous_map_right}}{Container of maps in the right side.}
 }
 \if{html}{\out{</div>}}
 }
@@ -162,6 +203,7 @@ Predict the latitude, longitude and zoom of a specific Earth Engine Object
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{R6Map$new()}}
+\item \href{#method-reset}{\code{R6Map$reset()}}
 \item \href{#method-print}{\code{R6Map$print()}}
 \item \href{#method-setCenter}{\code{R6Map$setCenter()}}
 \item \href{#method-setZoom}{\code{R6Map$setZoom()}}
@@ -189,7 +231,7 @@ Constructor of R6Map.
 
 \item{\code{zoom}}{The zoom level, from 1 to 24. By default 18.}
 
-\item{\code{save_maps}}{Should \code{R6Map} save the previous maps?.}
+\item{\code{save_maps}}{Should \code{R6Map} save previous maps?.}
 }
 \if{html}{\out{</div>}}
 }
@@ -198,26 +240,66 @@ A new \code{EarthEngineMap} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
-\subsection{Method \code{print()}}{
-Display a default map.
+\if{html}{\out{<a id="method-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-reset}{}}}
+\subsection{Method \code{reset()}}{
+Reset to initial arguments.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{R6Map$print()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$reset(lon = -76.942478, lat = -12.172116, zoom = 18, save_maps = TRUE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lon}}{The longitude of the center, in degrees. By default -76.942478.}
+
+\item{\code{lat}}{The latitude of the center, in degrees. By default -12.172116.}
+
+\item{\code{zoom}}{The zoom level, from 1 to 24. By default 18.}
+
+\item{\code{save_maps}}{Should \code{R6Map} save previous maps?.}
+}
+\if{html}{\out{</div>}}
+}
 \subsection{Returns}{
-A \code{EarthEngineMap} object.
+A new \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{library(rgee)
+ee_Initialize()
+
+# Load an Image
+image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+
+# Create
+Map <- R6Map$new()
+Map$centerObject(image)
+
+# Simple display: Map just will
+Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
+Map # display map
+
+Map$reset() # Reset arguments
 Map
 }
 \if{html}{\out{</div>}}
 
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+Display a \code{EarthEngineMap} object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+An \code{EarthEngineMap} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-setCenter"></a>}}
@@ -246,8 +328,16 @@ No return value, called to set initial coordinates and zoom.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{library(rgee)
-Map$setCenter(lon = -76, lat = 0, zoom = 6)
+
+ee_Initialize()
+
+Map <- R6Map$new()
+Map$setCenter(lon = -76, lat = 0, zoom = 5)
 Map
+
+# Map$lat
+# Map$lon
+# Map$zoom
 }
 \if{html}{\out{</div>}}
 
@@ -276,8 +366,16 @@ No return value, called to set zoom.
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{library(rgee)
-Map$setZoom(zoom = 3)
+
+ee_Initialize()
+
+Map <- R6Map$new()
+Map$setZoom(zoom = 4)
 Map
+
+# Map$lat
+# Map$lon
+# Map$zoom
 }
 \if{html}{\out{</div>}}
 
@@ -312,12 +410,14 @@ No return value, called to set zoom.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
-library(rgee)
+\preformatted{library(rgee)
+
 ee_Initialize()
+
+Map <- R6Map$new()
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 Map$centerObject(image)
-}
+Map
 }
 \if{html}{\out{</div>}}
 
@@ -354,22 +454,41 @@ Adds a given Eath Engine spatial object to the map as a layer
 
 \item{\code{opacity}}{The layer's opacity represented as a number between 0 and 1. Defaults to 1.}
 
+\item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
+the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
+By default NULL (No panel will be created).}
+
 \item{\code{legend}}{Should a legend be plotted?. Only the legend of the first image is displayed.}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A \code{EarthEngineMap} object.
+An \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
+\preformatted{
 library(rgee)
 ee_Initialize()
+
+# Load an Image
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
+
+# Create
+Map <- R6Map$new()
 Map$centerObject(image)
-Map$addLayer(image)
-}
+
+# Simple display: Map just will
+Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
+Map$addLayer(image, list(min=0, max = 20000, bands = c("B4", "B3", "B2")), name = "l8_02")
+
+# Simple display: Map just will (if the position is not specified it will
+# be saved on the right side)
+Map$reset() # Reset Map to the initial arguments.
+Map$centerObject(image)
+Map$addLayer(image, list(min=0, max=10000, bands = c("B4", "B3", "B2")), name = "l8_left", position = "left")
+Map$addLayer(image, list(min=0, max=20000, bands = c("B4", "B3", "B2")), name = "l8_right")
+
 }
 \if{html}{\out{</div>}}
 
@@ -407,6 +526,10 @@ Adds a given ee$ImageCollection to the map as multiple layers.
 
 \item{\code{shown}}{A flag indicating whether layers should be on by default.}
 
+\item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
+the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
+By default NULL (No panel will be created).}
+
 \item{\code{opacity}}{The layer's opacity represented as a number between 0 and 1. Defaults to 1.}
 
 \item{\code{legend}}{Should a legend be plotted?. Only the legend of the first image is displayed.}
@@ -418,10 +541,12 @@ A \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{\dontrun{
+\preformatted{library(sf)
 library(rgee)
 
 ee_Initialize()
+
+Map <- R6Map$new()
 
 nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
   st_transform(4326) \%>\%
@@ -430,23 +555,14 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
   filterBounds(nc) \%>\%
-  ee_get(0:4)
-Map$centerObject(nc$geometry())
+  ee_get(0:2)
 
-m5 <- Map$addLayers(ee_s2, legend = TRUE)
-m5
+Map$centerObject(nc$geometry())
+Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
+Map$reset()
 
 # digging up the metadata
-m5$rgee$tokens
-}
-Getter method to obtain right container map
-Getter method to obtain left container map
-Setter method (latitude)
-Setter method (longitude)
-Setter method (zoom)
-Setter method (previous_map_right)
-Setter method (previous_map_left)
-Predict the latitude, longitude and zoom of a specific Earth Engine Object
+Map$previous_map_right$rgee$tokens
 }
 \if{html}{\out{</div>}}
 
