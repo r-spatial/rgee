@@ -16,9 +16,9 @@ ee_install_set_pyenv(
 
 \item{py_env}{The name of the environment}
 
-\item{Renviron}{Character. If is "global" the environment variables are set in
+\item{Renviron}{Character. If it is "global" the environment variables are set in
 the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
-is "local" the environment variables are set in the .Renviron on the
+it is "local" the environment variables are set in the .Renviron on the
 working directory (getwd()). Finally, users can also enter a specific path
 (See examples).}
 

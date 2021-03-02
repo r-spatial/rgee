@@ -250,9 +250,9 @@ ee_install <- function(py_env = "rgee",
 #'
 #' @param py_path The path to a Python interpreter
 #' @param py_env The name of the environment
-#' @param Renviron Character. If is "global" the environment variables are set in
+#' @param Renviron Character. If it is "global" the environment variables are set in
 #' the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
-#' is "local" the environment variables are set in the .Renviron on the
+#' it is "local" the environment variables are set in the .Renviron on the
 #' working directory (getwd()). Finally, users can also enter a specific path
 #' (See examples).
 #' @param quiet Logical. Suppress info message
