@@ -13,8 +13,20 @@ vignette: >
 ---
 # rgee 1.0.8.9999
 
-- Fix a bug in `ee_extract` that changes names in column names when starts with numbers (#119, thanks @joshualerickson).
+
+- Vignettes documentation upgrade.
+- `ee_as_sf(..., via = "getInfo")` does not write in temp folder.
+- `ee_as_sf` now returns by default a GeoJSON instead of a ESRI shapefile.
+- When EarthEngineMaps have the same name, a random hex string is added to the second map.
+- Fix a bug in `sf_as_ee` that used to add `id` colum to the results.
+- `ee_extract` now supports lazy evaluation and containers `drive` and `gcs`.
+- R6, class to display Earth Engine (EE) spatial objects, added.
+- Map.addLayer is now a `R6` object.
+- `ee_install_set_pyenv` support local .Renviron. 
+- Fix a bug in ee_print that sometimes make see the warning: *ee_utils_py_to_r(.) : restarting interrupted promise evaluation*.
 - Fix a bug in `ee_install_set_pyenv` when py_env=NULL (#118, thanks @MatthieuStigler).
+- Fix a bug in `ee_extract` that changes column names when starts with numbers (#119, thanks @joshualerickson).
+
 
 # rgee 1.0.8
 
