@@ -2,7 +2,7 @@
 #'
 #' Authorize rgee to manage Earth Engine resources, Google
 #' Drive, and Google Cloud Storage. The \code{ee_initialize()} via
-#' web-browser will ask to sign in to your Google account and
+#' web-browser will ask users to sign into your Google account and
 #' allows you to grant permission to manage resources. This function is
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
@@ -16,7 +16,7 @@
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
 #' credential is cached in the path \code{~/.config/earthengine/}.
 #'
-#' @param display Logical. If TRUE display the earthengine authentication URL.
+#' @param display Logical. If TRUE, display the earthengine authentication URL.
 #'
 #' @param quiet Logical. Suppress info messages.
 #'
@@ -26,10 +26,10 @@
 #' @importFrom crayon blue green black red bold white
 #'
 #' @details
-#' \code{ee_Initialize(...)} can manage Google drive and Google
+#' \code{ee_Initialize(...)} can manage Google Drive, and Google
 #' Cloud Storage resources using the R packages googledrive and
 #' googlecloudStorageR, respectively. By default, rgee does not require
-#' them, these are only necessary to enable rgee I/O functionality.
+#' them. These are only necessary to enable rgee I/O functionality.
 #' All user credentials are saved in the directory
 #' \code{~/.config/earthengine/}, if a user does not specify the email
 #' argument all user credentials are saved in a subdirectory
@@ -401,6 +401,7 @@ ee_create_credentials_gcs <- function(email) {
       "> https://console.cloud.google.com/apis/credentials/serviceaccountkey/",
       bold("Until you do not save a SKA file, the following functions will not work:"),
       "- rgee::ee_gcs_to_local()",
+      "- ee_extract(..., via = \"gcs\")",
       "- ee_as_raster(..., via = \"gcs\")",
       "- ee_as_stars(..., via = \"gcs\")",
       "- ee_as_sf(..., via = \"gcs\")",
@@ -655,11 +656,11 @@ create_table <- function(user, wsc, quiet = FALSE) {
     cat("\n",
         user,
         wsc,
+        ee_symbol,
+        wsc,
         gmail_symbol,
         wsc,
-        gcs_symbol,
-        wsc,
-        ee_symbol
+        gcs_symbol
       )
   }
   user_str <- data.frame(EE = ee_count, GD = gd_count, GCS = gcs_count)
