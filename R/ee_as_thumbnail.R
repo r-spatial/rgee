@@ -1,4 +1,3 @@
-
 #' Create an R spatial gridded object from an EE thumbnail image
 #'
 #' Wrapper function around \code{ee$Image$getThumbURL} to create a stars or
@@ -7,8 +6,8 @@
 #'
 #' @param image EE Image object to be converted into a stars object.
 #' @param region EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
-#' the region to export.The CRS needs to be the same as the \code{x} argument,
-#' otherwise, it will be forced.
+#' the region to export.The CRS needs to be the same as the \code{x} argument.
+#' Otherwise, it will be forced.
 #' @param dimensions Numeric vector of length 2. Thumbnail dimensions in pixel
 #' units. If a single integer is provided, it defines the size of the
 #' image's larger aspect dimension and scales the smaller dimension
@@ -21,30 +20,27 @@
 #' @details
 #'
 #' \code{vizparams} set up the details of the thumbnail image. With
-#' `ee_as_thumbnail` only is possible export one-band (G) or three-band
+#' `ee_as_thumbnail` only is possible to export one-band (G) or three-band
 #' (RGB) images. Several parameters can be passed on to control color,
 #' intensity, the maximum and minimum values, etc. The table below provides
 #' all the parameters that admit `ee_as_thumbnail`.
 #'
 #' \tabular{lll}{
-#' \strong{Parameter} \tab \strong{Description} \tab \strong{Type}\cr
-#' \strong{bands}     \tab Comma-delimited list of
-#' three band names to be mapped to RGB \tab  list \cr
-#' \strong{min}       \tab  Value(s) to map to 0 \tab
+#' \strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
+#' \strong{bands}    \tab  Comma-delimited list of three band (RGB) \tab  list \cr
+#' \strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
+#' numbers, one for each band \cr
+#' \strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
 #' number or list of three numbers, one for each band \cr
-#' \strong{max}       \tab  Value(s) to map to 1 \tab
-#' number or list of three numbers, one for each band \cr
-#' \strong{gain}      \tab  Value(s) by which to multiply each pixel value \tab
-#' number or list of three numbers, one for each band \cr
-#' \strong{bias}      \tab  Value(s) to add to each Digital Number (DN)
+#' \strong{bias}     \tab  Value(s) to add to each Digital Number
 #' value \tab number or list of three numbers, one for each band \cr
-#' \strong{gamma}     \tab  Gamma correction factor(s) \tab
-#' number or list of three numbers, one for each band \cr
+#' \strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
+#' three numbers, one for each band \cr
 #' \strong{palette}  \tab  List of CSS-style color strings
-#' (single-band images only) \tab  comma-separated list of hex strings \cr
-#' \strong{opacity}   \tab  The opacity of the layer
-#' (0.0 is fully transparent and 1.0 is fully opaque) \tab
-#' number \cr
+#' (single-band only) \tab  comma-separated list of hex strings \cr
+#' \strong{opacity}   \tab  The opacity of the layer (from 0 to 1)  \tab  number \cr
 #' }
 #'
 #' @return An stars or Raster object depending on the \code{raster} argument.

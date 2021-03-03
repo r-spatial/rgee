@@ -13,7 +13,7 @@ ee_utils_py_to_r <- function(x) {
 }
 
 
-#' Create a zip file from a sf object
+#' Create a zip file from an sf object
 #'
 #' @param x sf object
 #' @param filename data source name

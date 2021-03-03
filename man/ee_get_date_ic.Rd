@@ -14,15 +14,15 @@ also returned. See details.}
 }
 \value{
 A data.frame with the columns: \code{id} (ID of the image),
-\code{time_start}, and \code{time_end} (If the argument \code{time_end} is
-set as TRUE). The number of rows depends of the number of images
+\code{time_start}, and \code{time_end} (only if the argument \code{time_end} is
+set as TRUE). The number of rows depends on the number of images
 (\code{ee$ImageCollection$size}).
 }
 \description{
 Get the date of a EE ImageCollection
 }
 \details{
-\code{system:time_start} set the start period of data acquisition while
+\code{system:time_start} Sets the start period of data acquisition while
 \code{system:time_end} does the same for the end period. See the
 \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 for getting more information.

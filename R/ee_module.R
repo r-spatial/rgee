@@ -1,7 +1,7 @@
 #' Main Earth Engine module
 #'
-#' Interface to main Earth Engine module. Provides access to top level classes
-#' and functions as well as sub-modules (e.g. \code{ee$Image},
+#' Interface to main Earth Engine module. Provides access to the top level
+#' classes and functions as well as sub-modules (e.g. \code{ee$Image},
 #' \code{ee$FeatureCollection$first}, etc.).
 #'
 #' @format Earth Engine module

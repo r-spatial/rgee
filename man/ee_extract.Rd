@@ -29,7 +29,7 @@ See details.}
 \item{scale}{A nominal scale in meters of the Image projection to work in.
 By default 1000.}
 
-\item{sf}{Logical. Should return a sf object?}
+\item{sf}{Logical. Should return an sf object?}
 
 \item{via}{Character. Method to export the image. Three method are
 implemented: "getInfo", "drive", "gcs".}
@@ -49,14 +49,14 @@ Ignore if \code{via} is set as "getInfo". See details.}
 }
 \value{
 A data.frame or an sf object depending on the sf argument.
-Column names are extracted from band names, use \code{ee$Image$rename} to
+Column names are extracted from band names. Use \code{ee$Image$rename} to
 rename the bands of an \code{ee$Image}. See \code{ee_help(ee$Image$rename)}.
 }
 \description{
-Extract values from a \code{ee$Image} at the
-locations of a geometry object. You can use \code{ee$Geometry$*},
-\code{ee$Feature}, \code{ee$FeatureCollection}, sf  or sfc objects. This function
-mimicking how \link[raster]{extract} currently works.
+Extract values from an \code{ee$Image} at the
+locations of a geometry object. Users can use \code{ee$Geometry$*},
+\code{ee$Feature}, \code{ee$FeatureCollection}, sf or sfc object to filter
+spatially. This function mimicking how \link[raster]{extract} currently works.
 }
 \details{
 The reducer functions that return one value are:

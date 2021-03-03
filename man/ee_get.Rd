@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_get.R
 \name{ee_get}
 \alias{ee_get}
-\title{Return the element at the specified position in a Earth Engine Collection}
+\title{Return the element at the specified position in an Earth Engine Collection}
 \usage{
 ee_get(ee_c, index = 0)
 }
@@ -12,11 +12,11 @@ ee_get(ee_c, index = 0)
 \item{index}{Numeric. Specified position.}
 }
 \value{
-Depending of \code{ee_c} can return either an ee$FeatureCollection
-or ee$ImageCollection.
+Depending of \code{ee_c} can return either an \code{ee$FeatureCollection}
+or \code{ee$ImageCollection}.
 }
 \description{
-Return the element at the specified position in a Earth Engine Collection
+Return the element at the specified position in an Earth Engine Collection
 }
 \examples{
 \dontrun{

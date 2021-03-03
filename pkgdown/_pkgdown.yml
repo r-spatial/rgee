@@ -34,6 +34,8 @@ reference:
   - title: "Earth Engine module"
     contents:
       - ee
+      - rgee-package
+
   - title: "Install"
     contents:
       - ee_install
@@ -58,9 +60,6 @@ reference:
       - ee_version
       - ee_user_info
       - ee_users
-
-  - title: "Path utils"
-    contents:
       - ee_get_assethome
       - ee_get_earthengine_path
 
@@ -74,7 +73,7 @@ reference:
   - title: "Visualization"
     contents:
       - Map
-      - null-default
+      - R6Map
 
   - title: "Image download"
     contents:

@@ -14,13 +14,13 @@ also returned. See details.}
 }
 \value{
 An List object with the elements: id, time_start and time_end
-(if the \code{time_end} argument is TRUE).
+(only if the \code{time_end} argument is TRUE).
 }
 \description{
 Get the date of a EE Image
 }
 \details{
-\code{system:time_start} set the start period of data acquisition while
+\code{system:time_start} sets the start period of data acquisition while
 \code{system:time_end} does the same for the end period. See the
 \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 for getting more information.

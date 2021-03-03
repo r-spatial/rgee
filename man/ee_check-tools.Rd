@@ -27,7 +27,7 @@ No return value, called for checking non-R rgee dependencies.
 }
 \description{
 R functions for checking Google credentials (Google Earth Engine,
-Google Drive and Google Cloud Storage), Python environment and the
+Google Drive and Google Cloud Storage), Python environment and
 Third-Party Python Packages used by rgee.
 }
 \examples{

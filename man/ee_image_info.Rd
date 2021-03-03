@@ -12,9 +12,9 @@ ee_image_info(image, getsize = TRUE, compression_ratio = 20, quiet = FALSE)
 \item{getsize}{Logical. If TRUE, the size of the object
 is estimated.}
 
-\item{compression_ratio}{Numeric. Measurement of the relative reduction
-in size of data representation produced by a data compression algorithm
-(ignored if \code{getsize} is FALSE). By default is 20}
+\item{compression_ratio}{Numeric. Measurement of the relative data size
+reduction produced by a data compression algorithm (ignored if
+\code{getsize} is FALSE). By default is 20.}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -24,7 +24,7 @@ number of columns (ncol), total number of pixels (total_pixel), and image
 size (image_size).
 }
 \description{
-Get the approximate number of rows, cols, and size of an single-band
+Get the approximate number of rows, cols, and size of a single-band
 Earth Engine Image.
 }
 \examples{

@@ -7,7 +7,7 @@
 ee_get_earthengine_path()
 }
 \value{
-A character which represents the path credential of a specific
+A character that represents the path credential of a specific
 user
 }
 \description{

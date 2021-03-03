@@ -83,10 +83,11 @@ Authors@R:
              email = "marius.appel@uni-muenster.de",
              comment = "Appel reviewed the package for JOSS, see 
                         https://github.com/openjournals/joss-reviews/issues/2272/"))
-Description: Earth Engine <https://earthengine.google.com/> client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
-    spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
-    See <https://r-spatial.github.io/rgee/> for further details.
+Description: Earth Engine <https://earthengine.google.com/> client library for R. All
+  of the 'Earth Engine' API classes, modules, and functions are made available. Additional
+  functions implemented include importing (exporting) of Earth Engine spatial objects, 
+  extraction of time series, interactive map display, assets management interface, 
+  and metadata display. See <https://r-spatial.github.io/rgee/> for further details.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: true
@@ -129,9 +130,3 @@ URL: https://github.com/r-spatial/rgee/, https://r-spatial.github.io/rgee/, http
 BugReports: https://github.com/r-spatial/rgee/issues/
 VignetteBuilder: knitr
 Language: en-US
-Config/reticulate:
-  list(
-    packages = list(
-      list(package = "earthengine-api", pip = TRUE)
-    ) 
-  )

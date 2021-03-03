@@ -1,9 +1,9 @@
 #' Extract values from EE Images or ImageCollections objects
 #'
-#' Extract values from a \code{ee$Image} at the
-#' locations of a geometry object. You can use \code{ee$Geometry$*},
-#' \code{ee$Feature}, \code{ee$FeatureCollection}, sf  or sfc objects. This function
-#' mimicking how \link[raster]{extract} currently works.
+#' Extract values from an \code{ee$Image} at the
+#' locations of a geometry object. Users can use \code{ee$Geometry$*},
+#' \code{ee$Feature}, \code{ee$FeatureCollection}, sf or sfc object to filter
+#' spatially. This function mimicking how \link[raster]{extract} currently works.
 #'
 #' @param x ee$Image.
 #' @param y ee$Geometry$*, ee$Feature, ee$FeatureCollection, sfc or sf objects.
@@ -12,7 +12,7 @@
 #' See details.
 #' @param scale A nominal scale in meters of the Image projection to work in.
 #' By default 1000.
-#' @param sf Logical. Should return a sf object?
+#' @param sf Logical. Should return an sf object?
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' Ignore if \code{via} is set as "getInfo". See details.
@@ -26,7 +26,7 @@
 #' \code{ee_help(ee$Image$reduceRegions)} for more details.
 #'
 #' @return A data.frame or an sf object depending on the sf argument.
-#' Column names are extracted from band names, use \code{ee$Image$rename} to
+#' Column names are extracted from band names. Use \code{ee$Image$rename} to
 #' rename the bands of an \code{ee$Image}. See \code{ee_help(ee$Image$rename)}.
 #'
 #' @details

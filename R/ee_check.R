@@ -1,7 +1,7 @@
 #' Interface to check Python and non-R dependencies
 #'
 #' R functions for checking Google credentials (Google Earth Engine,
-#' Google Drive and Google Cloud Storage), Python environment and the
+#' Google Drive and Google Cloud Storage), Python environment and
 #' Third-Party Python Packages used by rgee.
 #'
 #' @name ee_check-tools

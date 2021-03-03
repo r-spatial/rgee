@@ -1,8 +1,8 @@
-#' Convert an Earth Engine table in a sf object
+#' Convert an Earth Engine table in an sf object
 #'
-#' @param x Earth Engine table (ee$FeatureCollection) to be converted in a sf
+#' @param x Earth Engine table (ee$FeatureCollection) to be converted in an sf
 #' object.
-#' @param dsn Character. Output filename; in case \code{dsn} is missing
+#' @param dsn Character. Output filename. In case \code{dsn} is missing,
 #' a shapefile is created in the \code{tmp()} directory.
 #' @param overwrite Logical. Delete data source \code{dsn} before attempting
 #' to write?.
@@ -11,14 +11,15 @@
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported into (ignore if \code{via} is not defined as "drive" or
 #' "gcs").
-#' @param crs Integer or character. coordinate reference system
-#' for the EE table. If is NULL, \code{ee_as_sf} will take the CRS of
+#' @param crs Integer or Character. Coordinate Reference System (CRS)
+#' for the EE table. If it is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
 #' export (ignore if \code{via} is not set as "getInfo"). The task will fail
-#' if the exported region covers more features. Defaults to 5000.
+#' if the exported region covers more features than the specified in
+#' \code{maxFeatures}. Defaults to 5000.
 #' @param selectors The list of properties to include in the output, as a
-#' list of strings or a comma-separated string. By default, all properties are
+#' list/vector of strings or a comma-separated string. By default, all properties are
 #' included.
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
@@ -27,7 +28,7 @@
 #' See details.
 #' @param add_metadata Add metadata to the sf object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
-#' a prefix to files to export. This parameter helps to avoid exported files
+#' a prefix to export files. This parameter helps to avoid exported files
 #' with the same name. By default TRUE.
 #' @param quiet logical. Suppress info message.
 #' @importFrom methods as setMethod new is setGeneric
@@ -38,23 +39,22 @@
 #' (which use \href{https://CRAN.R-project.org/package=googledrive}{Google Drive})
 #' and "gcs" (which use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' Google Cloud Storage}). The advantage of use "getInfo" is a
-#' direct and faster download. However, there is a limitation of
-#' 5000 features by request which makes it not recommendable for large
-#' FeatureCollections. Instead of "getInfo", the options: "drive" and "gcs"
-#' are suitable for large FeatureCollections due the use of an intermediate
-#' container. When via is set as "drive" or "gcs" \code{ee_as_sf} perform
-#' the following steps:
+#' direct and faster download. However, there is a limitation of 5000 features by
+#' request, making it not recommendable for large FeatureCollection. Instead of
+#' "getInfo", the options: "drive" and "gcs" are suitable for large FeatureCollections
+#' due to the use of an intermediate container. When via is set as "drive" or "gcs"
+#' \code{ee_as_sf} perform the following steps:
 #' \itemize{
-#'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
+#'   \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 #'   move the EE Table from Earth Engine to the file storage system (Google Drive
 #'   or Google Cloud Storage) specified in the argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-#'   monitored. This is useful to lunch several tasks at the same time and
-#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   monitored. This is useful to lunch several tasks simultaneously and
+#'   calls them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the EE Table is stored on the path specified in the argument
 #'   \code{dsn}.}
-#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 #'   with the following elements is added to the sf object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}

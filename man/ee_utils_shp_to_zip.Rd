@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_utils.R
 \name{ee_utils_shp_to_zip}
 \alias{ee_utils_shp_to_zip}
-\title{Create a zip file from a sf object}
+\title{Create a zip file from an sf object}
 \usage{
 ee_utils_shp_to_zip(
   x,
@@ -22,7 +22,7 @@ into the zip file. By default: "dbf", "prj", "shp", "shx".}
 Character. The full path of the zip file created.
 }
 \description{
-Create a zip file from a sf object
+Create a zip file from an sf object
 }
 \examples{
 \dontrun{

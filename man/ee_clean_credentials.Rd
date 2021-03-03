@@ -18,7 +18,7 @@ and/or Earth Engine credentials.
 \description{
 Delete all the credentials according to a specific user. The credentials
 (Google Earth Engine, Google Drive and Google Cloud Storage) are created
-after running successfully \code{ee_Initialize(...)}. They are saved in
+after running \code{ee_Initialize(...)} successfully. They are saved in
 the path \code{rgee::ee_get_earthengine_path()}.
 }
 \seealso{

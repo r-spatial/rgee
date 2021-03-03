@@ -1,3 +1,250 @@
-#' @keywords internal
+#' rgee: An R package for interacting with Google Earth Engine
+#'
+#' Google Earth Engine (Gorelick et al., 2017) is a cloud computing platform
+#' designed for planetary-scale environmental data analysis. Its multi-petabyte
+#' data catalog and computation services are accessed via an Internet-accessible
+#' API. The API is only exposed through JavaScript and Python client libraries.
+#'
+#' \code{rgee} is an Earth Engine (EE) non-official client library for R that
+#' allows users to leverage the strengths of the R spatial ecosystem and Google
+#' Earth Engine in the same workflow. All of the Earth Engine Python API
+#' classes, modules, and functions are made available through the reticulate
+#' package (Ushey, Allaire, & Tang, 2020), which embeds a Python session within
+#' an R session, enabling seamless interoperability. Additionally, rgee adds
+#' several new features such as (i) new I/O design, (ii) interactive map display,
+#' (iii) easy extraction of time series, (iv) asset management interface, and
+#' (v) metadata display. In addition, rgee also makes it possible to execute
+#' Earth Engine Python code from within R, making the translation of large
+#' Python projects unnecessary.
+#'
+#' @details  The package implements and supports:
+#'
+#' \itemize{
+#'   \item Earth Engine Module
+#'   \item Install or set all rgee dependencies
+#'   \item Check non-R dependencies
+#'   \item Clean non-R dependencies
+#'   \item Session management
+#'   \item Transform an R Date to an EE Date or vice versa
+#'   \item Create Interactive visualization Maps
+#'   \item Image download
+#'   \item Vector download
+#'   \item Generic download
+#'   \item Assets management
+#'   \item Upload raster
+#'   \item Upload vector
+#'   \item Upload generic
+#'   \item Extract values
+#'   \item Helper functions
+#'   \item Utils functions
+#' }
+#'
+#' @section I. Earth Engine Module:
+#'
+#' Interface to main Earth Engine module. Provides access to top level classes
+#' and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first, etc.).
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee}}\tab Main Earth Engine module. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+
+#' @section II. Install or set non-R rgee dependencies:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_install}}\tab Create an isolated Python virtual environment with all rgee dependencies. \cr
+#'  \code{\link{ee_install_set_pyenv}}\tab Configure which version of Python to use with rgee. \cr
+#'  \code{\link{ee_install_upgrade}}\tab Upgrade the Earth Engine Python API. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section III. Check non-R dependencies:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_check}}\tab Check all non-R dependencies. \cr
+#'  \code{\link{ee_check_python}}\tab Check Python environment. \cr
+#'  \code{\link{ee_check_credentials}}\tab Check Google credentials. \cr
+#'  \code{\link{ee_check_python_packages}}\tab Check Python packages: earthengine-api and numpy. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section IV. Clean container, credentials, or rgee system variables:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_clean_container}}\tab Delete files from either a Folder or a Bucket. \cr
+#'  \code{\link{ee_clean_credentials}}\tab Delete Credentials. \cr
+#'  \code{\link{ee_clean_pyenv}}\tab Remove rgee system variables from .Renviron. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section V. Session management:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_Initialize}}\tab Authenticate and Initialize Earth Engine. \cr
+#'  \code{\link{ee_version}}\tab Earth Engine API version. \cr
+#'  \code{\link{ee_user_info}}\tab Display the credentials and general info of the initialized user. \cr
+#'  \code{\link{ee_users}}\tab Display the credentials of all users as a table. \cr
+#'  \code{\link{ee_get_assethome}}\tab Get the Asset home name. \cr
+#'  \code{\link{ee_get_earthengine_path}}\tab Get the path where the credentials are stored. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section VII. Transform an R Date to an EE Date or vice versa:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{eedate_to_rdate}}\tab Pass an Earth Engine date object to R. \cr
+#'  \code{\link{rdate_to_eedate}}\tab Pass an R date object to Earth Engine. \cr
+#'  \code{\link{ee_get_date_img}}\tab Get the date of a EE Image. \cr
+#'  \code{\link{ee_get_date_ic}}\tab Get the date of a EE ImageCollection. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section VIII. Visualization Map:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{Map}}\tab R6 object (Map) to display Earth Engine (EE) spatial objects. \cr
+#'  \code{\link{R6Map}}\tab R6 class to display Earth Engine (EE) spatial objects. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#'
+#' @section IX. Image download:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_as_raster}}\tab Convert an Earth Engine (EE) image in a raster object. \cr
+#'  \code{\link{ee_as_stars}}\tab Convert an Earth Engine (EE) image in a stars object. \cr
+#'  \code{\link{ee_as_thumbnail}}\tab Create an R spatial gridded object from an EE thumbnail image. \cr
+#'  \code{\link{ee_image_to_asset}}\tab Creates a task to export an EE Image to their EE Assets. \cr
+#'  \code{\link{ee_image_to_drive}}\tab Creates a task to export an EE Image to Drive. \cr
+#'  \code{\link{ee_image_to_gcs}}\tab Creates a task to export an EE Image to Google Cloud Storage. \cr
+#'  \code{\link{ee_image_info}}\tab Approximate size of an EE Image object. \cr
+#'  \code{\link{ee_imagecollection_to_local}}\tab Save an EE ImageCollection in their local system. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section X. Vector download:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_as_sf}}\tab Convert an Earth Engine table in an sf object. \cr
+#'  \code{\link{ee_table_to_asset}}\tab Creates a task to export a FeatureCollection to an EE table asset. \cr
+#'  \code{\link{ee_table_to_drive}}\tab Creates a task to export a FeatureCollection to Google Drive. \cr
+#'  \code{\link{ee_table_to_gcs}}\tab Creates a task to export a FeatureCollection to Google Cloud Storage. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XI. Generic download:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_drive_to_local}}\tab Move results from Google Drive to a local directory. \cr
+#'  \code{\link{ee_gcs_to_local}}\tab Move results from Google Cloud Storage to a local directory. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XII. Assets management:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_manage-tools}}\tab Interface to manage the Earth Engine Asset. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XIII. Upload raster:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{stars_as_ee}}\tab Convert a stars or stars-proxy object into an EE Image object. \cr
+#'  \code{\link{raster_as_ee}}\tab Convert a Raster* object into an EE Image object. \cr
+#'  \code{\link{gcs_to_ee_image}}\tab Move a GeoTIFF image from GCS to their EE assets. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XIV. Upload vector:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{gcs_to_ee_table}}\tab Move a zipped shapefile from GCS to their EE Assets. \cr
+#'  \code{\link{sf_as_ee}}\tab Convert an sf object to an EE object. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XV. Upload generic:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{local_to_gcs}}\tab Upload local files to Google Cloud Storage. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XVI. Extract values:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_extract}}\tab Extract values from EE Images or ImageCollections objects. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XVII. Helper functions:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_help}}\tab Documentation for Earth Engine Objects. \cr
+#'  \code{\link{ee_print}}\tab Print and return metadata about Spatial Earth Engine Objects. \cr
+#'  \code{\link{ee_monitoring}}\tab Monitoring Earth Engine task progress. \cr
+#'  \code{\link{print}}\tab Print Earth Engine objects. \cr
+#'  \code{\link{ee_get}}\tab Return the element at the specified position in an Earth Engine Collection. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section XVIII. Utils functions:
+#'
+#' \tabular{ll}{
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#'  \code{\link{ee_utils_py_to_r}}\tab Convert between Python and R objects. \cr
+#'  \code{\link{ee_utils_pyfunc}}\tab Wrap an R function in a Python function with the same signature. \cr
+#'  \code{\link{ee_utils_shp_to_zip}}\tab Create a zip file from an sf object. \cr
+#'  \code{\link{ee_utils_create_json}}\tab Convert a R list into a JSON file. \cr
+#'  \code{\link{ee_utils_create_manifest_image}}\tab Create a manifest to upload an image. \cr
+#'  \code{\link{ee_utils_create_manifest_table}}\tab Create a manifest to upload a table. \cr
+#'  \code{\link{ee_utils_get_crs}}\tab Convert EPSG, ESRI or SR-ORG code into a OGC WKT. \cr
+#'  \code{\link{ee_utils_gif_annotate}}\tab Add text to a GIF. \cr
+#'  \code{\link{ee_utils_gif_creator}}\tab Create a GIF from an Earth Engine ImageCollection. \cr
+#'  \code{\link{ee_utils_gif_save}}\tab Write a GIF file. \cr
+#'  \code{\link{ee_utils_future_value}}\tab The value of a future or the values of all elements in a container. \cr
+#'  \code{\link{ee_utils_search_display}}\tab Search into the Earth Engine Data Catalog. \cr
+#' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+#' }
+#'
+#' @section Acknowledgments:
+#'
+#' We want to offer a special thanks to Justin Braaten for his wise and
+#' helpful comments in the whole development of rgee. As well, we would like
+#' to mention the following third-party R/Python packages for contributing
+#' indirectly to the improvement of rgee:
+#'
+#' \itemize{
+#'   \item gee_asset_manager - Lukasz Tracewski
+#'   \item geeup - Samapriya Roy
+#'   \item geeadd - Samapriya Roy
+#'   \item eemont - David Montero Loaiza
+#'   \item cartoee - Kel Markert
+#'   \item geetools - Rodrigo E. Principe
+#'   \item landsat-extract-gee - Loïc Dutrieux
+#'   \item earthEngineGrabR - JesJehle
+#'   \item sf - Edzer Pebesma
+#'   \item stars - Edzer Pebesma
+#'   \item gdalcubes - Marius Appel
+#' }
+#'
+#' @keywords package
 #'
 "_PACKAGE"

@@ -40,7 +40,7 @@ single positive integer as the maximum dimension or "WIDTHxHEIGHT"
 where WIDTH and HEIGHT are each positive integers.}
 
 \item{region}{The lon,lat coordinates for a LinearRing or Polygon
-specifying the region to export. Can be specified as a nested lists
+specifying the region to export. It can be specified as nested lists
 of numbers or a serialized string. Defaults to the image's region.}
 
 \item{scale}{The resolution in meters per pixel. Defaults to the native
@@ -52,7 +52,7 @@ projection. Defaults to the image's default projection.}
 \item{crsTransform}{A comma-separated string of 6 numbers describing
 the affine transform of the coordinate reference system of the exported
 image's projection, in the order:
-xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+xScale, xShearing, xTranslation, yShearing, yScale, and yTranslation.
 Defaults to the image's native CRS transform.}
 
 \item{maxPixels}{The maximum allowed number of pixels in the
@@ -65,19 +65,19 @@ will be computed. Defaults to 256.}
 \item{fileDimensions}{The dimensions in pixels of each image file, if
 the image is too large to fit in a single file. May specify a single
 number to indicate a square shape, or a list of two dimensions to
-indicate (width,height). Note that the image will still be clipped to
+indicate (width, height). Note that the image will still be clipped to
 the overall image dimensions. Must be a multiple of shardSize.}
 
-\item{skipEmptyTiles}{If TRUE, skip writing empty (i.e. fully-masked)
+\item{skipEmptyTiles}{If TRUE, skip writing empty (i.e., fully-masked)
 image tiles. Defaults to FALSE.}
 
 \item{fileFormat}{The string file format to which the image is exported.
 Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults
 to 'GeoTIFF'.}
 
-\item{formatOptions}{A dictionary of string keys to format specific
+\item{formatOptions}{A dictionary of string keys to format-specific
 options. **kwargs: Holds other keyword arguments that may have been
-deprecated such as 'crs_transform'.}
+deprecated, such as 'crs_transform'.}
 }
 \value{
 An unstarted Task that exports the image to Google Cloud Storage.

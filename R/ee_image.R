@@ -3,15 +3,15 @@
 #' Convert an ee$Image in a stars object.
 #'
 #' @param image ee$Image to be converted into a stars object.
-#' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
-#' to export. CRS needs to be the same that the argument \code{image},
-#' otherwise, it will be forced. If not specified, image bounds are taken.
+#' @param region EE Geometry (ee$Geometry$Polygon) which specifies the region
+#' to export. CRS needs to be the same that the argument \code{image}.
+#' Otherwise, it will be forced. If not specified, image bounds are taken.
 #' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
-#' @param via Character. Method to export the image. Two method are
+#' @param via Character. Method to export the image. Two methods are
 #' implemented: "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into.
+#' to be exported.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
 #' to the native resolution of the image.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
@@ -23,7 +23,7 @@
 #' @param public Logical. If TRUE, a public link to the image is created.
 #' @param add_metadata Add metadata to the stars_proxy object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
-#' a prefix to files to export. This parameter helps to avoid exported files
+#' a prefix to export files. This parameter helps to avoid exported files
 #' with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
@@ -34,18 +34,18 @@
 #' by two different options: "drive"
 #' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
+#' Google Cloud Storage}). In both cases, \code{ee_as_stars} works as follow:
 #' \itemize{
 #'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
 #'   move the \code{ee$Image} from Earth Engine to the intermediate container
-#'   specified in argument \code{via}.}
+#'   specified in the argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-#'   monitored. This is useful to lunch several tasks at the same time and
-#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   monitored. This is useful to lunch several tasks simultaneously and
+#'   calls them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the \code{ee$Image} is stored on the path specified in the argument
 #'   \code{dsn}.}
-#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+#'   \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 #'   with the following elements is added to the stars-proxy object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
@@ -218,16 +218,16 @@ ee_as_stars <- function(image,
 #'
 #' Convert an ee$Image in a raster object
 #'
-#' @param image ee$Image to be converted into a raster object
-#' @param region EE Geometry (ee$Geometry$Polygon) which specify the region
-#' to export. CRS needs to be the same that the argument \code{image},
-#' otherwise, it will be forced. If not specified, image bounds are taken.
+#' @param image ee$Image to be converted into a raster object.
+#' @param region EE Geometry (ee$Geometry$Polygon) which specifies the region
+#' to export. CRS needs to be the same that the argument \code{image}.
+#' Otherwise, it will be forced. If not specified, image bounds are taken.
 #' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
-#' @param via Character. Method to export the image. Two method are
+#' @param via Character. Method to export the image. Two methods are
 #' implemented: "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into.
+#' to be exported.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
 #' to the native resolution of the image.
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
@@ -249,19 +249,19 @@ ee_as_stars <- function(image,
 #' by two different options: "drive"
 #' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' Google Cloud Storage}). In both cases \code{ee_as_stars} works as follow:
+#' Google Cloud Storage}). In both cases, \code{ee_as_stars} works as follow:
 #' \itemize{
-#'   \item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
+#'   \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 #'   move the \code{ee$Image} from Earth Engine to the intermediate container
-#'   specified in argument \code{via}.}
-#'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-#'   monitored. This is useful to lunch several tasks at the same time and
-#'   call them later using \code{\link{ee_utils_future_value}} or
+#'   specified in the argument \code{via}.}
+#'   \item{2. }{If the argument \code{lazy} is TRUE, the task is not be
+#'   monitored. This is useful to lunch several tasks simultaneously and
+#'   calls them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the \code{ee$Image} is stored on the path specified in the argument
 #'   \code{dsn}.}
-#'   \item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
-#'   with the following elements is added to the stars-proxy object.
+#'   \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
+#'   with the following elements are added to the stars-proxy object.
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
 #'       \itemize{
@@ -722,15 +722,15 @@ ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
 
 #' Approximate size of an EE Image object
 #'
-#' Get the approximate number of rows, cols, and size of an single-band
+#' Get the approximate number of rows, cols, and size of a single-band
 #' Earth Engine Image.
 #'
 #' @param image Single-band EE Image object.
 #' @param getsize Logical. If TRUE, the size of the object
 #' is estimated.
-#' @param compression_ratio Numeric. Measurement of the relative reduction
-#' in size of data representation produced by a data compression algorithm
-#' (ignored if \code{getsize} is FALSE). By default is 20
+#' @param compression_ratio Numeric. Measurement of the relative data size
+#' reduction produced by a data compression algorithm (ignored if
+#' \code{getsize} is FALSE). By default is 20.
 #' @param quiet Logical. Suppress info message
 #' @return A list containing information about the number of rows (nrow),
 #' number of columns (ncol), total number of pixels (total_pixel), and image

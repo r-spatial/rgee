@@ -38,18 +38,17 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #'
 #' @param ee_date ee$date object (ee$Date)
 #' @param timestamp Logical. If TRUE, return the date in milliseconds
-#' from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
+#' from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise, return the
 #' date as a POSIXct object. By default FALSE.
 #'
 #' @details
 #' \code{eedate_to_rdate} is essential to avoid potential errors that
 #' might appear when users call to retrieve dates. Currently,
-#' R integer only support 32 bit signed, such integers can only
-#' count up to about 2 billion. This range is extremely insufficient for dealing
-#' with Google Earth Engine date objects (ee$Date), which are represented
-#' by timestamps in milliseconds since the UNIX epoch. \code{eedate_to_rdate}
-#' use Python as a backend to obtain the date and convert it in float before
-#' exporting to R.
+#' R integer only supports 32 bit signed (such integers can only
+#' count up to about 2 billion). This range is notably insufficient for dealing
+#' with GEE date objects represented by timestamps in milliseconds since the
+#' UNIX epoch. \code{eedate_to_rdate} uses Python in the backend to obtain the
+#' date and convert it in float before exporting to R.
 #'
 #' @return \code{eedate_to_rdate} will return either a numeric timestamp or
 #' a POSIXct object depending on the \code{timestamp} argument.

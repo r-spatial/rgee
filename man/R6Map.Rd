@@ -26,22 +26,20 @@ parameters} available are:
 
 \tabular{lll}{
 \strong{Parameter}\tab \strong{Description}  \tab \strong{Type}\cr
-\strong{bands}    \tab  Comma-delimited list of three band names to be
-mapped to RGB     \tab  list \cr
+\strong{bands}    \tab  Comma-delimited list of three band (RGB) \tab  list \cr
 \strong{min}      \tab  Value(s) to map to 0 \tab  number or list of three
 numbers, one for each band \cr
 \strong{max}      \tab  Value(s) to map to 1 \tab  number or list of three
 numbers, one for each band \cr
 \strong{gain}     \tab  Value(s) by which to multiply each pixel value \tab
 number or list of three numbers, one for each band \cr
-\strong{bias}     \tab  Value(s) to add to each Digital Number (DN)
+\strong{bias}     \tab  Value(s) to add to each Digital Number
 value \tab number or list of three numbers, one for each band \cr
 \strong{gamma}    \tab  Gamma correction factor(s) \tab  number or list of
 three numbers, one for each band \cr
 \strong{palette}  \tab  List of CSS-style color strings
-(single-band images only) \tab  comma-separated list of hex strings \cr
-\strong{opacity}   \tab  The opacity of the layer (0.0 is fully transparent
-and 1.0 is fully opaque) \tab  number \cr
+(single-band only) \tab  comma-separated list of hex strings \cr
+\strong{opacity}   \tab  The opacity of the layer (from 0 to 1)  \tab  number \cr
 }
 
 If you add an \code{ee$Image} to Map$addLayer without any additional

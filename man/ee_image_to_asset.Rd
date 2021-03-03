@@ -33,16 +33,16 @@ in the image, a dictionary keyed by band name. Values must be one
 of: "mean", "sample", "min", "max", or "mode". Defaults to "mean".
 A special key, ".default", may be used to change the default for all bands.}
 
-\item{dimensions}{The dimensions of the exported image. Takes either a
+\item{dimensions}{The dimensions of the exported image. It takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
 WIDTH and HEIGHT are each positive integers.}
 
 \item{region}{The lon,lat coordinates for a LinearRing or Polygon
-specifying the region to export. Can be specified as a nested lists
+specifying the region to export. It can be specified as nested lists
 of numbers or a serialized string. Defaults to the image's region.}
 
 \item{scale}{The resolution in meters per pixel. Defaults to the native
-resolution of the image assset unless a crsTransform is specified.}
+resolution of the image asset unless a crsTransform is specified.}
 
 \item{crs}{The coordinate reference system of the exported image's
 projection. Defaults to the image's default projection.}
@@ -50,13 +50,13 @@ projection. Defaults to the image's default projection.}
 \item{crsTransform}{A comma-separated string of 6 numbers describing
 the affine transform of the coordinate reference system of the exported
 image's projection, in the order:
-xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+xScale, xShearing, xTranslation, yShearing, yScale, and yTranslation.
 Defaults to the image's native CRS transform.}
 
 \item{maxPixels}{The maximum allowed number of pixels in the exported
 image. The task will fail if the exported region covers more pixels
 in the specified projection. Defaults to 100,000,000. **kwargs: Holds
-other keyword arguments that may have been deprecated such
+other keyword arguments that may have been deprecated, such
 as 'crs_transform'.}
 }
 \value{

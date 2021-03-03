@@ -1,9 +1,9 @@
-#' Return the element at the specified position in a Earth Engine Collection
+#' Return the element at the specified position in an Earth Engine Collection
 #'
 #' @param ee_c ImageCollection or FeatureCollection.
 #' @param index Numeric. Specified position.
-#' @return Depending of \code{ee_c} can return either an ee$FeatureCollection
-#' or ee$ImageCollection.
+#' @return Depending of \code{ee_c} can return either an \code{ee$FeatureCollection}
+#' or \code{ee$ImageCollection}.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -92,13 +92,13 @@ ee_get_assethome <- function() {
 #' also returned. See details.
 #'
 #' @details
-#' \code{system:time_start} set the start period of data acquisition while
+#' \code{system:time_start} sets the start period of data acquisition while
 #' \code{system:time_end} does the same for the end period. See the
 #' \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 #' for getting more information.
 #'
 #' @return An List object with the elements: id, time_start and time_end
-#' (if the \code{time_end} argument is TRUE).
+#' (only if the \code{time_end} argument is TRUE).
 #' @family date functions
 #' @examples
 #' \dontrun{
@@ -150,14 +150,14 @@ ee_get_date_img <- function(x, time_end = FALSE) {
 #' also returned. See details.
 #'
 #' @details
-#' \code{system:time_start} set the start period of data acquisition while
+#' \code{system:time_start} Sets the start period of data acquisition while
 #' \code{system:time_end} does the same for the end period. See the
 #' \href{https://developers.google.com/earth-engine/glossary/}{Earth Engine glossary}
 #' for getting more information.
 #'
 #' @return A data.frame with the columns: \code{id} (ID of the image),
-#' \code{time_start}, and \code{time_end} (If the argument \code{time_end} is
-#' set as TRUE). The number of rows depends of the number of images
+#' \code{time_start}, and \code{time_end} (only if the argument \code{time_end} is
+#' set as TRUE). The number of rows depends on the number of images
 #' (\code{ee$ImageCollection$size}).
 #'
 #' @family date functions
@@ -239,7 +239,7 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
 #' Get the path where the credentials are stored
 #'
 #' @family path utils
-#' @return A character which represents the path credential of a specific
+#' @return A character that represents the path credential of a specific
 #' user
 #'
 #' @export

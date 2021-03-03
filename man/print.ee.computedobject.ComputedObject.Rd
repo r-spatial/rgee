@@ -2,6 +2,7 @@
 % Please edit documentation in R/print.R
 \name{print.ee.computedobject.ComputedObject}
 \alias{print.ee.computedobject.ComputedObject}
+\alias{print}
 \title{print Earth Engine object}
 \usage{
 \method{print}{ee.computedobject.ComputedObject}(x, ..., type = getOption("rgee.print.option"))

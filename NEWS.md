@@ -13,7 +13,7 @@ vignette: >
 ---
 # rgee 1.0.8.9999
 
-
+- Subsetting and Math operator where added to rgee
 - Vignettes documentation upgrade.
 - `ee_as_sf(..., via = "getInfo")` does not write in temp folder.
 - `ee_as_sf` now returns by default a GeoJSON instead of a ESRI shapefile.

@@ -447,7 +447,7 @@ A BibTeX entry for LaTeX users is
 
 ## Credits
 
-First off, we would like to offer an **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the develop of rgee:
+We want to offer a **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the improvement of rgee:
   
 -   [**gee_asset_manager - Lukasz Tracewski**](https://github.com/tracek/gee_asset_manager/)
 -   [**geeup - Samapriya Roy**](https://github.com/samapriya/geeup/)

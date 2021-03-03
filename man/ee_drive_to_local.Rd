@@ -15,12 +15,12 @@ ee_drive_to_local(
 )
 }
 \arguments{
-\item{task}{List generated after finished correctly a EE task. See details.}
+\item{task}{List generated after finished an EE task correctly. See details.}
 
 \item{dsn}{Character. Output filename. If missing, a temporary
 file will be assigned.}
 
-\item{overwrite}{A boolean argument which indicates
+\item{overwrite}{A boolean argument that indicates
 whether "filename" should be overwritten. By default TRUE.}
 
 \item{consider}{Interactive. See details.}
@@ -34,7 +34,7 @@ Drive resource. See details.}
 \item{quiet}{logical. Suppress info message.}
 }
 \value{
-If \code{metadata} is FALSE will return the filename of the Google
+If \code{metadata} is FALSE, will return the filename of the Google
 Drive resource on their system. Otherwise, a list with two elements
 (\code{dns} and \code{metadata}) is returned.
 }
@@ -53,7 +53,7 @@ download. Additionally, the options "last" and "all" are implemented. "last"
 will download just the last file saved in Google Drive while with "all" all
 files will be downloaded.
 
-Finally if the argument \code{metadata} is TRUE, a list with the
+Finally, if the argument \code{metadata} is TRUE, a list with the
 following elements are exported join with the output filename (dsn):
 
 \itemize{

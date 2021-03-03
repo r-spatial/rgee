@@ -24,13 +24,13 @@ ee_imagecollection_to_local(
 \item{ic}{ee$ImageCollection to be saved in the system.}
 
 \item{region}{EE Geometry (ee$Geometry$Polygon). The
-CRS needs to be the same that the \code{ic} argument otherwise it will be
+CRS needs to be the same that the \code{ic} argument. Otherwise, it will be
 forced.}
 
 \item{dsn}{Character. Output filename. If missing, a temporary file will
 be created for each image.}
 
-\item{via}{Character. Method to export the image. Two method are implemented:
+\item{via}{Character. Method to export the image. Two methods are implemented:
 "drive", "gcs". See details.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
@@ -53,7 +53,7 @@ See details.}
 \item{add_metadata}{Add metadata to the stars_proxy object. See details.}
 
 \item{timePrefix}{Logical. Add current date and time (\code{Sys.time()}) as
-a prefix to files to export. This parameter helps to avoid exported files
+a prefix to export files. This parameter helps to avoid exported files
 with the same name. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}
@@ -61,9 +61,10 @@ with the same name. By default TRUE.}
 \item{...}{Extra exporting argument. See \link{ee_image_to_drive} and}
 }
 \value{
-If add_metadata is FALSE, a character vector containing the filename
-of the images downloaded. Otherwise a list adding information related to
-the exportation (see details).
+If add_metadata is FALSE, \code{ee_imagecollection_to_local} will
+return a character vector containing the filename of the images downloaded.
+Otherwise, if add_metadata is TRUE, will retrun a list with extra information
+related to the exportation (see details).
 }
 \description{
 Save an EE ImageCollection in their local system
@@ -73,19 +74,19 @@ Save an EE ImageCollection in their local system
 by two different options: "drive"
 (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-Google Cloud Storage}). In both cases \code{ee_imagecollection_to_local}
+Google Cloud Storage}). In both cases, \code{ee_imagecollection_to_local}
 works as follow:
 \itemize{
-\item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
+\item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 move the \code{ee$Image} from Earth Engine to the intermediate container
-specified in argument \code{via}.}
+specified in the argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-monitored. This is useful to lunch several tasks at the same time and
-call them later using \code{\link{ee_utils_future_value}} or
+monitored. This is useful to lunch several tasks simultaneously and
+calls them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
 the \code{ee$Images} are stored on the path specified in the argument
 \code{dsn}.}
-\item{3. }{Finally if the argument \code{add_metadata} is TRUE, a list
+\item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 with the following elements will be added to the argument \code{dsn}.
 \itemize{
 \item{\bold{if via is "drive":}}
