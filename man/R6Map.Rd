@@ -6,7 +6,7 @@
 \value{
 Object of class \code{leaflet} and \code{EarthEngineMap}, with the
 following extra parameters: tokens, name, opacity, shown, min, max, palette,
-position, and legend. Use the $ method to retrieve the data (e.g. m$rgee$min).
+position, and legend. Use the $ method to retrieve the data (e.g., m$rgee$min).
 }
 \description{
 Create interactive visualizations of spatial EE objects
@@ -14,9 +14,9 @@ Create interactive visualizations of spatial EE objects
 using \code{leaflet}.
 }
 \details{
-\code{Map} use the Earth Engine method
+\code{R6Map} uses the Earth Engine method
 \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{
-getMapId} to fetch and return an ID dictionary being used to create
+getMapId} to fetch and return an ID dictionary used to create
 layers in a \code{leaflet} object. Users can specify visualization
 parameters to Map$addLayer by using the visParams argument. Each Earth
 Engine spatial object has a specific format. For
@@ -43,7 +43,7 @@ three numbers, one for each band \cr
 }
 
 If you add an \code{ee$Image} to Map$addLayer without any additional
-parameters, by default it assigns the first three bands to red,
+parameters. By default it assigns the first three bands to red,
 green, and blue bands, respectively. The default stretch is based on the
 min-max range. On the other hand, the available parameters for
 \code{ee$Geometry}, \code{ee$Feature}, and \code{ee$FeatureCollection}
@@ -189,11 +189,12 @@ Map$previous_map_right$rgee$tokens
 \item{\code{zoom}}{The zoom level, from 1 to 24.}
 
 \item{\code{save_maps}}{Should \code{R6Map} save the previous maps?. If TRUE, Map
-will work in a OOP style, otherwise will be functional programming style.}
+will work in an OOP style. Otherwise it will be a functional programming
+style.}
 
-\item{\code{previous_map_left}}{Container of maps in the left side.}
+\item{\code{previous_map_left}}{Container on maps in the left side.}
 
-\item{\code{previous_map_right}}{Container of maps in the right side.}
+\item{\code{previous_map_right}}{Container on maps in the right side.}
 }
 \if{html}{\out{</div>}}
 }
@@ -450,7 +451,7 @@ Adds a given Eath Engine spatial object to the map as a layer
 
 \item{\code{shown}}{A flag indicating whether layers should be on by default.}
 
-\item{\code{opacity}}{The layer's opacity represented as a number between 0 and 1. Defaults to 1.}
+\item{\code{opacity}}{The layer's opacity is represented as a number between 0 and 1. Defaults to 1.}
 
 \item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
@@ -528,7 +529,7 @@ Adds a given ee$ImageCollection to the map as multiple layers.
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).}
 
-\item{\code{opacity}}{The layer's opacity represented as a number between 0 and 1. Defaults to 1.}
+\item{\code{opacity}}{The layer's opacity is represented as a number between 0 and 1. Defaults to 1.}
 
 \item{\code{legend}}{Should a legend be plotted?. Only the legend of the first image is displayed.}
 }

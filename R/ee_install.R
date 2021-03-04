@@ -254,7 +254,7 @@ ee_install <- function(py_env = "rgee",
 #' the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
 #' it is "local" the environment variables are set in the .Renviron on the
 #' working directory (getwd()). Finally, users can also enter a specific path
-#' (See examples).
+#' (see examples).
 #' @param quiet Logical. Suppress info message
 #' @return no return value, called for setting EARTHENGINE_PYTHON in .Renviron
 #' @family ee_install functions

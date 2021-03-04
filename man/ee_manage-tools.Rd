@@ -14,7 +14,7 @@
 \alias{ee_manage_task}
 \alias{ee_manage_cancel_all_running_task}
 \alias{ee_manage_asset_size}
-\title{Interface for manage the Earth Engine Asset}
+\title{Interface to manage the Earth Engine Asset}
 \usage{
 ee_manage_create(path_asset, asset_type = "Folder", quiet = FALSE)
 
@@ -57,7 +57,7 @@ ImageCollection).}
 \item{quiet}{Logical. Suppress info message.}
 
 \item{strict}{Character vector. If TRUE, the existence of the asset will be
-evaluate before to perform the task.}
+evaluated before performing the task.}
 
 \item{final_path}{Character. Output filename
 (e.g users/datacolecfbf/ic_moved)}
@@ -77,10 +77,10 @@ details.}
 \item{all_users_can_read}{Logical. All users can see the asset element.}
 
 \item{cache}{Logical. If TRUE, the task report will be saved
-in the /temp directory and used when the function .}
+in the /temp directory and used when the function.}
 }
 \description{
-R functions for managing the Earth Engine Asset. The interface allows users
+R functions to manage the Earth Engine Asset. The interface allows users
 to create and eliminate folders, move and copy assets, set and delete
 properties, handle access control lists, and manage and/or cancel tasks.
 }
@@ -159,5 +159,5 @@ ee_manage_delete(addm("rgee/"))
 }
 }
 \author{
-Samapriya Roy, adapted to R by csaybar.
+Samapriya Roy, adapted to R and improved by csaybar.
 }

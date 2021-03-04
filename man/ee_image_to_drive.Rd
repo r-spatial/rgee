@@ -28,7 +28,7 @@ ee_image_to_drive(
 
 \item{description}{Human-readable name of the task.}
 
-\item{folder}{The name of a Google Drive folder in their Drive account to be
+\item{folder}{The name of a folder in their Drive account to be
 exported into. By default "rgee-backup".}
 
 \item{fileNamePrefix}{The Google Drive filename for the export. Defaults to

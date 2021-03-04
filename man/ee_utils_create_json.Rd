@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils-upload.R
 \name{ee_utils_create_json}
 \alias{ee_utils_create_json}
-\title{Convert a R list into a JSON file}
+\title{Convert an R list into a JSON file in the temp() file}
 \usage{
 ee_utils_create_json(x)
 }
@@ -13,7 +13,7 @@ ee_utils_create_json(x)
 A JSON file saved in a /tmp dir.
 }
 \description{
-Convert a R list into a JSON file
+Convert an R list into a JSON file in the temp() file
 }
 \examples{
 \dontrun{

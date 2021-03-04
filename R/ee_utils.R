@@ -21,7 +21,7 @@ ee_utils_py_to_r <- function(x) {
 #' into the zip file. By default: "dbf", "prj", "shp", "shx".
 #' @importFrom utils zip
 #'
-#' @return Character. The full path of the zip file created.
+#' @return Character. The full path of the created zip file.
 #' @family ee_utils functions
 #'
 #' @examples
@@ -340,7 +340,7 @@ ee_utils_gif_annotate <- function(image,
 
 #' Write a GIF
 #'
-#' Write a magick-image object as a GIF file using magick package. This
+#' Write a magick-image object as a GIF file using the \code{magick} package. This
 #' function is a wrapper around [image_write][magick::image_write].
 #'
 #' @author Jeroen Ooms
@@ -352,8 +352,8 @@ ee_utils_gif_annotate <- function(image,
 #' @param depth color depth (either 8 or 16).
 #' @param density resolution to render pdf or svg.
 #' @param comment text string added to the image metadata for supported formats.
-#' @param flatten should image be flattened before writing? This also replaces
-#' transparency with background color.
+#' @param flatten should the image be flattened before writing? This also replaces
+#' transparency with a background color.
 #' @examples
 #' \dontrun{
 #' library(rgee)
@@ -428,7 +428,7 @@ ee_utils_gif_save <- function(image,
 
 #' Search into the Earth Engine Data Catalog
 #'
-#' @param ee_search_dataset character which represents the EE dataset ID.
+#' @param ee_search_dataset Character that represents the EE dataset ID.
 #' @return No return value, called for displaying the Earth Engine dataset in the browser.
 #' @examples
 #' \dontrun{

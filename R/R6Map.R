@@ -5,9 +5,9 @@
 #' using \code{leaflet}.
 #'
 #' @details
-#' `Map` use the Earth Engine method
+#' `R6Map` uses the Earth Engine method
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{
-#' getMapId} to fetch and return an ID dictionary being used to create
+#' getMapId} to fetch and return an ID dictionary used to create
 #' layers in a \code{leaflet} object. Users can specify visualization
 #' parameters to Map$addLayer by using the visParams argument. Each Earth
 #' Engine spatial object has a specific format. For
@@ -34,7 +34,7 @@
 #' }
 #'
 #' If you add an \code{ee$Image} to Map$addLayer without any additional
-#' parameters, by default it assigns the first three bands to red,
+#' parameters. By default it assigns the first three bands to red,
 #' green, and blue bands, respectively. The default stretch is based on the
 #' min-max range. On the other hand, the available parameters for
 #' \code{ee$Geometry}, \code{ee$Feature}, and \code{ee$FeatureCollection}
@@ -50,7 +50,7 @@
 #'
 #' @returns Object of class \code{leaflet} and \code{EarthEngineMap}, with the
 #' following extra parameters: tokens, name, opacity, shown, min, max, palette,
-#' position, and legend. Use the $ method to retrieve the data (e.g. m$rgee$min).
+#' position, and legend. Use the $ method to retrieve the data (e.g., m$rgee$min).
 #'
 #' @export
 R6Map <- R6::R6Class(
@@ -66,13 +66,14 @@ R6Map <- R6::R6Class(
     zoom = NULL,
 
     #' @field save_maps Should `R6Map` save the previous maps?. If TRUE, Map
-    #' will work in a OOP style, otherwise will be functional programming style.
+    #' will work in an OOP style. Otherwise it will be a functional programming
+    #' style.
     save_maps = NULL,
 
-    #' @field previous_map_left Container of maps in the left side.
+    #' @field previous_map_left Container on maps in the left side.
     previous_map_left = NULL,
 
-    #' @field previous_map_right Container of maps in the right side.
+    #' @field previous_map_right Container on maps in the right side.
     previous_map_right = NULL,
 
     #' @description Constructor of R6Map.
@@ -218,7 +219,7 @@ R6Map <- R6::R6Class(
     #' @param visParams List of parameters for visualization. See details.
     #' @param name The name of layers.
     #' @param shown A flag indicating whether layers should be on by default.
-    #' @param opacity The layer's opacity represented as a number between 0 and 1. Defaults to 1.
+    #' @param opacity The layer's opacity is represented as a number between 0 and 1. Defaults to 1.
     #' @param legend Should a legend be plotted?. Only the legend of the first image is displayed.
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
@@ -349,7 +350,7 @@ R6Map <- R6::R6Class(
     #' @param nmax Numeric. The maximum number of images to display. By default 5.
     #' @param name The name of layers.
     #' @param shown A flag indicating whether layers should be on by default.
-    #' @param opacity The layer's opacity represented as a number between 0 and 1. Defaults to 1.
+    #' @param opacity The layer's opacity is represented as a number between 0 and 1. Defaults to 1.
     #' @param legend Should a legend be plotted?. Only the legend of the first image is displayed.
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
@@ -698,7 +699,7 @@ R6Map <- R6::R6Class(
 #'     \item \strong{name:} The name of the layer.\cr
 #'     \item \strong{shown:} A flag indicating whether the
 #'     layer should be on by default. \cr
-#'     \item \strong{opacity:} The layer's opacity represented as a number
+#'     \item \strong{opacity:} The layer's opacity is represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
 #'     \item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
 #'     is not a single-band ee$Image.
@@ -713,7 +714,7 @@ R6Map <- R6::R6Class(
 #'     \item \strong{name:} The name of layers.\cr
 #'     \item \strong{shown:} A flag indicating whether
 #'     layers should be on by default. \cr
-#'     \item \strong{opacity:} The layer's opacity represented as a number
+#'     \item \strong{opacity:} The layer's opacity is represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
 #'      \item \strong{nmax:} Numeric. The maximum number of images to display.
 #'      By default 5. \cr

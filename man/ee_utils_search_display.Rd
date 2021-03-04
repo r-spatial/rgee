@@ -7,7 +7,7 @@
 ee_utils_search_display(ee_search_dataset)
 }
 \arguments{
-\item{ee_search_dataset}{character which represents the EE dataset ID.}
+\item{ee_search_dataset}{Character that represents the EE dataset ID.}
 }
 \value{
 No return value, called for displaying the Earth Engine dataset in the browser.

@@ -7,7 +7,7 @@
 ee_monitoring(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{task}{List generated after a task is started (i.e. after run
+\item{task}{List generated after a task is started (i.e., after run
 \code{ee$batch$Task$start()}) or a character that represents the ID of a EE
 task started.}
 
@@ -20,7 +20,7 @@ listed.}
 }
 \value{
 An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"
-according to the response of the Earth Engine server.
+according to the Earth Engine server's response.
 }
 \description{
 Monitoring Earth Engine task progress

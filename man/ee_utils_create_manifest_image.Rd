@@ -16,7 +16,7 @@ ee_utils_create_manifest_image(
 )
 }
 \arguments{
-\item{gs_uri}{Character. GCS full path of the image to upload to Earth Engine assets
+\item{gs_uri}{Character. GCS full path of the image to upload to Earth Engine assets,
 e.g. gs://rgee_dev/l8.tif}
 
 \item{assetId}{Character. How to call the file once uploaded
@@ -25,25 +25,25 @@ to the Earth Engine Asset. e.g. users/datacolecfbf/l8.}
 \item{properties}{List. Set of parameters to be set up as properties
 of the EE object.}
 
-\item{start_time}{Character. Sets the start time property (system:time_start)
+\item{start_time}{Character. Sets the start time property (system:time_start).
 It could be a number (timestamp) or a date.}
 
-\item{end_time}{Character. Sets the end time property (system:time_end)
+\item{end_time}{Character. Sets the end time property (system:time_end).
 It could be a number (timestamp) or a date.}
 
 \item{pyramiding_policy}{Character. The pyramid reduction policy to use.}
 
-\item{returnList}{Logical. If TRUE will return the "manifest" as a list otherwise
+\item{returnList}{Logical. If TRUE will return the "manifest" as a list. Otherwise,
 will return a JSON file.}
 
 \item{quiet}{Logical. Suppress info message.}
 }
 \value{
-If \code{returnList} is TRUE a list otherwise a JSON file.
+If \code{returnList} is TRUE, a list otherwise a JSON file.
 }
 \description{
-Create a manifest to upload a GeoTIFF to Earth Engine assets folder. The
-"manifest" is simply a JSON file which describe all the upload parameters. See
+Create a manifest to upload a GeoTIFF to Earth Engine asset folder. The
+"manifest" is simply a JSON file that describe all the upload parameters. See
 \url{https://developers.google.com/earth-engine/guides/image_manifest} to get more
 details.
 }

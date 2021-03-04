@@ -21,10 +21,10 @@ e.g. gs://rgee_dev/nc.zip}
 \item{assetId}{Character. How to call the file once uploaded
 to the Earth Engine Asset. e.g. users/datacolecfbf/nc.}
 
-\item{start_time}{Character. Sets the start time property (system:time_start)
+\item{start_time}{Character. Sets the start time property (system:time_start).
 It could be a number (timestamp) or a date.}
 
-\item{end_time}{Character. Sets the end time property (system:time_end)
+\item{end_time}{Character. Sets the end time property (system:time_end).
 It could be a number (timestamp) or a date.}
 
 \item{properties}{List. Set of parameters to be set up as properties
@@ -36,11 +36,11 @@ will return a JSON file.}
 \item{quiet}{Logical. Suppress info message.}
 }
 \value{
-If \code{returnList} is TRUE a list otherwise a JSON file.
+If \code{returnList} is TRUE, a list otherwise a JSON file.
 }
 \description{
 Create a manifest to upload a zipped shapefile to Earth Engine assets folder. The
-"manifest" is simply a JSON file which describe all the upload parameters. See
+"manifest" is simply a JSON file that describe all the upload parameters. See
 \url{https://developers.google.com/earth-engine/guides/image_manifest} to get more
 details.
 }

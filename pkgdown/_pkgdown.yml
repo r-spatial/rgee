@@ -74,6 +74,8 @@ reference:
     contents:
       - Map
       - R6Map
+      - sidebar-map
+      - concat-map
 
   - title: "Image download"
     contents:

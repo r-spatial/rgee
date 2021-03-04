@@ -5,7 +5,7 @@
 #'
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
-#' @param folder The name of a Google Drive folder in their Drive account to be
+#' @param folder The name of a folder in their Drive account to be
 #' exported into. By default "rgee-backup".
 #' @param fileNamePrefix The Google Drive filename for the export. Defaults to
 #' the name of the task.

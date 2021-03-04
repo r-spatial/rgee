@@ -1,6 +1,6 @@
-#' Interface for manage the Earth Engine Asset
+#' Interface to manage the Earth Engine Asset
 #'
-#' R functions for managing the Earth Engine Asset. The interface allows users
+#' R functions to manage the Earth Engine Asset. The interface allows users
 #' to create and eliminate folders, move and copy assets, set and delete
 #' properties, handle access control lists, and manage and/or cancel tasks.
 #'
@@ -16,13 +16,13 @@
 #' @param del_properties Character. Names of properties to be deleted. See
 #' details.
 #' @param strict Character vector. If TRUE, the existence of the asset will be
-#' evaluate before to perform the task.
+#' evaluated before performing the task.
 #' @param owner Character vector. Define owner user in the IAM Policy.
 #' @param editor Character vector. Define editor users in the IAM Policy.
 #' @param viewer Character vector. Define viewer users in the IAM Policy.
 #' @param all_users_can_read Logical. All users can see the asset element.
 #' @param cache Logical. If TRUE, the task report will be saved
-#' in the /temp directory and used when the function .
+#' in the /temp directory and used when the function.
 #' @param quiet Logical. Suppress info message.
 #' @importFrom stats na.omit
 #' @importFrom utils write.csv read.csv
@@ -30,7 +30,7 @@
 #' If the argument `del_properties` is 'ALL',
 #' \link[=rgee]{ee_manage_delete_properties} will delete all
 #' the properties.
-#' @author Samapriya Roy, adapted to R by csaybar.
+#' @author Samapriya Roy, adapted to R and improved by csaybar.
 #' @examples
 #' \dontrun{
 #' library(rgee)

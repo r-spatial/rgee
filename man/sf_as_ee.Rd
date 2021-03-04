@@ -35,7 +35,7 @@ if \code{via} argument is "getInfo".}
 tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
 (ignore if \code{via} is not defined as "gcs_to_asset").}
 
-\item{overwrite}{A boolean argument which indicates indicating
+\item{overwrite}{A boolean argument that indicates indicating
 whether "filename" should be overwritten. Ignore if \code{via} argument
 is "getInfo". By default TRUE.}
 

@@ -23,7 +23,7 @@ is cached in the path \code{~/.config/earthengine/}.}
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential is cached in the path \code{~/.config/earthengine/}.}
 
-\item{display}{Logical. If TRUE display the earthengine authentication URL.}
+\item{display}{Logical. If TRUE, display the earthengine authentication URL.}
 
 \item{quiet}{Logical. Suppress info messages.}
 }
@@ -33,15 +33,15 @@ No return value, called for initializing the earthengine-api.
 \description{
 Authorize rgee to manage Earth Engine resources, Google
 Drive, and Google Cloud Storage. The \code{ee_initialize()} via
-web-browser will ask to sign in to your Google account and
+web-browser will ask users to sign into your Google account and
 allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize(...)} can manage Google drive and Google
+\code{ee_Initialize(...)} can manage Google Drive, and Google
 Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
-them, these are only necessary to enable rgee I/O functionality.
+them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
 \code{~/.config/earthengine/}, if a user does not specify the email
 argument all user credentials are saved in a subdirectory

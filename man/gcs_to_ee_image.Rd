@@ -12,7 +12,7 @@ gcs_to_ee_image(
 )
 }
 \arguments{
-\item{manifest}{Character. manifest upload file. See \code{\link{ee_utils_create_manifest_image}}.}
+\item{manifest}{Character. Manifest upload file. See \code{\link{ee_utils_create_manifest_image}}.}
 
 \item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
 it exists.}

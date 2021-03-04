@@ -57,10 +57,9 @@ Relevant just for \code{ee$ImageCollection} and \code{ee$Image} objects.}
 \item{time_end}{Logical. If TRUE, the system:time_end property in ee$Image
 is also returned. See \code{rgee::ee_get_date_img} for details.}
 
-\item{compression_ratio}{Numeric. Measurement of the relative reduction
-in size of data representation produced by a data compression algorithm
-(ignored if \code{eeobject} is not a Image or ImageCollection). By default
-is 20.}
+\item{compression_ratio}{Numeric. Measurement of the relative data size
+reduction produced by a data compression algorithm (ignored if \code{eeobject}
+is not an \code{ee$Image} or \code{ee$ImageCollection}). By default is 20.}
 
 \item{img_index}{Numeric. Index of the \code{ee$ImageCollection} to fetch.
 Relevant just for \code{ee$ImageCollection} objects.}
@@ -72,7 +71,7 @@ A list with the metadata of the Earth Engine object.
 Print and return metadata about Spatial Earth Engine Objects.
 \code{ee_print} can retrieve information about the number of images
 or features, number of bands or geometries, number of pixels, geotransform,
-data type, properties and object size.
+data type, properties, and object size.
 }
 \examples{
 \dontrun{

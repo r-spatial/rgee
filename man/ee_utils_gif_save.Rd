@@ -30,14 +30,14 @@ ee_utils_gif_save(
 
 \item{comment}{text string added to the image metadata for supported formats.}
 
-\item{flatten}{should image be flattened before writing? This also replaces
-transparency with background color.}
+\item{flatten}{should the image be flattened before writing? This also replaces
+transparency with a background color.}
 }
 \value{
 No return value, called to write a GIF file.
 }
 \description{
-Write a magick-image object as a GIF file using magick package. This
+Write a magick-image object as a GIF file using the \code{magick} package. This
 function is a wrapper around \link[magick:editing]{image_write}.
 }
 \examples{

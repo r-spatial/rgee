@@ -14,7 +14,7 @@ local_to_gcs(x, bucket = NULL, quiet = FALSE)
 \item{quiet}{Logical. Suppress info message.}
 }
 \value{
-Character which represents the full path of the object in the GCS
+Character that represents the full path of the object in the GCS
 bucket specified.
 }
 \description{

@@ -19,7 +19,7 @@ ee_utils_shp_to_zip(
 into the zip file. By default: "dbf", "prj", "shp", "shx".}
 }
 \value{
-Character. The full path of the zip file created.
+Character. The full path of the created zip file.
 }
 \description{
 Create a zip file from an sf object

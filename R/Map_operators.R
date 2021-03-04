@@ -3,7 +3,7 @@
 #' @author tim-salabim. Adapted from mapview code.
 #' @param e1 a EarthEngineMap map to which e2 should be added.
 #' @param e2 a EarthEngineMap map from which the objects should be added to e1.
-#' @name null-default
+#' @name map-operator
 #' @export
 '+.EarthEngineMap' <- function(e1, e2) {
   if (!any(class(e2) %in% "EarthEngineMap")) {
@@ -92,10 +92,9 @@
 
 #' EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.
 #'
-#' @author tim-salabim. Adapted from mapview code.
 #' @param e1 an EarthEngineMap object.
 #' @param e2 an EarthEngineMap object.
-#' @name null-default
+#' @name map-operator
 #' @aliases |, EarthEngineMap, EarthEngineMap-method
 #' @export
 '|.EarthEngineMap' <- function(e1, e2) {

@@ -17,7 +17,7 @@ See details.\cr
 \item \strong{name:} The name of the layer.\cr
 \item \strong{shown:} A flag indicating whether the
 layer should be on by default. \cr
-\item \strong{opacity:} The layer's opacity represented as a number
+\item \strong{opacity:} The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. \cr
 \item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
 is not a single-band ee$Image.
@@ -32,7 +32,7 @@ See details.\cr
 \item \strong{name:} The name of layers.\cr
 \item \strong{shown:} A flag indicating whether
 layers should be on by default. \cr
-\item \strong{opacity:} The layer's opacity represented as a number
+\item \strong{opacity:} The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. \cr
 \item \strong{nmax:} Numeric. The maximum number of images to display.
 By default 5. \cr

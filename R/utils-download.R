@@ -1,6 +1,6 @@
 #' Monitoring Earth Engine task progress
 #'
-#' @param task List generated after a task is started (i.e. after run
+#' @param task List generated after a task is started (i.e., after run
 #' `ee$batch$Task$start()`) or a character that represents the ID of a EE
 #' task started.
 #' @param task_time Numeric. How often (in seconds) should a task be polled?
@@ -8,7 +8,7 @@
 #' listed.
 #' @param quiet Logical. Suppress info message
 #' @return An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"
-#' according to the response of the Earth Engine server.
+#' according to the Earth Engine server's response.
 #' @family helper functions
 #' @export
 #' @examples
