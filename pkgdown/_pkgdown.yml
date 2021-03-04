@@ -20,13 +20,13 @@ navbar:
          href: articles/rgee03.html
       -  text: rgee examples
          href: https://r-earthengine.github.io/
-    - icon: fa-newspaper-o
+    - icon: fa fa-newspaper-o
       text: "news"
       href: news/index.html
-    - icon: fa-file-code-o
+    - icon: fa fa-file-code-o
       text: "functions"
       href: reference/index.html
-    - icon: fa-github fa-lg
+    - icon: fa fa-github fa-lg
       text: "github"
       href: https://github.com/r-spatial/rgee/
 
@@ -74,8 +74,7 @@ reference:
     contents:
       - Map
       - R6Map
-      - sidebar-map
-      - concat-map
+      - map-operator      
 
   - title: "Image download"
     contents:
