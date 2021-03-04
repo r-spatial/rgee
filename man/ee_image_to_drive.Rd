@@ -84,7 +84,8 @@ An unstarted Task that exports the image to Drive.
 }
 \description{
 Creates a task to export an EE Image to Drive.
-This function is a wrapper around \code{ee$batch$Export$image$toDrive(...)}.
+This function is a wrapper around \cr
+\code{ee$batch$Export$image$toDrive(...)}.
 }
 \examples{
 \dontrun{

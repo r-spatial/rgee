@@ -14,8 +14,9 @@ ee_Initialize(
 }
 \arguments{
 \item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email
-argument is used to create a folder inside the path \code{~/.config/earthengine/}
-that save all credentials for a specific Google identity.}
+argument is used to create a folder inside the path \cr
+\code{~/.config/earthengine/} that save all credentials for a specific
+Google identity.}
 
 \item{drive}{Logical (optional). If TRUE, the drive credential
 is cached in the path \code{~/.config/earthengine/}.}

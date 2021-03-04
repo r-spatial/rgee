@@ -1,7 +1,8 @@
 #' Creates a task to export an EE Image to Drive.
 #'
 #' Creates a task to export an EE Image to Drive.
-#' This function is a wrapper around \code{ee$batch$Export$image$toDrive(...)}.
+#' This function is a wrapper around \cr
+#' \code{ee$batch$Export$image$toDrive(...)}.
 #'
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
@@ -712,7 +713,7 @@ ee_table_to_asset <- function(collection,
 #'
 #' The task argument needs a status as task "COMPLETED" to work, due that the
 #' parameters necessary to identify EE objects into Google Drive are obtained
-#' from \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
+#' from \cr \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
 #'
 #' \code{consider} argument is necessary due that Google Drive permits users to
 #' create files with the same name. \code{consider} uses an interactive R
@@ -966,7 +967,7 @@ ee_drive_to_local <- function(task,
 #' @details
 #'
 #' The task argument needs "COMPLETED" task state to work due to that the parameters
-#' necessaries to locate the file into Google Cloud Storage are obtained from
+#' necessaries to locate the file into Google Cloud Storage are obtained from \cr
 #' \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 #'
 #' If the argument \code{metadata} is TRUE, a list with the

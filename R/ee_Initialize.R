@@ -7,8 +7,9 @@
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
 #' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`). The email
-#' argument is used to create a folder inside the path \code{~/.config/earthengine/}
-#' that save all credentials for a specific Google identity.
+#' argument is used to create a folder inside the path \cr
+#' \code{~/.config/earthengine/} that save all credentials for a specific
+#' Google identity.
 #'
 #' @param drive Logical (optional). If TRUE, the drive credential
 #' is cached in the path \code{~/.config/earthengine/}.

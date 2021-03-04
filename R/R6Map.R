@@ -109,7 +109,11 @@ R6Map <- R6::R6Class(
     #' Map$centerObject(image)
     #'
     #' # Simple display: Map just will
-    #' Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
+    #' Map$addLayer(
+    #'   eeObject = image,
+    #'   visParams = list(min=0, max = 10000, bands = c("B4", "B3", "B2")),
+    #'   name = "l8_01"
+    #' )
     #' Map # display map
     #'
     #' Map$reset() # Reset arguments
@@ -240,15 +244,34 @@ R6Map <- R6::R6Class(
     #' Map$centerObject(image)
     #'
     #' # Simple display: Map just will
-    #' Map$addLayer(image, list(min=0, max = 10000, bands = c("B4", "B3", "B2")), name = "l8_01")
-    #' Map$addLayer(image, list(min=0, max = 20000, bands = c("B4", "B3", "B2")), name = "l8_02")
+    #' Map$addLayer(
+    #'   eeObject = image,
+    #'   visParams = list(min=0, max = 10000, bands = c("B4", "B3", "B2")),
+    #'   name = "l8_01"
+    #' )
+    #'
+    #' Map$addLayer(
+    #'   eeObject = image,
+    #'   visParams = list(min=0, max = 20000, bands = c("B4", "B3", "B2")),
+    #'   name = "l8_02"
+    #' )
     #'
     #' # Simple display: Map just will (if the position is not specified it will
     #' # be saved on the right side)
     #' Map$reset() # Reset Map to the initial arguments.
     #' Map$centerObject(image)
-    #' Map$addLayer(image, list(min=0, max=10000, bands = c("B4", "B3", "B2")), name = "l8_left", position = "left")
-    #' Map$addLayer(image, list(min=0, max=20000, bands = c("B4", "B3", "B2")), name = "l8_right")
+    #' Map$addLayer(
+    #'   eeObject = image,
+    #'   visParams = list(min=0, max=10000, bands = c("B4", "B3", "B2")),
+    #'   name = "l8_left",
+    #'   position = "left"
+    #' )
+    #'
+    #' Map$addLayer(
+    #'   eeObject = image,
+    #'   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
+    #'   name = "l8_right"
+    #' )
     #'
     addLayer = function(eeObject,
                         visParams = NULL,

@@ -41,7 +41,7 @@ directory.
 }
 \details{
 The task argument needs "COMPLETED" task state to work due to that the parameters
-necessaries to locate the file into Google Cloud Storage are obtained from
+necessaries to locate the file into Google Cloud Storage are obtained from \cr
 \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 
 If the argument \code{metadata} is TRUE, a list with the
