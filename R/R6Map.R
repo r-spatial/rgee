@@ -131,14 +131,18 @@ R6Map <- R6::R6Class(
     #' Display a \code{EarthEngineMap} object.
     #' @return An `EarthEngineMap` object.
     print = function() {
-      m1 <- private$get_previous_map_right()
-      m2 <- private$get_previous_map_left()
-      if (is.null(m1$rgee$position) & is.null(m2$rgee$position)) {
-        m3 <- m1
+      if (isFALSE(self$save_maps)) {
+        print(private$ee_mapview())
       } else {
-        m3 <- m2 | m1
+        m1 <- private$get_previous_map_right()
+        m2 <- private$get_previous_map_left()
+        if (is.null(m1$rgee$position) & is.null(m2$rgee$position)) {
+          m3 <- m1
+        } else {
+          m3 <- m2 | m1
+        }
+        print(m3)
       }
-      print(m3)
     },
 
     #' @description
