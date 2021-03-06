@@ -238,7 +238,7 @@ and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first,
 \code{\link{ee_print}}\tab Print and return metadata about Spatial Earth Engine Objects. \cr
 \code{\link{ee_monitoring}}\tab Monitoring Earth Engine task progress. \cr
 \code{\link{print}}\tab Print Earth Engine objects. \cr
-\code{\link{ee_get}}\tab Return the element at the specified position in an Earth Engine Collection. \cr
+\code{\link{ee_get}}\tab Return the element at a specified position in an Earth Engine Collection. \cr
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 }
 }
@@ -260,6 +260,17 @@ and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first,
 \code{\link{ee_utils_gif_save}}\tab Write a GIF file. \cr
 \code{\link{ee_utils_future_value}}\tab The value of a future or the values of all elements in a container. \cr
 \code{\link{ee_utils_search_display}}\tab Search into the Earth Engine Data Catalog. \cr
+---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+}
+}
+
+\section{XIX. Subsetting}{
+
+
+\tabular{ll}{
+---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
+\code{\link{ee_get}}\tab Return the element at the specified position in an Earth Engine Collection. \cr
+\code{\link{ee_subsetting}}\tab Return the element at a specified position in an Earth Engine Image or ImageCollection. \cr
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 }
 }

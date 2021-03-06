@@ -54,6 +54,11 @@ reference:
       - ee_clean_credentials
       - ee_clean_pyenv
 
+  - title: "Subsetting"
+    contents:
+      - ee_get
+      - ee_subsetting
+
   - title: "Session management"
     contents:
       - ee_Initialize
@@ -74,7 +79,7 @@ reference:
     contents:
       - Map
       - R6Map
-      - map-operator      
+      - map-operator
 
   - title: "Image download"
     contents:
@@ -139,7 +144,6 @@ reference:
       - ee_print
       - print.ee.computedobject.ComputedObject
       - ee_monitoring
-      - ee_get
 
   - title: "Utils"
     contents:

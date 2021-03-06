@@ -36,7 +36,7 @@ saved into the file .Renviron.
 \dontrun{
 library(rgee)
 ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
-ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+# ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
 }
 }
 \seealso{

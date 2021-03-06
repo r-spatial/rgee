@@ -17,7 +17,6 @@ Get the Asset home name
 \dontrun{
 library(rgee)
 ee_Initialize()
-
 ee_get_assethome()
 }
 }
