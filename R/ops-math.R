@@ -1,21 +1,16 @@
-#' Earth Engine arithmetic, logic and compare Generic Methods
+#' Earth Engine arithmetic, logic and compare generic functions
 #'
-#' Standard arithmetic, logic and  operators for computations of ee$Image and
-#' numeric values. The following operators are available
+#' Arithmetic, logic and compare operators for computation with \code{ee$Image}
+#' objects and numeric values.
 #'
-#' @param e1 dsad fs aaa
-#' @param e2 dsadas dasd adsas
-#'
-#' @details
-#' dasdas
 #' \itemize{
 #'   \item \strong{Arith}: +, -, *, /, ^, %%, %/%, %>>% and %>>%.
-#'   \item \strong{Math}: abs, sign, sqrt, floor, ceiling, trunc, round, signif,
-#'   exp, log, expm1, log1p, cos, sin, tan, acos, asin, atan, cosh, sinh, tanh.
-#'   \item \strong{Summary}: sum, prod, min, max, mean, range.
+#'   \item \strong{Logic}: !, &, |.
+#'   \item \strong{Summary}: ==, !=, >, <, <=, >=
 #' }
 #'
-#'
+#' @param e1 Numeric or ee$Image.
+#' @param e2 Numeric or ee$Image.
 #'
 #' @examples
 #' \dontrun{
@@ -102,11 +97,11 @@ Ops.ee.image.Image <- function(e1, e2) {
 
 #' Mathematical functions
 #'
-#' @param x dsds
-#' @param ... dsdsds
+#' @param x ee$Image
+#' @param ... Ignored
 #'
-#' Generic mathematical functions that can be used with an \code{ee$Image} object
-#' as argument: \code{abs}, \code{sign}, \code{sqrt}, \code{ceiling},
+#' Generic mathematical functions that can be used with an \code{ee$Image}
+#' object as argument: \code{abs}, \code{sign}, \code{sqrt}, \code{ceiling},
 #' \code{cummax}, \code{cummin}, \code{cumprod}, \code{cumsum},
 #' \code{log}, \code{log10}, \code{log1p}, \code{acos}, \code{floor},
 #' \code{asin}, \code{atan}, \code{exp}, \code{expm1}, \code{cos},
@@ -180,10 +175,8 @@ Math.ee.image.Image <- function(x, ...) {
 
 #' Summary Methods
 #'
-#' Members of this group dispatch on the first argument supplied.
-#'
-#' @param ... Ignored
-#' @param na.rm Ignored
+#' @param ... ee$Image.
+#' @param na.rm Ignore.
 #' @name Summary-methods
 #' @export
 Summary.ee.image.Image <- function(..., na.rm = TRUE) {
