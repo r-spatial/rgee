@@ -108,7 +108,7 @@ remotes::install_github("r-spatial/rgee")
 
 **rgee** has two types of dependencies: <span
 style="color:#b52b09">**strict dependencies**</span> that must be
-satisfied before the **rgee** initialization (i.e. **[ee_Intialize()](https://r-spatial.github.io/rgee/reference/ee_Initialize.html)**) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that 
+satisfied before the **rgee** initialization (i.e. **[ee_Initialize()](https://r-spatial.github.io/rgee/reference/ee_Initialize.html)**) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that 
 unlock all **rgee** I/0 functionality with Google Drive (GD) and Google Cloud Storage (GCS).
 
 If the strict dependencies are not fulfilled **rgee just will not work**. The dependencies that comprised this group are:

@@ -135,8 +135,8 @@ ee_as_thumbnail <- function(image, region, dimensions, vizparams = NULL,
                             raster = FALSE, quiet = FALSE) {
   if (!quiet) {
     message_deprecated <- c(
-      "NOTE: ee_as_thumbnail can not determine the level of the scale. Is ",
-      "possible that the results present geometric offset. ",
+      "NOTE: ee_as_thumbnail can not determine the level of the scale. The ",
+      "results may show a geometric displacement. ",
       "See https://developers.google.com/earth-engine/guides/scale/ to get ",
       "more details."
     )

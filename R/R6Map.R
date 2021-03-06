@@ -256,7 +256,7 @@ R6Map <- R6::R6Class(
 
     #' @description
     #'
-    #' Adds a given Eath Engine spatial object to the map as a layer
+    #' Adds a given Earth Engine spatial object to the map as a layer
     #'
     #' @param eeObject The Earth Engine spatial object to display in the interactive map.
     #' @param visParams List of parameters for visualization. See details.

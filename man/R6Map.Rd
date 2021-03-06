@@ -454,7 +454,7 @@ Map
 \if{html}{\out{<a id="method-addLayer"></a>}}
 \if{latex}{\out{\hypertarget{method-addLayer}{}}}
 \subsection{Method \code{addLayer()}}{
-Adds a given Eath Engine spatial object to the map as a layer
+Adds a given Earth Engine spatial object to the map as a layer
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{R6Map$addLayer(
   eeObject,

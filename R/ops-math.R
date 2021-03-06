@@ -44,7 +44,7 @@
 #' v6 <- v1 + c(1, 5, 10)
 #' v6
 #' }
-#' @name arith-methods
+#' @name Ops-methods
 #' @export
 Ops.ee.image.Image <- function(e1, e2) {
   if (.Generic == "+") {
@@ -123,7 +123,12 @@ Math.ee.image.Image <- function(x, ...) {
   } else if(.Generic == "round") {
     ee$Image$round(x)
   } else if(.Generic == "log") {
-    ee$Image$log(x) / ee$Image$log(base)
+    args <- list(...)
+    if (length(args) == 0) {
+      ee$Image$log(x) / ee$Image$log(ee$Image$exp(1))
+    } else {
+      ee$Image$log(x) / ee$Image$log(...)
+    }
   } else if(.Generic == "log10") {
     ee$Image$log10(x)
   } else if(.Generic == "log1p") {

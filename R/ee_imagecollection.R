@@ -75,7 +75,7 @@
 #' @importFrom crayon green
 #' @return If add_metadata is FALSE, \code{ee_imagecollection_to_local} will
 #' return a character vector containing the filename of the images downloaded.
-#' Otherwise, if add_metadata is TRUE, will retrun a list with extra information
+#' Otherwise, if add_metadata is TRUE, will return a list with extra information
 #' related to the exportation (see details).
 #' @family image download functions
 #' @examples

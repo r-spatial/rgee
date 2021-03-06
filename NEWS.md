@@ -11,9 +11,10 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
-# rgee 1.0.8.9999
+# rgee 1.0.9
 
-- Subsetting and Math operator where added to rgee
+- Subsetting and Math operator where added to rgee (Experimental).
+- Earth Engine Python API updated to 0.1.254.
 - Vignettes documentation upgrade.
 - `ee_as_sf(..., via = "getInfo")` does not write in temp folder.
 - `ee_as_sf` now returns by default a GeoJSON instead of a ESRI shapefile.
@@ -34,7 +35,7 @@ vignette: >
 - Fix a bug in Map\$addLayer(..., legend=TRUE) when `eeobject` is an constant image  (i.e. ee\$Image(0)).
 - Stop message in `ee_Initialize` to does not allow the use of rgee when the folder ".../rgee/python/" does not exist.
 - Info messages when rgee make changes to.Renviron.
-- Earth Engine Python API test updated to 0.1.247.
+- Earth Engine Python API updated to 0.1.247.
 
 # rgee 1.0.7
 

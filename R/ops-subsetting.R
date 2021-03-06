@@ -69,6 +69,7 @@ ee_get <- function(ee_c, index = 0) {
   }
 }
 
+
 #' Extract or replace parts of and ee$ImageCollection
 #' @param x ee$ImageCollection or ee$Image.
 #' @param index Integer. Index specifying elements to extract or replace.
@@ -97,10 +98,11 @@ ee_get <- function(ee_c, index = 0) {
 #' )
 #'
 #' Map$setCenter(71.72, 52.48, 2)
-#' Map$addLayer(terraclimate[[2]][["tmmx"]], maximumTemperatureVis)
+#' m1 <- Map$addLayer(terraclimate[[2]][["tmmx"]], maximumTemperatureVis)
 #'
-#' terraclimate[[1:2]] <- terraclimate[[1:2]]*1.4
-#' Map$addLayer(terraclimate[[2]][["tmmx"]], maximumTemperatureVis)
+#' terraclimate[[2]] <- terraclimate[[2]]*1.4
+#' m2 <- Map$addLayer(terraclimate[[2]][["tmmx"]], maximumTemperatureVis)
+#' m1 | m2
 #' }
 #' @export
 '[[.ee.imagecollection.ImageCollection' <- function(x, index) {
@@ -122,6 +124,7 @@ ee_get <- function(ee_c, index = 0) {
     x %>% ee_get((index) - 1) %>% ee$ImageCollection$first()
   }
 }
+
 
 #' @name ee_subsetting
 #' @export
@@ -181,17 +184,17 @@ ee_get <- function(ee_c, index = 0) {
     )
   }
 
-  # 6. Do the index and value have the same length?
+  # 5. Do the index and value have the same length?
   if (length(index) != length(list_value)) {
     stop("The value to assign should have the same length that the ee$ImageCollection.")
   }
 
-  # 5. Condition: Index is outside of ic
+  # 6. Condition: Index is outside of ic
   if (!any(seq_len(ee_ic_size) %in% seq_along(list_value))) {
     stop("Not a valid subset")
   }
 
-  # 6. Condition: Index is outside of ic
+  # 7. Condition: Index is outside of ic
   counter <- 1
   for (list_value_index in seq_along(list_value)) {
     ic_list[[index[counter]]] <- list_value[[list_value_index]]
@@ -229,6 +232,7 @@ ee_get <- function(ee_c, index = 0) {
   }
 }
 
+
 #' @name ee_subsetting
 #' @export
 '[[<-.ee.image.Image' <- function(x, index, value) {
@@ -264,6 +268,7 @@ ee_get <- function(ee_c, index = 0) {
     x_ic$toBands()
   }
 }
+
 
 #' @name ee_subsetting
 #' @export
