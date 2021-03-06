@@ -165,6 +165,33 @@ R6Map <- R6::R6Class(
     #' # Map$lon
     #' # Map$zoom
     setCenter = function(lon = 0, lat = 0, zoom = 10) {
+      if(!is.numeric(lon)) {
+          stop(
+            sprintf(
+              "lon should be object of class numeric not %s.",
+              bold(class(lon)[1])
+            )
+          )
+      }
+
+      if(!is.numeric(lat)) {
+        stop(
+          sprintf(
+            "lat should be object of class numeric not %s.",
+            bold(class(lat)[1])
+          )
+        )
+      }
+
+      if(!is.numeric(zoom)) {
+        stop(
+          sprintf(
+            "zoom should be object of class numeric not %s.",
+            bold(class(zoom)[1])
+          )
+        )
+      }
+
       private$upgrade_center_right(lon, lat, zoom)
       private$upgrade_center_left(lon, lat, zoom)
       private$set_lat(lat)
@@ -189,6 +216,14 @@ R6Map <- R6::R6Class(
     #' # Map$lon
     #' # Map$zoom
     setZoom = function(zoom = 10) {
+      if(!is.numeric(zoom)) {
+        stop(
+          sprintf(
+            "zoom should be object of class numeric not %s.",
+            bold(class(zoom)[1])
+          )
+        )
+      }
       private$upgrade_center_right(self$lon, self$lat, zoom)
       private$upgrade_center_left(self$lon, self$lat, zoom)
       private$set_zoom(zoom)
