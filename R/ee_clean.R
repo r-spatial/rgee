@@ -166,18 +166,39 @@ ee_clean_container <- function(name = "rgee_backup",
         " to fix it"
       )
     }
-    count <- 1
-    try_gd_rm <- try(
-      expr = googledrive::drive_rm(name, verbose = !quiet),
-      silent = TRUE
+
+    # Search if the folder exist
+    drive_folder <- googledrive::drive_ls(
+      q = sprintf("name contains '%s'", name)
     )
-    while (class(try_gd_rm) == "try-error" & count < 5) {
-      try_gd_rm <- try(
-        expr = googledrive::drive_rm(name, verbose = !quiet),
-        silent = TRUE
-      )
-      count <- count + 1
+    if (nrow(drive_folder) == 0) {
+      stop("The folder that you attempt delete does not exist")
     }
+
+    # Search if the folder exist
+    if (!quiet) {
+      message(sprintf("Searching files in %s.", bold(name)))
+    }
+    drive_files_to_delete <- googledrive::drive_ls(
+      path = drive_folder
+    )
+
+    # Delete files
+    mapply(
+      FUN = function(index) {
+        if (!quiet) {
+          message(
+            sprintf(
+              "Deleting %s/%s.", bold(name),
+              bold(drive_files_to_delete[index, ]$name)
+            )
+          )
+        }
+        googledrive::drive_rm(drive_files_to_delete[index,])
+      },
+      seq_along(nrow(drive_files_to_delete))
+    )
+
   } else if (type == "gcs") {
     # check if googleCloudStorageR is installed
     ee_check_packages("ee_download_gcs", "googleCloudStorageR")
