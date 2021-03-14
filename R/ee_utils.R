@@ -435,11 +435,16 @@ ee_utils_gif_save <- function(image,
 #'  library(rgee)
 #'
 #'  ee_datasets <- c("WWF/HydroSHEDS/15DIR", "WWF/HydroSHEDS/03DIR")
-#'  ee_utils_search_display(ee_datasets)
+#'  ee_utils_dataset_display(ee_datasets)
 #' }
 #' @export
-ee_utils_search_display <- function(ee_search_dataset) {
-  tag_name <- gsub("\\/", "_", ee_search_dataset)
+ee_utils_dataset_display <- function(ee_search_dataset) {
+  if (is.character(ee_search_dataset)) {
+    tag_name <- gsub("\\/", "_", ee_search_dataset)
+  } else {
+    id_ee_obj <- ee_search_dataset$get("system:id")$getInfo()
+    tag_name <- gsub("\\/", "_", id_ee_obj)
+  }
   db_catalog <- "https://developers.google.com/earth-engine/datasets/catalog/"
   catalog_uri <- paste0(db_catalog, tag_name) %>%
     na.omit() %>%

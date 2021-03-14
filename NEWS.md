@@ -13,7 +13,16 @@ vignette: >
 ---
 # rgee 1.0.9
 
-- Subsetting and Math operator where added to rgee (Experimental).
+- Accessing the Earth Engine Data Catalog via '$' thanks to the [Earth-Engine-Datasets-List](https://github.com/samapriya/Earth-Engine-Datasets-List) 
+repo created by [@samapriya](https://github.com/samapriya).
+- Math  functions (abs, sign, sqrt, ceiling, cummax, cummin, cumprod, cumsum, 
+log, log10, log1p, acos, floor, asin, atan, exp, expm1, cos, cosh, sin, sinh, 
+tan, and tanh.) to `ee$Image`.
+- Summary functions (max, mean, min, range, sum, product) to `ee$Image`.
+- Comparison operators (==, !=, >, <, <=, >=) to `ee$Image`.
+- Logic operators (!, &, |) to `ee$Image`.
+- Arithmetic operators (+, -, *, /, ^, %%, %/%, %>>% and %>>%) to `ee$Image`.
+- Subsetting operators ('[[<-', '[[') to `ee$Image` and `ee$ImageCollection`.
 - Earth Engine Python API updated to 0.1.254.
 - Vignettes documentation upgrade.
 - `ee_as_sf(..., via = "getInfo")` does not write in temp folder.

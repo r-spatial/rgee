@@ -82,7 +82,7 @@ R6Map <- R6::R6Class(
     #' @param zoom The zoom level, from 1 to 24. By default 18.
     #' @param save_maps Should `R6Map` save previous maps?.
     #' @return A new `EarthEngineMap` object.
-    initialize = function(lon = -76.942478, lat = -12.172116 , zoom = 18, save_maps = TRUE) {
+    initialize = function(lon = 0, lat = 0, zoom = 1, save_maps = TRUE) {
       self$lon <- lon
       self$lat <- lat
       self$zoom <- zoom
@@ -118,7 +118,7 @@ R6Map <- R6::R6Class(
     #'
     #' Map$reset() # Reset arguments
     #' Map
-    reset = function(lon = -76.942478, lat = -12.172116 , zoom = 18, save_maps = TRUE) {
+    reset = function(lon = 0, lat = 0, zoom = 1, save_maps = TRUE) {
       self$lon <- lon
       self$lat <- lat
       self$zoom <- zoom

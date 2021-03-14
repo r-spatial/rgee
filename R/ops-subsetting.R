@@ -211,8 +211,8 @@ ee_get <- function(ee_c, index = 0) {
   if (is.numeric(index)) {
 
     # 2.1. Deal with negative and zero index
-    if (index < 1) {
-      if (index == 0) {
+    if (any(index < 1)) {
+      if (any(index == 0)) {
         stop(
           "rgee respect the one-based index. Therefore if you want to obtain the ",
           "first image-band you must use 1 rather than 0."
@@ -270,8 +270,69 @@ ee_get <- function(ee_c, index = 0) {
 }
 
 
-#' @name ee_subsetting
+#' Names of Earth Engine Images Layers
+#'
+#' Get or set the names of the layers of an Earth Engine Image object.
+#' @param x an EE Image object.
+#' @param value a character vector with the same length as x.
+#' @name ee_name
 #' @export
 'names<-.ee.image.Image' <-function(x, value) {
   ee$Image$rename(x, value)
+}
+
+
+#' @name ee_name
+#' @export
+'names.ee.image.Image' <-function(x) {
+  x$bandNames()$getInfo()
+}
+
+
+
+#' Length of an Earth Engine Image Object
+#'
+#' Get or set the length of an Earth Engine Image.
+#' @param x an EE Image Object.
+#' @param value a non-negative integer.
+#' @details
+#'  If a vector is shortened, extra values are discarded and when a vector
+#'  is lengthened, it is padded out to its new length with ee$Image(0), with
+#'  band name of zzz_rgee_NA_%02d.
+#' @name ee_length
+#' @export
+'length.ee.image.Image' <-function(x) {
+  length(x$bandNames()$getInfo())
+}
+
+
+
+#' @name ee_length
+#' @export
+'length<-.ee.image.Image' <-function(x, value) {
+  ee_x_length <- length(x)
+  how_much_add <- value - ee_x_length
+  if(how_much_add < 0) {
+    x[[seq_len(value)]]
+  } else if (how_much_add == 0) {
+    x
+  } else if (how_much_add > 0) {
+    ee_zero_img <- ee$ImageCollection(
+      lapply(seq_len(how_much_add), function(z) ee$Image(0))
+    )$toBands()
+    names(ee_zero_img) <- sprintf("zzz_rgee_NA_%02d", seq_len(how_much_add))
+    x$addBands(ee_zero_img)
+  }
+}
+
+
+#' Length of an Earth Engine ImageCollection Object
+#'
+#' Set the length of an Earth Engine Image.
+#'
+#' @param x an EE ImageCollection Object.
+#' @name ee_length_ic
+#' @export
+'length.ee.imagecollection.ImageCollection' <-function(x) {
+  x$size()$getInfo()
 }

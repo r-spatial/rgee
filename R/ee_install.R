@@ -269,6 +269,9 @@ ee_install_set_pyenv <- function(py_path = NULL,
                                  py_env = NULL,
                                  Renviron = "global",
                                  quiet = FALSE) {
+  if (is.null(py_path) & is.null(py_env) ) {
+    stop("Users must defined at least either py_path or py_env.")
+  }
 
   # Get the .Renviron on their system
   if (tolower(Renviron) == "global") {

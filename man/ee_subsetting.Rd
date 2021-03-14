@@ -6,7 +6,6 @@
 \alias{[[<-.ee.imagecollection.ImageCollection}
 \alias{[[.ee.image.Image}
 \alias{[[<-.ee.image.Image}
-\alias{names<-.ee.image.Image}
 \title{Extract or replace parts of and ee$ImageCollection}
 \usage{
 \method{[[}{ee.imagecollection.ImageCollection}(x, index)
@@ -16,8 +15,6 @@
 \method{[[}{ee.image.Image}(x, index)
 
 \method{[[}{ee.image.Image}(x, index) <- value
-
-\method{names}{ee.image.Image}(x) <- value
 }
 \arguments{
 \item{x}{ee$ImageCollection or ee$Image.}

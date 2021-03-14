@@ -6,7 +6,7 @@
 #' \itemize{
 #'   \item \strong{Arith}: +, -, *, /, ^, %%, %/%, %>>% and %>>%.
 #'   \item \strong{Logic}: !, &, |.
-#'   \item \strong{Summary}: ==, !=, >, <, <=, >=
+#'   \item \strong{Comparison}: ==, !=, >, <, <=, >=
 #' }
 #'
 #' @param e1 Numeric or ee$Image.

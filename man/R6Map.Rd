@@ -241,7 +241,7 @@ style.}
 \subsection{Method \code{new()}}{
 Constructor of R6Map.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{R6Map$new(lon = -76.942478, lat = -12.172116, zoom = 18, save_maps = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$new(lon = 0, lat = 0, zoom = 1, save_maps = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -267,7 +267,7 @@ A new \code{EarthEngineMap} object.
 \subsection{Method \code{reset()}}{
 Reset to initial arguments.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{R6Map$reset(lon = -76.942478, lat = -12.172116, zoom = 18, save_maps = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$reset(lon = 0, lat = 0, zoom = 1, save_maps = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

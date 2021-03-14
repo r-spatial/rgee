@@ -248,6 +248,16 @@ ee_Initialize <- function(email = NULL,
     }
   }
   # ee_check_python_packages(quiet = TRUE)
+
+  # Add Dataset attribute
+  eeDataset <- jsonlite::read_json(system.file("dataset.json", package="rgee"))
+  eeDataset_b <- ee_Dataset_creator(eeDataset)
+
+  ee$FeatureCollection$Dataset <- eeDataset_b$fc
+  ee$ImageCollection$Dataset <- eeDataset_b$ic
+  ee$Image$Dataset <- eeDataset_b$image
+
+
   invisible(TRUE)
 }
 
@@ -780,4 +790,14 @@ ee_check_packages <- function(fn_name, packages) {
     )
     stop(error_msg)
   }
+}
+
+
+#' Dataset Creator
+#' @noRd
+ee_Dataset_creator <- function(eeDataset) {
+  eedataset_img <- lapply(eeDataset[["Image"]], function(x) ee$Image(x))
+  eedataset_ic <- lapply(eeDataset[["ImageCollection"]], function(x) ee$ImageCollection(x))
+  eedataset_fc <- lapply(eeDataset[["FeatureCollection"]], function(x) ee$FeatureCollection(x))
+  list(image = eedataset_img, ic = eedataset_ic, fc = eedataset_fc)
 }

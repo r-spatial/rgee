@@ -220,7 +220,7 @@
 #'  \code{\link{ee_utils_gif_creator}}\tab Create a GIF from an Earth Engine ImageCollection. \cr
 #'  \code{\link{ee_utils_gif_save}}\tab Write a GIF file. \cr
 #'  \code{\link{ee_utils_future_value}}\tab The value of a future or the values of all elements in a container. \cr
-#'  \code{\link{ee_utils_search_display}}\tab Search into the Earth Engine Data Catalog. \cr
+#'  \code{\link{ee_utils_dataset_display}}\tab Search into the Earth Engine Data Catalog. \cr
 #' ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 #' }
 #'
