@@ -20,7 +20,7 @@ objects and numeric values.
 \itemize{
 \item \strong{Arith}: +, -, *, /, ^, \%\%, \%/\%, \%>>\% and \%>>\%.
 \item \strong{Logic}: !, &, |.
-\item \strong{Summary}: ==, !=, >, <, <=, >=
+\item \strong{Comparison}: ==, !=, >, <, <=, >=
 }
 }
 \examples{

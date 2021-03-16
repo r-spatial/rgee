@@ -47,6 +47,17 @@
 #' @name Ops-methods
 #' @export
 Ops.ee.image.Image <- function(e1, e2) {
+
+  # Convert logical values to numeric.
+  if (!missing(e2)) {
+    if (is.logical(e2)) {
+      e2 <- as.numeric(e2)
+    }
+  }
+  if (is.logical(e1)) {
+    e1 <- as.numeric(e1)
+  }
+
   if (.Generic == "+") {
     if (missing(e2)) {
       e1
@@ -102,17 +113,17 @@ Ops.ee.image.Image <- function(e1, e2) {
 #'
 #' Generic mathematical functions that can be used with an \code{ee$Image}
 #' object as argument: \code{abs}, \code{sign}, \code{sqrt}, \code{ceiling},
-#' \code{cummax}, \code{cummin}, \code{cumprod}, \code{cumsum},
-#' \code{log}, \code{log10}, \code{log1p}, \code{acos}, \code{floor},
-#' \code{asin}, \code{atan}, \code{exp}, \code{expm1}, \code{cos},
-#' \code{cosh}, \code{sin}, \code{sinh}, \code{tan}, and \code{tanh}.
+#' \code{cumprod}, \code{cumsum}, \code{log}, \code{log10}, \code{log1p},
+#' \code{log2}, \code{acos}, \code{floor}, \code{asin}, \code{atan}, \code{exp},
+#' \code{expm1}, \code{cos}, \code{cosh}, \code{sin}, \code{sinh},
+#' \code{tan}, and \code{tanh}.
 #'
 #' @name Math-methods
 #' @export
 Math.ee.image.Image <- function(x, ...) {
   if (.Generic == "abs") {
     ee$Image$abs(x)
-  } else if(.Generic == "signum") {
+  } else if(.Generic == "sign") {
     ee$Image$signum(x$float())
   } else if(.Generic == "sqrt") {
     ee$Image$sqrt(x)
@@ -127,10 +138,15 @@ Math.ee.image.Image <- function(x, ...) {
     if (length(args) == 0) {
       ee$Image$log(x) / ee$Image$log(ee$Image$exp(1))
     } else {
-      ee$Image$log(x) / ee$Image$log(...)
+      if (is.null(args$base)) {
+        stop("Unused argument.")
+      }
+      ee$Image$log(x) / ee$Image$log(ee$Image(args$base))
     }
   } else if(.Generic == "log10") {
     ee$Image$log10(x)
+  } else if(.Generic == "log2") {
+    ee$Image$log(x) / ee$Image$log(2)
   } else if(.Generic == "log1p") {
     ee$Image$log(x + 1)
   } else if(.Generic == "exp") {
@@ -174,7 +190,7 @@ Math.ee.image.Image <- function(x, ...) {
     }
     ee$ImageCollection(x_list)$toBands()
   } else {
-    stop("rgee does not support yet ", .Generic)
+    stop(sprintf("rgee does not support %s yet.", .Generic))
   }
 }
 
@@ -185,17 +201,12 @@ Math.ee.image.Image <- function(x, ...) {
 #' @name Summary-methods
 #' @export
 Summary.ee.image.Image <- function(..., na.rm = TRUE) {
-  imgs <- list(...)
-
-  if (length(imgs) > 1) {
-    stop("Only one ee$Image is supported.")
-  }
-  img <- imgs[[1]]
+  img <- ee$ImageCollection(list(...))$toBands()
 
   if (.Generic == "max") {
     img$reduce(ee$Reducer$max())
   } else if (.Generic == "min") {
-    img$reduce(ee$Reducer$max())
+    img$reduce(ee$Reducer$min())
   } else if (.Generic == "range") {
     img$reduce(ee$Reducer$minMax())
   } else if (.Generic == "sum") {
@@ -203,18 +214,14 @@ Summary.ee.image.Image <- function(..., na.rm = TRUE) {
   } else if (.Generic == "prod") {
     img$reduce(ee$Reducer$product())
   } else {
-    stop("rgee does not support yet ", .Generic)
+    stop(sprintf("rgee does not support %s yet.", .Generic))
   }
 }
 
 #' @name Summary-methods
 #' @export
 mean.ee.image.Image <- function(..., na.rm = TRUE) {
-  imgs <- list(...)
-  if (length(imgs) > 1) {
-    stop("Only one ee$Image is supported.")
-  }
-  img <- imgs[[1]]
+  img <- ee$ImageCollection(list(...))$toBands()
   img$reduce(ee$Reducer$mean())
 }
 
