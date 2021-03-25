@@ -6,7 +6,7 @@ on:
     branches:
       - master
   schedule:
-    - cron:  '0 1 * * *'
+    - cron:  '0 * * * *'
 
 jobs:
   build:
@@ -23,22 +23,21 @@ jobs:
           
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip        
-          pip install -U pip setuptools
-          pip install pendulum beautifulsoup4 requests
+          python -m pip install --upgrade pip          
+          pip install earthengine-api
       - name: dataset upgrade
         run: |
-          python3 ./.github/db_up.py
+          python3 ./.github/ee_up.py
       - name: file_check
         run: ls -l -a
       - name: commit files
         continue-on-error: true
         run: |
-          today=$(date +"%Y-%m-%d")
+          today=$(date +"%Y-%m-%d %H:%M:%S")
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "updated datasets ${today}" -a
+          git commit -m "updated earthengine version ${today}" -a
       - name: push changes
         continue-on-error: true
         uses: ad-m/github-push-action@v0.6.0
