@@ -13,28 +13,29 @@ vignette: >
 ---
 # rgee 1.0.9
 
-- Accessing the Earth Engine Data Catalog via '$' thanks to the [Earth-Engine-Datasets-List](https://github.com/samapriya/Earth-Engine-Datasets-List) 
-repo created by [@samapriya](https://github.com/samapriya).
+- Accessing the Earth Engine Data Catalog via '$' thanks to the [Earth-Engine-Datasets-List](https://github.com/samapriya/Earth-Engine-Datasets-List) created and supported by [@samapriya](https://github.com/samapriya).
 - Math  functions (abs, sign, sqrt, ceiling, cummax, cummin, cumprod, cumsum, 
 log, log10, log1p, acos, floor, asin, atan, exp, expm1, cos, cosh, sin, sinh, 
 tan, and tanh.) to `ee$Image`.
 - Summary functions (max, mean, min, range, sum, product) to `ee$Image`.
 - Comparison operators (==, !=, >, <, <=, >=) to `ee$Image`.
 - Logic operators (!, &, |) to `ee$Image`.
-- Arithmetic operators (+, -, *, /, ^, %%, %/%, %>>% and %>>%) to `ee$Image`.
+- Arithmetic operators (+, -, *, /, ^, %%, %/%) to `ee$Image`.
 - Subsetting operators ('[[<-', '[[') to `ee$Image` and `ee$ImageCollection`.
-- Earth Engine Python API updated to 0.1.254.
-- Vignettes documentation upgrade.
+- GH Action to automatica updated the Earth Engine Python API.
 - `ee_as_sf(..., via = "getInfo")` does not write in temp folder.
 - `ee_as_sf` now returns by default a GeoJSON instead of a ESRI shapefile.
 - When EarthEngineMaps have the same name, a random hex string is added to the second map.
-- Fix a bug in `sf_as_ee` that used to add `id` colum to the results.
+- Fix a bug in `sf_as_ee` that add `id` colum to the results.
 - `ee_extract` now supports lazy evaluation and containers `drive` and `gcs`.
 - R6, class to display Earth Engine (EE) spatial objects, added.
-- Map.addLayer is now a `R6` object.
+- Map is now a `R6` object instead of a environment.
+- Vignettes documentation upgrade.
 - `ee_install_set_pyenv` support local .Renviron. 
+- Fix a bug for new tokens in {googledrive} #139.
 - Fix a bug in ee_print that sometimes make see the warning: *ee_utils_py_to_r(.) : restarting interrupted promise evaluation*.
 - Fix a bug in `ee_install_set_pyenv` when py_env=NULL (#118, thanks @MatthieuStigler).
+- GH Action test-coverage removed.
 - Fix a bug in `ee_extract` that changes column names when starts with numbers (#119, thanks @joshualerickson).
 
 

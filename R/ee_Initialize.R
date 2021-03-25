@@ -140,7 +140,7 @@ ee_Initialize <- function(email = NULL,
         blue("Google Drive credentials:")
       )
     }
-    drive_credentials <- ee_create_credentials_drive(email)
+    drive_credentials <- ee_create_credentials_drive(email, quiet = quiet)
     if (!quiet) {
       cat(
         "\r",
@@ -329,7 +329,7 @@ ee_save_eecredentials <- function(url, code_verifier, main_ee_credential, user_e
 
 #' Create credentials - Google Drive
 #' @noRd
-ee_create_credentials_drive <- function(email) {
+ee_create_credentials_drive <- function(email, quiet) {
   ee_check_packages("ee_Initialize", "googledrive")
   # Set folder to save Google Drive Credentials
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
@@ -358,6 +358,16 @@ ee_create_credentials_drive <- function(email) {
           cache = ee_path_user
         )
       )
+      new_full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+      new_drive_condition <- grepl(".*_.*@.*", basename(new_full_credentials))
+      if (sum(new_drive_condition) > 1) {
+        files_credentials_time <- file.info(new_full_credentials[new_drive_condition])$ctime
+        drive_credential_to_remove <- new_full_credentials[which.min(files_credentials_time)]
+        if (!quiet) {
+          message("Removing previous Google Drive Token ....")
+        }
+        file.remove(drive_credential_to_remove)
+      }
       break
     }
   }
