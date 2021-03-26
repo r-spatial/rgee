@@ -145,6 +145,15 @@ reference:
       - print.ee.computedobject.ComputedObject
       - ee_monitoring
 
+  - title: "rgee Operator"
+    contents:
+      - Math-methods
+      - Ops-methods
+      - Summary-methods
+      - ee_length
+      - ee_length_ic
+      - ee_name
+
   - title: "Utils"
     contents:
       - ee_utils_py_to_r
