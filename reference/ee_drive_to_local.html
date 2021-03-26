@@ -66,9 +66,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -121,21 +130,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -177,7 +186,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>task</th>
-      <td><p>List generated after finished correctly a EE task. See details.</p></td>
+      <td><p>List generated after finished an EE task correctly. See details.</p></td>
     </tr>
     <tr>
       <th>dsn</th>
@@ -186,7 +195,7 @@ file will be assigned.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean argument which indicates indicating
+      <td><p>A boolean argument that indicates
 whether "filename" should be overwritten. By default TRUE.</p></td>
     </tr>
     <tr>
@@ -195,34 +204,45 @@ whether "filename" should be overwritten. By default TRUE.</p></td>
     </tr>
     <tr>
       <th>public</th>
-      <td><p>Logical. If TRUE, a public link to the image will be created.</p></td>
+      <td><p>Logical. If TRUE, a public link to the Google Drive resource is
+created.</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>Logical. If TRUE, export the metadata related to the image.</p></td>
+      <td><p>Logical. If TRUE, export the metadata related to the Google
+Drive resource. See details.</p></td>
     </tr>
     <tr>
       <th>quiet</th>
-      <td><p>logical. Suppress info message</p></td>
+      <td><p>logical. Suppress info message.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>metadata</code> is FALSE will return the filename of the image.
-Otherwise, a list with two elements (<code>dns</code> and <code>metadata</code>) will
-be returned.</p>
+    <p>If <code>metadata</code> is FALSE, will return the filename of the Google
+Drive resource on their system. Otherwise, a list with two elements
+(<code>dns</code> and <code>metadata</code>) is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The task argument needs a status as task "COMPLETED" to work, since the
-parameters necessary to identify EE objects into google drive are obtained
-from <code>ee$batch$Export$*$toDrive(...)$start()$status()</code>.
-<code>consider</code> argument is necessary since Google Drive permits users to
+    <p>The task argument needs a status as task "COMPLETED" to work, due that the
+parameters necessary to identify EE objects into Google Drive are obtained
+from <br /> <code>ee$batch$Export$*$toDrive(...)$start()$status()</code>.</p>
+<p><code>consider</code> argument is necessary due that Google Drive permits users to
 create files with the same name. <code>consider</code> uses an interactive R
 session by default to help users identify just the files that they want to
 download. Additionally, the options "last" and "all" are implemented. "last"
 will download just the last file saved in Google Drive while with "all" all
 files will be downloaded.</p>
+<p>Finally, if the argument <code>metadata</code> is TRUE, a list with the
+following elements are exported join with the output filename (dsn):</p>
+<ul>
+<li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
+<li><p><b>drive_name: </b>Name of the Table in Google Drive.</p></li>
+<li><p><b>drive_id: </b>Id of the Table in Google Drive.</p></li>
+<li><p><b>drive_download_link: </b>Download link to the table.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other generic download functions: 
@@ -302,11 +322,11 @@ files will be downloaded.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -314,6 +334,8 @@ files will be downloaded.</p>
 
   
 
+
+  
 
   </body>
 </html>

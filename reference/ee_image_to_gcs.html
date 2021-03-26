@@ -68,9 +68,18 @@ ee$batch$Export$image$toCloudStorage(...)." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -84,7 +93,7 @@ ee$batch$Export$image$toCloudStorage(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -123,21 +132,21 @@ ee$batch$Export$image$toCloudStorage(...)." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -218,7 +227,7 @@ where WIDTH and HEIGHT are each positive integers.</p></td>
     <tr>
       <th>region</th>
       <td><p>The lon,lat coordinates for a LinearRing or Polygon
-specifying the region to export. Can be specified as a nested lists
+specifying the region to export. It can be specified as nested lists
 of numbers or a serialized string. Defaults to the image's region.</p></td>
     </tr>
     <tr>
@@ -236,7 +245,7 @@ projection. Defaults to the image's default projection.</p></td>
       <td><p>A comma-separated string of 6 numbers describing
 the affine transform of the coordinate reference system of the exported
 image's projection, in the order:
-xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+xScale, xShearing, xTranslation, yShearing, yScale, and yTranslation.
 Defaults to the image's native CRS transform.</p></td>
     </tr>
     <tr>
@@ -255,12 +264,12 @@ will be computed. Defaults to 256.</p></td>
       <td><p>The dimensions in pixels of each image file, if
 the image is too large to fit in a single file. May specify a single
 number to indicate a square shape, or a list of two dimensions to
-indicate (width,height). Note that the image will still be clipped to
+indicate (width, height). Note that the image will still be clipped to
 the overall image dimensions. Must be a multiple of shardSize.</p></td>
     </tr>
     <tr>
       <th>skipEmptyTiles</th>
-      <td><p>If TRUE, skip writing empty (i.e. fully-masked)
+      <td><p>If TRUE, skip writing empty (i.e., fully-masked)
 image tiles. Defaults to FALSE.</p></td>
     </tr>
     <tr>
@@ -271,9 +280,9 @@ to 'GeoTIFF'.</p></td>
     </tr>
     <tr>
       <th>formatOptions</th>
-      <td><p>A dictionary of string keys to format specific
+      <td><p>A dictionary of string keys to format-specific
 options. **kwargs: Holds other keyword arguments that may have been
-deprecated such as 'crs_transform'.</p></td>
+deprecated, such as 'crs_transform'.</p></td>
     </tr>
     </table>
 
@@ -360,11 +369,11 @@ deprecated such as 'crs_transform'.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -372,6 +381,8 @@ deprecated such as 'crs_transform'.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

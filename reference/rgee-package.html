@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>rgee: R Bindings for Calling the 'Earth Engine' API — rgee-package • rgee</title>
+<title>rgee: An R package for interacting with Google Earth Engine — rgee-package • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,12 +46,15 @@
 
 
 
-<meta property="og:title" content="rgee: R Bindings for Calling the 'Earth Engine' API — rgee-package" />
-<meta property="og:description" content="
-Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
-    spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
-    See &amp;lt;https://r-spatial.github.io/rgee/&amp;gt; for further details." />
+<meta property="og:title" content="rgee: An R package for interacting with Google Earth Engine — rgee-package" />
+<meta property="og:description" content="Google Earth Engine (Gorelick et al., 2017) is a cloud computing platform
+designed for planetary-scale environmental data analysis that only can be
+accessed via the Earth Engine code editor, third-party web apps, and the
+JavaScript and Python client libraries. rgee is a non-official
+client library for R that uses reticulate to wrap the Earth Engine
+Python API and provide R users with a familiar interface, rapid development
+features, and flexibility to analyze data using open-source, R third-party
+packages." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -70,9 +73,16 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -86,7 +96,7 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -125,21 +135,21 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -157,20 +167,333 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>rgee: R Bindings for Calling the 'Earth Engine' API</h1>
+    <h1>rgee: An R package for interacting with Google Earth Engine</h1>
     <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/rgee-package.R'><code>R/rgee-package.R</code></a></small>
     <div class="hidden name"><code>rgee-package.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><img src='figures/logo.png' align='right' alt='logo' width='120' /></p>
-<p>Earth Engine &lt;https://earthengine.google.com/&gt; client library for R. All of the 'Earth Engine' API classes, 
-    modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine 
-    spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display.
-    See &lt;https://r-spatial.github.io/rgee/&gt; for further details.</p>
+    <p>Google Earth Engine (Gorelick et al., 2017) is a cloud computing platform
+designed for planetary-scale environmental data analysis that only can be
+accessed via the Earth Engine code editor, third-party web apps, and the
+JavaScript and Python client libraries. <code>rgee</code> is a non-official
+client library for R that uses <code>reticulate</code> to wrap the Earth Engine
+Python API and provide R users with a familiar interface, rapid development
+features, and flexibility to analyze data using open-source, R third-party
+packages.</p>
     </div>
 
 
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The package implements and supports:</p>
+<ul>
+<li><p>Earth Engine Module</p></li>
+<li><p>Install or set all rgee dependencies</p></li>
+<li><p>Check non-R dependencies</p></li>
+<li><p>Clean non-R dependencies</p></li>
+<li><p>Session management</p></li>
+<li><p>Transform an R Date to an EE Date or vice versa</p></li>
+<li><p>Create Interactive visualization Maps</p></li>
+<li><p>Image download</p></li>
+<li><p>Vector download</p></li>
+<li><p>Generic download</p></li>
+<li><p>Assets management</p></li>
+<li><p>Upload raster</p></li>
+<li><p>Upload vector</p></li>
+<li><p>Upload generic</p></li>
+<li><p>Extract values</p></li>
+<li><p>Helper functions</p></li>
+<li><p>Utils functions</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="i-earth-engine-module"><a class="anchor" href="#i-earth-engine-module"></a>I. Earth Engine Module</h2>
+
+    
+
+
+<p>Interface to main Earth Engine module. Provides access to top level classes
+and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first, etc.).</p>
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee.html'>ee</a></code></td><td>Main Earth Engine module.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="ii-install-or-set-non-r-rgee-dependencies"><a class="anchor" href="#ii-install-or-set-non-r-rgee-dependencies"></a>II. Install or set non-R rgee dependencies</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_install.html'>ee_install</a></code></td><td>Create an isolated Python virtual environment with all rgee dependencies.</td></tr>
+<tr><td><code><a href='ee_install_set_pyenv.html'>ee_install_set_pyenv</a></code></td><td>Configure which version of Python to use with rgee.</td></tr>
+<tr><td><code><a href='ee_install_upgrade.html'>ee_install_upgrade</a></code></td><td>Upgrade the Earth Engine Python API.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="iii-check-non-r-dependencies"><a class="anchor" href="#iii-check-non-r-dependencies"></a>III. Check non-R dependencies</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_check-tools.html'>ee_check</a></code></td><td>Check all non-R dependencies.</td></tr>
+<tr><td><code><a href='ee_check-tools.html'>ee_check_python</a></code></td><td>Check Python environment.</td></tr>
+<tr><td><code><a href='ee_check-tools.html'>ee_check_credentials</a></code></td><td>Check Google credentials.</td></tr>
+<tr><td><code><a href='ee_check-tools.html'>ee_check_python_packages</a></code></td><td>Check Python packages: earthengine-api and numpy.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="iv-clean-container-credentials-or-rgee-system-variables"><a class="anchor" href="#iv-clean-container-credentials-or-rgee-system-variables"></a>IV. Clean container, credentials, or rgee system variables</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_clean_container.html'>ee_clean_container</a></code></td><td>Delete files from either a Folder or a Bucket.</td></tr>
+<tr><td><code><a href='ee_clean_credentials.html'>ee_clean_credentials</a></code></td><td>Delete Credentials.</td></tr>
+<tr><td><code><a href='ee_clean_pyenv.html'>ee_clean_pyenv</a></code></td><td>Remove rgee system variables from .Renviron.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="v-session-management"><a class="anchor" href="#v-session-management"></a>V. Session management</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_Initialize.html'>ee_Initialize</a></code></td><td>Authenticate and Initialize Earth Engine.</td></tr>
+<tr><td><code><a href='ee_version.html'>ee_version</a></code></td><td>Earth Engine API version.</td></tr>
+<tr><td><code><a href='ee_user_info.html'>ee_user_info</a></code></td><td>Display the credentials and general info of the initialized user.</td></tr>
+<tr><td><code><a href='ee_users.html'>ee_users</a></code></td><td>Display the credentials of all users as a table.</td></tr>
+<tr><td><code><a href='ee_get_assethome.html'>ee_get_assethome</a></code></td><td>Get the Asset home name.</td></tr>
+<tr><td><code><a href='ee_get_earthengine_path.html'>ee_get_earthengine_path</a></code></td><td>Get the path where the credentials are stored.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="vii-transform-an-r-date-to-an-ee-date-or-vice-versa"><a class="anchor" href="#vii-transform-an-r-date-to-an-ee-date-or-vice-versa"></a>VII. Transform an R Date to an EE Date or vice versa</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='eedate_to_rdate.html'>eedate_to_rdate</a></code></td><td>Pass an Earth Engine date object to R.</td></tr>
+<tr><td><code><a href='rdate_to_eedate.html'>rdate_to_eedate</a></code></td><td>Pass an R date object to Earth Engine.</td></tr>
+<tr><td><code><a href='ee_get_date_img.html'>ee_get_date_img</a></code></td><td>Get the date of a EE Image.</td></tr>
+<tr><td><code><a href='ee_get_date_ic.html'>ee_get_date_ic</a></code></td><td>Get the date of a EE ImageCollection.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="viii-visualization-map"><a class="anchor" href="#viii-visualization-map"></a>VIII. Visualization Map</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='Map.html'>Map</a></code></td><td>R6 object (Map) to display Earth Engine (EE) spatial objects.</td></tr>
+<tr><td><code><a href='R6Map.html'>R6Map</a></code></td><td>R6 class to display Earth Engine (EE) spatial objects.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="ix-image-download"><a class="anchor" href="#ix-image-download"></a>IX. Image download</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_as_raster.html'>ee_as_raster</a></code></td><td>Convert an Earth Engine (EE) image in a raster object.</td></tr>
+<tr><td><code><a href='ee_as_stars.html'>ee_as_stars</a></code></td><td>Convert an Earth Engine (EE) image in a stars object.</td></tr>
+<tr><td><code><a href='ee_as_thumbnail.html'>ee_as_thumbnail</a></code></td><td>Create an R spatial gridded object from an EE thumbnail image.</td></tr>
+<tr><td><code><a href='ee_image_to_asset.html'>ee_image_to_asset</a></code></td><td>Creates a task to export an EE Image to their EE Assets.</td></tr>
+<tr><td><code><a href='ee_image_to_drive.html'>ee_image_to_drive</a></code></td><td>Creates a task to export an EE Image to Drive.</td></tr>
+<tr><td><code><a href='ee_image_to_gcs.html'>ee_image_to_gcs</a></code></td><td>Creates a task to export an EE Image to Google Cloud Storage.</td></tr>
+<tr><td><code><a href='ee_image_info.html'>ee_image_info</a></code></td><td>Approximate size of an EE Image object.</td></tr>
+<tr><td><code><a href='ee_imagecollection_to_local.html'>ee_imagecollection_to_local</a></code></td><td>Save an EE ImageCollection in their local system.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="x-vector-download"><a class="anchor" href="#x-vector-download"></a>X. Vector download</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_as_sf.html'>ee_as_sf</a></code></td><td>Convert an Earth Engine table in an sf object.</td></tr>
+<tr><td><code><a href='ee_table_to_asset.html'>ee_table_to_asset</a></code></td><td>Creates a task to export a FeatureCollection to an EE table asset.</td></tr>
+<tr><td><code><a href='ee_table_to_drive.html'>ee_table_to_drive</a></code></td><td>Creates a task to export a FeatureCollection to Google Drive.</td></tr>
+<tr><td><code><a href='ee_table_to_gcs.html'>ee_table_to_gcs</a></code></td><td>Creates a task to export a FeatureCollection to Google Cloud Storage.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xi-generic-download"><a class="anchor" href="#xi-generic-download"></a>XI. Generic download</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_drive_to_local.html'>ee_drive_to_local</a></code></td><td>Move results from Google Drive to a local directory.</td></tr>
+<tr><td><code><a href='ee_gcs_to_local.html'>ee_gcs_to_local</a></code></td><td>Move results from Google Cloud Storage to a local directory.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xii-assets-management"><a class="anchor" href="#xii-assets-management"></a>XII. Assets management</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_manage-tools.html'>ee_manage-tools</a></code></td><td>Interface to manage the Earth Engine Asset.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xiii-upload-raster"><a class="anchor" href="#xiii-upload-raster"></a>XIII. Upload raster</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='stars_as_ee.html'>stars_as_ee</a></code></td><td>Convert a stars or stars-proxy object into an EE Image object.</td></tr>
+<tr><td><code><a href='raster_as_ee.html'>raster_as_ee</a></code></td><td>Convert a Raster* object into an EE Image object.</td></tr>
+<tr><td><code><a href='gcs_to_ee_image.html'>gcs_to_ee_image</a></code></td><td>Move a GeoTIFF image from GCS to their EE assets.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xiv-upload-vector"><a class="anchor" href="#xiv-upload-vector"></a>XIV. Upload vector</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='gcs_to_ee_table.html'>gcs_to_ee_table</a></code></td><td>Move a zipped shapefile from GCS to their EE Assets.</td></tr>
+<tr><td><code><a href='sf_as_ee.html'>sf_as_ee</a></code></td><td>Convert an sf object to an EE object.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xv-upload-generic"><a class="anchor" href="#xv-upload-generic"></a>XV. Upload generic</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='local_to_gcs.html'>local_to_gcs</a></code></td><td>Upload local files to Google Cloud Storage.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xvi-extract-values"><a class="anchor" href="#xvi-extract-values"></a>XVI. Extract values</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_extract.html'>ee_extract</a></code></td><td>Extract values from EE Images or ImageCollections objects.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xvii-helper-functions"><a class="anchor" href="#xvii-helper-functions"></a>XVII. Helper functions</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_help.html'>ee_help</a></code></td><td>Documentation for Earth Engine Objects.</td></tr>
+<tr><td><code><a href='ee_print.html'>ee_print</a></code></td><td>Print and return metadata about Spatial Earth Engine Objects.</td></tr>
+<tr><td><code><a href='ee_monitoring.html'>ee_monitoring</a></code></td><td>Monitoring Earth Engine task progress.</td></tr>
+<tr><td><code><a href='print.ee.computedobject.ComputedObject.html'>print</a></code></td><td>Print Earth Engine objects.</td></tr>
+<tr><td><code><a href='ee_get.html'>ee_get</a></code></td><td>Return the element at a specified position in an Earth Engine Collection.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xviii-utils-functions"><a class="anchor" href="#xviii-utils-functions"></a>XVIII. Utils functions</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></code></td><td>Convert between Python and R objects.</td></tr>
+<tr><td><code><a href='ee_utils_pyfunc.html'>ee_utils_pyfunc</a></code></td><td>Wrap an R function in a Python function with the same signature.</td></tr>
+<tr><td><code><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></code></td><td>Create a zip file from an sf object.</td></tr>
+<tr><td><code><a href='ee_utils_create_json.html'>ee_utils_create_json</a></code></td><td>Convert a R list into a JSON file.</td></tr>
+<tr><td><code><a href='ee_utils_create_manifest_image.html'>ee_utils_create_manifest_image</a></code></td><td>Create a manifest to upload an image.</td></tr>
+<tr><td><code><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></code></td><td>Create a manifest to upload a table.</td></tr>
+<tr><td><code><a href='ee_utils_get_crs.html'>ee_utils_get_crs</a></code></td><td>Convert EPSG, ESRI or SR-ORG code into a OGC WKT.</td></tr>
+<tr><td><code><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></code></td><td>Add text to a GIF.</td></tr>
+<tr><td><code><a href='ee_utils_gif_creator.html'>ee_utils_gif_creator</a></code></td><td>Create a GIF from an Earth Engine ImageCollection.</td></tr>
+<tr><td><code><a href='ee_utils_gif_save.html'>ee_utils_gif_save</a></code></td><td>Write a GIF file.</td></tr>
+<tr><td><code><a href='ee_utils_future_value.html'>ee_utils_future_value</a></code></td><td>The value of a future or the values of all elements in a container.</td></tr>
+<tr><td><code><a href='ee_utils_dataset_display.html'>ee_utils_dataset_display</a></code></td><td>Search into the Earth Engine Data Catalog.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="xix-subsetting"><a class="anchor" href="#xix-subsetting"></a>XIX. Subsetting</h2>
+
+    
+
+
+<table class='table'>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+<tr><td><code><a href='ee_get.html'>ee_get</a></code></td><td>Return the element at the specified position in an Earth Engine Collection.</td></tr>
+<tr><td><code><a href='ee_subsetting.html'>ee_subsetting</a></code></td><td>Return the element at a specified position in an Earth Engine Image or ImageCollection.</td></tr>
+<tr><td>---------------------------</td><td>---------------------------------------------------------------------------------------------------</td></tr>
+</table>
+
+
+    <h2 class="hasAnchor" id="acknowledgments"><a class="anchor" href="#acknowledgments"></a>Acknowledgments</h2>
+
+    
+
+
+<p>We want to offer a special thanks to Justin Braaten for his wise and
+helpful comments in the whole development of rgee. As well, we would like
+to mention the following third-party R/Python packages for contributing
+indirectly to the improvement of rgee:</p>
+<ul>
+<li><p>gee_asset_manager - Lukasz Tracewski</p></li>
+<li><p>geeup - Samapriya Roy</p></li>
+<li><p>geeadd - Samapriya Roy</p></li>
+<li><p>eemont - David Montero Loaiza</p></li>
+<li><p>cartoee - Kel Markert</p></li>
+<li><p>geetools - Rodrigo E. Principe</p></li>
+<li><p>landsat-extract-gee - Loïc Dutrieux</p></li>
+<li><p>earthEngineGrabR - JesJehle</p></li>
+<li><p>sf - Edzer Pebesma</p></li>
+<li><p>stars - Edzer Pebesma</p></li>
+<li><p>gdalcubes - Marius Appel</p></li>
+</ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -220,11 +543,11 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -232,6 +555,8 @@ Earth Engine &amp;lt;https://earthengine.google.com/&amp;gt; client library for 
 
   
 
+
+  
 
   </body>
 </html>

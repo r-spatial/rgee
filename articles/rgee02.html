@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Considerations • rgee</title>
+<title>**Considerations** • rgee</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Considerations">
+<script src="../pkgdown.js"></script><meta property="og:title" content="**Considerations**">
 <meta property="og:description" content="rgee">
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -71,27 +73,27 @@
       <a href="../articles/rgee03.html">Best Practices</a>
     </li>
     <li>
-      <a href="https://r-earthengine.github.io/">rgee examples</a>
+      <a href="https://r-earthengine.github.io/" class="external-link">rgee examples</a>
     </li>
   </ul>
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
-  <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+  <a href="https://github.com/r-spatial/rgee/" class="external-link">
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -109,23 +111,39 @@
       </header><script src="rgee02_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Considerations</h1>
+      <h1 data-toc-skip><strong>Considerations</strong></h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/rgee02.Rmd"><code>vignettes/rgee02.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/rgee02.Rmd" class="external-link"><code>vignettes/rgee02.Rmd</code></a></small>
       <div class="hidden name"><code>rgee02.Rmd</code></div>
 
     </div>
 
     
     
-<p>Thanks to <strong>reticulate</strong> embedding a Python session within an R session, <strong>rgee</strong> and the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> <strong>share the same modules, classes, functions, and methods</strong>. In other words, the logic of the syntax is the same and just as fast (just change <strong>.</strong> by a <strong>$</strong>). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify <strong>three</strong> bug-potential cases. Each of them are explained in-depth below.</p>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
+<style type="text/css">
+  body{
+    font-size: 15pt;
+    font-family: 'Roboto', sans-serif;
+  }
+  pre code{
+    font-size: 12pt;
+  }
+  .list-group-item:last-child{
+    font-size: 11pt;
+    font-weight: bold;
+  }
+</style>
+<p>Thanks to <strong>reticulate</strong> is it possible embedding a Python session within an R session. The <strong><a href="https://pypi.org/project/earthengine-api/" class="external-link">Earth Engine Python API</a></strong> and <strong>rgee</strong> share the <strong>same modules, classes, functions, and methods</strong>. In other words, the logic of the syntax is the same and just as fast (just change <strong>.</strong> by a <strong>$</strong>). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify <strong>four</strong> bug-potential cases. Each of them is explained in-depth below.</p>
 <div id="the-map-message-error" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-map-message-error" class="anchor"></a>1. The <strong>map</strong> message error:</h3>
+<a href="#the-map-message-error" class="anchor"></a><strong>1. The map message error:</strong>
+</h3>
 <p>This issue happens when the <strong>map</strong> method is used under the next two cases: (1) users employing a reticulate version lower than &lt; 1.14 (please update it!); and (2) if you are leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span>
 <span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
 <span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
@@ -150,7 +168,7 @@
 <span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></code></pre></div>
 <p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span>
 <span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>
 <span class="va">mynewlist</span> <span class="op">=</span> <span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span>
@@ -163,7 +181,7 @@
 </div>
 <div id="do-not-forget-the-l" class="section level3">
 <h3 class="hasAnchor">
-<a href="#do-not-forget-the-l" class="anchor"></a>2. Do not forget the <strong>L</strong>
+<a href="#do-not-forget-the-l" class="anchor"></a><strong>2. Do not forget the L</strong>
 </h3>
 <p>By default, when you define a number in R it will produce a <strong>double precision</strong> value. This does not happen in Python because, by default it will create a <strong>int</strong> value.</p>
 <p><strong>Python</strong></p>
@@ -171,7 +189,7 @@
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;class 'int'&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; [1] "numeric"</span></code></pre></div>
 <p>But why does this matter? Let’s explain it with an example:</p>
 <p><strong>Python</strong></p>
@@ -199,9 +217,9 @@
 </div>
 <div id="be-careful-with-eedate" class="section level3">
 <h3 class="hasAnchor">
-<a href="#be-careful-with-eedate" class="anchor"></a>3. Be careful with <strong>ee$Date</strong>
+<a href="#be-careful-with-eedate" class="anchor"></a><strong>3. Be careful with ee$Date</strong>
 </h3>
-<p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R only support integer data type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, this range is extremely insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time">UNIX epoch</a>.</p>
+<p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R only support integer data type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, this range is extremely insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/" class="external-link">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time" class="external-link">UNIX epoch</a>.</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2"></a>my_date.getInfo()</span>
@@ -228,6 +246,25 @@
 <span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span><span class="op">(</span>ee_date <span class="op">=</span> <span class="va">ee_date</span>, timestamp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co">#&gt; [1] 1.546301e+12</span></code></pre></div>
 </div>
+<div id="take-into-consideration-reserved-words-in-r" class="section level3">
+<h3 class="hasAnchor">
+<a href="#take-into-consideration-reserved-words-in-r" class="anchor"></a><strong>4. Take into consideration reserved words in R</strong>
+</h3>
+<p>A reserved word is a word that cannot be used as an identifier, such as the name of a variable or a function. According with <code><a href="https://rdrr.io/r/base/Reserved.html" class="external-link">?reserved</a></code>, the reserved words in R’s parser are: <code>if</code>, <code>else</code>, <strong><code>repeat</code></strong>, <code>while</code>, <code>function</code>, <code>for</code>, <code>in</code>, <code>next</code>, <code>break</code>, <code>TRUE</code>, <code>FALSE</code>, <code>NULL</code>, <code>Inf</code>, <code>NaN</code>, <code>NA</code>, <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_complex_</code>, <code>NA_character_</code>. From all these words, the only one that is part of the Earth Engine API is <strong>repeat</strong>.</p>
+<p>We can find <strong>repeat</strong> as a method for an Earth Engine List object. See <strong><a href="https://developers.google.com/earth-engine/apidocs/ee-list-repeat" class="external-link"><code>ee$List$repeat(value, count)</code></a></strong>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(rgee)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">ee_Initialize</span>()</span>
+<span id="cb11-3"><a href="#cb11-3"></a>ee_list &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">List</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</span>
+<span id="cb11-4"><a href="#cb11-4"></a>ee_list<span class="op">$</span><span class="cf">repeat</span>(<span class="dv">10</span>,<span class="dv">2</span>)<span class="op">$</span><span class="kw">getInfo</span>()</span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; Error: unexpected 'repeat' in "ee_list$repeat"</span></span></code></pre></div>
+<p>To avoid this error use backticks/quotation marks:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">ee_list</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">List</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
+<span class="va">ee_list</span><span class="op">$</span><span class="st">'repeat'</span><span class="op">(</span><span class="fl">10</span>,<span class="fl">2</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; 10 10</span></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -239,11 +276,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p></p>
+<p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
 </div>
 
       </footer>
@@ -251,6 +290,8 @@
 
   
 
+
+  
 
   </body>
 </html>

@@ -66,9 +66,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -121,21 +130,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -207,7 +216,7 @@ tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean argument which indicates indicating
+      <td><p>A boolean argument that indicates indicating
 whether "filename" should be overwritten. Ignore if <code>via</code> argument
 is "getInfo". By default TRUE.</p></td>
     </tr>
@@ -305,8 +314,8 @@ table data</a> documentation for more details.</p>
 <span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.5</span>, <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Check insideness with a contains operator.</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>holePoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>evenOddPoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>holePoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>evenOddPoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># 2. Upload small geometries to EE asset</span>
 <span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly'</span><span class='op'>)</span>
@@ -340,11 +349,11 @@ table data</a> documentation for more details.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -352,6 +361,8 @@ table data</a> documentation for more details.</p>
 
   
 
+
+  
 
   </body>
 </html>

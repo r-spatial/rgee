@@ -50,7 +50,7 @@
 <meta property="og:description" content="Print and return metadata about Spatial Earth Engine Objects.
 ee_print can retrieve information about the number of images
 or features, number of bands or geometries, number of pixels, geotransform,
-data type, properties and object size." />
+data type, properties, and object size." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -69,9 +69,18 @@ data type, properties and object size." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -85,7 +94,7 @@ data type, properties and object size." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -124,21 +133,21 @@ data type, properties and object size." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -165,7 +174,7 @@ data type, properties and object size." />
     <p>Print and return metadata about Spatial Earth Engine Objects.
 <code>ee_print</code> can retrieve information about the number of images
 or features, number of bands or geometries, number of pixels, geotransform,
-data type, properties and object size.</p>
+data type, properties, and object size.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_print</span><span class='op'>(</span><span class='va'>eeobject</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -239,10 +248,9 @@ is also returned. See <code><a href='ee_get_date_img.html'>rgee::ee_get_date_img
     </tr>
     <tr>
       <th>compression_ratio</th>
-      <td><p>Numeric. Measurement of the relative reduction
-in size of data representation produced by a data compression algorithm
-(ignored if <code>eeobject</code> is not a Image or ImageCollection). By default
-is 20.</p></td>
+      <td><p>Numeric. Measurement of the relative data size
+reduction produced by a data compression algorithm (ignored if <code>eeobject</code>
+is not an <code>ee$Image</code> or <code>ee$ImageCollection</code>). By default is 20.</p></td>
     </tr>
     <tr>
       <th>img_index</th>
@@ -305,11 +313,11 @@ Relevant just for <code>ee$ImageCollection</code> objects.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -317,6 +325,8 @@ Relevant just for <code>ee$ImageCollection</code> objects.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

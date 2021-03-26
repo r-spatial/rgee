@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Earth Engine API version — ee_version • rgee</title>
+<title>Extract or replace parts of and ee$ImageCollection — ee_subsetting • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Earth Engine API version — ee_version" />
-<meta property="og:description" content="Earth Engine API version" />
+<meta property="og:title" content="Extract or replace parts of and ee$ImageCollection — ee_subsetting" />
+<meta property="og:description" content="Extract or replace parts of and ee$ImageCollection" />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -65,6 +65,8 @@
 <![endif]-->
 
 
+
+<!-- dependencies from examples -->
 
 
   
@@ -160,28 +162,75 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Earth Engine API version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_version.R'><code>R/ee_version.R</code></a></small>
-    <div class="hidden name"><code>ee_version.Rd</code></div>
+    <h1>Extract or replace parts of and ee$ImageCollection</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ops-subsetting.R'><code>R/ops-subsetting.R</code></a></small>
+    <div class="hidden name"><code>ee_subsetting.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Earth Engine API version</p>
+    <p>Extract or replace parts of and ee$ImageCollection</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_version</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"># S3 method for ee.imagecollection.ImageCollection
+[[(x, index)
+
+# S3 method for ee.imagecollection.ImageCollection
+[[(x, index) &lt;- value
+
+# S3 method for ee.image.Image
+[[(x, index)
+
+# S3 method for ee.image.Image
+[[(x, index) &lt;- value</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>ee$ImageCollection or ee$Image.</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>Integer. Index specifying elements to extract or replace.</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>ee$ImageCollection or ee$Image to replace in.</p></td>
+    </tr>
+    </table>
 
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
 
-    <p>Character. Earth Engine Python API version used to build rgee.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>gcs <span class='op'>=</span> <span class='cn'>TRUE</span>, drive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-    <div class='dont-index'><p>Other session management functions: 
-<code><a href='ee_Initialize.html'>ee_Initialize</a>()</code>,
-<code><a href='ee_user_info.html'>ee_user_info</a>()</code>,
-<code><a href='ee_users.html'>ee_users</a>()</code></p></div>
+<span class='co'># Define a Image or ImageCollection: Terraclimate</span>
+<span class='va'>terraclimate</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='va'>ee</span><span class='op'>$</span><span class='va'>ImageCollection</span><span class='op'>$</span><span class='fu'>filterDate</span><span class='op'>(</span><span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span><span class='op'>)</span>
 
+<span class='co'># Define temperature Vis parameters</span>
+<span class='va'>maximumTemperatureVis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  min <span class='op'>=</span> <span class='op'>-</span><span class='fl'>300.0</span>,
+  max <span class='op'>=</span> <span class='fl'>300.0</span>,
+  palette <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>'1a3678'</span>, <span class='st'>'2955bc'</span>, <span class='st'>'5699ff'</span>, <span class='st'>'8dbae9'</span>, <span class='st'>'acd1ff'</span>, <span class='st'>'caebff'</span>, <span class='st'>'e5f9ff'</span>,
+    <span class='st'>'fdffb4'</span>, <span class='st'>'ffe6a2'</span>, <span class='st'>'ffc969'</span>, <span class='st'>'ffa12d'</span>, <span class='st'>'ff7c1f'</span>, <span class='st'>'ca531a'</span>, <span class='st'>'ff0000'</span>,
+    <span class='st'>'ab0000'</span>
+  <span class='op'>)</span>
+<span class='op'>)</span>
+
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>setCenter</span><span class='op'>(</span><span class='fl'>71.72</span>, <span class='fl'>52.48</span>, <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>terraclimate</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[[</span><span class='st'>"tmmx"</span><span class='op'>]</span><span class='op'>]</span>, <span class='va'>maximumTemperatureVis</span><span class='op'>)</span>
+
+<span class='va'>terraclimate</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>terraclimate</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>*</span><span class='fl'>1.4</span>
+<span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>terraclimate</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span><span class='op'>[[</span><span class='st'>"tmmx"</span><span class='op'>]</span><span class='op'>]</span>, <span class='va'>maximumTemperatureVis</span><span class='op'>)</span>
+<span class='va'>m1</span> <span class='op'>|</span> <span class='va'>m2</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

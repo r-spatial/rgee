@@ -47,8 +47,8 @@
 
 
 <meta property="og:title" content="Main Earth Engine module — ee" />
-<meta property="og:description" content="Interface to main Earth Engine module. Provides access to top level classes
-and functions as well as sub-modules (e.g. ee$Image,
+<meta property="og:description" content="Interface to main Earth Engine module. Provides access to the top level
+classes and functions as well as sub-modules (e.g. ee$Image,
 ee$FeatureCollection$first, etc.)." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
@@ -68,9 +68,18 @@ ee$FeatureCollection$first, etc.)." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -84,7 +93,7 @@ ee$FeatureCollection$first, etc.)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -123,21 +132,21 @@ ee$FeatureCollection$first, etc.)." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -161,8 +170,8 @@ ee$FeatureCollection$first, etc.)." />
     </div>
 
     <div class="ref-description">
-    <p>Interface to main Earth Engine module. Provides access to top level classes
-and functions as well as sub-modules (e.g. <code>ee$Image</code>,
+    <p>Interface to main Earth Engine module. Provides access to the top level
+classes and functions as well as sub-modules (e.g. <code>ee$Image</code>,
 <code>ee$FeatureCollection$first</code>, etc.).</p>
     </div>
 
@@ -182,8 +191,8 @@ and functions as well as sub-modules (e.g. <code>ee$Image</code>,
 <span class='va'>ee_img</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>Image</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>)</span>
 <span class='va'>ee_ic</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='va'>ee_img</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>ee_img</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>ee_ic</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>ee_img</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>ee_ic</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
@@ -197,11 +206,11 @@ and functions as well as sub-modules (e.g. <code>ee$Image</code>,
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -209,6 +218,8 @@ and functions as well as sub-modules (e.g. <code>ee$Image</code>,
 
   
 
+
+  
 
   </body>
 </html>

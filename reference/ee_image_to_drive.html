@@ -48,7 +48,8 @@
 
 <meta property="og:title" content="Creates a task to export an EE Image to Drive. — ee_image_to_drive" />
 <meta property="og:description" content="Creates a task to export an EE Image to Drive.
-This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
+This function is a wrapper around 
+ee$batch$Export$image$toDrive(...)." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -67,9 +68,18 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +93,7 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -122,21 +132,21 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -161,7 +171,8 @@ This function is a wrapper around ee$batch$Export$image$toDrive(...)." />
 
     <div class="ref-description">
     <p>Creates a task to export an EE Image to Drive.
-This function is a wrapper around <code>ee$batch$Export$image$toDrive(...)</code>.</p>
+This function is a wrapper around <br />
+<code>ee$batch$Export$image$toDrive(...)</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_image_to_drive</span><span class='op'>(</span>
@@ -196,8 +207,8 @@ This function is a wrapper around <code>ee$batch$Export$image$toDrive(...)</code
     </tr>
     <tr>
       <th>folder</th>
-      <td><p>The name of a unique folder in your Drive account to be
-exported into. Defaults to the folder rgee-backup.</p></td>
+      <td><p>The name of a folder in their Drive account to be
+exported into. By default "rgee-backup".</p></td>
     </tr>
     <tr>
       <th>fileNamePrefix</th>
@@ -210,20 +221,20 @@ the name of the task.</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
-      <td><p>The dimensions of the exported image. Takes either a
+      <td><p>The dimensions of the exported image. It takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
 WIDTH and HEIGHT are each positive integers.</p></td>
     </tr>
     <tr>
       <th>region</th>
       <td><p>The lon,lat coordinates for a LinearRing or Polygon specifying
-the region to export. Can be specified as a nested lists of numbers or a
+the region to export. It can be specified as nested lists of numbers or a
 serialized string. Defaults to the image's region.</p></td>
     </tr>
     <tr>
       <th>scale</th>
       <td><p>The resolution in meters per pixel. Defaults to the native
-resolution of the image assset unless a crsTransform is specified.</p></td>
+resolution of the image asset unless a crsTransform is specified.</p></td>
     </tr>
     <tr>
       <th>crs</th>
@@ -235,7 +246,7 @@ projection. Defaults to the image's default projection.</p></td>
       <td><p>A comma-separated string of 6 numbers describing
 the affine transform of the coordinate reference system of the exported
 image's projection, in the order: xScale, xShearing, xTranslation,
-yShearing, yScale and yTranslation. Defaults to the image's native
+yShearing, yScale, and yTranslation. Defaults to the image's native
 CRS transform.</p></td>
     </tr>
     <tr>
@@ -254,12 +265,12 @@ will be computed. Defaults to 256.</p></td>
       <td><p>The dimensions in pixels of each image file,
 if the image is too large to fit in a single file. May specify a
 single number to indicate a square shape, or a list of two dimensions
-to indicate (width,height). Note that the image will still be clipped
+to indicate (width, height). Note that the image will still be clipped
 to the overall image dimensions. Must be a multiple of shardSize.</p></td>
     </tr>
     <tr>
       <th>skipEmptyTiles</th>
-      <td><p>If TRUE, skip writing empty (i.e. fully-masked)
+      <td><p>If TRUE, skip writing empty (i.e., fully-masked)
 image tiles. Defaults to FALSE.</p></td>
     </tr>
     <tr>
@@ -269,9 +280,9 @@ Currently only 'GeoTIFF' and 'TFRecord' are supported, defaults to 'GeoTIFF'.</p
     </tr>
     <tr>
       <th>formatOptions</th>
-      <td><p>A dictionary of string keys to format specific
+      <td><p>A dictionary of string keys to format-specific
 options. **kwargs: Holds other keyword arguments that may have been
-deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p></td>
+deprecated, such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p></td>
     </tr>
     </table>
 
@@ -357,11 +368,11 @@ deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -369,6 +380,8 @@ deprecated such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</p
 
   
 
+
+  
 
   </body>
 </html>

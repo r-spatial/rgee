@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Earth Engine API version — ee_version • rgee</title>
+<title>Length of an Earth Engine Image Object — ee_length • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Earth Engine API version — ee_version" />
-<meta property="og:description" content="Earth Engine API version" />
+<meta property="og:title" content="Length of an Earth Engine Image Object — ee_length" />
+<meta property="og:description" content="Get or set the length of an Earth Engine Image." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -160,27 +160,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Earth Engine API version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_version.R'><code>R/ee_version.R</code></a></small>
-    <div class="hidden name"><code>ee_version.Rd</code></div>
+    <h1>Length of an Earth Engine Image Object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ops-subsetting.R'><code>R/ops-subsetting.R</code></a></small>
+    <div class="hidden name"><code>ee_length.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Earth Engine API version</p>
+    <p>Get or set the length of an Earth Engine Image.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_version</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for ee.image.Image</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 
+<span class='co'># S3 method for ee.image.Image</span>
+<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='va'>value</span></pre>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>an EE Image Object.</p></td>
+    </tr>
+    <tr>
+      <th>value</th>
+      <td><p>a non-negative integer.</p></td>
+    </tr>
+    </table>
 
-    <p>Character. Earth Engine Python API version used to build rgee.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <div class='dont-index'><p>Other session management functions: 
-<code><a href='ee_Initialize.html'>ee_Initialize</a>()</code>,
-<code><a href='ee_user_info.html'>ee_user_info</a>()</code>,
-<code><a href='ee_users.html'>ee_users</a>()</code></p></div>
+    <p>If a vector is shortened, extra values are discarded and when a vector
+is lengthened, it is padded out to its new length with ee$Image(0), with
+band name of zzz_rgee_NA_%02d.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

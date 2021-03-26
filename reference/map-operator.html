@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Earth Engine API version — ee_version • rgee</title>
+<title>EarthEngineMap + EarthEngineMap; adds data from the second map to the first — map-operator • rgee</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,9 @@
 
 
 
-<meta property="og:title" content="Earth Engine API version — ee_version" />
-<meta property="og:description" content="Earth Engine API version" />
+<meta property="og:title" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first — map-operator" />
+<meta property="og:description" content="EarthEngineMap + EarthEngineMap; adds data from the second map to the first
+EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps." />
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
@@ -160,27 +161,38 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Earth Engine API version</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/ee_version.R'><code>R/ee_version.R</code></a></small>
-    <div class="hidden name"><code>ee_version.Rd</code></div>
+    <h1>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-spatial/rgee/blob/master/R/Map_operators.R'><code>R/Map_operators.R</code></a></small>
+    <div class="hidden name"><code>map-operator.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Earth Engine API version</p>
+    <p>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</p>
+<p>EarthEngineMap | EarthEngineMap provides a slider in the middle to compare two maps.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ee_version</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"># S3 method for EarthEngineMap
++(e1, e2)
 
+# S3 method for EarthEngineMap
+|(e1, e2)</pre>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>e1</th>
+      <td><p>an EarthEngineMap object.</p></td>
+    </tr>
+    <tr>
+      <th>e2</th>
+      <td><p>an EarthEngineMap object.</p></td>
+    </tr>
+    </table>
 
-    <p>Character. Earth Engine Python API version used to build rgee.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <div class='dont-index'><p>Other session management functions: 
-<code><a href='ee_Initialize.html'>ee_Initialize</a>()</code>,
-<code><a href='ee_user_info.html'>ee_user_info</a>()</code>,
-<code><a href='ee_users.html'>ee_users</a>()</code></p></div>
+    <p>tim-salabim. Adapted from mapview code.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

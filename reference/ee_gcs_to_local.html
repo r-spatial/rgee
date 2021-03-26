@@ -67,9 +67,18 @@ directory." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +92,7 @@ directory." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -122,21 +131,21 @@ directory." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -178,24 +187,26 @@ directory.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>task</th>
-      <td><p>List generated after finished correctly a EE task. See details.</p></td>
+      <td><p>List generated after finished an EE task correctly. See details.</p></td>
     </tr>
     <tr>
       <th>dsn</th>
       <td><p>Character. Output filename. If missing, a temporary
-file will be assigned.</p></td>
+file (i.e. <code><a href='https://rdrr.io/r/base/tempfile.html'>tempfile()</a></code>) is assigned.</p></td>
     </tr>
     <tr>
       <th>public</th>
-      <td><p>Logical. If TRUE, a public link to the image will be created.</p></td>
+      <td><p>Logical. If TRUE, a public link to Google Cloud Storage
+resource is created.</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>Logical. If TRUE, export the metadata related to the image.</p></td>
+      <td><p>Logical. If TRUE, export the metadata related to the Google
+Cloud Storage resource. See details.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>A boolean argument which indicates indicating
+      <td><p>A boolean argument that indicates indicating
 whether "filename" should be overwritten. By default TRUE.</p></td>
     </tr>
     <tr>
@@ -206,12 +217,25 @@ whether "filename" should be overwritten. By default TRUE.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>filename character vector.</p>
+    <p>If <code>metadata</code> is FALSE, will return the filename of the Google
+Cloud Storage resource on their system. Otherwise, a list with two elements
+(<code>dns</code> and <code>metadata</code>) is returned.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The task argument needs "COMPLETED" task state to work, since the parameters
-necessaries to locate the file into google cloud storage are obtained from
+    <p>The task argument needs "COMPLETED" task state to work due to that the parameters
+necessaries to locate the file into Google Cloud Storage are obtained from <br />
 <code>ee$batch$Export$*$toCloudStorage(...)$start()$status()</code>.</p>
+<p>If the argument <code>metadata</code> is TRUE, a list with the
+following elements is exported join with the output filename (dsn):</p>
+<ul>
+<li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
+<li><p><b>gcs_name: </b>Name of the Table in Google Cloud Storage.</p></li>
+<li><p><b>gcs_bucket: </b>Name of the bucket.</p></li>
+<li><p><b>gcs_fileFormat: </b>Format of the table.</p></li>
+<li><p><b>gcs_public_link: </b>Download link to the table.</p></li>
+<li><p><b>gcs_URI: </b>gs:// link to the table.</p></li>
+</ul>
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other generic download functions: 
@@ -290,11 +314,11 @@ necessaries to locate the file into google cloud storage are obtained from
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -302,6 +326,8 @@ necessaries to locate the file into google cloud storage are obtained from
 
   
 
+
+  
 
   </body>
 </html>

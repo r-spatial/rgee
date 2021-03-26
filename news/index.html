@@ -65,9 +65,16 @@
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -81,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -120,21 +127,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -156,13 +163,37 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rgee-1089999" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.8.9999">
-<a href="#rgee-1089999" class="anchor"></a>rgee 1.0.8.9999<small> Unreleased </small>
+    <div id="rgee-109" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.9">
+<a href="#rgee-109" class="anchor"></a>rgee 1.0.9<small> Unreleased </small>
 </h1>
 <ul>
-<li>Fix a bug in <code>ee_extract</code> that changes names in column names when starts with numbers (<a href='https://github.com/r-spatial/rgee/issues/119'>#119</a>, thanks <a href='https://github.com/joshualerickson'>@joshualerickson</a>).</li>
+<li>Accessing the Earth Engine Data Catalog via ‘$’ thanks to the <a href="https://github.com/samapriya/Earth-Engine-Datasets-List" class="external-link">Earth-Engine-Datasets-List</a> created and supported by <a href="https://github.com/samapriya" class="external-link">@samapriya</a>.</li>
+<li>Math functions (abs, sign, sqrt, ceiling, cummax, cummin, cumprod, cumsum, log, log10, log1p, acos, floor, asin, atan, exp, expm1, cos, cosh, sin, sinh, tan, and tanh.) to <code>ee$Image</code>.</li>
+<li>Summary functions (max, mean, min, range, sum, product) to <code>ee$Image</code>.</li>
+<li>Comparison operators (==, !=, &gt;, &lt;, &lt;=, &gt;=) to <code>ee$Image</code>.</li>
+<li>Logic operators (!, &amp;, |) to <code>ee$Image</code>.</li>
+<li>Arithmetic operators (+, -, *, /, ^, %%, %/%) to <code>ee$Image</code>.</li>
+<li>Subsetting operators (‘[[&lt;-’, ‘[[’) to <code>ee$Image</code> and <code>ee$ImageCollection</code>.</li>
+<li>GH Action to automatica updated the Earth Engine Python API.</li>
+<li>
+<code><a href="../reference/ee_as_sf.html">ee_as_sf(..., via = "getInfo")</a></code> does not write in temp folder.</li>
+<li>
+<code>ee_as_sf</code> now returns by default a GeoJSON instead of a ESRI shapefile.</li>
+<li>When EarthEngineMaps have the same name, a random hex string is added to the second map.</li>
+<li>Fix a bug in <code>sf_as_ee</code> that add <code>id</code> colum to the results.</li>
+<li>
+<code>ee_extract</code> now supports lazy evaluation and containers <code>drive</code> and <code>gcs</code>.</li>
+<li>R6, class to display Earth Engine (EE) spatial objects, added.</li>
+<li>Map is now a <code>R6</code> object instead of a environment.</li>
+<li>Vignettes documentation upgrade.</li>
+<li>
+<code>ee_install_set_pyenv</code> support local .Renviron.</li>
+<li>Fix a bug for new tokens in {googledrive} <a href='https://github.com/r-spatial/rgee/issues/139'>#139</a>.</li>
+<li>Fix a bug in ee_print that sometimes make see the warning: <em>ee_utils_py_to_r(.) : restarting interrupted promise evaluation</em>.</li>
 <li>Fix a bug in <code>ee_install_set_pyenv</code> when py_env=NULL (<a href='https://github.com/r-spatial/rgee/issues/118'>#118</a>, thanks <a href='https://github.com/MatthieuStigler'>@MatthieuStigler</a>).</li>
+<li>GH Action test-coverage removed.</li>
+<li>Fix a bug in <code>ee_extract</code> that changes column names when starts with numbers (<a href='https://github.com/r-spatial/rgee/issues/119'>#119</a>, thanks <a href='https://github.com/joshualerickson'>@joshualerickson</a>).</li>
 </ul>
 </div>
     <div id="rgee-108" class="section level1">
@@ -174,7 +205,7 @@
 <li>Fix a bug in Map$addLayer(…, legend=TRUE) when <code>eeobject</code> is an constant image (i.e. ee$Image(0)).</li>
 <li>Stop message in <code>ee_Initialize</code> to does not allow the use of rgee when the folder “…/rgee/python/” does not exist.</li>
 <li>Info messages when rgee make changes to.Renviron.</li>
-<li>Earth Engine Python API test updated to 0.1.247.</li>
+<li>Earth Engine Python API updated to 0.1.247.</li>
 </ul>
 </div>
     <div id="rgee-107" class="section level1">
@@ -295,7 +326,7 @@
 <li>We implement <code>ee_createAssetHome</code> to help users to define their <em>Earth Engine Assets home root folder</em> without leaving ee_Initialize(). (<a href='https://github.com/r-spatial/rgee/issues/70'>#70</a> Thanks <a href='https://github.com/jhollist'>@jhollist</a>)</li>
 <li>Fix a bug in <code><a href="../reference/ee_Initialize.html">ee_Initialize(drive = TRUE, gcs = TRUE)</a></code> which do not permit users save credentials. (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
 <li>Removed <code>check_ring_dir</code> argument from <code>sf_as_ee</code>. Now <code>rgee</code> expect that users fix potential geometry problems before upload geometries to their Earth Engine assets.</li>
-<li>Changes in “welcome to rgee” message (located in <code>ee_Initialize</code>). We delete <code><a href="https://rdrr.io/r/base/stop.html">stop("Initialization aborted")</a></code> and implement <code>ee_search_init_message</code>. It will permit to <code>rgee</code> to know if the user accepted to create the global var “EARTHENGINE_INIT_MESSAGE” without need to restart the R session.</li>
+<li>Changes in “welcome to rgee” message (located in <code>ee_Initialize</code>). We delete <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop("Initialization aborted")</a></code> and implement <code>ee_search_init_message</code>. It will permit to <code>rgee</code> to know if the user accepted to create the global var “EARTHENGINE_INIT_MESSAGE” without need to restart the R session.</li>
 <li>Fix minor bugs in <code>sf_as_ee</code> and <code>gcs_to_ee_table</code>. The argument <code>command_line_tool_path</code> was added to give users the option to set the path of the Earth Engine command linetool. This new argument is only relevant to upload files using Google Cloud Storage. New diagnostic message were added.</li>
 <li>Now <code>sf_as_ee</code> returns an <code>ee$Geometry$...</code> when <code>x</code> is a <code>sfg</code> or a single sfc object. If <code>x</code> is a sf or a <code>sfc</code> object with multiple geometries will return an <code>ee$FeatureCollection</code>. New unit test for <code>sf_as_ee</code>.</li>
 <li>Changes in the documentation of <code>ee_as_stars</code> and <code>ee_as_raster</code> (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
@@ -469,11 +500,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -481,6 +512,8 @@
 
   
 
+
+  
 
   </body>
 </html>

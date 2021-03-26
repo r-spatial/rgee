@@ -66,9 +66,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -121,21 +130,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -174,7 +183,7 @@
     <tr>
       <th>timestamp</th>
       <td><p>Logical. If TRUE, return the date in milliseconds
-from the Unix Epoch (1970-01-01 00:00:00 UTC) otherwise return the
+from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise, return the
 date as a POSIXct object. By default FALSE.</p></td>
     </tr>
     </table>
@@ -187,12 +196,11 @@ a POSIXct object depending on the <code>timestamp</code> argument.</p>
 
     <p><code>eedate_to_rdate</code> is essential to avoid potential errors that
 might appear when users call to retrieve dates. Currently,
-R integer only support 32 bit signed, such integers can only
-count up to about 2 billion. This range is extremely insufficient for dealing
-with Google Earth Engine date objects (ee$Date), which are represented
-by timestamps in milliseconds since the UNIX epoch. <code>eedate_to_rdate</code>
-use Python as a backend to obtain the date and convert it in float before
-exporting to R.</p>
+R integer only supports 32 bit signed (such integers can only
+count up to about 2 billion). This range is notably insufficient for dealing
+with GEE date objects represented by timestamps in milliseconds since the
+UNIX epoch. <code>eedate_to_rdate</code> uses Python in the backend to obtain the
+date and convert it in float before exporting to R.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other date functions: 
@@ -221,11 +229,11 @@ exporting to R.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -233,6 +241,8 @@ exporting to R.</p>
 
   
 
+
+  
 
   </body>
 </html>

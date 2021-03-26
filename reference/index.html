@@ -65,9 +65,16 @@
 
 
 
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -81,7 +88,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -120,21 +127,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -181,6 +188,12 @@
           <p><code><a href="ee.html">ee</a></code> </p>
         </td>
         <td><p>Main Earth Engine module</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rgee-package.html">rgee-package</a></code> </p>
+        </td>
+        <td><p>rgee: An R package for interacting with Google Earth Engine</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -249,7 +262,7 @@
         <td>
           <p><code><a href="ee_clean_container.html">ee_clean_container()</a></code> </p>
         </td>
-        <td><p>Delete files from a either Folder or Bucket</p></td>
+        <td><p>Delete files from either a Folder (Google Drive) or a Bucket (GCS)</p></td>
       </tr><tr>
         
         <td>
@@ -262,6 +275,31 @@
           <p><code><a href="ee_clean_pyenv.html">ee_clean_pyenv()</a></code> </p>
         </td>
         <td><p>Remove rgee system variables from .Renviron</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-subsetting" class="hasAnchor"><a href="#section-subsetting" class="anchor"></a>Subsetting</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="ee_get.html">ee_get()</a></code> </p>
+        </td>
+        <td><p>Return the element at a specified position in an Earth Engine Image or ImageCollection</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_subsetting.html">`[[`(<i>&lt;ee.imagecollection.ImageCollection&gt;</i>)</a></code> <code><a href="ee_subsetting.html">`[[&lt;-`(<i>&lt;ee.imagecollection.ImageCollection&gt;</i>)</a></code> <code><a href="ee_subsetting.html">`[[`(<i>&lt;ee.image.Image&gt;</i>)</a></code> <code><a href="ee_subsetting.html">`[[&lt;-`(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Extract or replace parts of and ee$ImageCollection</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -299,20 +337,7 @@
           <p><code><a href="ee_users.html">ee_users()</a></code> </p>
         </td>
         <td><p>Display the credentials of all users as a table</p></td>
-      </tr>
-    </tbody><tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-path-utils" class="hasAnchor"><a href="#section-path-utils" class="anchor"></a>Path utils</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
+      </tr><tr>
         
         <td>
           <p><code><a href="ee_get_assethome.html">ee_get_assethome()</a></code> </p>
@@ -379,11 +404,17 @@
         <td>
           <p><code><a href="Map.html">Map</a></code> </p>
         </td>
-        <td><p>Module to display Earth Engine (EE) spatial objects</p></td>
+        <td><p>R6 object (Map) to display Earth Engine (EE) spatial objects</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="null-default.html">`+`(<i>&lt;EarthEngineMap&gt;</i>)</a></code> <code><a href="null-default.html">`|`(<i>&lt;EarthEngineMap&gt;</i>)</a></code> </p>
+          <p><code><a href="R6Map.html">R6Map</a></code> </p>
+        </td>
+        <td><p>R6 class to display Earth Engine (EE) spatial objects</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="map-operator.html">`+`(<i>&lt;EarthEngineMap&gt;</i>)</a></code> <code><a href="map-operator.html">`|`(<i>&lt;EarthEngineMap&gt;</i>)</a></code> </p>
         </td>
         <td><p>EarthEngineMap + EarthEngineMap; adds data from the second map to the first</p></td>
       </tr>
@@ -465,7 +496,7 @@
         <td>
           <p><code><a href="ee_as_sf.html">ee_as_sf()</a></code> </p>
         </td>
-        <td><p>Convert an Earth Engine table in a sf object</p></td>
+        <td><p>Convert an Earth Engine table in an sf object</p></td>
       </tr><tr>
         
         <td>
@@ -527,7 +558,7 @@
         <td>
           <p><code><a href="ee_manage-tools.html">ee_manage_create()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete()</a></code> <code><a href="ee_manage-tools.html">ee_manage_assetlist()</a></code> <code><a href="ee_manage-tools.html">ee_manage_quota()</a></code> <code><a href="ee_manage-tools.html">ee_manage_copy()</a></code> <code><a href="ee_manage-tools.html">ee_manage_move()</a></code> <code><a href="ee_manage-tools.html">ee_manage_set_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_delete_properties()</a></code> <code><a href="ee_manage-tools.html">ee_manage_asset_access()</a></code> <code><a href="ee_manage-tools.html">ee_manage_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_cancel_all_running_task()</a></code> <code><a href="ee_manage-tools.html">ee_manage_asset_size()</a></code> </p>
         </td>
-        <td><p>Interface for manage the Earth Engine Asset</p></td>
+        <td><p>Interface to manage the Earth Engine Asset</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -659,12 +690,55 @@
           <p><code><a href="ee_monitoring.html">ee_monitoring()</a></code> </p>
         </td>
         <td><p>Monitoring Earth Engine task progress</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-rgee-operator" class="hasAnchor"><a href="#section-rgee-operator" class="anchor"></a>rgee Operator</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      
+      
+    </tbody><tbody>
+      
+      
+      <tr>
+        
+        <td>
+          <p><code><a href="Math-methods.html">Math(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Mathematical functions</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_get.html">ee_get()</a></code> </p>
+          <p><code><a href="Ops-methods.html">Ops(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Return the element at the specified position in a Earth Engine Collection</p></td>
+        <td><p>Earth Engine arithmetic, logic and compare generic functions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Summary-methods.html">Summary(<i>&lt;ee.image.Image&gt;</i>)</a></code> <code><a href="Summary-methods.html">mean(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Summary Methods</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_length.html">length(<i>&lt;ee.image.Image&gt;</i>)</a></code> <code><a href="ee_length.html">`length&lt;-`(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Length of an Earth Engine Image Object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_length_ic.html">length(<i>&lt;ee.imagecollection.ImageCollection&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Length of an Earth Engine ImageCollection Object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ee_name.html">`names&lt;-`(<i>&lt;ee.image.Image&gt;</i>)</a></code> <code><a href="ee_name.html">names(<i>&lt;ee.image.Image&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Names of Earth Engine Images Layers</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -695,13 +769,13 @@
         <td>
           <p><code><a href="ee_utils_shp_to_zip.html">ee_utils_shp_to_zip()</a></code> </p>
         </td>
-        <td><p>Create a zip file from a sf object</p></td>
+        <td><p>Create a zip file from an sf object</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="ee_utils_create_json.html">ee_utils_create_json()</a></code> </p>
         </td>
-        <td><p>Convert a R list into a JSON file</p></td>
+        <td><p>Convert an R list into a JSON file in the temp() file</p></td>
       </tr><tr>
         
         <td>
@@ -747,7 +821,7 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="ee_utils_search_display.html">ee_utils_search_display()</a></code> </p>
+          <p><code><a href="ee_utils_dataset_display.html">ee_utils_dataset_display()</a></code> </p>
         </td>
         <td><p>Search into the Earth Engine Data Catalog</p></td>
       </tr>
@@ -765,11 +839,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -777,6 +851,8 @@
 
   
 
+
+  
 
   </body>
 </html>

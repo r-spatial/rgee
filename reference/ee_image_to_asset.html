@@ -67,9 +67,18 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +92,7 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -122,21 +131,21 @@ This function is a wrapper around ee$batch$Export$image$toAsset(...)." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -207,20 +216,20 @@ A special key, ".default", may be used to change the default for all bands.</p><
     </tr>
     <tr>
       <th>dimensions</th>
-      <td><p>The dimensions of the exported image. Takes either a
+      <td><p>The dimensions of the exported image. It takes either a
 single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
 WIDTH and HEIGHT are each positive integers.</p></td>
     </tr>
     <tr>
       <th>region</th>
       <td><p>The lon,lat coordinates for a LinearRing or Polygon
-specifying the region to export. Can be specified as a nested lists
+specifying the region to export. It can be specified as nested lists
 of numbers or a serialized string. Defaults to the image's region.</p></td>
     </tr>
     <tr>
       <th>scale</th>
       <td><p>The resolution in meters per pixel. Defaults to the native
-resolution of the image assset unless a crsTransform is specified.</p></td>
+resolution of the image asset unless a crsTransform is specified.</p></td>
     </tr>
     <tr>
       <th>crs</th>
@@ -232,7 +241,7 @@ projection. Defaults to the image's default projection.</p></td>
       <td><p>A comma-separated string of 6 numbers describing
 the affine transform of the coordinate reference system of the exported
 image's projection, in the order:
-xScale, xShearing, xTranslation, yShearing, yScale and yTranslation.
+xScale, xShearing, xTranslation, yShearing, yScale, and yTranslation.
 Defaults to the image's native CRS transform.</p></td>
     </tr>
     <tr>
@@ -240,7 +249,7 @@ Defaults to the image's native CRS transform.</p></td>
       <td><p>The maximum allowed number of pixels in the exported
 image. The task will fail if the exported region covers more pixels
 in the specified projection. Defaults to 100,000,000. **kwargs: Holds
-other keyword arguments that may have been deprecated such
+other keyword arguments that may have been deprecated, such
 as 'crs_transform'.</p></td>
     </tr>
     </table>
@@ -329,11 +338,11 @@ as 'crs_transform'.</p></td>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -341,6 +350,8 @@ as 'crs_transform'.</p></td>
 
   
 
+
+  
 
   </body>
 </html>

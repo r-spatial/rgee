@@ -66,9 +66,18 @@
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -82,7 +91,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -121,21 +130,21 @@
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -187,24 +196,24 @@
     </tr>
     <tr>
       <th>region</th>
-      <td><p>EE Geometry (ee$Geometry$Polygon) which specify the region
-to export. CRS needs to be the same that the argument <code>image</code>,
-otherwise, it will be forced. If not specified, image bounds will be taken.</p></td>
+      <td><p>EE Geometry (ee$Geometry$Polygon) which specifies the region
+to export. CRS needs to be the same that the argument <code>image</code>.
+Otherwise, it will be forced. If not specified, image bounds are taken.</p></td>
     </tr>
     <tr>
       <th>dsn</th>
-      <td><p>Character. Output filename. If missing, a temporary file will be
+      <td><p>Character. Output filename. If missing, a temporary file is
 created.</p></td>
     </tr>
     <tr>
       <th>via</th>
-      <td><p>Character. Method to export the image. Two method are
+      <td><p>Character. Method to export the image. Two methods are
 implemented: "drive", "gcs". See details.</p></td>
     </tr>
     <tr>
       <th>container</th>
       <td><p>Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into.</p></td>
+to be exported.</p></td>
     </tr>
     <tr>
       <th>scale</th>
@@ -225,7 +234,7 @@ See details.</p></td>
     </tr>
     <tr>
       <th>public</th>
-      <td><p>Logical. If TRUE, a public link to the image will be created.</p></td>
+      <td><p>Logical. If TRUE, a public link to the image is created.</p></td>
     </tr>
     <tr>
       <th>add_metadata</th>
@@ -234,7 +243,7 @@ See details.</p></td>
     <tr>
       <th>timePrefix</th>
       <td><p>Logical. Add current date and time (<code><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time()</a></code>) as
-a prefix to files to export. This parameter helps to avoid exported files
+a prefix to export files. This parameter helps to avoid exported files
 with the same name. By default TRUE.</p></td>
     </tr>
     <tr>
@@ -257,18 +266,18 @@ with the same name. By default TRUE.</p></td>
 by two different options: "drive"
 (<a href='https://CRAN.R-project.org/package=googledrive'>Google Drive</a>) and "gcs"
 (<a href='https://CRAN.R-project.org/package=googleCloudStorageR'>
-Google Cloud Storage</a>). In both cases <code>ee_as_stars</code> works as follow:</p><ul>
-<li><p>1. A task will be started (i.e. <code>ee$batch$Task$start()</code>) to
+Google Cloud Storage</a>). In both cases, <code>ee_as_stars</code> works as follow:</p><ul>
+<li><p>1. A task is started (i.e. <code>ee$batch$Task$start()</code>) to
 move the <code>ee$Image</code> from Earth Engine to the intermediate container
-specified in argument <code>via</code>.</p></li>
+specified in the argument <code>via</code>.</p></li>
 <li><p>2. If the argument <code>lazy</code> is TRUE, the task will not be
-monitored. This is useful to lunch several tasks at the same time and
-call them later using <code><a href='ee_utils_future_value.html'>ee_utils_future_value</a></code> or
+monitored. This is useful to lunch several tasks simultaneously and
+calls them later using <code><a href='ee_utils_future_value.html'>ee_utils_future_value</a></code> or
 <code><a href='https://rdrr.io/pkg/future/man/value.html'>future::value</a></code>. At the end of this step,
-the <code>ee$Image</code> will be stored on the path specified in the argument
+the <code>ee$Image</code> is stored on the path specified in the argument
 <code>dsn</code>.</p></li>
-<li><p>3. Finally if the argument <code>add_metadata</code> is TRUE, a list
-with the following elements will be added to the stars-proxy object.
+<li><p>3. Finally, if the argument <code>add_metadata</code> is TRUE, a list
+with the following elements is added to the stars-proxy object.
 <ul>
 <li><p><b>if via is "drive":</b></p><ul>
 <li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
@@ -380,11 +389,11 @@ Earth Engine Guide - Export data</a>.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -392,6 +401,8 @@ Earth Engine Guide - Export data</a>.</p>
 
   
 
+
+  
 
   </body>
 </html>

@@ -68,9 +68,18 @@ EE thumbnail image." />
 
 
 
+<!-- dependencies from examples -->
+
+
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -84,7 +93,7 @@ EE thumbnail image." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.8.9999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
       </span>
     </div>
 
@@ -123,21 +132,21 @@ EE thumbnail image." />
 </li>
 <li>
   <a href="../news/index.html">
-    <span class="fas fa-newspaper-o"></span>
+    <span class="fa fa fa fa-newspaper-o"></span>
      
     news
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-file-code-o"></span>
+    <span class="fa fa fa fa-file-code-o"></span>
      
     functions
   </a>
 </li>
 <li>
   <a href="https://github.com/r-spatial/rgee/">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa fa fa-github fa-lg"></span>
      
     github
   </a>
@@ -185,8 +194,8 @@ RasterLayer R object from a
     <tr>
       <th>region</th>
       <td><p>EE Geometry Rectangle (<code>ee$Geometry$Rectangle</code>) specifying
-the region to export.The CRS needs to be the same as the <code>x</code> argument,
-otherwise, it will be forced.</p></td>
+the region to export.The CRS needs to be the same as the <code>x</code> argument.
+Otherwise, it will be forced.</p></td>
     </tr>
     <tr>
       <th>dimensions</th>
@@ -217,24 +226,25 @@ RasterStack object?</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>vizparams</code> set up the details of the thumbnail image. With
-<code>ee_as_thumbnail</code> only is possible export one-band (G) or three-band
+<code>ee_as_thumbnail</code> only is possible to export one-band (G) or three-band
 (RGB) images. Several parameters can be passed on to control color,
 intensity, the maximum and minimum values, etc. The table below provides
 all the parameters that admit <code>ee_as_thumbnail</code>.</p>
 <table class='table'>
 <tr><td><strong>Parameter</strong></td><td><strong>Description</strong></td><td><strong>Type</strong></td></tr>
-<tr><td><strong>bands</strong></td><td>Comma-delimited list of
-three band names to be mapped to RGB</td><td>list</td></tr>
-<tr><td><strong>min</strong></td><td>Value(s) to map to 0</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>max</strong></td><td>Value(s) to map to 1</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td><strong>bands</strong></td><td>Comma-delimited list of three band (RGB)</td><td>list</td></tr>
+<tr><td><strong>min</strong></td><td>Value(s) to map to 0</td><td>number or list of three
+numbers, one for each band</td></tr>
+<tr><td><strong>max</strong></td><td>Value(s) to map to 1</td><td>number or list of three
+numbers, one for each band</td></tr>
 <tr><td><strong>gain</strong></td><td>Value(s) by which to multiply each pixel value</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>bias</strong></td><td>Value(s) to add to each Digital Number (DN)
+<tr><td><strong>bias</strong></td><td>Value(s) to add to each Digital Number
 value</td><td>number or list of three numbers, one for each band</td></tr>
-<tr><td><strong>gamma</strong></td><td>Gamma correction factor(s)</td><td>number or list of three numbers, one for each band</td></tr>
+<tr><td><strong>gamma</strong></td><td>Gamma correction factor(s)</td><td>number or list of
+three numbers, one for each band</td></tr>
 <tr><td><strong>palette</strong></td><td>List of CSS-style color strings
-(single-band images only)</td><td>comma-separated list of hex strings</td></tr>
-<tr><td><strong>opacity</strong></td><td>The opacity of the layer
-(0.0 is fully transparent and 1.0 is fully opaque)</td><td>number</td></tr>
+(single-band only)</td><td>comma-separated list of hex strings</td></tr>
+<tr><td><strong>opacity</strong></td><td>The opacity of the layer (from 0 to 1)</td><td>number</td></tr>
 </table>
 
 
@@ -338,11 +348,11 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p><p>Developed by Cesar Aybar.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -350,6 +360,8 @@ value</td><td>number or list of three numbers, one for each band</td></tr>
 
   
 
+
+  
 
   </body>
 </html>
