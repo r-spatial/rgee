@@ -1,11 +1,11 @@
 pandoc: 2.7.3
 pkgdown: 1.6.1.9001
-pkgdown_sha: c6bd498aa2e0ae2e15e267891aaa69c6c15ab79f
+pkgdown_sha: 1224e7d19dc1247a45d2885cf7b18b37bd02797b
 articles:
   rgee01: rgee01.html
   rgee02: rgee02.html
   rgee03: rgee03.html
-last_built: 2021-04-08T12:46Z
+last_built: 2021-04-23T19:53Z
 urls:
   reference: https://r-spatial.github.io/rgee/reference
   article: https://r-spatial.github.io/rgee/articles

@@ -8,13 +8,6 @@
 
 <title>R6 object (Map) to display Earth Engine (EE) spatial objects — Map • rgee</title>
 
-<!-- favicons -->
-<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -50,7 +43,6 @@
 <meta property="og:description" content="Create interactive visualizations of spatial EE objects
 (ee$FeatureCollection, ee$ImageCollection, ee$Geometry, ee$Feature, and
 ee$Image.) using leaflet in the backend." />
-<meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png" />
 
 
 
@@ -283,26 +275,15 @@ default 3.</p></li>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Linking to GEOS 3.8.1, GDAL 3.1.4, PROJ 6.3.1</span></div><div class='input'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'><span style='font-weight: bold;'>Welcome to the Earth Engine client library for R!</span><span></span>
-#&gt; <span class='message'>----------------------------------------------------------------</span>
-#&gt; <span class='message'>It seems it is your first time using rgee. First off, keep in mind that</span>
-#&gt; <span class='message'>Google Earth Engine is </span><span style='font-weight: bold;'>only available to registered users</span><span>, check the</span>
-#&gt; <span class='message'>official website </span><span style='font-weight: bold;'>https://earthengine.google.com/</span><span> to get more information.</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>Before start coding is necessary to set up a Python environment. Run</span>
-#&gt; <span class='message'></span><span style='font-weight: bold;'>rgee::ee_install()</span><span> to set up automatically, after that, restart the R</span>
-#&gt; <span class='message'>session to see changes. See more than 300+ examples of rgee at</span>
-#&gt; <span class='message'></span><span style='font-weight: bold;'>https://r-earthengine.github.io/.</span><span></span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>rgee will need to create the environmental variable "EARTHENGINE_INIT_MESSAGE"</span>
-#&gt; <span class='message'>in your system to avoid you recieve this message again.</span></div><div class='output co'>#&gt; Would you like to stop to receive this message? [Y/n]:</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'>
+<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span><span class='op'>)</span>
+
 <span class='co'># Case 1: Geometry*</span>
 <span class='va'>geom1</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>73.53</span>, <span class='op'>-</span><span class='fl'>15.75</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'><span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>geom1</span>, zoom <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in class(eeObject) %in% "ee.featurecollection.FeatureCollection": object 'geom1' not found</span></div><div class='input'><span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>geom1</span>, zoom <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
+<span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   eeObject <span class='op'>=</span> <span class='va'>geom1</span>,
   visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
     pointRadius <span class='op'>=</span> <span class='fl'>10</span>,
@@ -310,19 +291,19 @@ default 3.</p></li>
   <span class='op'>)</span>,
   name <span class='op'>=</span> <span class='st'>"Geometry-Arequipa"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in class(eeObject) %in% ee_spatial_object: object 'geom1' not found</span></div><div class='input'>
+
 <span class='co'># Case 2: Feature</span>
 <span class='va'>feature_arq</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>Feature</span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>72.53</span>, <span class='op'>-</span><span class='fl'>15.75</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'><span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
+<span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   eeObject <span class='op'>=</span> <span class='va'>feature_arq</span>,
   name <span class='op'>=</span> <span class='st'>"Feature-Arequipa"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in class(eeObject) %in% ee_spatial_object: object 'feature_arq' not found</span></div><div class='input'><span class='va'>m2</span> <span class='op'>+</span> <span class='va'>m1</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm2' not found</span></div><div class='input'>
+<span class='va'>m2</span> <span class='op'>+</span> <span class='va'>m1</span>
+
 <span class='co'># Case 4: Image</span>
 <span class='va'>image</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>Image</span><span class='op'>(</span><span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'><span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in private$get_center(eeObject, zoom, maxError): Spatial Earth Engine Object not supported</span></div><div class='input'><span class='va'>m4</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
+<span class='va'>m4</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   eeObject <span class='op'>=</span> <span class='va'>image</span>,
   visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
     bands <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span><span class='op'>)</span>,
@@ -330,43 +311,37 @@ default 3.</p></li>
   <span class='op'>)</span>,
   name <span class='op'>=</span> <span class='st'>"SF"</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in Map$addLayer(eeObject = image, visParams = list(bands = c("B4",     "B3", "B2"), max = 10000), name = "SF"): The eeObject argument must be an instance of one of ee$Image, ee$Geometry, ee$Feature, or ee$FeatureCollection.</span></div><div class='input'>
+
 <span class='co'># Case 5: ImageCollection</span>
 <span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Reading layer `nc' from data source `/Users/runner/work/_temp/Library/sf/shape/nc.shp' using driver `ESRI Shapefile'
-#&gt; Simple feature collection with 100 features and 14 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -84.32385 ymin: 33.88199 xmax: -75.45698 ymax: 36.58965
-#&gt; Geodetic CRS:  NAD27</div><div class='output co'>#&gt; <span class='message'>Registered S3 method overwritten by 'geojsonsf':</span>
-#&gt; <span class='message'>  method        from   </span>
-#&gt; <span class='message'>  print.geojson geojson</span></div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'>
+
 <span class='va'>ee_s2</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"COPERNICUS/S2"</span><span class='op'>)</span><span class='op'>$</span>
   <span class='fu'>filterDate</span><span class='op'>(</span><span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span><span class='op'>)</span><span class='op'>$</span>
   <span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='ee_get.html'>ee_get</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'><span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>$</span><span class='fu'>geometry</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in class(eeObject) %in% "ee.featurecollection.FeatureCollection": object 'nc' not found</span></div><div class='input'><span class='va'>m5</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span><span class='va'>ee_s2</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in class(eeObject) %in% "ee.imagecollection.ImageCollection": object 'ee_s2' not found</span></div><div class='input'><span class='va'>m5</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm5' not found</span></div><div class='input'>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>$</span><span class='fu'>geometry</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>m5</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span><span class='va'>ee_s2</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>m5</span>
+
 <span class='co'># Case 6: Map comparison</span>
 <span class='va'>image</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>Image</span><span class='op'>(</span><span class='st'>"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error: Error 1 occurred creating conda environment r-reticulate</span></div><div class='input'><span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in private$get_center(eeObject, zoom, maxError): Spatial Earth Engine Object not supported</span></div><div class='input'><span class='va'>m_ndvi</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
+<span class='va'>m_ndvi</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   eeObject <span class='op'>=</span> <span class='va'>image</span><span class='op'>$</span><span class='fu'>normalizedDifference</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"B5"</span>, <span class='st'>"B4"</span><span class='op'>)</span><span class='op'>)</span>,
   visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>max <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
   name <span class='op'>=</span> <span class='st'>"SF_NDVI"</span>,
   legend <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in image$normalizedDifference: object of type 'closure' is not subsettable</span></div><div class='input'><span class='va'>m6</span> <span class='op'>&lt;-</span> <span class='va'>m4</span> <span class='op'>|</span> <span class='va'>m_ndvi</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm4' not found</span></div><div class='input'><span class='va'>m6</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm6' not found</span></div><div class='input'>
+<span class='va'>m6</span> <span class='op'>&lt;-</span> <span class='va'>m4</span> <span class='op'>|</span> <span class='va'>m_ndvi</span>
+<span class='va'>m6</span>
+
 <span class='co'># Case 7: digging up the metadata</span>
 <span class='va'>m6</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm6' not found</span></div><div class='input'><span class='va'>m5</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in eval(expr, envir, enclos): object 'm5' not found</span></div></span></pre>
+<span class='va'>m5</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
