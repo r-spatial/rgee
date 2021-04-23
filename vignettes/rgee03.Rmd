@@ -572,7 +572,7 @@ Map$addLayer(optimizedConvolution, viz, "optimizedConvolution")
 
 ## **Don't sample more data than you need**
 
-Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see [this reference](https://www.deeplearning.ai/machine-learning-yearning/)). The following example demonstrates how requesting too much training data can result in the dreaded "Computed value is too large" error:
+Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see [this reference](https://www.deeplearning.ai/programs/)). The following example demonstrates how requesting too much training data can result in the dreaded "Computed value is too large" error:
 
 <img src="thumb_down.png" width=25px>
 &nbsp; **Bad** — Don't sample too much data!

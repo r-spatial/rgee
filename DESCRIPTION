@@ -90,7 +90,7 @@ Description: Earth Engine <https://earthengine.google.com/> client library for R
   and metadata display. See <https://r-spatial.github.io/rgee/> for further details.
 License: Apache License (>= 2.0)
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends:
