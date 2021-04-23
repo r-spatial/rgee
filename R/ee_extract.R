@@ -224,7 +224,6 @@ ee_extract <- function(x,
   # Convert Image into ImageCollection
   x_ic <- bands_to_image_collection(x)
 
-
   # triplets save info about the value, the row_id (ee_ID) and col_id (imageId)
   create_tripplets <- function(img) {
     img_reduce_regions <- ee$Image$reduceRegions(

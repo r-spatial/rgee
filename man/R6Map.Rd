@@ -63,6 +63,7 @@ default 3.
 ## Method `R6Map$reset`
 ## ------------------------------------------------
 
+\dontrun{
 library(rgee)
 ee_Initialize()
 
@@ -83,11 +84,13 @@ Map # display map
 
 Map$reset() # Reset arguments
 Map
+}
 
 ## ------------------------------------------------
 ## Method `R6Map$setCenter`
 ## ------------------------------------------------
 
+\dontrun{
 library(rgee)
 
 ee_Initialize()
@@ -99,11 +102,13 @@ Map
 # Map$lat
 # Map$lon
 # Map$zoom
+}
 
 ## ------------------------------------------------
 ## Method `R6Map$setZoom`
 ## ------------------------------------------------
 
+\dontrun{
 library(rgee)
 
 ee_Initialize()
@@ -115,11 +120,13 @@ Map
 # Map$lat
 # Map$lon
 # Map$zoom
+}
 
 ## ------------------------------------------------
 ## Method `R6Map$centerObject`
 ## ------------------------------------------------
 
+\dontrun{
 library(rgee)
 
 ee_Initialize()
@@ -128,12 +135,13 @@ Map <- R6Map$new()
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 Map$centerObject(image)
 Map
+}
 
 ## ------------------------------------------------
 ## Method `R6Map$addLayer`
 ## ------------------------------------------------
 
-
+\dontrun{
 library(rgee)
 ee_Initialize()
 
@@ -173,12 +181,13 @@ Map$addLayer(
   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
   name = "l8_right"
 )
-
+}
 
 ## ------------------------------------------------
 ## Method `R6Map$addLayers`
 ## ------------------------------------------------
 
+\dontrun{
 library(sf)
 library(rgee)
 
@@ -201,6 +210,7 @@ Map$reset()
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
+}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -288,7 +298,8 @@ A new \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{library(rgee)
+\preformatted{\dontrun{
+library(rgee)
 ee_Initialize()
 
 # Load an Image
@@ -308,6 +319,7 @@ Map # display map
 
 Map$reset() # Reset arguments
 Map
+}
 }
 \if{html}{\out{</div>}}
 
@@ -353,7 +365,8 @@ No return value, called to set initial coordinates and zoom.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{library(rgee)
+\preformatted{\dontrun{
+library(rgee)
 
 ee_Initialize()
 
@@ -364,6 +377,7 @@ Map
 # Map$lat
 # Map$lon
 # Map$zoom
+}
 }
 \if{html}{\out{</div>}}
 
@@ -391,7 +405,8 @@ No return value, called to set zoom.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{library(rgee)
+\preformatted{\dontrun{
+library(rgee)
 
 ee_Initialize()
 
@@ -402,6 +417,7 @@ Map
 # Map$lat
 # Map$lon
 # Map$zoom
+}
 }
 \if{html}{\out{</div>}}
 
@@ -436,7 +452,8 @@ No return value, called to set zoom.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{library(rgee)
+\preformatted{\dontrun{
+library(rgee)
 
 ee_Initialize()
 
@@ -444,6 +461,7 @@ Map <- R6Map$new()
 image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 Map$centerObject(image)
 Map
+}
 }
 \if{html}{\out{</div>}}
 
@@ -493,7 +511,7 @@ An \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{
+\preformatted{\dontrun{
 library(rgee)
 ee_Initialize()
 
@@ -533,7 +551,7 @@ Map$addLayer(
   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
   name = "l8_right"
 )
-
+}
 }
 \if{html}{\out{</div>}}
 
@@ -586,7 +604,8 @@ A \code{EarthEngineMap} object.
 }
 \subsection{Examples}{
 \if{html}{\out{<div class="r example copy">}}
-\preformatted{library(sf)
+\preformatted{\dontrun{
+library(sf)
 library(rgee)
 
 ee_Initialize()
@@ -608,6 +627,7 @@ Map$reset()
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
+}
 }
 \if{html}{\out{</div>}}
 

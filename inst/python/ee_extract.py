@@ -12,7 +12,7 @@ acknowledgement for these functions should be always given to Nick Clinton.
 It is used in R/ee_extract.R
 """
 
-def table_format(table, rowId, colId,val):
+def table_format(table, rowId, colId, val):
     """Format a table of triplets into a 2D table of rowId x colId.
 
     Args:

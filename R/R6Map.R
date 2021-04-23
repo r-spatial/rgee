@@ -51,7 +51,6 @@
 #' @returns Object of class \code{leaflet} and \code{EarthEngineMap}, with the
 #' following extra parameters: tokens, name, opacity, shown, min, max, palette,
 #' position, and legend. Use the $ method to retrieve the data (e.g., m$rgee$min).
-#'
 #' @export
 R6Map <- R6::R6Class(
   classname = "EarthEngineMap",
@@ -98,6 +97,7 @@ R6Map <- R6::R6Class(
     #' @param save_maps Should `R6Map` save previous maps?.
     #' @return A new `EarthEngineMap` object.
     #' @examples
+    #' \dontrun{
     #' library(rgee)
     #' ee_Initialize()
     #'
@@ -118,6 +118,7 @@ R6Map <- R6::R6Class(
     #'
     #' Map$reset() # Reset arguments
     #' Map
+    #' }
     reset = function(lon = 0, lat = 0, zoom = 1, save_maps = TRUE) {
       self$lon <- lon
       self$lat <- lat
@@ -153,6 +154,7 @@ R6Map <- R6::R6Class(
     #' @param zoom The zoom level, from 1 to 24. By default 18.
     #' @return No return value, called to set initial coordinates and zoom.
     #' @examples
+    #' \dontrun{
     #' library(rgee)
     #'
     #' ee_Initialize()
@@ -164,6 +166,7 @@ R6Map <- R6::R6Class(
     #' # Map$lat
     #' # Map$lon
     #' # Map$zoom
+    #' }
     setCenter = function(lon = 0, lat = 0, zoom = 10) {
       if(!is.numeric(lon)) {
           stop(
@@ -204,6 +207,7 @@ R6Map <- R6::R6Class(
     #' @param zoom The zoom level, from 1 to 24. By default 10.
     #' @return No return value, called to set zoom.
     #' @examples
+    #' \dontrun{
     #' library(rgee)
     #'
     #' ee_Initialize()
@@ -215,6 +219,7 @@ R6Map <- R6::R6Class(
     #' # Map$lat
     #' # Map$lon
     #' # Map$zoom
+    #' }
     setZoom = function(zoom = 10) {
       if(!is.numeric(zoom)) {
         stop(
@@ -239,6 +244,7 @@ R6Map <- R6::R6Class(
     #' explicitly requested result projection or geodesic state.
     #' @return No return value, called to set zoom.
     #' @examples
+    #' \dontrun{
     #' library(rgee)
     #'
     #' ee_Initialize()
@@ -247,6 +253,7 @@ R6Map <- R6::R6Class(
     #' image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
     #' Map$centerObject(image)
     #' Map
+    #' }
     centerObject = function(eeObject,
                             zoom = NULL,
                             maxError = ee$ErrorMargin(1)) {
@@ -271,7 +278,7 @@ R6Map <- R6::R6Class(
     #' @return An `EarthEngineMap` object.
     #'
     #' @examples
-    #'
+    #' \dontrun{
     #' library(rgee)
     #' ee_Initialize()
     #'
@@ -311,7 +318,7 @@ R6Map <- R6::R6Class(
     #'   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
     #'   name = "l8_right"
     #' )
-    #'
+    #'}
     addLayer = function(eeObject,
                         visParams = NULL,
                         name = NULL,
@@ -420,6 +427,7 @@ R6Map <- R6::R6Class(
     #'
     #' @return A `EarthEngineMap` object.
     #' @examples
+    #' \dontrun{
     #' library(sf)
     #' library(rgee)
     #'
@@ -442,6 +450,7 @@ R6Map <- R6::R6Class(
     #'
     #' # digging up the metadata
     #' Map$previous_map_right$rgee$tokens
+    #' }
     addLayers = function(eeObject,
                          visParams = NULL,
                          nmax = 5,
@@ -807,7 +816,6 @@ R6Map <- R6::R6Class(
 #'     requested result projection or geodesic state.
 #'   }
 #' }
-#'
 #' @details
 #' `Map` use the Earth Engine method
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{
@@ -856,6 +864,7 @@ R6Map <- R6::R6Class(
 #' the data (e.g. m$rgee$min).
 #'
 #' @examples
+#' \dontrun{
 #' library(rgee)
 #' library(sf)
 #' ee_Initialize()
@@ -920,5 +929,6 @@ R6Map <- R6::R6Class(
 #' # Case 7: digging up the metadata
 #' m6$rgee$tokens
 #' m5$rgee$tokens
+#' }
 #' @export
 Map <- R6Map$new(save_maps = FALSE)

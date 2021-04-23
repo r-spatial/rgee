@@ -122,6 +122,7 @@ default 3.
 }
 }
 \examples{
+\dontrun{
 library(rgee)
 library(sf)
 ee_Initialize()
@@ -186,5 +187,6 @@ m6
 # Case 7: digging up the metadata
 m6$rgee$tokens
 m5$rgee$tokens
+}
 }
 \keyword{datasets}
