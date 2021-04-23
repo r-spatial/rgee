@@ -304,7 +304,12 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
     earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
     # Display URL?
     if (display) {
-      message("\n", earthengine_auth)
+      message("\n To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions: \n \n", earthengine_auth, "\n \n The authorization workflow will generate a code, which you should paste in the box below")
+      auth_code <- readline("Enter Earth Engine Authentication: ")
+      token <- ee$oauth$request_token(auth_code, code_verifier)
+      credential <- sprintf('{"refresh_token":"%s"}', token)
+      write(credential, main_ee_credential)
+      write(credential, user_ee_credential)
     }
     ee_save_eecredentials(
       url = earthengine_auth,
