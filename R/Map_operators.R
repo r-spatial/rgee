@@ -70,7 +70,7 @@
 
   # Add the legend of e2
   if (isTRUE(e2_legend)) {
-    if (is.na(e2_values[[1]])) {
+    if (anyNA(e2_values[[1]])) {
       e2_values <- list(e2_min:e2_max)
     }
     if (is.na(e2_position)) {
