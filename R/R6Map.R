@@ -332,6 +332,9 @@ R6Map <- R6::R6Class(
         visParams <- list()
       }
 
+      # Remove values element (It is useful for Map$addLegend)
+      visParams[["values"]] = NULL
+
       # Earth Engine Spatial object
       ee_spatial_object <- ee_get_spatial_objects("Simple")
 
@@ -344,7 +347,6 @@ R6Map <- R6::R6Class(
 
       if (any(class(eeObject) %in% ee_get_spatial_objects("Table"))) {
         features <- ee$FeatureCollection(eeObject)
-
 
         # If vizparams is NULL
         width <- 2
@@ -528,6 +530,136 @@ R6Map <- R6::R6Class(
       if (isFALSE(self$save_maps)) {
         Reduce('+', m_img_list)
       }
+    },
+
+    #' @description
+    #'
+    #' Adds a color legend to an EarthEngineMap.
+    #'
+    #' @param visParams List of parameters for visualization.
+    #' @param name The title of the legend.
+    #' @param position Character. The position of the legend. By default bottomright.
+    #' @param color_mapping Map data values (numeric or factor/character) to
+    #' colors according to a given palette. Use "numeric" ("discrete") for continuous
+    #' (categorical) data. For display characters use "character" and add to visParams
+    #' the element "values" containing the desired character names. For more customized
+    #' options use \link[leaflet]{colorNumeric} or \link[leaflet]{colorFactor}.
+    #' @param opacity The legend's opacity is represented as a number between 0
+    #' and 1. Defaults to 1.
+    #' @param ... Extra legend creator arguments. See \link[leaflet]{addLegend}.
+    #'
+    #' @return A `EarthEngineMap` object.
+    #'
+    #' @examples
+    #' \dontrun{
+    #' library(leaflet)
+    #' library(rgee)
+    #' ee_Initialize()
+    #'
+    #' # Load MODIS ImageCollection
+    #' imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
+    #'
+    #' # Parameters for visualization
+    #' labels <- c("good", "marginal", "snow", "cloud")
+    #' cols   <- c("#999999", "#00BFC4", "#F8766D", "#C77CFF")
+    #' vis_qc <- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = labels)
+    #'
+    #' # Create interactive map
+    #' m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
+    #'
+    #' # continous palette
+    #' m_legend <- Map$addLegend(vis_qc)
+    #' m_qc + m_legend
+    #'
+    #' # categorical palette
+    #' m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
+    #' m_qc + m_legend
+    #'
+    #' # character palette
+    #' m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
+    #' m1 <- m_qc + m_legend
+    #' m1
+    #'
+    #' # custom palette
+    #' colorbar <- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
+    #' m_legend <- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
+    #'                           position = "bottomleft")
+    #' m2 <- m_qc + m_legend
+    #' m2
+    #'
+    #' # Comparison map
+    #' m1 | m2
+    #' }
+    addLegend = function(visParams,
+                          name = "Legend",
+                          position = c("bottomright", "topright", "bottomleft", "topleft"),
+                          color_mapping= "numeric",
+                          opacity = 1,
+                          ...) {
+      if (!is.list(visParams)) {
+        stop("visParams should be a list")
+      }
+      visParams_is_null <- (is.null(visParams[["min"]]) | is.null(visParams[["max"]]) |
+                              is.null(visParams[["palette"]]))
+      if (visParams_is_null) {
+        stop("visParams should have at least the following elements: min, max, and palette.")
+      }
+
+      # Create a empty Earth Engine Map
+      m <- private$ee_mapview()
+
+      # Select one position
+      position <- match.arg(position)
+
+      # Create leaflet color mapping
+      if (is.character(color_mapping)) {
+        if (color_mapping == "numeric") {
+          pal <- leaflet::colorNumeric(visParams$palette, domain = NULL)
+          values <- visParams$min:visParams$max
+        } else if (color_mapping == "discrete") {
+          pal <- leaflet::colorFactor(visParams$palette, domain = NULL)
+          values <- visParams$min:visParams$max
+        }  else if (color_mapping == "character") {
+          pal <- leaflet::colorFactor(visParams$palette, domain = NULL)
+          if (is.null(visParams$values)) {
+            stop(
+              "visParams needs the argument values. For instance:\n",
+              "visParams <- list(palette = c(\"red\",\"blue\",\"green\"), values = LETTERS[1:3])"
+            )
+          }
+          values <- visParams$values
+        }
+      } else if(inherits(color_mapping, "function")) {
+        pal <- color_mapping
+        values <- visParams$min:visParams$max
+      } else {
+        stop(
+          sprintf("color_mapping is a %s. ", class(color_mapping))
+        )
+      }
+
+      # add legend to the map
+      m <- m %>%
+        leaflet::addLegend(
+          position = position,
+          pal = pal,
+          values = values,
+          opacity = opacity,
+          title = name,
+          ...
+        )
+
+      # Extra parameters
+      m$rgee$min <- visParams$min
+      m$rgee$max <- visParams$max
+      m$rgee$name <- name
+      m$rgee$palette <-  list(pal)
+      m$rgee$legend <-  TRUE
+      m$rgee$shown <- FALSE
+      m$rgee$position <- position
+      m$rgee$values <- list(values)
+      m$rgee$opacity <- opacity
+      m
     }
   ),
 
@@ -653,6 +785,8 @@ R6Map <- R6::R6Class(
       m$rgee$max <- if (is.null(visParams$max)) NA else visParams$max
       m$rgee$palette <-  if (is.null(visParams$palette)) list(NA) else list(visParams$palette)
       m$rgee$legend <-  FALSE
+      m$rgee$position <- NA
+      m$rgee$values <- list(NA)
       m
     },
     save_map = function(map, position = NULL) {
@@ -792,6 +926,24 @@ R6Map <- R6::R6Class(
 #'     \item \strong{legend:} Should a legend be plotted?. Only the legend of
 #'     the first image is displayed.
 #'   }
+#'
+#'   \item  \strong{addLegend(visParams, name = "Legend", position = c("bottomright",
+#'   "topright", "bottomleft", "topleft"), color_mapping= "numeric", opacity = 1, ...)}:
+#'    Adds a given ee$ImageCollection to the map as multiple layers. \cr
+#'   \itemize{
+#'     \item \strong{visParams:} List of parameters for visualization.\cr
+#'     \item \strong{name:} The title of the legend.\cr
+#'     \item \strong{position:} Character. The position of the legend. By default bottomright. \cr
+#'     \item \strong{opacity:} Map data values (numeric or factor/character) to
+#'     colors according to a given palette. Use "numeric" ("discrete") for continuous
+#'     (categorical) data. For display characters use "character" and add to visParams
+#'     the element "values" containing the desired character names. For more customized
+#'     options use \link[leaflet]{colorNumeric} or \link[leaflet]{colorFactor}. \cr
+#'     \item \strong{opacity:} The legend's opacity is represented as a number between 0
+#'     and 1. Defaults to 1. \cr
+#'     \item \strong{...:} Extra legend creator arguments. See \link[leaflet]{addLegend}. \cr
+#'   }
+#'
 #'   \item \strong{setCenter(lon = 0, lat = 0, zoom = NULL)}: Centers the map
 #'   view at the given coordinates with the given zoom level. If no zoom level
 #'   is provided, it uses 1 by default.

@@ -38,11 +38,15 @@ get_ee_image_url <- function(image) {
   url
 }
 
-
-
 #' Add legend to EarthEngineMap objects
 #' @noRd
 ee_add_legend <- function(m, eeObject, visParams, name) {
+  .Deprecated(
+    msg = paste(
+      "Map$addLayer(..., legend=TRUE) will be deprecated in rgee v.1.1.0.",
+      "Use Map$addLegend instead.",sep = " "
+    ),
+  )
   ee_obj_class <- class(eeObject)
   type <- ee_obj_class[ee_obj_class %in%  ee_get_spatial_objects("All")]
   if (type == "ee.image.Image") {

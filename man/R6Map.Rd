@@ -211,6 +211,50 @@ Map$reset()
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
 }
+
+## ------------------------------------------------
+## Method `R6Map$addLegend`
+## ------------------------------------------------
+
+\dontrun{
+library(leaflet)
+library(rgee)
+ee_Initialize()
+
+# Load MODIS ImageCollection
+imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
+
+# Parameters for visualization
+labels <- c("good", "marginal", "snow", "cloud")
+cols   <- c("#999999", "#00BFC4", "#F8766D", "#C77CFF")
+vis_qc <- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = labels)
+
+# Create interactive map
+m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
+
+# continous palette
+m_legend <- Map$addLegend(vis_qc)
+m_qc + m_legend
+
+# categorical palette
+m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
+m_qc + m_legend
+
+# character palette
+m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
+m1 <- m_qc + m_legend
+m1
+
+# custom palette
+colorbar <- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
+m_legend <- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
+                          position = "bottomleft")
+m2 <- m_qc + m_legend
+m2
+
+# Comparison map
+m1 | m2
+}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -242,6 +286,7 @@ style.}
 \item \href{#method-centerObject}{\code{R6Map$centerObject()}}
 \item \href{#method-addLayer}{\code{R6Map$addLayer()}}
 \item \href{#method-addLayers}{\code{R6Map$addLayers()}}
+\item \href{#method-addLegend}{\code{R6Map$addLegend()}}
 \item \href{#method-clone}{\code{R6Map$clone()}}
 }
 }
@@ -627,6 +672,94 @@ Map$reset()
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
+}
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-addLegend"></a>}}
+\if{latex}{\out{\hypertarget{method-addLegend}{}}}
+\subsection{Method \code{addLegend()}}{
+Adds a color legend to an EarthEngineMap.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$addLegend(
+  visParams,
+  name = "Legend",
+  position = c("bottomright", "topright", "bottomleft", "topleft"),
+  color_mapping = "numeric",
+  opacity = 1,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{visParams}}{List of parameters for visualization.}
+
+\item{\code{name}}{The title of the legend.}
+
+\item{\code{position}}{Character. The position of the legend. By default bottomright.}
+
+\item{\code{color_mapping}}{Map data values (numeric or factor/character) to
+colors according to a given palette. Use "numeric" ("discrete") for continuous
+(categorical) data. For display characters use "character" and add to visParams
+the element "values" containing the desired character names. For more customized
+options use \link[leaflet]{colorNumeric} or \link[leaflet]{colorFactor}.}
+
+\item{\code{opacity}}{The legend's opacity is represented as a number between 0
+and 1. Defaults to 1.}
+
+\item{\code{...}}{Extra legend creator arguments. See \link[leaflet]{addLegend}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A \code{EarthEngineMap} object.
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{\dontrun{
+library(leaflet)
+library(rgee)
+ee_Initialize()
+
+# Load MODIS ImageCollection
+imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
+
+# Parameters for visualization
+labels <- c("good", "marginal", "snow", "cloud")
+cols   <- c("#999999", "#00BFC4", "#F8766D", "#C77CFF")
+vis_qc <- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = labels)
+
+# Create interactive map
+m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
+
+# continous palette
+m_legend <- Map$addLegend(vis_qc)
+m_qc + m_legend
+
+# categorical palette
+m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
+m_qc + m_legend
+
+# character palette
+m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
+m1 <- m_qc + m_legend
+m1
+
+# custom palette
+colorbar <- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
+m_legend <- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
+                          position = "bottomleft")
+m2 <- m_qc + m_legend
+m2
+
+# Comparison map
+m1 | m2
 }
 }
 \if{html}{\out{</div>}}
