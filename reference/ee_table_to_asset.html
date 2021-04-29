@@ -229,11 +229,11 @@ it exists.</p></td>
          <span class='va'>rlist</span><span class='op'>$</span><span class='va'>xmax</span>, <span class='va'>rlist</span><span class='op'>$</span><span class='va'>ymax</span>,
          <span class='va'>rlist</span><span class='op'>$</span><span class='va'>xmin</span>, <span class='va'>rlist</span><span class='op'>$</span><span class='va'>ymax</span>,
          <span class='va'>rlist</span><span class='op'>$</span><span class='va'>xmin</span>, <span class='va'>rlist</span><span class='op'>$</span><span class='va'>ymin</span><span class='op'>)</span>
-<span class='va'>ee_ROI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>ROI</span>, ncol <span class='op'>=</span> <span class='fl'>2</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_set_crs</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>ee_ROI</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='va'>ROI</span>, ncol <span class='op'>=</span> <span class='fl'>2</span>, byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/sfc.html'>st_sfc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_crs.html'>st_set_crs</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>amk_fc</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span>

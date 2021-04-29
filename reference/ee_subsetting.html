@@ -209,7 +209,7 @@
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>gcs <span class='op'>=</span> <span class='cn'>TRUE</span>, drive <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># Define a Image or ImageCollection: Terraclimate</span>
-<span class='va'>terraclimate</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>terraclimate</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"IDAHO_EPSCOR/TERRACLIMATE"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
   <span class='va'>ee</span><span class='op'>$</span><span class='va'>ImageCollection</span><span class='op'>$</span><span class='fu'>filterDate</span><span class='op'>(</span><span class='st'>"2001-01-01"</span>, <span class='st'>"2002-01-01"</span><span class='op'>)</span>
 
 <span class='co'># Define temperature Vis parameters</span>

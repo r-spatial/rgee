@@ -278,10 +278,10 @@ supported).</p></li>
 <span class='co'>## 1.2 Download, display and save the GIF!</span>
 <span class='va'>animation</span> <span class='op'>&lt;-</span> <span class='fu'>ee_utils_gif_creator</span><span class='op'>(</span><span class='va'>basicAnimation</span>, <span class='va'>videoArgs</span>, mode <span class='op'>=</span> <span class='st'>"wb"</span><span class='op'>)</span>
 <span class='va'>get_years</span> <span class='op'>&lt;-</span> <span class='va'>basicAnimation</span><span class='op'>$</span><span class='fu'>aggregate_array</span><span class='op'>(</span><span class='st'>"year"</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>animation</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span><span class='op'>(</span><span class='st'>"Ucayali, Peru"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>animation</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span><span class='op'>(</span><span class='st'>"Ucayali, Peru"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span><span class='op'>(</span><span class='va'>get_years</span>, size <span class='op'>=</span> <span class='fl'>15</span>, location <span class='op'>=</span> <span class='st'>"+90+40"</span>,
-                        boxcolor <span class='op'>=</span> <span class='st'>"#FFFFFF"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+                        boxcolor <span class='op'>=</span> <span class='st'>"#FFFFFF"</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='ee_utils_gif_annotate.html'>ee_utils_gif_annotate</a></span><span class='op'>(</span><span class='st'>"created using {magick} + {rgee}"</span>,
                         size <span class='op'>=</span> <span class='fl'>15</span>, font <span class='op'>=</span> <span class='st'>"sans"</span>,location <span class='op'>=</span> <span class='st'>"+70+20"</span><span class='op'>)</span> <span class='op'>-&gt;</span>
   <span class='va'>animation_wtxt</span>

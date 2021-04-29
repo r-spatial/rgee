@@ -294,9 +294,9 @@ three numbers, one for each band</td></tr>
 <span class='op'>)</span>
 
 <span class='co'>## Arequipa-Peru</span>
-<span class='va'>arequipa_region</span> <span class='op'>&lt;-</span> <span class='va'>nc</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_bbox.html'>st_bbox</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sfc.html'>st_as_sfc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+<span class='va'>arequipa_region</span> <span class='op'>&lt;-</span> <span class='va'>nc</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_bbox.html'>st_bbox</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_as_sfc.html'>st_as_sfc</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>arequipa_dem</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_thumbnail</span><span class='op'>(</span>

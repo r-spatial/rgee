@@ -350,7 +350,7 @@ Earth Engine Guide - Export data</a>.</p>
 <span class='op'>)</span>
 
 <span class='co'># From Google Drive to client-side</span>
-<span class='va'>doqq_dsn</span> <span class='op'>&lt;-</span> <span class='va'>ic_drive_files_2</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>doqq_dsn</span> <span class='op'>&lt;-</span> <span class='va'>ic_drive_files_2</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>sapply</a></span><span class='op'>(</span><span class='va'>doqq_dsn</span>, <span class='st'>'[['</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>

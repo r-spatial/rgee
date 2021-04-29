@@ -296,7 +296,7 @@ with the following elements is added to the stars-proxy object.
 <li><p><b>gcs_URI: </b>gs:// link to the image.</p></li>
 </ul></li>
 </ul>
-Run <code><a href='https://rdrr.io/r/base/attr.html'>attr(stars, "metadata")</a></code> to get the list.</p></li>
+Run <code>attr(stars, "metadata")</code> to get the list.</p></li>
 </ul>
 
 <p>For getting more information about exporting data from Earth Engine, take
@@ -349,7 +349,7 @@ Earth Engine Guide - Export data</a>.</p>
   lazy <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
 
-<span class='va'>img_02_result</span> <span class='op'>&lt;-</span> <span class='va'>img_02</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>img_02_result</span> <span class='op'>&lt;-</span> <span class='va'>img_02</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>img_02_result</span>, <span class='st'>"metadata"</span><span class='op'>)</span> <span class='co'># metadata</span>
 
 <span class='co'>## gcs - Method 02</span>
@@ -370,7 +370,7 @@ Earth Engine Guide - Export data</a>.</p>
   via <span class='op'>=</span> <span class='st'>"gcs"</span>
 <span class='op'>)</span>
 
-<span class='va'>img_03_result</span> <span class='op'>&lt;-</span> <span class='va'>img_03</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>img_03_result</span> <span class='op'>&lt;-</span> <span class='va'>img_03</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'><a href='ee_utils_future_value.html'>ee_utils_future_value</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span><span class='op'>(</span><span class='va'>img_03_result</span>, <span class='st'>"metadata"</span><span class='op'>)</span> <span class='co'># metadata</span>
 
 <span class='co'># OPTIONAL: clean containers</span>
