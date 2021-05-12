@@ -251,7 +251,7 @@ terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
   ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>% 
   ee$ImageCollection$map(function(x) x$select("pr")) %>% # Select only precipitation bands
   ee$ImageCollection$toBands() %>% # from imagecollection to image
-  ee$Image$rename(sprintf("%02d",1:12)) # rename the bands of an image
+  ee$Image$rename(sprintf("PP_%02d",1:12)) # rename the bands of an image
 ```
 
 Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works similar to `raster::extract`, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).
@@ -265,7 +265,7 @@ Use ggplot2 to generate a beautiful static plot!
 ``` r
 ee_nc_rain %>%
   pivot_longer(-NAME, names_to = "month", values_to = "pr") %>%
-  mutate(month, month=gsub("X", "", month)) %>% 
+  mutate(month, month=gsub("PP_", "", month)) %>% 
   ggplot(aes(x = month, y = pr, group = NAME, color = pr)) +
   geom_line(alpha = 0.4) +
   xlab("Month") +
@@ -373,6 +373,16 @@ gifParams <- list(
   crs = 'EPSG:3857',
   framesPerSecond = 10
 )
+```
+
+Get month names
+
+``` r
+dates_modis_mabbr <- distinctDOY %>% 
+  ee_get_date_ic %>% # Get Image Collection dates
+  '[['("time_start") %>% # Select time_start column
+  lubridate::month() %>% # Get the month component of the datetime
+  '['(month.abb, .) # subset around month abbreviations
 ```
 
 Use ee_utils_gif\_\* functions to render the GIF animation and add some texts.
