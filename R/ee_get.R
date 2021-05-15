@@ -196,3 +196,94 @@ ee_get_earthengine_path <- function() {
   }
   return(sprintf("%s/%s/", ee_path, user))
 }
+
+
+
+#' Return the element at a specified position in an Earth Engine Image or ImageCollection (See rgeeExtra for an updated version)
+#'
+#' @param ee_c ImageCollection or FeatureCollection.
+#' @param index Numeric. Specified position.
+#' @return Depending of \code{ee_c} can return either an \code{ee$FeatureCollection}
+#' or \code{ee$ImageCollection}.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' library(sf)
+#'
+#' ee_Initialize()
+#'
+#' nc <- st_read(system.file("shape/nc.shp", package = "sf")) %>%
+#'   st_transform(4326) %>%
+#'   sf_as_ee()
+#'
+#' ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
+#'   filterDate("2016-01-01", "2016-01-31")$
+#'   filterBounds(nc)
+#'
+#' ee_s2$size()$getInfo() # 126
+#'
+#' # Get the first 5 elements
+#' ee_get(ee_s2, index = 0:4)$size()$getInfo() # 5
+#' }
+#' @noRd
+ee_get <- function(ee_c, index = 0) {
+  is_consecutive <- all(diff(index) == 1)
+  if (any(index < 0)) {
+    stop("index must be a positive value")
+  }
+  if (any(class(ee_c) %in%  c("ee.imagecollection.ImageCollection"))) {
+    # Index is a single value?
+    if (length(index) == 1) {
+      ee_c %>%
+        rgee::ee$ImageCollection$toList(count = 1, offset = index) %>%
+        rgee::ee$ImageCollection()
+    } else {
+      # Index is a n-length vector and consecutive?
+      if (length(index) > 1 & is_consecutive) {
+        ee_c %>%
+          rgee::ee$ImageCollection$toList(count = length(index), offset = min(index)) %>%
+          rgee::ee$ImageCollection()
+      } else {
+        ee_c_r <- list()
+        counter <- 1
+        for (i in index) {
+          ee_c_r[[counter]] <- ee_c %>%
+            rgee::ee$ImageCollection$toList(count = 1, offset = i) %>%
+            rgee::ee$ImageCollection() %>%
+            rgee::ee$ImageCollection$first()
+          counter <- counter + 1
+        }
+        ee$ImageCollection(ee_c_r)
+      }
+    }
+  } else  if (any(class(ee_c) %in%  c("ee.featurecollection.FeatureCollection"))) {
+    # Index is a single value?
+    if (length(index) == 1) {
+      ee_c %>%
+        rgee::ee$FeatureCollection$toList(count = 1, offset = index) %>%
+        rgee::ee$FeatureCollection()
+    } else {
+      # Index is a n-length vector and consecutive?
+      if (length(index) > 1 & is_consecutive) {
+        ee_c %>%
+          rgee::ee$FeatureCollection$toList(count = length(index), offset = min(index)) %>%
+          rgee::ee$FeatureCollection()
+      } else {
+        ee_c_r <- list()
+        counter <- 1
+        for (i in index) {
+          ee_c_r[[counter]] <- ee_c %>%
+            rgee::ee$FeatureCollection$toList(count = 1, offset = i) %>%
+            rgee::ee$FeatureCollection() %>%
+            rgee::ee$FeatureCollection$first()
+          counter <- counter + 1
+        }
+        ee$FeatureCollection(ee_c_r)
+      }
+    }
+  } else {
+    stop("ee_get only support objects of class FeatureCollection and ImageCollection.",
+         "\nEnter: ", class(ee_c)[1],
+         "\nExpected: ee$ImageCollection or ee$FeatureCollection")
+  }
+}
