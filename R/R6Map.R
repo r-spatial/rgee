@@ -481,6 +481,7 @@ R6Map <- R6::R6Class(
       m_img_list <- list()
 
       if (is.null(name)) {
+        # Get names (system:id) for each image from the ImageCollection
         name <- tryCatch(
           expr = eeObject %>%
             ee$ImageCollection$aggregate_array("system:id") %>%
@@ -489,7 +490,33 @@ R6Map <- R6::R6Class(
             basename(),
           error = function(e) sprintf("untitled_%02d", seq_len(eeObject_size))
         )
+
+        # if name is NULL
         if (length(name) == 0 | is.null(name)) name <- sprintf("untitled_%02d", seq_len(eeObject_size))
+
+        # all the images from the ee.ImageCollection must have a system:id
+        if (length(name) != length(eeObject_size)) {
+          message(
+            paste0(
+              "Some ee.Image does not have a 'system:id' property, locating does ee.Image ...",
+              " This could take some time ..."
+            )
+          )
+          lnames <- rep(NA, eeObject_size)
+          null_counter <- 1
+          for (index in seq_len(eeObject_size) - 1) {
+            lname <- ee_get(eeObject, index = index)$first()$get("system:id")$getInfo()
+            if (is.null(lname)) {
+              lname <- sprintf("layer_%02d", null_counter)
+              null_counter <- null_counter + 1
+              message(
+                sprintf("Assigning name %s to the ee.Image of index [%s]", lname, index + 1)
+              )
+            }
+            lnames[index + 1]  <- basename(lname)
+          }
+          name <- lnames
+        }
       }
 
       if (length(name) == 1) {
