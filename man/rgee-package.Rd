@@ -230,7 +230,6 @@ and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first,
 \code{\link{ee_print}}\tab Print and return metadata about Spatial Earth Engine Objects. \cr
 \code{\link{ee_monitoring}}\tab Monitoring Earth Engine task progress. \cr
 \code{\link{print}}\tab Print Earth Engine objects. \cr
-\code{\link{ee_get}}\tab Return the element at a specified position in an Earth Engine Collection. \cr
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 }
 }
@@ -247,22 +246,8 @@ and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first,
 \code{\link{ee_utils_create_manifest_image}}\tab Create a manifest to upload an image. \cr
 \code{\link{ee_utils_create_manifest_table}}\tab Create a manifest to upload a table. \cr
 \code{\link{ee_utils_get_crs}}\tab Convert EPSG, ESRI or SR-ORG code into a OGC WKT. \cr
-\code{\link{ee_utils_gif_annotate}}\tab Add text to a GIF. \cr
-\code{\link{ee_utils_gif_creator}}\tab Create a GIF from an Earth Engine ImageCollection. \cr
-\code{\link{ee_utils_gif_save}}\tab Write a GIF file. \cr
 \code{\link{ee_utils_future_value}}\tab The value of a future or the values of all elements in a container. \cr
 \code{\link{ee_utils_dataset_display}}\tab Search into the Earth Engine Data Catalog. \cr
----------------------------\tab --------------------------------------------------------------------------------------------------- \cr
-}
-}
-
-\section{XIX. Subsetting}{
-
-
-\tabular{ll}{
----------------------------\tab --------------------------------------------------------------------------------------------------- \cr
-\code{\link{ee_get}}\tab Return the element at the specified position in an Earth Engine Collection. \cr
-\code{\link{ee_subsetting}}\tab Return the element at a specified position in an Earth Engine Image or ImageCollection. \cr
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 }
 }
