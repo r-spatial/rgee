@@ -820,7 +820,7 @@ ee_drive_to_local <- function(task,
     ee_save_credential(pdrive = drive_credential)
     message(
       "Google Drive credentials were not loaded.",
-      " Running ee_Initialize(email = '",ee_user[["email"]],"', drive = TRUE)",
+      " Running ee_Initialize(user = '", ee_user[["email"]], "', drive = TRUE)",
       " to fix."
     )
   }
@@ -1066,7 +1066,7 @@ ee_gcs_to_local <- function(task,
     ee_save_credential(pgcs = gcs_credential[["path"]])
     message(
       "Google Cloud Storage credentials were not loaded.",
-      " Running ee_Initialize(email = '",ee_user[["email"]],"', gcs = TRUE)",
+      " Running ee_Initialize(user = '", ee_user[["email"]], "', gcs = TRUE)",
       " to fix."
     )
   }

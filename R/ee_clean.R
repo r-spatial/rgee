@@ -162,7 +162,7 @@ ee_clean_container <- function(name = "rgee_backup",
     if (is.na(ee_user[["drive_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", drive = TRUE)',
+        ' Run ee_Initialize(user = "myemail", drive = TRUE)',
         " to fix it"
       )
     }
@@ -206,7 +206,7 @@ ee_clean_container <- function(name = "rgee_backup",
     if (is.na(ee_user[["gcs_cre"]])) {
       stop(
         "Google Drive credentials were not loaded.",
-        ' Run ee_Initialize(email = "myemail", gcs = TRUE)',
+        ' Run ee_Initialize(user = "myemail", gcs = TRUE)',
         " to fix it"
       )
     }

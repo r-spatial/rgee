@@ -6,9 +6,9 @@
 #' allows you to grant permission to manage resources. This function is
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
-#' @param email Character (optional, e.g. `data.colec.fbf@gmail.com`). The email
-#' argument is used to create a folder inside the path \cr
-#' \code{~/.config/earthengine/} that save all credentials for a specific
+#' @param user Character (optional, e.g. `data.colec.fbf`). The user
+#' argument is used to create a folder inside the path
+#' \code{~/.config/earthengine/} that save all the credentials for a specific
 #' Google identity.
 #'
 #' @param drive Logical (optional). If TRUE, the drive credential
@@ -32,9 +32,9 @@
 #' googlecloudStorageR, respectively. By default, rgee does not require
 #' them. These are only necessary to enable rgee I/O functionality.
 #' All user credentials are saved in the directory
-#' \code{~/.config/earthengine/}, if a user does not specify the email
-#' argument all user credentials are saved in a subdirectory
-#' called \code{~/.config/earthengine/ndef}.
+#' \code{~/.config/earthengine/}. If a user does not specify the "user"
+#' argument, all user credentials are saved in the the subdirectory
+#' \code{~/.config/earthengine/ndef}.
 #'
 #' @family session management functions
 #' @return No return value, called for initializing the earthengine-api.
@@ -47,7 +47,7 @@
 #' ee_user_info()
 #' }
 #' @export
-ee_Initialize <- function(email = NULL,
+ee_Initialize <- function(user = NULL,
                           drive = FALSE,
                           gcs = FALSE,
                           display = FALSE,
@@ -97,28 +97,28 @@ ee_Initialize <- function(email = NULL,
   }
 
   # 1. simple checking
-  if (is.null(email)) {
-    email <- "ndef"
+  if (is.null(user)) {
+    user <- "ndef"
   }
 
   if (!quiet) {
-    if (email == "ndef") {
+    if (user == "ndef") {
       cat(
         "", green(symbol[["tick"]]),
-        blue("email:"),
+        blue("user:"),
         green("not_defined\n")
       )
     } else {
       cat(
         "", green(symbol[["tick"]]),
-        blue("email:"),
-        green(email), "\n"
+        blue("user:"),
+        green(user), "\n"
       )
     }
   }
 
   # create a user's folder
-  email_clean <- gsub("@gmail.com", "", email)
+  email_clean <- gsub("@gmail.com", "", user)
   ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
   ee_path_user <- sprintf("%s/%s", ee_path, email_clean)
   dir.create(ee_path_user, showWarnings = FALSE, recursive = TRUE)
@@ -140,7 +140,7 @@ ee_Initialize <- function(email = NULL,
         blue("Google Drive credentials:")
       )
     }
-    drive_credentials <- ee_create_credentials_drive(email, quiet = quiet)
+    drive_credentials <- ee_create_credentials_drive(user, quiet = quiet)
     if (!quiet) {
       cat(
         "\r",
@@ -162,7 +162,7 @@ ee_Initialize <- function(email = NULL,
       )
     }
     gcs_credentials <- tryCatch(
-      expr = ee_create_credentials_gcs(email),
+      expr = ee_create_credentials_gcs(user),
       error = function(e) {
         list(path = NA, message = NA)
       })
@@ -240,7 +240,7 @@ ee_Initialize <- function(email = NULL,
   )
 
   if (!quiet) {
-    cat("\r", green(symbol[["tick"]]), blue("Earth Engine user:"),
+    cat("\r", green(symbol[["tick"]]), blue("Earth Engine account:"),
         green(bold(ee_user)), "\n")
     cat(rule(), "\n")
     if (!is.na(gcs_credentials[["message"]])) {
