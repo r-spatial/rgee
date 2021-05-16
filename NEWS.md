@@ -11,6 +11,18 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.0.9.999 (dev)
+
+- re-coded the Map and R6Map modules to simplify the maintenance. Many bugs were solved.
+- ee_utils_get_crs now call to the web.archive.org if spatialreference is down.
+- Math module and subsetting module were migrated to [rgeeExtra](https://github.com/r-earthengine/rgeeExtra).
+- In ee_Initialize, the "email" parameter was renamed to "user".
+- package page up!
+- ee_get is now an internal function of rgee. A new/faster version of ee_get is available in rgeeExtra.
+- GH up
+
+
+
 # rgee 1.0.9
 
 - Accessing the Earth Engine Data Catalog via '$' thanks to the [Earth-Engine-Datasets-List](https://github.com/samapriya/Earth-Engine-Datasets-List) created and supported by [@samapriya](https://github.com/samapriya).
