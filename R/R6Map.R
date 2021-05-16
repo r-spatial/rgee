@@ -270,7 +270,6 @@ R6Map <- R6::R6Class(
     #' @param name The name of layers.
     #' @param shown A flag indicating whether layers should be on by default.
     #' @param opacity The layer's opacity is represented as a number between 0 and 1. Defaults to 1.
-    #' @param legend Should a legend be plotted?. Only the legend of the first image is displayed.
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
     #' By default NULL (No panel will be created).
@@ -419,7 +418,6 @@ R6Map <- R6::R6Class(
     #' @param name The name of layers.
     #' @param shown A flag indicating whether layers should be on by default.
     #' @param opacity The layer's opacity is represented as a number between 0 and 1. Defaults to 1.
-    #' @param legend Should a legend be plotted?. Only the legend of the first image is displayed.
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
     #' By default NULL (No panel will be created).
@@ -444,7 +442,7 @@ R6Map <- R6::R6Class(
     #'   ee_get(0:2)
     #'
     #' Map$centerObject(nc$geometry())
-    #' Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
+    #' Map$addLayers(eeObject = ee_s2,position = "right")
     #'
     #' # digging up the metadata
     #' Map$previous_map_right$rgee$tokens

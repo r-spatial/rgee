@@ -207,7 +207,7 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   ee_get(0:2)
 
 Map$centerObject(nc$geometry())
-Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
+Map$addLayers(eeObject = ee_s2,position = "right")
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
@@ -536,8 +536,6 @@ Adds a given Earth Engine spatial object to the map as a layer
 \item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).}
-
-\item{\code{legend}}{Should a legend be plotted?. Only the legend of the first image is displayed.}
 }
 \if{html}{\out{</div>}}
 }
@@ -630,8 +628,6 @@ the left panel. Otherwise, if it is "right" the map will be displayed in the rig
 By default NULL (No panel will be created).}
 
 \item{\code{opacity}}{The layer's opacity is represented as a number between 0 and 1. Defaults to 1.}
-
-\item{\code{legend}}{Should a legend be plotted?. Only the legend of the first image is displayed.}
 }
 \if{html}{\out{</div>}}
 }
@@ -658,7 +654,7 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   ee_get(0:2)
 
 Map$centerObject(nc$geometry())
-Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
+Map$addLayers(eeObject = ee_s2,position = "right")
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
