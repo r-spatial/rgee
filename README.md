@@ -1,13 +1,15 @@
 <h1 align="center">
   <br>
-  <a href="https://r-spatial.github.io/rgee/"><img src="https://raw.githubusercontent.com/r-spatial/rgee/master/man/figures/logo.png" alt="Markdownify" width="187"></a>
-  <a href="http://r-earthengine.github.io/"><img src="https://user-images.githubusercontent.com/16768318/105011770-a0127080-5a3d-11eb-961c-623b23399b01.png" alt="Markdownify" width="200"></a>
+  <a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a>
+  <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a>
+  <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>  
   <br>
-  Google Earth Engine for R
+  rgee: Google Earth Engine for R
   <br>
 </h1>
 
-<h4 align="center">An R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Several functions</a> have been implemented to make simple the connection with the R spatial ecosystem.</h4>
+
+<h4 align="center">rgee is an R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Various functions</a> are implemented to simplify the connection with the R spatial ecosystem.</h4>
 
 <p align="center">
 <a href="https://colab.research.google.com/github/r-spatial/rgee/blob/examples/rgee_colab.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open in Colab" title="Open and Execute in Google Colaboratory"></a>
@@ -463,12 +465,11 @@ We want to offer a **special thanks** :raised_hands: :clap: to [**Justin Braaten
   
 -   [**gee_asset_manager - Lukasz Tracewski**](https://github.com/tracek/gee_asset_manager/)
 -   [**geeup - Samapriya Roy**](https://github.com/samapriya/geeup/)
--   [**geeadd - Samapriya Roy**](https://github.com/samapriya/gee_asset_manager_addon/)\
+-   [**geeadd - Samapriya Roy**](https://github.com/samapriya/gee_asset_manager_addon/)
 -   [**cartoee - Kel Markert**](https://github.com/KMarkert/cartoee/)
 -   [**geetools - Rodrigo E. Principe**](https://github.com/gee-community/gee_tools/)
 -   [**landsat-extract-gee - Loïc Dutrieux**](https://github.com/loicdtx/landsat-extract-gee/)
 -   [**earthEngineGrabR - JesJehle**](https://github.com/JesJehle/earthEngineGrabR/)
 -   [**sf - Edzer Pebesma**](https://github.com/r-spatial/sf/)
 -   [**stars - Edzer Pebesma**](https://github.com/r-spatial/stars/)
--   [**gdalcubes - Marius Appel**](https://github.com/appelmar/gdalcubes/) /
-  
+-   [**gdalcubes - Marius Appel**](https://github.com/appelmar/gdalcubes/)
