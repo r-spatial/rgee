@@ -620,7 +620,14 @@ ee_utils_get_crs_web <- function(code) {
   } else {
     format <- "ogcwkt"
     link <- sprintf("https://spatialreference.org/ref/%s/%s/%s/", codetype, ee_code, format)
-    crs_wkt <- suppressWarnings(readLines(link))
+    crs_wkt <- tryCatch(
+      expr = suppressWarnings(readLines(link)),
+      error = function(e) {
+        message(sprintf("%s is down using %s ...", bold("spatialreference.org"), bold("web.archive.org")))
+        link <- sprintf("https://web.archive.org/web/https://spatialreference.org/ref/%s/%s/%s/", codetype, ee_code, format)
+        suppressWarnings(readLines(link))
+      }
+    )
   }
   ee_utils_py_to_r(crs_wkt)
 }
