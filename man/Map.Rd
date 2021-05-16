@@ -35,9 +35,7 @@ layers should be on by default. \cr
 \item \strong{opacity:} The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. \cr
 \item \strong{nmax:} Numeric. The maximum number of images to display.
-By default 5. \cr
-\item \strong{legend:} Should a legend be plotted?. Only the legend of
-the first image is displayed.
+By default 5.
 }
 
 \item  \strong{addLegend(visParams, name = "Legend", position = c("bottomright",
@@ -47,11 +45,10 @@ Adds a given ee$ImageCollection to the map as multiple layers. \cr
 \item \strong{visParams:} List of parameters for visualization.\cr
 \item \strong{name:} The title of the legend.\cr
 \item \strong{position:} Character. The position of the legend. By default bottomright. \cr
-\item \strong{opacity:} Map data values (numeric or factor/character) to
+\item \strong{color_mapping:} Map data values (numeric or factor/character) to
 colors according to a given palette. Use "numeric" ("discrete") for continuous
 (categorical) data. For display characters use "character" and add to visParams
-the element "values" containing the desired character names. For more customized
-options use \link[leaflet]{colorNumeric} or \link[leaflet]{colorFactor}. \cr
+the element "values" containing the desired character names. \cr
 \item \strong{opacity:} The legend's opacity is represented as a number between 0
 and 1. Defaults to 1. \cr
 \item \strong{...:} Extra legend creator arguments. See \link[leaflet]{addLegend}. \cr

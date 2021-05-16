@@ -5,7 +5,7 @@
 \title{Authenticate and Initialize Earth Engine}
 \usage{
 ee_Initialize(
-  email = NULL,
+  user = NULL,
   drive = FALSE,
   gcs = FALSE,
   display = FALSE,
@@ -13,9 +13,9 @@ ee_Initialize(
 )
 }
 \arguments{
-\item{email}{Character (optional, e.g. \code{data.colec.fbf@gmail.com}). The email
-argument is used to create a folder inside the path \cr
-\code{~/.config/earthengine/} that save all credentials for a specific
+\item{user}{Character (optional, e.g. \code{data.colec.fbf}). The user
+argument is used to create a folder inside the path
+\code{~/.config/earthengine/} that save all the credentials for a specific
 Google identity.}
 
 \item{drive}{Logical (optional). If TRUE, the drive credential
@@ -44,9 +44,9 @@ Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
-\code{~/.config/earthengine/}, if a user does not specify the email
-argument all user credentials are saved in a subdirectory
-called \code{~/.config/earthengine/ndef}.
+\code{~/.config/earthengine/}. If a user does not specify the "user"
+argument, all user credentials are saved in the the subdirectory
+\code{~/.config/earthengine/ndef}.
 }
 \examples{
 \dontrun{

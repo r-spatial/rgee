@@ -245,15 +245,6 @@ m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 m1 <- m_qc + m_legend
 m1
 
-# custom palette
-colorbar <- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
-m_legend <- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
-                          position = "bottomleft")
-m2 <- m_qc + m_legend
-m2
-
-# Comparison map
-m1 | m2
 }
 }
 \section{Public fields}{
@@ -525,8 +516,7 @@ Adds a given Earth Engine spatial object to the map as a layer
   name = NULL,
   shown = TRUE,
   opacity = 1,
-  position = NULL,
-  legend = FALSE
+  position = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -616,8 +606,7 @@ Adds a given ee$ImageCollection to the map as multiple layers.
   name = NULL,
   shown = TRUE,
   position = NULL,
-  opacity = 1,
-  legend = FALSE
+  opacity = 1
 )}\if{html}{\out{</div>}}
 }
 
@@ -707,8 +696,7 @@ Adds a color legend to an EarthEngineMap.
 \item{\code{color_mapping}}{Map data values (numeric or factor/character) to
 colors according to a given palette. Use "numeric" ("discrete") for continuous
 (categorical) data. For display characters use "character" and add to visParams
-the element "values" containing the desired character names. For more customized
-options use \link[leaflet]{colorNumeric} or \link[leaflet]{colorFactor}.}
+the element "values" containing the desired character names.}
 
 \item{\code{opacity}}{The legend's opacity is represented as a number between 0
 and 1. Defaults to 1.}
@@ -751,15 +739,6 @@ m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 m1 <- m_qc + m_legend
 m1
 
-# custom palette
-colorbar <- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
-m_legend <- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
-                          position = "bottomleft")
-m2 <- m_qc + m_legend
-m2
-
-# Comparison map
-m1 | m2
 }
 }
 \if{html}{\out{</div>}}

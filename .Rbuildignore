@@ -21,3 +21,4 @@
 ^test\credentials
 ^doc$
 ^Meta$
+^tester\.R$

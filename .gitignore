@@ -10,5 +10,6 @@ static
 pkgdown/favicon
 revdep
 build_package.R
+tester.R
 doc
 Meta
