@@ -1,0 +1,170 @@
+title: rgee
+url: https://r-spatial.github.io/rgee/
+template:
+  params:
+      bootswatch: flatly
+
+navbar:
+  left:
+    - icon: fa-home
+      href: index.html
+  right:
+    - text: "Articles"
+      icon: fas fa-book
+      menu:
+      -  text: Introduction
+         href: articles/rgee01.html
+      -  text: Consideration
+         href: articles/rgee02.html
+      -  text: Best Practices
+         href: articles/rgee03.html
+      -  text: rgee examples
+         href: https://r-earthengine.github.io/
+    - icon: fa fa-newspaper-o
+      text: "news"
+      href: news/index.html
+    - icon: fa fa-file-code-o
+      text: "functions"
+      href: reference/index.html
+    - icon: fa fa-github fa-lg
+      text: "github"
+      href: https://github.com/r-spatial/rgee/
+
+reference:
+  - title: "Earth Engine module"
+    contents:
+      - ee
+      - rgee-package
+
+  - title: "Install"
+    contents:
+      - ee_install
+      - ee_install_set_pyenv
+      - ee_install_upgrade
+
+  - title: "Checking"
+    contents:
+      - ee_check
+      - ee_check_python
+      - ee_check_credentials
+
+  - title: "Clean"
+    contents:
+      - ee_clean_container
+      - ee_clean_credentials
+      - ee_clean_pyenv
+
+  - title: "Subsetting"
+    contents:
+      - ee_get
+      - ee_subsetting
+
+  - title: "Session management"
+    contents:
+      - ee_Initialize
+      - ee_version
+      - ee_user_info
+      - ee_users
+      - ee_get_assethome
+      - ee_get_earthengine_path
+
+  - title: "Date"
+    contents:
+      - eedate_to_rdate
+      - rdate_to_eedate
+      - ee_get_date_img
+      - ee_get_date_ic
+
+  - title: "Visualization"
+    contents:
+      - Map
+      - R6Map
+      - map-operator
+
+  - title: "Image download"
+    contents:
+      - ee_as_raster
+      - ee_as_stars
+      - ee_as_thumbnail
+      - ee_image_to_asset
+      - ee_image_to_drive
+      - ee_image_to_gcs
+      - ee_image_info
+      - ee_imagecollection_to_local
+
+  - title: "Vector download"
+    contents:
+      - ee_as_sf
+      - ee_table_to_asset
+      - ee_table_to_drive
+      - ee_table_to_gcs
+
+  - title: "Generic download"
+    contents:
+      - ee_drive_to_local
+      - ee_gcs_to_local
+
+  - title: "Assets management"
+    contents:
+      - ee_manage_create
+      - ee_manage_delete
+      - ee_manage_assetlist
+      - ee_manage_quota
+      - ee_manage_copy
+      - ee_manage_move
+      - ee_manage_set_properties
+      - ee_manage_delete_properties
+      - ee_manage_asset_access
+      - ee_manage_task
+      - ee_manage_cancel_all_running_task
+      - ee_manage_asset_size
+
+  - title: "Upload raster"
+    contents:
+      - stars_as_ee
+      - raster_as_ee
+      - gcs_to_ee_image
+
+  - title: "Upload vector"
+    contents:
+      - gcs_to_ee_table
+      - sf_as_ee
+
+  - title: "Upload generic"
+    contents:
+      - local_to_gcs
+
+  - title: "Extract values"
+    contents:
+      - ee_extract
+
+  - title: "Helper functions"
+    contents:
+      - ee_help
+      - ee_print
+      - print.ee.computedobject.ComputedObject
+      - ee_monitoring
+
+  - title: "rgee Operator"
+    contents:
+      - Math-methods
+      - Ops-methods
+      - Summary-methods
+      - ee_length
+      - ee_length_ic
+      - ee_name
+
+  - title: "Utils"
+    contents:
+      - ee_utils_py_to_r
+      - ee_utils_pyfunc
+      - ee_utils_shp_to_zip
+      - ee_utils_create_json
+      - ee_utils_create_manifest_image
+      - ee_utils_create_manifest_table
+      - ee_utils_get_crs
+      - ee_utils_gif_annotate
+      - ee_utils_gif_creator
+      - ee_utils_gif_save
+      - ee_utils_future_value
+      - ee_utils_dataset_display
