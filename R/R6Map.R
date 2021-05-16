@@ -318,6 +318,8 @@ R6Map <- R6::R6Class(
     #'   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
     #'   name = "l8_right"
     #' )
+    #'
+    #' Map$reset()
     #'}
     addLayer = function(eeObject,
                         visParams = NULL,
@@ -443,10 +445,11 @@ R6Map <- R6::R6Class(
     #'
     #' Map$centerObject(nc$geometry())
     #' Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
-    #' Map$reset()
     #'
     #' # digging up the metadata
     #' Map$previous_map_right$rgee$tokens
+    #'
+    #' Map$reset()
     #' }
     addLayers = function(eeObject,
                          visParams = NULL,
@@ -574,6 +577,8 @@ R6Map <- R6::R6Class(
     #' library(rgee)
     #' ee_Initialize()
     #'
+    #' Map$reset()
+    #'
     #' # Load MODIS ImageCollection
     #' imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
     #'
@@ -586,18 +591,13 @@ R6Map <- R6::R6Class(
     #' m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
     #'
     #' # continous palette
-    #' m_legend <- Map$addLegend(vis_qc)
-    #' m_qc + m_legend
+    #' Map$addLegend(vis_qc)
     #'
     #' # categorical palette
-    #' m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
-    #' m_qc + m_legend
+    #' Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
     #'
     #' # character palette
-    #' m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
-    #' m1 <- m_qc + m_legend
-    #' m1
-    #'
+    #' Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
     #' }
     addLegend = function(visParams,
                          name = "Legend",
@@ -1041,7 +1041,7 @@ R6Map <- R6::R6Class(
 #'   filterBounds(nc) %>%
 #'   ee_get(0:4)
 #' Map$centerObject(nc$geometry())
-#' m5 <- Map$addLayers(ee_s2, legend = TRUE)
+#' m5 <- Map$addLayers(ee_s2)
 #' m5
 #'
 #' # Case 6: Map comparison
@@ -1049,10 +1049,9 @@ R6Map <- R6::R6Class(
 #' Map$centerObject(image)
 #' m_ndvi <- Map$addLayer(
 #'   eeObject = image$normalizedDifference(list("B5", "B4")),
-#'   visParams = list(max = 0.7),
-#'   name = "SF_NDVI",
-#'   legend = TRUE
-#' )
+#'   visParams = list(min = 0, max = 0.7),
+#'   name = "SF_NDVI"
+#' ) + Map$addLegend(list(min = 0, max = 0.7), name = "NDVI", position = "bottomright", bins = 4)
 #' m6 <- m4 | m_ndvi
 #' m6
 #'

@@ -181,6 +181,8 @@ Map$addLayer(
   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
   name = "l8_right"
 )
+
+Map$reset()
 }
 
 ## ------------------------------------------------
@@ -206,10 +208,11 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
 
 Map$centerObject(nc$geometry())
 Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
-Map$reset()
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
+
+Map$reset()
 }
 
 ## ------------------------------------------------
@@ -220,6 +223,8 @@ Map$previous_map_right$rgee$tokens
 library(leaflet)
 library(rgee)
 ee_Initialize()
+
+Map$reset()
 
 # Load MODIS ImageCollection
 imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
@@ -233,18 +238,13 @@ vis_qc <- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = l
 m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
 
 # continous palette
-m_legend <- Map$addLegend(vis_qc)
-m_qc + m_legend
+Map$addLegend(vis_qc)
 
 # categorical palette
-m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
-m_qc + m_legend
+Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
 
 # character palette
-m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
-m1 <- m_qc + m_legend
-m1
-
+Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 }
 }
 \section{Public fields}{
@@ -586,6 +586,8 @@ Map$addLayer(
   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
   name = "l8_right"
 )
+
+Map$reset()
 }
 }
 \if{html}{\out{</div>}}
@@ -657,10 +659,11 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
 
 Map$centerObject(nc$geometry())
 Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
-Map$reset()
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
+
+Map$reset()
 }
 }
 \if{html}{\out{</div>}}
@@ -715,6 +718,8 @@ library(leaflet)
 library(rgee)
 ee_Initialize()
 
+Map$reset()
+
 # Load MODIS ImageCollection
 imgcol <- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
 
@@ -727,18 +732,13 @@ vis_qc <- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = l
 m_qc <- Map$addLayer(imgcol$median(), vis_qc, "QC")
 
 # continous palette
-m_legend <- Map$addLegend(vis_qc)
-m_qc + m_legend
+Map$addLegend(vis_qc)
 
 # categorical palette
-m_legend <- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
-m_qc + m_legend
+Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
 
 # character palette
-m_legend <- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
-m1 <- m_qc + m_legend
-m1
-
+Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 }
 }
 \if{html}{\out{</div>}}

@@ -184,7 +184,7 @@ ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterBounds(nc) \%>\%
   ee_get(0:4)
 Map$centerObject(nc$geometry())
-m5 <- Map$addLayers(ee_s2, legend = TRUE)
+m5 <- Map$addLayers(ee_s2)
 m5
 
 # Case 6: Map comparison
@@ -192,10 +192,9 @@ image <- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
 Map$centerObject(image)
 m_ndvi <- Map$addLayer(
   eeObject = image$normalizedDifference(list("B5", "B4")),
-  visParams = list(max = 0.7),
-  name = "SF_NDVI",
-  legend = TRUE
-)
+  visParams = list(min = 0, max = 0.7),
+  name = "SF_NDVI"
+) + Map$addLegend(list(min = 0, max = 0.7), name = "NDVI", position = "bottomright", bins = 4)
 m6 <- m4 | m_ndvi
 m6
 
