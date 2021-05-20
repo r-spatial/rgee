@@ -26,8 +26,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -73,7 +71,7 @@
       <a href="../articles/rgee03.html">Best Practices</a>
     </li>
     <li>
-      <a href="https://r-earthengine.github.io/" class="external-link">rgee examples</a>
+      <a href="https://r-earthengine.github.io/">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -92,7 +90,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/r-spatial/rgee/" class="external-link">
+  <a href="https://github.com/r-spatial/rgee/">
     <span class="fa fa fa fa-github fa-lg"></span>
      
     github
@@ -114,7 +112,7 @@
       <h1 data-toc-skip><strong>Best Practices</strong></h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/rgee03.Rmd" class="external-link"><code>vignettes/rgee03.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/rgee03.Rmd"><code>vignettes/rgee03.Rmd</code></a></small>
       <div class="hidden name"><code>rgee03.Rmd</code></div>
 
     </div>
@@ -136,37 +134,37 @@
     font-weight: bold;
   }
 </style>
-<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">Google Earth Engine Documentation</a>.</strong></p>
+<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/guides/best_practices">Google Earth Engine Documentation</a>.</strong></p>
 <p>This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations.</p>
 <div id="avoid-mixing-client-functions-and-objects-with-server-functions-and-objects" class="section level2">
 <h2 class="hasAnchor">
-<a href="#avoid-mixing-client-functions-and-objects-with-server-functions-and-objects" class="anchor" aria-hidden="true"></a><strong>Avoid mixing client functions and objects with server functions and objects</strong>
+<a href="#avoid-mixing-client-functions-and-objects-with-server-functions-and-objects" class="anchor"></a><strong>Avoid mixing client functions and objects with server functions and objects</strong>
 </h2>
 <p>Earth Engine server objects are objects with constructors that start with <code>ee</code> (e.g. ee$Image, ee$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).</p>
-<p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">here</a>. See <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
+<p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/guides/debugging">here</a>. See <a href="https://developers.google.com/earth-engine/guides/client_server">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Won't work.</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="st">'No!'</span><span class="op">)</span> 
 <span class="op">}</span></code></pre></div>
 <p>Can you spot the error? Note that <code>table$size()</code> is a server method on a server object and can not be used with client-side functionality such as the <code>seq_len</code> function.</p>
 <p>A situation in which you may want to use for-loops is with to display results with <code>Map</code>, since the Map object and methods are client-side.</p>
 <p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use client functions for display Earth Engine spatial objects.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">l8_ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">l8_ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span>
   <span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_%s"</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"20140318"</span>, <span class="st">"20140403"</span>,<span class="st">"20140419"</span>,<span class="st">"20140505"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"20140318"</span>, <span class="st">"20140403"</span>,<span class="st">"20140419"</span>,<span class="st">"20140505"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">display_l8ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">display_l8ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">l8</span> <span class="kw">in</span> <span class="va">l8_ts</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">ee_l8</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">l8</span><span class="op">)</span>
   <span class="va">display_l8ts</span><span class="op">[[</span><span class="va">l8</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">ee_l8</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">ee_l8</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="st">'+'</span>, <span class="va">display_l8ts</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/funprog.html">Reduce</a></span><span class="op">(</span><span class="st">'+'</span>, <span class="va">display_l8ts</span><span class="op">)</span></code></pre></div>
 <p>Conversely, <code>map()</code> is a server function and client functionality won’t work inside the function passed to map(). For example:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -187,11 +185,11 @@
   <span class="va">f</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">"area_sq_meters"</span>, <span class="va">f</span><span class="op">$</span><span class="fu">area</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">withMoreProperties</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"area_sq_meters"</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>You can also <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> the collection based on computed or existing properties and <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code> the result. Note that you can not print a collection with more 5000 elements. If you get the “Collection query aborted after accumulating over 5000 elements” error, <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> or <code>limit()</code> the collection before printing.</p>
+<p>You can also <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> the collection based on computed or existing properties and <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code> the result. Note that you can not print a collection with more 5000 elements. If you get the “Collection query aborted after accumulating over 5000 elements” error, <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> or <code>limit()</code> the collection before printing.</p>
 </div>
 <div id="avoid-converting-to-list-unnecessarily" class="section level2">
 <h2 class="hasAnchor">
-<a href="#avoid-converting-to-list-unnecessarily" class="anchor" aria-hidden="true"></a><strong>Avoid converting to list unnecessarily</strong>
+<a href="#avoid-converting-to-list-unnecessarily" class="anchor"></a><strong>Avoid converting to list unnecessarily</strong>
 </h2>
 <p>Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a <code>List</code> or <code>Array</code> type. Unless you need random access to collection elements (i.e. you need to get the i’th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t convert to list unnecessarily!</p>
@@ -201,15 +199,15 @@
 <span class="co"># Do NOT do this!!</span>
 <span class="va">list</span> <span class="op">&lt;-</span> <span class="va">table</span><span class="op">$</span><span class="fu">toList</span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">list</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="fl">13</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># User memory limit exceeded.</span></code></pre></div>
-<p>Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p>Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>:</p>
+<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Niger'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Note that you should <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">use filters as early as possible in your analysis</a>.</p>
+<p>Note that you should <a href="https://developers.google.com/earth-engine/guides/best_practices">use filters as early as possible in your analysis</a>.</p>
 </div>
 <div id="avoid-ee-algorithms-if" class="section level2">
 <h2 class="hasAnchor">
-<a href="#avoid-ee-algorithms-if" class="anchor" aria-hidden="true"></a><strong>Avoid ee.Algorithms.If()</strong>
+<a href="#avoid-ee-algorithms-if" class="anchor"></a><strong>Avoid ee.Algorithms.If()</strong>
 </h2>
 <p>Do not use <code>ee.Algorithms.If()</code> to implement branching logic, especially in a mapped function. As the following example illustrates, <code>ee.Algorithms.If()</code> can be memory intensive and is not recommended:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t use <code>If()</code>:</p>
@@ -228,26 +226,26 @@
 
 <span class="co"># If() may evaluate both the true and false cases.</span></code></pre></div>
 <p>Note that the second argument to <code>map()</code> is <code>TRUE</code>. This means that the mapped function may return nulls and they will be dropped in the resultant collection. That can be useful (without <code>If()</code>), but here the easiest solution is to use a filter:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Chad'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>As shown in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
+<p>As shown in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
 </div>
 <div id="avoid-reproject" class="section level2">
 <h2 class="hasAnchor">
-<a href="#avoid-reproject" class="anchor" aria-hidden="true"></a><strong>Avoid reproject()</strong>
+<a href="#avoid-reproject" class="anchor"></a><strong>Avoid reproject()</strong>
 </h2>
 <p>Don’t use <code>reproject</code> unless absolutely necessary. One reason you might want to use reproject() is to force <code>Map</code> display computations to happen at a specific scale so you can examine the results at your desired scale of analysis. In the next example, patches of hot pixels are computed and the count of pixels in each patch is computed. Run the example and click on one of the patches. Note that the count of pixels differs between the reprojected data the data that has not been reprojected.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span>
-<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.405</span>, <span class="fl">37.786</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.405</span>, <span class="fl">37.786</span><span class="op">)</span><span class="op">)</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">sf</span>, <span class="fl">13</span><span class="op">)</span>
 
 <span class="co"># A reason to reproject - counting pixels and exploring interactively.</span>
 <span class="va">image</span> <span class="op">&lt;-</span> <span class="va">l8sr</span><span class="op">$</span><span class="fu">filterBounds</span><span class="op">(</span><span class="va">sf</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2019-06-01"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">first</span><span class="op">(</span><span class="op">)</span>
-<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">image</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="st">"B10"</span>, min <span class="op">=</span> <span class="fl">2800</span>, max <span class="op">=</span> <span class="fl">3100</span><span class="op">)</span>, <span class="st">"image"</span><span class="op">)</span>
+<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">image</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="st">"B10"</span>, min <span class="op">=</span> <span class="fl">2800</span>, max <span class="op">=</span> <span class="fl">3100</span><span class="op">)</span>, <span class="st">"image"</span><span class="op">)</span>
 
 <span class="va">hotspots</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">"B10"</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">gt</span><span class="op">(</span><span class="fl">3100</span><span class="op">)</span><span class="op">$</span>
@@ -257,18 +255,18 @@
 <span class="va">objectSize</span> <span class="op">&lt;-</span> <span class="va">hotspots</span><span class="op">$</span><span class="fu">connectedPixelCount</span><span class="op">(</span><span class="fl">256</span><span class="op">)</span>
 <span class="co"># Beware of reproject!  Don't zoom out on reprojected data.</span>
 <span class="va">reprojected</span> <span class="op">&lt;-</span> <span class="va">objectSize</span><span class="op">$</span><span class="fu">reproject</span><span class="op">(</span><span class="va">hotspots</span><span class="op">$</span><span class="fu">projection</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">objectSize</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size No Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">reprojected</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/guides/scale" class="external-link">scale of analysis</a> is set by the Code Editor zoom level. By calling <code>reproject()</code> you set the scale of the computation instead of the Map display. Use <code>reproject()</code> with extreme caution for reasons described in <a href="https://developers.google.com/earth-engine/guides/projections" class="external-link">this doc</a>.</p>
+<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">objectSize</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size No Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+<span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">reprojected</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/guides/scale">scale of analysis</a> is set by the Code Editor zoom level. By calling <code>reproject()</code> you set the scale of the computation instead of the Map display. Use <code>reproject()</code> with extreme caution for reasons described in <a href="https://developers.google.com/earth-engine/guides/projections">this doc</a>.</p>
 </div>
 <div id="filter-and-select-first" class="section level2">
 <h2 class="hasAnchor">
-<a href="#filter-and-select-first" class="anchor" aria-hidden="true"></a><strong>Filter and select() first</strong>
+<a href="#filter-and-select-first" class="anchor"></a><strong>Filter and select() first</strong>
 </h2>
-<p>In general, filter input collections by time, location and/or metadata prior to doing anything else with the collection. Apply more selective filters before less selective filters. Spatial and/or temporal filters are often more selective. For example, note that <code><a href="https://rdrr.io/pkg/raster/man/select.html" class="external-link">select()</a></code> and <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> are applied before <code>map()</code>:</p>
+<p>In general, filter input collections by time, location and/or metadata prior to doing anything else with the collection. Apply more selective filters before less selective filters. Spatial and/or temporal filters are often more selective. For example, note that <code><a href="https://rdrr.io/pkg/raster/man/select.html">select()</a></code> and <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> are applied before <code>map()</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">images</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2_SR"</span><span class="op">)</span>
-<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.463</span>, <span class="fl">37.768</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.463</span>, <span class="fl">37.768</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Expensive function to reduce the neighborhood of an image.</span>
 <span class="va">reduceFunction</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">image</span><span class="op">)</span> <span class="op">{</span>
@@ -278,7 +276,7 @@
   <span class="op">)</span>
 <span class="op">}</span>
 
-<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span>
+<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span>
 <span class="co"># Select and filter first!</span>
 <span class="va">reasonableComputation</span> <span class="op">&lt;-</span> <span class="va">images</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">filterBounds</span><span class="op">(</span><span class="va">sf</span><span class="op">)</span><span class="op">$</span>
@@ -289,23 +287,23 @@
   <span class="fu">reduce</span><span class="op">(</span><span class="st">'mean'</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">rename</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span>
 
-<span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="va">bands</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>
+<span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="va">bands</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">reasonableComputation</span>, <span class="va">viz</span>, <span class="st">"resonableComputation"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="use-updatemask-instead-of-mask" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-updatemask-instead-of-mask" class="anchor" aria-hidden="true"></a><strong>Use updateMask() instead of mask()</strong>
+<a href="#use-updatemask-instead-of-mask" class="anchor"></a><strong>Use updateMask() instead of mask()</strong>
 </h2>
-<p>The difference between <code>updateMask()</code> and <code><a href="https://rdrr.io/pkg/raster/man/mask.html" class="external-link">mask()</a></code> is that the former does a logical <code>and()</code> of the argument (the new mask) and the existing image mask whereas <code><a href="https://rdrr.io/pkg/raster/man/mask.html" class="external-link">mask()</a></code> simply replaces the image mask with the argument. The danger of the latter is that you can unmask pixels unintentionally. In this example, the goal is to mask pixels less than or equal to 300 meters elevation. As you can see (zoom out), using <code><a href="https://rdrr.io/pkg/raster/man/mask.html" class="external-link">mask()</a></code> causes a lot of pixels to become unmasked, pixels that don’t belong in the image of interest:</p>
+<p>The difference between <code>updateMask()</code> and <code><a href="https://rdrr.io/pkg/raster/man/mask.html">mask()</a></code> is that the former does a logical <code>and()</code> of the argument (the new mask) and the existing image mask whereas <code><a href="https://rdrr.io/pkg/raster/man/mask.html">mask()</a></code> simply replaces the image mask with the argument. The danger of the latter is that you can unmask pixels unintentionally. In this example, the goal is to mask pixels less than or equal to 300 meters elevation. As you can see (zoom out), using <code><a href="https://rdrr.io/pkg/raster/man/mask.html">mask()</a></code> causes a lot of pixels to become unmasked, pixels that don’t belong in the image of interest:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span>
-<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.40554461769182</span>, <span class="fl">37.786807309873716</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.40554461769182</span>, <span class="fl">37.786807309873716</span><span class="op">)</span><span class="op">)</span>
 <span class="va">aw3d30</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"JAXA/ALOS/AW3D30_V1_1"</span><span class="op">)</span>
 
 <span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">sf</span>, <span class="fl">7</span><span class="op">)</span>
 
 <span class="va">image</span> <span class="op">&lt;-</span> <span class="va">l8sr</span><span class="op">$</span><span class="fu">filterBounds</span><span class="op">(</span><span class="va">sf</span><span class="op">)</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">"2019-06-01"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span>
-<span class="va">vis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span>
+<span class="va">vis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">3000</span><span class="op">)</span>
 
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">image</span>, <span class="va">vis</span>, <span class="st">"image"</span>, <span class="cn">FALSE</span><span class="op">)</span>
 
@@ -321,7 +319,7 @@
 </div>
 <div id="combine-reducers" class="section level2">
 <h2 class="hasAnchor">
-<a href="#combine-reducers" class="anchor" aria-hidden="true"></a><strong>Combine reducers</strong>
+<a href="#combine-reducers" class="anchor"></a><strong>Combine reducers</strong>
 </h2>
 <p>If you need multiple statistics (e.g. mean and standard deviation) from a single input (e.g. an image region), it is more efficient to combine reducers. For example, to get image statistics, combine reducers as follows:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -333,7 +331,7 @@
     reducer2 <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">stdDev</span><span class="op">(</span><span class="op">)</span>,
     sharedInputs <span class="op">=</span> <span class="cn">TRUE</span>
   <span class="op">)</span>,
-  geometry <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.15</span>, <span class="fl">48.55</span>, <span class="op">-</span><span class="fl">1.83</span>, <span class="fl">48.72</span><span class="op">)</span><span class="op">)</span>,
+  geometry <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.15</span>, <span class="fl">48.55</span>, <span class="op">-</span><span class="fl">1.83</span>, <span class="fl">48.72</span><span class="op">)</span><span class="op">)</span>,
   scale <span class="op">=</span> <span class="fl">10</span>,
   bestEffort <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># Use maxPixels if you care about scale.</span>
 <span class="op">)</span>
@@ -347,36 +345,36 @@
 </div>
 <div id="use-export" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-export" class="anchor" aria-hidden="true"></a><strong>Use Export</strong>
+<a href="#use-export" class="anchor"></a><strong>Use Export</strong>
 </h2>
 <p>For computations that result in “User memory limit exceeded” or “Computation timed out” errors in the Code Editor, the same computations may be able to succeed by using <code>Export</code>. This is because the timeouts are longer and the allowable memory footprint is larger when running in the batch system (where exports run). (There are other approaches you may want to try first as detailed in the debugging doc). Continuing the previous example, suppose that dictionary returned an error. You could obtain the results by doing something like:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">link</span> <span class="op">&lt;-</span> <span class="st">'86836482971a35a5e735a17e93c23272'</span>
 <span class="va">task</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">batch</span><span class="op">$</span><span class="va">Export</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">toDrive</span><span class="op">(</span>
   collection <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Feature</span><span class="op">(</span><span class="cn">NULL</span>, <span class="va">stats</span><span class="op">)</span><span class="op">)</span>,
-  description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"exported_stats_demo_"</span>, <span class="va">link</span><span class="op">)</span>,
+  description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"exported_stats_demo_"</span>, <span class="va">link</span><span class="op">)</span>,
   fileFormat <span class="op">=</span> <span class="st">"CSV"</span>
 <span class="op">)</span>
 
 <span class="co"># Using rgee I/O</span>
 <span class="va">task</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_table_to_drive.html">ee_table_to_drive</a></span><span class="op">(</span>
   collection <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Feature</span><span class="op">(</span><span class="cn">NULL</span>, <span class="va">stats</span><span class="op">)</span><span class="op">)</span>,
-  description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"exported_stats_demo_"</span>, <span class="va">link</span><span class="op">)</span>,
+  description <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"exported_stats_demo_"</span>, <span class="va">link</span><span class="op">)</span>,
   fileFormat <span class="op">=</span> <span class="st">"CSV"</span>
 <span class="op">)</span>
 <span class="va">task</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="../reference/ee_monitoring.html">ee_monitoring</a></span><span class="op">(</span><span class="va">task</span><span class="op">)</span>
 
 <span class="va">exported_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_drive_to_local.html">ee_drive_to_local</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,dsn <span class="op">=</span> <span class="st">"exported_stats.csv"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">exported_stats</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">exported_stats</span><span class="op">)</span></code></pre></div>
 <p>Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export <code>toAsset</code>, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don’t use a complex geometry if you don’t need it).</p>
-<p>See the debugging page for examples of using <code>Export</code> to resolve <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Computation</a> timed out and <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Too many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/guides/exporting" class="external-link">this doc</a> for details on exporting in general.</p>
+<p>See the debugging page for examples of using <code>Export</code> to resolve <a href="https://developers.google.com/earth-engine/guides/debugging">Computation</a> timed out and <a href="https://developers.google.com/earth-engine/guides/debugging">Too many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/guides/exporting">this doc</a> for details on exporting in general.</p>
 </div>
 <div id="if-you-dont-need-to-clip-dont-use-clip" class="section level2">
 <h2 class="hasAnchor">
-<a href="#if-you-dont-need-to-clip-dont-use-clip" class="anchor" aria-hidden="true"></a><strong>If you don’t need to clip, don’t use clip() </strong>
+<a href="#if-you-dont-need-to-clip-dont-use-clip" class="anchor"></a><strong>If you don’t need to clip, don’t use clip() </strong>
 </h2>
-<p>Using <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unnecessarily will increase computation time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unless it’s necessary to your analysis. If you’re not sure, don’t clip. An example of a bad use of clip:</p>
+<p>Using <code><a href="https://rdrr.io/r/graphics/clip.html">clip()</a></code> unnecessarily will increase computation time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html">clip()</a></code> unless it’s necessary to your analysis. If you’re not sure, don’t clip. An example of a bad use of clip:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t clip inputs unnecessarily!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>
@@ -407,7 +405,7 @@
   <span class="fu">select</span><span class="op">(</span><span class="st">'B4'</span><span class="op">)</span><span class="op">$</span>                          <span class="co"># Good.</span>
   <span class="fu">filterBounds</span><span class="op">(</span><span class="va">chad</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>          <span class="co"># Good.</span>
   <span class="fu">filterDate</span><span class="op">(</span><span class="st">'2019-01-01'</span>, <span class="st">'2019-12-31'</span><span class="op">)</span><span class="op">$</span> <span class="co"># Good.</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">reduceRegion</span><span class="op">(</span>
     reducer <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">mean</span><span class="op">(</span><span class="op">)</span>,
     geometry <span class="op">=</span> <span class="va">chad</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span>, <span class="co"># Geometry is specified here.</span>
@@ -415,11 +413,11 @@
     maxPixels <span class="op">=</span> <span class="fl">1e10</span>
   <span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">noClipNeeded</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">this example</a>.</p>
+<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/guides/best_practices">this example</a>.</p>
 </div>
 <div id="if-you-need-to-clip-with-a-complex-collection-use-cliptocollection" class="section level2">
 <h2 class="hasAnchor">
-<a href="#if-you-need-to-clip-with-a-complex-collection-use-cliptocollection" class="anchor" aria-hidden="true"></a><strong>If you need to clip with a complex collection, use clipToCollection()</strong>
+<a href="#if-you-need-to-clip-with-a-complex-collection-use-cliptocollection" class="anchor"></a><strong>If you need to clip with a complex collection, use clipToCollection()</strong>
 </h2>
 <p>If you really need to clip something, and the geometries you want to use for clipping are in a collection, use <code>clipToCollection()</code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -444,7 +442,7 @@
 </div>
 <div id="dont-use-a-complex-collection-as-the-region-for-a-reducer" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dont-use-a-complex-collection-as-the-region-for-a-reducer" class="anchor" aria-hidden="true"></a><strong>Don’t use a complex collection as the region for a reducer</strong>
+<a href="#dont-use-a-complex-collection-as-the-region-for-a-reducer" class="anchor"></a><strong>Don’t use a complex collection as the region for a reducer</strong>
 </h2>
 <p>If you need to do a spatial reduction such that the reducer pools inputs from multiple regions in a <code>FeatureCollection</code>, don’t supply <code>featureCollection.geometry()</code> as the <code>geometry</code> input to the reducer. Instead, use <code>clipToCollection()</code> and a region large enough to encompass the bounds of the collection. For example:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -460,7 +458,7 @@
 <span class="va">reduction</span> <span class="op">&lt;-</span> <span class="va">clippedTheRightWay</span><span class="op">$</span><span class="fu">reduceRegion</span><span class="op">(</span>
   reducer <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">mean</span><span class="op">(</span><span class="op">)</span>,
   geometry <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span>
-    coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">179.9</span>, <span class="op">-</span><span class="fl">50</span>, <span class="fl">179.9</span>, <span class="fl">50</span><span class="op">)</span>,  <span class="co"># Almost global.</span>
+    coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">179.9</span>, <span class="op">-</span><span class="fl">50</span>, <span class="fl">179.9</span>, <span class="fl">50</span><span class="op">)</span>,  <span class="co"># Almost global.</span>
     geodesic <span class="op">=</span> <span class="cn">FALSE</span>
   <span class="op">)</span>,
   scale <span class="op">=</span> <span class="fl">30</span>,
@@ -471,7 +469,7 @@
 </div>
 <div id="use-a-non-zero-errormargin" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-a-non-zero-errormargin" class="anchor" aria-hidden="true"></a><strong>Use a non-zero errorMargin</strong>
+<a href="#use-a-non-zero-errormargin" class="anchor"></a><strong>Use a non-zero errorMargin</strong>
 </h2>
 <p>For possibly expensive geometry operations, use the largest error margin possible given the required precision of the computation. The error margin specifies the maximum allowable error (in meters) permitted during operations on geometries (e.g. during reprojection). Specifying a small error margin can result in the need to densify geometries (with coordinates), which can be memory intensive. It’s good practice to specify as large an error margin as possible for your computation:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
@@ -489,7 +487,7 @@
 </div>
 <div id="dont-use-a-ridiculously-small-scale-with-reducetovectors" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dont-use-a-ridiculously-small-scale-with-reducetovectors" class="anchor" aria-hidden="true"></a><strong>Don’t use a ridiculously small scale with reduceToVectors()</strong>
+<a href="#dont-use-a-ridiculously-small-scale-with-reducetovectors" class="anchor"></a><strong>Don’t use a ridiculously small scale with reduceToVectors()</strong>
 </h2>
 <p>If you want to convert a raster to a vector, use an appropriate scale. Specifying a very small scale can substantially increase computation cost. Set scale as high as possible give the required precision. For example, to get polygons representing global land masses:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -500,12 +498,12 @@
 
 <span class="co"># Non-geodesic polygon.</span>
 <span class="va">almostGlobal</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span>
-  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>
+  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>
   <span class="op">)</span>,
   proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,
   geodesic <span class="op">=</span> <span class="cn">FALSE</span>
@@ -526,7 +524,7 @@
 </div>
 <div id="dont-use-reducetovectors-with-reduceregions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dont-use-reducetovectors-with-reduceregions" class="anchor" aria-hidden="true"></a><strong>Don’t use reduceToVectors() with reduceRegions()</strong>
+<a href="#dont-use-reducetovectors-with-reduceregions" class="anchor"></a><strong>Don’t use reduceToVectors() with reduceRegions()</strong>
 </h2>
 <p>Don’t use a <code>FeatureCollection</code> returned by <code>reduceToVectors()</code> as an input to <code>reduceRegions()</code>. Instead, add the bands you want to reduce before calling <code>reduceToVectors()</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -538,7 +536,7 @@
 
 <span class="co"># Non-geodesic polygon.</span>
 <span class="va">almostGlobal</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span>
-  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span><span class="op">)</span>,
+  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="fl">80</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">180</span>, <span class="op">-</span><span class="fl">80</span><span class="op">)</span><span class="op">)</span>,
   proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,
   geodesic <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span>
@@ -551,13 +549,13 @@
   maxPixels <span class="op">=</span> <span class="fl">1e10</span>
 <span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">means</span><span class="op">$</span><span class="fu">limit</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Note that other ways of reducing pixels of one image within zones of another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">reduceConnectedCommponents()</a> and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">grouping reducers</a>.</p>
+<p>Note that other ways of reducing pixels of one image within zones of another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/">reduceConnectedCommponents()</a> and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/">grouping reducers</a>.</p>
 </div>
 <div id="use-fastdistancetransform-for-neighborhood-operations" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-fastdistancetransform-for-neighborhood-operations" class="anchor" aria-hidden="true"></a><strong>Use fastDistanceTransform() for neighborhood operations</strong>
+<a href="#use-fastdistancetransform-for-neighborhood-operations" class="anchor"></a><strong>Use fastDistanceTransform() for neighborhood operations</strong>
 </h2>
-<p>For some convolution operations, <code>fastDistanceTransform()</code> may be more efficient than <code>reduceNeighborhood()</code> or <code><a href="https://rdrr.io/r/stats/convolve.html" class="external-link">convolve()</a></code>. For example, to do erosion and/or dilation of binary inputs:</p>
+<p>For some convolution operations, <code>fastDistanceTransform()</code> may be more efficient than <code>reduceNeighborhood()</code> or <code><a href="https://rdrr.io/r/stats/convolve.html">convolve()</a></code>. For example, to do erosion and/or dilation of binary inputs:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">aw3d30</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"JAXA/ALOS/AW3D30_V1_1"</span><span class="op">)</span>
 
@@ -579,14 +577,14 @@
 </div>
 <div id="use-the-optimizations-in-reduceneighborhood" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-the-optimizations-in-reduceneighborhood" class="anchor" aria-hidden="true"></a><strong>Use the optimizations in reduceNeighborhood()</strong>
+<a href="#use-the-optimizations-in-reduceneighborhood" class="anchor"></a><strong>Use the optimizations in reduceNeighborhood()</strong>
 </h2>
 <p>If you need to perform a convolution and can’t use <code>fastDistanceTransform()</code>, use the optimizations in <code>reduceNeighborhood()</code>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span>
 <span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span>
 
-<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B4'</span>, <span class="st">'B3'</span>, <span class="st">'B2'</span><span class="op">)</span>
+<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'B4'</span>, <span class="st">'B3'</span>, <span class="st">'B2'</span><span class="op">)</span>
 
 <span class="va">optimizedConvolution</span> <span class="op">&lt;-</span> <span class="va">composite</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span><span class="op">$</span><span class="fu">reduceNeighborhood</span><span class="op">(</span>
   reducer <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">mean</span><span class="op">(</span><span class="op">)</span>,
@@ -594,16 +592,16 @@
   optimization <span class="op">=</span> <span class="st">"boxcar"</span> <span class="co"># Suitable optimization for mean.</span>
 <span class="op">)</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span>
 
-<span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="va">bands</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">72</span><span class="op">)</span>
+<span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>bands <span class="op">=</span> <span class="va">bands</span>, min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">72</span><span class="op">)</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span><span class="op">-</span><span class="fl">122.0703</span>, <span class="fl">37.3872</span>, <span class="fl">11</span><span class="op">)</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">composite</span>, <span class="va">viz</span>, <span class="st">"composite"</span><span class="op">)</span> <span class="op">+</span>
 <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">optimizedConvolution</span>, <span class="va">viz</span>, <span class="st">"optimizedConvolution"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="dont-sample-more-data-than-you-need" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dont-sample-more-data-than-you-need" class="anchor" aria-hidden="true"></a><strong>Don’t sample more data than you need</strong>
+<a href="#dont-sample-more-data-than-you-need" class="anchor"></a><strong>Don’t sample more data than you need</strong>
 </h2>
-<p>Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/" class="external-link">this reference</a>). The following example demonstrates how requesting too much training data can result in the dreaded “Computed value is too large” error:</p>
+<p>Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/">this reference</a>). The following example demonstrates how requesting too much training data can result in the dreaded “Computed value is too large” error:</p>
 <p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t sample too much data!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span>
@@ -613,11 +611,11 @@
 <span class="co"># No!  Not necessary.  Don't do this:</span>
 <span class="va">labels</span> <span class="op">&lt;-</span> <span class="va">labels</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span><span class="op">{</span><span class="va">f</span><span class="op">$</span><span class="fu">buffer</span><span class="op">(</span><span class="fl">100000</span>, <span class="fl">1000</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
 
-<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B2'</span>, <span class="st">'B3'</span>, <span class="st">'B4'</span>, <span class="st">'B5'</span>, <span class="st">'B6'</span>, <span class="st">'B7'</span><span class="op">)</span>
+<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'B2'</span>, <span class="st">'B3'</span>, <span class="st">'B4'</span>, <span class="st">'B5'</span>, <span class="st">'B6'</span>, <span class="st">'B7'</span><span class="op">)</span>
 
 <span class="va">training</span> <span class="op">&lt;-</span> <span class="va">composite</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span><span class="op">$</span><span class="fu">sampleRegions</span><span class="op">(</span>
   collection <span class="op">=</span> <span class="va">labels</span>,
-  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"landcover"</span><span class="op">)</span>,
+  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"landcover"</span><span class="op">)</span>,
   scale <span class="op">=</span> <span class="fl">30</span>
 <span class="op">)</span>
 
@@ -638,11 +636,11 @@
 <span class="co"># Increase the data a little bit, possibly introducing noise.</span>
 <span class="va">labels</span> <span class="op">&lt;-</span> <span class="va">labels</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span><span class="va">f</span><span class="op">$</span><span class="fu">buffer</span><span class="op">(</span><span class="fl">100</span>, <span class="fl">10</span><span class="op">)</span><span class="op">}</span><span class="op">)</span>
 
-<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'B2'</span>, <span class="st">'B3'</span>, <span class="st">'B4'</span>, <span class="st">'B5'</span>, <span class="st">'B6'</span>, <span class="st">'B7'</span><span class="op">)</span>
+<span class="va">bands</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'B2'</span>, <span class="st">'B3'</span>, <span class="st">'B4'</span>, <span class="st">'B5'</span>, <span class="st">'B6'</span>, <span class="st">'B7'</span><span class="op">)</span>
 
 <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">composite</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="va">bands</span><span class="op">)</span><span class="op">$</span><span class="fu">sampleRegions</span><span class="op">(</span>
   collection <span class="op">=</span> <span class="va">labels</span>,
-  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"landcover"</span><span class="op">)</span>,
+  properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"landcover"</span><span class="op">)</span>,
   scale <span class="op">=</span> <span class="fl">30</span>
 <span class="op">)</span>
 
@@ -675,13 +673,13 @@
 <span class="op">)</span>
 
 <span class="va">minLeafPopulation_array</span> <span class="op">&lt;-</span> <span class="va">accuracies</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://r-spatial.github.io/stars/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span>
+<span class="fu"><a href="https://r-spatial.github.io/stars/reference/plot.html">plot</a></span><span class="op">(</span>
   x <span class="op">=</span> <span class="va">minLeafPopulation_array</span>,
   type <span class="op">=</span> <span class="st">"b"</span>, 
   col <span class="op">=</span> <span class="st">"blue"</span>,
   lwd <span class="op">=</span> <span class="fl">2</span>,
   ylab <span class="op">=</span> <span class="st">"accuracy"</span>,
-  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,
+  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>,
   xlab <span class="op">=</span> <span class="st">"value"</span>,
   main <span class="op">=</span> <span class="st">"Hyperparameter tunning (minLeafPopulation)"</span>
 <span class="op">)</span></code></pre></div>
@@ -689,28 +687,28 @@
 </div>
 <div id="export-intermediate-results" class="section level2">
 <h2 class="hasAnchor">
-<a href="#export-intermediate-results" class="anchor" aria-hidden="true"></a><strong>Export intermediate results</strong>
+<a href="#export-intermediate-results" class="anchor"></a><strong>Export intermediate results</strong>
 </h2>
 <p>Suppose your objective is to take samples from a relatively complex computed image. It is often more efficient to <code>Export</code> the image <code>toAsset()</code>, load the exported image, then sample. For example:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'UMD/hansen/global_forest_change_2018_v1_6'</span><span class="op">)</span>
 <span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span>
-  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">76.64069800085349</span>, <span class="fl">5.511777325802095</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">76.64069800085349</span>, <span class="op">-</span><span class="fl">20.483938229362376</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35.15632300085349</span>, <span class="op">-</span><span class="fl">20.483938229362376</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35.15632300085349</span>, <span class="fl">5.511777325802095</span><span class="op">)</span>
+  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">76.64069800085349</span>, <span class="fl">5.511777325802095</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">76.64069800085349</span>, <span class="op">-</span><span class="fl">20.483938229362376</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35.15632300085349</span>, <span class="op">-</span><span class="fl">20.483938229362376</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">35.15632300085349</span>, <span class="fl">5.511777325802095</span><span class="op">)</span>
   <span class="op">)</span>,
   proj <span class="op">=</span>  <span class="st">"EPSG:4326"</span>,
   geodesic <span class="op">=</span>  <span class="cn">FALSE</span>
 <span class="op">)</span>
 
 <span class="va">testRegion</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span>
-  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">48.86726050085349</span>, <span class="op">-</span><span class="fl">3.0475996402515717</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">48.86726050085349</span>, <span class="op">-</span><span class="fl">3.9248707849303295</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">47.46101050085349</span>, <span class="op">-</span><span class="fl">3.9248707849303295</span><span class="op">)</span>,
-    <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">47.46101050085349</span>, <span class="op">-</span><span class="fl">3.0475996402515717</span><span class="op">)</span>
+  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">48.86726050085349</span>, <span class="op">-</span><span class="fl">3.0475996402515717</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">48.86726050085349</span>, <span class="op">-</span><span class="fl">3.9248707849303295</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">47.46101050085349</span>, <span class="op">-</span><span class="fl">3.9248707849303295</span><span class="op">)</span>,
+    <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">47.46101050085349</span>, <span class="op">-</span><span class="fl">3.0475996402515717</span><span class="op">)</span>
   <span class="op">)</span>,
   proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,
   geodesic <span class="op">=</span> <span class="cn">FALSE</span>
@@ -722,8 +720,8 @@
 
 <span class="co"># Cloud masking function.</span>
 <span class="va">maskL8sr</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">image</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">cloudShadowBitMask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/bitwise.html" class="external-link">bitwShiftL</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>
-  <span class="va">cloudsBitMask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/bitwise.html" class="external-link">bitwShiftL</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>
+  <span class="va">cloudShadowBitMask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/bitwise.html">bitwShiftL</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span>
+  <span class="va">cloudsBitMask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/bitwise.html">bitwShiftL</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>
   <span class="va">qa</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'pixel_qa'</span><span class="op">)</span>
   <span class="va">mask</span> <span class="op">&lt;-</span> <span class="va">qa</span><span class="op">$</span><span class="fu">bitwiseAnd</span><span class="op">(</span><span class="va">cloudShadowBitMask</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">$</span>
     <span class="fu">And</span><span class="op">(</span><span class="va">qa</span><span class="op">$</span><span class="fu">bitwiseAnd</span><span class="op">(</span><span class="va">cloudsBitMask</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span>
@@ -731,7 +729,7 @@
   <span class="va">image</span><span class="op">$</span><span class="fu">updateMask</span><span class="op">(</span><span class="va">mask</span><span class="op">)</span><span class="op">$</span>
     <span class="fu">divide</span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span><span class="op">$</span>
     <span class="fu">select</span><span class="op">(</span><span class="st">"B[0-9]*"</span><span class="op">)</span><span class="op">$</span>
-    <span class="fu">copyProperties</span><span class="op">(</span><span class="va">image</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"system:time_start"</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu">copyProperties</span><span class="op">(</span><span class="va">image</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"system:time_start"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="va">collection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="va">maskL8sr</span><span class="op">)</span>
@@ -788,12 +786,12 @@
 </div>
 <div id="join-vs--map-filter" class="section level2">
 <h2 class="hasAnchor">
-<a href="#join-vs--map-filter" class="anchor" aria-hidden="true"></a><strong>Join vs. map-filter</strong>
+<a href="#join-vs--map-filter" class="anchor"></a><strong>Join vs. map-filter</strong>
 </h2>
 <p>Suppose you want to join collections based on time, location or some metadata property. Generally, this is most efficiently accomplished with a join. The following example does a spatio-temporal join between the Landsat 8 and Sentinel-2 collections:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">l8</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span>
 
@@ -814,10 +812,10 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">joined</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>Although you should try a join first (<code>Export</code> if needed), occasionally a <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> within a <code>map()</code> can also be effective, particularly for very large collections.</p>
+<p>Although you should try a join first (<code>Export</code> if needed), occasionally a <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> within a <code>map()</code> can also be effective, particularly for very large collections.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">l8</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span>
 
@@ -828,7 +826,7 @@
     <span class="fu">filterDate</span><span class="op">(</span><span class="va">date</span><span class="op">$</span><span class="fu">advance</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="st">"day"</span><span class="op">)</span>, <span class="va">date</span><span class="op">$</span><span class="fu">advance</span><span class="op">(</span><span class="fl">1</span>, <span class="st">"day"</span><span class="op">)</span><span class="op">)</span>
     <span class="co"># Return the input image with matching scenes in a property.</span>
   <span class="va">image</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
       landsat <span class="op">=</span> <span class="va">landsat</span>,
       size <span class="op">=</span> <span class="va">landsat</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span>
     <span class="op">)</span>
@@ -839,9 +837,9 @@
 </div>
 <div id="reduceregion-vs--reduceregions-vs--for-loop" class="section level2">
 <h2 class="hasAnchor">
-<a href="#reduceregion-vs--reduceregions-vs--for-loop" class="anchor" aria-hidden="true"></a><strong>reduceRegion() vs. reduceRegions() vs. for-loop</strong>
+<a href="#reduceregion-vs--reduceregions-vs--for-loop" class="anchor"></a><strong>reduceRegion() vs. reduceRegions() vs. for-loop</strong>
 </h2>
-<p>Calling <code>reduceRegions()</code> with a very large or complex <code>FeatureCollection</code> as input may result in the dreaded “Computed value is too large” error. One potential solution is to map <code>reduceRegion()</code> over the <code>FeatureCollection</code> instead. Another potential solution is to use a (gasp) for-loop. Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/guides/getstarted" class="external-link">here</a>, <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">here</a> and <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">here</a>, <code>reduceRegion()</code> can be implemented in a for-loop to perform large reductions.</p>
+<p>Calling <code>reduceRegions()</code> with a very large or complex <code>FeatureCollection</code> as input may result in the dreaded “Computed value is too large” error. One potential solution is to map <code>reduceRegion()</code> over the <code>FeatureCollection</code> instead. Another potential solution is to use a (gasp) for-loop. Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/guides/getstarted">here</a>, <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03">here</a> and <a href="https://developers.google.com/earth-engine/guides/client_server">here</a>, <code>reduceRegion()</code> can be implemented in a for-loop to perform large reductions.</p>
 <p>Suppose your objective is to obtain the mean of pixels (or any statistic) in each feature in a <code>FeatureCollection</code> for each image in an <code>ImageCollection</code>. The following example compares the three approaches previously described:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Table of countries.</span>
@@ -864,7 +862,7 @@
     scale <span class="op">=</span> <span class="fl">500</span>
   <span class="op">)</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">f</span><span class="op">)</span> <span class="op">{</span>
     <span class="va">f</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+      <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
         time <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">millis</span><span class="op">(</span><span class="op">)</span>,
         date <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="op">)</span>
       <span class="op">)</span>
@@ -886,7 +884,7 @@
           scale <span class="op">=</span> <span class="fl">500</span>
         <span class="op">)</span>
       <span class="op">)</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>
-        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+        <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
           time <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">millis</span><span class="op">(</span><span class="op">)</span>,
           date <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="op">)</span>
         <span class="op">)</span>
@@ -902,9 +900,9 @@
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">size</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># 312</span>
 
 <span class="va">countriesList</span> <span class="op">&lt;-</span> <span class="va">countriesTable</span><span class="op">$</span><span class="fu">toList</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Adjust size.</span>
-<span class="va">data</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Empty table.</span>
+<span class="va">data</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Empty table.</span>
 
-<span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">countriesList</span><span class="op">$</span><span class="fu">length</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">j</span> <span class="kw">in</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="va">countriesList</span><span class="op">$</span><span class="fu">length</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
   <span class="va">feature</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Feature</span><span class="op">(</span><span class="va">countriesList</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="va">j</span><span class="op">)</span><span class="op">)</span>
   <span class="co"># Convert ImageCollection &gt; FeatureCollection</span>
   <span class="va">fc</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span>
@@ -918,7 +916,7 @@
             scale <span class="op">=</span> <span class="fl">500</span>
           <span class="op">)</span>
         <span class="op">)</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span>
-          <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
+          <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
             time <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">millis</span><span class="op">(</span><span class="op">)</span>,
             date <span class="op">=</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="op">)</span>
           <span class="op">)</span>
@@ -933,18 +931,18 @@
 </div>
 <div id="use-forward-differencing-for-neighbors-in-time" class="section level2">
 <h2 class="hasAnchor">
-<a href="#use-forward-differencing-for-neighbors-in-time" class="anchor" aria-hidden="true"></a><strong>Use forward differencing for neighbors in time</strong>
+<a href="#use-forward-differencing-for-neighbors-in-time" class="anchor"></a><strong>Use forward differencing for neighbors in time</strong>
 </h2>
-<p>Suppose you have a temporally sorted <code>ImageCollection</code> (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use <code><a href="https://rdrr.io/pkg/reticulate/man/iterate.html" class="external-link">iterate()</a></code> for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:</p>
+<p>Suppose you have a temporally sorted <code>ImageCollection</code> (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use <code><a href="https://rdrr.io/pkg/reticulate/man/iterate.html">iterate()</a></code> for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sentinel2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span>
-<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.47555371521855</span>, <span class="fl">37.76884708376152</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.47555371521855</span>, <span class="fl">37.76884708376152</span><span class="op">)</span><span class="op">)</span>
 <span class="va">s2</span> <span class="op">&lt;-</span> <span class="va">sentinel2</span><span class="op">$</span>
   <span class="fu">filterBounds</span><span class="op">(</span><span class="va">sf</span><span class="op">)</span><span class="op">$</span>
   <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2018-01-01"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span>
 
 <span class="va">withDoys</span> <span class="op">&lt;-</span> <span class="va">s2</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">image</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">ndvi</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">normalizedDifference</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B8"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="st">"ndvi"</span><span class="op">)</span>
+  <span class="va">ndvi</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">normalizedDifference</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B8"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="st">"ndvi"</span><span class="op">)</span>
   <span class="va">date</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">date</span><span class="op">(</span><span class="op">)</span>
   <span class="va">doy</span> <span class="op">&lt;-</span> <span class="va">date</span><span class="op">$</span><span class="fu">getRelative</span><span class="op">(</span><span class="st">"day"</span>, <span class="st">"year"</span><span class="op">)</span>
   <span class="va">time</span> <span class="op">&lt;-</span> <span class="va">image</span><span class="op">$</span><span class="fu">metadata</span><span class="op">(</span><span class="st">"system:time_start"</span><span class="op">)</span>
@@ -968,7 +966,7 @@
   <span class="va">doy</span> <span class="op">&lt;-</span> <span class="va">sorted</span><span class="op">$</span><span class="fu">arraySlice</span><span class="op">(</span><span class="va">bandAxis</span>, <span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
   <span class="va">left</span> <span class="op">&lt;-</span> <span class="va">doy</span><span class="op">$</span><span class="fu">arraySlice</span><span class="op">(</span><span class="va">timeAxis</span>, <span class="fl">1</span><span class="op">)</span>
   <span class="va">right</span> <span class="op">&lt;-</span> <span class="va">doy</span><span class="op">$</span><span class="fu">arraySlice</span><span class="op">(</span><span class="va">timeAxis</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>
-  <span class="va">mask</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Array</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>
+  <span class="va">mask</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Array</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>
     <span class="fu">arrayCat</span><span class="op">(</span><span class="va">left</span><span class="op">$</span><span class="fu">neq</span><span class="op">(</span><span class="va">right</span><span class="op">)</span>, <span class="va">timeAxis</span><span class="op">)</span>
   <span class="va">array</span><span class="op">$</span><span class="fu">arrayMask</span><span class="op">(</span><span class="va">mask</span><span class="op">)</span>
 <span class="op">}</span>
@@ -992,13 +990,11 @@
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Cesar Aybar.</p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -1006,8 +1002,6 @@
 
   
 
-
-  
 
   </body>
 </html>

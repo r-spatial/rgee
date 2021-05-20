@@ -57,8 +57,6 @@ a wrapper around rgee::ee$Initialize()." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -70,18 +68,9 @@ a wrapper around rgee::ee$Initialize()." />
 
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -95,7 +84,7 @@ a wrapper around rgee::ee$Initialize()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -180,7 +169,7 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ee_Initialize</span><span class='op'>(</span>
-  email <span class='op'>=</span> <span class='cn'>NULL</span>,
+  user <span class='op'>=</span> <span class='cn'>NULL</span>,
   drive <span class='op'>=</span> <span class='cn'>FALSE</span>,
   gcs <span class='op'>=</span> <span class='cn'>FALSE</span>,
   display <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -191,10 +180,10 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>email</th>
-      <td><p>Character (optional, e.g. <code>data.colec.fbf@gmail.com</code>). The email
-argument is used to create a folder inside the path <br />
-<code>~/.config/earthengine/</code> that save all credentials for a specific
+      <th>user</th>
+      <td><p>Character (optional, e.g. <code>data.colec.fbf</code>). The user
+argument is used to create a folder inside the path
+<code>~/.config/earthengine/</code> that save all the credentials for a specific
 Google identity.</p></td>
     </tr>
     <tr>
@@ -227,9 +216,9 @@ Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
-<code>~/.config/earthengine/</code>, if a user does not specify the email
-argument all user credentials are saved in a subdirectory
-called <code>~/.config/earthengine/ndef</code>.</p>
+<code>~/.config/earthengine/</code>. If a user does not specify the "user"
+argument, all user credentials are saved in the the subdirectory
+<code>~/.config/earthengine/ndef</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other session management functions: 
@@ -257,11 +246,11 @@ called <code>~/.config/earthengine/ndef</code>.</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -269,8 +258,6 @@ called <code>~/.config/earthengine/ndef</code>.</p>
 
   
 
-
-  
 
   </body>
 </html>

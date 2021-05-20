@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -65,16 +63,9 @@
 
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -88,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -170,7 +161,7 @@
 </ul>
 <div id="at-submit-an-issue-please-attached-the-following-information-of-your-rgee-session" class="section level4">
 <h4 class="hasAnchor">
-<a href="#at-submit-an-issue-please-attached-the-following-information-of-your-rgee-session" class="anchor" aria-hidden="true"></a>At submit an issue, please attached the following information of your <code>rgee</code> session:</h4>
+<a href="#at-submit-an-issue-please-attached-the-following-information-of-your-rgee-session" class="anchor"></a>At submit an issue, please attached the following information of your <code>rgee</code> session:</h4>
 <ul>
 <li>
 <input type="checkbox" disabled>
@@ -183,16 +174,16 @@ You have the Python API installed (from terminal):</li>
 You can find the credentials file on your system:</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-<span class="va">ee_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/path.expand.html" class="external-link">path.expand</a></span><span class="op">(</span><span class="st">"~/.config/earthengine/credentials"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">ee_path</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<span class="va">ee_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/path.expand.html">path.expand</a></span><span class="op">(</span><span class="st">"~/.config/earthengine/credentials"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">ee_path</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>
 <input type="checkbox" disabled>
 You can run a simple EE command from R:</li>
 </ul>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
 
 <span class="co"># Initialize the Earth Engine module.</span>
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
@@ -201,17 +192,17 @@ You can run a simple EE command from R:</li>
 <span class="fu"><a href="reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'USGS/SRTMGL1_003'</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Attach your Python (reticulate) configuration:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate" class="external-link">reticulate</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html" class="external-link">py_config</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate">reticulate</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/reticulate/man/py_config.html">py_config</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="description" class="section level3">
 <h3 class="hasAnchor">
-<a href="#description" class="anchor" aria-hidden="true"></a>Description</h3>
+<a href="#description" class="anchor"></a>Description</h3>
 <p>Describe what you were trying to get done. Tell us what happened, what went wrong, and what you expected to happen.</p>
 </div>
 <div id="what-i-did" class="section level3">
 <h3 class="hasAnchor">
-<a href="#what-i-did" class="anchor" aria-hidden="true"></a>What I Did</h3>
+<a href="#what-i-did" class="anchor"></a>What I Did</h3>
 <pre><code>Paste the command(s) you ran and the output.
 If there was a crash, please include the traceback here.</code></pre>
 </div>
@@ -231,11 +222,11 @@ If there was a crash, please include the traceback here.</code></pre>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -243,8 +234,6 @@ If there was a crash, please include the traceback here.</code></pre>
 
   
 
-
-  
 
   </body>
 </html>

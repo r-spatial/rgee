@@ -55,8 +55,6 @@ using leaflet." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -68,18 +66,9 @@ using leaflet." />
 
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -93,7 +82,7 @@ using leaflet." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -246,7 +235,7 @@ style.</p></dd>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3 class='hasAnchor' id='public-methods'><a class='anchor' aria-hidden='true' href='#public-methods'></a>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>R6Map$new()</code></a></p></li>
@@ -261,11 +250,11 @@ style.</p></dd>
 <li><p><a href='#method-clone'><code>R6Map$clone()</code></a></p></li>
 </ul>
 <p><hr>
-<a id="method-new"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code><a href='https://rdrr.io/r/methods/new.html'>new()</a></code></h3>
-<p>Constructor of R6Map.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Constructor of R6Map.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>1</span>, save_maps <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
 
@@ -276,31 +265,14 @@ style.</p></dd>
 <dt><code>save_maps</code></dt><dd><p>Should <code>R6Map</code> save previous maps?.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>A new <code>EarthEngineMap</code> object.</p>
-<h3 class='hasAnchor' id='list-new-'><a class='anchor' aria-hidden='true' href='#list-new-'></a>Method <code><a href='https://rdrr.io/r/methods/new.html'>new()</a></code></h3>
-<p>Constructor of R6Map.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>1</span>, save_maps <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
-
-<dt><code>lat</code></dt><dd><p>The latitude of the center, in degrees. By default -12.172116.</p></dd>
-
-<dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 18.</p></dd>
-
-<dt><code>save_maps</code></dt><dd><p>Should <code>R6Map</code> save previous maps?.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A new <code>EarthEngineMap</code> object.</p>
 <p><hr>
-<a id="method-reset"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>reset()</code></h3>
-<p>Reset to initial arguments.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-reset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>reset()</code></h3>
+<p>Reset to initial arguments.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>1</span>, save_maps <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
 
@@ -311,51 +283,9 @@ style.</p></dd>
 <dt><code>save_maps</code></dt><dd><p>Should <code>R6Map</code> save previous maps?.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A new <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(rgee)
-ee_Initialize()
-
-# Load an Image
-image &lt;- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-
-# Create
-Map &lt;- R6Map$new()
-Map$centerObject(image)
-
-# Simple display: Map just will
-Map$addLayer(
-  eeObject = image,
-  visParams = list(min=0, max = 10000, bands = c("B4", "B3", "B2")),
-  name = "l8_01"
-)
-Map # display map
-
-Map$reset() # Reset arguments
-Map
-}
-</pre><p></div></p>
-
-<h3 class='hasAnchor' id='list-reset-'><a class='anchor' aria-hidden='true' href='#list-reset-'></a>Method <code>reset()</code></h3>
-<p>Reset to initial arguments.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>1</span>, save_maps <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
-
-<dt><code>lat</code></dt><dd><p>The latitude of the center, in degrees. By default -12.172116.</p></dd>
-
-<dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 18.</p></dd>
-
-<dt><code>save_maps</code></dt><dd><p>Should <code>R6Map</code> save previous maps?.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>A new <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(rgee)
 ee_Initialize()
@@ -381,25 +311,19 @@ Map
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-print"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code><a href='print.ee.computedobject.ComputedObject.html'>print()</a></code></h3>
-<p>Display a <code>EarthEngineMap</code> object.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='print.ee.computedobject.ComputedObject.html'>print()</a></code></h3>
+<p>Display a <code>EarthEngineMap</code> object.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>An <code>EarthEngineMap</code> object.</p>
-<h3 class='hasAnchor' id='list-print-'><a class='anchor' aria-hidden='true' href='#list-print-'></a>Method <code><a href='print.ee.computedobject.ComputedObject.html'>print()</a></code></h3>
-<p>Display a <code>EarthEngineMap</code> object.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>An <code>EarthEngineMap</code> object.</p>
 <p><hr>
-<a id="method-setCenter"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>setCenter()</code></h3>
+<a id="method-setCenter"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>setCenter()</code></h3>
 <p>Centers the map view at the given coordinates with the given zoom level. If
-no zoom level is provided, it uses 10 by default.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+no zoom level is provided, it uses 10 by default.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>setCenter</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
 
@@ -408,41 +332,9 @@ no zoom level is provided, it uses 10 by default.</p><h4 class='hasAnchor' id='u
 <dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 18.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>No return value, called to set initial coordinates and zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(rgee)
-
-ee_Initialize()
-
-Map &lt;- R6Map$new()
-Map$setCenter(lon = -76, lat = 0, zoom = 5)
-Map
-
-# Map$lat
-# Map$lon
-# Map$zoom
-}
-</pre><p></div></p>
-
-<h3 class='hasAnchor' id='list-setcenter-'><a class='anchor' aria-hidden='true' href='#list-setcenter-'></a>Method <code>setCenter()</code></h3>
-<p>Centers the map view at the given coordinates with the given zoom level. If
-no zoom level is provided, it uses 10 by default.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>setCenter</span><span class='op'>(</span>lon <span class='op'>=</span> <span class='fl'>0</span>, lat <span class='op'>=</span> <span class='fl'>0</span>, zoom <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>lon</code></dt><dd><p>The longitude of the center, in degrees. By default -76.942478.</p></dd>
-
-<dt><code>lat</code></dt><dd><p>The latitude of the center, in degrees. By default -12.172116.</p></dd>
-
-<dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 18.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>No return value, called to set initial coordinates and zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(rgee)
 
@@ -459,45 +351,18 @@ Map
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-setZoom"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>setZoom()</code></h3>
-<p>Sets the zoom level of the map.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-setZoom"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>setZoom()</code></h3>
+<p>Sets the zoom level of the map.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>setZoom</span><span class='op'>(</span>zoom <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 10.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>No return value, called to set zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(rgee)
-
-ee_Initialize()
-
-Map &lt;- R6Map$new()
-Map$setZoom(zoom = 4)
-Map
-
-# Map$lat
-# Map$lon
-# Map$zoom
-}
-</pre><p></div></p>
-
-<h3 class='hasAnchor' id='list-setzoom-'><a class='anchor' aria-hidden='true' href='#list-setzoom-'></a>Method <code>setZoom()</code></h3>
-<p>Sets the zoom level of the map.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>setZoom</span><span class='op'>(</span>zoom <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default 10.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>No return value, called to set zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(rgee)
 
@@ -514,13 +379,13 @@ Map
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-centerObject"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>centerObject()</code></h3>
+<a id="method-centerObject"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>centerObject()</code></h3>
 <p>Centers the map view on a given object. If no zoom level is provided, it
 will be predicted according to the bounds of the Earth Engine object
-specified.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+specified.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>eeObject</span>, zoom <span class='op'>=</span> <span class='cn'>NULL</span>, maxError <span class='op'>=</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ErrorMargin</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>eeObject</code></dt><dd><p>Earth Engine spatial object.</p></dd>
 
@@ -530,40 +395,9 @@ specified.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='tr
 explicitly requested result projection or geodesic state.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>No return value, called to set zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(rgee)
-
-ee_Initialize()
-
-Map &lt;- R6Map$new()
-image &lt;- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-Map$centerObject(image)
-Map
-}
-</pre><p></div></p>
-
-<h3 class='hasAnchor' id='list-centerobject-'><a class='anchor' aria-hidden='true' href='#list-centerobject-'></a>Method <code>centerObject()</code></h3>
-<p>Centers the map view on a given object. If no zoom level is provided, it
-will be predicted according to the bounds of the Earth Engine object
-specified.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>eeObject</span>, zoom <span class='op'>=</span> <span class='cn'>NULL</span>, maxError <span class='op'>=</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ErrorMargin</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>eeObject</code></dt><dd><p>Earth Engine spatial object.</p></dd>
-
-<dt><code>zoom</code></dt><dd><p>The zoom level, from 1 to 24. By default NULL.</p></dd>
-
-<dt><code>maxError</code></dt><dd><p>Max error when input image must be reprojected to an
-explicitly requested result projection or geodesic state.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>No return value, called to set zoom.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(rgee)
 
@@ -577,19 +411,18 @@ Map
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-addLayer"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>addLayer()</code></h3>
-<p>Adds a given Earth Engine spatial object to the map as a layer</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-addLayer"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>addLayer()</code></h3>
+<p>Adds a given Earth Engine spatial object to the map as a layer</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   <span class='va'>eeObject</span>,
   visParams <span class='op'>=</span> <span class='cn'>NULL</span>,
   name <span class='op'>=</span> <span class='cn'>NULL</span>,
   shown <span class='op'>=</span> <span class='cn'>TRUE</span>,
   opacity <span class='op'>=</span> <span class='fl'>1</span>,
-  position <span class='op'>=</span> <span class='cn'>NULL</span>,
-  legend <span class='op'>=</span> <span class='cn'>FALSE</span>
+  position <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>eeObject</code></dt><dd><p>The Earth Engine spatial object to display in the interactive map.</p></dd>
 
@@ -605,12 +438,10 @@ Map
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).</p></dd>
 
-<dt><code>legend</code></dt><dd><p>Should a legend be plotted?. Only the legend of the first image is displayed.</p></dd>
-
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>An <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(rgee)
 ee_Initialize()
@@ -651,89 +482,14 @@ Map$addLayer(
   visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
   name = "l8_right"
 )
-}
-</pre><p></div></p>
 
-<h3 class='hasAnchor' id='list-addlayer-'><a class='anchor' aria-hidden='true' href='#list-addlayer-'></a>Method <code>addLayer()</code></h3>
-<p>Adds a given Earth Engine spatial object to the map as a layer</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
-  <span class='va'>eeObject</span>,
-  visParams <span class='op'>=</span> <span class='cn'>NULL</span>,
-  name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  shown <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  opacity <span class='op'>=</span> <span class='fl'>1</span>,
-  position <span class='op'>=</span> <span class='cn'>NULL</span>,
-  legend <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>eeObject</code></dt><dd><p>The Earth Engine spatial object to display in the interactive map.</p></dd>
-
-<dt><code>visParams</code></dt><dd><p>List of parameters for visualization. See details.</p></dd>
-
-<dt><code>name</code></dt><dd><p>The name of layers.</p></dd>
-
-<dt><code>shown</code></dt><dd><p>A flag indicating whether layers should be on by default.</p></dd>
-
-<dt><code>opacity</code></dt><dd><p>The layer's opacity is represented as a number between 0 and 1. Defaults to 1.</p></dd>
-
-<dt><code>position</code></dt><dd><p>Character. Activate panel creation. If "left" the map will be displayed in
-the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
-By default NULL (No panel will be created).</p></dd>
-
-<dt><code>legend</code></dt><dd><p>Should a legend be plotted?. Only the legend of the first image is displayed.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>An <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(rgee)
-ee_Initialize()
-
-# Load an Image
-image &lt;- ee$Image("LANDSAT/LC08/C01/T1/LC08_044034_20140318")
-
-# Create
-Map &lt;- R6Map$new()
-Map$centerObject(image)
-
-# Simple display: Map just will
-Map$addLayer(
-  eeObject = image,
-  visParams = list(min=0, max = 10000, bands = c("B4", "B3", "B2")),
-  name = "l8_01"
-)
-
-Map$addLayer(
-  eeObject = image,
-  visParams = list(min=0, max = 20000, bands = c("B4", "B3", "B2")),
-  name = "l8_02"
-)
-
-# Simple display: Map just will (if the position is not specified it will
-# be saved on the right side)
-Map$reset() # Reset Map to the initial arguments.
-Map$centerObject(image)
-Map$addLayer(
-  eeObject = image,
-  visParams = list(min=0, max=10000, bands = c("B4", "B3", "B2")),
-  name = "l8_left",
-  position = "left"
-)
-
-Map$addLayer(
-  eeObject = image,
-  visParams = list(min=0, max=20000, bands = c("B4", "B3", "B2")),
-  name = "l8_right"
-)
+Map$reset()
 }
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-addLayers"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>addLayers()</code></h3>
-<p>Adds a given ee$ImageCollection to the map as multiple layers.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-addLayers"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>addLayers()</code></h3>
+<p>Adds a given ee$ImageCollection to the map as multiple layers.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span>
   <span class='va'>eeObject</span>,
   visParams <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -741,11 +497,10 @@ Map$addLayer(
   name <span class='op'>=</span> <span class='cn'>NULL</span>,
   shown <span class='op'>=</span> <span class='cn'>TRUE</span>,
   position <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opacity <span class='op'>=</span> <span class='fl'>1</span>,
-  legend <span class='op'>=</span> <span class='cn'>FALSE</span>
+  opacity <span class='op'>=</span> <span class='fl'>1</span>
 <span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>eeObject</code></dt><dd><p>ee$ImageCollection to display in the interactive map.</p></dd>
 
@@ -763,12 +518,10 @@ By default NULL (No panel will be created).</p></dd>
 
 <dt><code>opacity</code></dt><dd><p>The layer's opacity is represented as a number between 0 and 1. Defaults to 1.</p></dd>
 
-<dt><code>legend</code></dt><dd><p>Should a legend be plotted?. Only the legend of the first image is displayed.</p></dd>
-
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(sf)
 library(rgee)
@@ -787,80 +540,18 @@ ee_s2 &lt;- ee$ImageCollection("COPERNICUS/S2")$
   ee_get(0:2)
 
 Map$centerObject(nc$geometry())
-Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
-Map$reset()
+Map$addLayers(eeObject = ee_s2,position = "right")
 
 # digging up the metadata
 Map$previous_map_right$rgee$tokens
-}
-</pre><p></div></p>
 
-<h3 class='hasAnchor' id='list-addlayers-'><a class='anchor' aria-hidden='true' href='#list-addlayers-'></a>Method <code>addLayers()</code></h3>
-<p>Adds a given ee$ImageCollection to the map as multiple layers.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span>
-  <span class='va'>eeObject</span>,
-  visParams <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nmax <span class='op'>=</span> <span class='fl'>5</span>,
-  name <span class='op'>=</span> <span class='cn'>NULL</span>,
-  shown <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  position <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opacity <span class='op'>=</span> <span class='fl'>1</span>,
-  legend <span class='op'>=</span> <span class='cn'>FALSE</span>
-<span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>eeObject</code></dt><dd><p>ee$ImageCollection to display in the interactive map.</p></dd>
-
-<dt><code>visParams</code></dt><dd><p>List of parameters for visualization. See details.</p></dd>
-
-<dt><code>nmax</code></dt><dd><p>Numeric. The maximum number of images to display. By default 5.</p></dd>
-
-<dt><code>name</code></dt><dd><p>The name of layers.</p></dd>
-
-<dt><code>shown</code></dt><dd><p>A flag indicating whether layers should be on by default.</p></dd>
-
-<dt><code>position</code></dt><dd><p>Character. Activate panel creation. If "left" the map will be displayed in
-the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
-By default NULL (No panel will be created).</p></dd>
-
-<dt><code>opacity</code></dt><dd><p>The layer's opacity is represented as a number between 0 and 1. Defaults to 1.</p></dd>
-
-<dt><code>legend</code></dt><dd><p>Should a legend be plotted?. Only the legend of the first image is displayed.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>A <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(sf)
-library(rgee)
-
-ee_Initialize()
-
-Map &lt;- R6Map$new()
-
-nc &lt;- st_read(system.file("shape/nc.shp", package = "sf")) %&gt;%
-  st_transform(4326) %&gt;%
-  sf_as_ee()
-
-ee_s2 &lt;- ee$ImageCollection("COPERNICUS/S2")$
-  filterDate("2016-01-01", "2016-01-31")$
-  filterBounds(nc) %&gt;%
-  ee_get(0:2)
-
-Map$centerObject(nc$geometry())
-Map$addLayers(eeObject = ee_s2, legend = TRUE, position = "right")
 Map$reset()
-
-# digging up the metadata
-Map$previous_map_right$rgee$tokens
 }
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-addLegend"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code><a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend()</a></code></h3>
-<p>Adds a color legend to an EarthEngineMap.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-addLegend"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend()</a></code></h3>
+<p>Adds a color legend to an EarthEngineMap.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span>
   <span class='va'>visParams</span>,
   name <span class='op'>=</span> <span class='st'>"Legend"</span>,
@@ -870,7 +561,7 @@ Map$previous_map_right$rgee$tokens
   <span class='va'>...</span>
 <span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>visParams</code></dt><dd><p>List of parameters for visualization.</p></dd>
 
@@ -881,8 +572,7 @@ Map$previous_map_right$rgee$tokens
 <dt><code>color_mapping</code></dt><dd><p>Map data values (numeric or factor/character) to
 colors according to a given palette. Use "numeric" ("discrete") for continuous
 (categorical) data. For display characters use "character" and add to visParams
-the element "values" containing the desired character names. For more customized
-options use <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorNumeric</a> or <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorFactor</a>.</p></dd>
+the element "values" containing the desired character names.</p></dd>
 
 <dt><code>opacity</code></dt><dd><p>The legend's opacity is represented as a number between 0
 and 1. Defaults to 1.</p></dd>
@@ -890,13 +580,15 @@ and 1. Defaults to 1.</p></dd>
 <dt><code>...</code></dt><dd><p>Extra legend creator arguments. See <a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend</a>.</p></dd>
 
 </dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>A <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Examples</h4>
 <p><div class="r example copy"></p><pre>\dontrun{
 library(leaflet)
 library(rgee)
 ee_Initialize()
+
+Map$reset()
 
 # Load MODIS ImageCollection
 imgcol &lt;- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
@@ -910,120 +602,22 @@ vis_qc &lt;- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values 
 m_qc &lt;- Map$addLayer(imgcol$median(), vis_qc, "QC")
 
 # continous palette
-m_legend &lt;- Map$addLegend(vis_qc)
-m_qc + m_legend
+Map$addLegend(vis_qc)
 
 # categorical palette
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
-m_qc + m_legend
+Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
 
 # character palette
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
-m1 &lt;- m_qc + m_legend
-m1
-
-# custom palette
-colorbar &lt;- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
-                          position = "bottomleft")
-m2 &lt;- m_qc + m_legend
-m2
-
-# Comparison map
-m1 | m2
-}
-</pre><p></div></p>
-
-<h3 class='hasAnchor' id='list-addlegend-'><a class='anchor' aria-hidden='true' href='#list-addlegend-'></a>Method <code><a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend()</a></code></h3>
-<p>Adds a color legend to an EarthEngineMap.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span>
-  <span class='va'>visParams</span>,
-  name <span class='op'>=</span> <span class='st'>"Legend"</span>,
-  position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bottomright"</span>, <span class='st'>"topright"</span>, <span class='st'>"bottomleft"</span>, <span class='st'>"topleft"</span><span class='op'>)</span>,
-  color_mapping <span class='op'>=</span> <span class='st'>"numeric"</span>,
-  opacity <span class='op'>=</span> <span class='fl'>1</span>,
-  <span class='va'>...</span>
-<span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>visParams</code></dt><dd><p>List of parameters for visualization.</p></dd>
-
-<dt><code>name</code></dt><dd><p>The title of the legend.</p></dd>
-
-<dt><code>position</code></dt><dd><p>Character. The position of the legend. By default bottomright.</p></dd>
-
-<dt><code>color_mapping</code></dt><dd><p>Map data values (numeric or factor/character) to
-colors according to a given palette. Use "numeric" ("discrete") for continuous
-(categorical) data. For display characters use "character" and add to visParams
-the element "values" containing the desired character names. For more customized
-options use <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorNumeric</a> or <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorFactor</a>.</p></dd>
-
-<dt><code>opacity</code></dt><dd><p>The legend's opacity is represented as a number between 0
-and 1. Defaults to 1.</p></dd>
-
-<dt><code>...</code></dt><dd><p>Extra legend creator arguments. See <a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend</a>.</p></dd>
-
-</dl><p></div></p>
-<h4 class='hasAnchor' id='returns'><a class='anchor' aria-hidden='true' href='#returns'></a>Returns</h4>
-<p>A <code>EarthEngineMap</code> object.</p>
-<h4 class='hasAnchor' id='examples'><a class='anchor' aria-hidden='true' href='#examples'></a>Examples</h4>
-<p><div class="r example copy"></p><pre>\dontrun{
-library(leaflet)
-library(rgee)
-ee_Initialize()
-
-# Load MODIS ImageCollection
-imgcol &lt;- ee$ImageCollection$Dataset$MODIS_006_MOD13Q1
-
-# Parameters for visualization
-labels &lt;- c("good", "marginal", "snow", "cloud")
-cols   &lt;- c("#999999", "#00BFC4", "#F8766D", "#C77CFF")
-vis_qc &lt;- list(min = 0, max = 3, palette = cols, bands = "SummaryQA", values = labels)
-
-# Create interactive map
-m_qc &lt;- Map$addLayer(imgcol$median(), vis_qc, "QC")
-
-# continous palette
-m_legend &lt;- Map$addLegend(vis_qc)
-m_qc + m_legend
-
-# categorical palette
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend1", color_mapping = "discrete")
-m_qc + m_legend
-
-# character palette
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
-m1 &lt;- m_qc + m_legend
-m1
-
-# custom palette
-colorbar &lt;- leaflet::colorNumeric(palette = vis_qc$palette, domain = NULL)
-m_legend &lt;- Map$addLegend(vis_qc, name = "Legend3", color_mapping = colorbar,
-                          position = "bottomleft")
-m2 &lt;- m_qc + m_legend
-m2
-
-# Comparison map
-m1 | m2
+Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 }
 </pre><p></div></p>
 
 <p><hr>
-<a id="method-clone"></a></p><h3 class='hasAnchor' id='method-'><a class='anchor' aria-hidden='true' href='#method-'></a>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
-<p><div class="arguments"></p><dl>
-<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
-
-</dl><p></div></p>
-<h3 class='hasAnchor' id='list-clone-'><a class='anchor' aria-hidden='true' href='#list-clone-'></a>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='usage'><a class='anchor' aria-hidden='true' href='#usage'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
-
-<h4 class='hasAnchor' id='arguments'><a class='anchor' aria-hidden='true' href='#arguments'></a>Arguments</h4>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
@@ -1155,6 +749,8 @@ m1 | m2
   visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>min<span class='op'>=</span><span class='fl'>0</span>, max<span class='op'>=</span><span class='fl'>20000</span>, bands <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"B4"</span>, <span class='st'>"B3"</span>, <span class='st'>"B2"</span><span class='op'>)</span><span class='op'>)</span>,
   name <span class='op'>=</span> <span class='st'>"l8_right"</span>
 <span class='op'>)</span>
+
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------</span>
@@ -1169,21 +765,22 @@ m1 | m2
 
 <span class='va'>Map</span> <span class='op'>&lt;-</span> <span class='va'>R6Map</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+<span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>ee_s2</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"COPERNICUS/S2"</span><span class='op'>)</span><span class='op'>$</span>
   <span class='fu'>filterDate</span><span class='op'>(</span><span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span><span class='op'>)</span><span class='op'>$</span>
-  <span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='ee_get.html'>ee_get</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
+  <span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_get</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>2</span><span class='op'>)</span>
 
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>$</span><span class='fu'>geometry</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span>eeObject <span class='op'>=</span> <span class='va'>ee_s2</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span>, position <span class='op'>=</span> <span class='st'>"right"</span><span class='op'>)</span>
-<span class='va'>Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span>eeObject <span class='op'>=</span> <span class='va'>ee_s2</span>,position <span class='op'>=</span> <span class='st'>"right"</span><span class='op'>)</span>
 
 <span class='co'># digging up the metadata</span>
 <span class='va'>Map</span><span class='op'>$</span><span class='va'>previous_map_right</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
+
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 <span class='co'>## ------------------------------------------------</span>
@@ -1194,6 +791,8 @@ m1 | m2
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://rstudio.github.io/leaflet/'>leaflet</a></span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
 <span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span><span class='op'>)</span>
+
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># Load MODIS ImageCollection</span>
 <span class='va'>imgcol</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>ImageCollection</span><span class='op'>$</span><span class='va'>Dataset</span><span class='op'>$</span><span class='va'>MODIS_006_MOD13Q1</span>
@@ -1207,27 +806,13 @@ m1 | m2
 <span class='va'>m_qc</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>imgcol</span><span class='op'>$</span><span class='fu'>median</span><span class='op'>(</span><span class='op'>)</span>, <span class='va'>vis_qc</span>, <span class='st'>"QC"</span><span class='op'>)</span>
 
 <span class='co'># continous palette</span>
-<span class='va'>m_legend</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span><span class='op'>)</span>
-<span class='va'>m_qc</span> <span class='op'>+</span> <span class='va'>m_legend</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span><span class='op'>)</span>
 
 <span class='co'># categorical palette</span>
-<span class='va'>m_legend</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span>, name <span class='op'>=</span> <span class='st'>"Legend1"</span>, color_mapping <span class='op'>=</span> <span class='st'>"discrete"</span><span class='op'>)</span>
-<span class='va'>m_qc</span> <span class='op'>+</span> <span class='va'>m_legend</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span>, name <span class='op'>=</span> <span class='st'>"Legend1"</span>, color_mapping <span class='op'>=</span> <span class='st'>"discrete"</span><span class='op'>)</span>
 
 <span class='co'># character palette</span>
-<span class='va'>m_legend</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span>, name <span class='op'>=</span> <span class='st'>"Legend2"</span>, color_mapping <span class='op'>=</span> <span class='st'>"character"</span><span class='op'>)</span>
-<span class='va'>m1</span> <span class='op'>&lt;-</span> <span class='va'>m_qc</span> <span class='op'>+</span> <span class='va'>m_legend</span>
-<span class='va'>m1</span>
-
-<span class='co'># custom palette</span>
-<span class='va'>colorbar</span> <span class='op'>&lt;-</span> <span class='fu'>leaflet</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorNumeric</a></span><span class='op'>(</span>palette <span class='op'>=</span> <span class='va'>vis_qc</span><span class='op'>$</span><span class='va'>palette</span>, domain <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span>
-<span class='va'>m_legend</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span>, name <span class='op'>=</span> <span class='st'>"Legend3"</span>, color_mapping <span class='op'>=</span> <span class='va'>colorbar</span>,
-                          position <span class='op'>=</span> <span class='st'>"bottomleft"</span><span class='op'>)</span>
-<span class='va'>m2</span> <span class='op'>&lt;-</span> <span class='va'>m_qc</span> <span class='op'>+</span> <span class='va'>m_legend</span>
-<span class='va'>m2</span>
-
-<span class='co'># Comparison map</span>
-<span class='va'>m1</span> <span class='op'>|</span> <span class='va'>m2</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='va'>vis_qc</span>, name <span class='op'>=</span> <span class='st'>"Legend2"</span>, color_mapping <span class='op'>=</span> <span class='st'>"character"</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
@@ -1241,11 +826,11 @@ m1 | m2
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -1253,8 +838,6 @@ m1 | m2
 
   
 
-
-  
 
   </body>
 </html>

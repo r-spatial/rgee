@@ -53,8 +53,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -66,18 +64,9 @@
 
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -91,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -292,7 +281,7 @@ table data</a> documentation for more details.</p>
 
 <span class='co'># 1. Handling geometry parameters</span>
 <span class='co'># Simple</span>
-<span class='va'>ee_x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+<span class='va'>ee_x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>sf_as_ee</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span>eeObject <span class='op'>=</span> <span class='va'>ee_x</span><span class='op'>)</span>
@@ -301,8 +290,8 @@ table data</a> documentation for more details.</p>
 <span class='co'># Create a right-inside polygon.</span>
 <span class='va'>toy_poly</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>35</span>,<span class='op'>-</span><span class='fl'>10</span>,<span class='op'>-</span><span class='fl'>35</span>,<span class='fl'>10</span>,<span class='fl'>35</span>,<span class='fl'>10</span>,<span class='fl'>35</span>,<span class='op'>-</span><span class='fl'>10</span>,<span class='op'>-</span><span class='fl'>35</span>,<span class='op'>-</span><span class='fl'>10</span><span class='op'>)</span>,
                    ncol <span class='op'>=</span> <span class='fl'>2</span>,
-                   byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+                   byrow <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st.html'>st_polygon</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>holePoly</span> <span class='op'>&lt;-</span> <span class='fu'>sf_as_ee</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>toy_poly</span>, evenOdd <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
@@ -314,8 +303,8 @@ table data</a> documentation for more details.</p>
 <span class='va'>pt</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Point</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1.5</span>, <span class='fl'>1.5</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Check insideness with a contains operator.</span>
-<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>holePoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>evenOddPoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>holePoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='print.ee.computedobject.ComputedObject.html'>print</a></span><span class='op'>(</span><span class='va'>evenOddPoly</span><span class='op'>$</span><span class='fu'>contains</span><span class='op'>(</span><span class='va'>pt</span><span class='op'>)</span><span class='op'>$</span><span class='fu'>getInfo</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='ee_utils_py_to_r.html'>ee_utils_py_to_r</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># 2. Upload small geometries to EE asset</span>
 <span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly'</span><span class='op'>)</span>
@@ -349,11 +338,11 @@ table data</a> documentation for more details.</p>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -361,8 +350,6 @@ table data</a> documentation for more details.</p>
 
   
 
-
-  
 
   </body>
 </html>

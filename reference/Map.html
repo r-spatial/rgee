@@ -55,8 +55,6 @@ ee$Image.) using leaflet in the backend." />
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -68,18 +66,9 @@ ee$Image.) using leaflet in the backend." />
 
 
 
-<!-- dependencies from examples -->
-
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -93,7 +82,7 @@ ee$Image.) using leaflet in the backend." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -183,7 +172,7 @@ ee$Image.) using <code>leaflet</code> in the backend.</p>
     <p>An object of class environment with the
 following functions:</p><ul>
 <li><p><strong>addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1, legend = FALSE)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
+opacity = 1)</strong>: Adds a given EE object to the map as a layer. <br /></p><ul>
 <li><p><strong>eeObject:</strong> The object to add to the interactive map.<br /></p></li>
 <li><p><strong>visParams:</strong> List of parameters for visualization.
 See details.<br /></p></li>
@@ -196,7 +185,7 @@ between 0 and 1. Defaults to 1. <br /></p></li>
 is not a single-band ee$Image.</p></li>
 </ul></li>
 <li><p><strong>addLayers(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1, legend = FALSE)</strong>: Adds a given ee$ImageCollection to the map
+opacity = 1)</strong>: Adds a given ee$ImageCollection to the map
 as multiple layers. <br /></p><ul>
 <li><p><strong>eeObject:</strong> The ee$ImageCollection to add to the interactive map.<br /></p></li>
 <li><p><strong>visParams:</strong> List of parameters for visualization.
@@ -207,9 +196,7 @@ layers should be on by default. <br /></p></li>
 <li><p><strong>opacity:</strong> The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. <br /></p></li>
 <li><p><strong>nmax:</strong> Numeric. The maximum number of images to display.
-By default 5. <br /></p></li>
-<li><p><strong>legend:</strong> Should a legend be plotted?. Only the legend of
-the first image is displayed.</p></li>
+By default 5.</p></li>
 </ul></li>
 <li><p><strong>addLegend(visParams, name = "Legend", position = c("bottomright",
 "topright", "bottomleft", "topleft"), color_mapping= "numeric", opacity = 1, ...)</strong>:
@@ -217,11 +204,10 @@ Adds a given ee$ImageCollection to the map as multiple layers. <br /></p><ul>
 <li><p><strong>visParams:</strong> List of parameters for visualization.<br /></p></li>
 <li><p><strong>name:</strong> The title of the legend.<br /></p></li>
 <li><p><strong>position:</strong> Character. The position of the legend. By default bottomright. <br /></p></li>
-<li><p><strong>opacity:</strong> Map data values (numeric or factor/character) to
+<li><p><strong>color_mapping:</strong> Map data values (numeric or factor/character) to
 colors according to a given palette. Use "numeric" ("discrete") for continuous
 (categorical) data. For display characters use "character" and add to visParams
-the element "values" containing the desired character names. For more customized
-options use <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorNumeric</a> or <a href='https://rdrr.io/pkg/leaflet/man/colorNumeric.html'>colorFactor</a>. <br /></p></li>
+the element "values" containing the desired character names. <br /></p></li>
 <li><p><strong>opacity:</strong> The legend's opacity is represented as a number between 0
 and 1. Defaults to 1. <br /></p></li>
 <li><p><strong>...:</strong> Extra legend creator arguments. See <a href='https://rdrr.io/pkg/leaflet/man/addLegend.html'>addLegend</a>. <br /></p></li>
@@ -336,16 +322,16 @@ default 3.</p></li>
 <span class='op'>)</span>
 
 <span class='co'># Case 5: ImageCollection</span>
-<span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
+<span class='va'>nc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_transform.html'>st_transform</a></span><span class='op'>(</span><span class='fl'>4326</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='sf_as_ee.html'>sf_as_ee</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='va'>ee_s2</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>ImageCollection</span><span class='op'>(</span><span class='st'>"COPERNICUS/S2"</span><span class='op'>)</span><span class='op'>$</span>
   <span class='fu'>filterDate</span><span class='op'>(</span><span class='st'>"2016-01-01"</span>, <span class='st'>"2016-01-31"</span><span class='op'>)</span><span class='op'>$</span>
-  <span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>)</span> <span class='op'><a href='pipe.html'>%&gt;%</a></span>
-  <span class='fu'><a href='ee_get.html'>ee_get</a></span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
+  <span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>ee_get</span><span class='op'>(</span><span class='fl'>0</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>nc</span><span class='op'>$</span><span class='fu'>geometry</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>m5</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span><span class='va'>ee_s2</span>, legend <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>m5</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayers</span><span class='op'>(</span><span class='va'>ee_s2</span><span class='op'>)</span>
 <span class='va'>m5</span>
 
 <span class='co'># Case 6: Map comparison</span>
@@ -353,10 +339,9 @@ default 3.</p></li>
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>image</span><span class='op'>)</span>
 <span class='va'>m_ndvi</span> <span class='op'>&lt;-</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span>
   eeObject <span class='op'>=</span> <span class='va'>image</span><span class='op'>$</span><span class='fu'>normalizedDifference</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"B5"</span>, <span class='st'>"B4"</span><span class='op'>)</span><span class='op'>)</span>,
-  visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>max <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
-  name <span class='op'>=</span> <span class='st'>"SF_NDVI"</span>,
-  legend <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
+  visParams <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>min <span class='op'>=</span> <span class='fl'>0</span>, max <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>,
+  name <span class='op'>=</span> <span class='st'>"SF_NDVI"</span>
+<span class='op'>)</span> <span class='op'>+</span> <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLegend</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>min <span class='op'>=</span> <span class='fl'>0</span>, max <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>, name <span class='op'>=</span> <span class='st'>"NDVI"</span>, position <span class='op'>=</span> <span class='st'>"bottomright"</span>, bins <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 <span class='va'>m6</span> <span class='op'>&lt;-</span> <span class='va'>m4</span> <span class='op'>|</span> <span class='va'>m_ndvi</span>
 <span class='va'>m6</span>
 
@@ -376,11 +361,11 @@ default 3.</p></li>
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -388,8 +373,6 @@ default 3.</p></li>
 
   
 
-
-  
 
   </body>
 </html>

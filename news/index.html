@@ -52,8 +52,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -65,16 +63,9 @@
 
 
 
-
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -88,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
       </span>
     </div>
 
@@ -163,12 +154,24 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rgee-109" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.9">
-<a href="#rgee-109" class="anchor" aria-hidden="true"></a>rgee 1.0.9<small> 2021-04-24 </small>
+    <div id="rgee-109999-dev" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.9.999">
+<a href="#rgee-109999-dev" class="anchor"></a>rgee 1.0.9.999 (dev)<small> Unreleased </small>
 </h1>
 <ul>
-<li>Accessing the Earth Engine Data Catalog via ‘$’ thanks to the <a href="https://github.com/samapriya/Earth-Engine-Datasets-List" class="external-link">Earth-Engine-Datasets-List</a> created and supported by <a href="https://github.com/samapriya" class="external-link">@samapriya</a>.</li>
+<li>re-coded the Map and R6Map modules to simplify the maintenance. Many bugs were solved.</li>
+<li>ee_utils_get_crs now call to the web.archive.org if spatialreference is down.</li>
+<li>Math module and subsetting module were migrated to <a href="https://github.com/r-earthengine/rgeeExtra">rgeeExtra</a>.</li>
+<li>In ee_Initialize, the “email” parameter was renamed to “user”.</li>
+<li>ee_get is now an internal function of rgee. A new/faster version of ee_get is available in rgeeExtra.</li>
+</ul>
+</div>
+    <div id="rgee-109" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.9">
+<a href="#rgee-109" class="anchor"></a>rgee 1.0.9<small> 2021-04-24 </small>
+</h1>
+<ul>
+<li>Accessing the Earth Engine Data Catalog via ‘$’ thanks to the <a href="https://github.com/samapriya/Earth-Engine-Datasets-List">Earth-Engine-Datasets-List</a> created and supported by <a href="https://github.com/samapriya">@samapriya</a>.</li>
 <li>Math functions (abs, sign, sqrt, ceiling, cummax, cummin, cumprod, cumsum, log, log10, log1p, acos, floor, asin, atan, exp, expm1, cos, cosh, sin, sinh, tan, and tanh.) to <code>ee$Image</code>.</li>
 <li>Summary functions (max, mean, min, range, sum, product) to <code>ee$Image</code>.</li>
 <li>Comparison operators (==, !=, &gt;, &lt;, &lt;=, &gt;=) to <code>ee$Image</code>.</li>
@@ -177,7 +180,7 @@
 <li>Subsetting operators (‘[[&lt;-’, ‘[[’) to <code>ee$Image</code> and <code>ee$ImageCollection</code>.</li>
 <li>GH Action to automatica updated the Earth Engine Python API.</li>
 <li>
-<code>ee_as_sf(..., via = "getInfo")</code> does not write in temp folder.</li>
+<code><a href="../reference/ee_as_sf.html">ee_as_sf(..., via = "getInfo")</a></code> does not write in temp folder.</li>
 <li>
 <code>ee_as_sf</code> now returns by default a GeoJSON instead of a ESRI shapefile.</li>
 <li>When EarthEngineMaps have the same name, a random hex string is added to the second map.</li>
@@ -198,7 +201,7 @@
 </div>
     <div id="rgee-108" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.8">
-<a href="#rgee-108" class="anchor" aria-hidden="true"></a>rgee 1.0.8<small> 2021-01-27 </small>
+<a href="#rgee-108" class="anchor"></a>rgee 1.0.8<small> 2021-01-27 </small>
 </h1>
 <ul>
 <li>Unit testing enhanced.</li>
@@ -210,7 +213,7 @@
 </div>
     <div id="rgee-107" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.7">
-<a href="#rgee-107" class="anchor" aria-hidden="true"></a>rgee 1.0.7<small> Unreleased </small>
+<a href="#rgee-107" class="anchor"></a>rgee 1.0.7<small> Unreleased </small>
 </h1>
 <ul>
 <li>Unit testing enhanced.</li>
@@ -234,7 +237,7 @@
 </div>
     <div id="rgee-106" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.6">
-<a href="#rgee-106" class="anchor" aria-hidden="true"></a>rgee 1.0.6<small> Unreleased </small>
+<a href="#rgee-106" class="anchor"></a>rgee 1.0.6<small> Unreleased </small>
 </h1>
 <ul>
 <li>Class method chaining (i.e. <code>x$size()$getInfo()</code>) were changed by pipes (i.e. ee_x %&gt;% <code>ee$FeatureCollection$size() %&gt;% ee$Number()</code>) in all the <code>rgee</code> functions. This solve the problem “OverflowError: python int too large to convert to C long” on Window systems.</li>
@@ -259,11 +262,11 @@
 </div>
     <div id="rgee-105" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.5">
-<a href="#rgee-105" class="anchor" aria-hidden="true"></a>rgee 1.0.5<small> Unreleased </small>
+<a href="#rgee-105" class="anchor"></a>rgee 1.0.5<small> Unreleased </small>
 </h1>
 <ul>
 <li>Important changes in the low level API to upload raster and vector with GCS. However, high upload API (<code>sf_as_ee</code>, <code>stars_as_ee</code>, and <code>raster_as_ee</code>) continue working in the same way.</li>
-<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see https://developers.google.com/earth-engine/image_manifest/).</li>
+<li>Add the functions: <code>ee_utils_create_manifest_image</code> and <code>ee_utils_create_manifest_table</code> to help users to create a JSON file with all the upload parameters (“manifest”, see <a href="https://developers.google.com/earth-engine/image_manifest/" class="uri">https://developers.google.com/earth-engine/image_manifest/</a>).</li>
 <li>Add the functions: <code>ee_utils_gif_creator</code>, <code>ee_utils_gif_annotate</code> and <code>ee_utils_gif_save</code> to help users to read, add text, and save gif files.</li>
 <li>New | operator inspired in mapview 2.9.0! try: m4 | m5</li>
 <li>Fix several typos.</li>
@@ -272,12 +275,12 @@
 </div>
     <div id="rgee-104" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.4">
-<a href="#rgee-104" class="anchor" aria-hidden="true"></a>rgee 1.0.4<small> Unreleased </small>
+<a href="#rgee-104" class="anchor"></a>rgee 1.0.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>Add <code>ee_help</code> a new Rstudio addins that mimics the help Rstudio interface (F1).</li>
 <li>Fix a bug that makes that <code>ee_as_sf</code> only supports <code>GeoJSON</code> format.</li>
-<li>If <code>dsn</code> is not specified in <code>ee_as_sf</code>, it will create a temporary shapefile (in dir).</li>
+<li>If <code>dsn</code> is not specified in <code>ee_as_sf</code>, it will create a temporary shapefile (in \tmp dir).</li>
 <li>Fix a bug in <code>ee_imagecollection_to_local</code> (<a href='https://github.com/r-spatial/rgee/issues/87'>#87</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
 <li>Fix a bug in <code>ee_image_local</code> (<a href='https://github.com/r-spatial/rgee/issues/88'>#88</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
 <li>Fix a bug in <code>ee_create_credentials_drive</code> (<a href='https://github.com/r-spatial/rgee/issues/90'>#90</a> <a href='https://github.com/r-spatial/rgee/issues/78'>#78</a> Thanks <a href='https://github.com/cedlfc44'>@cedlfc44</a>)</li>
@@ -285,14 +288,14 @@
 </div>
     <div id="rgee-103" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.3">
-<a href="#rgee-103" class="anchor" aria-hidden="true"></a>rgee 1.0.3<small> Unreleased </small>
+<a href="#rgee-103" class="anchor"></a>rgee 1.0.3<small> Unreleased </small>
 </h1>
 <ul>
 <li>getPass library removed from <code>ee_Initialize</code>.</li>
 <li>New argument <code>display</code> in <code>ee_Initialize</code> to return the authentication URI. Useful for <code>rgee</code> colab users.</li>
 <li>Changes in some diagnostic messages to make possible to use <code>rgee</code> in colab.</li>
 <li>
-<code>ee_help</code> returns a HTML file rather than TRUE. It also now supports characters (e.g. <code>ee_help("ee$Image")</code>).</li>
+<code>ee_help</code> returns a HTML file rather than TRUE. It also now supports characters (e.g. <code><a href="../reference/ee_help.html">ee_help("ee$Image")</a></code>).</li>
 <li>Fix a strange bug when <code>ee_Initialize</code> tries to connect to reticulate the first time.</li>
 <li>Fix small bugs in <code>ee_user_info</code> and <code>ee_users</code>
 </li>
@@ -300,7 +303,7 @@
 </div>
     <div id="rgee-102" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.2">
-<a href="#rgee-102" class="anchor" aria-hidden="true"></a>rgee 1.0.2<small> Unreleased </small>
+<a href="#rgee-102" class="anchor"></a>rgee 1.0.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>Earth Engine Python API updated to 0.1.229.</li>
@@ -310,7 +313,7 @@
 </div>
     <div id="rgee-101" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.1">
-<a href="#rgee-101" class="anchor" aria-hidden="true"></a>rgee 1.0.1<small> Unreleased </small>
+<a href="#rgee-101" class="anchor"></a>rgee 1.0.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Earth Engine Python API updated to 0.1.228.</li>
@@ -320,13 +323,13 @@
 </div>
     <div id="rgee-100" class="section level1">
 <h1 class="page-header" data-toc-text="1.0.0">
-<a href="#rgee-100" class="anchor" aria-hidden="true"></a>rgee 1.0.0<small> Unreleased </small>
+<a href="#rgee-100" class="anchor"></a>rgee 1.0.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>We implement <code>ee_createAssetHome</code> to help users to define their <em>Earth Engine Assets home root folder</em> without leaving ee_Initialize(). (<a href='https://github.com/r-spatial/rgee/issues/70'>#70</a> Thanks <a href='https://github.com/jhollist'>@jhollist</a>)</li>
-<li>Fix a bug in <code>ee_Initialize(drive = TRUE, gcs = TRUE)</code> which do not permit users save credentials. (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
+<li>Fix a bug in <code><a href="../reference/ee_Initialize.html">ee_Initialize(drive = TRUE, gcs = TRUE)</a></code> which do not permit users save credentials. (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
 <li>Removed <code>check_ring_dir</code> argument from <code>sf_as_ee</code>. Now <code>rgee</code> expect that users fix potential geometry problems before upload geometries to their Earth Engine assets.</li>
-<li>Changes in “welcome to rgee” message (located in <code>ee_Initialize</code>). We delete <code>stop("Initialization aborted")</code> and implement <code>ee_search_init_message</code>. It will permit to <code>rgee</code> to know if the user accepted to create the global var “EARTHENGINE_INIT_MESSAGE” without need to restart the R session.</li>
+<li>Changes in “welcome to rgee” message (located in <code>ee_Initialize</code>). We delete <code><a href="https://rdrr.io/r/base/stop.html">stop("Initialization aborted")</a></code> and implement <code>ee_search_init_message</code>. It will permit to <code>rgee</code> to know if the user accepted to create the global var “EARTHENGINE_INIT_MESSAGE” without need to restart the R session.</li>
 <li>Fix minor bugs in <code>sf_as_ee</code> and <code>gcs_to_ee_table</code>. The argument <code>command_line_tool_path</code> was added to give users the option to set the path of the Earth Engine command linetool. This new argument is only relevant to upload files using Google Cloud Storage. New diagnostic message were added.</li>
 <li>Now <code>sf_as_ee</code> returns an <code>ee$Geometry$...</code> when <code>x</code> is a <code>sfg</code> or a single sfc object. If <code>x</code> is a sf or a <code>sfc</code> object with multiple geometries will return an <code>ee$FeatureCollection</code>. New unit test for <code>sf_as_ee</code>.</li>
 <li>Changes in the documentation of <code>ee_as_stars</code> and <code>ee_as_raster</code> (<a href='https://github.com/r-spatial/rgee/issues/72'>#72</a> Thanks <a href='https://github.com/appelmar'>@appelmar</a>).</li>
@@ -354,7 +357,7 @@
 </div>
     <div id="rgee-062" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.2">
-<a href="#rgee-062" class="anchor" aria-hidden="true"></a>rgee 0.6.2<small> Unreleased </small>
+<a href="#rgee-062" class="anchor"></a>rgee 0.6.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>Earth Engine Python API updated to 0.1.226.</li>
@@ -377,7 +380,7 @@
 </div>
     <div id="rgee-061" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.1">
-<a href="#rgee-061" class="anchor" aria-hidden="true"></a>rgee 0.6.1<small> Unreleased </small>
+<a href="#rgee-061" class="anchor"></a>rgee 0.6.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fix some typos.</li>
@@ -388,7 +391,7 @@
 </div>
     <div id="rgee-060" class="section level1">
 <h1 class="page-header" data-toc-text="0.6.0">
-<a href="#rgee-060" class="anchor" aria-hidden="true"></a>rgee 0.6.0<small> Unreleased </small>
+<a href="#rgee-060" class="anchor"></a>rgee 0.6.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>Earth Engine Python API updated to 0.1.225.</li>
@@ -402,7 +405,7 @@
 </div>
     <div id="rgee-054" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.4">
-<a href="#rgee-054" class="anchor" aria-hidden="true"></a>rgee 0.5.4<small> Unreleased </small>
+<a href="#rgee-054" class="anchor"></a>rgee 0.5.4<small> Unreleased </small>
 </h1>
 <ul>
 <li>Earth Engine Python API updated to 0.1.224.</li>
@@ -416,11 +419,11 @@
 </div>
     <div id="rgee-053" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.3">
-<a href="#rgee-053" class="anchor" aria-hidden="true"></a>rgee 0.5.3<small> Unreleased </small>
+<a href="#rgee-053" class="anchor"></a>rgee 0.5.3<small> Unreleased </small>
 </h1>
 <ul>
 <li>Fix a bug in ee_check_python_packages.</li>
-<li>changed by in the documentation.</li>
+<li>\donttest changed by \dontrun in the documentation.</li>
 <li>gdal and v8 system dependencies added to GH actions.</li>
 <li>Fix a bug in the paper (<code>ee_extract</code> example).</li>
 <li>Fix a minor bug in <code>ee_extract</code>, now the argument … works.</li>
@@ -435,13 +438,13 @@
 </div>
     <div id="rgee-052" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.2">
-<a href="#rgee-052" class="anchor" aria-hidden="true"></a>rgee 0.5.2<small> Unreleased </small>
+<a href="#rgee-052" class="anchor"></a>rgee 0.5.2<small> Unreleased </small>
 </h1>
 <ul>
 <li>DESCRIPTION: single quotes in title and description.</li>
 <li>DESCRIPTION: A more compressible description of what rgee does.</li>
 <li>DESCRIPTION: Added web reference to the Earth Engine API.</li>
-<li>changed by in all our examples.</li>
+<li>\dontrun changed by \donttest in all our examples.</li>
 <li>Added “#’ <a href='https://github.com/return'>@return</a>” to several functions.</li>
 <li>Added “#’ <a href='https://github.com/family'>@family</a>” to all the functions.</li>
 <li>Added ‘quiet’ argument to all the functions that needed.</li>
@@ -454,7 +457,7 @@
 </div>
     <div id="rgee-051" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.1">
-<a href="#rgee-051" class="anchor" aria-hidden="true"></a>rgee 0.5.1<small> Unreleased </small>
+<a href="#rgee-051" class="anchor"></a>rgee 0.5.1<small> Unreleased </small>
 </h1>
 <ul>
 <li>ee_install_* functions were deprecated and replaced by ee_install. ee_install create an isolated Python virtual environment with all rgee dependencies.</li>
@@ -463,7 +466,7 @@
 </div>
     <div id="rgee-050" class="section level1">
 <h1 class="page-header" data-toc-text="0.5.0">
-<a href="#rgee-050" class="anchor" aria-hidden="true"></a>rgee 0.5.0<small> Unreleased </small>
+<a href="#rgee-050" class="anchor"></a>rgee 0.5.0<small> Unreleased </small>
 </h1>
 <ul>
 <li><strong>First attempt to submit to CRAN</strong></li>
@@ -500,11 +503,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cesar Aybar.</p></p>
+  <p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -512,8 +515,6 @@
 
   
 
-
-  
 
   </body>
 </html>
