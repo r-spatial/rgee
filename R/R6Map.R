@@ -623,7 +623,7 @@ R6Map <- R6::R6Class(
         if (color_mapping == "numeric") {
           pal <- leaflet::colorNumeric(visParams$palette, domain = NULL)
           values <- c(visParams$min, visParams$max)
-        } else if (color_mapping == "discrete") {
+        } else if (color_mapping == "discrete" | color_mapping == "categorical") {
           pal <- leaflet::colorFactor(visParams$palette, domain = NULL)
           values <- visParams$min:visParams$max
         }  else if (color_mapping == "character") {
@@ -634,7 +634,8 @@ R6Map <- R6::R6Class(
               "visParams <- list(palette = c(\"red\",\"blue\",\"green\"), values = LETTERS[1:3])"
             )
           }
-          values <- visParams$values
+          values_chr <- visParams$values
+          values <- factor(values_chr, levels = values_chr)
         }
       } else {
         stop(
@@ -875,7 +876,7 @@ R6Map <- R6::R6Class(
 #' following functions:
 #' \itemize{
 #'   \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-#'   opacity = 1, legend = FALSE)}: Adds a given EE object to the map as a layer. \cr
+#'   opacity = 1)}: Adds a given EE object to the map as a layer. \cr
 #'   \itemize{
 #'     \item \strong{eeObject:} The object to add to the interactive map.\cr
 #'     \item \strong{visParams:} List of parameters for visualization.
@@ -889,7 +890,7 @@ R6Map <- R6::R6Class(
 #'     is not a single-band ee$Image.
 #'   }
 #'   \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
-#'   opacity = 1, legend = FALSE)}: Adds a given ee$ImageCollection to the map
+#'   opacity = 1)}: Adds a given ee$ImageCollection to the map
 #'   as multiple layers. \cr
 #'   \itemize{
 #'     \item \strong{eeObject:} The ee$ImageCollection to add to the interactive map.\cr

@@ -9,7 +9,7 @@ An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1, legend = FALSE)}: Adds a given EE object to the map as a layer. \cr
+opacity = 1)}: Adds a given EE object to the map as a layer. \cr
 \itemize{
 \item \strong{eeObject:} The object to add to the interactive map.\cr
 \item \strong{visParams:} List of parameters for visualization.
@@ -23,7 +23,7 @@ between 0 and 1. Defaults to 1. \cr
 is not a single-band ee$Image.
 }
 \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1, legend = FALSE)}: Adds a given ee$ImageCollection to the map
+opacity = 1)}: Adds a given ee$ImageCollection to the map
 as multiple layers. \cr
 \itemize{
 \item \strong{eeObject:} The ee$ImageCollection to add to the interactive map.\cr
