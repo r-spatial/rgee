@@ -109,11 +109,11 @@ ee_help <- function(eeobject, browser = FALSE) {
         ee_html_usage_rstudio(doc_to_display),
         ee_html_arguments_rstudio(doc_to_display$parameters),
         ee_html_details_rstudio(doc_to_display$details),
-        ee_html_returns_rstudio(doc_to_display$returns)
+        ee_html_returns_rstudio(doc_to_display$returns),
+        ee_html_examples_rstudio(doc_to_display$Examples)
       ),
       con = fileConn
     )
-
     on.exit(close(fileConn), add = TRUE)
     rstudioapi::viewer(temp_file)
   } else {
@@ -378,6 +378,20 @@ ee_html_returns_simple <- function(returns) {
   }
 }
 
+#' Create examples - R Documentation Simple
+#' @noRd
+ee_html_examples_simple <- function(examples) {
+  if (is.null(examples)) {
+    return(examples)
+  }
+  if (nchar(examples) < 1) {
+    examples
+  } else {
+    sprintf('<h3 style="%s">Examples</h3><p>%s<p>',
+            ee_css_h3_simple(),
+            examples)
+  }
+}
 
 #' Create returns - R Documentation Simple
 #' @noRd
@@ -393,6 +407,26 @@ ee_html_returns_rstudio <- function(returns) {
             ee_css_h3_rstudio(),
             p_style,
             returns)
+  }
+}
+
+
+#' Create examples - R Documentation Simple
+#' @noRd
+ee_html_examples_rstudio <- function(examples) {
+  if (is.null(examples)) {
+    return(examples)
+  }
+  if (nchar(examples) < 1) {
+    examples
+  } else {
+    p_style <- "font-family: sans-serif; font-size: 10pt;"
+    sprintf(
+      '<h3 style="%s">Examples</h3><p style="%s">%s<p>',
+      ee_css_h3_rstudio(),
+      p_style,
+      examples
+    )
   }
 }
 
@@ -461,6 +495,8 @@ ee_function_docs <- function(ee_function) {
   output_help$description <- gsub("\n"," ",real_description)
   output_help$details <- ""
   output_help$parameters <- real_args$arg
+  output_help$Examples <- gsub(">>>", "<br>", output_help$sections$Examples)
+  output_help$sections <- NULL
   output_help$signature <- sprintf(
     "%s(%s, ...)",
     gsub( " *\\(.*?\\) *", "", output_help$signature),
