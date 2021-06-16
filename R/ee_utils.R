@@ -4,7 +4,7 @@
 #' @return An R object
 #' @export
 ee_utils_py_to_r <- function(x) {
-  p_r <- suppressWarnings(try(py_to_r(x),silent = TRUE))
+  p_r <- suppressWarnings(try(py_to_r(x), silent = TRUE))
   if (class(p_r) %in% 'try-error') {
     return(x)
   } else {

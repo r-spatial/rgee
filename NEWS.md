@@ -31,11 +31,11 @@ tan, and tanh.) to `ee$Image`.
 - Logic operators (!, &, |) to `ee$Image`.
 - Arithmetic operators (+, -, *, /, ^, %%, %/%) to `ee$Image`.
 - Subsetting operators ('[[<-', '[[') to `ee$Image` and `ee$ImageCollection`.
-- GH Action to automatica updated the Earth Engine Python API.
+- GH Action to automatically updated the Earth Engine Python API.
 - `ee_as_sf(..., via = "getInfo")` does not write in temp folder.
 - `ee_as_sf` now returns by default a GeoJSON instead of a ESRI shapefile.
 - When EarthEngineMaps have the same name, a random hex string is added to the second map.
-- Fix a bug in `sf_as_ee` that add `id` colum to the results.
+- Fix a bug in `sf_as_ee` that add `id` column to the results.
 - `ee_extract` now supports lazy evaluation and containers `drive` and `gcs`.
 - R6, class to display Earth Engine (EE) spatial objects, added.
 - Map is now a `R6` object instead of a environment.

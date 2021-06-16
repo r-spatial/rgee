@@ -67,8 +67,14 @@ eedate_to_rdate <- function(ee_date, timestamp = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py",
                                  package = "rgee")
   ee_utils <- ee_source_python(oauth_func_path)
-  date_numeric <- ee_utils$eedate_to_rdate(ee$Date(ee_date)) %>%
-    ee_utils_py_to_r()
+  date_numeric <- suppressWarnings(
+    { # ee_utils$eedate_to_rdate could return error,
+      # then warning message "restarting interrupted
+      # promise evaluation" is invoked.
+      ee_utils$eedate_to_rdate(ee$Date(ee_date)) %>%
+        ee_utils_py_to_r()
+    }
+  )
   if (isTRUE(timestamp)) {
     date_numeric
   } else {
