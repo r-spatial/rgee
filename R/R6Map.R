@@ -427,6 +427,7 @@ R6Map <- R6::R6Class(
     #' \dontrun{
     #' library(sf)
     #' library(rgee)
+    #' library(rgeeExtra)
     #'
     #' ee_Initialize()
     #'
@@ -994,8 +995,10 @@ R6Map <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
+#' library(rgeeExtra)
 #' library(rgee)
 #' library(sf)
+#'
 #' ee_Initialize()
 #'
 #' # Case 1: Geometry*

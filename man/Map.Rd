@@ -138,8 +138,10 @@ default 3.
 }
 \examples{
 \dontrun{
+library(rgeeExtra)
 library(rgee)
 library(sf)
+
 ee_Initialize()
 
 # Case 1: Geometry*

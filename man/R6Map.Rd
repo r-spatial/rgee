@@ -192,6 +192,7 @@ Map$reset()
 \dontrun{
 library(sf)
 library(rgee)
+library(rgeeExtra)
 
 ee_Initialize()
 
@@ -639,6 +640,7 @@ A \code{EarthEngineMap} object.
 \preformatted{\dontrun{
 library(sf)
 library(rgee)
+library(rgeeExtra)
 
 ee_Initialize()
 

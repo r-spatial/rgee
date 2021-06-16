@@ -285,35 +285,46 @@ ee_sf_to_fc <- function(x, proj, geodesic, evenOdd) {
 
   # Load python module
   oauth_func_path <- system.file("python/sf_as_ee.py", package = "rgee")
-  sf_as_ee <- ee_source_python(oauth_func_path)
+  sf_as_ee_lib <- ee_source_python(oauth_func_path)
 
-  ngeometries <- if (any(class(x) %in% "sf")) nrow(x) else length(x)
+  # How much geometry does x have?
+  ngeometries <- if (inherits(x, "sf")) nrow(x) else length(x)
 
-  if (ngeometries == 1 & !any(class(x) %in% "sf")) {
+  # does x only has one geometry and it is a sfc?,
+  # then, return a ee$Geometry$...
+  if (ngeometries == 1 & !inherits(x, "sf")) {
     sfc_feature <- sf::st_geometry(x)
     py_geometry <- geojsonio::geojson_json(sfc_feature, type = 'skip')
     sf_obj_class <- class(sfc_feature)
     wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
+
     if (length(wkt_type) == 0) {
       stop(
         "sf_as_ee does not support objects of class ",
       )
     }
-    ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+    ee_geometry <- sf_as_ee_lib$sfg_as_ee_py(x = py_geometry,
                                          sfc_class = wkt_type,
                                          opt_proj = proj,
                                          opt_geodesic = geodesic,
                                          opt_evenOdd = evenOdd)
     return(ee_geometry)
   } else {
+    # if x is a sf object with more than one geometry.
     fc <- list()
     for (index in seq_len(ngeometries)) {
-      feature <- x[index,]
+      if (inherits(x, "sfc")) {
+        # if x is a sfc. (it's need it only in sf >= 1.0.0)
+        feature <- x[index]
+      } else {
+        # if x is a sf. (it's need it only in sf >= 1.0.0)
+        feature <- x[index,]
+      }
       sfc_feature <- sf::st_geometry(feature)
       py_geometry <- geojsonio::geojson_json(sfc_feature, type = 'skip')
       sf_obj_class <- class(sfc_feature)
       wkt_type <- sf_obj_class[sf_obj_class %in% ee_sf_comp()]
-      ee_geometry <- sf_as_ee$sfg_as_ee_py(x = py_geometry,
+      ee_geometry <- sf_as_ee_lib$sfg_as_ee_py(x = py_geometry,
                                            sfc_class = wkt_type,
                                            opt_proj = proj,
                                            opt_geodesic = geodesic,
