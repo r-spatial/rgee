@@ -384,6 +384,10 @@ ee_html_examples_simple <- function(examples) {
   if (is.null(examples)) {
     return(examples)
   }
+  if (length(examples) == 0) {
+    return(NULL)
+  }
+
   if (nchar(examples) < 1) {
     examples
   } else {
@@ -416,6 +420,9 @@ ee_html_returns_rstudio <- function(returns) {
 ee_html_examples_rstudio <- function(examples) {
   if (is.null(examples)) {
     return(examples)
+  }
+  if (length(examples) == 0) {
+    return(NULL)
   }
   if (nchar(examples) < 1) {
     examples
