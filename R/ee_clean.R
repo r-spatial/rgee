@@ -155,6 +155,7 @@ ee_clean_message <- function() {
 ee_clean_container <- function(name = "rgee_backup",
                                type = "drive",
                                quiet = FALSE) {
+
   ee_user <- ee_exist_credentials()
 
   if (type == "drive") {
@@ -167,37 +168,28 @@ ee_clean_container <- function(name = "rgee_backup",
       )
     }
 
-    # Search if the folder exist
-    drive_folder <- googledrive::drive_ls(
-      q = sprintf("name contains '%s'", name)
-    )
-    if (nrow(drive_folder) == 0) {
-      stop("The folder that you attempt delete does not exist")
+    # Check if the folder exist!
+    find_folder <- googledrive::drive_find(q = sprintf("name contains '%s'", name), type = "folder")
+    if (nrow(find_folder) == 0) {
+      if (!quiet) {
+        message("The folder that you attempt delete does not exist")
+      }
+      return(FALSE)
     }
 
     # Search if the folder exist
     if (!quiet) {
       message(sprintf("Searching files in %s.", bold(name)))
     }
-    drive_files_to_delete <- googledrive::drive_ls(
-      path = drive_folder
-    )
 
-    # Delete files
-    mapply(
-      FUN = function(index) {
-        if (!quiet) {
-          message(
-            sprintf(
-              "Deleting %s/%s.", bold(name),
-              bold(drive_files_to_delete[index, ]$name)
-            )
-          )
-        }
-        googledrive::drive_rm(drive_files_to_delete[index,])
-      },
-      seq_along(nrow(drive_files_to_delete))
-    )
+    # Delete folder
+    if (!quiet) {
+      googledrive::with_drive_quiet(
+        googledrive::drive_rm(find_folder)
+      )
+    } else {
+      googledrive::drive_rm(find_folder)
+    }
 
   } else if (type == "gcs") {
     # check if googleCloudStorageR is installed
