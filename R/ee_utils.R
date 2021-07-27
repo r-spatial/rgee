@@ -131,3 +131,26 @@ ee_utils_dataset_display <- function(ee_search_dataset) {
   invisible(TRUE)
 }
 
+
+
+#' Return metadata of a COG tile server
+#'
+#' @param resource Character that represents a COG tile server file.
+#' @param titiler_server Titiler endpoint. Defaults to "https://api.cogeo.xyz/".
+#' @return A metadata list for a COG file.
+#' @examples
+#' \dontrun{
+#'  library(rgee)
+#'
+#'  resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+#'  ee_utils_cog_metadata(resource)
+#' }
+#' @export
+ee_utils_cog_metadata <- function(resource, titiler_server = "https://api.cogeo.xyz/") {
+  response <- httr::GET(
+    url = sprintf("%s/cog/metadata", titiler_server),
+    config = httr::accept_json(),
+    query = c(list("url" = resource), visParams)
+  )
+  httr::content(response, type="application/json")
+}
