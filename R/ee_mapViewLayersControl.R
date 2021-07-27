@@ -23,12 +23,10 @@ ee_getCallEntryFromMap <- function(map, call) {
 #' @noRd
 ee_mapViewLayersControl <- function(map, map.types, names, native.crs = FALSE) {
   ind <- ee_getCallEntryFromMap(map, call = "addLayersControl")
-  if (!length(ind)) {
-    bgm <- map.types
-  }
-  else {
-    bgm <- map$x$calls[[ind[1]]]$args[[1]]
-  }
+
+  # Add Layer Control
+  bgm <- map$x$calls[[ind[1]]]$args[[1]]
+
   if (!native.crs) {
     m <- leaflet::addLayersControl(
       map = map, position = "topleft",

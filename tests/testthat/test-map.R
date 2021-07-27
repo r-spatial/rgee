@@ -213,3 +213,28 @@ test_that("Map | comparison operator", {
   expect_s3_class(mc1, "leaflet")
   expect_s3_class(mc2, "leaflet")
 })
+
+# ee_mapViewLayersControl
+test_that("ee_mapViewLayersControl", {
+  map <- Map$addLayer(ee$Image(0))
+  map.types <- "Esri.WorldImagery"
+  names <- "dss"
+  native.crs <- TRUE
+  mm5 <- rgee:::ee_mapViewLayersControl(map, map.types, names, native.crs)
+  expect_s3_class(mm5, "leaflet")
+})
+
+# COG testing
+test_that("COG testing", {
+  resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+  visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+
+  Map$centerObject(resource)
+  m1 <- Map$addLayer(resource, visParams=visParams)
+  expect_equal(m1$rgee$opacity, 1)
+
+  resource <- "sss"
+  expect_error(Map$centerObject(resource))
+  expect_error(Map$addLayer(resource))
+})
+

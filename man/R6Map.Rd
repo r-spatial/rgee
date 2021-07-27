@@ -469,7 +469,12 @@ Centers the map view on a given object. If no zoom level is provided, it
 will be predicted according to the bounds of the Earth Engine object
 specified.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{R6Map$centerObject(eeObject, zoom = NULL, maxError = ee$ErrorMargin(1))}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{R6Map$centerObject(
+  eeObject,
+  zoom = NULL,
+  maxError = ee$ErrorMargin(1),
+  titiler_server = "https://api.cogeo.xyz/"
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -481,6 +486,8 @@ specified.
 
 \item{\code{maxError}}{Max error when input image must be reprojected to an
 explicitly requested result projection or geodesic state.}
+
+\item{\code{titiler_server}}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }
 \if{html}{\out{</div>}}
 }
@@ -517,7 +524,8 @@ Adds a given Earth Engine spatial object to the map as a layer
   name = NULL,
   shown = TRUE,
   opacity = 1,
-  position = NULL
+  position = NULL,
+  titiler_server = "https://api.cogeo.xyz/"
 )}\if{html}{\out{</div>}}
 }
 
@@ -537,6 +545,8 @@ Adds a given Earth Engine spatial object to the map as a layer
 \item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).}
+
+\item{\code{titiler_server}}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }
 \if{html}{\out{</div>}}
 }

@@ -4,7 +4,13 @@
 #' https://stackoverflow.com/questions/6048975/
 #' @noRd
 ee_getZoom <- function(eeObject, maxError = ee$ErrorMargin(1)) {
-  bounds <- ee_get_boundary(eeObject, maxError)
+  # added for support COG
+  if (inherits(eeObject, "list")) {
+    bounds <- unlist(eeObject$bounds)
+    names(bounds) <- c("xmin", "ymin", "xmax", "ymax")
+  } else {
+    bounds <- ee_get_boundary(eeObject, maxError)
+  }
 
   WORLD_DIM <- list(height = 256, width = 256)
   ZOOM_MAX <- 18

@@ -242,6 +242,7 @@ R6Map <- R6::R6Class(
     #' @param zoom The zoom level, from 1 to 24. By default NULL.
     #' @param maxError Max error when input image must be reprojected to an
     #' explicitly requested result projection or geodesic state.
+    #' @param titiler_server Titiler endpoint. Defaults to "https://api.cogeo.xyz/".
     #' @return No return value, called to set zoom.
     #' @examples
     #' \dontrun{
@@ -256,8 +257,13 @@ R6Map <- R6::R6Class(
     #' }
     centerObject = function(eeObject,
                             zoom = NULL,
-                            maxError = ee$ErrorMargin(1)) {
-      viewer_params <- private$get_center(eeObject, zoom, maxError)
+                            maxError = ee$ErrorMargin(1),
+                            titiler_server = "https://api.cogeo.xyz/") {
+      if (inherits(eeObject, "character")) {
+        viewer_params <- private$centerObject_COG(eeObject, titiler_server)
+      } else {
+        viewer_params <- private$get_center(eeObject, zoom, maxError)
+      }
       self$setCenter(viewer_params$lon, viewer_params$lat, viewer_params$zoom)
     },
 
@@ -273,7 +279,7 @@ R6Map <- R6::R6Class(
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
     #' By default NULL (No panel will be created).
-    #'
+    #' @param titiler_server Titiler endpoint. Defaults to "https://api.cogeo.xyz/".
     #' @return An `EarthEngineMap` object.
     #'
     #' @examples
@@ -325,9 +331,24 @@ R6Map <- R6::R6Class(
                         name = NULL,
                         shown = TRUE,
                         opacity = 1,
-                        position = NULL) {
+                        position = NULL,
+                        titiler_server = "https://api.cogeo.xyz/") {
       # check packages
       ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem"))
+
+      if (inherits(eeObject, "character")) {
+        ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem", "httr"))
+        return(private$addCOG(
+          resource = eeObject,
+          visParams = visParams,
+          name = name,
+          shown = shown,
+          opacity = opacity,
+          position = position,
+          titiler_server = titiler_server
+        ))
+      }
+
       if (is.null(visParams)) {
         visParams <- list()
       }
@@ -407,7 +428,6 @@ R6Map <- R6::R6Class(
         map
       }
     },
-
     #' @description
     #'
     #' Adds a given ee$ImageCollection to the map as multiple layers.
@@ -685,6 +705,91 @@ R6Map <- R6::R6Class(
     set_zoom = function(val) {
       self$zoom <- val
     },
+    centerObject_COG = function(resource, titiler_server) {
+      # check packages
+      ee_check_packages("Map$centerObject_COG", c("jsonlite", "leaflet", "leafem", "httr"))
+
+      # COG service
+      titiler_server_service <- sprintf("%s/%s", titiler_server, "cog/tilejson.json")
+
+      # GET tilejson.json
+      response <- httr::GET(
+        url = titiler_server_service,
+        config = httr::accept_json(),
+        query = list(
+          "url" = resource
+        )
+      )
+
+      if (response$status_code != 200) {
+        stop("eeObject is neither a COG resource nor an EE spatial object.")
+      }
+
+      jsonInfo <- httr::content(response, type="application/json")
+
+      lon <- jsonInfo$center[[1]]
+      lat <- jsonInfo$center[[2]]
+      zoom <- ee_getZoom(jsonInfo)
+      list(lon = lon, lat = lat, zoom = zoom)
+    },
+    addCOG = function(resource,
+                      visParams = NULL,
+                      name = NULL,
+                      shown = TRUE,
+                      opacity = 1,
+                      position = NULL,
+                      titiler_server = "https://api.cogeo.xyz/") {
+      # check packages
+      ee_check_packages("Map$addCOG", c("jsonlite", "leaflet", "leafem", "httr"))
+
+      # COG service
+      titiler_server_service <- sprintf("%s/%s", titiler_server, "cog/tilejson.json")
+
+      # Remove values element (It is useful for Map$addLegend)
+      visParams[["values"]] = NULL
+
+      # If name is null try to obtain from image metadata if not untitled_
+      # would be the name.
+      if (is.null(name)) {
+        name <- tryCatch(
+          expr = ee_get_system_id(eeObject),
+          error = function(e) basename(tempfile(pattern = "untitled_"))
+        )
+        if (is.null(name)) name <- basename(tempfile(pattern = "untitled_"))
+      }
+
+      # GET tilejson.json
+      response <- httr::GET(
+        url = titiler_server_service,
+        config = httr::accept_json(),
+        query = c(list("url" = resource), visParams)
+      )
+
+      if (response$status_code != 200) {
+        stop("eeObject is neither a COG resource nor an EE spatial object.")
+      }
+
+      jsonInfo <- httr::content(response, type="application/json")
+      tile <- jsonInfo$tiles[[1]]
+
+      # Using the previous token create a map using leaflet package
+      map <- private$ee_addTile(
+        tile = tile,
+        name = name,
+        visParams = visParams,
+        shown = shown,
+        opacity = opacity,
+        position = position
+      )
+
+      if (isTRUE(self$save_maps)) {
+        # Save the previous map in previous_map_left or previous_map_right
+        # according to posisa tion argument.
+        private$save_map(map, position = position)
+      } else {
+        map
+      }
+    },
     get_center = function(eeObject, zoom, maxError) {
       if (any(class(eeObject) %in% "ee.featurecollection.FeatureCollection")) {
         message("NOTE: Center obtained from the first element.")
@@ -887,8 +992,6 @@ R6Map <- R6::R6Class(
 #'     layer should be on by default. \cr
 #'     \item \strong{opacity:} The layer's opacity is represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
-#'     \item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
-#'     is not a single-band ee$Image.
 #'   }
 #'   \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
 #'   opacity = 1)}: Adds a given ee$ImageCollection to the map
@@ -1060,6 +1163,15 @@ R6Map <- R6::R6Class(
 #' # Case 7: digging up the metadata
 #' m6$rgee$tokens
 #' m5$rgee$tokens
+#'
+#' # Case 8: COG support
+#' resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+#' # See parameters here: https://api.cogeo.xyz/docs#/Cloud%20Optimized%20GeoTIFF/tilejson_cog_tilejson_json_get
+#' # visParams <- list(nodata = 0)
+#' visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+#'
+#' Map$centerObject(resource)
+#' Map$addLayer(resource, visParams = visParams, shown = TRUE)
 #' }
 #' @export
 Map <- R6Map$new(save_maps = FALSE)

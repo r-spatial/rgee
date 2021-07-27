@@ -19,8 +19,6 @@ See details.\cr
 layer should be on by default. \cr
 \item \strong{opacity:} The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. \cr
-\item \strong{legend:} Should a legend be plotted?. Ignore if \code{eeObject}
-is not a single-band ee$Image.
 }
 \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
 opacity = 1)}: Adds a given ee$ImageCollection to the map
@@ -203,6 +201,15 @@ m6
 # Case 7: digging up the metadata
 m6$rgee$tokens
 m5$rgee$tokens
+
+# Case 8: COG support
+resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+# See parameters here: https://api.cogeo.xyz/docs#/Cloud\%20Optimized\%20GeoTIFF/tilejson_cog_tilejson_json_get
+# visParams <- list(nodata = 0)
+visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+
+Map$centerObject(resource)
+Map$addLayer(resource, visParams = visParams, shown = TRUE)
 }
 }
 \keyword{datasets}

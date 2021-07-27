@@ -153,7 +153,6 @@
       m <- do.call(leaflet::addLegend, leaflet_legend_args)
     }
   }
-
   m
 }
 
