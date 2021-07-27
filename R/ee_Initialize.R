@@ -258,6 +258,17 @@ ee_Initialize <- function(user = NULL,
   ee$Image$Dataset <- eeDataset_b$image
 
 
+  # If Extra module exist add to ee!
+  tryCatch(
+    expr = {
+      class(Extra) <- c("Extra_EE_module", class(Extra))
+      ee$Extra <- Extra
+    },
+    error = function(e) {
+      {ee$Extra <- NULL}
+    }
+  )
+
   invisible(TRUE)
 }
 
