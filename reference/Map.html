@@ -181,8 +181,6 @@ See details.<br /></p></li>
 layer should be on by default. <br /></p></li>
 <li><p><strong>opacity:</strong> The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. <br /></p></li>
-<li><p><strong>legend:</strong> Should a legend be plotted?. Ignore if <code>eeObject</code>
-is not a single-band ee$Image.</p></li>
 </ul></li>
 <li><p><strong>addLayers(eeObject, visParams, name = NULL, shown = TRUE,
 opacity = 1)</strong>: Adds a given ee$ImageCollection to the map
@@ -350,6 +348,15 @@ default 3.</p></li>
 <span class='co'># Case 7: digging up the metadata</span>
 <span class='va'>m6</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
 <span class='va'>m5</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
+
+<span class='co'># Case 8: COG support</span>
+<span class='va'>resource</span> <span class='op'>&lt;-</span> <span class='st'>"https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"</span>
+<span class='co'># See parameters here: https://api.cogeo.xyz/docs#/Cloud%20Optimized%20GeoTIFF/tilejson_cog_tilejson_json_get</span>
+<span class='co'># visParams &lt;- list(nodata = 0)</span>
+<span class='va'>visParams</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nodata <span class='op'>=</span> <span class='fl'>0</span>, expression <span class='op'>=</span> <span class='st'>"B1*1+B2*4+B3*2"</span>, rescale <span class='op'>=</span> <span class='st'>"0, 2000"</span>, colormap_name <span class='op'>=</span> <span class='st'>"viridis"</span><span class='op'>)</span>
+
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>resource</span><span class='op'>)</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>resource</span>, visParams <span class='op'>=</span> <span class='va'>visParams</span>, shown <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </div></pre>
   </div>
