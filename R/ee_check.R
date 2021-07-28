@@ -27,6 +27,12 @@
 #' }
 #' @export
 ee_check <- function(user = NULL, quiet = FALSE) {
+  # Load your Python Session
+  # if EARTHENGINE_PYTHON is defined, then send it to RETICULATE_PYTHON
+  earthengine_python <- Sys.getenv("EARTHENGINE_PYTHON", unset = NA)
+  if (!is.na(earthengine_python))
+    Sys.setenv(RETICULATE_PYTHON = earthengine_python)
+
   ee_check_python(quiet = quiet)
   ee_check_python_packages(quiet = quiet)
   if (!is.null(user)) {
