@@ -2,7 +2,7 @@
   <br>
   <a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a>
   <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a>
-  <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>  
+  <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>
   <br>
   rgee: Google Earth Engine for R
   <br>
@@ -28,15 +28,15 @@ status"></a>
 <a href="https://www.buymeacoffee.com/csay" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 </p>
 
-<p align="center">  
-  • 
-  <a href="#installation">Installation</a> &nbsp;•  
+<p align="center">
+  •
+  <a href="#installation">Installation</a> &nbsp;•
   <a href="#hello-world">Hello World</a> &nbsp;•
   <a href="#how-does-rgee-work">How does rgee work?</a> &nbsp;•
   <a href="#quick-start-users-guide-for-rgee">Guides</a> &nbsp;•
   <a href="#contributing-guide">Contributing</a> &nbsp;•
   <a href="#share-the-love">Citation</a> &nbsp;•
-  <a href="#credits">Credits</a>  
+  <a href="#credits">Credits</a>
 </p>
 
 ## What is Google Earth Engine?
@@ -51,7 +51,7 @@ status"></a>
 </tr>
 <tr>
 <td>
-  
+
 ``` javascript
 var db = 'CGIAR/SRTM90_V4'
 var image = ee.Image(db)
@@ -92,7 +92,7 @@ image$bandNames()$getInfo()
 ## Installation
 
 Install from CRAN with:
-  
+
 ``` r
 install.packages("rgee")
 ```
@@ -105,7 +105,7 @@ install_github("r-spatial/rgee")
 ```
 
 Additionally, `rgee` depends on the [Python packages](https://rstudio.github.io/reticulate/articles/package.html): [numpy](https://pypi.org/project/numpy/) and [ee](https://pypi.org/project/earthengine-api/). To install them, users can follow any of these three methods:
-  
+
   1.  Use [**ee_install**](https://r-spatial.github.io/rgee/reference/ee_install.html) (Highly recommend for users with no experience with Python environments)
 
 ``` r
@@ -124,10 +124,10 @@ rgee::ee_install_set_pyenv(
 Take into account that the Python PATH you set must have installed the Earth Engine Python API and numpy. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
 Other option, only possible for MacOS and Linux, is just set the Python PATH:
-  
+
 ``` r
 rgee::ee_install_set_pyenv(
-  py_path = "/usr/bin/python3", 
+  py_path = "/usr/bin/python3",
   py_env = NULL
 )
 ```
@@ -150,7 +150,7 @@ Integrate [rgee](https://r-spatial.github.io/rgee/) with [geemap](https://geemap
 library(reticulate)
 library(rgee)
 
-# 1. Initialize the Python Environment  
+# 1. Initialize the Python Environment
 ee_Initialize()
 
 # 2. Install geemap in the same Python ENV that use rgee
@@ -212,7 +212,7 @@ ee_print(col_reduce)
 ```
 
 Create a interactive visualization!
-  
+
 ``` r
 Map$setCenter(9.08203, 47.39835, 3)
 Map$addLayer(
@@ -249,8 +249,8 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 Map each image from 2001 to extract the monthly precipitation (Pr) from the [Terraclimate dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/)
 
 ``` r
-terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>% 
-  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>% 
+terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
+  ee$ImageCollection$filterDate("2001-01-01", "2002-01-01") %>%
   ee$ImageCollection$map(function(x) x$select("pr")) %>% # Select only precipitation bands
   ee$ImageCollection$toBands() %>% # from imagecollection to image
   ee$Image$rename(sprintf("PP_%02d",1:12)) # rename the bands of an image
@@ -263,11 +263,11 @@ ee_nc_rain <- ee_extract(x = terraclimate, y = nc["NAME"], sf = FALSE)
 ```
 
 Use ggplot2 to generate a beautiful static plot!
-  
+
 ``` r
 ee_nc_rain %>%
   pivot_longer(-NAME, names_to = "month", values_to = "pr") %>%
-  mutate(month, month=gsub("PP_", "", month)) %>% 
+  mutate(month, month=gsub("PP_", "", month)) %>%
   ggplot(aes(x = month, y = pr, group = NAME, color = pr)) +
   geom_line(alpha = 0.4) +
   xlab("Month") +
@@ -276,13 +276,13 @@ ee_nc_rain %>%
 ```
 
 <p align="center">
-  
+
   <img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width="80%"/>
-  
+
   </p>
-  
+
   ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/))
-  
+
   Install and load `sf`, after that, initialize the Earth Engine R API.
 
 ``` r
@@ -296,8 +296,8 @@ ee_Initialize()
 Define the regional bounds of animation frames and a mask to clip the NDVI data by.
 
 ``` r
-mask <- system.file("shp/arequipa.shp", package = "rgee") %>% 
-  st_read(quiet = TRUE) %>% 
+mask <- system.file("shp/arequipa.shp", package = "rgee") %>%
+  st_read(quiet = TRUE) %>%
   sf_as_ee()
 region <- mask$geometry()$bounds()
 ```
@@ -361,7 +361,7 @@ Create RGB visualization images for use as animation frames.
 
 ``` r
 rgbVis <- comp$map(function(img) {
-  do.call(img$visualize, visParams) %>% 
+  do.call(img$visualize, visParams) %>%
     ee$Image$clip(mask)
 })
 ```
@@ -380,7 +380,7 @@ gifParams <- list(
 Get month names
 
 ``` r
-dates_modis_mabbr <- distinctDOY %>% 
+dates_modis_mabbr <- distinctDOY %>%
   ee_get_date_ic %>% # Get Image Collection dates
   '[['("time_start") %>% # Select time_start column
   lubridate::month() %>% # Get the month component of the datetime
@@ -391,17 +391,17 @@ Use ee_utils_gif\_\* functions to render the GIF animation and add some texts.
 
 ``` r
 animation <- ee_utils_gif_creator(rgbVis, gifParams, mode = "wb")
-animation %>% 
+animation %>%
   ee_utils_gif_annotate(
     text = "NDVI: MODIS/006/MOD13A2",
     size = 15, color = "white",
     location = "+10+10"
-  ) %>% 
+  ) %>%
   ee_utils_gif_annotate(
-    text = dates_modis_mabbr, 
-    size = 30, 
+    text = dates_modis_mabbr,
+    size = 30,
     location = "+290+350",
-    color = "white", 
+    color = "white",
     font = "arial",
     boxcolor = "#000000"
   ) # -> animation_wtxt
@@ -410,25 +410,25 @@ animation %>%
 ```
 
 <p align="center">
-  
+
   <img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif"/>
-  
+
   </p>
-  
+
   ## How does rgee work?
-  
+
   `rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece into Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
 ## Quick Start User's Guide for rgee
 
-<a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a> <a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a> <a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
-  
-  **Created by:** - EN and POR: Andres Luiz Lima Costa <https://bit.ly/3p1DFm9> - SPA: Antony Barja Ingaruca <https://barja8.github.io/>
-  
+<a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a> <a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a> <a href="https://ambarja.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
+
+  **Created by:** - EN and POR: Andres Luiz Lima Costa <https://bit.ly/3p1DFm9> - SPA: Antony Barja Ingaruca <https://ambarja.github.io/>
+
   ## Code of Conduct
-  
+
   Please note that the `rgee` project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 ## Contributing Guide
@@ -444,7 +444,7 @@ Using **rgee** for a paper you are writing? Consider citing it
 ``` r
 citation("rgee")
 To cite rgee in publications use:
-  
+
   C Aybar, Q Wu, L Bautista, R Yali and A Barja (2020) rgee: An R
   package for interacting with Google Earth Engine Journal of Open
   Source Software URL https://github.com/r-spatial/rgee/.
@@ -462,7 +462,7 @@ A BibTeX entry for LaTeX users is
 ## Credits
 
 We want to offer a **special thanks** :raised_hands: :clap: to [**Justin Braaten**](https://github.com/jdbcode) for his wise and helpful comments in the whole development of **rgee**. As well, we would like to mention the following third-party R/Python packages for contributing indirectly to the improvement of rgee:
-  
+
 -   [**gee_asset_manager - Lukasz Tracewski**](https://github.com/tracek/gee_asset_manager/)
 -   [**geeup - Samapriya Roy**](https://github.com/samapriya/geeup/)
 -   [**geeadd - Samapriya Roy**](https://github.com/samapriya/gee_asset_manager_addon/)
