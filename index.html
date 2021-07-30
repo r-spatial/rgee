@@ -114,14 +114,14 @@
   <div class="contents col-md-9">
 
 <div class="page-header"><h1 align="center">
-<br><a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a> <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a> <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a><br><br> rgee: Google Earth Engine for R <br>
+<br><a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a> <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a> <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a> <br> rgee: Google Earth Engine for R <br>
 </h1></div>
 <h4 align="center">
 rgee is an R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Various functions</a> are implemented to simplify the connection with the R spatial ecosystem.
 </h4>
 
 <p align="center">
-• <a href="#installation">Installation</a>  •<br><a href="#hello-world">Hello World</a>  • <a href="#how-does-rgee-work">How does rgee work?</a>  • <a href="#quick-start-users-guide-for-rgee">Guides</a>  • <a href="#contributing-guide">Contributing</a>  • <a href="#share-the-love">Citation</a>  • <a href="#credits">Credits</a>
+• <a href="#installation">Installation</a>  • <a href="#hello-world">Hello World</a>  • <a href="#how-does-rgee-work">How does rgee work?</a>  • <a href="#quick-start-users-guide-for-rgee">Guides</a>  • <a href="#contributing-guide">Contributing</a>  • <a href="#share-the-love">Citation</a>  • <a href="#credits">Credits</a>
 </p>
 <div id="what-is-google-earth-engine" class="section level2">
 <h2 class="hasAnchor">
@@ -195,7 +195,7 @@ R
 <p>Other option, only possible for MacOS and Linux, is just set the Python PATH:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">rgee</span><span class="fu">::</span><span class="fu"><a href="reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span><span class="op">(</span>
-  py_path <span class="op">=</span> <span class="st">"/usr/bin/python3"</span>, 
+  py_path <span class="op">=</span> <span class="st">"/usr/bin/python3"</span>,
   py_env <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
 <p>However, <a href="https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html"><strong>rgee::ee_install_upgrade</strong></a> and <a href="https://rstudio.github.io/reticulate/reference/py_install.html"><strong>reticulate::py_install</strong></a> will not work until you set a Python ENV.</p>
@@ -214,7 +214,7 @@ R
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/rstudio/reticulate">reticulate</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
 
-<span class="co"># 1. Initialize the Python Environment  </span>
+<span class="co"># 1. Initialize the Python Environment</span>
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># 2. Install geemap in the same Python ENV that use rgee</span>
@@ -294,8 +294,8 @@ R
 <code class="sourceCode R"><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/">Terraclimate dataset</a></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">terraclimate</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">terraclimate</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">"pr"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Select only precipitation bands</span>
   <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">toBands</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># from imagecollection to image</span>
   <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"PP_%02d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="co"># rename the bands of an image</span></code></pre></div>
@@ -306,7 +306,7 @@ R
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ee_nc_rain</span> <span class="op">%&gt;%</span>
   <span class="fu">pivot_longer</span><span class="op">(</span><span class="op">-</span><span class="va">NAME</span>, names_to <span class="op">=</span> <span class="st">"month"</span>, values_to <span class="op">=</span> <span class="st">"pr"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">mutate</span><span class="op">(</span><span class="va">month</span>, month<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"PP_"</span>, <span class="st">""</span>, <span class="va">month</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">mutate</span><span class="op">(</span><span class="va">month</span>, month<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"PP_"</span>, <span class="st">""</span>, <span class="va">month</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">month</span>, y <span class="op">=</span> <span class="va">pr</span>, group <span class="op">=</span> <span class="va">NAME</span>, color <span class="op">=</span> <span class="va">pr</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">geom_line</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">xlab</span><span class="op">(</span><span class="st">"Month"</span><span class="op">)</span> <span class="op">+</span>
@@ -316,10 +316,7 @@ R
 </p>
 <p><img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width="80%"></p>
 
-</div>
-<div id="3-create-an-ndvi-animation-js-version" class="section level3">
-<h3 class="hasAnchor">
-<a href="#3-create-an-ndvi-animation-js-version" class="anchor"></a>3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/">JS version</a>)</h3>
+<p>### 3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/">JS version</a>)</p>
 <p>Install and load <code>sf</code>, after that, initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/">magick</a></span><span class="op">)</span>
@@ -329,8 +326,8 @@ R
 <span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Define the regional bounds of animation frames and a mask to clip the NDVI data by.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shp/arequipa.shp"</span>, package <span class="op">=</span> <span class="st">"rgee"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">mask</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"shp/arequipa.shp"</span>, package <span class="op">=</span> <span class="st">"rgee"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="reference/sf_as_ee.html">sf_as_ee</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">region</span> <span class="op">&lt;-</span> <span class="va">mask</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">bounds</span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p>Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an <code>ee.ImageCollection</code> and select the NDVI band.</p>
@@ -373,7 +370,7 @@ R
 <p>Create RGB visualization images for use as animation frames.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rgbVis</span> <span class="op">&lt;-</span> <span class="va">comp</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="va">visualize</span>, <span class="va">visParams</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="va">visualize</span>, <span class="va">visParams</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">clip</span><span class="op">(</span><span class="va">mask</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>Define GIF visualization parameters.</p>
@@ -386,7 +383,7 @@ R
 <span class="op">)</span></code></pre></div>
 <p>Get month names</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dates_modis_mabbr</span> <span class="op">&lt;-</span> <span class="va">distinctDOY</span> <span class="op">%&gt;%</span> 
+<code class="sourceCode R"><span class="va">dates_modis_mabbr</span> <span class="op">&lt;-</span> <span class="va">distinctDOY</span> <span class="op">%&gt;%</span>
   <span class="va">ee_get_date_ic</span> <span class="op">%&gt;%</span> <span class="co"># Get Image Collection dates</span>
   <span class="st">'[['</span><span class="op">(</span><span class="st">"time_start"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Select time_start column</span>
   <span class="fu">lubridate</span><span class="fu">::</span><span class="fu">month</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="co"># Get the month component of the datetime</span>
@@ -394,17 +391,17 @@ R
 <p>Use ee_utils_gif_* functions to render the GIF animation and add some texts.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">animation</span> <span class="op">&lt;-</span> <span class="fu">ee_utils_gif_creator</span><span class="op">(</span><span class="va">rgbVis</span>, <span class="va">gifParams</span>, mode <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span>
-<span class="va">animation</span> <span class="op">%&gt;%</span> 
+<span class="va">animation</span> <span class="op">%&gt;%</span>
   <span class="fu">ee_utils_gif_annotate</span><span class="op">(</span>
     text <span class="op">=</span> <span class="st">"NDVI: MODIS/006/MOD13A2"</span>,
     size <span class="op">=</span> <span class="fl">15</span>, color <span class="op">=</span> <span class="st">"white"</span>,
     location <span class="op">=</span> <span class="st">"+10+10"</span>
-  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">ee_utils_gif_annotate</span><span class="op">(</span>
-    text <span class="op">=</span> <span class="va">dates_modis_mabbr</span>, 
-    size <span class="op">=</span> <span class="fl">30</span>, 
+    text <span class="op">=</span> <span class="va">dates_modis_mabbr</span>,
+    size <span class="op">=</span> <span class="fl">30</span>,
     location <span class="op">=</span> <span class="st">"+290+350"</span>,
-    color <span class="op">=</span> <span class="st">"white"</span>, 
+    color <span class="op">=</span> <span class="st">"white"</span>,
     font <span class="op">=</span> <span class="st">"arial"</span>,
     boxcolor <span class="op">=</span> <span class="st">"#000000"</span>
   <span class="op">)</span> <span class="co"># -&gt; animation_wtxt</span>
@@ -414,23 +411,17 @@ R
 </p>
 <p><img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif"></p>
 
-</div>
-</div>
-<div id="how-does-rgee-work" class="section level2">
-<h2 class="hasAnchor">
-<a href="#how-does-rgee-work" class="anchor"></a>How does rgee work?</h2>
+<p>## How does rgee work?</p>
 <p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece into Python. Once the Python code is obtained, the <code>Earth Engine Python API</code> transform the request to a <code>JSON</code> format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The <strong>response</strong> will follow the same path.</p>
 <p><img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt="workflow"></p>
+</div>
 </div>
 <div id="quick-start-users-guide-for-rgee" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-start-users-guide-for-rgee" class="anchor"></a>Quick Start User’s Guide for rgee</h2>
-<p><a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"></a> <a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"></a> <a href="https://barja8.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"></a></p>
-<p><strong>Created by:</strong> - EN and POR: Andres Luiz Lima Costa <a href="https://bit.ly/3p1DFm9" class="uri">https://bit.ly/3p1DFm9</a> - SPA: Antony Barja Ingaruca <a href="https://barja8.github.io/" class="uri">https://barja8.github.io/</a></p>
-</div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
+<p><a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"></a> <a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"></a> <a href="https://ambarja.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"></a></p>
+<p><strong>Created by:</strong> - EN and POR: Andres Luiz Lima Costa <a href="https://bit.ly/3p1DFm9" class="uri">https://bit.ly/3p1DFm9</a> - SPA: Antony Barja Ingaruca <a href="https://ambarja.github.io/" class="uri">https://ambarja.github.io/</a></p>
+<p>## Code of Conduct</p>
 <p>Please note that the <code>rgee</code> project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
 <div id="contributing-guide" class="section level2">
@@ -445,7 +436,7 @@ R
 <p>Using <strong>rgee</strong> for a paper you are writing? Consider citing it</p>
 <div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="kw">citation</span>(<span class="st">"rgee"</span>)</span>
 <span id="cb34-2"><a href="#cb34-2"></a>To cite rgee <span class="cf">in</span> publications use<span class="op">:</span></span>
-<span id="cb34-3"><a href="#cb34-3"></a><span class="st">  </span></span>
+<span id="cb34-3"><a href="#cb34-3"></a></span>
 <span id="cb34-4"><a href="#cb34-4"></a><span class="st">  </span>C Aybar, Q Wu, L Bautista, R Yali and A <span class="kw">Barja</span> (<span class="dv">2020</span>) rgee<span class="op">:</span><span class="st"> </span>An R</span>
 <span id="cb34-5"><a href="#cb34-5"></a>  package <span class="cf">for</span> interacting with Google Earth Engine Journal of Open</span>
 <span id="cb34-6"><a href="#cb34-6"></a>  Source Software URL https<span class="op">:</span><span class="er">//</span>github.com<span class="op">/</span>r<span class="op">-</span>spatial<span class="op">/</span>rgee<span class="op">/</span>.</span>
