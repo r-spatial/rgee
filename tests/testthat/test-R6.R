@@ -200,3 +200,19 @@ test_that("Map$addLayer r6map", {
   Map$addLayer(geom_01, list(width=5, color = "FFFFFF"))
   expect_s3_class(Map, "EarthEngineMap")
 })
+
+test_that("Map$centerObject_COG r6map", {
+  # amazon
+  resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+  visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+  Map$centerObject(resource)
+  Map$addLayer(resource, visParams = visParams, shown = TRUE)
+
+  # google
+  resource <- "https://storage.googleapis.com/pdd-stac/disasters/hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
+  visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
+  Map$centerObject(resource)
+  mcog <- Map$addLayer(resource, visParams = visParams, shown = TRUE)
+  expect_s3_class(mcog, "EarthEngineMap")
+})
+

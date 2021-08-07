@@ -1,14 +1,17 @@
 comment: false
+ignore:
+  - "addins.R"
+  - "ee_clean.R"
+  - "ee_install.R"
+  - "zzz.R"
 
 coverage:
   status:
-    project:
-      default:
-        target: auto
-        threshold: 1%
-        informational: true
     patch:
       default:
-        target: auto
-        threshold: 1%
-        informational: true
+        target: 0
+        threshold: 95
+    project:
+      default:
+        target: 70
+        threshold: 95

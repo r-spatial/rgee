@@ -4,10 +4,16 @@
 \alias{ee_utils_cog_metadata}
 \title{Return metadata of a COG tile server}
 \usage{
-ee_utils_cog_metadata(resource, titiler_server = "https://api.cogeo.xyz/")
+ee_utils_cog_metadata(
+  resource,
+  visParams,
+  titiler_server = "https://api.cogeo.xyz/"
+)
 }
 \arguments{
 \item{resource}{Character that represents a COG tile server file.}
+
+\item{visParams}{Vizualization parameters see "https://api.cogeo.xyz/docs".}
 
 \item{titiler_server}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }

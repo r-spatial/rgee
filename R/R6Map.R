@@ -1172,6 +1172,12 @@ R6Map <- R6::R6Class(
 #'
 #' Map$centerObject(resource)
 #' Map$addLayer(resource, visParams = visParams, shown = TRUE)
+#'
+#' resource <- "https://storage.googleapis.com/pdd-stac/disasters/hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
+#' visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
+#' Map$centerObject(resource)
+#' Map$addLayer(resource, visParams = visParams, shown = TRUE)
+#'
 #' }
 #' @export
 Map <- R6Map$new(save_maps = FALSE)
