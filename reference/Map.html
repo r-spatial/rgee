@@ -82,7 +82,7 @@ ee$Image.) using leaflet in the backend." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -350,11 +350,25 @@ default 3.</p></li>
 <span class='va'>m5</span><span class='op'>$</span><span class='va'>rgee</span><span class='op'>$</span><span class='va'>tokens</span>
 
 <span class='co'># Case 8: COG support</span>
-<span class='va'>resource</span> <span class='op'>&lt;-</span> <span class='st'>"https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"</span>
-<span class='co'># See parameters here: https://api.cogeo.xyz/docs#/Cloud%20Optimized%20GeoTIFF/tilejson_cog_tilejson_json_get</span>
+<span class='va'>server</span> <span class='op'>&lt;-</span> <span class='st'>"https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"</span>
+<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='st'>"SkySat_Freeport_s03_20170831T162740Z3.tif"</span>
+<span class='va'>resource</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>server</span>, <span class='va'>file</span><span class='op'>)</span>
+<span class='co'># See parameters here: https://api.cogeo.xyz/docs</span>
 <span class='co'># visParams &lt;- list(nodata = 0)</span>
-<span class='va'>visParams</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nodata <span class='op'>=</span> <span class='fl'>0</span>, expression <span class='op'>=</span> <span class='st'>"B1*1+B2*4+B3*2"</span>, rescale <span class='op'>=</span> <span class='st'>"0, 2000"</span>, colormap_name <span class='op'>=</span> <span class='st'>"viridis"</span><span class='op'>)</span>
+<span class='va'>visParams</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  nodata <span class='op'>=</span> <span class='fl'>0</span>,
+  expression <span class='op'>=</span> <span class='st'>"B1*1+B2*4+B3*2"</span>,
+  rescale <span class='op'>=</span> <span class='st'>"0, 2000"</span>,
+  colormap_name <span class='op'>=</span> <span class='st'>"viridis"</span>
+<span class='op'>)</span>
 
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>resource</span><span class='op'>)</span>
+<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>resource</span>, visParams <span class='op'>=</span> <span class='va'>visParams</span>, shown <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+<span class='va'>server</span> <span class='op'>&lt;-</span> <span class='st'>"https://storage.googleapis.com/pdd-stac/disasters/"</span>
+<span class='va'>file</span> <span class='op'>&lt;-</span> <span class='st'>"hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"</span>
+<span class='va'>resource</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>server</span>, <span class='va'>file</span><span class='op'>)</span>
+<span class='va'>visParams</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>nodata <span class='op'>=</span> <span class='fl'>0</span>, expression <span class='op'>=</span> <span class='st'>"B3, B2, B1"</span>, rescale <span class='op'>=</span> <span class='st'>"3000, 13500"</span><span class='op'>)</span>
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>centerObject</span><span class='op'>(</span><span class='va'>resource</span><span class='op'>)</span>
 <span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>resource</span>, visParams <span class='op'>=</span> <span class='va'>visParams</span>, shown <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>

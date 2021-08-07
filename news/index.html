@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.9.999</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -154,16 +154,24 @@
       <small>Source: <a href='https://github.com/r-spatial/rgee/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="rgee-109999-dev" class="section level1">
-<h1 class="page-header" data-toc-text="1.0.9.999">
-<a href="#rgee-109999-dev" class="anchor"></a>rgee 1.0.9.999 (dev)<small> Unreleased </small>
+    <div id="rgee-110" class="section level1">
+<h1 class="page-header" data-toc-text="1.1.0">
+<a href="#rgee-110" class="anchor"></a>rgee 1.1.0<small> Unreleased </small>
 </h1>
 <ul>
 <li>re-coded the Map and R6Map modules to simplify the maintenance. Many bugs were solved.</li>
-<li>ee_utils_get_crs now call to the web.archive.org if spatialreference is down.</li>
+<li>ee_utils_get_crs now call to the web.archive.org if spatialreference is shut down.</li>
 <li>Math module and subsetting module were migrated to <a href="https://github.com/r-earthengine/rgeeExtra">rgeeExtra</a>.</li>
 <li>In ee_Initialize, the “email” parameter was renamed to “user”.</li>
 <li>ee_get is now an internal function of rgee. A new/faster version of ee_get is available in rgeeExtra.</li>
+<li>Support to display COG resources. See Map or R6Map examples.</li>
+<li>rgee now supports googledrive version 2.0.0.</li>
+<li>Obtain COG metadata (<code>ee_utils_cog_metadata</code>).</li>
+<li>New test unit tests.</li>
+<li>Solve a bug in <code>ee_help</code>.</li>
+<li>
+<code>Map$addLegend</code> supports categorical legends in leaflet interactive maps.</li>
+<li>New logos :)</li>
 </ul>
 </div>
     <div id="rgee-109" class="section level1">
