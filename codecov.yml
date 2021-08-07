@@ -1,9 +1,9 @@
 comment: false
-ignore:
-  - "addins.R"
-  - "ee_clean.R"
-  - "ee_install.R"
-  - "zzz.R"
+fixes:
+  - "rgee/R/addins.R"
+  - "rgee/R/ee_clean.R"
+  - "rgee/R/ee_install.R"
+  - "rgee/R/zzz.R"
 
 coverage:
   status:

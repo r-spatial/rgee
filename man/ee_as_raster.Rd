@@ -177,8 +177,8 @@ img_03_result <- img_03 \%>\% ee_utils_future_value()
 img_03_result@history$metadata # metadata
 
 # OPTIONAL: clean containers
-ee_clean_container(name = "rgee_backup", type = "drive")
-ee_clean_container(name = "rgee_dev", type = "gcs")
+# ee_clean_container(name = "rgee_backup", type = "drive")
+# ee_clean_container(name = "rgee_dev", type = "gcs")
 }
 }
 \seealso{

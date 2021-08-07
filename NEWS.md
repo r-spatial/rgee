@@ -11,13 +11,20 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
-# rgee 1.0.9.999 (dev)
+# rgee 1.1.0
 
 - re-coded the Map and R6Map modules to simplify the maintenance. Many bugs were solved.
-- ee_utils_get_crs now call to the web.archive.org if spatialreference is down.
+- ee_utils_get_crs now call to the web.archive.org if spatialreference is shut down.
 - Math module and subsetting module were migrated to [rgeeExtra](https://github.com/r-earthengine/rgeeExtra).
 - In ee_Initialize, the "email" parameter was renamed to "user".
 - ee_get is now an internal function of rgee. A new/faster version of ee_get is available in rgeeExtra.
+- Support to display COG resources. See Map or R6Map examples.
+- rgee now supports googledrive version 2.0.0.
+- Obtain COG metadata (`ee_utils_cog_metadata`).
+- New test unit tests.
+- Solve a bug in `ee_help`.
+- `Map$addLegend` supports categorical legends in leaflet interactive maps.
+- New logos :) 
 
 
 # rgee 1.0.9

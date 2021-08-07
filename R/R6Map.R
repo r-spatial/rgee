@@ -242,7 +242,7 @@ R6Map <- R6::R6Class(
     #' @param zoom The zoom level, from 1 to 24. By default NULL.
     #' @param maxError Max error when input image must be reprojected to an
     #' explicitly requested result projection or geodesic state.
-    #' @param titiler_server Titiler endpoint. Defaults to "https://api.cogeo.xyz/".
+    #' @param titiler_server TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".
     #' @return No return value, called to set zoom.
     #' @examples
     #' \dontrun{
@@ -279,7 +279,7 @@ R6Map <- R6::R6Class(
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
     #' By default NULL (No panel will be created).
-    #' @param titiler_server Titiler endpoint. Defaults to "https://api.cogeo.xyz/".
+    #' @param titiler_server TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".
     #' @return An `EarthEngineMap` object.
     #'
     #' @examples
@@ -1165,19 +1165,27 @@ R6Map <- R6::R6Class(
 #' m5$rgee$tokens
 #'
 #' # Case 8: COG support
-#' resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
-#' # See parameters here: https://api.cogeo.xyz/docs#/Cloud%20Optimized%20GeoTIFF/tilejson_cog_tilejson_json_get
+#' server <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"
+#' file <- "SkySat_Freeport_s03_20170831T162740Z3.tif"
+#' resource <- paste0(server, file)
+#' # See parameters here: https://api.cogeo.xyz/docs
 #' # visParams <- list(nodata = 0)
-#' visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+#' visParams <- list(
+#'   nodata = 0,
+#'   expression = "B1*1+B2*4+B3*2",
+#'   rescale = "0, 2000",
+#'   colormap_name = "viridis"
+#' )
 #'
 #' Map$centerObject(resource)
 #' Map$addLayer(resource, visParams = visParams, shown = TRUE)
 #'
-#' resource <- "https://storage.googleapis.com/pdd-stac/disasters/hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
+#' server <- "https://storage.googleapis.com/pdd-stac/disasters/"
+#' file <- "hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
+#' resource <- paste0(server, file)
 #' visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
 #' Map$centerObject(resource)
 #' Map$addLayer(resource, visParams = visParams, shown = TRUE)
-#'
 #' }
 #' @export
 Map <- R6Map$new(save_maps = FALSE)

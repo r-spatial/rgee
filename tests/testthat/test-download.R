@@ -409,3 +409,23 @@ test_that("image to asset",{
   mess <- ee_manage_delete(assetid)
   expect_equal(mess, TRUE)
 })
+
+
+test_that("image to asset",{
+  expect_error(
+    ee_image_to_gcs(
+      image = image_test,
+      bucket = NULL,
+      fileFormat = "GEOTIFF"
+    )
+  )
+
+  expect_error(
+    ee_image_to_gcs(
+      image = image_test,
+      bucket = NULL,
+      fileFormat = "GEOTIFF"
+    )
+  )
+})
+

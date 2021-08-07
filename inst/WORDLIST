@@ -311,3 +311,6 @@ spatialreference
 tanh
 topleft
 topright
+TiTiler
+cogeo
+xyz

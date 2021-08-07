@@ -43,3 +43,33 @@ test_that("sf - error",{
   expect_error(ee_as_sf(ee_randomPoints, maxFeatures = 15000))
 })
 
+
+
+test_that("ee_as_sf - drive - dsn",{
+  ee_randomPoints <- ee_as_sf(
+    x = ee$Feature(sheds$first()),
+    dsn = tempfile(fileext = ".geojson"),
+    via = "drive",
+    lazy = TRUE
+  )
+  results <- ee_utils_future_value(ee_randomPoints)
+  expect_s3_class(results, "sf")
+})
+
+
+test_that("ee_as_sf - gcs - dsn",{
+  ee_randomPoints <- ee_as_sf(
+    x = ee$Feature(sheds$first()),
+    dsn = tempfile(fileext = ".geojson"),
+    container = "rgee_dev",
+    via = "gcs",
+    lazy = TRUE
+  )
+  results <- ee_utils_future_value(ee_randomPoints)
+  expect_s3_class(results, "sf")
+})
+
+test_that("sf - error",{
+  ee_randomPoints <- ee$FeatureCollection$randomPoints(region, 30000)
+  expect_error(ee_as_sf(ee_randomPoints, via = 15000))
+})

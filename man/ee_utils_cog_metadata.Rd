@@ -13,9 +13,9 @@ ee_utils_cog_metadata(
 \arguments{
 \item{resource}{Character that represents a COG tile server file.}
 
-\item{visParams}{Vizualization parameters see "https://api.cogeo.xyz/docs".}
+\item{visParams}{Visualization parameters see "https://api.cogeo.xyz/docs".}
 
-\item{titiler_server}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
+\item{titiler_server}{TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }
 \value{
 A metadata list for a COG file.
@@ -27,7 +27,10 @@ Return metadata of a COG tile server
 \dontrun{
  library(rgee)
 
- resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
- ee_utils_cog_metadata(resource)
+server <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"
+file <- "SkySat_Freeport_s03_20170831T162740Z3.tif"
+resource <- paste0(server, file)
+visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
+ee_utils_cog_metadata(resource, visParams)
 }
 }

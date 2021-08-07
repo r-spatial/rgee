@@ -45,3 +45,11 @@ test_that("ee_users",{
   counts <- ee_user_info()
   expect_type(counts, "list")
 })
+
+test_that("ee_connect_to_py",{
+  expect_error(rgee:::ee_connect_to_py("demo.py"))
+})
+
+
+
+

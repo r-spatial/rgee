@@ -2,6 +2,8 @@ context("rgee: ee_upload test")
 skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 
+ee_Initialize(gcs = TRUE, drive = TRUE)
+
 test_that("local_to_gcs - character",{
   skip_if_no_credentials()
   # Define an image.

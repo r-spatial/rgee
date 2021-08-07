@@ -487,7 +487,7 @@ specified.
 \item{\code{maxError}}{Max error when input image must be reprojected to an
 explicitly requested result projection or geodesic state.}
 
-\item{\code{titiler_server}}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
+\item{\code{titiler_server}}{TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }
 \if{html}{\out{</div>}}
 }
@@ -546,7 +546,7 @@ Adds a given Earth Engine spatial object to the map as a layer
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).}
 
-\item{\code{titiler_server}}{Titiler endpoint. Defaults to "https://api.cogeo.xyz/".}
+\item{\code{titiler_server}}{TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }
 \if{html}{\out{</div>}}
 }

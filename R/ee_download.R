@@ -846,7 +846,11 @@ ee_drive_to_local <- function(task,
   }
 
   if (public) {
-    files_gd <- googledrive::drive_share_anyone(files_gd, verbose = FALSE)
+    googledrive::with_drive_quiet({
+      files_gd <- googledrive::drive_share_anyone(
+        file = files_gd
+      )
+    })
   }
 
   # (Problem) Google Drive support files with the same name
@@ -924,12 +928,21 @@ ee_drive_to_local <- function(task,
   #   )
   # }
   for (index in seq_len(nrow(to_download))) {
-    googledrive::drive_download(
-      file = to_download[index, ],
-      path = filenames_local[index],
-      overwrite = overwrite,
-      verbose = !quiet
-    )
+    if (!quiet) {
+      googledrive::with_drive_quiet({
+        googledrive::drive_download(
+          file = to_download[index, ],
+          path = filenames_local[index],
+          overwrite = overwrite
+        )
+      })
+    } else {
+      googledrive::drive_download(
+        file = to_download[index, ],
+        path = filenames_local[index],
+        overwrite = overwrite
+      )
+    }
   }
 
   if (metadata) {

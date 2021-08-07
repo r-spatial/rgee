@@ -142,8 +142,8 @@
 #' attr(img_03_result, "metadata") # metadata
 #'
 #' # OPTIONAL: clean containers
-#' ee_clean_container(name = "rgee_backup", type = "drive")
-#' ee_clean_container(name = "rgee_dev", type = "gcs")
+#' # ee_clean_container(name = "rgee_backup", type = "drive")
+#' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_stars <- function(image,
@@ -356,8 +356,8 @@ ee_as_stars <- function(image,
 #' img_03_result@history$metadata # metadata
 #'
 #' # OPTIONAL: clean containers
-#' ee_clean_container(name = "rgee_backup", type = "drive")
-#' ee_clean_container(name = "rgee_dev", type = "gcs")
+#' # ee_clean_container(name = "rgee_backup", type = "drive")
+#' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
 ee_as_raster <- function(image,
@@ -837,93 +837,6 @@ ee_image_msize <- function(image, total_pixel, compression_ratio) {
   band_precision <- vapply(band_types, ee_get_typeimage_size, 0)
   number_of_bytes <- total_pixel * band_precision / compression_ratio
   sum(number_of_bytes)
-}
-
-#' Approx number of pixels
-#' @noRd
-ee_approx_number_pixels <- function(region, geotransform) {
-  bbox <- region %>%
-    sf::st_bbox() %>%
-    as.numeric()
-
-  # necessary info
-  x_diff <- bbox[3] - bbox[1]
-  y_diff <- bbox[4] - bbox[2]
-  xScale <- geotransform$transform[[1]]
-  yScale <- geotransform$transform[[5]]
-  x_npixel <- tail(abs(x_diff / xScale))
-  y_npixel <- tail(abs(y_diff / yScale))
-  round(x_npixel * y_npixel) # approximately
-}
-
-#' The value of a future or the values of all elements in a container
-#'
-#' Gets the value of a future or the values of all elements (including futures)
-#' in a container such as a list, an environment, or a list environment.
-#' If one or more futures is unresolved, then this function blocks until all
-#' queried futures are resolved.
-#'
-#' @author Henrik Bengtsson <https://github.com/HenrikBengtsson/>
-#'
-#' @param future, x A Future, an environment, a list, or a list environment.
-#'
-#' @param stdout If TRUE, standard output captured while resolving futures
-#' is relayed, otherwise not.
-#'
-#' @param signal If TRUE, \link[base]{conditions} captured while resolving
-#' futures are relayed, otherwise not.
-#'
-#' @param \dots All arguments used by the S3 methods.
-#'
-#' @return
-#' `value()` of a Future object returns the value of the future, which can
-#' be any type of \R object.
-#'
-#' `value()` of a list, an environment, or a list environment returns an
-#' object with the same number of elements and of the same class.
-#' Names and dimension attributes are preserved, if available.
-#' All future elements are replaced by their corresponding `value()` values.
-#' For all other elements, the existing object is kept as-is.
-#'
-#' If `signal` is TRUE and one of the futures produces an error, then
-#' that error is produced.
-#'
-#' @export
-ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
-  ee_check_packages("ee_utils_future_value", "future")
-  if (is.list(future)) {
-    # if all the elements in a list are of the class SequentialFuture.
-    condition1 <- all(
-      sapply(future, function(x) any(class(x) %in% "SequentialFuture"))
-    )
-    if (condition1) {
-      lazy_batch_extract <- future %>%
-        future::value(stdout = stdout, signal = signal, ...)
-      # Is the list a results of run ee_imagecollection_to_local?
-      if(is(future, "ee_imagecollection")) {
-        dsn <- lapply(lazy_batch_extract, '[[', 1)
-        metadata <- lapply(lazy_batch_extract, function(x) attr(x, "metadata"))
-        # If metadata is NULL means that the user run:
-        # ee_imagecollection_to_local(..., add_metadata=FALSE)
-        if (any(sapply(metadata, is.null))) {
-           unlist(dsn)
-        } else {
-          mapply(
-            function(x, y) list(dsn = x, metadata = y),
-            dsn, metadata,
-            SIMPLIFY=FALSE
-          )
-        }
-      } else {
-        lazy_batch_extract
-      }
-    } else {
-      stop("Impossible to use ee_utils_future_value in a list ",
-           "with elements of a class different from SequentialFuture.")
-    }
-  } else {
-    future %>% future::value(stdout = stdout, signal = signal, ...)
-  }
 }
 
 #' helper function to read raster (ee_read_stars)

@@ -203,11 +203,25 @@ m6$rgee$tokens
 m5$rgee$tokens
 
 # Case 8: COG support
-resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
-# See parameters here: https://api.cogeo.xyz/docs#/Cloud\%20Optimized\%20GeoTIFF/tilejson_cog_tilejson_json_get
+server <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"
+file <- "SkySat_Freeport_s03_20170831T162740Z3.tif"
+resource <- paste0(server, file)
+# See parameters here: https://api.cogeo.xyz/docs
 # visParams <- list(nodata = 0)
-visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
+visParams <- list(
+  nodata = 0,
+  expression = "B1*1+B2*4+B3*2",
+  rescale = "0, 2000",
+  colormap_name = "viridis"
+)
 
+Map$centerObject(resource)
+Map$addLayer(resource, visParams = visParams, shown = TRUE)
+
+server <- "https://storage.googleapis.com/pdd-stac/disasters/"
+file <- "hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
+resource <- paste0(server, file)
+visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
 Map$centerObject(resource)
 Map$addLayer(resource, visParams = visParams, shown = TRUE)
 }

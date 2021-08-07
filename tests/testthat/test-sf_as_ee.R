@@ -1,6 +1,7 @@
 context("rgee: sf_as_ee test")
 skip_if_no_pypkg()
 # -------------------------------------------------------------------------
+ee_Initialize(gcs = TRUE, drive = TRUE)
 
 filename <- system.file("external/lux.shp", package = "raster")
 nc <- system.file("shape/nc.shp", package = "sf")

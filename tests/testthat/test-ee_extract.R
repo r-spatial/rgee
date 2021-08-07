@@ -1,5 +1,6 @@
 context("rgee: ee_extract test")
 skip_if_no_pypkg()
+
 # -------------------------------------------------------------------------
 filename <- system.file("external/lux.shp", package="raster")
 
@@ -37,7 +38,7 @@ test_that("ee_extract sf = FALSE",{
 
 
 
-test_that("ee_extract lazy = TRUE",{
+test_that("ee_extract lazy = TRUE - drive",{
   ee_nc_rain <- ee_extract(x = terraclimate$toBands(),
                            y = nc["CRESS_ID"],
                            fun = ee$Reducer$max(),
@@ -80,3 +81,16 @@ test_that("ee_extract - error ",{
   expect_error(ee_extract(x = terraclimate, y = terraclimate, sf = TRUE))
 })
 
+
+
+test_that("ee_extract lazy = TRUE - gcs",{
+  ee_nc_rain <- ee_extract(x = terraclimate$toBands(),
+                           y = nc["CRESS_ID"],
+                           fun = ee$Reducer$max(),
+                           container = "rgee_dev",
+                           via = "gcs",
+                           lazy = TRUE,
+                           sf = TRUE)
+  ee_nc_rain <- ee_nc_rain %>% ee_utils_future_value()
+  expect_equal(mean(ee_nc_rain$X200012_pr), 53.29)
+})

@@ -17,6 +17,29 @@ starsproxy_x <- read_stars(tif, proxy = TRUE)
 assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 image_srtm <- ee$Image("CGIAR/SRTM90_V4")
 
+
+# ee_as_stars lazy ---------------------------------------------------
+test_that('image lazy', {
+  img_stars_01 <- ee_as_stars(
+    image = img,
+    region = geometry,
+    scale = 250,
+    via = "drive",
+    lazy = TRUE
+  )
+
+  img_stars_02 <- ee_as_stars(
+    image = img,
+    region = geometry,
+    scale = 250,
+    via = "gcs",
+    container = "rgee_dev",
+    lazy = TRUE
+  )
+  expect_s3_class(img_stars_01, "Future")
+  expect_s3_class(img_stars_02, "Future")
+})
+
 # getInfo geometry ---------------------------------------------------
 test_that('Geometry consideration for "getInfo"', {
   rect_01 <- ee$Geometry$Rectangle(-3, -3, 3, 3)
@@ -252,10 +275,10 @@ test_that("ee_image_info", {
   # World SRTM
   srtm <- ee$Image("CGIAR/SRTM90_V4")
   srtm_list <- ee_image_info(srtm)
-  # Landast8
-  l8 <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")
-  l8_list <- ee_image_info(l8$select("B1"), getsize = FALSE)
-  expect_type(srtm_list, "list")
-  expect_type(l8_list, "list")
+
+  austria_dem <- ee$Image("users/csaybar/austria_dem")
+  image_id <- ee_utils_py_to_r(austria_dem$get("system:id")$getInfo())
+  austria_dem_info <- ee_image_info(austria_dem)
+  expect_is(austria_dem_info, "list")
 })
 
