@@ -15,7 +15,7 @@ def dataset_upgrade():
   
   for ee_dataset in ee_datasets:
     key_name = re.sub("/", "_", ee_dataset["id"])
-    if ee_dataset["type"] == "table":
+    if (ee_dataset["type"] == "table") or (ee_dataset["type"] == "table_collection"):
       FeatureCollection[key_name] = ee_dataset["id"]
     elif ee_dataset["type"] == "image":
       Image[key_name] = ee_dataset["id"]
