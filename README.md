@@ -1,8 +1,8 @@
 <h1 align="center">
   <br>
-  <a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a>
-  <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a>
-  <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>
+  <a href="https://github.com/r-spatial/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a>
+  <a href="https://github.com/r-earthengine/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a>
+  <a href="https://github.com/r-earthengine/rgeebook/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>
   <br>
   rgee: Google Earth Engine for R
   <br>
@@ -41,7 +41,7 @@ status"></a>
 
 ## What is Google Earth Engine?
 
-[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R!**. Below you will find the comparison between the syntax of `rgee` and the two Google-supported client libraries.
+[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R!**. Below you will find the comparison between the syntax of `rgee` and the two other Google-supported client libraries.
 
 <table>
 <tr>
@@ -87,7 +87,7 @@ image$bandNames()$getInfo()
 </table>
 
 
-**Quite similar, isn't it?**. However, there are additional smaller changes should consider when using Google Earth Engine with R. Please check the [consideration section](https://r-spatial.github.io/rgee/articles/rgee02.html) before you start coding!
+**Quite similar, isn't it?**. However, additional more minor changes should be considered when using Google Earth Engine with R. Please check the [consideration section](https://r-spatial.github.io/rgee/articles/rgee02.html) before you start coding!
 
 ## Installation
 
@@ -417,7 +417,8 @@ animation %>%
 
   ## How does rgee work?
 
-  `rgee` is **not** a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece into Python. Once the Python code is obtained, the `Earth Engine Python API` transform the request to a `JSON` format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The **response** will follow the same path.
+
+  `rgee` is **not** a native Earth Engine API like the Javascript or Python client. Develop an Earth Engine API from scratch would be tough to maintain, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece into Python. Once the Python code is generated, the `Earth Engine Python API` converts the request to a `JSON` format. Finally, the request is received by the GEE Platform through a Web REST API. The **response** will follow the same path.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
