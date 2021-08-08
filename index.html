@@ -114,7 +114,7 @@
   <div class="contents col-md-9">
 
 <div class="page-header"><h1 align="center">
-<br><a href="https://r-spatial.github.io/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a> <a href="http://r-earthengine.github.io/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a> <a href="https://rgeebook.netlify.app/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a> <br> rgee: Google Earth Engine for R <br>
+<br><a href="https://github.com/r-spatial/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a> <a href="https://github.com/r-earthengine/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a> <a href="https://github.com/r-earthengine/rgeebook/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a> <br> rgee: Google Earth Engine for R <br>
 </h1></div>
 <h4 align="center">
 rgee is an R binding package for calling <a href="https://developers.google.com/earth-engine/" target="_blank">Google Earth Engine API</a> from within R. <a href="https://r-spatial.github.io/rgee/reference/index.html" target="_blank">Various functions</a> are implemented to simplify the connection with the R spatial ecosystem.
@@ -126,7 +126,7 @@ rgee is an R binding package for calling <a href="https://developers.google.com/
 <div id="what-is-google-earth-engine" class="section level2">
 <h2 class="hasAnchor">
 <a href="#what-is-google-earth-engine" class="anchor"></a>What is Google Earth Engine?</h2>
-<p><a href="https://earthengine.google.com/">Google Earth Engine</a> is a cloud-based platform that allows users to have an easy access to a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. <code>rgee</code> will fill the gap <strong>starting to provide support to R!</strong>. Below you will find the comparison between the syntax of <code>rgee</code> and the two Google-supported client libraries.</p>
+<p><a href="https://earthengine.google.com/">Google Earth Engine</a> is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. <code>rgee</code> will fill the gap <strong>starting to provide support to R!</strong>. Below you will find the comparison between the syntax of <code>rgee</code> and the two other Google-supported client libraries.</p>
 <table class="table">
 <tr>
 <th>
@@ -165,7 +165,7 @@ R
 </td>
 </tr>
 </table>
-<p><strong>Quite similar, isn’t it?</strong>. However, there are additional smaller changes should consider when using Google Earth Engine with R. Please check the <a href="https://r-spatial.github.io/rgee/articles/rgee02.html">consideration section</a> before you start coding!</p>
+<p><strong>Quite similar, isn’t it?</strong>. However, additional more minor changes should be considered when using Google Earth Engine with R. Please check the <a href="https://r-spatial.github.io/rgee/articles/rgee02.html">consideration section</a> before you start coding!</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -412,7 +412,7 @@ R
 <p><img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif"></p>
 
 <p>## How does rgee work?</p>
-<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client, to do this would be extremely hard, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow a seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece into Python. Once the Python code is obtained, the <code>Earth Engine Python API</code> transform the request to a <code>JSON</code> format. Finally, the request is received by the Google Earth Engine Platform thanks to a Web REST API. The <strong>response</strong> will follow the same path.</p>
+<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client. Develop an Earth Engine API from scratch would be tough to maintain, especially considering that the API is in <a href="https://github.com/google/earthengine-api">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/">reticulate</a>. <code>reticulate</code> is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will transform this piece into Python. Once the Python code is generated, the <code>Earth Engine Python API</code> converts the request to a <code>JSON</code> format. Finally, the request is received by the GEE Platform through a Web REST API. The <strong>response</strong> will follow the same path.</p>
 <p><img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt="workflow"></p>
 </div>
 </div>
