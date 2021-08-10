@@ -187,6 +187,7 @@ sf_as_ee <- function(x,
       evenOdd = evenOdd
     )
   } else if (via == "getInfo_to_asset") {
+
     # Transform x according to proj argument
     x <- sf::st_transform(x, proj)
     sf_fc <- ee_sf_to_fc(
@@ -202,7 +203,10 @@ sf_as_ee <- function(x,
 
     # Verify if assetId exist and the EE asset path
     if (is.null(assetId)) {
-      stop('assetId was not defined')
+      stop(
+        "You must define assetId args in 'getInfo_to_asset' and ",
+        "'gcs_to_asset' mode."
+      )
     }
 
     # Verify is the EE assets path is valid
@@ -228,8 +232,18 @@ sf_as_ee <- function(x,
       ee$FeatureCollection(assetId)
     }
   } else if (via == "gcs_to_asset") {
+
+    # Verify if assetId args exist
+    if (is.null(assetId)) {
+      stop(
+        "You must define assetId args in 'getInfo_to_asset' and ",
+        "'gcs_to_asset' mode."
+      )
+    }
+
+    # Verify if bucket args exist
     if (is.null(bucket)) {
-      stop("Cloud Storage bucket was not defined")
+      stop("Cloud Storage bucket was not defined.")
     } else {
       tryCatch(
         expr = googleCloudStorageR::gcs_get_bucket(bucket),

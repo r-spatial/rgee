@@ -228,7 +228,7 @@ test_that("ee_mapViewLayersControl", {
 test_that("COG testing", {
   resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
   visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
-
+  Map <- rgee::R6Map$new()
   Map$centerObject(resource)
   m1 <- Map$addLayer(resource, visParams=visParams)
   expect_equal(m1$rgee$opacity, 1)

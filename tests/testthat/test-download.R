@@ -429,3 +429,13 @@ test_that("image to asset",{
   )
 })
 
+test_that("image to asset",{
+  rgee:::ee_get_typeimage_size("int") +
+  rgee:::ee_get_typeimage_size("INT") +
+  rgee:::ee_get_typeimage_size("double") +
+  rgee:::ee_get_typeimage_size("float") +
+  rgee:::ee_get_typeimage_size("int8") +
+  rgee:::ee_get_typeimage_size("int16") +
+  rgee:::ee_get_typeimage_size("int32") -> result
+  expect_equal(result, 248)
+})

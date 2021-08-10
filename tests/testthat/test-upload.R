@@ -60,3 +60,12 @@ test_that("gcs_to_ee_image ", {
   )
   expect_equal(result,sprintf("%s/stars_l7", ee_get_assethome()))
 })
+
+
+test_that("ee_as_proxystars ", {
+  tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+  x <- suppressWarnings(raster::raster(tif))
+  xx <- suppressWarnings(rgee:::ee_as_proxystars(x))
+  expect_s3_class(xx, "stars")
+  expect_error(rgee:::ee_as_proxystars(list(a=10)))
+})

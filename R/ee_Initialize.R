@@ -726,7 +726,7 @@ ee_createAssetHome <- function() {
 
 #' Message for new users
 #' @noRd
-ee_init_message <- function() {
+ee_init_message <- function(debug=FALSE) {
   text <- paste(
     crayon::bold("Welcome to the Earth Engine client library for R!"),
     "----------------------------------------------------------------",
@@ -748,7 +748,11 @@ ee_init_message <- function() {
     sep = "\n"
   )
   message(text)
-  response <- readline("Would you like to stop to receive this message? [Y/n]:")
+  if (!debug) {
+    response <- readline("Would you like to stop to receive this message? [Y/n]:")
+  } else {
+    response <- "y"
+  }
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
@@ -763,6 +767,7 @@ ee_init_message <- function() {
       response <- readline("Please answer yes or no: ")
     }
   }
+  invisible(TRUE)
 }
 
 #' ee_utils if the first call that rgee does to Python, so delay_load (reticulate::import)

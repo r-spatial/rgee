@@ -99,3 +99,25 @@ test_that("ERROR 04", {
     sf_as_ee(ss_ff)
   )
 })
+
+
+test_that("is_POSIX and more errors", {
+  nc <- st_read(system.file("shape/nc.shp", package="sf"))
+  kml_file <- tempfile(fileext = ".kml")
+  write_sf(nc, kml_file)
+  expect_error(sf_as_ee(read_sf(kml_file)))
+
+  sf_area <- nc["AREA"]
+  colnames(sf_area) <- c("sf.area", "geometry")
+  expect_error(sf_as_ee(sf_area))
+})
+
+test_that("bucket error", {
+  st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    sf_as_ee(via = 'gcs_to_asset', assetId = "test") %>%
+    expect_error()
+
+  st_read(system.file("shape/nc.shp", package = "sf")) %>%
+    ee_table_to_gcs() %>%
+    expect_error()
+})

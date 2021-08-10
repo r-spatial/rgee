@@ -31,6 +31,7 @@
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
                        confirm = interactive()) {
+
   #check packages
   ee_check_packages("ee_install", "rstudioapi")
 
@@ -57,7 +58,13 @@ ee_install <- function(py_env = "rgee",
       sep = "\n"
     )
     message(text)
-    response <- readline("Would you like to install Miniconda? [Y/n]: ")
+
+    if (confirm) {
+      response <- readline("Would you like to install Miniconda? [Y/n]: ")
+    } else {
+      response <- "y"
+    }
+
     repeat {
       ch <- tolower(substring(response, 1, 1))
       if (ch == "y" || ch == "") {
@@ -159,7 +166,13 @@ ee_install <- function(py_env = "rgee",
       sep = "\n"
     )
   )
-  response <- readline("Would you like to continues? [Y/n]:")
+
+  if (confirm) {
+    response <- readline("Would you like to continues? [Y/n]:")
+  } else {
+    response <- "y"
+  }
+
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {

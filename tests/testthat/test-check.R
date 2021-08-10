@@ -25,5 +25,10 @@ test_that("ee_wrong_message",{
 # })
 
 
+test_that("ee_install check", {
+  message = ee_install(confirm = FALSE)
+  ee_clean_pyenv()
+  expect_true(message)
+})
 
 

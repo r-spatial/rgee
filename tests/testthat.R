@@ -4,6 +4,9 @@ library(stars)
 library(rgee)
 library(sf)
 
+Sys.setenv(EARTHENGINE_PYTHON="/usr/bin/python3")
+Sys.setenv(RETICULATE_PYTHON="/usr/bin/python3")
+
 # Pre-checking ------------------------------------------------------
 # Google credentials were loaded in the system?
 skip_if_no_credentials <- function() {

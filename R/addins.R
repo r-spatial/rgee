@@ -1,8 +1,12 @@
 #' Return documentation of Earth Engine modules, methods and classes
 #' @noRd
-ee_help_addins <- function() {
-  context <- rstudioapi::getSourceEditorContext()
-  selected_content <- context$selection[[1]]$text
+ee_help_addins <- function(debug=FALSE, content) {
+  if (!debug) {
+    selected_content <- content
+  } else {
+    context <- rstudioapi::getSourceEditorContext()
+    selected_content <- context$selection[[1]]$text
+  }
   # If press Ctrl + Enter
   if (selected_content == "") {
     try(ee_help(ee_get_eefunc()), silent = TRUE)
@@ -11,6 +15,7 @@ ee_help_addins <- function() {
     selected_content_filtered <- gsub("\n|[[:space:]]","", selected_content)
     try(ee_help(selected_content_filtered), silent = TRUE)
   }
+  invisible(TRUE)
 }
 
 #' How many white space we deleted?
