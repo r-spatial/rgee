@@ -11,4 +11,8 @@
   # delay load earthengine-api
   #ee <<- reticulate::import("ee", delay_load = TRUE)
   ee <<- reticulate::import("ee", delay_load = list(priority = 30))
+
+  # delay load eeExtra
+  .__Extra_module__ <<- reticulate::import("ee_extra", delay_load = list(priority = 40))
+  .__Extra__ <<- .__Extra_module__$Extra
 }

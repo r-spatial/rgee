@@ -261,8 +261,8 @@ ee_Initialize <- function(user = NULL,
   # If Extra module exist add to ee!
   tryCatch(
     expr = {
-      class(Extra) <- c("Extra_EE_module", class(Extra))
-      ee$Extra <- Extra
+      ee$Extra <- .__Extra__
+      ee$`__Extra__` <- .__Extra_module__
     },
     error = function(e) {
       {ee$Extra <- NULL}
