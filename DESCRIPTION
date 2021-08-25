@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -98,6 +98,7 @@ Depends:
 Imports:
     methods,
     reticulate (>= 1.15),
+    rstudioapi (>= 0.7),
     leaflet (>= 2.0.2),
     magrittr,
     jsonlite,
@@ -112,9 +113,9 @@ Suggests:
     geojsonio,
     sf,
     stars,
-    googledrive (>= 1.0.0),
+    googledrive (>= 2.0.0),
     googleCloudStorageR (>= 0.5.1),
-    rstudioapi (>= 0.7),
+    gargle,
     raster,
     rgdal,
     httr,

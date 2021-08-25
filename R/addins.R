@@ -1,7 +1,7 @@
 #' Return documentation of Earth Engine modules, methods and classes
 #' @noRd
-ee_help_addins <- function(debug=FALSE, content) {
-  if (!debug) {
+ee_help_addins <- function(content=NULL, debug=FALSE) {
+  if (debug) {
     selected_content <- content
   } else {
     context <- rstudioapi::getSourceEditorContext()
