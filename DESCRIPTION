@@ -112,7 +112,7 @@ Suggests:
     geojsonio,
     sf,
     stars,
-    googledrive (>= 1.0.0),
+    googledrive (>= 2.0.0),
     googleCloudStorageR (>= 0.5.1),
     rstudioapi (>= 0.7),
     raster,
