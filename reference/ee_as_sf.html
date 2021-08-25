@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -226,7 +226,7 @@ included.</p></td>
     </tr>
     <tr>
       <th>lazy</th>
-      <td><p>Logical. If TRUE, a <code><a href='https://rdrr.io/pkg/future/man/sequential.html'>
+      <td><p>Logical. If TRUE, a <code><a href='https://future.futureverse.org/reference/sequential.html'>
 future::sequential</a></code> object is created to evaluate the task in the future.
 Ignore if <code>via</code> is set as "getInfo". See details.</p></td>
     </tr>
@@ -273,7 +273,7 @@ or Google Cloud Storage) specified in the argument <code>via</code>.</p></li>
 <li><p>2. If the argument <code>lazy</code> is TRUE, the task will not be
 monitored. This is useful to lunch several tasks simultaneously and
 calls them later using <code><a href='ee_utils_future_value.html'>ee_utils_future_value</a></code> or
-<code><a href='https://rdrr.io/pkg/future/man/value.html'>future::value</a></code>. At the end of this step,
+<code><a href='https://future.futureverse.org/reference/value.html'>future::value</a></code>. At the end of this step,
 the EE Table is stored on the path specified in the argument
 <code>dsn</code>.</p></li>
 <li><p>3. Finally, if the argument <code>add_metadata</code> is TRUE, a list
