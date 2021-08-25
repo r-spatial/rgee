@@ -852,7 +852,7 @@ test_drive_privileges <-function(user) {
     stop(
       "Your googledrive token does not have permission\n",
       "to view or modify files from Google Drive.\n",
-      "Are you cross the check box when Google asked for permissions?\n",
+      "Did you cross the check box when Google asked for permissions?\n",
       "See: https://github.com/r-spatial/rgee/issues/175#issuecomment-905611278\n",
       sprintf(
         "Run %s to fix.",
