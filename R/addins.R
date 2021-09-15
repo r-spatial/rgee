@@ -1,6 +1,6 @@
 #' Return documentation of Earth Engine modules, methods and classes
 #' @noRd
-ee_help_addins <- function(content = NULL, debug=FALSE) {
+ee_help_addins <- function(content=NULL, debug=FALSE) {
   if (debug) {
     selected_content <- content
   } else {
@@ -164,4 +164,3 @@ ee_get_eefunc <- function() {
     ee_get_funname(text = context$contents[line], cursor =  cursor)
   }
 }
-

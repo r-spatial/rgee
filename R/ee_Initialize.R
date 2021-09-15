@@ -823,7 +823,6 @@ ee_check_packages <- function(fn_name, packages) {
   }
 }
 
-
 #' Dataset Creator
 #' @noRd
 ee_Dataset_creator <- function(eeDataset) {
@@ -854,3 +853,30 @@ eeExtra_exist <- function() {
 }
 
 
+#' Testing 403 error in GD
+#' @noRd
+test_drive_privileges <-function(user) {
+  ee_check_packages("ee_Initialize(..., drive=TRUE)", "gargle")
+  # this will break in GD API v4 ... be careful :)
+  req <- gargle::request_build(
+    path = "drive/v3/files/{fileId}",
+    method = "GET",
+    params = list(fileId = "soyunparametro", supportsAllDrives = TRUE),
+    token = googledrive::drive_token()
+  )
+  resp <- gargle::request_make(req)
+  if (resp$status_code == 403) {
+    stop(
+      "Your googledrive token does not have permission\n",
+      "to view or modify files from Google Drive.\n",
+      "Did you cross the check box when Google asked for permissions?\n",
+      "See: https://github.com/r-spatial/rgee/issues/175#issuecomment-905611278\n",
+      sprintf(
+        "Run %s to fix.",
+        crayon::bold(
+          sprintf("ee_clean_credentials('%s')", user)
+        )
+      )
+    )
+  }
+}
