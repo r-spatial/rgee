@@ -1,0 +1,52 @@
+# This CITATION.cff file was created by ruby-cff (v 0.9.0).
+# Gem: https://rubygems.org/gems/cff
+# CFF: https://citation-file-format.github.io/
+
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "rgee: An R package for interacting with Google Earth Engine"
+authors:
+- family-names: Aybar 
+  given-names: Cesar
+  orcid: https://orcid.org/0000-0003-2745-9535
+- family-names: Qiusheng  
+  given-names: Wu
+  orcid: https://orcid.org/0000-0001-5437-4073
+- family-names: Bautista
+  given-names: Lesly
+  orcid: https://orcid.org/0000-0003-3523-8687
+- family-names: Yali
+  given-names: Roy
+  orcid: https://orcid.org/0000-0003-4542-3755
+- family-names: Barja
+  given-names: Antony
+  orcid: https://orcid.org/0000-0001-5921-2858
+version: 1.1.1
+date-released: 2019-07-27
+license: Apache License 2.0
+url: "https://github.com/r-spatial/rgee"
+preferred-citation:
+type: article
+authors:
+- family-names: Aybar 
+  given-names: Cesar
+  orcid: https://orcid.org/0000-0003-2745-9535
+- family-names: Qiusheng  
+  given-names: Wu
+  orcid: https://orcid.org/0000-0001-5437-4073
+- family-names: Bautista
+  given-names: Lesly
+  orcid: https://orcid.org/0000-0003-3523-8687
+- family-names: Yali
+  given-names: Roy
+  orcid: https://orcid.org/0000-0003-4542-3755
+- family-names: Barja
+  given-names: Antony
+  orcid: https://orcid.org/0000-0001-5921-2858
+journal: "Journal of Open Source Software"
+month: 7
+start: 1
+end: 6 
+title: "rgee: An R package for interacting with Google Earth Engine"
+year: 2020
+

@@ -133,6 +133,7 @@ ee_Initialize <- function(user = NULL,
 
   if (drive) {
     ee_check_packages("ee_Initialize", "googledrive")
+    # your user have enough permissions to read GD files?
     if (!quiet) {
       cat(
         "",
@@ -141,6 +142,7 @@ ee_Initialize <- function(user = NULL,
       )
     }
     drive_credentials <- ee_create_credentials_drive(user, quiet = quiet)
+    test_drive_privileges(user)
     if (!quiet) {
       cat(
         "\r",

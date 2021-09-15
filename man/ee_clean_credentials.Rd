@@ -4,10 +4,10 @@
 \alias{ee_clean_credentials}
 \title{Delete Credentials}
 \usage{
-ee_clean_credentials(email = "not_defined", quiet = FALSE)
+ee_clean_credentials(user = "not_defined", quiet = FALSE)
 }
 \arguments{
-\item{email}{Character. Earth Engine user (e.g. \code{data.colec.fbf}).}
+\item{user}{Character. Earth Engine user (e.g. \code{data.colec.fbf}).}
 
 \item{quiet}{Logical. Suppress info messages.}
 }

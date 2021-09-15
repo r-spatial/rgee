@@ -11,6 +11,15 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.1.1
+
+- Deprecated.R file deleted.
+- ee_help Rstudio addin critical bug solved.
+- ee_clean argument name changed to 'user' rather than 'email'.
+- New test inside ee_Initialize checks if the user token has enough permissions to read or modify files from GD.
+- DESCRIPTION file modified: rgee always must use googledrive 2.0.0>=
+- rstudioapi package moved from Suggests to Imports.
+
 # rgee 1.1.0
 
 - re-coded the Map and R6Map modules to simplify the maintenance. Many bugs were solved.

@@ -54,3 +54,9 @@ test_that("ee_install_set_init_message", {
   response <- rgee:::ee_init_message(debug = TRUE)
   testthat::expect_true(response)
 })
+
+test_that("ee_install_set_init_message", {
+  ee_Initialize(drive = TRUE)
+  response <- rgee:::test_drive_privileges("user_to_test")
+  testthat::expect_null(response)
+})

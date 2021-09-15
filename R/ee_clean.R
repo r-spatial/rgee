@@ -5,17 +5,17 @@
 #' after running `ee_Initialize(...)` successfully. They are saved in
 #' the path `rgee::ee_get_earthengine_path()`.
 #'
-#' @param email Character. Earth Engine user (e.g. `data.colec.fbf`).
+#' @param user Character. Earth Engine user (e.g. `data.colec.fbf`).
 #' @param quiet Logical. Suppress info messages.
 #' @return No return value, called for cleaning Google Drive, Google Cloud Storage,
 #' and/or Earth Engine credentials.
 #' @family ee_clean functions
 #' @export
-ee_clean_credentials <- function(email='not_defined', quiet = FALSE) {
+ee_clean_credentials <- function(user='not_defined', quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-  email_clean <- gsub("@gmail.com", "", email)
+  email_clean <- gsub("@gmail.com", "", user)
 
   if (email == 'not_defined') {
     email_clean <- 'ndef'
