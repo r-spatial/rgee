@@ -109,7 +109,7 @@ ee_check_python_packages <- function(quiet = FALSE) {
       sprintf("version used by rgee (%s). You might use:", ee_version()),
       "* rgee::ee_install_upgrade()",
       sprintf(
-        "* reticulate::py_install('earthengine-api==%s')",
+        "* reticulate::py_install('earthengine-api==%s', envname='PUT_HERE_YOUR_PYENV')",
         ee_version()
       ),
       sprintf(

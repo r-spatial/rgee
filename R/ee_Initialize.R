@@ -259,18 +259,6 @@ ee_Initialize <- function(user = NULL,
   ee$ImageCollection$Dataset <- eeDataset_b$ic
   ee$Image$Dataset <- eeDataset_b$image
 
-
-  # If Extra module exist add to ee!
-  tryCatch(
-    expr = {
-      class(Extra) <- c("Extra_EE_module", class(Extra))
-      ee$Extra <- Extra
-    },
-    error = function(e) {
-      {ee$Extra <- NULL}
-    }
-  )
-
   invisible(TRUE)
 }
 
@@ -825,7 +813,6 @@ ee_check_packages <- function(fn_name, packages) {
   }
 }
 
-
 #' Dataset Creator
 #' @noRd
 ee_Dataset_creator <- function(eeDataset) {
@@ -834,7 +821,6 @@ ee_Dataset_creator <- function(eeDataset) {
   eedataset_fc <- lapply(eeDataset[["FeatureCollection"]], function(x) ee$FeatureCollection(x))
   list(image = eedataset_img, ic = eedataset_ic, fc = eedataset_fc)
 }
-
 
 #' Testing 403 error in GD
 #' @noRd

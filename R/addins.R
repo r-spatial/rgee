@@ -164,4 +164,3 @@ ee_get_eefunc <- function() {
     ee_get_funname(text = context$contents[line], cursor =  cursor)
   }
 }
-

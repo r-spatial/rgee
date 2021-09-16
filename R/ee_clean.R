@@ -15,13 +15,13 @@ ee_clean_credentials <- function(user='not_defined', quiet = FALSE) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-  email_clean <- gsub("@gmail.com", "", user)
+  user_clean <- gsub("@gmail.com", "", user)
 
-  if (email == 'not_defined') {
-    email_clean <- 'ndef'
+  if (user == 'not_defined') {
+    user_clean <- 'ndef'
   }
 
-  path_to_delete <- sprintf("%s/%s", ee_path, email_clean)
+  path_to_delete <- sprintf("%s/%s", ee_path, user_clean)
 
   if (!dir.exists(path_to_delete)) {
     if (!quiet) {
@@ -32,7 +32,7 @@ ee_clean_credentials <- function(user='not_defined', quiet = FALSE) {
   if (!quiet && dir.exists(path_to_delete)) {
     cat(
       sprintf("Credentials in %s has been deleted.\n",
-              sprintf("%s/%s", ee_path, email_clean)))
+              sprintf("%s/%s", ee_path, user_clean)))
   }
 
   unlink(x = path_to_delete, recursive = TRUE, force = TRUE)

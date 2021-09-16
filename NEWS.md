@@ -11,6 +11,12 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.1.2
+
+- Fix an error in 'ee_check' warning message.
+- 'ee_extra' Python package is now a submodule of rgeeExtra.
+- 'ee_install' typo fixed.
+
 # rgee 1.1.1
 
 - Deprecated.R file deleted.
