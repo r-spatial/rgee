@@ -259,18 +259,6 @@ ee_Initialize <- function(user = NULL,
   ee$ImageCollection$Dataset <- eeDataset_b$ic
   ee$Image$Dataset <- eeDataset_b$image
 
-
-  # If Extra module exist add to ee!
-  tryCatch(
-    expr = {
-      ee$Extra <- .__Extra__
-      ee$`__Extra__` <- .__Extra_module__
-    },
-    error = function(e) {
-      {ee$Extra <- NULL}
-    }
-  )
-
   invisible(TRUE)
 }
 
@@ -833,27 +821,6 @@ ee_Dataset_creator <- function(eeDataset) {
   eedataset_fc <- lapply(eeDataset[["FeatureCollection"]], function(x) ee$FeatureCollection(x))
   list(image = eedataset_img, ic = eedataset_ic, fc = eedataset_fc)
 }
-
-
-#' Exist ee_extra
-#' @noRd
-eeExtra_exist <- function() {
-  condition <- reticulate::py_module_available("ee_extra")
-  if (!condition) {
-    "Consider installing ee_extra Python package. ee_extra enables"
-    "the integration between Javascript and rgee. The following functions"
-    "will not work until you install ee_extra:"
-    "- rgeeExtra::module()"
-    "- ee$Extra$*"
-    "To  install ee_extra please try as follow:"
-    "> ee_install(): To create and set a Python environment with all rgee dependencies."
-    "> ee_install_upgrade(): Run previously ee_Initialize to set a Python Env."
-    "> pip3 install ee_extra"
-    "> conda install ee_xtra"
-  }
-  return(condition)
-}
-
 
 #' Testing 403 error in GD
 #' @noRd

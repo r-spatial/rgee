@@ -224,7 +224,7 @@ ee_install <- function(py_env = "rgee",
   )
 
   reticulate::py_install(
-    packages = c("earthengine-api", "numpy", "ee_extra"),
+    packages = c("earthengine-api", "numpy"),
     envname = rgee_path
   )
 
@@ -455,8 +455,8 @@ ee_install_upgrade <- function(version = NULL,
                                earthengine_env = Sys.getenv("EARTHENGINE_ENV")) {
   if (earthengine_env == "") {
     stop(
-      "ee_install_upgrade needs that global env EARTHENGINE_ENV",
-      " is defined to work. Run ee_install_set_pyenv(py_env = \"YOUR_ENV\")",
+      "ee_install_upgrade needs to define EARTHENGINE_ENV.\n",
+      "Run ee_install_set_pyenv(py_env = \"YOUR_ENV\")",
       " to set a Python environment."
       )
   }
@@ -465,7 +465,7 @@ ee_install_upgrade <- function(version = NULL,
   }
   reticulate::py_install(
     packages = c(sprintf("earthengine-api==%s", version)),
-    envname = Sys.getenv("EARTHENGINE_ENV")
+    envname = earthengine_env
   )
   title <- paste(
     "",
