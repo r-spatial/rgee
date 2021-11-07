@@ -226,6 +226,9 @@ ee_html_usage_simple <- function(pydoc) {
     pydoc$signature,
     perl = TRUE
   )
+  if (length(extract_parenthesis_text) == 0) {
+    return("")
+  }
   to_display <- name_strong %>%
     paste0(regmatches(pydoc$signature, extract_parenthesis_text)[[1]])
   sprintf(
@@ -247,6 +250,9 @@ ee_html_usage_rstudio <- function(pydoc) {
     pydoc$signature,
     perl = TRUE
   )
+  if (length(extract_parenthesis_text) == 0) {
+    return("")
+  }
   to_display <- name_strong %>%
     paste0(regmatches(pydoc$signature, extract_parenthesis_text)[[1]])
   sprintf('<h3 style="%s">Usage</h3><p style = "%s">%s</p>',

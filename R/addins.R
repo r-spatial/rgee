@@ -9,7 +9,12 @@ ee_help_addins <- function(content=NULL, debug=FALSE) {
   }
   # If press Ctrl + Enter
   if (selected_content == "") {
-    try(ee_help(ee_get_eefunc()), silent = TRUE)
+    condition <- try(ee_get_eefunc())
+    if (isFALSE(condition)) {
+      try(ee_help(ee_get_eefunc(-1)), silent = TRUE)
+    } else {
+      try(ee_help(ee_get_eefunc()), silent = TRUE)
+    }
     # If first select the text and after that Ctrl + Enter
   } else {
     selected_content_filtered <- gsub("\n|[[:space:]]","", selected_content)
@@ -141,10 +146,10 @@ is_multilines <- function(context, line) {
 
 #' Returns the EE function name
 #' @noRd
-ee_get_eefunc <- function() {
+ee_get_eefunc <- function(fix=0) {
   # get rstudio context
   context <- rstudioapi::getSourceEditorContext()
-  cursor <- context$selection[[1]]$range[[1]][2]
+  cursor <- context$selection[[1]]$range[[1]][2] + fix
   line <- context$selection[[1]]$range[[1]][1]
 
   # is a multiple line?
