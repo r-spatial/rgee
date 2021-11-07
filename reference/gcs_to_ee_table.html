@@ -196,37 +196,37 @@ it exists.</p></td>
     <p>Character. The Earth Engine asset ID.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span>
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='co'># 1. Read dataset and create a output filename</span>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly_gcs'</span><span class='op'>)</span>
-
-<span class='co'># 2. From sf to .shp</span>
-<span class='va'>shp_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s.shp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>geozip_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>shp_dir</span><span class='op'>)</span>
-
-<span class='co'># 3. From local to gcs</span>
-<span class='va'>gcs_filename</span> <span class='op'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span><span class='op'>(</span>
- x <span class='op'>=</span> <span class='va'>geozip_dir</span>,
- bucket <span class='op'>=</span> <span class='st'>"rgee_dev"</span> <span class='co'># Insert your own bucket here!</span>
-<span class='op'>)</span>
-
-<span class='co'># 4. Create Table Manifest</span>
-<span class='va'>manifest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></span><span class='op'>(</span>
- gs_uri <span class='op'>=</span> <span class='va'>gcs_filename</span>,
- assetId <span class='op'>=</span> <span class='va'>assetId</span>
-<span class='op'>)</span>
-
-<span class='co'># 5. From GCS to Earth Engine</span>
-<span class='va'>ee_nc</span> <span class='op'>&lt;-</span> <span class='fu'>gcs_to_ee_table</span><span class='op'>(</span><span class='va'>manifest</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span><span class='va'>ee_nc</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://r-spatial.github.io/sf/'>sf</a></span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 1. Read dataset and create a output filename</span></span>
+<span class='r-in'><span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://r-spatial.github.io/sf/reference/st_read.html'>st_read</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"shape/nc.shp"</span>, package <span class='op'>=</span> <span class='st'>"sf"</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>assetId</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s/%s"</span>, <span class='fu'><a href='ee_get_assethome.html'>ee_get_assethome</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>'toy_poly_gcs'</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 2. From sf to .shp</span></span>
+<span class='r-in'><span class='va'>shp_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"%s.shp"</span>, <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>geozip_dir</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_shp_to_zip.html'>ee_utils_shp_to_zip</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>shp_dir</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 3. From local to gcs</span></span>
+<span class='r-in'><span class='va'>gcs_filename</span> <span class='op'>&lt;-</span> <span class='fu'><a href='local_to_gcs.html'>local_to_gcs</a></span><span class='op'>(</span></span>
+<span class='r-in'> x <span class='op'>=</span> <span class='va'>geozip_dir</span>,</span>
+<span class='r-in'> bucket <span class='op'>=</span> <span class='st'>"rgee_dev"</span> <span class='co'># Insert your own bucket here!</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 4. Create Table Manifest</span></span>
+<span class='r-in'><span class='va'>manifest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ee_utils_create_manifest_table.html'>ee_utils_create_manifest_table</a></span><span class='op'>(</span></span>
+<span class='r-in'> gs_uri <span class='op'>=</span> <span class='va'>gcs_filename</span>,</span>
+<span class='r-in'> assetId <span class='op'>=</span> <span class='va'>assetId</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># 5. From GCS to Earth Engine</span></span>
+<span class='r-in'><span class='va'>ee_nc</span> <span class='op'>&lt;-</span> <span class='fu'>gcs_to_ee_table</span><span class='op'>(</span><span class='va'>manifest</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='ee_monitoring.html'>ee_monitoring</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>Map</span><span class='op'>$</span><span class='fu'>addLayer</span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span><span class='va'>ee_nc</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

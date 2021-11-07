@@ -296,7 +296,7 @@ with the following elements is added to the sf object.
 <li><p><b>gcs_URI: </b>gs:// link to the table.</p></li>
 </ul></li>
 </ul>
-Run <code><a href='https://rdrr.io/r/base/attr.html'>attr(sf, "metadata")</a></code> to get the list.</p></li>
+Run <code>attr(sf, "metadata")</code> to get the list.</p></li>
 </ul>
 
 <p>For getting more information about exporting data from Earth Engine, take
@@ -305,48 +305,48 @@ a look at the
 Earth Engine Guide - Export data</a>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span>
-
-<span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>drive <span class='op'>=</span> <span class='cn'>TRUE</span>, gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='co'># Region of interest</span>
-<span class='va'>roi</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Polygon</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.275</span>, <span class='fl'>37.891</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.275</span>, <span class='fl'>37.868</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.240</span>, <span class='fl'>37.868</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.240</span>, <span class='fl'>37.891</span><span class='op'>)</span>
-<span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># TIGER: US Census Blocks Dataset</span>
-<span class='va'>blocks</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span><span class='st'>"TIGER/2010/Blocks"</span><span class='op'>)</span>
-<span class='va'>subset</span> <span class='op'>&lt;-</span> <span class='va'>blocks</span><span class='op'>$</span><span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>roi</span><span class='op'>)</span>
-<span class='va'>sf_subset</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>subset</span><span class='op'>)</span>
-<span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>sf_subset</span><span class='op'>)</span>
-
-<span class='co'># Create Random points in Earth Engine</span>
-<span class='va'>region</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Rectangle</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>119.224</span>, <span class='fl'>34.669</span>, <span class='op'>-</span><span class='fl'>99.536</span>, <span class='fl'>50.064</span><span class='op'>)</span>
-<span class='fu'><a href='ee_help.html'>ee_help</a></span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='va'>FeatureCollection</span><span class='op'>$</span><span class='va'>randomPoints</span><span class='op'>)</span>
-<span class='va'>ee_randomPoints</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>FeatureCollection</span><span class='op'>$</span><span class='fu'>randomPoints</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>100</span><span class='op'>)</span>
-
-<span class='co'># Download via GetInfo</span>
-<span class='va'>sf_randomPoints</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span><span class='va'>ee_randomPoints</span><span class='op'>)</span>
-<span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>sf_randomPoints</span><span class='op'>)</span>
-
-<span class='co'># Download via drive</span>
-<span class='va'>sf_randomPoints_drive</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span>
-  x <span class='op'>=</span> <span class='va'>ee_randomPoints</span>,
-  via <span class='op'>=</span> <span class='st'>'drive'</span>
-<span class='op'>)</span>
-
-<span class='co'># Download via GCS</span>
-<span class='va'>sf_randomPoints_gcs</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span>
- x <span class='op'>=</span> <span class='va'>subset</span>,
- via <span class='op'>=</span> <span class='st'>'gcs'</span>,
- container <span class='op'>=</span> <span class='st'>'rgee_dev'</span> <span class='co'>#GCS bucket name</span>
-<span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/r-spatial/rgee/'>rgee</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='ee_Initialize.html'>ee_Initialize</a></span><span class='op'>(</span>drive <span class='op'>=</span> <span class='cn'>TRUE</span>, gcs <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Region of interest</span></span>
+<span class='r-in'><span class='va'>roi</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Polygon</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.275</span>, <span class='fl'>37.891</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.275</span>, <span class='fl'>37.868</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.240</span>, <span class='fl'>37.868</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>122.240</span>, <span class='fl'>37.891</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># TIGER: US Census Blocks Dataset</span></span>
+<span class='r-in'><span class='va'>blocks</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='fu'>FeatureCollection</span><span class='op'>(</span><span class='st'>"TIGER/2010/Blocks"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>subset</span> <span class='op'>&lt;-</span> <span class='va'>blocks</span><span class='op'>$</span><span class='fu'>filterBounds</span><span class='op'>(</span><span class='va'>roi</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>sf_subset</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>subset</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>sf_subset</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create Random points in Earth Engine</span></span>
+<span class='r-in'><span class='va'>region</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>Geometry</span><span class='op'>$</span><span class='fu'>Rectangle</span><span class='op'>(</span><span class='op'>-</span><span class='fl'>119.224</span>, <span class='fl'>34.669</span>, <span class='op'>-</span><span class='fl'>99.536</span>, <span class='fl'>50.064</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='ee_help.html'>ee_help</a></span><span class='op'>(</span><span class='va'>ee</span><span class='op'>$</span><span class='va'>FeatureCollection</span><span class='op'>$</span><span class='va'>randomPoints</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>ee_randomPoints</span> <span class='op'>&lt;-</span> <span class='va'>ee</span><span class='op'>$</span><span class='va'>FeatureCollection</span><span class='op'>$</span><span class='fu'>randomPoints</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>100</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Download via GetInfo</span></span>
+<span class='r-in'><span class='va'>sf_randomPoints</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span><span class='va'>ee_randomPoints</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://r-spatial.github.io/sf/reference/plot.html'>plot</a></span><span class='op'>(</span><span class='va'>sf_randomPoints</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Download via drive</span></span>
+<span class='r-in'><span class='va'>sf_randomPoints_drive</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span></span>
+<span class='r-in'>  x <span class='op'>=</span> <span class='va'>ee_randomPoints</span>,</span>
+<span class='r-in'>  via <span class='op'>=</span> <span class='st'>'drive'</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Download via GCS</span></span>
+<span class='r-in'><span class='va'>sf_randomPoints_gcs</span> <span class='op'>&lt;-</span> <span class='fu'>ee_as_sf</span><span class='op'>(</span></span>
+<span class='r-in'> x <span class='op'>=</span> <span class='va'>subset</span>,</span>
+<span class='r-in'> via <span class='op'>=</span> <span class='st'>'gcs'</span>,</span>
+<span class='r-in'> container <span class='op'>=</span> <span class='st'>'rgee_dev'</span> <span class='co'>#GCS bucket name</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
