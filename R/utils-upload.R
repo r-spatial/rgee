@@ -32,7 +32,7 @@ local_to_gcs <- function(x,
     stop("Cloud Storage bucket was not defined")
   }
 
-  if (is.na(getOption("rgee.gcs.auth"))) {
+  if (is.na(getOption("rgee.gcs.auth")) || is.null(getOption("rgee.gcs.auth"))) {
     stop(
       "Google Cloud Storage credentials were not loaded.",
       ' Run ee_Initialize(..., gcs = TRUE)',
