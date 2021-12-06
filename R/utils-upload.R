@@ -50,7 +50,8 @@ local_to_gcs <- function(x,
       googleCloudStorageR::gcs_upload(
         file = x,
         bucket = bucket,
-        name = basename(x)),
+        name = basename(x),
+        predefinedAcl = predefinedAcl),
         silent = TRUE
     )
     while (any(class(files_gcs) %in% "try-error") & count < 4) {
@@ -58,7 +59,8 @@ local_to_gcs <- function(x,
         googleCloudStorageR::gcs_upload(
           file = x,
           bucket = bucket,
-          name = basename(x)),
+          name = basename(x),
+          predefinedAcl = predefinedAcl),
           silent = TRUE
         )
       count <- count + 1
@@ -67,7 +69,8 @@ local_to_gcs <- function(x,
       files_gcs <- googleCloudStorageR::gcs_upload(
         file = x,
         bucket = bucket,
-        name = basename(x))
+        name = basename(x),
+        predefinedAcl = predefinedAcl)
     }
   } else {
     files_gcs <- try(
@@ -87,7 +90,8 @@ local_to_gcs <- function(x,
           googleCloudStorageR::gcs_upload(
             file = x,
             bucket = bucket,
-            name = basename(x)
+            name = basename(x),
+            predefinedAcl = predefinedAcl
           )
         ),
         silent = TRUE
