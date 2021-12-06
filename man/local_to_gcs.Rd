@@ -4,12 +4,15 @@
 \alias{local_to_gcs}
 \title{Upload local files to Google Cloud Storage}
 \usage{
-local_to_gcs(x, bucket = NULL, quiet = FALSE)
+local_to_gcs(x, bucket = NULL, predefinedAcl = "private", quiet = FALSE)
 }
 \arguments{
 \item{x}{Character. filename.}
 
 \item{bucket}{bucket name you are uploading to}
+
+\item{predefinedAcl}{Specify user access to object. Passed to
+\code{googleCloudStorageR::gcs_upload}.}
 
 \item{quiet}{Logical. Suppress info message.}
 }

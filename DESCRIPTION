@@ -114,7 +114,7 @@ Suggests:
     sf,
     stars,
     googledrive (>= 2.0.0),
-    googleCloudStorageR (>= 0.5.1),
+    googleCloudStorageR (>= 0.6.0),
     gargle,
     raster,
     rgdal,

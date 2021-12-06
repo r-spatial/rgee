@@ -9,6 +9,7 @@ sf_as_ee(
   via = "getInfo",
   assetId = NULL,
   bucket = NULL,
+  predefinedAcl = "private",
   command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,
@@ -30,6 +31,9 @@ if \code{via} argument is "getInfo".}
 
 \item{bucket}{Character. Name of the bucket (GCS) to save intermediate files
 (ignore if \code{via} is not defined as "gcs_to_asset").}
+
+\item{predefinedAcl}{Specify user access to object. Passed to
+\code{googleCloudStorageR::gcs_upload}.}
 
 \item{command_line_tool_path}{Character. Path to the Earth Engine command line
 tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.

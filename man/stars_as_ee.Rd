@@ -8,6 +8,7 @@ stars_as_ee(
   x,
   assetId,
   bucket = NULL,
+  predefinedAcl = "private",
   command_line_tool_path = NULL,
   overwrite = FALSE,
   monitoring = TRUE,
@@ -21,6 +22,9 @@ stars_as_ee(
 \item{assetId}{Character. Destination asset ID for the uploaded file.}
 
 \item{bucket}{Character. Name of the GCS bucket.}
+
+\item{predefinedAcl}{Specify user access to object. Passed to
+\code{googleCloudStorageR::gcs_upload}.}
 
 \item{command_line_tool_path}{Character. Path to the Earth Engine command line
 tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.

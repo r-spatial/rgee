@@ -8,6 +8,7 @@ raster_as_ee(
   x,
   assetId,
   bucket = NULL,
+  predefinedAcl = "private",
   command_line_tool_path = NULL,
   overwrite = FALSE,
   monitoring = TRUE,
