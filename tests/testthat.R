@@ -39,11 +39,18 @@ drive_folder_f <- function(){
   "rgee_backup"
 }
 
-# Define your own GCS bucket to save intermediate files.
-# ALERT!!: After test finished all the files inside the bucket
-# will be deleted.
+# Define your own GCS bucket with fine-grained access to save 
+# intermediate files. ALERT!!: After test finished all the files 
+# inside the bucket will be deleted.
 gcs_bucket_f <- function(){
-  "rgee_dev"
+  "rgee_dev2"
+}
+
+# Define your own GCS bucket with fine-grained access to save 
+# intermediate files. ALERT!!: After test finished all the files 
+# inside the bucket will be deleted.
+gcs_bucket_uniform_f <- function(){
+  "rgee_dev2_uniform"
 }
 
 # Initialize credentials

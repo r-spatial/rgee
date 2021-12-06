@@ -9,7 +9,17 @@ test_that("local_to_gcs - character",{
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_f())
-  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_f(), quiet = TRUE)
+  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_f(), predefinedAcl = "private", quiet = TRUE)
+  expect_type(gcsuri,'character')
+})
+
+
+test_that("local_to_gcs - character",{
+  skip_if_no_credentials()
+  # Define an image.
+  tif <- system.file("tif/L7_ETMs.tif", package = "stars")
+  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_uniform_f())
+  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_uniform_f(), quiet = TRUE)
   expect_type(gcsuri,'character')
 })
 

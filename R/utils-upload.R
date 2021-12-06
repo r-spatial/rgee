@@ -4,6 +4,8 @@
 #'
 #' @param x Character. filename.
 #' @param bucket bucket name you are uploading to
+#' @param predefinedAcl Specify user access to object. Passed to 
+#' \code{googleCloudStorageR::gcs_upload}.
 #' @param quiet Logical. Suppress info message.
 #' @return Character that represents the full path of the object in the GCS
 #' bucket specified.
@@ -24,6 +26,7 @@
 #' @export
 local_to_gcs <- function(x,
                          bucket = NULL,
+                         predefinedAcl = "private",
                          quiet = FALSE) {
   # check packages
   ee_check_packages("rgee::ee_download_gcs", "googleCloudStorageR")
@@ -66,7 +69,8 @@ local_to_gcs <- function(x,
         googleCloudStorageR::gcs_upload(
           file = x,
           bucket = bucket,
-          name = basename(x)
+          name = basename(x),
+          predefinedAcl = predefinedAcl
         )
       ),
       silent = TRUE
