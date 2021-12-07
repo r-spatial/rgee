@@ -4,7 +4,7 @@ skip_if_no_pypkg()
 
 ee_Initialize(gcs = TRUE, drive = TRUE)
 
-test_that("local_to_gcs - character",{
+test_that("local_to_gcs - character - fine grained access",{
   skip_if_no_credentials()
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
@@ -14,7 +14,7 @@ test_that("local_to_gcs - character",{
 })
 
 
-test_that("local_to_gcs - character",{
+test_that("local_to_gcs - character - uniform access",{
   skip_if_no_credentials()
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
@@ -23,7 +23,7 @@ test_that("local_to_gcs - character",{
   expect_type(gcsuri,'character')
 })
 
-test_that("local_to_gcs - character",{
+test_that("local_to_gcs errors for mismatched predefinedAcl",{
   skip_if_no_credentials()
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
