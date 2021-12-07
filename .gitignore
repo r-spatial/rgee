@@ -13,3 +13,4 @@ build_package.R
 tester.R
 doc
 Meta
+.DS_store
