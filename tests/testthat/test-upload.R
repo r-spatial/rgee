@@ -23,13 +23,6 @@ test_that("local_to_gcs - character - uniform access",{
   expect_type(gcsuri,'character')
 })
 
-test_that("local_to_gcs errors for mismatched predefinedAcl",{
-  skip_if_no_credentials()
-  # Define an image.
-  tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-  expect_error(gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_uniform_f(), predefinedAcl = "private"))
-})
-
 # ee_upload with bucket -----------------------------------------------------
 test_that("gcs_to_ee_table ", {
   skip_if_no_credentials()

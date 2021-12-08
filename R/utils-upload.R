@@ -4,7 +4,7 @@
 #'
 #' @param x Character. filename.
 #' @param bucket bucket name you are uploading to
-#' @param predefinedAcl Specify user access to object. Passed to 
+#' @param predefinedAcl Specify user access to object. Passed to
 #' \code{googleCloudStorageR::gcs_upload}.
 #' @param quiet Logical. Suppress info message.
 #' @return Character that represents the full path of the object in the GCS
@@ -54,7 +54,7 @@ local_to_gcs <- function(x,
         predefinedAcl = predefinedAcl),
         silent = TRUE
     )
-    while (any(class(files_gcs) %in% "try-error") & count < 4) {
+    while (any(class(files_gcs) %in% "try-error") & count < 5) {
       files_gcs <- try(
         googleCloudStorageR::gcs_upload(
           file = x,
@@ -63,14 +63,10 @@ local_to_gcs <- function(x,
           predefinedAcl = predefinedAcl),
           silent = TRUE
         )
+      if (count == 4) {
+        cat(files_gcs)
+      }
       count <- count + 1
-    }
-    if (count == 4) {
-      files_gcs <- googleCloudStorageR::gcs_upload(
-        file = x,
-        bucket = bucket,
-        name = basename(x),
-        predefinedAcl = predefinedAcl)
     }
   } else {
     files_gcs <- try(
