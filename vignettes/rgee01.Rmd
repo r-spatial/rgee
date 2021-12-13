@@ -51,9 +51,9 @@ knitr::opts_chunk$set(
 
 ## **2. The purpose of Earth Engine is to:**
 
- * Perform highly-interactive algorithm development at global scale
+ * Perform highly interactive algorithm development at global scale
 
- * Push the edge of the envelope for big data in remote sensing
+ * Push the envelope for big data in remote sensing
 
  * Enable high-impact, data-driven science
 
@@ -63,7 +63,7 @@ knitr::opts_chunk$set(
 
 The main components of Earth Engine are:
 
-**Datasets**: A petabyte-scale archive of publicly available remotely sensed imagery and other data. Explore the data catalog.
+**Datasets**: A petabyte-scale archive of publicly available remotely sensed imagery and other data. [Explore the data catalog](https://developers.google.com/earth-engine/datasets).
 
 **Compute power**: Google’s computational infrastructure optimized for parallel processing of geospatial data.
 
@@ -71,7 +71,7 @@ The main components of Earth Engine are:
 
 ## 4. Meet Earth Engine 
 
-Users must considerate that the Earth Engine API and advanced Earth Engine functionality **are experimental and subject to change**. Access is limited and requires requesting access via the **[form](https://earthengine.google.com/signup/)**. See **[Earth Engine official website](https://earthengine.google.com/)** to obtain more information.
+The Earth Engine API and advanced Earth Engine functionality **are experimental and subject to change**. Access is limited and requires requesting access via the **[form](https://earthengine.google.com/signup/)**. See **[Earth Engine official website](https://earthengine.google.com/)** to obtain more information.
 
 <br>
 
@@ -91,8 +91,7 @@ A short comparison based on **[Tyler Erickson presentation](https://docs.google.
 
 ## 6. Installation
 
-**rgee** depends on **[reticulate](https://cran.r-project.org/package=reticulate)**, **[R6](https://cran.r-project.org/package=R6)** and **[processx](https://cran.r-project.org/package=processx)**. Therefore, users should ensure 
-that their system do not have problem to install those R packages. To install **rgee** run as follow:
+**rgee** depends on **[reticulate](https://cran.r-project.org/package=reticulate)**, **[R6](https://cran.r-project.org/package=R6)** and **[processx](https://cran.r-project.org/package=processx)**. To install **rgee** run:
 
 Stable version:
 
@@ -108,10 +107,10 @@ remotes::install_github("r-spatial/rgee")
 
 **rgee** has two types of dependencies: <span
 style="color:#b52b09">**strict dependencies**</span> that must be
-satisfied before the **rgee** initialization (i.e. **[ee_Initialize()](https://r-spatial.github.io/rgee/reference/ee_Initialize.html)**) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that 
+present before **rgee** initialization (i.e. **[ee_Initialize()](https://r-spatial.github.io/rgee/reference/ee_Initialize.html)**) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that 
 unlock all **rgee** I/0 functionality with Google Drive (GD) and Google Cloud Storage (GCS).
 
-If the strict dependencies are not fulfilled **rgee just will not work**. The dependencies that comprised this group are:
+If the strict dependencies are not installed, **rgee just will not work**. These dependencies are:
 
   * <span style="color:#b52b09"><b> Google account with Earth Engine
     activated </b></span>
@@ -121,16 +120,16 @@ If the strict dependencies are not fulfilled **rgee just will not work**. The de
   * <span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span>
 
 The activation of an **Earth Engine account** depends on each user, check
-the official website of [Google Earth Engine](https://earthengine.google.com/) for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we strongly recommend you run:
+the official website of [Google Earth Engine](https://earthengine.google.com/) for more details. If you do not have a Python environment or a version of the EarthEngine Python API, we strongly recommend you run:
 
 ```{r eval = FALSE}
 library(rgee)
 ee_install(py_env = "rgee") # It is just necessary once!
 ```
 
-This function will realize the following six tasks:
+This function will perform the following six tasks:
 
-  1. If you do not count with a Python environment, it will display an
+  1. If you do not have a Python environment, it will display an
   interactive  menu to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
   (a free minimal installer for conda).
   
@@ -138,21 +137,21 @@ This function will realize the following six tasks:
   
   3. Create a new Python environment.
 
-  4. Set the environmental variable EARTHENGINE_PYTHON and EARTHENGINE_ENV. These variables
+  4. Set the environmental variables EARTHENGINE_PYTHON and EARTHENGINE_ENV. These variables
   will be used to define the reticulate environmental variable [RETICULATE_PYTHON](https://rstudio.github.io/reticulate/articles/versions.html#providing-hints) when 
   rgee is loaded. 
   
   5. Install rgee Python dependencies: [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and
   [numpy](https://pypi.org/project/numpy/).
   
-  6. Interactive menu to confirm if restart the R session to see changes.
+  6. Ask to restart the R session in order to see changes.
 
-**However, the use of rgee::ee_install() is not mandatory. You can count on with your own custom installation. This would be also allowed.** If you are a Rstudio v.1.4 > user, this [**tutorial**](https://github.com/r-spatial/rgee/tree/help/rstudio/) will help you to properly set a Python Environment with your R session without **rgee::ee_install()**.  Take into account that the Python Environment you set must have installed the  [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and [Numpy](https://pypi.org/project/numpy/).
+**However, the use of rgee::ee_install() is not mandatory; you can instead use your own custom installation.** If you are an Rstudio v.1.4 > user, this [**tutorial**](https://github.com/r-spatial/rgee/tree/help/rstudio/) will help you to properly set a Python Environment with your R session without **rgee::ee_install()**.  Take into account that the Python Environment you set must have installed the  [Earth Engine Python API](https://pypi.org/project/earthengine-api/) and [Numpy](https://pypi.org/project/numpy/).
 
-By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span>
+On the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span>
 are only needed to move data from Google Drive and Google Cloud Storage to your local environment.
 These dependencies are not mandatory. However, they will help you to create a seamless connection between
-R and Earth Engine.  The dependencies that comprised this group are shown below:
+R and Earth Engine.  These dependencies are:
 
   -   <span style="color:#857e04">**Google Cloud Storage
       credential**</span>
@@ -163,7 +162,7 @@ See the next section to learn how to correctly set both credentials.
 
 ## 7. Authentication
 
-As we have seen previously, **rgee** deal with three different Google API's:
+As we have seen previously, **rgee** deals with three different Google API's:
 
   -   Google Earth Engine
   
@@ -171,7 +170,7 @@ As we have seen previously, **rgee** deal with three different Google API's:
   
   -   Google Cloud Storage
 
-To authenticate/initialize either Google Drive or Google Cloud Storage, you just need to run as follow:
+To authenticate/initialize either Google Drive or Google Cloud Storage, you just need to run:
 
 ```{r eval = FALSE}
 library(rgee)
@@ -190,17 +189,17 @@ ee_Initialize(user = 'csaybar@gmail.com', drive = TRUE, gcs = TRUE)
 If the Google account is verified and the permission is granted, you
 will be directed to an authentication token. Copy this token and paste
 it in your R console. Unlike Earth Engine and Google Drive, Google Cloud 
-Storage need to set up its credential manually ([link1](https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) and [link2](https://github.com/r-spatial/rgee/tree/help/gcs/)). In all cases, the users credentials always will be stored in: 
+Storage needs to set up its credential manually ([link1](https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html) and [link2](https://github.com/r-spatial/rgee/tree/help/gcs/)). In all cases, the user's credentials will be stored in: 
 
 ``` {r eval = FALSE}
 ee_get_earthengine_path()
 ```
 
-Remember you only have to authorize once, for next sessions it will not be necessary.
+Remember you only have to authorize once, for subsequent sessions it will not be necessary.
 
 ## 8. Hello World
 
-we know that installing **rgee** can be frustrating sometimes :( , so, congratulations to go so far :D :D. In this small example will show you how to display SRTM elevation values worldwide!.
+we know that installing **rgee** can be frustrating sometimes :( , so, congratulations if you've gotten this far :D :D. In this small example will show you how to display SRTM elevation values worldwide!
 
 ```{r eval = FALSE}
 library(rgee)
