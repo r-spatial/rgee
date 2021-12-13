@@ -29,7 +29,7 @@ vignette: >
   }
 </style>
 
-Thanks to **reticulate** is it possible embedding a Python session within an R session. The **[Earth Engine Python API](https://pypi.org/project/earthengine-api/)** and **rgee** share the **same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **four** bug-potential cases. Each of them is explained in-depth below.
+Thanks to **reticulate** is it possible to embed a Python session within an R session. The **[Earth Engine Python API](https://pypi.org/project/earthengine-api/)** and **rgee** share the **same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **four** bug-potential cases. Each of them is explained in-depth below.
 
 
 ```{r, setup, include=FALSE}
@@ -40,9 +40,8 @@ knitr::opts_chunk$set(
 
 ### **1. The map message error:**
 
-This issue happens when the **map** method is used
-under the next two cases: (1) users employing a reticulate version
-lower than &lt; 1.14 (please update it!); and (2) if you are leading
+This issue happens when the **map** method is used while: (1) running a reticulate version
+lower than &lt; 1.14 (please update it!); or (2) leading
 with **ee$List** objects. For instance:
 
 ``` r
@@ -92,7 +91,7 @@ mynewlist$getInfo()
 
 By default, when you define a number in R it will produce a **double
 precision** value. This does not happen in Python because, by default it
-will create a **int** value.
+will create an **int** value.
 
 **Python**
 
@@ -108,7 +107,7 @@ class(1)
 #> [1] "numeric"
 ```
 
-But why does this matter? Let's explain it with an example:
+But why does this matter? Let's explain with an example:
 
 **Python**
 
@@ -137,7 +136,7 @@ ee.ee_exception.EEException: Number.bitwiseAnd: Bitwise operands must be integer
 
 Users need to take into consideration that most of the arguments of the
 Earth Engine methods are strict to admit only **integer values**. The
-creation of integers in R is quite simple, you just need to add the
+creation of integers in R is quite simple; you just need to add the
 letter **L** to the end of the specific number or employ the
 function `as.integer`. The **correct code** in R would be:
 
@@ -150,9 +149,9 @@ and_bitwise$getInfo()
 ### **3. Be careful with ee$Date**
 
 This problem also appears due to differences between the design of R and
-Python as programming languages. Currently, R only support integer data 
+Python as programming languages. Currently, R only supports integer data 
 type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, 
-this range is extremely insufficient to deal with [Google Earth
+this range is insufficient to deal with [Google Earth
 Engine timestamp](https://developers.google.com/earth-engine/glossary/)
 which is saved in milliseconds since the [UNIX epoch](https://en.wikipedia.org/wiki/Unix_time).
 
@@ -177,8 +176,8 @@ my_date$getInfo()
 ```
 
 The problems with `ee$Date` just appear in the last mile (Python to R or
-vice-versa, `reticulate`), and it should not be a trouble if treated
-with care. `rgee` implement two functions to deal with Earth Engine
+vice-versa, `reticulate`), and they should not be too severe if treated
+with care. `rgee` implements two functions to deal with Earth Engine
 dates: `eedate_to_rdate` and `rdate_to_eedate`.
 
 ``` r
@@ -199,7 +198,7 @@ eedate_to_rdate(ee_date = ee_date, timestamp = TRUE)
 A reserved word is a word that cannot be used as an identifier, such as the name
 of a variable or a function. According with `?reserved`, the reserved words in R's parser
 are: `if`, `else`, **`repeat`**, `while`, `function`, `for`, `in`, `next`, `break`, `TRUE`, `FALSE`, `NULL`,
-`Inf`, `NaN`, `NA`, `NA_integer_`, `NA_real_`, `NA_complex_`, `NA_character_`. From all these words,
+`Inf`, `NaN`, `NA`, `NA_integer_`, `NA_real_`, `NA_complex_`, `NA_character_`. Of these words,
 the only one that is part of the Earth Engine API is **repeat**.
 
 We can find **repeat** as a
