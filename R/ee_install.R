@@ -403,7 +403,7 @@ ee_install_create_pyenv <- function(py_env = "rgee") {
   #Check is Python is greather than 3.5
   ee_check_python(quiet = TRUE)
   if (is_windows()) {
-    pyenv_path <- conda_create(py_env)
+    pyenv_path <- conda_create(py_env, python_version = "3.8")
   } else {
     pyenv_path <- virtualenv_create(py_env)
   }
