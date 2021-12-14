@@ -41,7 +41,7 @@ status"></a>
 
 ## What is Google Earth Engine?
 
-[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` will fill the gap **starting to provide support to R!**. Below you will find the comparison between the syntax of `rgee` and the two other Google-supported client libraries.
+[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` fills the gap **by providing support for R!**. Below you will find the comparison between the syntax of `rgee` and the two other Google-supported client libraries.
 
 <table>
 <tr>
@@ -106,13 +106,13 @@ install_github("r-spatial/rgee")
 
 Additionally, `rgee` depends on the [Python packages](https://rstudio.github.io/reticulate/articles/package.html): [numpy](https://pypi.org/project/numpy/) and [ee](https://pypi.org/project/earthengine-api/). To install them, users can follow any of these three methods:
 
-  1.  Use [**ee_install**](https://r-spatial.github.io/rgee/reference/ee_install.html) (Highly recommend for users with no experience with Python environments)
+  1.  Use [**ee_install**](https://r-spatial.github.io/rgee/reference/ee_install.html) (Highly recommended for users with no experience with Python environments)
 
 ``` r
 rgee::ee_install()
 ```
 
-2.  Use [**ee_install_set_pyenv**](https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html) (Recommend for users with experience with Python environments)
+2.  Use [**ee_install_set_pyenv**](https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html) (Recommended for users with experience with Python environments)
 
 ``` r
 rgee::ee_install_set_pyenv(
@@ -121,9 +121,9 @@ rgee::ee_install_set_pyenv(
 )
 ```
 
-Take into account that the Python PATH you set must have installed the Earth Engine Python API and numpy. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
+Take into account that the Python PATH you set must have installations of the Earth Engine Python API and numpy. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
-Other option, only possible for MacOS and Linux, is just set the Python PATH:
+Another option, only possible for MacOS and Linux, is just set the Python PATH:
 
 ``` r
 rgee::ee_install_set_pyenv(
@@ -170,8 +170,8 @@ ee_install_upgrade()
 
 -   All `rgee` functions have the prefix ee\_. Auto-completion is your friend :).
 -   Full access to the Earth Engine API with the prefix [**ee\$...**](https://developers.google.com/earth-engine/).
--   Authenticate and Initialize the Earth Engine R API with [**ee_Initialize**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html). It is necessary once by session!.
--   `rgee` is "pipe-friendly", we re-exports %\>%, but `rgee` does not require its use.
+-   Authenticate and Initialize the Earth Engine R API with [**ee_Initialize**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html). It is necessary once per session!.
+-   `rgee` is "pipe-friendly"; we re-export %\>% but do not require its use.
 
 ## Hello World
 
@@ -211,7 +211,7 @@ col_reduce <- col_reduce$addBands(
 ee_print(col_reduce)
 ```
 
-Create a interactive visualization!
+Create an interactive visualization!
 
 ``` r
 Map$setCenter(9.08203, 47.39835, 3)
@@ -230,7 +230,7 @@ Map$addLayer(
 
 ### 2. Extract precipitation values
 
-Install and load `tidyverse` and `sf` R package, after that, initialize the Earth Engine R API.
+Install and load `tidyverse` and `sf` R packages, and initialize the Earth Engine R API.
 
 ``` r
 library(tidyverse)
@@ -418,7 +418,7 @@ animation %>%
   ## How does rgee work?
 
 
-  `rgee` is **not** a native Earth Engine API like the Javascript or Python client. Develop an Earth Engine API from scratch would be tough to maintain, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will transform this piece into Python. Once the Python code is generated, the `Earth Engine Python API` converts the request to a `JSON` format. Finally, the request is received by the GEE Platform through a Web REST API. The **response** will follow the same path.
+  `rgee` is **not** a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will translate this request into Python and pass it to the `Earth Engine Python API`, which  converts the request to a `JSON` format. Finally, the request is received by the GEE Platform through a Web REST API. The **response** will follow the same path in reverse.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
