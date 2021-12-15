@@ -123,6 +123,7 @@ changes.</p></li>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_install</span><span class="op">(</span>
   py_env <span class="op">=</span> <span class="st">"rgee"</span>,
   earthengine_version <span class="op">=</span> <span class="fu"><a href="ee_version.html">ee_version</a></span><span class="op">(</span><span class="op">)</span>,
+  python_version <span class="op">=</span> <span class="st">"3.8"</span>,
   confirm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -135,6 +136,14 @@ to be used by rgee.</p></dd>
 <dt>earthengine_version</dt>
 <dd><p>Character. The Earth Engine Python API version
 to install. By default <code><a href="ee_version.html">rgee::ee_version()</a></code>.</p></dd>
+<dt>python_version</dt>
+<dd><p>Only windows users. The version of Python to be used in
+this conda environment. The associated Python package from conda will be requested
+as python=python_version. When NULL, the default python package will be
+used instead. For example, use python_version = "3.6" to request that the
+conda environment be created with a copy of Python 3.6. This argument will be
+ignored if python is specified as part of the packages argument, for backwards
+compatibility.</p></dd>
 <dt>confirm</dt>
 <dd><p>Logical. Confirm before restarting R?.</p></dd>
 </dl></div>
