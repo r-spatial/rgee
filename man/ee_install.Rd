@@ -7,6 +7,7 @@
 ee_install(
   py_env = "rgee",
   earthengine_version = ee_version(),
+  python_version = "3.8",
   confirm = interactive()
 )
 }
@@ -16,6 +17,14 @@ to be used by rgee.}
 
 \item{earthengine_version}{Character. The Earth Engine Python API version
 to install. By default \code{rgee::ee_version()}.}
+
+\item{python_version}{Only windows users. The version of Python to be used in
+this conda environment. The associated Python package from conda will be requested
+as python={python_version}. When NULL, the default python package will be
+used instead. For example, use python_version = "3.6" to request that the
+conda environment be created with a copy of Python 3.6. This argument will be
+ignored if python is specified as part of the packages argument, for backwards
+compatibility.}
 
 \item{confirm}{Logical. Confirm before restarting R?.}
 }

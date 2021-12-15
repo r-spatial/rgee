@@ -97,7 +97,7 @@ Depends:
     R (>= 3.3.0)
 Imports:
     methods,
-    reticulate (>= 1.15),
+    reticulate (>= 1.22),
     rstudioapi (>= 0.7),
     leaflet (>= 2.0.2),
     magrittr,

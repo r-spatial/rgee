@@ -24,12 +24,20 @@
 #' to be used by rgee.
 #' @param earthengine_version Character. The Earth Engine Python API version
 #' to install. By default \code{rgee::ee_version()}.
+#' @param python_version Only windows users. The version of Python to be used in
+#' this conda environment. The associated Python package from conda will be requested
+#' as python={python_version}. When NULL, the default python package will be
+#' used instead. For example, use python_version = "3.6" to request that the
+#' conda environment be created with a copy of Python 3.6. This argument will be
+#' ignored if python is specified as part of the packages argument, for backwards
+#' compatibility.
 #' @param confirm Logical. Confirm before restarting R?.
 #' @return No return value, called for installing non-R dependencies.
 #' @family ee_install functions
 #' @export
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
+                       python_version = "3.8",
                        confirm = interactive()) {
 
   #check packages
@@ -114,7 +122,7 @@ ee_install <- function(py_env = "rgee",
 
   message("\n", bold(sprintf("2. Creating a Python Environment (%s)", py_env)))
   rgee_path <- tryCatch(
-    expr = ee_install_create_pyenv(py_env = py_env),
+    expr = ee_install_create_pyenv(python_version = python_version, py_env = py_env),
     error = function(e) stop(
       "An error occur when ee_install was creating the Python Environment. ",
       "Run ee_clean_pyenv() and restart the R session, before trying again."
@@ -399,11 +407,11 @@ ee_install_set_init_message <- function() {
 #' @importFrom reticulate conda_create virtualenv_create
 #' @return Character. The path of the virtual environment created.
 #' @noRd
-ee_install_create_pyenv <- function(py_env = "rgee") {
+ee_install_create_pyenv <- function(python_version, py_env = "rgee") {
   #Check is Python is greather than 3.5
   ee_check_python(quiet = TRUE)
   if (is_windows()) {
-    pyenv_path <- conda_create(py_env, python_version = "3.8")
+    pyenv_path <- conda_create(py_env, python_version = python_version)
   } else {
     pyenv_path <- virtualenv_create(py_env)
   }
