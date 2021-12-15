@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2</span>
       </span>
     </div>
 
@@ -71,7 +73,7 @@
       <a href="../articles/rgee03.html">Best Practices</a>
     </li>
     <li>
-      <a href="https://r-earthengine.github.io/">rgee examples</a>
+      <a href="https://r-earthengine.github.io/" class="external-link">rgee examples</a>
     </li>
   </ul>
 </li>
@@ -90,7 +92,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/r-spatial/rgee/">
+  <a href="https://github.com/r-spatial/rgee/" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
     github
@@ -112,7 +114,7 @@
       <h1 data-toc-skip><strong>Introduction to rgee</strong></h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/master/vignettes/rgee01.Rmd"><code>vignettes/rgee01.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/HEAD/vignettes/rgee01.Rmd" class="external-link"><code>vignettes/rgee01.Rmd</code></a></small>
       <div class="hidden name"><code>rgee01.Rmd</code></div>
 
     </div>
@@ -134,9 +136,9 @@
     font-weight: bold;
   }
 </style>
-<div id="what-is-google-earth-engine" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-is-google-earth-engine" class="anchor"></a><strong>1. What is Google Earth Engine ?</strong>
+<div class="section level2">
+<h2 id="what-is-google-earth-engine">
+<strong>1. What is Google Earth Engine ?</strong><a class="anchor" aria-label="anchor" href="#what-is-google-earth-engine"></a>
 </h2>
 <p><strong>Google Earth Engine</strong> is a computing platform that allows users to run geospatial analysis on Google’s infrastructure. There are several ways to interact with the platform:</p>
 <ul>
@@ -146,32 +148,32 @@
 <li>Python client library</li>
 <li><strong>R client library</strong></li>
 </ul>
-<p>This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop <strong><a href="https://github.com/MVanDenburg92/RGEE_Shiny/">web applications</a></strong>.</p>
+<p>This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop <strong><a href="https://github.com/MVanDenburg92/RGEE_Shiny/" class="external-link">web applications</a></strong>.</p>
 </div>
-<div id="the-purpose-of-earth-engine-is-to" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-purpose-of-earth-engine-is-to" class="anchor"></a><strong>2. The purpose of Earth Engine is to:</strong>
+<div class="section level2">
+<h2 id="the-purpose-of-earth-engine-is-to">
+<strong>2. The purpose of Earth Engine is to:</strong><a class="anchor" aria-label="anchor" href="#the-purpose-of-earth-engine-is-to"></a>
 </h2>
 <ul>
-<li><p>Perform highly-interactive algorithm development at global scale</p></li>
-<li><p>Push the edge of the envelope for big data in remote sensing</p></li>
+<li><p>Perform highly interactive algorithm development at global scale</p></li>
+<li><p>Push the envelope for big data in remote sensing</p></li>
 <li><p>Enable high-impact, data-driven science</p></li>
 <li><p>Make substantive progress on global challenges that involve large geospatial datasets</p></li>
 </ul>
 </div>
-<div id="components" class="section level2">
-<h2 class="hasAnchor">
-<a href="#components" class="anchor"></a><strong>3. Components:</strong>
+<div class="section level2">
+<h2 id="components">
+<strong>3. Components:</strong><a class="anchor" aria-label="anchor" href="#components"></a>
 </h2>
 <p>The main components of Earth Engine are:</p>
-<p><strong>Datasets</strong>: A petabyte-scale archive of publicly available remotely sensed imagery and other data. Explore the data catalog.</p>
+<p><strong>Datasets</strong>: A petabyte-scale archive of publicly available remotely sensed imagery and other data. <a href="https://developers.google.com/earth-engine/datasets" class="external-link">Explore the data catalog</a>.</p>
 <p><strong>Compute power</strong>: Google’s computational infrastructure optimized for parallel processing of geospatial data.</p>
 <p><strong>WEB REST API/Client libraries</strong>: For making requests to the Earth Engine servers.</p>
 </div>
-<div id="meet-earth-engine" class="section level2">
-<h2 class="hasAnchor">
-<a href="#meet-earth-engine" class="anchor"></a>4. Meet Earth Engine</h2>
-<p>Users must considerate that the Earth Engine API and advanced Earth Engine functionality <strong>are experimental and subject to change</strong>. Access is limited and requires requesting access via the <strong><a href="https://earthengine.google.com/signup/">form</a></strong>. See <strong><a href="https://earthengine.google.com/">Earth Engine official website</a></strong> to obtain more information.</p>
+<div class="section level2">
+<h2 id="meet-earth-engine">4. Meet Earth Engine<a class="anchor" aria-label="anchor" href="#meet-earth-engine"></a>
+</h2>
+<p>The Earth Engine API and advanced Earth Engine functionality <strong>are experimental and subject to change</strong>. Access is limited and requires requesting access via the <strong><a href="https://earthengine.google.com/signup/" class="external-link">form</a></strong>. See <strong><a href="https://earthengine.google.com/" class="external-link">Earth Engine official website</a></strong> to obtain more information.</p>
 <p><br></p>
 <center>
 <iframe name="Stack" src="https://www.youtube.com/embed/gKGOeTFHnKY/" style="height: 450px; width: 80%;
@@ -179,12 +181,12 @@
 </iframe>
 </center>
 </div>
-<div id="why-rgee-instead-of-code-editor-javascript" class="section level2">
-<h2 class="hasAnchor">
-<a href="#why-rgee-instead-of-code-editor-javascript" class="anchor"></a>5. Why rgee instead of code editor (Javascript)?</h2>
-<p>A short comparison based on <strong><a href="https://docs.google.com/presentation/d/1MVVeyCdm-FrMVRPop6wB3iyd85TAlwB-F9ygTQZ8S1w/pub?slide=id.g1e419debf0_1_205/">Tyler Erickson presentation</a></strong>.</p>
+<div class="section level2">
+<h2 id="why-rgee-instead-of-code-editor-javascript">5. Why rgee instead of code editor (Javascript)?<a class="anchor" aria-label="anchor" href="#why-rgee-instead-of-code-editor-javascript"></a>
+</h2>
+<p>A short comparison based on <strong><a href="https://docs.google.com/presentation/d/1MVVeyCdm-FrMVRPop6wB3iyd85TAlwB-F9ygTQZ8S1w/pub?slide=id.g1e419debf0_1_205/" class="external-link">Tyler Erickson presentation</a></strong>.</p>
 <center>
-<table class="table tg">
+<table style="border-collapse:collapse;border-color:#ccc;border-spacing:0;border:none" class="table tg">
 <thead><tr>
 <th style="background-color:#f0f0f0;border-color:inherit;border-style:solid;border-width:0px;color:#333;font-family:Arial, sans-serif;font-size:14px;font-weight:bold;overflow:hidden;padding:10px 5px;text-align:center;vertical-align:top;word-break:normal">
 Code Editor
@@ -238,56 +240,56 @@ Many, many plotting options
 </table>
 </center>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>6. Installation</h2>
-<p><strong>rgee</strong> depends on <strong><a href="https://cran.r-project.org/package=reticulate">reticulate</a></strong>, <strong><a href="https://cran.r-project.org/package=R6">R6</a></strong> and <strong><a href="https://cran.r-project.org/package=processx">processx</a></strong>. Therefore, users should ensure that their system do not have problem to install those R packages. To install <strong>rgee</strong> run as follow:</p>
+<div class="section level2">
+<h2 id="installation">6. Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p><strong>rgee</strong> depends on <strong><a href="https://cran.r-project.org/package=reticulate" class="external-link">reticulate</a></strong>, <strong><a href="https://cran.r-project.org/package=R6" class="external-link">R6</a></strong> and <strong><a href="https://cran.r-project.org/package=processx" class="external-link">processx</a></strong>. To install <strong>rgee</strong> run:</p>
 <p>Stable version:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span></code></pre></div>
 <p>Dev version:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></code></pre></div>
-<p><strong>rgee</strong> has two types of dependencies: <span style="color:#b52b09"><strong>strict dependencies</strong></span> that must be satisfied before the <strong>rgee</strong> initialization (i.e. <strong><a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html">ee_Initialize()</a></strong>) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that unlock all <strong>rgee</strong> I/0 functionality with Google Drive (GD) and Google Cloud Storage (GCS).</p>
-<p>If the strict dependencies are not fulfilled <strong>rgee just will not work</strong>. The dependencies that comprised this group are:</p>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></code></pre></div>
+<p><strong>rgee</strong> has two types of dependencies: <span style="color:#b52b09"><strong>strict dependencies</strong></span> that must be present before <strong>rgee</strong> initialization (i.e. <strong><a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html">ee_Initialize()</a></strong>) and the <span style="color:#857e04"><b>credentials dependencies</b></span> that unlock all <strong>rgee</strong> I/0 functionality with Google Drive (GD) and Google Cloud Storage (GCS).</p>
+<p>If the strict dependencies are not installed, <strong>rgee just will not work</strong>. These dependencies are:</p>
 <ul>
 <li><p><span style="color:#b52b09"><b> Google account with Earth Engine activated </b></span></p></li>
 <li><p><span style="color:#b52b09"><b> Python &gt;= v3.5 </b></span></p></li>
 <li><p><span style="color:#b52b09"><b> EarthEngine Python API (Python package) </b></span></p></li>
 </ul>
-<p>The activation of an <strong>Earth Engine account</strong> depends on each user, check the official website of <a href="https://earthengine.google.com/">Google Earth Engine</a> for more details. If you do not count with a Python environment or a version of the EarthEngine Python API, we strongly recommend you run:</p>
+<p>The activation of an <strong>Earth Engine account</strong> depends on each user, check the official website of <a href="https://earthengine.google.com/" class="external-link">Google Earth Engine</a> for more details. If you do not have a Python environment or a version of the EarthEngine Python API, we strongly recommend you run:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/ee_install.html">ee_install</a></span><span class="op">(</span>py_env <span class="op">=</span> <span class="st">"rgee"</span><span class="op">)</span> <span class="co"># It is just necessary once!</span></code></pre></div>
-<p>This function will realize the following six tasks:</p>
+<p>This function will perform the following six tasks:</p>
 <ol style="list-style-type: decimal">
-<li><p>If you do not count with a Python environment, it will display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html">Miniconda</a> (a free minimal installer for conda).</p></li>
+<li><p>If you do not have a Python environment, it will display an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html" class="external-link">Miniconda</a> (a free minimal installer for conda).</p></li>
 <li><p>Remove the previous Python environment defined with the same name if it exists.</p></li>
 <li><p>Create a new Python environment.</p></li>
-<li><p>Set the environmental variable EARTHENGINE_PYTHON and EARTHENGINE_ENV. These variables will be used to define the reticulate environmental variable <a href="https://rstudio.github.io/reticulate/articles/versions.html#providing-hints">RETICULATE_PYTHON</a> when rgee is loaded.</p></li>
-<li><p>Install rgee Python dependencies: <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> and <a href="https://pypi.org/project/numpy/">numpy</a>.</p></li>
-<li><p>Interactive menu to confirm if restart the R session to see changes.</p></li>
+<li><p>Set the environmental variables EARTHENGINE_PYTHON and EARTHENGINE_ENV. These variables will be used to define the reticulate environmental variable <a href="https://rstudio.github.io/reticulate/articles/versions.html#providing-hints" class="external-link">RETICULATE_PYTHON</a> when rgee is loaded.</p></li>
+<li><p>Install rgee Python dependencies: <a href="https://pypi.org/project/earthengine-api/" class="external-link">Earth Engine Python API</a> and <a href="https://pypi.org/project/numpy/" class="external-link">numpy</a>.</p></li>
+<li><p>Ask to restart the R session in order to see changes.</p></li>
 </ol>
-<p><strong>However, the use of rgee::ee_install() is not mandatory. You can count on with your own custom installation. This would be also allowed.</strong> If you are a Rstudio v.1.4 &gt; user, this <a href="https://github.com/r-spatial/rgee/tree/help/rstudio/"><strong>tutorial</strong></a> will help you to properly set a Python Environment with your R session without <strong>rgee::ee_install()</strong>. Take into account that the Python Environment you set must have installed the <a href="https://pypi.org/project/earthengine-api/">Earth Engine Python API</a> and <a href="https://pypi.org/project/numpy/">Numpy</a>.</p>
-<p>By the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are only needed to move data from Google Drive and Google Cloud Storage to your local environment. These dependencies are not mandatory. However, they will help you to create a seamless connection between R and Earth Engine. The dependencies that comprised this group are shown below:</p>
+<p><strong>However, the use of rgee::ee_install() is not mandatory; you can instead use your own custom installation.</strong> If you are an Rstudio v.1.4 &gt; user, this <a href="https://github.com/r-spatial/rgee/tree/help/rstudio/" class="external-link"><strong>tutorial</strong></a> will help you to properly set a Python Environment with your R session without <strong>rgee::ee_install()</strong>. Take into account that the Python Environment you set must have installed the <a href="https://pypi.org/project/earthengine-api/" class="external-link">Earth Engine Python API</a> and <a href="https://pypi.org/project/numpy/" class="external-link">Numpy</a>.</p>
+<p>On the other hand, the <span style="color:#857e04"><b>credentials dependencies</b></span> are only needed to move data from Google Drive and Google Cloud Storage to your local environment. These dependencies are not mandatory. However, they will help you to create a seamless connection between R and Earth Engine. These dependencies are:</p>
 <ul>
 <li><p><span style="color:#857e04"><strong>Google Cloud Storage credential</strong></span></p></li>
 <li><p><span style="color:#857e04"><strong>Google Drive credential</strong></span></p></li>
 </ul>
 <p>See the next section to learn how to correctly set both credentials.</p>
 </div>
-<div id="authentication" class="section level2">
-<h2 class="hasAnchor">
-<a href="#authentication" class="anchor"></a>7. Authentication</h2>
-<p>As we have seen previously, <strong>rgee</strong> deal with three different Google API’s:</p>
+<div class="section level2">
+<h2 id="authentication">7. Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a>
+</h2>
+<p>As we have seen previously, <strong>rgee</strong> deals with three different Google API’s:</p>
 <ul>
 <li><p>Google Earth Engine</p></li>
 <li><p>Google Drive</p></li>
 <li><p>Google Cloud Storage</p></li>
 </ul>
-<p>To authenticate/initialize either Google Drive or Google Cloud Storage, you just need to run as follow:</p>
+<p>To authenticate/initialize either Google Drive or Google Cloud Storage, you just need to run:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="co">#ee_reattach() # reattach ee as a reserve word</span>
 <span class="co"># Initialize just Earth Engine</span>
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span> 
@@ -298,25 +300,25 @@ Many, many plotting options
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">'csaybar@gmail.com'</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="co"># Initialize Earth Engine, GD and GCS</span>
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">'csaybar@gmail.com'</span>, drive <span class="op">=</span> <span class="cn">TRUE</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in your R console. Unlike Earth Engine and Google Drive, Google Cloud Storage need to set up its credential manually (<a href="https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html">link1</a> and <a href="https://github.com/r-spatial/rgee/tree/help/gcs/">link2</a>). In all cases, the users credentials always will be stored in:</p>
+<p>If the Google account is verified and the permission is granted, you will be directed to an authentication token. Copy this token and paste it in your R console. Unlike Earth Engine and Google Drive, Google Cloud Storage needs to set up its credential manually (<a href="https://code.markedmondson.me/googleCloudStorageR/articles/googleCloudStorageR.html" class="external-link">link1</a> and <a href="https://github.com/r-spatial/rgee/tree/help/gcs/" class="external-link">link2</a>). In all cases, the user’s credentials will be stored in:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p>Remember you only have to authorize once, for next sessions it will not be necessary.</p>
+<p>Remember you only have to authorize once, for subsequent sessions it will not be necessary.</p>
 </div>
-<div id="hello-world" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hello-world" class="anchor"></a>8. Hello World</h2>
-<p>we know that installing <strong>rgee</strong> can be frustrating sometimes :( , so, congratulations to go so far :D :D. In this small example will show you how to display SRTM elevation values worldwide!.</p>
+<div class="section level2">
+<h2 id="hello-world">8. Hello World<a class="anchor" aria-label="anchor" href="#hello-world"></a>
+</h2>
+<p>we know that installing <strong>rgee</strong> can be frustrating sometimes :( , so, congratulations if you’ve gotten this far :D :D. In this small example will show you how to display SRTM elevation values worldwide!</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">srtm</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"USGS/SRTMGL1_003"</span><span class="op">)</span></code></pre></div>
 <p><strong>Define visualization parameters</strong></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">viz</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>
   max <span class="op">=</span> <span class="fl">4000</span>,
   min <span class="op">=</span> <span class="fl">0</span>,
-  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#000000"</span>,<span class="st">"#5AAD5A"</span>,<span class="st">"#A9AD84"</span>,<span class="st">"#FFFFFF"</span><span class="op">)</span>
+  palette <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000000"</span>,<span class="st">"#5AAD5A"</span>,<span class="st">"#A9AD84"</span>,<span class="st">"#FFFFFF"</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p><strong>Use Map$addLayer to visualize the map interactively</strong></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -330,9 +332,9 @@ Many, many plotting options
 <img src="https://user-images.githubusercontent.com/16768318/103684232-8bd56a80-4f8b-11eb-8bbb-fac3e1c2aada.png" width="90%">
 </center>
 </div>
-<div id="checking" class="section level2">
-<h2 class="hasAnchor">
-<a href="#checking" class="anchor"></a>9. Checking</h2>
+<div class="section level2">
+<h2 id="checking">9. Checking<a class="anchor" aria-label="anchor" href="#checking"></a>
+</h2>
 <p>The <code><a href="../reference/ee_check-tools.html">ee_check()</a></code> function will help you for checking the sanity of your <code>rgee</code> installation and dependencies.</p>
 <ul>
 <li>
@@ -343,7 +345,7 @@ Many, many plotting options
 <code><a href="../reference/ee_check-tools.html">ee_check_python_packages()</a></code> - Python packages</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/">rgee</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ee_check-tools.html">ee_check_python</a></span><span class="op">(</span><span class="op">)</span>
@@ -363,11 +365,13 @@ Many, many plotting options
 
 
       <footer><div class="copyright">
-  <p>Developed by Cesar Aybar.</p>
+  <p></p>
+<p>Developed by Cesar Aybar.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -375,6 +379,8 @@ Many, many plotting options
 
   
 
+
+  
 
   </body>
 </html>
