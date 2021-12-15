@@ -168,3 +168,4 @@ reference:
       - ee_utils_gif_save
       - ee_utils_future_value
       - ee_utils_dataset_display
+      - ee_utils_cog_metadata
