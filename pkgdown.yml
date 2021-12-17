@@ -5,7 +5,8 @@ articles:
   rgee01: rgee01.html
   rgee02: rgee02.html
   rgee03: rgee03.html
-last_built: 2021-12-15T21:19Z
+  rgee04: rgee04.html
+last_built: 2021-12-17T02:34Z
 urls:
   reference: https://r-spatial.github.io/rgee/reference
   article: https://r-spatial.github.io/rgee/articles
