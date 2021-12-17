@@ -30,9 +30,9 @@ vignette: >
 </style>
 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
+  ```{r setup, include=FALSE}
+  knitr::opts_chunk$set(eval = FALSE)
+  ```
 
 
 **Adapted from [Google Earth Engine Documentation](https://developers.google.com/earth-engine/guides/best_practices).**

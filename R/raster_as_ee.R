@@ -7,7 +7,7 @@
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
-#' @param predefinedAcl Specify user access to object. Passed to 
+#' @param predefinedAcl Specify user access to object. Passed to
 #' \code{googleCloudStorageR::gcs_upload}.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
@@ -131,6 +131,8 @@ stars_as_ee <- function(x,
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
 #' @param overwrite Logical. If TRUE, the assetId will be overwritten.
 #' @param bucket Character. Name of the GCS bucket.
+#' @param predefinedAcl Specify user access to object. Passed to
+#' \code{googleCloudStorageR::gcs_upload}.
 #' @param monitoring Logical. If TRUE the exportation task will be monitored.
 #' @param quiet Logical. Suppress info message.
 #' @param ... parameter(s) passed on to \code{\link{ee_utils_create_manifest_image}}

@@ -18,6 +18,8 @@
 ^vignettes\BestPractices.Rmd
 ^vignettes\thumb_down.png
 ^vignettes\thumb_up.png
+^vignettes\vig_4.drawio
+^vignettes\vig_4.png
 ^test\credentials
 ^doc$
 ^Meta$

@@ -23,7 +23,7 @@ skip_if_no_credentials <- function() {
 # Necessary Python packages were loaded?
 skip_if_no_pypkg <- function() {
   have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy")
+  have_numpy <- reticulate::py_module_available("numpy2")
   if (isFALSE(have_ee)) {
     skip("ee not available for testing")
   }
@@ -56,7 +56,7 @@ gcs_bucket_uniform_f <- function(){
 # Initialize credentials
 # If you do not count with GCS credentials the test will be skipped
 have_ee <- reticulate::py_module_available("ee")
-have_numpy <- reticulate::py_module_available("numpy")
+have_numpy <- reticulate::py_module_available("numpy2")
 if (have_ee & have_numpy) {
 ee_Initialize(drive = TRUE, gcs = TRUE)
 }
