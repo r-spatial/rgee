@@ -18,6 +18,8 @@ navbar:
          href: articles/rgee02.html
       -  text: Best Practices
          href: articles/rgee03.html
+      -  text: Shiny apps deployment
+         href: articles/rgee04.html
       -  text: rgee examples
          href: https://r-earthengine.github.io/
     - icon: fa fa-newspaper-o
