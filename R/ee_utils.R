@@ -230,3 +230,60 @@ ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
     future %>% future::value(stdout = stdout, signal = signal, ...)
   }
 }
+
+#' Store Service account key (SaK) inside the EE folder
+#'
+#' Copy SaK in the ~/.config/earthengine/$USER.
+#'
+#' @param sakfile Character. SaK filename.
+#' @param users Character. The user related to the SaK file. A SaK
+#' file can be related to multiple users.
+#' @param delete Logical. If TRUE, the SaK filename is deleted after copy.
+#' @param quiet Logical. Suppress info message
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' ee_Initialize()
+#'
+#' sakfile <- "/home/rgee_dev/sak_file.json"
+#' ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
+#' }
+ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FALSE) {
+  if (is.null(users)) {
+    ee_users <- tryCatch(
+      expr = ee_get_earthengine_path(),
+      error = function(e) {
+        ee_Initialize()
+        ee_get_earthengine_path()
+      }
+    )
+  } else {
+    ee_users <- sprintf("%s/%s", dirname(ee_get_earthengine_path()), users)
+  }
+
+  for (ee_user in ee_users) {
+    # 1. Remove previous Sak
+    file.remove(list.files(ee_user, pattern = "\\.json$", full.names = TRUE))
+
+    # 2. Copy new SaKfile
+    file.copy(
+      from = sakfile,
+      to = sprintf("%s/rgee_sak.json", ee_user),
+      overwrite = TRUE
+    )
+  }
+
+  if (delete) {
+    file.remove(sakfile)
+  }
+
+  if (!quiet & length(ee_users) == 1) {
+    message(
+      sprintf("SaK copy succesfully. Please run ee_Initialize(user = '%s', gcs = TRUE) again.", basename(ee_users))
+    )
+  } else {
+    message("SaK copy successfully")
+  }
+  sprintf("%s/rgee_sak.json", ee_users)
+}
