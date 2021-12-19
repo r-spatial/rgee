@@ -2,12 +2,12 @@
 % Please edit documentation in R/ee_utils.R
 \name{ee_utils_sak_copy}
 \alias{ee_utils_sak_copy}
-\title{Store Service account key (SaK) inside the EE folder}
+\title{Stores a Service account key (SaK) inside the EE folder}
 \usage{
 ee_utils_sak_copy(sakfile, users = NULL, delete = FALSE, quiet = FALSE)
 }
 \arguments{
-\item{sakfile}{Character. SaK filename.}
+\item{sakfile}{Character. SaK filename. If missing, the SaK of the first user is used.}
 
 \item{users}{Character. The user related to the SaK file. A SaK
 file can be related to multiple users.}
@@ -26,6 +26,10 @@ library(rgee)
 ee_Initialize()
 
 sakfile <- "/home/rgee_dev/sak_file.json"
+# Copy sakfile to the users 'csaybar' and 'ndef'
 ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
+
+# Copy the sakfile of the user1 to the user2 and user3.
+ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))
 }
 }

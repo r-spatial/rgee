@@ -14,5 +14,6 @@ tester.R
 doc
 Meta
 .DS_store
-
 *.drawio
+vignettes/*.html
+vignettes/*.R

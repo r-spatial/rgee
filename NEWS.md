@@ -11,6 +11,11 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
+# rgee 1.1.2.9000
+
+- ee_utils_sak_validate and ee_utils_sak_copy added to ee_utils.R
+- vignette to describe Shiny & rgee sync is added.
+
 # rgee 1.1.2
 
 - Fix an error in 'ee_check' warning message.
