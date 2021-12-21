@@ -9,7 +9,7 @@ sf_as_ee(
   via = "getInfo",
   assetId = NULL,
   bucket = NULL,
-  predefinedAcl = "private",
+  predefinedAcl = "bucketLevel",
   command_line_tool_path = NULL,
   overwrite = TRUE,
   monitoring = TRUE,

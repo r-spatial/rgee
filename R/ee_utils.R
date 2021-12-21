@@ -318,23 +318,37 @@ ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FAL
 #' have privileges to write/read objects in a GCS bucket.
 #'
 #' @param sakfile Character. SaK filename.
+#' @param bucket Character. Name of the GCS bucket. If bucket is not set,
+#' rgee will tries to create a bucket using \code{googleCloudStorageR::gcs_create_bucket}.
 #' @param quiet Logical. Suppress info message
 #' @examples
 #' \dontrun{
 #' library(rgee)
 #'
-#' ee_Initialize()
+#' ee_Initialize(gcs = TRUE)
 #'
+#' # Check a specific SaK
 #' sakfile <- "/home/rgee_dev/sak_file.json"
-#' ee_utils_sak_validate(sakfile_l)
+#' ee_utils_sak_validate(sakfile, bucket = "rgee_dev")
 #'
+#' # Check the SaK for the current user
+#' ee_utils_sak_validate()
 #' }
 #' @export
-ee_utils_sak_validate <- function(sakfile, quiet = FALSE) {
+ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
   ee_check_packages(
     fn_name = "ee_utils_sak_validation",
     packages = c("googleCloudStorageR", "jsonlite")
   )
+
+  if (missing(sakfile)) {
+    sakfile <- list.files(
+      path = ee_get_earthengine_path(),
+      pattern = "\\.json$",
+      recursive = TRUE,
+      full.names = TRUE
+    )[1]
+  }
 
   # Load the GCS credential
   googleCloudStorageR::gcs_auth(sakfile)
@@ -350,56 +364,78 @@ ee_utils_sak_validate <- function(sakfile, quiet = FALSE) {
     )
   }
 
-  # Create a bucket (try two times) - TEST 01
-  bucket_rname <- random_name()
-  suppressMessages(
-    googleCloudStorageR::gcs_create_bucket(bucket_rname, project_id)
-  )
-
   if (!quiet) {
     cat(
-      sprintf(
-        "%s : %s \n",
-        crayon::bold("Bucket creation"),
-        crayon::green$bold("OK!")
+      cli::rule(
+        left = crayon::bold("SaK validator"),
+        right = "The test should take ~1 min. Please wait."
       )
     )
+    cat("\n")
+  }
+
+  # Create a bucket (try two times) - TEST 01
+  if (is.null(bucket)) {
+    bucket_rname <- random_name()
+    result01 <- tryCatch(
+      expr = {
+        suppressMessages(
+          googleCloudStorageR::gcs_create_bucket(bucket_rname, project_id)
+        )
+        TRUE
+      },
+      error = function(e) {
+        message(e)
+        message("\nAn ERROR raised when rgee tries to create a GCS bucket.")
+        return(FALSE)
+      }
+    )
+
+    if (!quiet & result01) {
+      cat(
+        sprintf(
+          "%s : %s \n",
+          crayon::bold("Bucket creation"),
+          crayon::green$bold("OK!")
+        )
+      )
+    }
+  } else {
+    bucket_rname <- bucket
   }
 
   # TEST 02
   demo_data <- data.frame(a = 1:10, b = 1:10)
-  result <- try(
-    suppressMessages(
-      googleCloudStorageR::gcs_upload(
-        file = demo_data,
-        name = "demo_data.csv",
-        bucket = bucket_rname
+  result02 <- tryCatch(
+    expr = {
+      suppressMessages(
+        googleCloudStorageR::gcs_upload(
+          file = demo_data,
+          name = "demo_data.csv",
+          bucket = bucket_rname,
+          predefinedAcl = "bucketLevel"
+        )
       )
-    )
+      TRUE
+    }, error = function(e) {
+      message(e)
+      message("\nAn ERROR raised when rgee tries to write in your GCS bucket.")
+      return(FALSE)
+    }
   )
-  if (class(result) == "try-error") {
-    suppressMessages(
-      googleCloudStorageR::gcs_upload(
-        file = dedmo_data,
-        name = "demo_data.csv",
-        bucket = bucket_rname,
-        predefinedAcl = "bucketLevel"
-      )
-    )
-  }
 
-  if (!quiet) {
+  if (!quiet & result02) {
     cat(
       sprintf(
-        "%s : %s",
-        crayon::bold("Upload files"),
+        "%s : %s \n",
+        crayon::bold("Upload GCS objects"),
         crayon::green$bold("OK!")
       )
     )
   }
 
   # Download data
-  tryCatch(
+  result03 <- tryCatch(
     expr = {
       suppressMessages(
         googleCloudStorageR::gcs_get_object(
@@ -409,21 +445,58 @@ ee_utils_sak_validate <- function(sakfile, quiet = FALSE) {
           overwrite = TRUE
         )
       )
+      TRUE
     }, error = function(e) {
-      stop("Oops, An error arised when reading a GCS object")
+      message(e)
+      message("\nAn ERROR raised when rgee tries to read your GCS bucket.")
+      return(FALSE)
     }
   )
 
-  if (!quiet) {
+  if (!quiet & result03) {
     cat(
       sprintf(
-        "%s : %s",
-        crayon::bold("Download files"),
+        "%s : %s \n",
+        crayon::bold("Download GCS objects"),
         crayon::green$bold("OK!")
       )
     )
   }
-  googleCloudStorageR::gcs_delete_object("demo_data.csv", bucket_rname)
-  googleCloudStorageR::gcs_delete_bucket(bucket_rname)
+
+  # Check GCS and GEE sync
+  result04 <- tryCatch(
+    expr = {
+      ee_as_sf(
+        x = ee$Geometry$Point(c(0, 0 )),
+        via = "gcs", container = bucket_rname,
+        quiet = TRUE,
+        public = FALSE
+      )
+      TRUE
+    }, error = function(e) {
+      message(e)
+      message("\nAn ERROR raised when rgee tries to sync GEE & GCS.")
+      return(FALSE)
+    }
+  )
+
+  if (!quiet & result04) {
+    cat(
+      sprintf(
+        "%s : %s \n",
+        crayon::bold("GEE & GCS sync"),
+        crayon::green$bold("OK!")
+      )
+    )
+  }
+
+  suppressMessages(
+    googleCloudStorageR::gcs_delete_object("demo_data.csv", bucket_rname)
+  )
+  if (is.null(bucket)) {
+    suppressMessages(
+      googleCloudStorageR::gcs_delete_bucket(bucket_rname)
+    )
+  }
   invisible(TRUE)
 }

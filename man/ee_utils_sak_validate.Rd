@@ -4,10 +4,13 @@
 \alias{ee_utils_sak_validate}
 \title{Validate a Service account key (SaK)}
 \usage{
-ee_utils_sak_validate(sakfile, quiet = FALSE)
+ee_utils_sak_validate(sakfile, bucket = NULL, quiet = FALSE)
 }
 \arguments{
 \item{sakfile}{Character. SaK filename.}
+
+\item{bucket}{Character. Name of the GCS bucket. If bucket is not set,
+rgee will tries to create a bucket using \code{googleCloudStorageR::gcs_create_bucket}.}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -20,10 +23,13 @@ have privileges to write/read objects in a GCS bucket.
 \dontrun{
 library(rgee)
 
-ee_Initialize()
+ee_Initialize(gcs = TRUE)
 
+# Check a specific SaK
 sakfile <- "/home/rgee_dev/sak_file.json"
-ee_utils_sak_validate(sakfile_l)
+ee_utils_sak_validate(sakfile, bucket = "rgee_dev")
 
+# Check the SaK for the current user
+ee_utils_sak_validate()
 }
 }

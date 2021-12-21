@@ -8,7 +8,7 @@ stars_as_ee(
   x,
   assetId,
   bucket = NULL,
-  predefinedAcl = "private",
+  predefinedAcl = "bucketLevel",
   command_line_tool_path = NULL,
   overwrite = FALSE,
   monitoring = TRUE,

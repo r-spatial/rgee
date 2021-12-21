@@ -1111,11 +1111,21 @@ ee_gcs_to_local <- function(task,
 
   if (public) {
     for (name in files_gcs$name) {
-      googleCloudStorageR::gcs_update_object_acl(
-        object_name = name,
-        bucket = gcs_bucket,
-        entity_type = "allUsers"
-      )
+        lresult <- try(
+          {
+            googleCloudStorageR::gcs_update_object_acl(
+              object_name = name,
+              bucket = gcs_bucket,
+              entity_type = "allUsers"
+            )
+          }, silent = TRUE
+        )
+        if (class(lresult) == "try-error") {
+          message(
+            crayon::bold("Is the access control of the bucket fine-grained?"),
+            " rgee can not change the access policy to 'Public' of buckets with uniform access control."
+          )
+        }
     }
   }
 

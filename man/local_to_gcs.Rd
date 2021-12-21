@@ -4,7 +4,7 @@
 \alias{local_to_gcs}
 \title{Upload local files to Google Cloud Storage}
 \usage{
-local_to_gcs(x, bucket = NULL, predefinedAcl = "private", quiet = FALSE)
+local_to_gcs(x, bucket = NULL, predefinedAcl = "bucketLevel", quiet = FALSE)
 }
 \arguments{
 \item{x}{Character. filename.}

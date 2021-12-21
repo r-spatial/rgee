@@ -26,7 +26,7 @@
 #' @export
 local_to_gcs <- function(x,
                          bucket = NULL,
-                         predefinedAcl = "private",
+                         predefinedAcl = "bucketLevel",
                          quiet = FALSE) {
   # check packages
   ee_check_packages("rgee::ee_download_gcs", "googleCloudStorageR")

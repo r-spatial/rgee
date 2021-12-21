@@ -25,7 +25,7 @@
 #' If unspecified, defaults to TRUE.
 #' @param bucket Character. Name of the bucket (GCS) to save intermediate files
 #' (ignore if \code{via} is not defined as "gcs_to_asset").
-#' @param predefinedAcl Specify user access to object. Passed to 
+#' @param predefinedAcl Specify user access to object. Passed to
 #' \code{googleCloudStorageR::gcs_upload}.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
 #' tool (CLT). If NULL, rgee assumes that CLT is set in the system PATH.
@@ -122,7 +122,7 @@ sf_as_ee <- function(x,
                      via = 'getInfo',
                      assetId = NULL,
                      bucket = NULL,
-                     predefinedAcl = "private",
+                     predefinedAcl = "bucketLevel",
                      command_line_tool_path = NULL,
                      overwrite = TRUE,
                      monitoring = TRUE,
