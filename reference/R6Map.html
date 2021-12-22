@@ -51,6 +51,12 @@ using leaflet."><meta property="og:image" content="https://r-spatial.github.io/r
       <a href="../articles/rgee04.html">Shiny apps deployment</a>
     </li>
     <li>
+      <a href="../articles/rgee05.html">rgee and GCS sync</a>
+    </li>
+    <li>
+      <a href="../articles/rgee06.html">Integrate Rmarkdown and rgee</a>
+    </li>
+    <li>
       <a href="https://r-earthengine.github.io/" class="external-link">rgee examples</a>
     </li>
   </ul></li>
@@ -430,6 +436,7 @@ Map
   shown <span class="op">=</span> <span class="cn">TRUE</span>,
   opacity <span class="op">=</span> <span class="fl">1</span>,
   position <span class="op">=</span> <span class="cn">NULL</span>,
+  titiler_viz_convert <span class="op">=</span> <span class="cn">TRUE</span>,
   titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span>
 <span class="op">)</span></code></pre></div><p></p></div>
 </div>
@@ -460,6 +467,11 @@ Map
 <dd><p>Character. Activate panel creation. If "left" the map will be displayed in
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).</p></dd>
+
+
+<dt><code>titiler_viz_convert</code></dt>
+<dd><p>Logical. If it is TRUE, Map$addLayer will transform the
+visParams to titiler style. Ignored if eeObject is not a COG file.</p></dd>
 
 
 <dt><code>titiler_server</code></dt>

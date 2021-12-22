@@ -76,6 +76,12 @@
       <a href="../articles/rgee04.html">Shiny apps deployment</a>
     </li>
     <li>
+      <a href="../articles/rgee05.html">rgee and GCS sync</a>
+    </li>
+    <li>
+      <a href="../articles/rgee06.html">Integrate Rmarkdown and rgee</a>
+    </li>
+    <li>
       <a href="https://r-earthengine.github.io/" class="external-link">rgee examples</a>
     </li>
   </ul>
@@ -194,7 +200,7 @@
 <h4 id="set-up-a-service-account">
 <strong>4: Set up a service account</strong><a class="anchor" aria-label="anchor" href="#set-up-a-service-account"></a>
 </h4>
-<p>Now we are going to create a <a href="https://cloud.google.com/iam/docs/service-accounts" class="external-link"><strong>service account</strong></a>. A service account is used to ‘sign in’ applications that require one or many Google services. In our case, <strong>rgee</strong> (the app) needs an account with <strong>GCS admin privileges</strong>. To create a service account, search for ‘Cloud Storage’ in the browser, and click on ‘Cloud Storage’ product.</p>
+<p>Now we are going to create a <a href="https://cloud.google.com/iam/docs/service-accounts" class="external-link"><strong>service account</strong></a>. A service account is used to ‘sign in’ applications that require one or many GCP services. In our case, <strong>rgee</strong> (the app) needs an account with <strong>GCS admin privileges</strong>. To create a service account, search for ‘Cloud Storage’ in the browser, and click on ‘Cloud Storage’ product.</p>
 <br><center>
 <img src="https://user-images.githubusercontent.com/24624959/146641879-71809544-e171-4ea2-8509-0b58a602b119.png">
 </center>
@@ -300,7 +306,7 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <img src="https://user-images.githubusercontent.com/16768318/146684836-e38a3414-d6b6-441d-becc-b2697df8d4d1.png">
 </center>
 <p><br></p>
-<p>Why is this important?. Because if you create a bucket using the first option an error message will arise: <strong>“Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at <a href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" class="external-link uri">https://cloud.google.com/storage/docs/uniform-bucket-level-access</a>”</strong>.</p>
+<p>Why is this important?. It is important, because if you create a bucket using the first option an error message will arise: <strong>“Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at <a href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" class="external-link uri">https://cloud.google.com/storage/docs/uniform-bucket-level-access</a>”</strong>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
 
@@ -378,7 +384,7 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <h2 id="conclusion">
 <strong>Conclusion</strong><a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having trouble setting up your SaK, feel free to clearly detail your problem in [rgee isues] (<a href="https://github.com/r-spatial/rgee/issues" class="external-link uri">https://github.com/r-spatial/rgee/issues</a>).</p>
+<p>Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having problems setting up your SaK, feel free to clearly detail your problem in <a href="https://github.com/r-spatial/rgee/issues" class="external-link">rgee isues</a>.</p>
 </div>
   </div>
 
