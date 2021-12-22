@@ -466,11 +466,17 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
   # Check GCS and GEE sync
   result04 <- tryCatch(
     expr = {
-      ee_as_sf(
+      demo_sf <- ee_as_sf(
         x = ee$Geometry$Point(c(0, 0 )),
         via = "gcs", container = bucket_rname,
         quiet = TRUE,
         public = FALSE
+      )
+      suppressMessages(
+        googleCloudStorageR::gcs_delete_object(
+          object_name = attr(demo_sf, "metadata")$metadata$gcs_name,
+          bucket = bucket_rname
+        )
       )
       TRUE
     }, error = function(e) {
@@ -493,6 +499,7 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
   suppressMessages(
     googleCloudStorageR::gcs_delete_object("demo_data.csv", bucket_rname)
   )
+
   if (is.null(bucket)) {
     suppressMessages(
       googleCloudStorageR::gcs_delete_bucket(bucket_rname)

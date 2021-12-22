@@ -221,3 +221,16 @@ initBaseMaps <- function (map.types, canvas = FALSE, viewer.suppress = FALSE) {
   }
   return(m)
 }
+
+
+#' Get metadata from COG
+#' @noRd
+ee_get_metadata <- function(resource, titiler_server = "https://api.cogeo.xyz/") {
+  titiler_server_service <- sprintf("%s/%s", titiler_server, "cog/metadata")
+  response <- httr::GET(
+    url = titiler_server_service,
+    config = httr::accept_json(),
+    query = c(list("url" = resource))
+  )
+  httr::content(response, type="application/json")
+}

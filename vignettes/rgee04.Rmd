@@ -1,5 +1,5 @@
 ---
-title: "**How to create and deploy rgee Shiny apps - I**"
+title: "How to create and deploy rgee Shiny apps - I"
 output:
   html_document:
     toc: true

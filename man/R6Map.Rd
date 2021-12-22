@@ -525,6 +525,7 @@ Adds a given Earth Engine spatial object to the map as a layer
   shown = TRUE,
   opacity = 1,
   position = NULL,
+  titiler_viz_convert = TRUE,
   titiler_server = "https://api.cogeo.xyz/"
 )}\if{html}{\out{</div>}}
 }
@@ -545,6 +546,9 @@ Adds a given Earth Engine spatial object to the map as a layer
 \item{\code{position}}{Character. Activate panel creation. If "left" the map will be displayed in
 the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
 By default NULL (No panel will be created).}
+
+\item{\code{titiler_viz_convert}}{Logical. If it is TRUE, Map$addLayer will transform the
+visParams to titiler style. Ignored if eeObject is not a COG file.}
 
 \item{\code{titiler_server}}{TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".}
 }

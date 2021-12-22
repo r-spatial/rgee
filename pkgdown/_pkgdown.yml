@@ -20,6 +20,10 @@ navbar:
          href: articles/rgee03.html
       -  text: Shiny apps deployment
          href: articles/rgee04.html
+      -  text: rgee and GCS sync
+         href: articles/rgee05.html
+      -  text: Integrate Rmarkdown and rgee
+         href: articles/rgee06.html
       -  text: rgee examples
          href: https://r-earthengine.github.io/
     - icon: fa fa-newspaper-o

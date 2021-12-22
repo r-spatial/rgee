@@ -9,7 +9,9 @@ An object of class environment with the
 following functions:
 \itemize{
 \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+opacity = 1, titiler_viz_convert = TRUE,
+titiler_server = "https://api.cogeo.xyz/")}: Adds a given EE object to the
+map as a layer. \cr
 \itemize{
 \item \strong{eeObject:} The object to add to the interactive map.\cr
 \item \strong{visParams:} List of parameters for visualization.
@@ -19,6 +21,11 @@ See details.\cr
 layer should be on by default. \cr
 \item \strong{opacity:} The layer's opacity is represented as a number
 between 0 and 1. Defaults to 1. \cr
+\item \strong{titiler_viz_convert:} Logical. If it is TRUE, Map$addLayer
+will transform the visParams to titiler style. Ignored if eeObject is
+not a COG file. \cr
+\item \strong{titiler_server:} TiTiler endpoint. Defaults to
+"https://api.cogeo.xyz/".
 }
 \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
 opacity = 1)}: Adds a given ee$ImageCollection to the map
@@ -203,25 +210,12 @@ m6$rgee$tokens
 m5$rgee$tokens
 
 # Case 8: COG support
-server <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"
-file <- "SkySat_Freeport_s03_20170831T162740Z3.tif"
-resource <- paste0(server, file)
 # See parameters here: https://api.cogeo.xyz/docs
-# visParams <- list(nodata = 0)
-visParams <- list(
-  nodata = 0,
-  expression = "B1*1+B2*4+B3*2",
-  rescale = "0, 2000",
-  colormap_name = "viridis"
-)
-
-Map$centerObject(resource)
-Map$addLayer(resource, visParams = visParams, shown = TRUE)
 
 server <- "https://storage.googleapis.com/pdd-stac/disasters/"
 file <- "hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
 resource <- paste0(server, file)
-visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
+visParams <- list(bands = c("B3", "B2", "B1"), min = 3000, max = 13500, nodata = 0)
 Map$centerObject(resource)
 Map$addLayer(resource, visParams = visParams, shown = TRUE)
 }

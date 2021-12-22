@@ -279,6 +279,8 @@ R6Map <- R6::R6Class(
     #' @param position Character. Activate panel creation. If "left" the map will be displayed in
     #' the left panel. Otherwise, if it is "right" the map will be displayed in the right panel.
     #' By default NULL (No panel will be created).
+    #' @param titiler_viz_convert Logical. If it is TRUE, Map$addLayer will transform the
+    #' visParams to titiler style. Ignored if eeObject is not a COG file.
     #' @param titiler_server TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".
     #' @return An `EarthEngineMap` object.
     #'
@@ -332,6 +334,7 @@ R6Map <- R6::R6Class(
                         shown = TRUE,
                         opacity = 1,
                         position = NULL,
+                        titiler_viz_convert = TRUE,
                         titiler_server = "https://api.cogeo.xyz/") {
       # check packages
       ee_check_packages("Map$addLayer", c("jsonlite", "leaflet", "leafem"))
@@ -345,6 +348,7 @@ R6Map <- R6::R6Class(
           shown = shown,
           opacity = opacity,
           position = position,
+          titiler_viz_convert = titiler_viz_convert,
           titiler_server = titiler_server
         ))
       }
@@ -676,7 +680,7 @@ R6Map <- R6::R6Class(
 
       if (isTRUE(self$save_maps)) {
         # Save the previous map in previous_map_left or previous_map_right
-        # according to posisa tion argument.
+        # according to position argument.
         private$save_map(legend_args, position = NULL)
       } else {
         legend_args
@@ -722,7 +726,8 @@ R6Map <- R6::R6Class(
       )
 
       if (response$status_code != 200) {
-        stop("eeObject is neither a COG resource nor an EE spatial object.")
+        message <- httr::content(response, type="application/json")$detail
+        stop(message)
       }
 
       jsonInfo <- httr::content(response, type="application/json")
@@ -732,12 +737,106 @@ R6Map <- R6::R6Class(
       zoom <- ee_getZoom(jsonInfo)
       list(lon = lon, lat = lat, zoom = zoom)
     },
+    convert_eevizparam_to_titiler = function(resource, vizparam) {
+      # get metadata
+      metadata_bands <- ee_get_metadata(resource)
+
+      # Convert bands to expression
+      if (is.null(vizparam[["bands"]])) {
+        expression = "B1"
+      }  else {
+        band_names <- sapply(
+          X = seq_along(metadata_bands$band_descriptions),
+          FUN = function(x) metadata_bands$band_descriptions[[x]][[2]]
+        )
+
+        if (any(sapply(band_names, function(x) x == ""))) {
+          expression <- paste0(
+            sprintf(fmt = "%s", vizparam[["bands"]]),
+            collapse = ", "
+          )
+        } else {
+          binorder <- sapply(
+            X = seq_along(vizparam[["bands"]]),
+            FUN = function(x) which(band_names %in% vizparam[["bands"]][x])
+          )
+          expression <- paste0(
+            sprintf(fmt = "B%s", binorder),
+            collapse = ", "
+          )
+        }
+      }
+
+      # Convert min to rescale
+      if (is.null(vizparam[["min"]])) {
+        vmin <- 0
+      } else {
+        vmin <- vizparam[["min"]]
+      }
+
+      # Convert max to rescale
+      if (is.null(vizparam[["max"]])) {
+        vmax <- 1
+      } else {
+        vmax <- vizparam[["max"]]
+      }
+
+      rescale <- paste0(c(vmin, vmax), collapse = ", ")
+
+      # Convert max to rescale
+      if (length(strsplit(expression, ",")[[1]]) == 1) {
+        if (is.null(vizparam[["palette"]])) {
+          vpalette <- "ocean_r"
+        } else {
+          if (length(vpalette) > 2) {
+            stop(
+              "Titiler does not support custom colorbar. Please select one",
+              " from the list below. \n",
+              "above, accent, accent_r, afmhot, afmhot_r, autumn, ",
+              "autumn_r, binary, binary_r, blues, blues_r, bone, bone_r, brbg, brbg_r, ",
+              "brg, brg_r, bugn, bugn_r, bupu, bupu_r, bwr, bwr_r, cfastie, cividis, ",
+              "cividis_r, cmrmap, cmrmap_r, cool, cool_r, coolwarm, coolwarm_r, copper, ",
+              "copper_r, cubehelix, cubehelix_r, dark2, dark2_r, flag, flag_r, gist_earth, ",
+              "gist_earth_r, gist_gray, gist_gray_r, gist_heat, gist_heat_r, gist_ncar, ",
+              "gist_ncar_r, gist_rainbow, gist_rainbow_r, gist_stern, gist_stern_r, ",
+              "gist_yarg, gist_yarg_r, gnbu, gnbu_r, gnuplot, gnuplot2, gnuplot2_r, ",
+              "gnuplot_r, gray, gray_r, greens, greens_r, greys, greys_r, hot, hot_r, ",
+              "hsv, hsv_r, inferno, inferno_r, jet, jet_r, magma, magma_r, nipy_spectral, ",
+              "nipy_spectral_r, ocean, ocean_r, oranges, oranges_r, orrd, orrd_r, paired, ",
+              "paired_r, pastel1, pastel1_r, pastel2, pastel2_r, pink, pink_r, piyg, ",
+              "piyg_r, plasma, plasma_r, prgn, prgn_r, prism, prism_r, pubu, pubu_r, ",
+              "pubugn, pubugn_r, puor, puor_r, purd, purd_r, purples, purples_r, rainbow, ",
+              "rainbow_r, rdbu, rdbu_r, rdgy, rdgy_r, rdpu, rdpu_r, rdylbu, rdylbu_r, ",
+              "rdylgn, rdylgn_r, reds, reds_r, rplumbo, schwarzwald, seismic, seismic_r, ",
+              "set1, set1_r, set2, set2_r, set3, set3_r, spectral, spectral_r, spring, ",
+              "spring_r, summer, summer_r, tab10, tab10_r, tab20, tab20_r, tab20b, ",
+              "tab20b_r, tab20c, tab20c_r, terrain, terrain_r, twilight, twilight_r, ",
+              "twilight_shifted, twilight_shifted_r, viridis, viridis_r, winter, ",
+              "winter_r, wistia, wistia_r, ylgn, ylgn_r, ylgnbu, ylgnbu_r, ylorbr, ",
+              "ylorbr_r, ylorrd, ylorrd_r"
+            )
+          } else {
+            vpalette <- vizparam[["palette"]]
+          }
+        }
+      }
+
+      # Upgrade your vizparams
+      vizparam[["expression"]] <- expression
+      vizparam[["rescale"]] <- rescale
+      vizparam[["palette"]] <- NULL
+      vizparam[["min"]] <- NULL
+      vizparam[["max"]] <- NULL
+      vizparam[["bands"]] <- NULL
+      return(vizparam)
+    },
     addCOG = function(resource,
                       visParams = NULL,
                       name = NULL,
                       shown = TRUE,
                       opacity = 1,
                       position = NULL,
+                      titiler_viz_convert = TRUE,
                       titiler_server = "https://api.cogeo.xyz/") {
       # check packages
       ee_check_packages("Map$addCOG", c("jsonlite", "leaflet", "leafem", "httr"))
@@ -759,6 +858,10 @@ R6Map <- R6::R6Class(
       }
 
       # GET tilejson.json
+      if (titiler_viz_convert) {
+        visParams <- private$convert_eevizparam_to_titiler(resource, visParams)
+      }
+
       response <- httr::GET(
         url = titiler_server_service,
         config = httr::accept_json(),
@@ -766,7 +869,8 @@ R6Map <- R6::R6Class(
       )
 
       if (response$status_code != 200) {
-        stop("eeObject is neither a COG resource nor an EE spatial object.")
+        message <- httr::content(response, type="application/json")$detail
+        stop(message)
       }
 
       jsonInfo <- httr::content(response, type="application/json")
@@ -982,7 +1086,9 @@ R6Map <- R6::R6Class(
 #' following functions:
 #' \itemize{
 #'   \item  \strong{addLayer(eeObject, visParams, name = NULL, shown = TRUE,
-#'   opacity = 1)}: Adds a given EE object to the map as a layer. \cr
+#'   opacity = 1, titiler_viz_convert = TRUE,
+#'   titiler_server = "https://api.cogeo.xyz/")}: Adds a given EE object to the
+#'   map as a layer. \cr
 #'   \itemize{
 #'     \item \strong{eeObject:} The object to add to the interactive map.\cr
 #'     \item \strong{visParams:} List of parameters for visualization.
@@ -992,6 +1098,11 @@ R6Map <- R6::R6Class(
 #'     layer should be on by default. \cr
 #'     \item \strong{opacity:} The layer's opacity is represented as a number
 #'      between 0 and 1. Defaults to 1. \cr
+#'      \item \strong{titiler_viz_convert:} Logical. If it is TRUE, Map$addLayer
+#'      will transform the visParams to titiler style. Ignored if eeObject is
+#'      not a COG file. \cr
+#'      \item \strong{titiler_server:} TiTiler endpoint. Defaults to
+#'      "https://api.cogeo.xyz/".
 #'   }
 #'   \item  \strong{addLayers(eeObject, visParams, name = NULL, shown = TRUE,
 #'   opacity = 1)}: Adds a given ee$ImageCollection to the map
@@ -1165,25 +1276,12 @@ R6Map <- R6::R6Class(
 #' m5$rgee$tokens
 #'
 #' # Case 8: COG support
-#' server <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/"
-#' file <- "SkySat_Freeport_s03_20170831T162740Z3.tif"
-#' resource <- paste0(server, file)
 #' # See parameters here: https://api.cogeo.xyz/docs
-#' # visParams <- list(nodata = 0)
-#' visParams <- list(
-#'   nodata = 0,
-#'   expression = "B1*1+B2*4+B3*2",
-#'   rescale = "0, 2000",
-#'   colormap_name = "viridis"
-#' )
-#'
-#' Map$centerObject(resource)
-#' Map$addLayer(resource, visParams = visParams, shown = TRUE)
 #'
 #' server <- "https://storage.googleapis.com/pdd-stac/disasters/"
 #' file <- "hurricane-harvey/0831/20170831_172754_101c_3B_AnalyticMS.tif"
 #' resource <- paste0(server, file)
-#' visParams <- list(nodata = 0, expression = "B3, B2, B1", rescale = "3000, 13500")
+#' visParams <- list(bands = c("B3", "B2", "B1"), min = 3000, max = 13500, nodata = 0)
 #' Map$centerObject(resource)
 #' Map$addLayer(resource, visParams = visParams, shown = TRUE)
 #' }

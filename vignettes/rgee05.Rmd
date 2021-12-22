@@ -103,7 +103,7 @@ that the API is activated!
 
 #### **4: Set up a service account**
 
-Now we are going to create a [**service account**](https://cloud.google.com/iam/docs/service-accounts). A service account is used to 'sign in' applications that require one or many Google services. In our case, **rgee** (the app) needs an account with **GCS admin privileges**. To create a service account, search for ‘Cloud Storage’ in the browser, and click on ‘Cloud Storage’ product.
+Now we are going to create a [**service account**](https://cloud.google.com/iam/docs/service-accounts). A service account is used to 'sign in' applications that require one or many GCP services. In our case, **rgee** (the app) needs an account with **GCS admin privileges**. To create a service account, search for ‘Cloud Storage’ in the browser, and click on ‘Cloud Storage’ product.
 
 
 <br>
@@ -248,7 +248,7 @@ On the contrary if you use [`googleCloudStorageR::gcs_create_bucket`](https://co
 <br>
 
 
-Why is this important?. Because if you create a bucket using the first option an error message will arise: **"Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access"**.
+Why is this important?. It is important, because if you create a bucket using the first option an error message will arise: **"Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access"**.
 
 ```{r}
 demo_data <- data.frame(a = 1:10, b = 1:10)
@@ -340,4 +340,4 @@ Finally, add the Google user account of the **EE USER**. **Do not forget to add 
 
 ## **Conclusion**
 
-Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having trouble setting up your SaK, feel free to clearly detail your problem in [rgee isues] (https://github.com/r-spatial/rgee/issues).
+Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having problems setting up your SaK, feel free to clearly detail your problem in [rgee isues](https://github.com/r-spatial/rgee/issues).

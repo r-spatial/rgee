@@ -13,8 +13,13 @@ vignette: >
 ---
 # rgee 1.1.2.9000
 
+- Better `Map$addLayer` support to COG.
+- predefinedAcl='bucketLevel' is set as deault in stars_as_ee, sf_as_ee, raster_as_ee, and local_to_gcs.
 - ee_utils_sak_validate and ee_utils_sak_copy added to ee_utils.R
 - vignette to describe Shiny & rgee sync is added.
+- vignette that describe how to set up a SaK.
+- vignette that describe how to integrate rgee and markdown.
+
 
 # rgee 1.1.2
 

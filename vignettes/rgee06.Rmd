@@ -1,0 +1,183 @@
+---
+title: "How to integrate Rmarkdown and rgee"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+    toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{5. Interactive maps display in Rmarkdown.}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+<link rel="preconnect" href="https://fonts.gstatic.com"> <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+```{=html}
+<style type="text/css">
+  body{
+    font-size: 15pt;
+    font-family: 'Roboto', sans-serif;
+  }
+  pre code{
+    font-size: 12pt;
+  }
+  .list-group-item:last-child{
+    font-size: 11pt;
+    font-weight: bold;
+  }
+</style>
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## **1. The problem**
+
+GEE offers on-the-fly computation for rendering EE spatial objects:
+
+```{r}
+library(rgee)
+library(rgeeExtra)
+
+ee_Initialize()
+
+img <- ee$Image$Dataset$CGIAR_SRTM90_V4
+Map$addLayer(log1p(img), list(min = 0, max = 7))
+```
+
+<br>
+<center>
+<img src=https://user-images.githubusercontent.com/16768318/146937907-17ba9a1c-c37d-4de1-9c61-5c7ee2d18aab.png>
+</center>
+<br>
+
+However, this interactive map service **is temporary**, disappearing after a short period of time (~ 4 hours). This makes `Map$addLayer` unusable for report generation. In this vignette, we will learn to create a **permanent interactive map**.
+
+## **2. A tentative workaround**
+
+Instead of using GEE API for creating interactive maps, we will use [**titiler**](https://github.com/developmentseed/titiler). titiler creates web map tiles dynamically based on COG (STAC) resources. Since an exported EE task to retrieve images can return a COG, we just have to move these results to a **storage web service with [HTTP GET range requests](https://www.cogeo.org/)**.
+
+<br>
+<center>
+<img src=https://user-images.githubusercontent.com/10407788/98711823-7f4de080-2353-11eb-9c8a-8a46550651ae.png>
+</center>
+<br>
+
+
+Fortunately, [GCS counts with this feature](https://cloud.google.com/storage/docs/json_api/v1/objects/get), so if we manage to move our results to GCS, the work would be already done :)
+
+```
+GET /OBJECT_NAME HTTP/1.1
+Host: BUCKET_NAME.storage.googleapis.com
+Content-Length: 0
+Authorization: AUTHENTICATION_STRING
+Range: bytes=BYTE_RANGE
+If-Match: ENTITY_TAG
+If-Modified-Since: DATE
+If-None-Match: ENTITY_TAG
+If-Unmodified-Since: DATE
+```
+
+## 3. Show me the code!
+
+First, load `rgee` and `googleCloudStorageR` and initialize the EE API. You must have correctly configured a service account key, if not check our tutorial "[**how to integrate Google Cloud Storage and rgee**](https://r-spatial.github.io/rgee/articles/rgee05.html)".
+
+```{r}
+library(rgee)
+library(googleCloudStorageR)
+
+# Init the EE API
+ee_Initialize("csaybar", gcs = TRUE)
+
+# Validate your SaK
+# ee_utils_sak_validate(bucket = "rgee_examples")
+```
+
+
+Define your study area.
+
+```{r}
+# Define an study area
+EE_geom <- ee$Geometry$Point(c(-70.06240, -6.52077))$buffer(5000)
+```
+
+
+Select an `ee$Image`, for instance, a Landsat-8 image.
+
+```{r}
+l8img <- ee$ImageCollection$Dataset$LANDSAT_LC08_C02_T2_L2 %>% 
+  ee$ImageCollection$filterDate('2021-06-01', '2021-12-01') %>% 
+  ee$ImageCollection$filterBounds(EE_geom) %>% 
+  ee$ImageCollection$first()
+```
+
+Move `l8img` from EE to GCS.
+
+```{r}
+gcs_l8_name  <- "l8demo2" # name of the image in GCS.
+BUCKET_NAME <- "rgee_examples" # set here your bucket name
+task <- ee_image_to_gcs(
+  image = l8img$select(sprintf("SR_B%s",1:5)),
+  region = EE_geom,
+  fileNamePrefix = gcs_l8_name,
+  timePrefix = FALSE,
+  bucket = BUCKET_NAME,
+  scale = 10,
+  formatOptions = list(cloudOptimized = TRUE) # Return a COG rather than a TIFF file.
+)
+task$start()
+ee_monitoring()
+```
+
+Titiler needs resources downloadable for anyone. Therefore, **we recommend you to work with GCS buckets with fine-grained access**. In this way, you can decide individually which objects to make public. On the other hand, if you decide to work with buckets with uniform access, you will have to expose the entire bucket!. The code below makes a specific object in your bucket **public to internet**.
+
+
+```{r}
+# Make PUBLIC the GCS object 
+googleCloudStorageR::gcs_update_object_acl(
+  object_name = paste0(gcs_l8_name, ".tif"),
+  bucket = BUCKET_NAME,
+  entity_type = "allUsers"
+)
+```
+
+Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint [`https://api.cogeo.xyz/docs`](`https://api.cogeo.xyz/docs`). 
+
+
+```{r eval=TRUE, echo=FALSE}
+library(rgee)
+gcs_l8_name  <- "l8demo2" # name of the image in GCS.
+BUCKET_NAME <- "rgee_examples" # set here your bucket name
+```
+
+
+```{r eval=TRUE}
+img_id <- sprintf("https://storage.googleapis.com/%s/%s.tif", BUCKET_NAME, gcs_l8_name)
+visParams <- list(bands=c("SR_B4","SR_B3","SR_B2"), min = 8000, max = 20000, nodata = 0)
+Map$centerObject(img_id)
+Map$addLayer(
+  eeObject = img_id, 
+  visParams = visParams,
+  name = "My_first_COG",
+  titiler_server = "https://api.cogeo.xyz/"
+)
+```
+
+If you prefer to use [titiler syntax](https://api.cogeo.xyz/docs), set the parameter 
+`titiler_viz_convert` as FALSE.
+
+
+```{r eval=TRUE}
+visParams <- list(expression = "B4,B3,B2", rescale = "8000, 20000", resampling_method = "cubic")
+Map$addLayer(
+  eeObject = img_id, 
+  visParams = visParams,
+  name = "My_first_COG",
+  titiler_server = "https://api.cogeo.xyz/",
+  titiler_viz_convert = FALSE
+)
+```
+
