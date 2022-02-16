@@ -145,6 +145,12 @@ ee_as_sf <- function(x,
   #check packages
   ee_check_packages("ee_as_sf", c("sf", "geojsonio"))
 
+
+  # Change low maxFeature values.
+  if (maxFeatures < 5000) {
+    maxFeatures <- 5000
+  }
+
   # Is  a geometry, feature, or fc?
   sp_eeobjects <- ee_get_spatial_objects('Table')
   if (!any(class(x) %in% sp_eeobjects)) {
