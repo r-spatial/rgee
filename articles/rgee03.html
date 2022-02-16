@@ -944,7 +944,7 @@
 <h2 id="use-forward-differencing-for-neighbors-in-time">
 <strong>Use forward differencing for neighbors in time</strong><a class="anchor" aria-label="anchor" href="#use-forward-differencing-for-neighbors-in-time"></a>
 </h2>
-<p>Suppose you have a temporally sorted <code>ImageCollection</code> (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use <code><a href="https://rdrr.io/pkg/reticulate/man/iterate.html" class="external-link">iterate()</a></code> for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:</p>
+<p>Suppose you have a temporally sorted <code>ImageCollection</code> (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use <code><a href="https://rstudio.github.io/reticulate/reference/iterate.html" class="external-link">iterate()</a></code> for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sentinel2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span>
 <span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.47555371521855</span>, <span class="fl">37.76884708376152</span><span class="op">)</span><span class="op">)</span>
@@ -1007,7 +1007,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
