@@ -386,7 +386,7 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
       },
       error = function(e) {
         message(e)
-        message("\nAn ERROR raised when rgee tries to create a GCS bucket.")
+        message("\nAn ERROR was raised when rgee tried to create a GCS bucket.")
         return(FALSE)
       }
     )
@@ -419,7 +419,7 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
       TRUE
     }, error = function(e) {
       message(e)
-      message("\nAn ERROR raised when rgee tries to write in your GCS bucket.")
+      message("\nAn ERROR was raised when rgee tried to write in your GCS bucket.")
       return(FALSE)
     }
   )
@@ -448,7 +448,7 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
       TRUE
     }, error = function(e) {
       message(e)
-      message("\nAn ERROR raised when rgee tries to read your GCS bucket.")
+      message("\nAn ERROR was raised when rgee tried to read your GCS bucket.")
       return(FALSE)
     }
   )
@@ -481,7 +481,7 @@ ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
       TRUE
     }, error = function(e) {
       message(e)
-      message("\nAn ERROR raised when rgee tries to sync GEE & GCS.")
+      message("\nAn ERROR was raised when rgee tried to sync GEE & GCS.")
       return(FALSE)
     }
   )
