@@ -145,12 +145,6 @@ ee_as_sf <- function(x,
   #check packages
   ee_check_packages("ee_as_sf", c("sf", "geojsonio"))
 
-
-  # Change low maxFeature values.
-  if (maxFeatures < 5000) {
-    maxFeatures <- 5000
-  }
-
   # Is  a geometry, feature, or fc?
   sp_eeobjects <- ee_get_spatial_objects('Table')
   if (!any(class(x) %in% sp_eeobjects)) {
@@ -286,8 +280,8 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
   # using getInfo).
   fc_size <- 5000
 
-  # If maxFeatures is greather than 5000 estimate the number of elements.
-  if (maxFeatures > 5000) {
+  # If maxFeatures is different than 5000 estimate the number of elements.
+  if (maxFeatures != 5000) {
     if (!quiet) {
       cat("Number of features: Calculating ...")
     }
