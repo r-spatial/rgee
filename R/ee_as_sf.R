@@ -290,7 +290,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
       ee$FeatureCollection$size() %>%
       ee$Number$getInfo()
     if (!quiet) {
-      cat(sprintf("\rNumber of features: %s \n", fc_size))
+      cat(sprintf("\rNumber of features: %s                     \n", fc_size))
     }
   }
 
