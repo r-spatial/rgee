@@ -4,7 +4,13 @@
 \alias{ee_monitoring}
 \title{Monitoring Earth Engine task progress}
 \usage{
-ee_monitoring(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE)
+ee_monitoring(
+  task,
+  task_time = 5,
+  eeTaskList = FALSE,
+  quiet = FALSE,
+  max_attempts = Inf
+)
 }
 \arguments{
 \item{task}{List generated after a task is started (i.e., after run
@@ -17,6 +23,8 @@ task started.}
 listed.}
 
 \item{quiet}{Logical. Suppress info message}
+
+\item{max_attempts}{Number of times to monitor the tasks before ending.}
 }
 \value{
 An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"

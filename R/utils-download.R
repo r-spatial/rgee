@@ -7,6 +7,7 @@
 #' @param eeTaskList Logical. If \code{TRUE}, all Earth Engine tasks will be
 #' listed.
 #' @param quiet Logical. Suppress info message
+#' @param max_attempts Number of times to monitor the tasks before ending.
 #' @return An \code{ee$batch$Task} object with a state "COMPLETED" or "FAILED"
 #' according to the Earth Engine server's response.
 #' @family helper functions
@@ -18,7 +19,7 @@
 #' ee_monitoring(eeTaskList = TRUE)
 #' }
 #' @export
-ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE) {
+ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE, max_attempts = Inf) {
   # if task is missing
   if (missing(task)) {
     all_task <- ee_utils_py_to_r(ee$batch$Task$list())
@@ -51,21 +52,24 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
   }
 
   # Start to monitoring the task ...
-  counter <- 0
+  counter_time <- 0
+  counter_attempts <- 1
   while (ee_utils_py_to_r(ee$batch$Task$active(task)) &
-         task[["state"]] != "CANCEL_REQUESTED") {
+         task[["state"]] != "CANCEL_REQUESTED" &
+         counter_attempts <= max_attempts) {
     if (!quiet) {
       cat(sprintf("Polling for task <id: %s, time: %ds>.\n",
-                  task[["id"]], counter))
+                  task[["id"]], counter_time))
     }
-    counter <- counter + task_time
+    counter_time <- counter_time + task_time
+    counter_attempts <- counter_attempts + 1
     Sys.sleep(task_time)
   }
   task_status <- ee_utils_py_to_r(ee$batch$Task$status(task))
   if (!quiet) {
     cat(sprintf("State: %s\n", task_status[["state"]]))
   }
-  if (task_status[["state"]] != "COMPLETED") {
+  if (task_status[["state"]] != "COMPLETED" && counter_attempts <= max_attempts) {
     message(
       "ERROR in Earth Engine servers: ",
       task_status[["error_message"]]
