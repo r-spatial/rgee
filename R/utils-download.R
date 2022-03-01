@@ -74,7 +74,7 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
       "ERROR in Earth Engine servers: ",
       task_status[["error_message"]]
     )
-    stop("ee_monitoring was forced to stop before getting results")
+    if(is.infinite(max_attempts)) stop("ee_monitoring was forced to stop before getting results")
   }
   invisible(task)
 }
