@@ -2,6 +2,7 @@
 % Please edit documentation in R/utils-download.R
 \name{ee_monitoring}
 \alias{ee_monitoring}
+\alias{ee_check_task_status}
 \title{Monitoring Earth Engine task progress}
 \usage{
 ee_monitoring(
@@ -11,6 +12,8 @@ ee_monitoring(
   quiet = FALSE,
   max_attempts = Inf
 )
+
+ee_check_task_status(task, quiet = FALSE)
 }
 \arguments{
 \item{task}{List generated after a task is started (i.e., after run

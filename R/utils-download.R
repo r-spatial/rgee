@@ -79,6 +79,13 @@ ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE
   invisible(task)
 }
 
+#' @rdname ee_monitoring
+#' @export
+ee_check_task_status <- function(task, quiet = FALSE) {
+  ee_monitoring(task, task_time = 1, eeTaskList = FALSE, quiet = quiet, max_attempts = 1)
+}
+
+
 #' Sort google drives files
 #' @noRd
 sort_drive_files <- function(drive_files, fileformat) {
