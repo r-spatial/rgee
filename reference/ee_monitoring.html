@@ -98,7 +98,15 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_monitoring</span><span class="op">(</span><span class="va">task</span>, task_time <span class="op">=</span> <span class="fl">5</span>, eeTaskList <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_monitoring</span><span class="op">(</span>
+  <span class="va">task</span>,
+  task_time <span class="op">=</span> <span class="fl">5</span>,
+  eeTaskList <span class="op">=</span> <span class="cn">FALSE</span>,
+  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
+  max_attempts <span class="op">=</span> <span class="cn">Inf</span>
+<span class="op">)</span>
+
+<span class="fu">ee_check_task_status</span><span class="op">(</span><span class="va">task</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,6 +122,8 @@ task started.</p></dd>
 listed.</p></dd>
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message</p></dd>
+<dt>max_attempts</dt>
+<dd><p>Number of times to monitor the tasks before ending.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
