@@ -31,7 +31,7 @@ saved into the file .Renviron."><meta property="og:image" content="https://r-spa
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-book"></span>
      
     Articles
@@ -103,9 +103,10 @@ saved into the file .Renviron.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_install_set_pyenv</span><span class="op">(</span>
-  py_path <span class="op">=</span> <span class="cn">NULL</span>,
+  <span class="va">py_path</span>,
   py_env <span class="op">=</span> <span class="cn">NULL</span>,
   Renviron <span class="op">=</span> <span class="st">"global"</span>,
+  confirm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span>,
   quiet <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -115,13 +116,16 @@ saved into the file .Renviron.</p>
     <dl><dt>py_path</dt>
 <dd><p>The path to a Python interpreter</p></dd>
 <dt>py_env</dt>
-<dd><p>The name of the environment</p></dd>
+<dd><p>The name of the conda or venv environment. If
+NULL, <code><a href="ee_install_upgrade.html">ee_install_upgrade</a></code> and <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">py_install</a></code> functions will not work.</p></dd>
 <dt>Renviron</dt>
 <dd><p>Character. If it is "global" the environment variables are set in
 the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
 it is "local" the environment variables are set in the .Renviron on the
 working directory (getwd()). Finally, users can also enter a specific path
 (see examples).</p></dd>
+<dt>confirm</dt>
+<dd><p>Logical. Confirm before restarting R?.</p></dd>
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message</p></dd>
 </dl></div>
@@ -140,8 +144,13 @@ working directory (getwd()). Finally, users can also enter a specific path
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## For macOS and Linux users</span></span>
 <span class="r-in"><span class="co"># ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")</span></span>
 <span class="r-in"><span class="co"># ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co">## For Window users</span></span>
+<span class="r-in"><span class="co"># ee_install_set_pyenv(py_path = "C:\Users\Ellen\Anaconda3\envs\rgee", py_env = "rgee")</span></span>
 <span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
