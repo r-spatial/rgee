@@ -285,12 +285,15 @@ ee_install <- function(py_env = "rgee",
 #' \dontrun{
 #' library(rgee)
 #'
-#' ## For macOS and Linux users
+`#' ## For macOS and Linux users
 #' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
 #' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
 #'
 #' ## For Window users
-#' # ee_install_set_pyenv(py_path = "C:\\Users\\Ellen\\Anaconda3\\envs\\rgee", py_env = "rgee")
+#' # ee_install_set_pyenv(
+#' #     py_path = "C://Users/Unicorn/Anaconda3/envs/rgee",
+#' #     py_env = "rgee"
+#' # )`
 #' }
 #' @export
 ee_install_set_pyenv <- function(py_path,
