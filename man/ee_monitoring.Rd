@@ -10,7 +10,7 @@ ee_monitoring(
   task_time = 5,
   eeTaskList = FALSE,
   quiet = FALSE,
-  max_attempts = Inf
+  max_attempts = 5
 )
 
 ee_check_task_status(task, quiet = FALSE)

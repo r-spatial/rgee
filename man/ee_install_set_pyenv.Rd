@@ -5,22 +5,26 @@
 \title{Configure which version of Python to use with rgee}
 \usage{
 ee_install_set_pyenv(
-  py_path = NULL,
+  py_path,
   py_env = NULL,
   Renviron = "global",
+  confirm = interactive(),
   quiet = FALSE
 )
 }
 \arguments{
 \item{py_path}{The path to a Python interpreter}
 
-\item{py_env}{The name of the environment}
+\item{py_env}{The name of the conda or venv environment. If
+NULL, \code{\link{ee_install_upgrade}} and \code{\link{py_install}} functions will not work.}
 
 \item{Renviron}{Character. If it is "global" the environment variables are set in
 the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
 it is "local" the environment variables are set in the .Renviron on the
 working directory (getwd()). Finally, users can also enter a specific path
 (see examples).}
+
+\item{confirm}{Logical. Confirm before restarting R?.}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -35,8 +39,13 @@ saved into the file .Renviron.
 \examples{
 \dontrun{
 library(rgee)
+
+## For macOS and Linux users
 # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
 # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+
+## For Window users
+# ee_install_set_pyenv(py_path = "C:\\Users\\Ellen\\Anaconda3\\envs\\rgee", py_env = "rgee")
 }
 }
 \seealso{

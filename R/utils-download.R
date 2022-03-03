@@ -19,7 +19,7 @@
 #' ee_monitoring(eeTaskList = TRUE)
 #' }
 #' @export
-ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE, max_attempts = Inf) {
+ee_monitoring <- function(task, task_time = 5, eeTaskList = FALSE, quiet = FALSE, max_attempts = 5) {
   # if task is missing
   if (missing(task)) {
     all_task <- ee_utils_py_to_r(ee$batch$Task$list())

@@ -184,7 +184,7 @@ ee_install <- function(py_env = "rgee",
   repeat {
     ch <- tolower(substring(response, 1, 1))
     if (ch == "y" || ch == "") {
-      renv <- ee_install_set_pyenv(py_path = py_path, py_env = py_env, quiet = TRUE)
+      renv <- ee_install_set_pyenv(py_path = py_path, py_env = py_env, confirm = 3, quiet = TRUE)
       message(
         "\n",
         paste(
@@ -242,9 +242,9 @@ ee_install <- function(py_env = "rgee",
     if (isTRUE(confirm)) {
       title <- paste(
         "",
-        bold("Well done! rgee was successfully set up in your system."),
-        "You need restart R to see changes. After doing that, we recommend",
-        "run ee_check() to perform a full check of all non-R rgee dependencies.",
+        bold("Well done! rgee has been successfully installed on your system."),
+        sprintf("You need restart R to see changes (%s). After that, we recommend", bold("Windows users must terminate R!")),
+        "running ee_check() to perform a full check of all non-R rgee dependencies.",
         "Do you want restart your R session?",
         sep = "\n"
       )
@@ -270,25 +270,33 @@ ee_install <- function(py_env = "rgee",
 #' saved into the file .Renviron.
 #'
 #' @param py_path The path to a Python interpreter
-#' @param py_env The name of the environment
+#' @param py_env The name of the conda or venv environment. If
+#' NULL, \code{\link{ee_install_upgrade}} and \code{\link{py_install}} functions will not work.
 #' @param Renviron Character. If it is "global" the environment variables are set in
 #' the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
 #' it is "local" the environment variables are set in the .Renviron on the
 #' working directory (getwd()). Finally, users can also enter a specific path
 #' (see examples).
 #' @param quiet Logical. Suppress info message
+#' @param confirm Logical. Confirm before restarting R?.
 #' @return no return value, called for setting EARTHENGINE_PYTHON in .Renviron
 #' @family ee_install functions
 #' @examples
 #' \dontrun{
 #' library(rgee)
+#'
+#' ## For macOS and Linux users
 #' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
 #' # ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+#'
+#' ## For Window users
+#' # ee_install_set_pyenv(py_path = "C:\\Users\\Ellen\\Anaconda3\\envs\\rgee", py_env = "rgee")
 #' }
 #' @export
-ee_install_set_pyenv <- function(py_path = NULL,
+ee_install_set_pyenv <- function(py_path,
                                  py_env = NULL,
                                  Renviron = "global",
+                                 confirm = interactive(),
                                  quiet = FALSE) {
   if (is.null(py_path) & is.null(py_env) ) {
     stop("Users must defined at least either py_path or py_env.")
@@ -359,6 +367,27 @@ ee_install_set_pyenv <- function(py_path = NULL,
         )
       )
     }
+  }
+
+
+  # Restart to see changes
+  if (rstudioapi::isAvailable()) {
+    # Restart to see changes
+    if (isTRUE(confirm)) {
+      title <- sprintf(
+        "Do you want restart your R session? %s",
+        bold("Windows users could need to terminate R instead of restarting.")
+      )
+      response <- menu(c("yes", "no"), title = title)
+    } else {
+      response <- confirm
+    }
+    switch(response + 1,
+           cat("Restart R session to see changes.\n"),
+           rstudioapi::restartSession(),
+           cat("Restart R session to see changes.\n"))
+  } else {
+    message("rgee needs to restart the R session to see changes.\n")
   }
   invisible(renv)
 }
