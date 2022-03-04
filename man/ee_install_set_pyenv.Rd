@@ -51,6 +51,12 @@ ee_install_set_pyenv(
   py_env = "rgee" # Change it for your own Python ENV
 )
 
+## For Anaconda users - MacOS users
+ee_install_set_pyenv(
+  py_path = "/Users/UNICORN/opt/anaconda3/bin/python",
+  py_env = "rgee" # Change it for your own Python ENV
+)
+
 ## For Miniconda users - Windows OS
 win_py_path = paste0(
   "C:/Users/UNICORN/AppData/Local/r-miniconda/envs/rgee/",
