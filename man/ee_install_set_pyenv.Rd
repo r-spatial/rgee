@@ -40,12 +40,55 @@ saved into the file .Renviron.
 \dontrun{
 library(rgee)
 
-## For macOS and Linux users
-# ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
-# ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+# IMPORTANT: Change 'py_path' argument according to your own Python PATH
+## For Anaconda users - Windows OS
+win_py_path = paste0(
+  "C:/Users/UNICORN/AppData/Local/Programs/Python/",
+  "Python37/python.exe"
+)
+ee_install_set_pyenv(
+  py_path = win_py_path,
+  py_env = "rgee" # Change it for your own Python ENV
+)
 
-## For Window users
-# ee_install_set_pyenv(py_path = "C:\\Users\\Ellen\\Anaconda3\\envs\\rgee", py_env = "rgee")
+## For Miniconda users - Windows OS
+win_py_path = paste0(
+  "C:/Users/UNICORN/AppData/Local/r-miniconda/envs/rgee/",
+  "python.exe"
+)
+ee_install_set_pyenv(
+  py_path = win_py_path,
+  py_env = "rgee" # Change it for your own Python ENV
+)
+
+## For Miniconda users - Linux/MacOS users
+unix_py_path = paste0(
+  "/home/UNICORN/.local/share/r-miniconda/envs/",
+  "rgee/bin/python3"
+)
+ee_install_set_pyenv(
+  py_path = unix_py_path,
+  py_env = "rgee" # Change it for your own Python ENV
+)
+
+## For virtualenv users - Linux/MacOS users
+ee_install_set_pyenv(
+  py_path = "/home/UNICORN/.virtualenvs/rgee/bin/python",
+  py_env = "rgee" # Change it for your own Python ENV
+)
+
+## For Python root user - Linux/MacOS users
+ee_install_set_pyenv(
+  py_path = "/usr/bin/python3",
+  py_env = NULL,
+  Renviron = "global" # Save ENV variables in the global .Renv file
+)
+
+ee_install_set_pyenv(
+  py_path = "/usr/bin/python3",
+  py_env = NULL,
+  Renviron = "local" # Save ENV variables in a local .Renv file
+)
 }
 }
 \seealso{
