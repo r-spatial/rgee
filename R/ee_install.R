@@ -663,7 +663,7 @@ ee_install_set_pyenv_env <- function(py_env, py_path, renv, quiet) {
         "The use of a Python environment is",
         bold("mandatory.")
       )
-      stop(stop_message)
+      warning(stop_message)
     } else {
 
       text_msg <- paste(
