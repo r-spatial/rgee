@@ -11,16 +11,9 @@
 ^docs$
 ^pkgdown$
 ^revdep$
-^inst\tests
 ^paper
 ^revdep$
-^vignettes\considerations.Rmd
-^vignettes\setup.Rmd
-^vignettes\BestPractices.Rmd
-^vignettes\thumb_down.png
-^vignettes\thumb_up.png
-^vignettes\vig_4.drawio
-^vignettes\vig_4.png
+^vignettes/vig_4\.drawio
 ^test\credentials
 ^doc$
 ^Meta$
