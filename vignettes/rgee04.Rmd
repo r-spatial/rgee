@@ -13,23 +13,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-<link rel="preconnect" href="https://fonts.gstatic.com"> <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-```{=html}
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
-```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
@@ -43,7 +26,7 @@ An EEtk is a 100-character text string (OAuth2 credential) stored on your local 
 <br>
 
 <center>
-<img src="vig_4.png" width="80%"/>
+<img src="images/r4_01.png" width="80%"/>
 </center>
 
 <br>

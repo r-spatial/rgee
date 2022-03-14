@@ -1,6 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README.md
+^CITATION.cff
 ^CONTRIBUTING.md
 ^CODE_OF_CONDUCT.md
 ^LICENSE.md

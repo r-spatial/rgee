@@ -22,6 +22,12 @@ no return value, called to upgrade the earthengine-api Python package
 \description{
 Upgrade the Earth Engine Python API
 }
+\examples{
+\dontrun{
+library(rgee)
+# ee_install_upgrade()
+}
+}
 \seealso{
 Other ee_install functions: 
 \code{\link{ee_install_set_pyenv}()},

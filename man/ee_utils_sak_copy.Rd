@@ -25,11 +25,11 @@ library(rgee)
 
 ee_Initialize()
 
-sakfile <- "/home/rgee_dev/sak_file.json"
-# Copy sakfile to the users 'csaybar' and 'ndef'
-ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
+# sakfile <- "/home/rgee_dev/sak_file.json"
+## Copy sakfile to the users 'csaybar' and 'ndef'
+# ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
 
-# Copy the sakfile of the user1 to the user2 and user3.
-ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))
+# # Copy the sakfile of the user1 to the user2 and user3.
+# ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))
 }
 }

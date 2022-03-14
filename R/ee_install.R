@@ -6,34 +6,33 @@
 #'  \item{1. }{If you do not count with a Python environment, it will display
 #'  an interactive menu to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 #'  (a free minimal installer for conda).}
-#'  \item{2. }{Remove the previous Python environment defined in \code{py_env} if
-#'  it exist.}
-#'  \item{3. }{Create a new Python environment (See \code{py_env}).}
-#'  \item{4. }{ Set the environment variable EARTHENGINE_PYTHON. It is used to
-#'  define RETICULATE_PYTHON when the library is loaded. See this
+#'  \item{2. }{If it exists,  delete the previous Python environment specified in
+#'  the \code{py_env} argument.}
+#'  \item{3. }{Create a new Python environment (See \code{py_env}) argument.}
+#'  \item{4. }{Set the environment variable EARTHENGINE_PYTHON and EARTHENGINE_ENV.
+#'  It is used to define RETICULATE_PYTHON when the library is loaded. See this
 #'  \href{https://rstudio.github.io/reticulate/articles/versions.html}{article}
-#'  for further details.
-#'  }
-#'  \item{5. }{Install rgee Python dependencies. Using
-#'  \code{reticulate::py_install}.}
-#'  \item{6. }{Interactive menu to confirm if restart the R session to see
-#'  changes.}
+#'  for further details.}
+#'  \item{5. }{Install rgee Python dependencies. Using \code{reticulate::py_install}.}
+#'  \item{6. }{Interactive menu to confirm if restart the R session to see changes.}
 #' }
 #'
 #' @param py_env Character. The name, or full path, of the Python environment
 #' to be used by rgee.
 #' @param earthengine_version Character. The Earth Engine Python API version
 #' to install. By default \code{rgee::ee_version()}.
-#' @param python_version Only windows users. The version of Python to be used in
-#' this conda environment. The associated Python package from conda will be requested
-#' as python={python_version}. When NULL, the default python package will be
+#' @param python_version Only windows users. The Python version to be used in
+#' this conda environment. When NULL, the default python package will be
 #' used instead. For example, use python_version = "3.6" to request that the
-#' conda environment be created with a copy of Python 3.6. This argument will be
-#' ignored if python is specified as part of the packages argument, for backwards
-#' compatibility.
+#' conda environment be created with a copy of Python 3.6.
 #' @param confirm Logical. Confirm before restarting R?.
 #' @return No return value, called for installing non-R dependencies.
 #' @family ee_install functions
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' # ee_install()
+#' }
 #' @export
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
@@ -263,11 +262,14 @@ ee_install <- function(py_env = "rgee",
 }
 
 
-#' Configure which version of Python to use with rgee
+#' Specify a Python environment for rgee
 #'
-#' Configure which version of Python to use with rgee. This function creates two
-#' environment variables: 'EARTHENGINE_PYTHON' and 'EARTHENGINE_ENV' both will be
-#' saved into the file .Renviron.
+#' Specify a Python environment to use with rgee. This function creates
+#' a .Renviron file that contains two environmental variables: 'EARTHENGINE PYTHON'
+#' and 'EARTHENGINE ENV'. If an .Renviron file is already in use, \code{ee_install_set_pyenv} will
+#' append the two previous environmental variables to the end of the file. If the prior two
+#' environmental variables were previously set, \code{ee_install_set_pyenv} will simply overwrite them.
+#' See details to get more information.
 #'
 #' @param py_path The path to a Python interpreter
 #' @param py_env The name of the conda or venv environment. If
@@ -277,6 +279,15 @@ ee_install <- function(py_env = "rgee",
 #' it is "local" the environment variables are set in the .Renviron on the
 #' working directory (getwd()). Finally, users can also enter a specific path
 #' (see examples).
+#'
+#' @details
+#'
+#' The 'EARTHENGINE_PYTHON' set the Python interpreter path to use with rgee.
+#' In the other hand, the 'EARTHENGINE ENV' set the Python environment name. Both
+#' variables are storage in an .Renviron file. See \code{\link{Startup}} documentation to
+#' get more information about startup files in R.
+#'
+#'
 #' @param quiet Logical. Suppress info message
 #' @param confirm Logical. Confirm before restarting R?.
 #' @return no return value, called for setting EARTHENGINE_PYTHON in .Renviron
@@ -285,61 +296,62 @@ ee_install <- function(py_env = "rgee",
 #' \dontrun{
 #' library(rgee)
 #'
-#' # IMPORTANT: Change 'py_path' argument according to your own Python PATH
+#' ## IMPORTANT: Change 'py_path' argument according to your own Python PATH
 #' ## For Anaconda users - Windows OS
-#' win_py_path = paste0(
-#'   "C:/Users/UNICORN/AppData/Local/Programs/Python/",
-#'   "Python37/python.exe"
-#' )
-#' ee_install_set_pyenv(
-#'   py_path = win_py_path,
-#'   py_env = "rgee" # Change it for your own Python ENV
-#' )
+#' ## OBS: Anaconda Python PATH can vary, run “where anaconda” in console.
+#' # win_py_path = paste0(
+#' #    "C:/Users/UNICORN/AppData/Local/Programs/Python/",
+#' #    "Python37/python.exe"
+#' # )
+#' # ee_install_set_pyenv(
+#' #   py_path = win_py_path,
+#' #   py_env = "rgee" # Change it for your own Python ENV
+#' # )
 #'
 #' ## For Anaconda users - MacOS users
-#' ee_install_set_pyenv(
-#'   py_path = "/Users/UNICORN/opt/anaconda3/bin/python",
-#'   py_env = "rgee" # Change it for your own Python ENV
-#' )
-#'
+#' # ee_install_set_pyenv(
+#' #   py_path = "/Users/UNICORN/opt/anaconda3/bin/python",
+#' #   py_env = "rgee" # Change it for your own Python ENV
+#' # )
+#' #
 #' ## For Miniconda users - Windows OS
-#' win_py_path = paste0(
-#'   "C:/Users/UNICORN/AppData/Local/r-miniconda/envs/rgee/",
-#'   "python.exe"
-#' )
-#' ee_install_set_pyenv(
-#'   py_path = win_py_path,
-#'   py_env = "rgee" # Change it for your own Python ENV
-#' )
+#' # win_py_path = paste0(
+#' #   "C:/Users/UNICORN/AppData/Local/r-miniconda/envs/rgee/",
+#' #   "python.exe"
+#' # )
+#' # ee_install_set_pyenv(
+#' #   py_path = win_py_path,
+#' #   py_env = "rgee" # Change it for your own Python ENV
+#' # )
 #'
 #' ## For Miniconda users - Linux/MacOS users
-#' unix_py_path = paste0(
-#'   "/home/UNICORN/.local/share/r-miniconda/envs/",
-#'   "rgee/bin/python3"
-#' )
-#' ee_install_set_pyenv(
-#'   py_path = unix_py_path,
-#'   py_env = "rgee" # Change it for your own Python ENV
-#' )
+#' # unix_py_path = paste0(
+#' #   "/home/UNICORN/.local/share/r-miniconda/envs/",
+#' #   "rgee/bin/python3"
+#' # )
+#' # ee_install_set_pyenv(
+#' #   py_path = unix_py_path,
+#' #   py_env = "rgee" # Change it for your own Python ENV
+#' # )
 #'
 #' ## For virtualenv users - Linux/MacOS users
-#' ee_install_set_pyenv(
-#'   py_path = "/home/UNICORN/.virtualenvs/rgee/bin/python",
-#'   py_env = "rgee" # Change it for your own Python ENV
-#' )
+#' # ee_install_set_pyenv(
+#' #   py_path = "/home/UNICORN/.virtualenvs/rgee/bin/python",
+#' #   py_env = "rgee" # Change it for your own Python ENV
+#' # )
 #'
 #' ## For Python root user - Linux/MacOS users
-#' ee_install_set_pyenv(
-#'   py_path = "/usr/bin/python3",
-#'   py_env = NULL,
-#'   Renviron = "global" # Save ENV variables in the global .Renv file
-#' )
+#' # ee_install_set_pyenv(
+#' #   py_path = "/usr/bin/python3",
+#' #   py_env = NULL,
+#' #   Renviron = "global" # Save ENV variables in the global .Renv file
+#' # )
 #'
-#' ee_install_set_pyenv(
-#'   py_path = "/usr/bin/python3",
-#'   py_env = NULL,
-#'   Renviron = "local" # Save ENV variables in a local .Renv file
-#' )
+#' # ee_install_set_pyenv(
+#' #   py_path = "/usr/bin/python3",
+#' #   py_env = NULL,
+#' #   Renviron = "local" # Save ENV variables in a local .Renv file
+#' # )
 #' }
 #' @export
 ee_install_set_pyenv <- function(py_path,
@@ -535,6 +547,11 @@ is_windows <- function() {
 #' @param earthengine_env Character. The name, or full path, of the
 #' environment in which the earthengine-api packages are to be installed.
 #' @return no return value, called to upgrade the earthengine-api Python package
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' # ee_install_upgrade()
+#' }
 #' @family ee_install functions
 #' @export
 ee_install_upgrade <- function(version = NULL,

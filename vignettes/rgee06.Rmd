@@ -13,23 +13,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-<link rel="preconnect" href="https://fonts.gstatic.com"> <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-```{=html}
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
-```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
@@ -50,7 +33,7 @@ Map$addLayer(log1p(img), list(min = 0, max = 7))
 
 <br>
 <center>
-<img src=https://user-images.githubusercontent.com/16768318/146937907-17ba9a1c-c37d-4de1-9c61-5c7ee2d18aab.png>
+<img src="images/r6_01.png">
 </center>
 <br>
 
@@ -62,7 +45,7 @@ Instead of using GEE API for creating interactive maps, we will use [**titiler**
 
 <br>
 <center>
-<img src=https://user-images.githubusercontent.com/10407788/98711823-7f4de080-2353-11eb-9c8a-8a46550651ae.png>
+<img src="images/r6_02.png">
 </center>
 <br>
 

@@ -11,14 +11,21 @@ vignette: >
   %\VignetteIndexEntry{NEWS}
   %\VignetteEncoding{UTF-8}
 ---
-# rgee 1.1.2.9000
 
+# rgee 1.1.3
+
+- Fixed a bug in ee_as_sf  (@MatthieuStigler).
+- New function ee_check_task_status added.
+- ee_monitoring new argument max_attempts (@MatthieuStigler)
+- Fixed a minor bug in ee_install_set_pyenv when users use Anaconda.
 - Better `Map$addLayer` support to COG.
-- predefinedAcl='bucketLevel' is set as deault in stars_as_ee, sf_as_ee, raster_as_ee, and local_to_gcs.
+- predefinedAcl='bucketLevel' is set as default in stars_as_ee, sf_as_ee, raster_as_ee, and local_to_gcs.
 - ee_utils_sak_validate and ee_utils_sak_copy added to ee_utils.R
 - vignette to describe Shiny & rgee sync is added.
 - vignette that describe how to set up a SaK.
 - vignette that describe how to integrate rgee and markdown.
+- Function documentation upgraded.
+- CITATION.cff added.
 
 
 # rgee 1.1.2
