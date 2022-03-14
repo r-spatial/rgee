@@ -4,17 +4,15 @@ ee_install realize the following six (6) tasks:
 1. If you do not count with a Python environment, it will display
 an interactive menu to install Miniconda
 (a free minimal installer for conda).
-2. Remove the previous Python environment defined in py_env if
-it exist.
-3. Create a new Python environment (See py_env).
-4.  Set the environment variable EARTHENGINE_PYTHON. It is used to
-define RETICULATE_PYTHON when the library is loaded. See this
+2. If it exists,  delete the previous Python environment specified in
+the py_env argument.
+3. Create a new Python environment (See py_env) argument.
+4. Set the environment variable EARTHENGINE_PYTHON and EARTHENGINE_ENV.
+It is used to define RETICULATE_PYTHON when the library is loaded. See this
 article
 for further details.
-5. Install rgee Python dependencies. Using
-reticulate::py_install.
-6. Interactive menu to confirm if restart the R session to see
-changes.
+5. Install rgee Python dependencies. Using reticulate::py_install.
+6. Interactive menu to confirm if restart the R session to see changes.
 
 "><meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -34,7 +32,7 @@ changes.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -115,17 +113,15 @@ changes.
 <code>ee_install</code> realize the following six (6) tasks:</p><ul><li><p>1. If you do not count with a Python environment, it will display
 an interactive menu to install <a href="https://docs.conda.io/en/latest/miniconda.html" class="external-link">Miniconda</a>
 (a free minimal installer for conda).</p></li>
-<li><p>2. Remove the previous Python environment defined in <code>py_env</code> if
-it exist.</p></li>
-<li><p>3. Create a new Python environment (See <code>py_env</code>).</p></li>
-<li><p>4.  Set the environment variable EARTHENGINE_PYTHON. It is used to
-define RETICULATE_PYTHON when the library is loaded. See this
+<li><p>2. If it exists,  delete the previous Python environment specified in
+the <code>py_env</code> argument.</p></li>
+<li><p>3. Create a new Python environment (See <code>py_env</code>) argument.</p></li>
+<li><p>4. Set the environment variable EARTHENGINE_PYTHON and EARTHENGINE_ENV.
+It is used to define RETICULATE_PYTHON when the library is loaded. See this
 <a href="https://rstudio.github.io/reticulate/articles/versions.html" class="external-link">article</a>
 for further details.</p></li>
-<li><p>5. Install rgee Python dependencies. Using
-<code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install</a></code>.</p></li>
-<li><p>6. Interactive menu to confirm if restart the R session to see
-changes.</p></li>
+<li><p>5. Install rgee Python dependencies. Using <code><a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link">reticulate::py_install</a></code>.</p></li>
+<li><p>6. Interactive menu to confirm if restart the R session to see changes.</p></li>
 </ul></div>
 
     <div id="ref-usage">
@@ -146,13 +142,10 @@ to be used by rgee.</p></dd>
 <dd><p>Character. The Earth Engine Python API version
 to install. By default <code><a href="ee_version.html">rgee::ee_version()</a></code>.</p></dd>
 <dt>python_version</dt>
-<dd><p>Only windows users. The version of Python to be used in
-this conda environment. The associated Python package from conda will be requested
-as python=python_version. When NULL, the default python package will be
+<dd><p>Only windows users. The Python version to be used in
+this conda environment. When NULL, the default python package will be
 used instead. For example, use python_version = "3.6" to request that the
-conda environment be created with a copy of Python 3.6. This argument will be
-ignored if python is specified as part of the packages argument, for backwards
-compatibility.</p></dd>
+conda environment be created with a copy of Python 3.6.</p></dd>
 <dt>confirm</dt>
 <dd><p>Logical. Confirm before restarting R?.</p></dd>
 </dl></div>
@@ -167,6 +160,14 @@ compatibility.</p></dd>
 <code><a href="ee_install_upgrade.html">ee_install_upgrade</a>()</code></p></div>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="co"># ee_install()</span></span>
+<span class="r-in"><span class="op">}</span></span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

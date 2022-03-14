@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -130,20 +130,6 @@
 
     
     
-<p><link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"></p>
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
 <p>Google Earth Engine (GEE) allows users to create apps by three different approaches: <strong>user tokens</strong>, <a href="https://developers.google.com/earth-engine/guides/service_account" class="external-link">service accounts</a> and <a href="https://github.com/google/earthengine-api/tree/master/demos/client-auth" class="external-link">client-side authentication</a>. In this tutorial, we will get focus on the first option.</p>
 <div class="section level2">
 <h2 id="what-is-an-ee-user-token-eetk">
@@ -152,7 +138,7 @@
 <p>An EEtk is a 100-character text string (OAuth2 credential) stored on your local system that is used to identify and authenticate users (See Figure below). In other words, it will permit to connect the EE Web REST API with their local system.</p>
 <p><br></p>
 <center>
-<img src="vig_4.png" width="80%">
+<img src="images/r4_01.png" width="80%">
 </center>
 <p><br></p>
 <p>In <strong>rgee</strong> the authentication procedure is triggered internally by <a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html"><strong>ee_Initialize</strong></a>. This <a href="https://github.com/google/earthengine-api/blob/b4c068924b1c7574ee717761cb9fe0499a3b932b/python/ee/data.py#L210%60" class="external-link">function</a> will search for the ‘<strong><em>credentials</em></strong>’ file (it stores the EEtk) on the path: <strong>~/.config/earthengine/</strong>.</p>

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -130,23 +130,9 @@
 
     
     
-<p><link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet"></p>
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
 <p><em>Google Cloud Platform may slightly change its website. If this occurs, help us by informing at <a href="https://github.com/r-spatial/rgee/issues/new" class="external-link">rgee issues</a>. Based on <a href="https://bookdown.org/hegghammer/interacting_with_google_storage_in_r/interacting_with_google_storage.html" class="external-link">Interacting with Google Storage in R</a> by <a href="https://github.com/Hegghammer" class="external-link">Thomas Hegghammer</a>.</em></p>
 <p>This tutorial explains how to integrate rgee and Google Cloud Storage (GCS) step by step. In rgee, GCS is used as an <strong>intermediary container</strong> for massive downloading/uploading of files which is more flexible than Google Drive. At today’s date (December 2021), GCS is free for <a href="https://cloud.google.com/artifact-registry/pricing" class="external-link">uses of less than 0.5 GB</a>.</p>
-<p><img src="https://user-images.githubusercontent.com/16768318/146637221-f0c7d9c1-d779-47e1-8de2-14fd902df320.png"></p>
+<p><img src="images/r5_01.png"></p>
 <div class="section level2">
 <h2 id="create-a-service-account-key">
 <strong>Create a Service Account Key</strong><a class="anchor" aria-label="anchor" href="#create-a-service-account-key"></a>
@@ -158,7 +144,7 @@
 </h4>
 <p>Go to <a href="https://cloud.google.com/" class="external-link uri">https://cloud.google.com/</a>, and create an account. You will have to add your address and a credit card.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146672237-ff02d553-5d0c-4297-99ba-583522b6056f.png">
+<img src="images/r5_02.png">
 </center>
 <p><br></p>
 </div>
@@ -168,31 +154,31 @@
 </h4>
 <p>Go to console.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146672301-f117b742-f2ee-4057-8927-ecb6e99ef5c9.png">
+<img src="images/r5_03.png">
 </center>
 <p><br></p>
 <p>If it is your first time using GCP, you are assigned a project named <strong><em>My first project</em></strong>. If you want to create a new project (<strong>OPTIONAL</strong>). First, click on ‘My first project’ in the top blue bar, just to the right of ‘Google Cloud Platform’, and then ‘<strong>NEW PROJECT</strong>’.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146672770-4ace34e3-cae8-4157-8127-221f7248e4d2.png">
+<img src="images/r5_04.png">
 </center>
 <p><br></p>
 <p>Create a project with the desired name.</p>
 <center>
-<img src="https://user-images.githubusercontent.com/16768318/146675593-7646d367-e0dc-4eac-b84e-0362f6c57c5f.png">
+<img src="images/r5_05.png">
 </center>
 </div>
 <div class="section level4">
 <h4 id="activate-gcs-api">
-<strong>3: Activate GCS API</strong><a class="anchor" aria-label="anchor" href="#activate-gcs-api"></a>
+<strong>3. Activate GCS API</strong><a class="anchor" aria-label="anchor" href="#activate-gcs-api"></a>
 </h4>
 <p>By default, the GCS API is activated. Make sure of it by typing “Cloud Storage API” in the search browser.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146641268-da151477-e993-4614-ad5c-e09129f673dd.png">
+<img src="images/r5_06.png">
 </center>
 <p><br></p>
 <p>Click on ‘Enable APIs and Services’ (if the API is turned off). A green checkmark as the image below means that the API is activated!</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146673009-ec91a12b-ecba-4e4a-80a9-6925fa939903.png">
+<img src="images/r5_07.png">
 </center>
 <p><br></p>
 </div>
@@ -202,27 +188,27 @@
 </h4>
 <p>Now we are going to create a <a href="https://cloud.google.com/iam/docs/service-accounts" class="external-link"><strong>service account</strong></a>. A service account is used to ‘sign in’ applications that require one or many GCP services. In our case, <strong>rgee</strong> (the app) needs an account with <strong>GCS admin privileges</strong>. To create a service account, search for ‘Cloud Storage’ in the browser, and click on ‘Cloud Storage’ product.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146641879-71809544-e171-4ea2-8509-0b58a602b119.png">
+<img src="images/r5_08.png">
 </center>
 <p><br></p>
 <p>Click on ‘settings’.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146642118-51c496c9-f03e-4784-aaf9-6124da880123.png">
+<img src="images/r5_09.png">
 </center>
 <p><br></p>
 <p>Click on ‘INTEROPERABILITY’, and then click on ‘CREATE A KEY FOR A SERVICE ACCOUNT’.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146642177-bb8329c5-4a08-4da3-af60-14f5fab23a4c.png">
+<img src="images/r5_10.png">
 </center>
 <p><br></p>
 <p>Click on ‘CREATE NEW ACCOUNT’.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146642293-886c4e18-2f00-4e16-ac7c-9f607582d1e2.png">
+<img src="images/r5_11.png">
 </center>
 <p><br></p>
 <p>Set a name (1), and define <strong>Storage Admin</strong> (<strong>DON’T FORGET THIS STEP!!</strong>) in role (3).</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146642396-6b0b4e5f-4147-4229-b3f3-98830785d64d.png">
+<img src="images/r5_12.png">
 </center>
 <p><br></p>
 </div>
@@ -232,20 +218,20 @@
 </h4>
 <p>Once create the service account, we have to download the <strong>S</strong>ervice <strong>a</strong>ccount <strong>K</strong>ey to use GCS outside the Google Cloud Platform console. A SaK is just a JSON file with your public/private RSA keys. First, click the small edit icon on the bottom right (three horizontal lines). Then, go to API &amp; Services and click on <strong>credentials</strong>.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146674751-b9733151-00e7-411c-8422-e500f8deaf19.png">
+<img src="images/r5_13.png">
 </center>
 <p><br></p>
 <p>On the next page, click on the service account name.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/24624959/146643392-308cc7e8-127d-4566-86d2-a5554729edba.png">
+<img src="images/r5_14.png">
 </center>
 click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <center>
-<img src="https://user-images.githubusercontent.com/24624959/146643435-18ac2316-2b61-40a2-9f1a-c470df2ce071.png">
+<img src="images/r5_15.png">
 </center>
 <p><br> Then, select JSON format, and click ‘create’. <br></p>
 <center>
-<img src="https://user-images.githubusercontent.com/24624959/146643466-5bf5b7a7-6953-4520-9c23-ae453931a59d.png">
+<img src="images/r5_16.png">
 </center>
 <p><br></p>
 <p>This should prompt a save file window. Save the file to your hard drive. You can change the name to something more memorable if you like (<strong>but keep the “.json” extension</strong>). Also, please take note of where you stored it. Now we are done in the Google Cloud Console and can finally start working in RStudio.</p>
@@ -295,15 +281,15 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <p>This is a <a href="https://github.com/cloudyr/googleCloudStorageR/issues/111" class="external-link">common issue</a> related to the control access of buckets. GCS offers two systems for granting users permission to access your buckets and objects: <a href="https://cloud.google.com/storage/docs/access-control/iam" class="external-link">IAM</a> (recommended, used in all Google Cloud services) and <a href="https://cloud.google.com/storage/docs/access-control/lists" class="external-link">Access Control Lists (ACL)</a> (legacy access control system, only available in GCS).</p>
 <p>If you use the Google Cloud Platform console to create a bucket, it will use <strong>Uniform access</strong> (<strong>IAM is used alone to manage permissions</strong>) by default.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146841722-6da1a14a-8203-4ad8-83bb-6903730a3efe.png">
+<img src="images/r5_17.png">
 </center>
 <center>
-<img src="https://user-images.githubusercontent.com/16768318/146684785-a82ae364-bf77-48e8-8b36-974e73792453.png">
+<img src="images/r5_18.png">
 </center>
 <p><br></p>
 <p>On the contrary if you use <a href="https://code.markedmondson.me/googleCloudStorageR/reference/gcs_create_bucket.html" class="external-link"><code>googleCloudStorageR::gcs_create_bucket</code></a>, it will use fine-grained access (<strong>IAM and ACLs to manage permissions</strong>).</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146684836-e38a3414-d6b6-441d-becc-b2697df8d4d1.png">
+<img src="images/r5_19.png">
 </center>
 <p><br></p>
 <p>Why is this important?. It is important, because if you create a bucket using the first option an error message will arise: <strong>“Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at <a href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" class="external-link uri">https://cloud.google.com/storage/docs/uniform-bucket-level-access</a>”</strong>.</p>
@@ -335,7 +321,7 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 </h2>
 <p>This error arises when GEE tries to send an exported task results but your <strong>EE USER</strong> does not have enough privileges to write/read the bucket. <strong>Why does this occur if I have successfully configured my SaK in my local system?</strong>. Well, the SaK ensures a smooth connection between your local environment and GCS, but <strong>not between GEE and GCS</strong>.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146687641-dc28511e-2ca3-4c45-a1d8-50ba01bbb64d.png">
+<img src="images/r5_20.png">
 </center>
 <p><br></p>
 <p>For instance, imagine that you have access to 2 Google user accounts, one personal and one for your work (in this example, we will call them David and Cesar). Both accounts have access to GEE. David creates a SaK and sends it to Cesar. As a result of this action, both Cesar and David can work together in the same bucket, downloading and creating GCS objects (Local &lt;-&gt; GCS). If David tries to use <code>ee_as_raster(..., via='gcs')</code> (from GEE -&gt; GCS -&gt; Local), GEE will recognize that the owner of the bucket is David so it will allow the procedure (GEE -&gt; GCS) and thanks to the SaK there will be no problem to send the information to his local environment (GCS -&gt; Local). However, if Cesar tries to do the same, it will get an error when passing the information from GEE -&gt; GCS because <strong>GEE does not know that Cesar has David SaK in their local system</strong>.</p>
@@ -368,15 +354,15 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <span class="co"># ERROR in Earth Engine servers: Unable to write to bucket demo_0001 (permission denied).</span></code></pre></div>
 <p>This error is quite easy to fix. Just go to the bucket in your Google Cloud Platform console.</p>
 <br><center>
-<img src="https://user-images.githubusercontent.com/16768318/146689541-4c3bf4af-ae0f-417b-b1e8-49950f617d36.png">
+<img src="images/r5_21.png">
 </center>
 <p>Click on ‘PERMISSIONS’, and click on ‘ADD’.</p>
 <center>
-<img src="https://user-images.githubusercontent.com/16768318/146689562-6b115a25-a6f5-4f13-840d-10f88df3424e.png">
+<img src="images/r5_22.png">
 </center>
 <p>Finally, add the Google user account of the <strong>EE USER</strong>. <strong>Do not forget to add ‘STORAGE ADMIN’ in the role!</strong></p>
 <center>
-<img src="https://user-images.githubusercontent.com/16768318/146689576-03b4af8f-e8a8-4506-9c77-b8e06b338ae3.png">
+<img src="images/r5_23.png">
 </center>
 <p><br></p>
 </div>
@@ -384,7 +370,7 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <h2 id="conclusion">
 <strong>Conclusion</strong><a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having problems setting up your SaK, feel free to clearly detail your problem in <a href="https://github.com/r-spatial/rgee/issues" class="external-link">rgee isues</a>.</p>
+<p>Setting up a SaK for GCS can be quite frustrating but it is definitely worth it!. If you are still having problems setting up your SaK, feel free to clearly detail your problem in <a href="https://github.com/r-spatial/rgee/issues" class="external-link">rgee issues</a>.</p>
 </div>
   </div>
 

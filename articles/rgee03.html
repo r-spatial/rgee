@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>**Best Practices** • rgee</title>
+<title>Best Practices • rgee</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="**Best Practices**">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Best Practices">
 <meta property="og:description" content="rgee">
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
       </header><script src="rgee03_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip><strong>Best Practices</strong></h1>
+      <h1 data-toc-skip>Best Practices</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/r-spatial/rgee/blob/HEAD/vignettes/rgee03.Rmd" class="external-link"><code>vignettes/rgee03.Rmd</code></a></small>
@@ -130,21 +130,6 @@
 
     
     
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
 <p><strong>Adapted from <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">Google Earth Engine Documentation</a>.</strong></p>
 <p>This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations.</p>
 <div class="section level2">
@@ -153,7 +138,7 @@
 </h2>
 <p>Earth Engine server objects are objects with constructors that start with <code>ee</code> (e.g. ee$Image, ee$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).</p>
 <p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">here</a>. See <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Won't work.</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
@@ -161,7 +146,7 @@
 <span class="op">}</span></code></pre></div>
 <p>Can you spot the error? Note that <code>table$size()</code> is a server method on a server object and can not be used with client-side functionality such as the <code>seq_len</code> function.</p>
 <p>A situation in which you may want to use for-loops is with to display results with <code>Map</code>, since the Map object and methods are client-side.</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use client functions for display Earth Engine spatial objects.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use client functions for display Earth Engine spatial objects.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8_ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span>
   <span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_%s"</span>,
@@ -177,7 +162,7 @@
 <span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">ee_l8</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="st">'+'</span>, <span class="va">display_l8ts</span><span class="op">)</span></code></pre></div>
 <p>Conversely, <code>map()</code> is a server function and client functionality won’t work inside the function passed to map(). For example:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>
 
@@ -186,7 +171,7 @@
   <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>; <span class="co"># Can't use a client function here.</span>
   <span class="co"># Can't Export, either.</span>
 <span class="op">}</span><span class="op">)</span></code></pre></div>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code>map()</code> <code>set()</code>.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code>map()</code> <code>set()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>
 
@@ -203,7 +188,7 @@
 <strong>Avoid converting to list unnecessarily</strong><a class="anchor" aria-label="anchor" href="#avoid-converting-to-list-unnecessarily"></a>
 </h2>
 <p>Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a <code>List</code> or <code>Array</code> type. Unless you need random access to collection elements (i.e. you need to get the i’th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t convert to list unnecessarily!</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t convert to list unnecessarily!</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>;
 
@@ -211,7 +196,7 @@
 <span class="va">list</span> <span class="op">&lt;-</span> <span class="va">table</span><span class="op">$</span><span class="fu">toList</span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">list</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="fl">13</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># User memory limit exceeded.</span></code></pre></div>
 <p>Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Niger'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Note that you should <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">use filters as early as possible in your analysis</a>.</p>
@@ -221,7 +206,7 @@
 <strong>Avoid ee.Algorithms.If()</strong><a class="anchor" aria-label="anchor" href="#avoid-ee-algorithms-if"></a>
 </h2>
 <p>Do not use <code>ee.Algorithms.If()</code> to implement branching logic, especially in a mapped function. As the following example illustrates, <code>ee.Algorithms.If()</code> can be memory intensive and is not recommended:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t use <code>If()</code>:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t use <code>If()</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">ee.FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>
 
@@ -237,7 +222,7 @@
 
 <span class="co"># If() may evaluate both the true and false cases.</span></code></pre></div>
 <p>Note that the second argument to <code>map()</code> is <code>TRUE</code>. This means that the mapped function may return nulls and they will be dropped in the resultant collection. That can be useful (without <code>If()</code>), but here the easiest solution is to use a filter:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Chad'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>As shown in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
@@ -386,7 +371,7 @@
 <strong>If you don’t need to clip, don’t use clip() </strong><a class="anchor" aria-label="anchor" href="#if-you-dont-need-to-clip-dont-use-clip"></a>
 </h2>
 <p>Using <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unnecessarily will increase computation time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unless it’s necessary to your analysis. If you’re not sure, don’t clip. An example of a bad use of clip:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t clip inputs unnecessarily!</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t clip inputs unnecessarily!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>
 <span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_SR'</span><span class="op">)</span>
@@ -410,7 +395,7 @@
   <span class="op">)</span>
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">unnecessaryClip</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Clipping the input images can be skipped entirely, because the region is specified in the <code>reduceRegion()</code> call:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Specify the region on the output.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Specify the region on the output.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">noClipNeeded</span> <span class="op">&lt;-</span> <span class="va">l8sr</span><span class="op">$</span>
   <span class="fu">select</span><span class="op">(</span><span class="st">'B4'</span><span class="op">)</span><span class="op">$</span>                          <span class="co"># Good.</span>
@@ -613,7 +598,7 @@
 <strong>Don’t sample more data than you need</strong><a class="anchor" aria-label="anchor" href="#dont-sample-more-data-than-you-need"></a>
 </h2>
 <p>Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/" class="external-link">this reference</a>). The following example demonstrates how requesting too much training data can result in the dreaded “Computed value is too large” error:</p>
-<p><img src="thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t sample too much data!</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t sample too much data!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span>
 <span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span>
@@ -638,7 +623,7 @@
 
 <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">classifier</span><span class="op">$</span><span class="fu">explain</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Computed value is too large</span></code></pre></div>
 <p>The better approach is to start with a moderate amount of data and tune the hyperparameters of the classifier to determine if you can achieve your desired accuracy:</p>
-<p><img src="thumb_up.png" width="25px">   <strong>Good</strong> — Tune hyperparameters.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Tune hyperparameters.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_RT"</span><span class="op">)</span>
 <span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span>
