@@ -127,7 +127,7 @@ googleCloudStorageR::gcs_update_object_acl(
 )
 ```
 
-Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint [`https://api.cogeo.xyz/docs`](`https://api.cogeo.xyz/docs`). 
+Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint: https://api.cogeo.xyz/docs. 
 
 
 ```{r eval=TRUE, echo=FALSE}

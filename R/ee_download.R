@@ -1120,7 +1120,7 @@ ee_gcs_to_local <- function(task,
             )
           }, silent = TRUE
         )
-        if (class(lresult) == "try-error") {
+        if (inherits(lresult, "try-error")) {
           message(
             crayon::bold("Is the access control of the bucket fine-grained?"),
             " rgee can not change the access policy to 'Public' of buckets with uniform access control."

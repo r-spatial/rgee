@@ -115,7 +115,7 @@ ee_install <- function(py_env = "rgee",
     )
   )
   try_error <- try(ee_install_delete_pyenv(py_env), silent = TRUE)
-  if (class(try_error) == "try-error") {
+  if (inherits(try_error, "try-error")) {
     message(sprintf("%s not found \n", py_env))
   }
 

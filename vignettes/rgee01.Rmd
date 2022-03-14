@@ -24,7 +24,7 @@ vignette: >
  * Python client library
  * **R client library**   
 
-This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop **[web applications](https://github.com/MVanDenburg92/RGEE_Sdsdhiny/)**. 
+This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop **web applications**. 
 
 
 ```{r, setup, include=FALSE}
