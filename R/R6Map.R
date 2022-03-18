@@ -358,7 +358,7 @@ R6Map <- R6::R6Class(
       }
 
       # Remove values element (It is useful for Map$addLegend)
-      visParams[["values"]] = NULL
+      visParams[["values"]] <- NULL
 
       # Earth Engine Spatial object
       ee_spatial_object <- ee_get_spatial_objects("Simple")
@@ -958,6 +958,8 @@ R6Map <- R6::R6Class(
       m
     },
     ee_addTile = function(tile, name, visParams, shown, opacity, position) {
+      tile_params <- leaflet::tileOptions(opacity = opacity)
+      tile_params$maxZoom <- 24
       # check packages
       ee_check_packages("Map$addLayer", c("leaflet"))
       m <- private$ee_mapview() %>%
@@ -965,7 +967,7 @@ R6Map <- R6::R6Class(
           urlTemplate = tile,
           layerId = name,
           group = name,
-          options = leaflet::tileOptions(opacity = opacity)
+          options = tile_params
         ) %>%
         ee_mapViewLayersControl(names = name) %>%
         leaflet::hideGroup(if (!shown) name else NULL)
@@ -1019,7 +1021,7 @@ R6Map <- R6::R6Class(
         height = NULL,
         width = NULL,
         options = leaflet::leafletOptions(
-          minZoom = 1, maxZoom = 52,
+          minZoom = 1, maxZoom = 24,
           bounceAtZoomLimits = FALSE,
           maxBounds = list(list(c(-90,-370)), list(c(90, 370))),
           preferCanvas = canvas),
@@ -1032,15 +1034,16 @@ R6Map <- R6::R6Class(
         provider = map.types[1],
         layerId = map.types[1],
         group = map.types[1],
-        options = leaflet::providerTileOptions(pane = "tilePane")
+        options = append(leaflet::providerTileOptions(pane = "tilePane"), list(maxZoom = 24))
       )
+      m
       for (i in 2:length(map.types)) {
         m <- leaflet::addProviderTiles(
           map = m,
           provider = map.types[i],
           layerId = map.types[i],
           group = map.types[i],
-          options = leaflet::providerTileOptions(pane = "tilePane"))
+          options = append(leaflet::providerTileOptions(pane = "tilePane"), list(maxZoom = 24)))
       }
       return(m)
     },
