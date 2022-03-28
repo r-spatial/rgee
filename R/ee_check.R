@@ -47,7 +47,7 @@ ee_check <- function(user = NULL, quiet = FALSE) {
 ee_check_python <- function(quiet = FALSE) {
   python_test <- py_available(initialize = TRUE)
   if (python_test) {
-    py_version <- as.numeric(py_discover_config()[["version"]])
+    py_version <- py_discover_config()[["version"]]
     if (!quiet) {
       cat_line(
         blue(symbol[["circle_filled"]]),
@@ -66,7 +66,9 @@ ee_check_python <- function(quiet = FALSE) {
       "rgee::ee_Initialize(). For more details run reticulate::py_available()"
     )
   }
-  if (py_version < 3.5) stop("rgee needs Python 3.5 >=")
+  if (utils::compareVersion(py_version, "3.5") == -1) {
+    stop("rgee needs Python 3.5 >=")
+  }
   return(invisible(TRUE))
 }
 
