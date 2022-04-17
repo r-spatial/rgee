@@ -12,6 +12,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# rgee 1.1.3.9000
+
+- Preventive message added to ee_get_date_ic (thanks @zackarno)
+- Critical bug solved in ee_check, see changes [here](https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795) (thanks @MartinHoldrege)
+
 # rgee 1.1.3
 
 - Fixed a bug in ee_as_sf  (@MatthieuStigler).
