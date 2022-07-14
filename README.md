@@ -92,6 +92,8 @@ image$bandNames()$getInfo()
 
 ## Installation
 
+**WARNING: The Authentication of new users now required [gcloud CLI](https://cloud.google.com/sdk/docs/install#deb).  Please set it up before logging in.**
+
 Install from CRAN with:
 
 ``` r
