@@ -104,9 +104,9 @@ ee_Initialize <- function(user = NULL,
 
   # is earthengine-api greater than 0.1.215?
 
-  if (as.numeric(gsub("\\.","",earthengine_version)) <= 01311) {
+  if (as.numeric(gsub("\\.","",earthengine_version)) < 01317) {
     warning(
-      "Update your earthnengine-api installations to v0.1.311 or greater. ",
+      "Update your earthnengine-api installations to v0.1.317 or greater. ",
       "Earlier versions are not compatible with recent ",
       "changes to the Earth Engine backend."
     )

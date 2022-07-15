@@ -451,7 +451,6 @@ R6Map <- R6::R6Class(
     #' \dontrun{
     #' library(sf)
     #' library(rgee)
-    #' library(rgeeExtra)
     #'
     #' ee_Initialize()
     #'
@@ -463,8 +462,8 @@ R6Map <- R6::R6Class(
     #'
     #' ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
     #'   filterDate("2016-01-01", "2016-01-31")$
-    #'   filterBounds(nc) %>%
-    #'   ee_get(0:2)
+    #'   filterBounds(nc)
+    #' ee_s2 <- ee$ImageCollection(ee_s2$toList(2))
     #'
     #' Map$centerObject(nc$geometry())
     #' Map$addLayers(eeObject = ee_s2,position = "right")
@@ -1212,7 +1211,6 @@ R6Map <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#' library(rgeeExtra)
 #' library(rgee)
 #' library(sf)
 #'
@@ -1257,8 +1255,9 @@ R6Map <- R6::R6Class(
 #'
 #' ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
 #'   filterDate("2016-01-01", "2016-01-31")$
-#'   filterBounds(nc) %>%
-#'   ee_get(0:4)
+#'   filterBounds(nc)
+#' ee_s2 <- ee$ImageCollection(ee_s2$toList(2))
+#'
 #' Map$centerObject(nc$geometry())
 #' m5 <- Map$addLayers(ee_s2)
 #' m5
