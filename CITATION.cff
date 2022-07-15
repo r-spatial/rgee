@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.1
+# CITATION file created with {cffr} R package, v0.2.2
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.3.9000
+version: 1.1.4
 abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
   of the 'Earth Engine' API classes, modules, and functions are made available. Additional
   functions implemented include importing (exporting) of Earth Engine spatial objects,
@@ -27,7 +27,7 @@ preferred-citation:
     given-names: Cesar
     email: csaybar@gmail.com
     orcid: https://orcid.org/0000-0003-2745-9535
-  version: 1.1.3.9000
+  version: 1.1.4
   abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
     of the 'Earth Engine' API classes, modules, and functions are made available.
     Additional functions implemented include importing (exporting) of Earth Engine
