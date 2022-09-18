@@ -69,7 +69,7 @@ ee_Initialize <- function(user = NULL,
   if (!file.exists(ee_current_version)) {
     stop(
       sprintf(
-        "The file %s does not exist in their system. Please re-install rgee: %s",
+        "The file %s does not exist in your system. Please re-install rgee: %s",
         ee_current_version,
         "remotes::install_github(\"r-spatial/rgee\")."
       )
@@ -90,7 +90,7 @@ ee_Initialize <- function(user = NULL,
   # is earthengine-api greater than 0.1.215?
   if (as.numeric(gsub("\\.","",earthengine_version)) < 01215) {
     warning(
-      "Update your earthnengine-api installations to v0.1.232 or greater. ",
+      "Update your earthengine-api installations to v0.1.232 or greater. ",
       "Earlier versions are not compatible with recent ",
       "changes to the Earth Engine backend."
     )
@@ -218,7 +218,7 @@ ee_Initialize <- function(user = NULL,
     root_text <- paste(
       "Earth Engine Assets home root folder does not exist for the current user.",
       "Please enter your desired root folder name below. Take into consideration",
-      sprintf("that once created %s Alternatively,",
+      sprintf("that once you created %s",
               bold("you will not be able to change the folder name again. ")),
       sprintf("press ESC to interrupt and run: %s",
               bold("ee$data$createAssetHome(\"users/PUT_YOUR_NAME_HERE\")")),
@@ -422,9 +422,9 @@ ee_create_credentials_gcs <- function(email) {
     gcs_text <- paste(
       sprintf("Unable to find a service account key (SAK) file in: %s",  bold(ee_path_user)),
       "Please, download and save the key manually on the path mentioned",
-      "before. A compressible tutorial to obtain their SAK file is available in:",
+      "before. A tutorial to obtain the SAK file is available at:",
       "> https://r-spatial.github.io/rgee/articles/rgee05.html",
-      bold("Until you do not save a SKA file, the following functions will not work:"),
+      bold("As long as you haven't saved a SKA file, the following functions will not work:"),
       "- rgee::ee_gcs_to_local()",
       "- ee_extract(..., via = \"gcs\")",
       "- ee_as_raster(..., via = \"gcs\")",
