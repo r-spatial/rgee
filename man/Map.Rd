@@ -143,7 +143,6 @@ default 3.
 }
 \examples{
 \dontrun{
-library(rgeeExtra)
 library(rgee)
 library(sf)
 
@@ -188,8 +187,9 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
-  filterBounds(nc) \%>\%
-  ee_get(0:4)
+  filterBounds(nc)
+ee_s2 <- ee$ImageCollection(ee_s2$toList(2))
+
 Map$centerObject(nc$geometry())
 m5 <- Map$addLayers(ee_s2)
 m5

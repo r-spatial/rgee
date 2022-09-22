@@ -137,7 +137,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
         #  If nested_folder class is "try-error", try the path_asset dirname.
         #            path_asset                            new_path
         #   users/datacolecfbf/cs/cs/rgee   --->  users/datacolecfbf/cs/rgee
-        if (class(nested_folder) == "try-error") {
+        if (inherits(nested_folder, "try-error")) {
           new_path <- dirname(new_path)
         } else {
           if (!quiet) cat("GEE asset:", new_path, "created\n")
@@ -160,7 +160,7 @@ ee_manage_create <- function(path_asset, asset_type = "Folder", quiet = FALSE) {
       )
       # If the Folder where the ImageCollection
       # will be saved does not exist, create it!
-      if (class(create_ic_asset) == "try-error") {
+      if (inherits(create_ic_asset, "try-error")) {
         dir_path <- dirname(path_asset)
         # Creating the folder
         ee_manage_create(

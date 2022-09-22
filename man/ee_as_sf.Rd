@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_as_sf.R
 \name{ee_as_sf}
 \alias{ee_as_sf}
-\title{Convert an Earth Engine table in an sf object}
+\title{Convert an Earth Engine table into a sf object}
 \usage{
 ee_as_sf(
   x,
@@ -21,7 +21,7 @@ ee_as_sf(
 )
 }
 \arguments{
-\item{x}{Earth Engine table (ee$FeatureCollection) to be converted in an sf
+\item{x}{Earth Engine table (ee$FeatureCollection) to be converted into a sf
 object.}
 
 \item{dsn}{Character. Output filename. In case \code{dsn} is missing,
@@ -34,7 +34,7 @@ to write?.}
 implemented: "getInfo", "drive", "gcs". See details.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignore if \code{via} is not defined as "drive" or
+to be exported into (ignored if \code{via} is not defined as "drive" or
 "gcs").}
 
 \item{crs}{Integer or Character. Coordinate Reference System (CRS)
@@ -42,7 +42,7 @@ for the EE table. If it is NULL, \code{ee_as_sf} will take the CRS of
 the first element.}
 
 \item{maxFeatures}{Numeric. The maximum allowed number of features to
-export (ignore if \code{via} is not set as "getInfo"). The task will fail
+export (ignored if \code{via} is not set as "getInfo"). The task will fail
 if the exported region covers more features than the specified in
 \code{maxFeatures}. Defaults to 5000.}
 
@@ -69,7 +69,7 @@ with the same name. By default TRUE.}
 An sf object.
 }
 \description{
-Convert an Earth Engine table in an sf object
+Convert an Earth Engine table into a sf object
 }
 \details{
 \code{ee_as_sf} supports the download of \code{ee$Geometry}, \code{ee$Feature},
@@ -81,17 +81,17 @@ Google Cloud Storage}). The advantage of use "getInfo" is a
 direct and faster download. However, there is a limitation of 5000 features by
 request, making it not recommendable for large FeatureCollection. Instead of
 "getInfo", the options: "drive" and "gcs" are suitable for large FeatureCollections
-due to the use of an intermediate container. When via is set as "drive" or "gcs"
+due to the use of an intermediate container. When \code{via} is set as "drive" or "gcs"
 \code{ee_as_sf} perform the following steps:
 \itemize{
 \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 move the EE Table from Earth Engine to the file storage system (Google Drive
 or Google Cloud Storage) specified in the argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-monitored. This is useful to lunch several tasks simultaneously and
+monitored. This is useful to launch several tasks simultaneously and
 calls them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
-the EE Table is stored on the path specified in the argument
+the EE Table is stored under the path specified by the argument
 \code{dsn}.}
 \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 with the following elements is added to the sf object.
@@ -119,7 +119,7 @@ Run \code{attr(sf, "metadata")} to get the list.
 }
 }
 
-For getting more information about exporting data from Earth Engine, take
+To get more information about exporting data from Earth Engine, take
 a look at the
 \href{https://developers.google.com/earth-engine/guides/exporting}{Google
 Earth Engine Guide - Export data}.

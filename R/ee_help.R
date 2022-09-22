@@ -24,7 +24,7 @@ ee_help <- function(eeobject, browser = FALSE) {
     silent = TRUE
   )
   # If eeobject is an Earth Engine object get the last function
-  if (class(eequery_scope) != 'try-error' & !is.null(eequery_scope)) {
+  if (!inherits(eequery_scope, 'try-error') & !is.null(eequery_scope)) {
     search_funnames <- grepl("functionName", names(eequery_scope))
     ee_functions <- eequery_scope[search_funnames]
     fun_name <- paste0("ee$",gsub("\\.","$",tail(ee_functions,1)))

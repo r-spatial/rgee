@@ -72,7 +72,7 @@ gcs_to_ee_image(
 )
 
 # OPTIONAL: Monitoring progress
-ee_monitoring()
+ee_monitoring(max_attempts = Inf)
 
 # OPTIONAL: Display results
 ee_stars_01 <- ee$Image(assetId)

@@ -17,9 +17,18 @@
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
 #' credential is cached in the path \code{~/.config/earthengine/}.
 #'
-#' @param display Logical. If TRUE, display the earthengine authentication URL.
-#'
+# @param display Logical. If TRUE, display the earthengine authentication URL.
+# (display url - useul for colab noteboks)
+#' @param credentials  OAuth2 credentials. 'persistent' (default) means
+#' use credentials already stored in the filesystem, or raise an explanatory
+#' exception guiding the user to create those credentials.
+#' @param opt_url The base url for the EarthEngine REST API to connect to.
+#' @param cloud_api_key An optional API key to use the Cloud API.
+#' @param http_transport The http transport method to use when making requests.
+#' @param project The client project ID or number to use when making API calls.
 #' @param quiet Logical. Suppress info messages.
+#'
+#' @param ... Extra exporting argument. See \link{ee_Authenticate}.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
 #' @importFrom reticulate import_from_path import install_miniconda py_available
@@ -27,7 +36,7 @@
 #' @importFrom crayon blue green black red bold white
 #'
 #' @details
-#' \code{ee_Initialize(...)} can manage Google Drive, and Google
+#' \code{ee_Initialize()} can manage Google Drive, and Google
 #' Cloud Storage resources using the R packages googledrive and
 #' googlecloudStorageR, respectively. By default, rgee does not require
 #' them. These are only necessary to enable rgee I/O functionality.
@@ -50,8 +59,14 @@
 ee_Initialize <- function(user = NULL,
                           drive = FALSE,
                           gcs = FALSE,
-                          display = FALSE,
-                          quiet = FALSE) {
+                          credentials='persistent',
+                          opt_url=NULL,
+                          cloud_api_key=NULL,
+                          http_transport=NULL,
+                          project=NULL,
+                          quiet = FALSE,
+                          ...
+                          ) {
   # Message for new user
   init_rgee_message <- ee_search_init_message()
   if (!init_rgee_message) {
@@ -88,9 +103,10 @@ ee_Initialize <- function(user = NULL,
   }
 
   # is earthengine-api greater than 0.1.215?
-  if (as.numeric(gsub("\\.","",earthengine_version)) < 01215) {
+
+  if (as.numeric(gsub("\\.","",earthengine_version)) < 01317) {
     warning(
-      "Update your earthengine-api installations to v0.1.232 or greater. ",
+      "Update your earthnengine-api installations to v0.1.317 or greater. ",
       "Earlier versions are not compatible with recent ",
       "changes to the Earth Engine backend."
     )
@@ -198,8 +214,14 @@ ee_Initialize <- function(user = NULL,
     )
   }
 
-  ee_create_credentials_earthengine(email_clean, display = display)
-  ee$Initialize()
+  ee_create_credentials_earthengine(email_clean, ...)
+  ee$Initialize(
+    credentials=credentials,
+    opt_url=opt_url,
+    cloud_api_key=cloud_api_key,
+    http_transport=http_transport,
+    project=project
+  )
 
   if (!quiet) {
     cat(
@@ -262,6 +284,45 @@ ee_Initialize <- function(user = NULL,
   invisible(TRUE)
 }
 
+
+
+#' Prompts the user to authorize access to Earth Engine via OAuth2.
+#'
+#' @param authorization_code An optional authorization code.
+#' @param code_verifier PKCE verifier to prevent auth code stealing.
+#' @param auth_mode The authentication mode. One of:
+#' \itemize{
+#'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
+#'  \item{2. }{notebook - send user to notebook authenticator page}
+#'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
+#'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
+#'  \item{5. }{None - a default mode is chosen based on your environment.}
+#' }
+#' @param scopes List of scopes to use for authentication. Defaults to : 'https://www.googleapis.com/auth/earthengine' or
+#' 'https://www.googleapis.com/auth/devstorage.full_control'
+#' @param quiet If TRUE, do not require interactive prompts.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Simple init - Load just the Earth Engine credential
+#' ee_Authenticate()
+#' }
+#' @export
+ee_Authenticate <- function(authorization_code = NULL,
+                            code_verifier = NULL,
+                            auth_mode = NULL,
+                            scopes = NULL,
+                            quiet = FALSE) {
+  ee$Authenticate(
+    authorization_code = authorization_code,
+    code_verifier = code_verifier,
+    auth_mode = auth_mode,
+    scopes = scopes,
+    quiet = quiet
+  )
+}
+
 #' Authorize rgee to view and manage your Earth Engine account.
 #' This is a three-step function:
 #' \itemize {
@@ -278,7 +339,7 @@ ee_Initialize <- function(user = NULL,
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(email_clean, display) {
+ee_create_credentials_earthengine <- function(email_clean, ...) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
 
@@ -299,25 +360,35 @@ ee_create_credentials_earthengine <- function(email_clean, display) {
       overwrite = TRUE
     )
   } else {
-    oauth_codes <- ee_utils_py_to_r(utils_py$create_codes())
-    code_verifier <- oauth_codes[[1]]
-    code_challenge <- oauth_codes[[2]]
-    earthengine_auth <- ee$oauth$get_authorization_url(code_challenge)
-    # Display URL?
-    if (display) {
-      message("\n To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions: \n \n", earthengine_auth, "\n \n The authorization workflow will generate a code, which you should paste in the box below")
-      auth_code <- readline("Enter Earth Engine Authentication: ")
-      token <- ee$oauth$request_token(auth_code, code_verifier)
-      credential <- sprintf('{"refresh_token":"%s"}', token)
-      write(credential, main_ee_credential)
-      write(credential, user_ee_credential)
-    }
-    ee_save_eecredentials(
-      url = earthengine_auth,
-      code_verifier = code_verifier,
-      main_ee_credential = main_ee_credential,
-      user_ee_credential = user_ee_credential
+    # pkce <- ee_utils_py_to_r(utils_py$create_codes('code_verifier'))
+    # code_verifier <- pkce[["code_verifier"]]
+    # code_challenge <- pkce[["code_challenge"]]
+    # earthengine_auth <- ee$oauth$get_authorization_url(code_challenge, NULL)
+    ## Display URL?
+    # if (display) {
+    #   message("\n To authorize access needed by Earth Engine, open the following URL in a web browser and follow the instructions: \n \n", earthengine_auth, "\n \n The authorization workflow will generate a code, which you should paste in the box below")
+    #   auth_code <- readline("Enter Earth Engine Authentication: ")
+    #   token <- ee$oauth$request_token(auth_code, code_verifier)
+    #   credential <- sprintf('{"refresh_token":"%s"}', token)
+    #   write(credential, main_ee_credential)
+    #   write(credential, user_ee_credential)
+    # }
+
+    # Run authenticate
+    do.call(ee_Authenticate, list(...))
+
+    # Copy credentials into the user folder
+    Sys.sleep(0.1)
+    file.copy(
+      from = main_ee_credential,
+      to = user_ee_credential
     )
+    # ee_save_eecredentials(
+    #   url = earthengine_auth,
+    #   code_verifier = code_verifier,
+    #   main_ee_credential = main_ee_credential,
+    #   user_ee_credential = user_ee_credential
+    # )
     invisible(TRUE)
   }
 }
@@ -593,6 +664,11 @@ ee_user_info <- function(quiet = FALSE) {
     gcs_file = gcs
   )
 }
+
+
+
+
+
 
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/

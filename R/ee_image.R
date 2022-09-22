@@ -674,7 +674,7 @@ ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet) 
 #' Passing an Earth Engine Image from GD to Local
 #' @noRd
 ee_image_local_drive <- function(task, dsn, metadata, public, quiet) {
-  ee_monitoring(task = task, quiet = quiet)
+  ee_monitoring(task = task, quiet = quiet, max_attempts = Inf)
   # From Google Drive to local
   if (isFALSE(quiet)) {
     cat('Moving image from Google Drive to Local ... Please wait  \n')
@@ -698,7 +698,7 @@ ee_image_local_drive <- function(task, dsn, metadata, public, quiet) {
 #' @noRd
 ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
   # earth engine monitoring
-  ee_monitoring(task = task, quiet = quiet)
+  ee_monitoring(task = task, quiet = quiet, max_attempts = Inf)
 
   # From Google Cloud Storage to local
   if(isFALSE(quiet)) {

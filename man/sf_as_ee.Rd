@@ -147,6 +147,6 @@ eex <- sf_as_ee(
   monitoring = FALSE,
   via = 'gcs_to_asset'
 )
-ee_monitoring()
+ee_monitoring(max_attempts = Inf)
 }
 }

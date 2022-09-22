@@ -8,8 +8,13 @@ ee_Initialize(
   user = NULL,
   drive = FALSE,
   gcs = FALSE,
-  display = FALSE,
-  quiet = FALSE
+  credentials = "persistent",
+  opt_url = NULL,
+  cloud_api_key = NULL,
+  http_transport = NULL,
+  project = NULL,
+  quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,9 +29,21 @@ is cached in the path \code{~/.config/earthengine/}.}
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential is cached in the path \code{~/.config/earthengine/}.}
 
-\item{display}{Logical. If TRUE, display the earthengine authentication URL.}
+\item{credentials}{OAuth2 credentials. 'persistent' (default) means
+use credentials already stored in the filesystem, or raise an explanatory
+exception guiding the user to create those credentials.}
+
+\item{opt_url}{The base url for the EarthEngine REST API to connect to.}
+
+\item{cloud_api_key}{An optional API key to use the Cloud API.}
+
+\item{http_transport}{The http transport method to use when making requests.}
+
+\item{project}{The client project ID or number to use when making API calls.}
 
 \item{quiet}{Logical. Suppress info messages.}
+
+\item{...}{Extra exporting argument. See \link{ee_Authenticate}.}
 }
 \value{
 No return value, called for initializing the earthengine-api.
@@ -39,7 +56,7 @@ allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize(...)} can manage Google Drive, and Google
+\code{ee_Initialize()} can manage Google Drive, and Google
 Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.

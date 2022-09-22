@@ -180,6 +180,7 @@ ee_extract <- function(x,
   # Load Python module
   oauth_func_path <- system.file("python/ee_extract.py", package = "rgee")
   extract_py <- ee_source_python(oauth_func_path)
+
   # spatial classes
   sp_objects <- ee_get_spatial_objects('Table')
 
@@ -207,7 +208,14 @@ ee_extract <- function(x,
     # sf object
   } else if(any(ee_get_spatial_objects('Table') %in%  class(y))) {
     ee_y <- ee$FeatureCollection(y)
-    sf_y <- ee_as_sf(y, quiet = TRUE)
+    sf_y <- tryCatch(
+      expr = ee_as_sf(y, quiet = FALSE, maxFeatures = 10000),
+      error = function(e) {
+          stop(
+            "The ee$FeatureCollection (y) must be not higher than 10 000."
+          )
+      }
+    )
   }
 
   #set ee_ID for identify rows in the data.frame

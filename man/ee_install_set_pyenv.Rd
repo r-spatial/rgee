@@ -2,19 +2,21 @@
 % Please edit documentation in R/ee_install.R
 \name{ee_install_set_pyenv}
 \alias{ee_install_set_pyenv}
-\title{Configure which version of Python to use with rgee}
+\title{Specify a Python environment for rgee}
 \usage{
 ee_install_set_pyenv(
-  py_path = NULL,
+  py_path,
   py_env = NULL,
   Renviron = "global",
+  confirm = interactive(),
   quiet = FALSE
 )
 }
 \arguments{
 \item{py_path}{The path to a Python interpreter}
 
-\item{py_env}{The name of the environment}
+\item{py_env}{The name of the conda or venv environment. If
+NULL, \code{\link{ee_install_upgrade}} and \code{\link{py_install}} functions will not work.}
 
 \item{Renviron}{Character. If it is "global" the environment variables are set in
 the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
@@ -22,21 +24,87 @@ it is "local" the environment variables are set in the .Renviron on the
 working directory (getwd()). Finally, users can also enter a specific path
 (see examples).}
 
+\item{confirm}{Logical. Confirm before restarting R?.}
+
 \item{quiet}{Logical. Suppress info message}
 }
 \value{
 no return value, called for setting EARTHENGINE_PYTHON in .Renviron
 }
 \description{
-Configure which version of Python to use with rgee. This function creates two
-environment variables: 'EARTHENGINE_PYTHON' and 'EARTHENGINE_ENV' both will be
-saved into the file .Renviron.
+Specify a Python environment to use with rgee. This function creates
+a .Renviron file that contains two environmental variables: 'EARTHENGINE PYTHON'
+and 'EARTHENGINE ENV'. If an .Renviron file is already in use, \code{ee_install_set_pyenv} will
+append the two previous environmental variables to the end of the file. If the prior two
+environmental variables were previously set, \code{ee_install_set_pyenv} will simply overwrite them.
+See details to get more information.
+}
+\details{
+The 'EARTHENGINE_PYTHON' set the Python interpreter path to use with rgee.
+In the other hand, the 'EARTHENGINE ENV' set the Python environment name. Both
+variables are storage in an .Renviron file. See \code{\link{Startup}} documentation to
+get more information about startup files in R.
 }
 \examples{
 \dontrun{
 library(rgee)
-# ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "local")
-# ee_install_set_pyenv(py_path = "/usr/bin/python3", Renviron = "/home/zgis/")
+
+## IMPORTANT: Change 'py_path' argument according to your own Python PATH
+## For Anaconda users - Windows OS
+## OBS: Anaconda Python PATH can vary, run “where anaconda” in console.
+# win_py_path = paste0(
+#    "C:/Users/UNICORN/AppData/Local/Programs/Python/",
+#    "Python37/python.exe"
+# )
+# ee_install_set_pyenv(
+#   py_path = win_py_path,
+#   py_env = "rgee" # Change it for your own Python ENV
+# )
+
+## For Anaconda users - MacOS users
+# ee_install_set_pyenv(
+#   py_path = "/Users/UNICORN/opt/anaconda3/bin/python",
+#   py_env = "rgee" # Change it for your own Python ENV
+# )
+#
+## For Miniconda users - Windows OS
+# win_py_path = paste0(
+#   "C:/Users/UNICORN/AppData/Local/r-miniconda/envs/rgee/",
+#   "python.exe"
+# )
+# ee_install_set_pyenv(
+#   py_path = win_py_path,
+#   py_env = "rgee" # Change it for your own Python ENV
+# )
+
+## For Miniconda users - Linux/MacOS users
+# unix_py_path = paste0(
+#   "/home/UNICORN/.local/share/r-miniconda/envs/",
+#   "rgee/bin/python3"
+# )
+# ee_install_set_pyenv(
+#   py_path = unix_py_path,
+#   py_env = "rgee" # Change it for your own Python ENV
+# )
+
+## For virtualenv users - Linux/MacOS users
+# ee_install_set_pyenv(
+#   py_path = "/home/UNICORN/.virtualenvs/rgee/bin/python",
+#   py_env = "rgee" # Change it for your own Python ENV
+# )
+
+## For Python root user - Linux/MacOS users
+# ee_install_set_pyenv(
+#   py_path = "/usr/bin/python3",
+#   py_env = NULL,
+#   Renviron = "global" # Save ENV variables in the global .Renv file
+# )
+
+# ee_install_set_pyenv(
+#   py_path = "/usr/bin/python3",
+#   py_env = NULL,
+#   Renviron = "local" # Save ENV variables in a local .Renv file
+# )
 }
 }
 \seealso{

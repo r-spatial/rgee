@@ -13,23 +13,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-<link rel="preconnect" href="https://fonts.gstatic.com"> <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-```{=html}
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
-```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
@@ -43,7 +26,7 @@ An EEtk is a 100-character text string (OAuth2 credential) stored on your local 
 <br>
 
 <center>
-<img src="vig_4.png" width="80%"/>
+<img src="images/r4_01.png" width="80%"/>
 </center>
 
 <br>
@@ -59,7 +42,7 @@ sprintf("%s/credentials", dirname(rgee::ee_get_earthengine_path()))
 
 <br>
 
-If the file exists, then an [Oauth2 Credential](**https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html**) object is created using a [refresh token](https://developers.google.com/identity/protocols/oauth2) grant. This *refresh token* must come from a Google account registered in GEE if not a *Bad Request error* will be invoked. Once the Oauth2 Credential is successfully loaded, it is dynamically passed to all EE methods (See [Initialize](https://github.com/google/earthengine-api/blob/b4c068924b1c7574ee717761cb9fe0499a3b932b/python/ee/__init__.py#L125)) in order to realize independent calls to the Web REST API (https://earthengine.googleapis.com). As you realize, the **_credentials_** file is crucial to interact with the EE API and if it does not exist on your system, it will simply not be possible to use rgee.
+If the file exists, then an [Oauth2 Credential](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html) object is created using a [refresh token](https://developers.google.com/identity/protocols/oauth2) grant. This *refresh token* must come from a Google account registered in GEE if not a *Bad Request error* will be invoked. Once the Oauth2 Credential is successfully loaded, it is dynamically passed to all EE methods (See [Initialize](https://github.com/google/earthengine-api/blob/b4c068924b1c7574ee717761cb9fe0499a3b932b/python/ee/__init__.py#L125)) in order to realize independent calls to the Web REST API. As you realize, the **_credentials_** file is crucial to interact with the EE API and if it does not exist on your system, it will simply not be possible to use rgee.
 
 
 <center>

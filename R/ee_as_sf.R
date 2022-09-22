@@ -290,7 +290,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
       ee$FeatureCollection$size() %>%
       ee$Number$getInfo()
     if (!quiet) {
-      cat(sprintf("\rNumber of features: %s \n", fc_size))
+      cat(sprintf("\rNumber of features: %s                     \n", fc_size))
     }
   }
 
@@ -503,7 +503,7 @@ ee_init_task_drive_fc <- function(x_fc, dsn, container, table_id,
 #' from drive to local
 #' @noRd
 ee_sf_drive_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
-  ee_monitoring(task = table_task, quiet = quiet)
+  ee_monitoring(task = table_task, quiet = quiet, max_attempts = Inf)
 
   if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
     stop(ee$batch$Task$status(table_task)[["error_message"]])
@@ -603,7 +603,7 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
 #' from GCS to local
 #' @noRd
 ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
-  ee_monitoring(task = table_task, quiet = quiet)
+  ee_monitoring(task = table_task, quiet = quiet, max_attempts = Inf)
 
   if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
     stop(ee$batch$Task$status(table_task)[["error_message"]])

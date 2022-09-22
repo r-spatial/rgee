@@ -1,5 +1,5 @@
 ---
-title: "**Introduction to rgee**"
+title: "Introduction to rgee"
 output:
   html_document:
     toc: true
@@ -13,21 +13,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}    
 ---
 
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
 
 ## **1. What is Google Earth Engine ?**
 
@@ -39,7 +24,7 @@ vignette: >
  * Python client library
  * **R client library**   
 
-This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop **[web applications](https://github.com/MVanDenburg92/RGEE_Shiny/)**. 
+This website is focused on the last one, you can use the R client library to send/receive messages to/from the Earth Engine server and develop **web applications**. 
 
 
 ```{r, setup, include=FALSE}
@@ -229,7 +214,7 @@ Map$addLayer(
 ```
 
 <center>
-<img src="https://user-images.githubusercontent.com/16768318/103684232-8bd56a80-4f8b-11eb-8bbb-fac3e1c2aada.png" width="90%">
+<img src="images/r1_01.png" width="90%">
 </center>
 
 ## 9. Checking

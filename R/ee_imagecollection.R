@@ -167,6 +167,11 @@ ee_imagecollection_to_local <- function(ic,
   # if dsn  is a vector character with the same length of the
   # imagecollection.
   if (length(dsn) == ic_count) {
+    message(
+      "dsn is a vector character with the same length of the imagecollection.\n",
+      "Length: ", ic_count, "\n",
+      "Running: final_names <- dsn"
+    )
     ic_names <- dsn
   } else {
     # if dsn is a directory or a character
