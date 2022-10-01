@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.2
+# CITATION file created with {cffr} R package, v0.3.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.4
+version: 1.1.5
 abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
   of the 'Earth Engine' API classes, modules, and functions are made available. Additional
   functions implemented include importing (exporting) of Earth Engine spatial objects,
@@ -19,36 +19,6 @@ authors:
   given-names: Cesar
   email: csaybar@gmail.com
   orcid: https://orcid.org/0000-0003-2745-9535
-preferred-citation:
-  type: manual
-  title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-  authors:
-  - family-names: Aybar
-    given-names: Cesar
-    email: csaybar@gmail.com
-    orcid: https://orcid.org/0000-0003-2745-9535
-  version: 1.1.4
-  abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
-    of the 'Earth Engine' API classes, modules, and functions are made available.
-    Additional functions implemented include importing (exporting) of Earth Engine
-    spatial objects, extraction of time series, interactive map display, assets management
-    interface, and metadata display. See <https://r-spatial.github.io/rgee/> for further
-    details.
-  repository: https://CRAN.R-project.org/package=rgee
-  repository-code: https://github.com/r-spatial/rgee/issues/
-  url: https://github.com/r-spatial/rgee/
-  identifiers:
-  - type: url
-    value: https://r-spatial.github.io/rgee/
-  - type: url
-    value: https://github.com/google/earthengine-api/
-  contact:
-  - family-names: Aybar
-    given-names: Cesar
-    email: csaybar@gmail.com
-    orcid: https://orcid.org/0000-0003-2745-9535
-  license: Apache-2.0
-  year: '2022'
 repository: https://CRAN.R-project.org/package=rgee
 repository-code: https://github.com/r-spatial/rgee/issues/
 url: https://github.com/r-spatial/rgee/
@@ -245,6 +215,10 @@ references:
   - family-names: Teucher
     given-names: Andy
     email: andy.teucher@gmail.com
+  - family-names: Mahoney
+    given-names: Michael
+    email: mike.mahoney.218@gmail.com
+    orcid: https://orcid.org/0000-0003-2402-304X
   year: '2022'
   url: https://CRAN.R-project.org/package=geojsonio
 - type: software
