@@ -27,6 +27,8 @@
 #' @param http_transport The http transport method to use when making requests.
 #' @param project The client project ID or number to use when making API calls.
 #' @param quiet Logical. Suppress info messages.
+#' @param auth_quiet Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
+#' do not require interactive prompts and force --no-browser mode for gcloud.
 #'
 #' @param ... Extra exporting argument. See \link{ee_Authenticate}.
 #'
@@ -65,6 +67,7 @@ ee_Initialize <- function(user = NULL,
                           http_transport=NULL,
                           project=NULL,
                           quiet = FALSE,
+                          auth_quiet = FALSE,
                           ...
                           ) {
   # Message for new user
@@ -106,7 +109,7 @@ ee_Initialize <- function(user = NULL,
 
   if (as.numeric(gsub("\\.","",earthengine_version)) < 01317) {
     warning(
-      "Update your earthnengine-api installations to v0.1.317 or greater. ",
+      "Update your earthengine-api installations to v0.1.317 or greater. ",
       "Earlier versions are not compatible with recent ",
       "changes to the Earth Engine backend."
     )
@@ -214,7 +217,7 @@ ee_Initialize <- function(user = NULL,
     )
   }
 
-  ee_create_credentials_earthengine(email_clean, ...)
+  ee_create_credentials_earthengine(email_clean, auth_quiet, ...)
   ee$Initialize(
     credentials=credentials,
     opt_url=opt_url,
@@ -339,7 +342,7 @@ ee_Authenticate <- function(authorization_code = NULL,
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(email_clean, ...) {
+ee_create_credentials_earthengine <- function(email_clean, auth_quiet, ...) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
 
@@ -375,7 +378,8 @@ ee_create_credentials_earthengine <- function(email_clean, ...) {
     # }
 
     # Run authenticate
-    do.call(ee_Authenticate, list(...))
+    extra_params = append(list(...), list(quiet = auth_quiet))
+    do.call(ee_Authenticate, extra_params)
 
     # Copy credentials into the user folder
     Sys.sleep(0.1)
