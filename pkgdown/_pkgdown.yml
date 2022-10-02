@@ -62,7 +62,6 @@ reference:
 
   - title: "Subsetting"
     contents:
-      - ee_get
       - ee_subsetting
 
   - title: "Session management"
