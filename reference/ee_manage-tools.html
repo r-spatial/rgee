@@ -19,7 +19,7 @@ properties, handle access control lists, and manage and/or cancel tasks."><meta 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -102,36 +102,36 @@ properties, handle access control lists, and manage and/or cancel tasks.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_manage_create</span><span class="op">(</span><span class="va">path_asset</span>, asset_type <span class="op">=</span> <span class="st">"Folder"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_delete</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_assetlist</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_quota</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_copy</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">final_path</span>, strict <span class="op">=</span> <span class="cn">TRUE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_move</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">final_path</span>, strict <span class="op">=</span> <span class="cn">TRUE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_set_properties</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">add_properties</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_delete_properties</span><span class="op">(</span><span class="va">path_asset</span>, del_properties <span class="op">=</span> <span class="st">"ALL"</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_asset_access</span><span class="op">(</span>
-  <span class="va">path_asset</span>,
-  owner <span class="op">=</span> <span class="cn">NULL</span>,
-  editor <span class="op">=</span> <span class="cn">NULL</span>,
-  viewer <span class="op">=</span> <span class="cn">NULL</span>,
-  all_users_can_read <span class="op">=</span> <span class="cn">TRUE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu">ee_manage_task</span><span class="op">(</span>cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu">ee_manage_cancel_all_running_task</span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu">ee_manage_asset_size</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_manage_create</span><span class="op">(</span><span class="va">path_asset</span>, asset_type <span class="op">=</span> <span class="st">"Folder"</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_delete</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_assetlist</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_quota</span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_copy</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">final_path</span>, strict <span class="op">=</span> <span class="cn">TRUE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_move</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">final_path</span>, strict <span class="op">=</span> <span class="cn">TRUE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_set_properties</span><span class="op">(</span><span class="va">path_asset</span>, <span class="va">add_properties</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_delete_properties</span><span class="op">(</span><span class="va">path_asset</span>, del_properties <span class="op">=</span> <span class="st">"ALL"</span>, strict <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_asset_access</span><span class="op">(</span></span>
+<span>  <span class="va">path_asset</span>,</span>
+<span>  owner <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  editor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  viewer <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  all_users_can_read <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_task</span><span class="op">(</span>cache <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_cancel_all_running_task</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ee_manage_asset_size</span><span class="op">(</span><span class="va">path_asset</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -139,34 +139,57 @@ properties, handle access control lists, and manage and/or cancel tasks.</p>
     <dl><dt>path_asset</dt>
 <dd><p>Character. Name of the EE asset (Table, Image, Folder or
 ImageCollection).</p></dd>
+
+
 <dt>asset_type</dt>
 <dd><p>Character. The asset type to create ('Folder' or
 'ImageCollection').</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message.</p></dd>
+
+
 <dt>strict</dt>
 <dd><p>Character vector. If TRUE, the existence of the asset will be
 evaluated before performing the task.</p></dd>
+
+
 <dt>final_path</dt>
 <dd><p>Character. Output filename
 (e.g users/datacolecfbf/ic_moved)</p></dd>
+
+
 <dt>add_properties</dt>
 <dd><p>List. Set of parameters to established as a property
 of an EE object. See details.</p></dd>
+
+
 <dt>del_properties</dt>
 <dd><p>Character. Names of properties to be deleted. See
 details.</p></dd>
+
+
 <dt>owner</dt>
 <dd><p>Character vector. Define owner user in the IAM Policy.</p></dd>
+
+
 <dt>editor</dt>
 <dd><p>Character vector. Define editor users in the IAM Policy.</p></dd>
+
+
 <dt>viewer</dt>
 <dd><p>Character vector. Define viewer users in the IAM Policy.</p></dd>
+
+
 <dt>all_users_can_read</dt>
 <dd><p>Logical. All users can see the asset element.</p></dd>
+
+
 <dt>cache</dt>
 <dd><p>Logical. If TRUE, the task report will be saved
 in the /temp directory and used when the function.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -181,73 +204,73 @@ the properties.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Change datacolecfbf by your EE user to be able to reproduce</span></span>
-<span class="r-in"><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="ee_get_assethome.html">ee_get_assethome</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">addm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%s/%s"</span>,<span class="va">user</span>, <span class="va">x</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># 1. Create a folder or Image Collection</span></span>
-<span class="r-in"><span class="co"># Change path asset according to your specific user</span></span>
-<span class="r-in"><span class="fu">ee_manage_create</span><span class="op">(</span><span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 1. List all the elements inside a folder or a ImageCollection</span></span>
-<span class="r-in"><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 2. Create a Folder or a ImageCollection</span></span>
-<span class="r-in"><span class="fu">ee_manage_create</span><span class="op">(</span></span>
-<span class="r-in">  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder"</span><span class="op">)</span>,</span>
-<span class="r-in">  asset_type <span class="op">=</span> <span class="st">"Folder"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">ee_manage_create</span><span class="op">(</span></span>
-<span class="r-in">  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_ic"</span><span class="op">)</span>,</span>
-<span class="r-in">  asset_type <span class="op">=</span> <span class="st">"ImageCollection"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 3. Shows Earth Engine quota</span></span>
-<span class="r-in"><span class="fu">ee_manage_quota</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 4. Move an EE object to another folder</span></span>
-<span class="r-in"><span class="fu">ee_manage_move</span><span class="op">(</span></span>
-<span class="r-in">  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_ic"</span><span class="op">)</span>,</span>
-<span class="r-in">  final_path <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 5. Set properties to an EE object.</span></span>
-<span class="r-in"><span class="fu">ee_manage_set_properties</span><span class="op">(</span></span>
-<span class="r-in">  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span>,</span>
-<span class="r-in">  add_properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"hello-world"</span>, language <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ic_id</span> <span class="op">&lt;-</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">test_ic</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="va">ic_id</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">test_ic</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 6. Delete properties</span></span>
-<span class="r-in"><span class="fu">ee_manage_delete_properties</span><span class="op">(</span></span>
-<span class="r-in">  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span>,</span>
-<span class="r-in">  del_properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"message"</span>, <span class="st">"language"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">test_ic</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 7. Create a report based on all the tasks</span></span>
-<span class="r-in"><span class="co"># that are running or have already been completed.</span></span>
-<span class="r-in"><span class="fu">ee_manage_task</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 8. Cancel all the running task</span></span>
-<span class="r-in"><span class="fu">ee_manage_cancel_all_running_task</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># 9. Delete EE objects or folders</span></span>
-<span class="r-in"><span class="fu">ee_manage_delete</span><span class="op">(</span><span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Change datacolecfbf by your EE user to be able to reproduce</span></span></span>
+<span class="r-in"><span><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="ee_get_assethome.html">ee_get_assethome</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">addm</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"%s/%s"</span>,<span class="va">user</span>, <span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># 1. Create a folder or Image Collection</span></span></span>
+<span class="r-in"><span><span class="co"># Change path asset according to your specific user</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_create</span><span class="op">(</span><span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 1. List all the elements inside a folder or a ImageCollection</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 2. Create a Folder or a ImageCollection</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_create</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  asset_type <span class="op">=</span> <span class="st">"Folder"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_create</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_ic"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  asset_type <span class="op">=</span> <span class="st">"ImageCollection"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 3. Shows Earth Engine quota</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_quota</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 4. Move an EE object to another folder</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_move</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_ic"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  final_path <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_assetlist</span><span class="op">(</span>path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 5. Set properties to an EE object.</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_set_properties</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  add_properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"hello-world"</span>, language <span class="op">=</span> <span class="st">"R"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ic_id</span> <span class="op">&lt;-</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_ic</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="va">ic_id</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_ic</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 6. Delete properties</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_delete_properties</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path_asset <span class="op">=</span> <span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/rgee_folder/rgee_ic_moved"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  del_properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"message"</span>, <span class="st">"language"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_ic</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 7. Create a report based on all the tasks</span></span></span>
+<span class="r-in"><span><span class="co"># that are running or have already been completed.</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_task</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 8. Cancel all the running task</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_cancel_all_running_task</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># 9. Delete EE objects or folders</span></span></span>
+<span class="r-in"><span><span class="fu">ee_manage_delete</span><span class="op">(</span><span class="fu">addm</span><span class="op">(</span><span class="st">"rgee/"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -262,7 +285,7 @@ the properties.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

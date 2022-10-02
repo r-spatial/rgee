@@ -21,7 +21,7 @@ a wrapper around rgee::ee$Initialize()."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -106,13 +106,19 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_Initialize</span><span class="op">(</span>
-  user <span class="op">=</span> <span class="cn">NULL</span>,
-  drive <span class="op">=</span> <span class="cn">FALSE</span>,
-  gcs <span class="op">=</span> <span class="cn">FALSE</span>,
-  display <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_Initialize</span><span class="op">(</span></span>
+<span>  user <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  drive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  gcs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  credentials <span class="op">=</span> <span class="st">"persistent"</span>,</span>
+<span>  opt_url <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cloud_api_key <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  http_transport <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  project <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  auth_quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -122,24 +128,62 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
 argument is used to create a folder inside the path
 <code>~/.config/earthengine/</code> that save all the credentials for a specific
 Google identity.</p></dd>
+
+
 <dt>drive</dt>
 <dd><p>Logical (optional). If TRUE, the drive credential
 is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+
+
 <dt>gcs</dt>
 <dd><p>Logical (optional). If TRUE, the Google Cloud Storage
 credential is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
-<dt>display</dt>
-<dd><p>Logical. If TRUE, display the earthengine authentication URL.</p></dd>
+
+
+<dt>credentials</dt>
+<dd><p>OAuth2 credentials. 'persistent' (default) means
+use credentials already stored in the filesystem, or raise an explanatory
+exception guiding the user to create those credentials.</p></dd>
+
+
+<dt>opt_url</dt>
+<dd><p>The base url for the EarthEngine REST API to connect to.</p></dd>
+
+
+<dt>cloud_api_key</dt>
+<dd><p>An optional API key to use the Cloud API.</p></dd>
+
+
+<dt>http_transport</dt>
+<dd><p>The http transport method to use when making requests.</p></dd>
+
+
+<dt>project</dt>
+<dd><p>The client project ID or number to use when making API calls.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info messages.</p></dd>
+
+
+<dt>auth_quiet</dt>
+<dd><p>Logical. <a href="ee_Authenticate.html">ee_Authenticate</a> quiet parameter. If TRUE,
+do not require interactive prompts and force --no-browser mode for gcloud.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Extra exporting argument. See <a href="ee_Authenticate.html">ee_Authenticate</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>No return value, called for initializing the earthengine-api.</p>
+    
+
+<p>No return value, called for initializing the earthengine-api.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p><code>ee_Initialize(...)</code> can manage Google Drive, and Google
+    <p><code>ee_Initialize()</code> can manage Google Drive, and Google
 Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
@@ -158,13 +202,13 @@ argument, all user credentials are saved in the the subdirectory
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Simple init - Load just the Earth Engine credential</span></span>
-<span class="r-in"><span class="fu">ee_Initialize</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Simple init - Load just the Earth Engine credential</span></span></span>
+<span class="r-in"><span><span class="fu">ee_Initialize</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -179,7 +223,7 @@ argument, all user credentials are saved in the the subdirectory
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

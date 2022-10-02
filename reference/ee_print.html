@@ -20,7 +20,7 @@ data type, properties, and object size."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -104,39 +104,39 @@ data type, properties, and object size.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span><span class="op">)</span>
-
-<span class="co"># S3 method for ee.geometry.Geometry</span>
-<span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for ee.feature.Feature</span>
-<span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for ee.featurecollection.FeatureCollection</span>
-<span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, f_index <span class="op">=</span> <span class="fl">0</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="co"># S3 method for ee.image.Image</span>
-<span class="fu">ee_print</span><span class="op">(</span>
-  <span class="va">eeobject</span>,
-  <span class="va">...</span>,
-  <span class="va">img_band</span>,
-  time_end <span class="op">=</span> <span class="cn">TRUE</span>,
-  compression_ratio <span class="op">=</span> <span class="fl">20</span>,
-  clean <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="co"># S3 method for ee.imagecollection.ImageCollection</span>
-<span class="fu">ee_print</span><span class="op">(</span>
-  <span class="va">eeobject</span>,
-  <span class="va">...</span>,
-  time_end <span class="op">=</span> <span class="cn">TRUE</span>,
-  img_index <span class="op">=</span> <span class="fl">0</span>,
-  <span class="va">img_band</span>,
-  compression_ratio <span class="op">=</span> <span class="fl">20</span>,
-  clean <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ee.geometry.Geometry</span></span>
+<span><span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ee.feature.Feature</span></span>
+<span><span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ee.featurecollection.FeatureCollection</span></span>
+<span><span class="fu">ee_print</span><span class="op">(</span><span class="va">eeobject</span>, <span class="va">...</span>, f_index <span class="op">=</span> <span class="fl">0</span>, clean <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ee.image.Image</span></span>
+<span><span class="fu">ee_print</span><span class="op">(</span></span>
+<span>  <span class="va">eeobject</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  <span class="va">img_band</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compression_ratio <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  clean <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for ee.imagecollection.ImageCollection</span></span>
+<span><span class="fu">ee_print</span><span class="op">(</span></span>
+<span>  <span class="va">eeobject</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  time_end <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  img_index <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  <span class="va">img_band</span>,</span>
+<span>  compression_ratio <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  clean <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -144,32 +144,51 @@ data type, properties, and object size.</p>
     <dl><dt>eeobject</dt>
 <dd><p>Earth Engine Object. Available for: Geometry, Feature,
 FeatureCollection, Image or ImageCollection.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>ignored</p></dd>
+
+
 <dt>clean</dt>
 <dd><p>Logical. If TRUE, the cache will be cleaned.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message</p></dd>
+
+
 <dt>f_index</dt>
 <dd><p>Numeric. Index of the <code>ee$FeatureCollection</code> to fetch.
 Relevant just for <code>ee$FeatureCollection</code> objects.</p></dd>
+
+
 <dt>img_band</dt>
 <dd><p>Character. Band name of the <code>ee$Image</code> to fetch.
 Relevant just for <code>ee$ImageCollection</code> and <code>ee$Image</code> objects.</p></dd>
+
+
 <dt>time_end</dt>
 <dd><p>Logical. If TRUE, the system:time_end property in ee$Image
 is also returned. See <code><a href="ee_get_date_img.html">rgee::ee_get_date_img</a></code> for details.</p></dd>
+
+
 <dt>compression_ratio</dt>
 <dd><p>Numeric. Measurement of the relative data size
 reduction produced by a data compression algorithm (ignored if <code>eeobject</code>
 is not an <code>ee$Image</code> or <code>ee$ImageCollection</code>). By default is 20.</p></dd>
+
+
 <dt>img_index</dt>
 <dd><p>Numeric. Index of the <code>ee$ImageCollection</code> to fetch.
 Relevant just for <code>ee$ImageCollection</code> objects.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list with the metadata of the Earth Engine object.</p>
+    
+
+<p>A list with the metadata of the Earth Engine object.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -180,38 +199,38 @@ Relevant just for <code>ee$ImageCollection</code> objects.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Geometry</span></span>
-<span class="r-in"><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ee_print</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Feature</span></span>
-<span class="r-in"><span class="va">feature</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Feature</span><span class="op">(</span><span class="va">geom</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rgee <span class="op">=</span> <span class="st">"ee_print"</span>, data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ee_print</span><span class="op">(</span><span class="va">feature</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># FeatureCollection</span></span>
-<span class="r-in"><span class="va">featurecollection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="va">feature</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ee_print</span><span class="op">(</span><span class="va">featurecollection</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Image</span></span>
-<span class="r-in"><span class="va">srtm</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"CGIAR/SRTM90_V4"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ee_print</span><span class="op">(</span><span class="va">srtm</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">srtm_clip</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"CGIAR/SRTM90_V4"</span><span class="op">)</span><span class="op">$</span><span class="fu">clip</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">srtm_metadata</span> <span class="op">&lt;-</span> <span class="fu">ee_print</span><span class="op">(</span><span class="va">srtm_clip</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">srtm_metadata</span><span class="op">$</span><span class="va">img_bands_names</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># ImageCollection</span></span>
-<span class="r-in"><span class="va">object</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_TOA"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Filter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">"WRS_PATH"</span>, <span class="fl">44</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Filter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">"WRS_ROW"</span>, <span class="fl">34</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2014-03-01"</span>, <span class="st">"2014-08-01"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">aside</span><span class="op">(</span><span class="va">ee_print</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Geometry</span></span></span>
+<span class="r-in"><span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>,<span class="op">-</span><span class="fl">10</span>,<span class="fl">10</span>,<span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ee_print</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Feature</span></span></span>
+<span class="r-in"><span><span class="va">feature</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Feature</span><span class="op">(</span><span class="va">geom</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>rgee <span class="op">=</span> <span class="st">"ee_print"</span>, data <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ee_print</span><span class="op">(</span><span class="va">feature</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># FeatureCollection</span></span></span>
+<span class="r-in"><span><span class="va">featurecollection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="va">feature</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ee_print</span><span class="op">(</span><span class="va">featurecollection</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Image</span></span></span>
+<span class="r-in"><span><span class="va">srtm</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"CGIAR/SRTM90_V4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ee_print</span><span class="op">(</span><span class="va">srtm</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">srtm_clip</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"CGIAR/SRTM90_V4"</span><span class="op">)</span><span class="op">$</span><span class="fu">clip</span><span class="op">(</span><span class="va">geom</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">srtm_metadata</span> <span class="op">&lt;-</span> <span class="fu">ee_print</span><span class="op">(</span><span class="va">srtm_clip</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">srtm_metadata</span><span class="op">$</span><span class="va">img_bands_names</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># ImageCollection</span></span></span>
+<span class="r-in"><span><span class="va">object</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_TOA"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Filter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">"WRS_PATH"</span>, <span class="fl">44</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="fu">Filter</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">"WRS_ROW"</span>, <span class="fl">34</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2014-03-01"</span>, <span class="st">"2014-08-01"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">aside</span><span class="op">(</span><span class="va">ee_print</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -226,7 +245,7 @@ Relevant just for <code>ee$ImageCollection</code> objects.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -137,41 +137,41 @@
 </h3>
 <p>This issue happens when the <strong>map</strong> method is used while: (1) running a reticulate version lower than &lt; 1.14 (please update it!); or (2) leading with <strong>ee$List</strong> objects. For instance:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-<span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span>
-<span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Detailed traceback: </span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/apifunction.py", line 205, in &lt;lambda&gt;</span>
-<span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 67, in call</span>
-<span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span>
-<span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span>
-<span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/__init__.py", line 242, in _Promote</span>
-<span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create</span>
-<span class="co">#&gt;     return CustomFunction(signature, func)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span>
-<span class="co">#&gt;     self._body = body(*variables)</span>
-<span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span>
-<span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span><span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error in py_call_impl(callable, dots$args, dots$keywords): RuntimeError: Evaluation error: argument "x" is missing, with no default.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Detailed traceback: </span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/apifunction.py", line 205, in &lt;lambda&gt;</span></span>
+<span><span class="co">#&gt;     return lambda *args, **kwargs: func.call(*args, **kwargs)  # pylint: disable=unnecessary-lambda</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 67, in call</span></span>
+<span><span class="co">#&gt;     return self.apply(self.nameArgs(args, kwargs))</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 80, in apply</span></span>
+<span><span class="co">#&gt;     result = computedobject.ComputedObject(self, self.promoteArgs(named_args))</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/function.py", line 107, in promoteArgs</span></span>
+<span><span class="co">#&gt;     promoted_args[name] = Function._promoter(args[name], spec['type'])</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/__init__.py", line 242, in _Promote</span></span>
+<span><span class="co">#&gt;     return CustomFunction.create(arg, 'Object', ['Object'] * args_count)</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 121, in create</span></span>
+<span><span class="co">#&gt;     return CustomFunction(signature, func)</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/.virtualenvs/r-reticulate/lib/python3.7/site-packages/ee/customfunction.py", line 47, in __init__</span></span>
+<span><span class="co">#&gt;     self._body = body(*variables)</span></span>
+<span><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></span>
+<span><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></span></code></pre></div>
 <p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-<span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span>
-<span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span>
-<span class="va">mynewlist</span> <span class="op">=</span> <span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span>
-  <span class="fu"><a href="../reference/ee_utils_pyfunc.html">ee_utils_pyfunc</a></span><span class="op">(</span>
-    <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>   
-  <span class="op">)</span>
-<span class="op">)</span>
-<span class="va">mynewlist</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span><span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">mylist</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">List</span><span class="op">$</span><span class="fu">sequence</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">mynewlist</span> <span class="op">=</span> <span class="va">mylist</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/ee_utils_pyfunc.html">ee_utils_pyfunc</a></span><span class="op">(</span></span>
+<span>    <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">$</span><span class="fu">add</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>   </span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">mynewlist</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10 11</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="do-not-forget-the-l">
@@ -183,8 +183,8 @@
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;class 'int'&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; [1] "numeric"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "numeric"</span></span></code></pre></div>
 <p>But why does this matter? Let’s explain with an example:</p>
 <p><strong>Python</strong></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ee.Initialize()</span>
@@ -205,9 +205,9 @@
 <span id="cb6-11"><a href="#cb6-11"></a>ee.ee_exception.EEException<span class="op">:</span><span class="st"> </span>Number.bitwiseAnd<span class="op">:</span><span class="st"> </span>Bitwise operands must be integer only.</span></code></pre></div>
 <p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple; you just need to add the letter <strong>L</strong> to the end of the specific number or employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">and_bitwise</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="fl">32L</span><span class="op">)</span><span class="op">$</span><span class="fu">bitwiseAnd</span><span class="op">(</span><span class="fl">100L</span><span class="op">)</span>
-<span class="va">and_bitwise</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; [1] 32</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">and_bitwise</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="fl">32L</span><span class="op">)</span><span class="op">$</span><span class="fu">bitwiseAnd</span><span class="op">(</span><span class="fl">100L</span><span class="op">)</span></span>
+<span><span class="va">and_bitwise</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 32</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="be-careful-with-eedate">
@@ -220,25 +220,25 @@
 <span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; {'type': 'Date', 'value': 631152000000} # greater than 2 billion</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">my_date</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="st">'1990-01-01'</span><span class="op">)</span>
-<span class="va">my_date</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; $type</span>
-<span class="co">#&gt; [1] "Date"</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; $value</span>
-<span class="co">#&gt; [1] -208192512</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_date</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="st">'1990-01-01'</span><span class="op">)</span></span>
+<span><span class="va">my_date</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $type</span></span>
+<span><span class="co">#&gt; [1] "Date"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $value</span></span>
+<span><span class="co">#&gt; [1] -208192512</span></span></code></pre></div>
 <p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and they should not be too severe if treated with care. <code>rgee</code> implements two functions to deal with Earth Engine dates: <code>eedate_to_rdate</code> and <code>rdate_to_eedate</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Era5 dataset</span>
-<span class="va">era_img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"ECMWF/ERA5/DAILY"</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">first</span><span class="op">(</span><span class="op">)</span>
-<span class="co"># Extracting init date</span>
-<span class="va">ee_date</span> <span class="op">&lt;-</span> <span class="va">era_img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span>
-<span class="va">ee_date</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Silent error</span>
-<span class="co">#&gt; [1] 112573440</span>
-<span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span><span class="op">(</span>ee_date <span class="op">=</span> <span class="va">ee_date</span>, timestamp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="co">#&gt; [1] 1.546301e+12</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Era5 dataset</span></span>
+<span><span class="va">era_img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"ECMWF/ERA5/DAILY"</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2019-01-01"</span>, <span class="st">"2019-12-31"</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">first</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co"># Extracting init date</span></span>
+<span><span class="va">ee_date</span> <span class="op">&lt;-</span> <span class="va">era_img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span></span>
+<span><span class="va">ee_date</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Silent error</span></span>
+<span><span class="co">#&gt; [1] 112573440</span></span>
+<span><span class="fu"><a href="../reference/eedate_to_rdate.html">eedate_to_rdate</a></span><span class="op">(</span>ee_date <span class="op">=</span> <span class="va">ee_date</span>, timestamp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.546301e+12</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="take-into-consideration-reserved-words-in-r">
@@ -253,11 +253,11 @@
 <span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; Error: unexpected 'repeat' in "ee_list$repeat"</span></span></code></pre></div>
 <p>To avoid this error use backticks/quotation marks:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">ee_list</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">List</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">ee_list</span><span class="op">$</span><span class="st">'repeat'</span><span class="op">(</span><span class="fl">10</span>,<span class="fl">2</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; 10 10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">ee_list</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">List</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">ee_list</span><span class="op">$</span><span class="st">'repeat'</span><span class="op">(</span><span class="fl">10</span>,<span class="fl">2</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 10 10</span></span></code></pre></div>
 </div>
   </div>
 
@@ -276,7 +276,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

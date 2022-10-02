@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -94,7 +94,9 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.3.9000" id="rgee-1139000">rgee 1.1.3.9000<a class="anchor" aria-label="anchor" href="#rgee-1139000"></a></h2>
-<ul><li>Preventive message added to ee_get_date_ic (thanks <a href="https://github.com/zackarno" class="external-link">@zackarno</a>)</li>
+<ul><li>ee_Initialize now supports EE API &gt; 0.1.310.</li>
+<li>ee_Authenticate added.</li>
+<li>Preventive message added to ee_get_date_ic (thanks <a href="https://github.com/zackarno" class="external-link">@zackarno</a>)</li>
 <li>Critical bug solved in ee_check, see changes <a href="https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795" class="external-link">here</a> (thanks <a href="https://github.com/MartinHoldrege" class="external-link">@MartinHoldrege</a>)</li>
 </ul></div>
     <div class="section level2">
@@ -302,8 +304,7 @@
 <li>add a new logical argument called ‘strict’ to <strong>ee_manage_delete</strong>. If TRUE, the existence of the asset will be evaluate before to perform the task.</li>
 <li>Fix a bug in ee_Initialize, now users without an Earth Engine Assets home root will see a message.</li>
 <li>Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.</li>
-<li>ee_check completely renovated.
-<ul><li>New diagnostic messages.</li>
+<li>ee_check completely renovated.<ul><li>New diagnostic messages.</li>
 <li>Fix a minor bug when testing GCS credentials.</li>
 <li>The file ee_check.py was deleted.</li>
 </ul></li>
@@ -407,7 +408,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

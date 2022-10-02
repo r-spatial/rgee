@@ -19,7 +19,7 @@ using leaflet."><meta property="og:image" content="https://r-spatial.github.io/r
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -104,7 +104,9 @@ using <code>leaflet</code>.</p>
 
     <div id="value">
     <h2>Value</h2>
-    <p>Object of class <code>leaflet</code> and <code>EarthEngineMap</code>, with the
+    
+
+<p>Object of class <code>leaflet</code> and <code>EarthEngineMap</code>, with the
 following extra parameters: tokens, name, opacity, shown, min, max, palette,
 position, and legend. Use the $ method to retrieve the data (e.g., m$rgee$min).</p>
     </div>
@@ -186,7 +188,7 @@ style.</p></dd>
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Constructor of R6Map.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/R6Map.html">R6Map</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">1</span>, save_maps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/R6Map.html">R6Map</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">1</span>, save_maps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -218,7 +220,7 @@ style.</p></dd>
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Reset to initial arguments.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">1</span>, save_maps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">1</span>, save_maps <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -277,7 +279,7 @@ Map
 <h3 id="method-print-">Method <code><a href="print.ee.computedobject.ComputedObject.html">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Display a <code>EarthEngineMap</code> object.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -290,7 +292,7 @@ Map
 <p>Centers the map view at the given coordinates with the given zoom level. If
 no zoom level is provided, it uses 10 by default.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span>lon <span class="op">=</span> <span class="fl">0</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -336,7 +338,7 @@ Map
 <h3 id="method-setzoom-">Method <code>setZoom()</code><a class="anchor" aria-label="anchor" href="#method-setzoom-"></a></h3>
 <p>Sets the zoom level of the map.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">setZoom</span><span class="op">(</span>zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">setZoom</span><span class="op">(</span>zoom <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -376,12 +378,12 @@ Map
 will be predicted according to the bounds of the Earth Engine object
 specified.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span>
-  <span class="va">eeObject</span>,
-  zoom <span class="op">=</span> <span class="cn">NULL</span>,
-  maxError <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ErrorMargin</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,
-  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span></span>
+<span>  <span class="va">eeObject</span>,</span>
+<span>  zoom <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxError <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ErrorMargin</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -429,16 +431,16 @@ Map
 <h3 id="method-addlayer-">Method <code>addLayer()</code><a class="anchor" aria-label="anchor" href="#method-addlayer-"></a></h3>
 <p>Adds a given Earth Engine spatial object to the map as a layer</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span>
-  <span class="va">eeObject</span>,
-  visParams <span class="op">=</span> <span class="cn">NULL</span>,
-  name <span class="op">=</span> <span class="cn">NULL</span>,
-  shown <span class="op">=</span> <span class="cn">TRUE</span>,
-  opacity <span class="op">=</span> <span class="fl">1</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  titiler_viz_convert <span class="op">=</span> <span class="cn">TRUE</span>,
-  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
+<span>  <span class="va">eeObject</span>,</span>
+<span>  visParams <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shown <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opacity <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  titiler_viz_convert <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -537,15 +539,15 @@ Map$reset()
 <h3 id="method-addlayers-">Method <code>addLayers()</code><a class="anchor" aria-label="anchor" href="#method-addlayers-"></a></h3>
 <p>Adds a given ee$ImageCollection to the map as multiple layers.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLayers</span><span class="op">(</span>
-  <span class="va">eeObject</span>,
-  visParams <span class="op">=</span> <span class="cn">NULL</span>,
-  nmax <span class="op">=</span> <span class="fl">5</span>,
-  name <span class="op">=</span> <span class="cn">NULL</span>,
-  shown <span class="op">=</span> <span class="cn">TRUE</span>,
-  position <span class="op">=</span> <span class="cn">NULL</span>,
-  opacity <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLayers</span><span class="op">(</span></span>
+<span>  <span class="va">eeObject</span>,</span>
+<span>  visParams <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nmax <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  name <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  shown <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  position <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opacity <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -591,7 +593,6 @@ By default NULL (No panel will be created).</p></dd>
 <p></p><div class="r example copy"><div class="sourceCode"><pre><code>\dontrun{
 library(sf)
 library(rgee)
-library(rgeeExtra)
 
 ee_Initialize()
 
@@ -603,8 +604,8 @@ nc &lt;- st_read(system.file("shape/nc.shp", package = "sf")) %&gt;%
 
 ee_s2 &lt;- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
-  filterBounds(nc) %&gt;%
-  ee_get(0:2)
+  filterBounds(nc)
+ee_s2 &lt;- ee$ImageCollection(ee_s2$toList(2))
 
 Map$centerObject(nc$geometry())
 Map$addLayers(eeObject = ee_s2,position = "right")
@@ -622,14 +623,14 @@ Map$reset()
 <h3 id="method-addlegend-">Method <code><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html" class="external-link">addLegend()</a></code><a class="anchor" aria-label="anchor" href="#method-addlegend-"></a></h3>
 <p>Adds a color legend to an EarthEngineMap.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span>
-  <span class="va">visParams</span>,
-  name <span class="op">=</span> <span class="st">"Legend"</span>,
-  position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bottomright"</span>, <span class="st">"topright"</span>, <span class="st">"bottomleft"</span>, <span class="st">"topleft"</span><span class="op">)</span>,
-  color_mapping <span class="op">=</span> <span class="st">"numeric"</span>,
-  opacity <span class="op">=</span> <span class="fl">1</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span></span>
+<span>  <span class="va">visParams</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"Legend"</span>,</span>
+<span>  position <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"bottomright"</span>, <span class="st">"topright"</span>, <span class="st">"bottomleft"</span>, <span class="st">"topleft"</span><span class="op">)</span>,</span>
+<span>  color_mapping <span class="op">=</span> <span class="st">"numeric"</span>,</span>
+<span>  opacity <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -705,7 +706,7 @@ Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">R6Map</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">R6Map</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -723,195 +724,194 @@ Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$reset`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load an Image</span></span>
-<span class="r-in"><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create</span></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Simple display: Map just will</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
-<span class="r-in">  eeObject <span class="op">=</span> <span class="va">image</span>,</span>
-<span class="r-in">  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"l8_01"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span> <span class="co"># display map</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span> <span class="co"># Reset arguments</span></span>
-<span class="r-in"><span class="va">Map</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$setCenter`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">76</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Map$lat</span></span>
-<span class="r-in"><span class="co"># Map$lon</span></span>
-<span class="r-in"><span class="co"># Map$zoom</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$setZoom`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">setZoom</span><span class="op">(</span>zoom <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Map$lat</span></span>
-<span class="r-in"><span class="co"># Map$lon</span></span>
-<span class="r-in"><span class="co"># Map$zoom</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$centerObject`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$addLayer`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load an Image</span></span>
-<span class="r-in"><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create</span></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Simple display: Map just will</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
-<span class="r-in">  eeObject <span class="op">=</span> <span class="va">image</span>,</span>
-<span class="r-in">  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"l8_01"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
-<span class="r-in">  eeObject <span class="op">=</span> <span class="va">image</span>,</span>
-<span class="r-in">  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">20000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"l8_02"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Simple display: Map just will (if the position is not specified it will</span></span>
-<span class="r-in"><span class="co"># be saved on the right side)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span> <span class="co"># Reset Map to the initial arguments.</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
-<span class="r-in">  eeObject <span class="op">=</span> <span class="va">image</span>,</span>
-<span class="r-in">  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max<span class="op">=</span><span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"l8_left"</span>,</span>
-<span class="r-in">  position <span class="op">=</span> <span class="st">"left"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
-<span class="r-in">  eeObject <span class="op">=</span> <span class="va">image</span>,</span>
-<span class="r-in">  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max<span class="op">=</span><span class="fl">20000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="st">"l8_right"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$addLayers`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rgeeExtra</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu"><a href="sf_as_ee.html">sf_as_ee</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ee_s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2016-01-01"</span>, <span class="st">"2016-01-31"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">nc</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">ee_get</span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayers</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">ee_s2</span>,position <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># digging up the metadata</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="va">previous_map_right</span><span class="op">$</span><span class="va">rgee</span><span class="op">$</span><span class="va">tokens</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"><span class="co">## Method `R6Map$addLegend`</span></span>
-<span class="r-in"><span class="co">## ------------------------------------------------</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load MODIS ImageCollection</span></span>
-<span class="r-in"><span class="va">imgcol</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="va">Dataset</span><span class="op">$</span><span class="va">MODIS_006_MOD13Q1</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Parameters for visualization</span></span>
-<span class="r-in"><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"good"</span>, <span class="st">"marginal"</span>, <span class="st">"snow"</span>, <span class="st">"cloud"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">cols</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#999999"</span>, <span class="st">"#00BFC4"</span>, <span class="st">"#F8766D"</span>, <span class="st">"#C77CFF"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">vis_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">3</span>, palette <span class="op">=</span> <span class="va">cols</span>, bands <span class="op">=</span> <span class="st">"SummaryQA"</span>, values <span class="op">=</span> <span class="va">labels</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create interactive map</span></span>
-<span class="r-in"><span class="va">m_qc</span> <span class="op">&lt;-</span> <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">imgcol</span><span class="op">$</span><span class="fu">median</span><span class="op">(</span><span class="op">)</span>, <span class="va">vis_qc</span>, <span class="st">"QC"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># continous palette</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># categorical palette</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span>, name <span class="op">=</span> <span class="st">"Legend1"</span>, color_mapping <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># character palette</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span>, name <span class="op">=</span> <span class="st">"Legend2"</span>, color_mapping <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$reset`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load an Image</span></span></span>
+<span class="r-in"><span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create</span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Simple display: Map just will</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eeObject <span class="op">=</span> <span class="va">image</span>,</span></span>
+<span class="r-in"><span>  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"l8_01"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="co"># display map</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span> <span class="co"># Reset arguments</span></span></span>
+<span class="r-in"><span><span class="va">Map</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$setCenter`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span>lon <span class="op">=</span> <span class="op">-</span><span class="fl">76</span>, lat <span class="op">=</span> <span class="fl">0</span>, zoom <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Map$lat</span></span></span>
+<span class="r-in"><span><span class="co"># Map$lon</span></span></span>
+<span class="r-in"><span><span class="co"># Map$zoom</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$setZoom`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">setZoom</span><span class="op">(</span>zoom <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Map$lat</span></span></span>
+<span class="r-in"><span><span class="co"># Map$lon</span></span></span>
+<span class="r-in"><span><span class="co"># Map$zoom</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$centerObject`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$addLayer`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load an Image</span></span></span>
+<span class="r-in"><span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_20140318"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create</span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Simple display: Map just will</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eeObject <span class="op">=</span> <span class="va">image</span>,</span></span>
+<span class="r-in"><span>  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"l8_01"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eeObject <span class="op">=</span> <span class="va">image</span>,</span></span>
+<span class="r-in"><span>  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max <span class="op">=</span> <span class="fl">20000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"l8_02"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Simple display: Map just will (if the position is not specified it will</span></span></span>
+<span class="r-in"><span><span class="co"># be saved on the right side)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span> <span class="co"># Reset Map to the initial arguments.</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">image</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eeObject <span class="op">=</span> <span class="va">image</span>,</span></span>
+<span class="r-in"><span>  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max<span class="op">=</span><span class="fl">10000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"l8_left"</span>,</span></span>
+<span class="r-in"><span>  position <span class="op">=</span> <span class="st">"left"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  eeObject <span class="op">=</span> <span class="va">image</span>,</span></span>
+<span class="r-in"><span>  visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>, max<span class="op">=</span><span class="fl">20000</span>, bands <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="st">"l8_right"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$addLayers`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span> <span class="op">&lt;-</span> <span class="va">R6Map</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_transform.html" class="external-link">st_transform</a></span><span class="op">(</span><span class="fl">4326</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="sf_as_ee.html">sf_as_ee</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ee_s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">filterDate</span><span class="op">(</span><span class="st">"2016-01-01"</span>, <span class="st">"2016-01-31"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">nc</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ee_s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="va">ee_s2</span><span class="op">$</span><span class="fu">toList</span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">nc</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayers</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">ee_s2</span>,position <span class="op">=</span> <span class="st">"right"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># digging up the metadata</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="va">previous_map_right</span><span class="op">$</span><span class="va">rgee</span><span class="op">$</span><span class="va">tokens</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="co">## Method `R6Map$addLegend`</span></span></span>
+<span class="r-in"><span><span class="co">## ------------------------------------------------</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/leaflet/" class="external-link">leaflet</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load MODIS ImageCollection</span></span></span>
+<span class="r-in"><span><span class="va">imgcol</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="va">Dataset</span><span class="op">$</span><span class="va">MODIS_006_MOD13Q1</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Parameters for visualization</span></span></span>
+<span class="r-in"><span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"good"</span>, <span class="st">"marginal"</span>, <span class="st">"snow"</span>, <span class="st">"cloud"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cols</span>   <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#999999"</span>, <span class="st">"#00BFC4"</span>, <span class="st">"#F8766D"</span>, <span class="st">"#C77CFF"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">vis_qc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">0</span>, max <span class="op">=</span> <span class="fl">3</span>, palette <span class="op">=</span> <span class="va">cols</span>, bands <span class="op">=</span> <span class="st">"SummaryQA"</span>, values <span class="op">=</span> <span class="va">labels</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create interactive map</span></span></span>
+<span class="r-in"><span><span class="va">m_qc</span> <span class="op">&lt;-</span> <span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">imgcol</span><span class="op">$</span><span class="fu">median</span><span class="op">(</span><span class="op">)</span>, <span class="va">vis_qc</span>, <span class="st">"QC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># continous palette</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># categorical palette</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span>, name <span class="op">=</span> <span class="st">"Legend1"</span>, color_mapping <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># character palette</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLegend</span><span class="op">(</span><span class="va">vis_qc</span>, name <span class="op">=</span> <span class="st">"Legend2"</span>, color_mapping <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -926,7 +926,7 @@ Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

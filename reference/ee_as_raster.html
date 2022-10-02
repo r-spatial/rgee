@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -98,68 +98,95 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_as_raster</span><span class="op">(</span>
-  <span class="va">image</span>,
-  region <span class="op">=</span> <span class="cn">NULL</span>,
-  dsn <span class="op">=</span> <span class="cn">NULL</span>,
-  via <span class="op">=</span> <span class="st">"drive"</span>,
-  container <span class="op">=</span> <span class="st">"rgee_backup"</span>,
-  scale <span class="op">=</span> <span class="cn">NULL</span>,
-  maxPixels <span class="op">=</span> <span class="fl">1e+09</span>,
-  lazy <span class="op">=</span> <span class="cn">FALSE</span>,
-  public <span class="op">=</span> <span class="cn">TRUE</span>,
-  add_metadata <span class="op">=</span> <span class="cn">TRUE</span>,
-  timePrefix <span class="op">=</span> <span class="cn">TRUE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_as_raster</span><span class="op">(</span></span>
+<span>  <span class="va">image</span>,</span>
+<span>  region <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dsn <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  via <span class="op">=</span> <span class="st">"drive"</span>,</span>
+<span>  container <span class="op">=</span> <span class="st">"rgee_backup"</span>,</span>
+<span>  scale <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxPixels <span class="op">=</span> <span class="fl">1e+09</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  public <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  add_metadata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  timePrefix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>image</dt>
 <dd><p>ee$Image to be converted into a raster object.</p></dd>
+
+
 <dt>region</dt>
 <dd><p>EE Geometry (ee$Geometry$Polygon) which specifies the region
 to export. CRS needs to be the same that the argument <code>image</code>.
 Otherwise, it will be forced. If not specified, image bounds are taken.</p></dd>
+
+
 <dt>dsn</dt>
 <dd><p>Character. Output filename. If missing, a temporary file is
 created.</p></dd>
+
+
 <dt>via</dt>
 <dd><p>Character. Method to export the image. Two methods are
 implemented: "drive", "gcs". See details.</p></dd>
+
+
 <dt>container</dt>
 <dd><p>Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported.</p></dd>
+
+
 <dt>scale</dt>
 <dd><p>Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image.</p></dd>
+
+
 <dt>maxPixels</dt>
 <dd><p>Numeric. The maximum allowed number of pixels in the
 exported image. The task will fail if the exported region covers
 more pixels in the specified projection. Defaults to 100,000,000.</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>Logical. If TRUE, a <code><a href="https://future.futureverse.org/reference/sequential.html" class="external-link">
 future::sequential</a></code> object is created to evaluate the task in the future.
 See details.</p></dd>
+
+
 <dt>public</dt>
 <dd><p>Logical. If TRUE, a public link to the image is created.</p></dd>
+
+
 <dt>add_metadata</dt>
 <dd><p>Add metadata to the stars_proxy object. See details.</p></dd>
+
+
 <dt>timePrefix</dt>
 <dd><p>Logical. Add current date and time (<code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time()</a></code>) as
 a prefix to files to export. This parameter helps to avoid exported files
 with the same name. By default TRUE.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Extra exporting argument. See <a href="ee_image_to_drive.html">ee_image_to_drive</a> and
 <a href="ee_image_to_gcs.html">ee_image_to_gcs</a>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A RasterStack object</p>
+    
+
+<p>A RasterStack object</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -207,72 +234,72 @@ Earth Engine Guide - Export data</a>.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>drive <span class="op">=</span> <span class="cn">TRUE</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define an image.</span></span>
-<span class="r-in"><span class="va">img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">select</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span>
-<span class="r-in">  <span class="fu">divide</span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># OPTIONAL display it using Map</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">img</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">img</span>, visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>max <span class="op">=</span> <span class="fl">0.4</span>,gamma<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Define an area of interest.</span></span>
-<span class="r-in"><span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span></span>
-<span class="r-in">  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">110.8</span>, <span class="fl">44.6</span>, <span class="op">-</span><span class="fl">110.6</span>, <span class="fl">44.7</span><span class="op">)</span>,</span>
-<span class="r-in">  proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,</span>
-<span class="r-in">  geodesic <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## drive - Method 01</span></span>
-<span class="r-in"><span class="co"># Simple</span></span>
-<span class="r-in"><span class="va">img_02</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span>
-<span class="r-in">  image <span class="op">=</span> <span class="va">img</span>,</span>
-<span class="r-in">  region <span class="op">=</span> <span class="va">geometry</span>,</span>
-<span class="r-in">  via <span class="op">=</span> <span class="st">"drive"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Lazy</span></span>
-<span class="r-in"><span class="va">img_02</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span>
-<span class="r-in">  image <span class="op">=</span> <span class="va">img</span>,</span>
-<span class="r-in">  region <span class="op">=</span> <span class="va">geometry</span>,</span>
-<span class="r-in">  via <span class="op">=</span> <span class="st">"drive"</span>,</span>
-<span class="r-in">  lazy <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">img_02_result</span> <span class="op">&lt;-</span> <span class="va">img_02</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="ee_utils_future_value.html">ee_utils_future_value</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">img_02_result</span><span class="op">@</span><span class="va">history</span><span class="op">$</span><span class="va">metadata</span> <span class="co"># metadata</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">## gcs - Method 02</span></span>
-<span class="r-in"><span class="co"># Simple</span></span>
-<span class="r-in"><span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span>
-<span class="r-in"> image <span class="op">=</span> <span class="va">img</span>,</span>
-<span class="r-in"> region <span class="op">=</span> <span class="va">geometry</span>,</span>
-<span class="r-in"> container <span class="op">=</span> <span class="st">"rgee_dev"</span>,</span>
-<span class="r-in"> via <span class="op">=</span> <span class="st">"gcs"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Lazy</span></span>
-<span class="r-in"><span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span>
-<span class="r-in"> image <span class="op">=</span> <span class="va">img</span>,</span>
-<span class="r-in"> region <span class="op">=</span> <span class="va">geometry</span>,</span>
-<span class="r-in"> container <span class="op">=</span> <span class="st">"rgee_dev"</span>,</span>
-<span class="r-in"> lazy <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span class="r-in"> via <span class="op">=</span> <span class="st">"gcs"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">img_03_result</span> <span class="op">&lt;-</span> <span class="va">img_03</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="ee_utils_future_value.html">ee_utils_future_value</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">img_03_result</span><span class="op">@</span><span class="va">history</span><span class="op">$</span><span class="va">metadata</span> <span class="co"># metadata</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># OPTIONAL: clean containers</span></span>
-<span class="r-in"><span class="co"># ee_clean_container(name = "rgee_backup", type = "drive")</span></span>
-<span class="r-in"><span class="co"># ee_clean_container(name = "rgee_dev", type = "gcs")</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>drive <span class="op">=</span> <span class="cn">TRUE</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_user_info.html">ee_user_info</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define an image.</span></span></span>
+<span class="r-in"><span><span class="va">img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">select</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span></span>
+<span class="r-in"><span>  <span class="fu">divide</span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># OPTIONAL display it using Map</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">img</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span>eeObject <span class="op">=</span> <span class="va">img</span>, visParams <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>max <span class="op">=</span> <span class="fl">0.4</span>,gamma<span class="op">=</span><span class="fl">0.1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Define an area of interest.</span></span></span>
+<span class="r-in"><span><span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">110.8</span>, <span class="fl">44.6</span>, <span class="op">-</span><span class="fl">110.6</span>, <span class="fl">44.7</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,</span></span>
+<span class="r-in"><span>  geodesic <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## drive - Method 01</span></span></span>
+<span class="r-in"><span><span class="co"># Simple</span></span></span>
+<span class="r-in"><span><span class="va">img_02</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  image <span class="op">=</span> <span class="va">img</span>,</span></span>
+<span class="r-in"><span>  region <span class="op">=</span> <span class="va">geometry</span>,</span></span>
+<span class="r-in"><span>  via <span class="op">=</span> <span class="st">"drive"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Lazy</span></span></span>
+<span class="r-in"><span><span class="va">img_02</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  image <span class="op">=</span> <span class="va">img</span>,</span></span>
+<span class="r-in"><span>  region <span class="op">=</span> <span class="va">geometry</span>,</span></span>
+<span class="r-in"><span>  via <span class="op">=</span> <span class="st">"drive"</span>,</span></span>
+<span class="r-in"><span>  lazy <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">img_02_result</span> <span class="op">&lt;-</span> <span class="va">img_02</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="ee_utils_future_value.html">ee_utils_future_value</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">img_02_result</span><span class="op">@</span><span class="va">history</span><span class="op">$</span><span class="va">metadata</span> <span class="co"># metadata</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## gcs - Method 02</span></span></span>
+<span class="r-in"><span><span class="co"># Simple</span></span></span>
+<span class="r-in"><span><span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span></span>
+<span class="r-in"><span> image <span class="op">=</span> <span class="va">img</span>,</span></span>
+<span class="r-in"><span> region <span class="op">=</span> <span class="va">geometry</span>,</span></span>
+<span class="r-in"><span> container <span class="op">=</span> <span class="st">"rgee_dev"</span>,</span></span>
+<span class="r-in"><span> via <span class="op">=</span> <span class="st">"gcs"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Lazy</span></span></span>
+<span class="r-in"><span><span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu">ee_as_raster</span><span class="op">(</span></span></span>
+<span class="r-in"><span> image <span class="op">=</span> <span class="va">img</span>,</span></span>
+<span class="r-in"><span> region <span class="op">=</span> <span class="va">geometry</span>,</span></span>
+<span class="r-in"><span> container <span class="op">=</span> <span class="st">"rgee_dev"</span>,</span></span>
+<span class="r-in"><span> lazy <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span> via <span class="op">=</span> <span class="st">"gcs"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">img_03_result</span> <span class="op">&lt;-</span> <span class="va">img_03</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="ee_utils_future_value.html">ee_utils_future_value</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">img_03_result</span><span class="op">@</span><span class="va">history</span><span class="op">$</span><span class="va">metadata</span> <span class="co"># metadata</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># OPTIONAL: clean containers</span></span></span>
+<span class="r-in"><span><span class="co"># ee_clean_container(name = "rgee_backup", type = "drive")</span></span></span>
+<span class="r-in"><span><span class="co"># ee_clean_container(name = "rgee_dev", type = "gcs")</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -287,7 +314,7 @@ Earth Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

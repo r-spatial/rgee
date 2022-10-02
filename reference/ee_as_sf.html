@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -98,21 +98,21 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_as_sf</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">dsn</span>,
-  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,
-  via <span class="op">=</span> <span class="st">"getInfo"</span>,
-  container <span class="op">=</span> <span class="st">"rgee_backup"</span>,
-  crs <span class="op">=</span> <span class="cn">NULL</span>,
-  maxFeatures <span class="op">=</span> <span class="fl">5000</span>,
-  selectors <span class="op">=</span> <span class="cn">NULL</span>,
-  lazy <span class="op">=</span> <span class="cn">FALSE</span>,
-  public <span class="op">=</span> <span class="cn">TRUE</span>,
-  add_metadata <span class="op">=</span> <span class="cn">TRUE</span>,
-  timePrefix <span class="op">=</span> <span class="cn">TRUE</span>,
-  quiet <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_as_sf</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">dsn</span>,</span>
+<span>  overwrite <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  via <span class="op">=</span> <span class="st">"getInfo"</span>,</span>
+<span>  container <span class="op">=</span> <span class="st">"rgee_backup"</span>,</span>
+<span>  crs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  maxFeatures <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  selectors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  lazy <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  public <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  add_metadata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  timePrefix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -120,51 +120,78 @@
     <dl><dt>x</dt>
 <dd><p>Earth Engine table (ee$FeatureCollection) to be converted into a sf
 object.</p></dd>
+
+
 <dt>dsn</dt>
 <dd><p>Character. Output filename. In case <code>dsn</code> is missing,
 a shapefile is created in the <code>tmp()</code> directory.</p></dd>
+
+
 <dt>overwrite</dt>
 <dd><p>Logical. Delete data source <code>dsn</code> before attempting
 to write?.</p></dd>
+
+
 <dt>via</dt>
 <dd><p>Character. Method to export the image. Three method are
 implemented: "getInfo", "drive", "gcs". See details.</p></dd>
+
+
 <dt>container</dt>
 <dd><p>Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported into (ignored if <code>via</code> is not defined as "drive" or
 "gcs").</p></dd>
+
+
 <dt>crs</dt>
 <dd><p>Integer or Character. Coordinate Reference System (CRS)
 for the EE table. If it is NULL, <code>ee_as_sf</code> will take the CRS of
 the first element.</p></dd>
+
+
 <dt>maxFeatures</dt>
 <dd><p>Numeric. The maximum allowed number of features to
 export (ignored if <code>via</code> is not set as "getInfo"). The task will fail
 if the exported region covers more features than the specified in
 <code>maxFeatures</code>. Defaults to 5000.</p></dd>
+
+
 <dt>selectors</dt>
 <dd><p>The list of properties to include in the output, as a
 list/vector of strings or a comma-separated string. By default, all properties are
 included.</p></dd>
+
+
 <dt>lazy</dt>
 <dd><p>Logical. If TRUE, a <code><a href="https://future.futureverse.org/reference/sequential.html" class="external-link">
 future::sequential</a></code> object is created to evaluate the task in the future.
 Ignore if <code>via</code> is set as "getInfo". See details.</p></dd>
+
+
 <dt>public</dt>
 <dd><p>Logical. If TRUE, a public link to the file is created.
 See details.</p></dd>
+
+
 <dt>add_metadata</dt>
 <dd><p>Add metadata to the sf object. See details.</p></dd>
+
+
 <dt>timePrefix</dt>
 <dd><p>Logical. Add current date and time (<code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time()</a></code>) as
 a prefix to export files. This parameter helps to avoid exported files
 with the same name. By default TRUE.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>logical. Suppress info message.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An sf object.</p>
+    
+
+<p>An sf object.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -211,47 +238,47 @@ Earth Engine Guide - Export data</a>.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>drive <span class="op">=</span> <span class="cn">TRUE</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Region of interest</span></span>
-<span class="r-in"><span class="va">roi</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.275</span>, <span class="fl">37.891</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.275</span>, <span class="fl">37.868</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.240</span>, <span class="fl">37.868</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.240</span>, <span class="fl">37.891</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># TIGER: US Census Blocks Dataset</span></span>
-<span class="r-in"><span class="va">blocks</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">"TIGER/2010/Blocks"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">subset</span> <span class="op">&lt;-</span> <span class="va">blocks</span><span class="op">$</span><span class="fu">filterBounds</span><span class="op">(</span><span class="va">roi</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">sf_subset</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span>x <span class="op">=</span> <span class="va">subset</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sf_subset</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create Random points in Earth Engine</span></span>
-<span class="r-in"><span class="va">region</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="op">-</span><span class="fl">119.224</span>, <span class="fl">34.669</span>, <span class="op">-</span><span class="fl">99.536</span>, <span class="fl">50.064</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="ee_help.html">ee_help</a></span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">FeatureCollection</span><span class="op">$</span><span class="va">randomPoints</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ee_randomPoints</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">FeatureCollection</span><span class="op">$</span><span class="fu">randomPoints</span><span class="op">(</span><span class="va">region</span>, <span class="fl">100</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Download via GetInfo</span></span>
-<span class="r-in"><span class="va">sf_randomPoints</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span><span class="va">ee_randomPoints</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://r-spatial.github.io/sf/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sf_randomPoints</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Download via drive</span></span>
-<span class="r-in"><span class="va">sf_randomPoints_drive</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span></span>
-<span class="r-in">  x <span class="op">=</span> <span class="va">ee_randomPoints</span>,</span>
-<span class="r-in">  via <span class="op">=</span> <span class="st">'drive'</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Download via GCS</span></span>
-<span class="r-in"><span class="va">sf_randomPoints_gcs</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span></span>
-<span class="r-in"> x <span class="op">=</span> <span class="va">subset</span>,</span>
-<span class="r-in"> via <span class="op">=</span> <span class="st">'gcs'</span>,</span>
-<span class="r-in"> container <span class="op">=</span> <span class="st">'rgee_dev'</span> <span class="co">#GCS bucket name</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>drive <span class="op">=</span> <span class="cn">TRUE</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Region of interest</span></span></span>
+<span class="r-in"><span><span class="va">roi</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.275</span>, <span class="fl">37.891</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.275</span>, <span class="fl">37.868</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.240</span>, <span class="fl">37.868</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.240</span>, <span class="fl">37.891</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># TIGER: US Census Blocks Dataset</span></span></span>
+<span class="r-in"><span><span class="va">blocks</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">"TIGER/2010/Blocks"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">subset</span> <span class="op">&lt;-</span> <span class="va">blocks</span><span class="op">$</span><span class="fu">filterBounds</span><span class="op">(</span><span class="va">roi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sf_subset</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span>x <span class="op">=</span> <span class="va">subset</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sf_subset</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create Random points in Earth Engine</span></span></span>
+<span class="r-in"><span><span class="va">region</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span><span class="op">-</span><span class="fl">119.224</span>, <span class="fl">34.669</span>, <span class="op">-</span><span class="fl">99.536</span>, <span class="fl">50.064</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_help.html">ee_help</a></span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">FeatureCollection</span><span class="op">$</span><span class="va">randomPoints</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ee_randomPoints</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">FeatureCollection</span><span class="op">$</span><span class="fu">randomPoints</span><span class="op">(</span><span class="va">region</span>, <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Download via GetInfo</span></span></span>
+<span class="r-in"><span><span class="va">sf_randomPoints</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span><span class="va">ee_randomPoints</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sf_randomPoints</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Download via drive</span></span></span>
+<span class="r-in"><span><span class="va">sf_randomPoints_drive</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="va">ee_randomPoints</span>,</span></span>
+<span class="r-in"><span>  via <span class="op">=</span> <span class="st">'drive'</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Download via GCS</span></span></span>
+<span class="r-in"><span><span class="va">sf_randomPoints_gcs</span> <span class="op">&lt;-</span> <span class="fu">ee_as_sf</span><span class="op">(</span></span></span>
+<span class="r-in"><span> x <span class="op">=</span> <span class="va">subset</span>,</span></span>
+<span class="r-in"><span> via <span class="op">=</span> <span class="st">'gcs'</span>,</span></span>
+<span class="r-in"><span> container <span class="op">=</span> <span class="st">'rgee_dev'</span> <span class="co">#GCS bucket name</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -266,7 +293,7 @@ Earth Engine Guide - Export data</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

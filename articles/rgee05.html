@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -243,36 +243,36 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 </h2>
 <p>From rgee v.1.2.9000 we added <a href="https://r-spatial.github.io/rgee/reference/ee_utils_sak_copy.html">ee_utils_sak_copy</a> and <a href="https://r-spatial.github.io/rgee/reference/ee_utils_sak_validate.html">ee_utils_sak_validate</a> to help you to validate and store your SaK. Please run as follow to properly set your SaK in your system.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># remotes::install_github("r-spatial/rgee") Install rgee v.1.3</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="st">"csaybar"</span><span class="op">)</span>
-
-<span class="va">SaK_file</span> <span class="op">&lt;-</span> <span class="st">"/home/csaybar/Downloads/SaK_rgee.json"</span> <span class="co"># PUT HERE THE FULLNAME OF YOUR SAK.</span>
-
-<span class="co"># Assign the SaK to a EE user.</span>
-<span class="fu"><a href="../reference/ee_utils_sak_copy.html">ee_utils_sak_copy</a></span><span class="op">(</span>
-  sakfile <span class="op">=</span>  <span class="va">SaK_file</span>,
-  users <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csaybar"</span>, <span class="st">"ryali93"</span><span class="op">)</span> <span class="co"># Unlike GD, we can use the same SaK for multiple users.</span>
-<span class="op">)</span>
-
-<span class="co"># Validate your SaK</span>
-<span class="fu"><a href="../reference/ee_utils_sak_validate.html">ee_utils_sak_validate</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># remotes::install_github("r-spatial/rgee") Install rgee v.1.3</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="st">"csaybar"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">SaK_file</span> <span class="op">&lt;-</span> <span class="st">"/home/csaybar/Downloads/SaK_rgee.json"</span> <span class="co"># PUT HERE THE FULLNAME OF YOUR SAK.</span></span>
+<span></span>
+<span><span class="co"># Assign the SaK to a EE user.</span></span>
+<span><span class="fu"><a href="../reference/ee_utils_sak_copy.html">ee_utils_sak_copy</a></span><span class="op">(</span></span>
+<span>  sakfile <span class="op">=</span>  <span class="va">SaK_file</span>,</span>
+<span>  users <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"csaybar"</span>, <span class="st">"ryali93"</span><span class="op">)</span> <span class="co"># Unlike GD, we can use the same SaK for multiple users.</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Validate your SaK</span></span>
+<span><span class="fu"><a href="../reference/ee_utils_sak_validate.html">ee_utils_sak_validate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><code>ee_utils_sak_validate</code> evaluate if <strong>rgee</strong> with your SaK can: (1) create buckets, (2) write objects, (3) read objects, and (4) connect GEE and GCS. If it does not retrieve an error, <code>ee_Initialize(..., gcs = TRUE)</code> will work like a charm!. The next step is create your own <strong>GCS bucket</strong>. Consider that the bucket name you set must be <strong>globally unique</strong>. In other words, two buckets can not exist with the same name in Google Cloud Storage.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805" class="external-link">jsonlite</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://code.markedmondson.me/googleCloudStorageR/" class="external-link">googleCloudStorageR</a></span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="st">"csaybar"</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co"># Create your own container</span>
-<span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"\\.json$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">read_json</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
-  <span class="st">'$'</span><span class="op">(</span><span class="va">project_id</span><span class="op">)</span> <span class="co"># Get the Project ID</span>
-
-<span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_create_bucket.html" class="external-link">gcs_create_bucket</a></span><span class="op">(</span><span class="st">"CHOOSE_A_BUCKET_NAME"</span>, projectId <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://arxiv.org/abs/1403.2805" class="external-link">jsonlite</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://code.markedmondson.me/googleCloudStorageR/" class="external-link">googleCloudStorageR</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="st">"csaybar"</span>, gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create your own container</span></span>
+<span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"\\.json$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">read_json</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="st">'$'</span><span class="op">(</span><span class="va">project_id</span><span class="op">)</span> <span class="co"># Get the Project ID</span></span>
+<span></span>
+<span><span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_create_bucket.html" class="external-link">gcs_create_bucket</a></span><span class="op">(</span><span class="st">"CHOOSE_A_BUCKET_NAME"</span>, projectId <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="error-cannot-insert-legacy-acl-for-an-object-when-uniform-bucket-level-access-is-enabled">
@@ -294,25 +294,25 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <p><br></p>
 <p>Why is this important?. It is important, because if you create a bucket using the first option an error message will arise: <strong>“Cannot insert legacy ACL for an object when uniform bucket-level access is enabled. Read more at <a href="https://cloud.google.com/storage/docs/uniform-bucket-level-access" class="external-link uri">https://cloud.google.com/storage/docs/uniform-bucket-level-access</a>”</strong>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="co"># Bad --------------------------------------------------</span>
-<span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_upload.html" class="external-link">gcs_upload</a></span><span class="op">(</span>
-  file <span class="op">=</span> <span class="va">demo_data</span>,
-  name <span class="op">=</span> <span class="st">"demo_data.csv"</span>,
-  bucket <span class="op">=</span> <span class="st">"demo_0002"</span> <span class="co"># Bucket with uniform control access</span>
-<span class="op">)</span>
-<span class="co">#  Error: Insert legacy ACL for an object when uniform bucket-level access</span>
-<span class="co">#  is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access</span>
-
-
-<span class="co"># Good -------------------------------------------------</span>
-<span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_upload.html" class="external-link">gcs_upload</a></span><span class="op">(</span>
-  file <span class="op">=</span> <span class="va">demo_data</span>,
-  name <span class="op">=</span> <span class="st">"demo_data.csv"</span>,
-  bucket <span class="op">=</span> <span class="st">"demo_0002"</span>, <span class="co"># Bucket with uniform control access</span>
-  predefinedAcl <span class="op">=</span> <span class="st">"bucketLevel"</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">demo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Bad --------------------------------------------------</span></span>
+<span><span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_upload.html" class="external-link">gcs_upload</a></span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="va">demo_data</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"demo_data.csv"</span>,</span>
+<span>  bucket <span class="op">=</span> <span class="st">"demo_0002"</span> <span class="co"># Bucket with uniform control access</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#  Error: Insert legacy ACL for an object when uniform bucket-level access</span></span>
+<span><span class="co">#  is enabled. Read more at https://cloud.google.com/storage/docs/uniform-bucket-level-access</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Good -------------------------------------------------</span></span>
+<span><span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_upload.html" class="external-link">gcs_upload</a></span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="va">demo_data</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"demo_data.csv"</span>,</span>
+<span>  bucket <span class="op">=</span> <span class="st">"demo_0002"</span>, <span class="co"># Bucket with uniform control access</span></span>
+<span>  predefinedAcl <span class="op">=</span> <span class="st">"bucketLevel"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>It happens due that <code>googleCloudStorageaR</code> by default expects buckets created with fine-grained access (ACL support, see <a href="https://github.com/cloudyr/googleCloudStorageR/issues/111" class="external-link">cloudyr/googleCloudStorageR#111</a>). To avoid this issue, from rgee v.1.3 we opt to change the default predefinedAcl argument from ‘private’ to ‘bucketLevel’. This simple change should avoid users dealing with access control issues. However, if for some reason a user needs to change the access control policy (maybe to reduce the data exposure), from rgee v.1.2.0 all the rgee GCS functions (<a href="https://r-spatial.github.io/rgee/reference/sf_as_ee.html">sf_as_ee</a>, <a href="https://r-spatial.github.io/rgee/reference/local_to_gcs.html">local_to_gcs</a>, <a href="https://r-spatial.github.io/rgee/reference/raster_as_ee.html">raster_as_ee</a>, and <a href="https://r-spatial.github.io/rgee/reference/stars_as_ee.html">stars_as_ee</a>) support the <code>predefinedAcl</code> argument too (Thanks to @<a href="https://github.com/jsocolar" class="external-link">jsocolar</a>).</p>
 </div>
 <div class="section level2">
@@ -326,32 +326,32 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <p><br></p>
 <p>For instance, imagine that you have access to 2 Google user accounts, one personal and one for your work (in this example, we will call them David and Cesar). Both accounts have access to GEE. David creates a SaK and sends it to Cesar. As a result of this action, both Cesar and David can work together in the same bucket, downloading and creating GCS objects (Local &lt;-&gt; GCS). If David tries to use <code>ee_as_raster(..., via='gcs')</code> (from GEE -&gt; GCS -&gt; Local), GEE will recognize that the owner of the bucket is David so it will allow the procedure (GEE -&gt; GCS) and thanks to the SaK there will be no problem to send the information to his local environment (GCS -&gt; Local). However, if Cesar tries to do the same, it will get an error when passing the information from GEE -&gt; GCS because <strong>GEE does not know that Cesar has David SaK in their local system</strong>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-
-<span class="co"># Define an image.</span>
-<span class="va">img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">select</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span>
-  <span class="fu">divide</span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span>
-
-<span class="co"># Define an area of interest.</span>
-<span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span>
-  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">110.8</span>, <span class="fl">44.6</span>, <span class="op">-</span><span class="fl">110.6</span>, <span class="fl">44.7</span><span class="op">)</span>,
-  proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,
-  geodesic <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_as_raster.html">ee_as_raster</a></span><span class="op">(</span>
-  image <span class="op">=</span> <span class="va">img</span>,
-  region <span class="op">=</span> <span class="va">geometry</span>,
-  container <span class="op">=</span> <span class="st">"demo_0001"</span>,
-  via <span class="op">=</span> <span class="st">"gcs"</span>,
-  scale <span class="op">=</span> <span class="fl">1000</span>
-<span class="op">)</span>
-
-<span class="co"># ERROR in Earth Engine servers: Unable to write to bucket demo_0001 (permission denied).</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span>gcs <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co"># Define an image.</span></span>
+<span><span class="va">img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810"</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"B4"</span>, <span class="st">"B3"</span>, <span class="st">"B2"</span><span class="op">)</span><span class="op">)</span><span class="op">$</span></span>
+<span>  <span class="fu">divide</span><span class="op">(</span><span class="fl">10000</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define an area of interest.</span></span>
+<span><span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Rectangle</span><span class="op">(</span></span>
+<span>  coords <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">110.8</span>, <span class="fl">44.6</span>, <span class="op">-</span><span class="fl">110.6</span>, <span class="fl">44.7</span><span class="op">)</span>,</span>
+<span>  proj <span class="op">=</span> <span class="st">"EPSG:4326"</span>,</span>
+<span>  geodesic <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">img_03</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_as_raster.html">ee_as_raster</a></span><span class="op">(</span></span>
+<span>  image <span class="op">=</span> <span class="va">img</span>,</span>
+<span>  region <span class="op">=</span> <span class="va">geometry</span>,</span>
+<span>  container <span class="op">=</span> <span class="st">"demo_0001"</span>,</span>
+<span>  via <span class="op">=</span> <span class="st">"gcs"</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ERROR in Earth Engine servers: Unable to write to bucket demo_0001 (permission denied).</span></span></code></pre></div>
 <p>This error is quite easy to fix. Just go to the bucket in your Google Cloud Platform console.</p>
 <br><center>
 <img src="images/r5_21.png">
@@ -391,7 +391,7 @@ click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

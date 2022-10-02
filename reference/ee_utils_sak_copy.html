@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
       </span>
     </div>
 
@@ -98,36 +98,43 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ee_utils_sak_copy</span><span class="op">(</span><span class="va">sakfile</span>, users <span class="op">=</span> <span class="cn">NULL</span>, delete <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_utils_sak_copy</span><span class="op">(</span><span class="va">sakfile</span>, users <span class="op">=</span> <span class="cn">NULL</span>, delete <span class="op">=</span> <span class="cn">FALSE</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>sakfile</dt>
 <dd><p>Character. SaK filename. If missing, the SaK of the first user is used.</p></dd>
+
+
 <dt>users</dt>
 <dd><p>Character. The user related to the SaK file. A SaK
 file can be related to multiple users.</p></dd>
+
+
 <dt>delete</dt>
 <dd><p>Logical. If TRUE, the SaK filename is deleted after copy.</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info message</p></dd>
+
 </dl></div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># sakfile &lt;- "/home/rgee_dev/sak_file.json"</span></span>
-<span class="r-in"><span class="co">## Copy sakfile to the users 'csaybar' and 'ndef'</span></span>
-<span class="r-in"><span class="co"># ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># # Copy the sakfile of the user1 to the user2 and user3.</span></span>
-<span class="r-in"><span class="co"># ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># sakfile &lt;- "/home/rgee_dev/sak_file.json"</span></span></span>
+<span class="r-in"><span><span class="co">## Copy sakfile to the users 'csaybar' and 'ndef'</span></span></span>
+<span class="r-in"><span><span class="co"># ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># # Copy the sakfile of the user1 to the user2 and user3.</span></span></span>
+<span class="r-in"><span><span class="co"># ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -142,7 +149,7 @@ file can be related to multiple users.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
