@@ -2,8 +2,9 @@
 #'
 #' R functions for checking Google credentials (Google Earth Engine,
 #' Google Drive and Google Cloud Storage), Python environment and
-#' Third-Party Python Packages used by rgee.
-#'
+#' Third-Party Python Packages used by rgee. Besides, from v0.1.304,
+#' earthengine-api (Python side) requires gcloud to manage
+#' authentication (see \link{ee_Authenticate}).
 #' @name ee_check-tools
 #'
 #' @param user Character. User to check credentials. If it is not defined,
@@ -23,7 +24,14 @@
 #' ee_check_python()
 #' ee_check_python_packages()
 #' ee_check_credentials()
+#' ee_check_gcloud()
 #' ee_check() # put them all together
+#'
+#' ## Install gcloud in Unix systems
+#' ## 1. Download/Install gcloud
+#' # system("curl -sSL https://sdk.cloud.google.com | bash")
+#' ## 2. Set the PATH ENV
+#' # Sys.setenv(PATH=sprintf("%s:%s", Sys.getenv("PATH"), sprintf("%s/google-cloud-sdk/bin/", Sys.getenv("HOME"))))
 #' }
 #' @export
 ee_check <- function(user = NULL, quiet = FALSE) {
@@ -38,6 +46,8 @@ ee_check <- function(user = NULL, quiet = FALSE) {
   if (!is.null(user)) {
     ee_check_credentials(quiet = quiet)
   }
+  # gcloud is need it to authenticate but no for initialize.
+  ee_check_gcloud()
   invisible(TRUE)
 }
 
@@ -230,6 +240,22 @@ ee_check_credentials <- function(quiet = FALSE) {
   invisible(TRUE)
 }
 
+#' @rdname ee_check-tools
+#' @family ee_check functions
+#' @export
+ee_check_gcloud <- function() {
+  os <- reticulate::import("os")
+  return <- os$system(
+    "gcloud --help > /dev/null 2>&1"
+  )
+  if (return != 0) {
+    stop(
+      "gcloud failed [os.system('gcloud --help')]. Please check
+      for any errors above and install gcloud if needed ",
+      "(https://cloud.google.com/sdk/docs/install)."
+    )
+  }
+}
 
 #' Wrong message when a Python package is not installed
 #' @noRd

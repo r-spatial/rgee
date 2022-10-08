@@ -301,7 +301,8 @@ ee_Initialize <- function(user = NULL,
 #'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
 #'  \item{5. }{None - a default mode is chosen based on your environment.}
 #' }
-#' @param scopes List of scopes to use for authentication. Defaults to : 'https://www.googleapis.com/auth/earthengine' or
+#' @param scopes List of scopes to use for authentication. Defaults to
+#' 'https://www.googleapis.com/auth/earthengine' or
 #' 'https://www.googleapis.com/auth/devstorage.full_control'
 #' @param quiet If TRUE, do not require interactive prompts.
 #' @examples
@@ -310,6 +311,10 @@ ee_Initialize <- function(user = NULL,
 #'
 #' # Simple init - Load just the Earth Engine credential
 #' ee_Authenticate()
+#'
+#' # At Server side
+#' ee_Authenticate(quiet=TRUE)
+#'
 #' }
 #' @export
 ee_Authenticate <- function(authorization_code = NULL,

@@ -26,7 +26,8 @@ ee_Authenticate(
 \item{5. }{None - a default mode is chosen based on your environment.}
 }}
 
-\item{scopes}{List of scopes to use for authentication. Defaults to : 'https://www.googleapis.com/auth/earthengine' or
+\item{scopes}{List of scopes to use for authentication. Defaults to
+'https://www.googleapis.com/auth/earthengine' or
 'https://www.googleapis.com/auth/devstorage.full_control'}
 
 \item{quiet}{If TRUE, do not require interactive prompts.}
@@ -40,5 +41,9 @@ library(rgee)
 
 # Simple init - Load just the Earth Engine credential
 ee_Authenticate()
+
+# At Server side
+ee_Authenticate(quiet=TRUE)
+
 }
 }
