@@ -53,6 +53,7 @@ reference:
       - ee_check
       - ee_check_python
       - ee_check_credentials
+      - ee_check_gcloud
 
   - title: "Clean"
     contents:
