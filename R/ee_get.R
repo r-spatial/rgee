@@ -207,7 +207,13 @@ ee_get_earthengine_path <- function() {
       "run rgee::ee_Initialize() to fixed."
     )
   }
-  return(sprintf("%s/%s/", ee_path, user))
+
+  if (user == "ndef") {
+    ee_path
+  } else {
+    sprintf("%s/%s/", ee_path, user)
+  }
+
 }
 
 

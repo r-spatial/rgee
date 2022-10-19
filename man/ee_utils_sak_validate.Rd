@@ -4,7 +4,7 @@
 \alias{ee_utils_sak_validate}
 \title{Validate a Service account key (SaK)}
 \usage{
-ee_utils_sak_validate(sakfile, bucket = NULL, quiet = FALSE)
+ee_utils_sak_validate(sakfile, bucket, quiet = FALSE)
 }
 \arguments{
 \item{sakfile}{Character. SaK filename.}

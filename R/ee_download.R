@@ -1077,11 +1077,13 @@ ee_gcs_to_local <- function(task,
   if (is.na(ee_user[["gcs_cre"]])) {
     gcs_credential <- ee_create_credentials_gcs(ee_user$email)
     ee_save_credential(pgcs = gcs_credential[["path"]])
-    message(
-      "Google Cloud Storage credentials were not loaded.",
-      " Running ee_Initialize(user = '", ee_user[["email"]], "', gcs = TRUE)",
-      " to fix."
-    )
+    if (!quiet) {
+      message(
+        "Google Cloud Storage credentials were not loaded.",
+        " Running ee_Initialize(..., gcs = TRUE)",
+        " to fix."
+      )
+    }
   }
   # Getting bucket name and filename
   gcs_ExportOptions <- task[["config"]][["fileExportOptions"]]
