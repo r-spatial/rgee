@@ -95,11 +95,13 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
   # gcs_credentials
   full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
   gcs_condition <- grepl(".json", full_credentials)
+
   if (!any(gcs_condition)) {
     gcs_text <- paste(
       sprintf("Unable to find a service account key (SAK) file in: %s",  crayon::bold(ee_path_user)),
-      "Please, download and save the key manually on the path mentioned",
-      "before. A tutorial to obtain the SAK file is available at:",
+      "Please, download and validate it using rgee::ee_utils_sak_validate.",
+      "Then, use rgee::ee_utils_sak_copy to set the Service Account Key.",
+      "A tutorial to obtain the SAK file is available at:",
       "> https://r-spatial.github.io/rgee/articles/rgee05.html",
       crayon::bold("As long as you haven't saved a SKA file, the following functions will not work:"),
       "- rgee::ee_gcs_to_local()",
@@ -151,7 +153,7 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(user, auth_quiet, ee_utils, ...) {
+ee_create_credentials_earthengine <- function(user, auth_quiet, ee_utils, auth_params=NULL, ...) {
 
   # setting ee folder
   if (is.null(user)) {
@@ -179,8 +181,13 @@ ee_create_credentials_earthengine <- function(user, auth_quiet, ee_utils, ...) {
     }
   } else {
     # Run authenticate
-    extra_params = append(list(...), list(quiet = auth_quiet))
-    do.call(ee_Authenticate, extra_params)
+    if (is.null(auth_params)) {
+      extra_params = append(list(...), list(quiet = auth_quiet))
+    } else {
+      extra_params = append(auth_params, list(quiet = auth_quiet))
+    }
+
+    do.call(ee$Authenticate, extra_params)
 
     # Copy credentials into the user folder
     Sys.sleep(0.1)

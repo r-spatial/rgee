@@ -215,6 +215,86 @@ ee_sessioninfo <- function(email = NULL,
 }
 
 
+#' Function used in ee_user
+#'
+#' Search if credentials exist and display
+#' it as tick and crosses.
+#'
+#' @noRd
+create_table <- function(user, wsc, quiet = FALSE) {
+  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
+  utils_py <- ee_source_python(oauth_func_path)
+  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
+  user_clean <- gsub(" ", "", user, fixed = TRUE)
+  credentials <- list.files(sprintf("%s/%s",ee_path,user_clean))
+
+  #google drive
+  if (any(grepl("@gmail.com",credentials))) {
+    gmail_symbol <- green(symbol[["tick"]])
+    gd_count <- 1
+  } else {
+    gmail_symbol <- red(symbol[["cross"]])
+    gd_count <- 0
+  }
+
+  #GCS
+  if (any(grepl(".json",credentials))) {
+    gcs_symbol <- green(symbol[["tick"]])
+    gcs_count <- 1
+  } else {
+    gcs_symbol <- red(symbol[["cross"]])
+    gcs_count <- 0
+  }
+
+  #Earth Engine
+  if (any(grepl("credentials",credentials))) {
+    ee_symbol <- green(symbol[["tick"]])
+    ee_count <- 1
+  } else {
+    ee_symbol <- red(symbol[["cross"]])
+    ee_count <- 0
+  }
+
+  if (!quiet) {
+    cat("\n",
+        user,
+        wsc,
+        ee_symbol,
+        wsc,
+        gmail_symbol,
+        wsc,
+        gcs_symbol
+    )
+  }
+  user_str <- data.frame(EE = ee_count, GD = gd_count, GCS = gcs_count)
+  row.names(user_str) <- user_clean
+  invisible(user_str)
+}
+
+#' Function used in ee_user
+#'
+#' Add extra space to usernames to form a nice table
+#'
+#' @noRd
+add_extra_space <- function(name, space) {
+  iter <- length(space)
+  result <- rep(NA,iter)
+  for (z in seq_len(iter)) {
+    add_space <- paste0(rep(" ",space[z]), collapse = "")
+    result[z] <- paste0(name[z], add_space)
+  }
+  result
+}
+
+#' Read and evaluate a python script
+#' @noRd
+ee_source_python <- function(oauth_func_path) {
+  module_name <- gsub("\\.py$", "", basename(oauth_func_path))
+  module_path <- dirname(oauth_func_path)
+  import_from_path(module_name, path = module_path, convert = FALSE)
+}
+
+
 # messages ----------------------------
 #' Long message display 01 - rule and user
 #' @noRd
@@ -336,3 +416,5 @@ ee_message_06 <- function(gcs_credentials, ee_user) {
     message(gcs_credentials[["message"]])
   }
 }
+
+

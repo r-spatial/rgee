@@ -94,6 +94,8 @@ ee_Initialize <- function(user = NULL,
   gcs_credentials <- list(path = NA, message = NA)
 
   if (drive) {
+    ee_check_packages("ee_Initialize", "googledrive")
+
     # drive init message
     if (!quiet) ee_message_02(init = TRUE)
 
@@ -153,6 +155,153 @@ ee_Initialize <- function(user = NULL,
   ee$FeatureCollection$Dataset <- eeDataset_b$fc
   ee$ImageCollection$Dataset <- eeDataset_b$ic
   ee$Image$Dataset <- eeDataset_b$image
+
+  invisible(TRUE)
+}
+
+
+#' Prompts the user to authorize access to Earth Engine via OAuth2.
+#' @param user Character (optional). If is a character, the credentials are saved in
+#' the dirpath: ~/.config/earthengine/$user. If is NULL, the credentials are stored
+#' in ~/.config/earthengine.
+#' @param earthengine Logical (optional). If TRUE, the EarthEngine credential
+#' is cached in the path \code{~/.config/earthengine/}.
+#' @param drive Logical (optional). If TRUE, the drive credential
+#' is cached in the path \code{~/.config/earthengine/}.
+#' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
+#' credential is cached in the path \code{~/.config/earthengine/}.
+#' @param authorization_code An optional authorization code.
+#' @param code_verifier PKCE verifier to prevent auth code stealing.
+#' @param auth_mode The authentication mode. One of:
+#' \itemize{
+#'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
+#'  \item{2. }{notebook - send user to notebook authenticator page}
+#'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
+#'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
+#'  \item{5. }{None - a default mode is chosen based on your environment.}
+#' }
+#' @param scopes List of scopes to use for authentication. Defaults to
+#' 'https://www.googleapis.com/auth/earthengine' or
+#' 'https://www.googleapis.com/auth/devstorage.full_control'
+#' @param quiet If TRUE, do not require interactive prompts and force --no-browser mode for gcloud.
+#' @param verbose Logical. Suppress info messages.
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Simple init - Load just the Earth Engine credential
+#' ee_Authenticate()
+#'
+#' # At Server side
+#' ee_Authenticate(quiet=TRUE)
+#'
+#' }
+#' @export
+ee_Authenticate <- function(
+    user=NULL,
+    earthengine = TRUE,
+    drive = FALSE,
+    gcs = FALSE,
+    authorization_code = NULL,
+    code_verifier = NULL,
+    auth_mode = NULL,
+    scopes = NULL,
+    quiet = FALSE,
+    verbose = TRUE) {
+
+  # Set google-cloud-sdk in your PATH system
+  sdkpath <- sprintf("%s/google-cloud-sdk/bin/", Sys.getenv("HOME"))
+  if (!grepl(sdkpath, Sys.getenv("PATH"))) {
+    Sys.setenv(PATH = sprintf("%s:%s", Sys.getenv("PATH"), sdkpath))
+  }
+
+  # Check sanity of earth-engine and return ee_utils.py module
+  init <- ee_check_init()
+  ee_utils <- init$ee_utils
+
+  # setting the user and main ee folder
+  if (is.null(user)) {
+    ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
+    ee_path_user <- ee_path
+  } else {
+    ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
+    ee_path_user <- sprintf("%s/%s", ee_path, user)
+  }
+
+
+  # Create empty user folder is it does not exist
+  if (!is.null(user)) {
+    ee_create_user_subfolder(ee_utils, user)
+  }
+
+  # Retrieve the Earth Engine credentials
+  if (earthengine) {
+    # Remove previous credential
+    unlink(sprintf("%s/credentials", ee_path_user))
+
+    # Display info message
+    if (verbose) ee_message_04(init = TRUE)
+
+    # Extra auth params
+    auth_params <- list(
+      authorization_code = authorization_code,
+      code_verifier = code_verifier,
+      auth_mode = auth_mode,
+      scopes = scopes
+    )
+
+    # Copy credentials
+    ee_create_credentials_earthengine(
+      user,
+      quiet,
+      ee_utils,
+      auth_params
+    )
+
+    # If no error is returned, print ok info message
+      if (verbose) ee_message_04(init = FALSE)
+  }
+
+  # Retrieve the Drive credentials
+  if (drive) {
+    ee_check_packages("ee_Initialize", "googledrive")
+
+    # Remove previous credential
+    full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+    drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
+    unlink(full_credentials[drive_condition])
+
+    # drive init message
+    if (verbose) ee_message_02(init = TRUE)
+
+    # Create the drive credential
+    drive_credentials <- ee_create_credentials_drive(user, ee_utils, quiet = verbose)
+    test_drive_privileges(user)
+
+    if (verbose) ee_message_02(init = FALSE)
+  }
+
+  # Retrieve the GCS credentials
+  if (gcs) {
+    ee_check_packages("ee_Initialize", "googleCloudStorageR")
+
+    # gcs init message
+    if (verbose) ee_message_03(init = TRUE, gcs_credentials)
+
+    # Create the gcs credential
+    gcs_credentials <- ee_create_credentials_gcs(user=user, ee_utils)
+
+    if (verbose) {
+      ee_message_03(init=FALSE, gcs_credentials = gcs_credentials)
+      if (is.na(gcs_credentials[["path"]])) {
+          message(gcs_credentials[["message"]])
+      }
+    }
+  }
+
+  if (verbose) {
+    message("credentials are cached in the path: ", ee_path_user)
+  }
 
   invisible(TRUE)
 }
@@ -295,130 +444,4 @@ ee_user_info <- function(quiet = FALSE) {
     gd_id = basename(gd),
     gcs_file = gcs
   )
-}
-
-
-#' Read and evaluate a python script
-#' @noRd
-ee_source_python <- function(oauth_func_path) {
-  module_name <- gsub("\\.py$", "", basename(oauth_func_path))
-  module_path <- dirname(oauth_func_path)
-  import_from_path(module_name, path = module_path, convert = FALSE)
-}
-
-#' Function used in ee_user
-#'
-#' Add extra space to usernames to form a nice table
-#'
-#' @noRd
-add_extra_space <- function(name, space) {
-  iter <- length(space)
-  result <- rep(NA,iter)
-  for (z in seq_len(iter)) {
-    add_space <- paste0(rep(" ",space[z]), collapse = "")
-    result[z] <- paste0(name[z], add_space)
-  }
-  result
-}
-
-#' Function used in ee_user
-#'
-#' Search if credentials exist and display
-#' it as tick and crosses.
-#'
-#' @noRd
-create_table <- function(user, wsc, quiet = FALSE) {
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-  user_clean <- gsub(" ", "", user, fixed = TRUE)
-  credentials <- list.files(sprintf("%s/%s",ee_path,user_clean))
-
-  #google drive
-  if (any(grepl("@gmail.com",credentials))) {
-    gmail_symbol <- green(symbol[["tick"]])
-    gd_count <- 1
-  } else {
-    gmail_symbol <- red(symbol[["cross"]])
-    gd_count <- 0
-  }
-
-  #GCS
-  if (any(grepl(".json",credentials))) {
-    gcs_symbol <- green(symbol[["tick"]])
-    gcs_count <- 1
-  } else {
-    gcs_symbol <- red(symbol[["cross"]])
-    gcs_count <- 0
-  }
-
-  #Earth Engine
-  if (any(grepl("credentials",credentials))) {
-    ee_symbol <- green(symbol[["tick"]])
-    ee_count <- 1
-  } else {
-    ee_symbol <- red(symbol[["cross"]])
-    ee_count <- 0
-  }
-
-  if (!quiet) {
-    cat("\n",
-        user,
-        wsc,
-        ee_symbol,
-        wsc,
-        gmail_symbol,
-        wsc,
-        gcs_symbol
-    )
-  }
-  user_str <- data.frame(EE = ee_count, GD = gd_count, GCS = gcs_count)
-  row.names(user_str) <- user_clean
-  invisible(user_str)
-}
-
-
-#' Prompts the user to authorize access to Earth Engine via OAuth2.
-#'
-#' @param authorization_code An optional authorization code.
-#' @param code_verifier PKCE verifier to prevent auth code stealing.
-#' @param auth_mode The authentication mode. One of:
-#' \itemize{
-#'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
-#'  \item{2. }{notebook - send user to notebook authenticator page}
-#'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
-#'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
-#'  \item{5. }{None - a default mode is chosen based on your environment.}
-#' }
-#' @param scopes List of scopes to use for authentication. Defaults to
-#' 'https://www.googleapis.com/auth/earthengine' or
-#' 'https://www.googleapis.com/auth/devstorage.full_control'
-#' @param quiet If TRUE, do not require interactive prompts.
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#'
-#' # Simple init - Load just the Earth Engine credential
-#' ee_Authenticate()
-#'
-#' # At Server side
-#' ee_Authenticate(quiet=TRUE)
-#'
-#' }
-#' @export
-ee_Authenticate <- function(
-    authorization_code = NULL,
-    code_verifier = NULL,
-    auth_mode = NULL,
-    scopes = NULL,
-    quiet = FALSE) {
-
-  ee$Authenticate(
-    authorization_code = authorization_code,
-    code_verifier = code_verifier,
-    auth_mode = auth_mode,
-    scopes = scopes,
-    quiet = quiet
-  )
-
 }

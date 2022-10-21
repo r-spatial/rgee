@@ -5,14 +5,32 @@
 \title{Prompts the user to authorize access to Earth Engine via OAuth2.}
 \usage{
 ee_Authenticate(
+  user = NULL,
+  earthengine = TRUE,
+  drive = FALSE,
+  gcs = FALSE,
   authorization_code = NULL,
   code_verifier = NULL,
   auth_mode = NULL,
   scopes = NULL,
-  quiet = FALSE
+  quiet = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{
+\item{user}{Character (optional). If is a character, the credentials are saved in
+the dirpath: ~/.config/earthengine/$user. If is NULL, the credentials are stored
+in ~/.config/earthengine.}
+
+\item{earthengine}{Logical (optional). If TRUE, the EarthEngine credential
+is cached in the path \code{~/.config/earthengine/}.}
+
+\item{drive}{Logical (optional). If TRUE, the drive credential
+is cached in the path \code{~/.config/earthengine/}.}
+
+\item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
+credential is cached in the path \code{~/.config/earthengine/}.}
+
 \item{authorization_code}{An optional authorization code.}
 
 \item{code_verifier}{PKCE verifier to prevent auth code stealing.}
@@ -30,7 +48,9 @@ ee_Authenticate(
 'https://www.googleapis.com/auth/earthengine' or
 'https://www.googleapis.com/auth/devstorage.full_control'}
 
-\item{quiet}{If TRUE, do not require interactive prompts.}
+\item{quiet}{If TRUE, do not require interactive prompts and force --no-browser mode for gcloud.}
+
+\item{verbose}{Logical. Suppress info messages.}
 }
 \description{
 Prompts the user to authorize access to Earth Engine via OAuth2.
