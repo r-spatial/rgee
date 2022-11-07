@@ -13,7 +13,7 @@ skip_if_no_credentials <- function() {
   ee_path <- ee_get_earthengine_path()
   credentials <- list.files(
     path = ee_path,
-    pattern = "@gmail.com|credentials|GCS_AUTH_FILE.json"
+    pattern = "@gmail.com|credentials|.*.json"
   )
   if (length(credentials) != 3) {
     skip("All google credentials were not found")
@@ -23,7 +23,7 @@ skip_if_no_credentials <- function() {
 # Necessary Python packages were loaded?
 skip_if_no_pypkg <- function() {
   have_ee <- reticulate::py_module_available("ee")
-  have_numpy <- reticulate::py_module_available("numpy2")
+  have_numpy <- reticulate::py_module_available("numpy")
   if (isFALSE(have_ee)) {
     skip("ee not available for testing")
   }
@@ -43,7 +43,7 @@ drive_folder_f <- function(){
 # intermediate files. ALERT!!: After test finished all the files
 # inside the bucket will be deleted.
 gcs_bucket_f <- function(){
-  "rgee_dev"
+  "rgeedev2"
 }
 
 # Define your own GCS bucket with uniform access to save
@@ -56,7 +56,7 @@ gcs_bucket_uniform_f <- function(){
 # Initialize credentials
 # If you do not count with GCS credentials the test will be skipped
 have_ee <- reticulate::py_module_available("ee")
-have_numpy <- reticulate::py_module_available("numpy2")
+have_numpy <- reticulate::py_module_available("numpy")
 if (have_ee & have_numpy) {
 ee_Initialize(drive = TRUE, gcs = TRUE)
 }

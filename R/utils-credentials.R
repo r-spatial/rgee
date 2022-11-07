@@ -4,6 +4,11 @@ ee_create_credentials_drive <- function(user=NULL, ee_utils, quiet) {
   # check googledrive R package installation
   ee_check_packages("ee_Initialize", "googledrive")
 
+  # Check sanity of earth-engine and return ee_utils.py module
+  init <- ee_check_init()
+  ee_utils <- init$ee_utils
+
+
   # setting drive folder
   if (is.null(user)) {
     ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
@@ -83,6 +88,10 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
   # check packages
   ee_check_packages("ee_Initialize", "googleCloudStorageR")
 
+  # Check sanity of earth-engine and return ee_utils.py module
+  init <- ee_check_init()
+  ee_utils <- init$ee_utils
+
   # setting gcs folder
   if (is.null(user)) {
     ee_path <- suppressWarnings(ee_utils_py_to_r(ee_utils$ee_path()))
@@ -99,8 +108,10 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
   if (!any(gcs_condition)) {
     gcs_text <- paste(
       sprintf("Unable to find a service account key (SAK) file in: %s",  crayon::bold(ee_path_user)),
-      "Please, download and validate it using rgee::ee_utils_sak_validate.",
-      "Then, use rgee::ee_utils_sak_copy to set the Service Account Key.",
+      "To solve this problem:",
+      "  1) download it from your Google cloud console",
+      "  2) validate it using rgee::ee_utils_sak_validate [OPTIONAL].",
+      "  3) Use rgee::ee_utils_sak_copy to set the SaK in rgee.",
       "A tutorial to obtain the SAK file is available at:",
       "> https://r-spatial.github.io/rgee/articles/rgee05.html",
       crayon::bold("As long as you haven't saved a SKA file, the following functions will not work:"),
