@@ -22,7 +22,6 @@ Remove rgee system variables from .Renviron
 }
 \seealso{
 Other ee_clean functions: 
-\code{\link{ee_clean_container}()},
-\code{\link{ee_clean_credentials}()}
+\code{\link{ee_clean_container}()}
 }
 \concept{ee_clean functions}

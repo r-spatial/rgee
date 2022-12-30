@@ -13,7 +13,7 @@ ee_as_raster(
   scale = NULL,
   maxPixels = 1e+09,
   lazy = FALSE,
-  public = TRUE,
+  public = FALSE,
   add_metadata = TRUE,
   timePrefix = TRUE,
   quiet = FALSE,

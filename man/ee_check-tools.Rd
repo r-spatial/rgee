@@ -49,7 +49,8 @@ ee_check() # put them all together
 ## 1. Download/Install gcloud
 # system("curl -sSL https://sdk.cloud.google.com | bash")
 ## 2. Set the PATH ENV
-# Sys.setenv(PATH=sprintf("\%s:\%s", Sys.getenv("PATH"), sprintf("\%s/google-cloud-sdk/bin/", Sys.getenv("HOME"))))
+# sdkpath <- sprintf("\%s/google-cloud-sdk/bin/", Sys.getenv("HOME"))
+# Sys.setenv(PATH=sprintf("\%s:\%s", Sys.getenv("PATH"), sdkpath))
 }
 }
 \concept{ee_check functions}

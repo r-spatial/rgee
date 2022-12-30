@@ -1,7 +1,12 @@
 context("rgee: ee_download test")
-skip_if_no_pypkg()
-drive_folder <- drive_folder_f()
-gcs_bucket <- gcs_bucket_f()
+
+library(sf)
+library(rgee)
+
+ee_Initialize()
+
+drive_folder <- "rgee_backup"
+gcs_bucket <- "rgeedev2"
 # -------------------------------------------------------------------------
 
 # Communal Reserve Amarakaeri - Peru
@@ -65,7 +70,8 @@ test_that("GEOTIFF_DRIVE", {
     fileNamePrefix = "test_image_GEOTIFF"
   )
   task_img$start()
-  ee_monitoring(task_img$id)
+  ee_monitoring(task_img$id, max_attempts = Inf)
+
   full_list <- ee_monitoring(eeTaskList = TRUE)
   img <- ee_drive_to_local(
     task = task_img,
@@ -115,7 +121,6 @@ test_that("GEOTIFF_DRIVE", {
 
 # # # 4. GEOTIFF - GCS
 test_that("GEOTIFF_GCS", {
-  skip_if_no_credentials()
   task_img <- ee_image_to_gcs(
     image = image_test,
     bucket = gcs_bucket,
@@ -128,9 +133,9 @@ test_that("GEOTIFF_GCS", {
     fileNamePrefix = "testing/test_image_GEOTIFF"
   )
   task_img$start()
-  ee_monitoring(task_img)
+  ee_monitoring(task_img, max_attempts = Inf)
   img <- ee_gcs_to_local(task = task_img, dsn = tempfile(),
-                         public = TRUE,
+                         public = FALSE,
                          metadata = TRUE)
   img <- ee_gcs_to_local(task = task_img, dsn = tempfile(), quiet = TRUE)
   expect_is(img, "character")
@@ -202,7 +207,7 @@ test_that("SHP_VECTOR_DRIVE",{
     fileNamePrefix = "test_fc_SHP"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_drive_to_local(
     task = task_vector,
     consider = 'all'
@@ -219,7 +224,7 @@ test_that("KML_VECTOR_DRIVE",{
     fileNamePrefix = "test_fc_KML"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_drive_to_local(
     task = task_vector,
     consider = 'all'
@@ -236,7 +241,7 @@ test_that("KMZ_VECTOR_DRIVE",{
     fileNamePrefix = "test_fc_KMZ"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_drive_to_local(
     task = task_vector,
     consider = 'all'
@@ -253,7 +258,7 @@ test_that("GEOJSON_VECTOR_DRIVE",{
     fileNamePrefix = "test_fc_GEOJSON"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_drive_to_local(
     task = task_vector,
     consider = 'last'
@@ -324,7 +329,6 @@ test_that("GEOJSON_VECTOR_DRIVE",{
 
 # # 17. KMZ_VECTOR - GCS
 test_that("KMZ_VECTOR_GCS",{
-  skip_if_no_credentials()
   task_vector <- ee_table_to_gcs(
     collection = fc_test,
     bucket = gcs_bucket,
@@ -337,16 +341,15 @@ test_that("KMZ_VECTOR_GCS",{
     fileNamePrefix = "testing/test_fc_KMZ"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_gcs_to_local(task = task_vector,
-                            public = TRUE,
+                            public = FALSE,
                             metadata = TRUE)
   expect_is(vector, "list")
 })
 
 # # 18. GEOJSON_VECTOR - GCS
 test_that("GEOJSON_VECTOR_GCS",{
-  skip_if_no_credentials()
   task_vector <- ee_table_to_gcs(
     collection = fc_test,
     bucket = gcs_bucket,
@@ -354,9 +357,9 @@ test_that("GEOJSON_VECTOR_GCS",{
     fileNamePrefix = "testing/test_fc_GEOJSON"
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   vector <- ee_gcs_to_local(task = task_vector,
-                            public = TRUE,
+                            public = FALSE,
                             metadata = TRUE)
   expect_is(vector, "list")
 })
@@ -388,7 +391,7 @@ test_that("table to asset",{
     overwrite = TRUE
   )
   task_vector$start()
-  ee_monitoring(task_vector)
+  ee_monitoring(task_vector, max_attempts = Inf)
   mess <- ee_manage_delete(assetid)
   expect_equal(mess, TRUE)
 })
@@ -405,7 +408,7 @@ test_that("image to asset",{
     overwrite = TRUE
   )
   task_img$start()
-  ee_monitoring(task_img)
+  ee_monitoring(task_img, max_attempts = Inf)
   mess <- ee_manage_delete(assetid)
   expect_equal(mess, TRUE)
 })

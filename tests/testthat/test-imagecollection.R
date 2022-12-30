@@ -1,6 +1,9 @@
 context("rgee: ee_imagecollection_to_local test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
+library(rgee)
+library(raster)
+
+ee_Initialize(drive = TRUE, gcs = TRUE)
 
 loc <- ee$Geometry$Point(-99.2222, 46.7816)
 collection <- ee$ImageCollection('USDA/NAIP/DOQQ')$
@@ -43,7 +46,7 @@ test_that("ee_imagecollection_to_local - simple dsn", {
  ic_getinfo_files <- ee_imagecollection_to_local(
    ic = ic,
    scale = 200,
-   dsn = c("lesly_01.tif", "lesly_02.tif"),
+   dsn = c(sprintf("%s/lesly_01.tif", tempfile()), sprintf("%s/lesly_02.tif", tempfile())),
    region = geometry,
    add_metadata = FALSE
  )

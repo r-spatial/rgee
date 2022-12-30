@@ -138,7 +138,7 @@ ee_as_sf <- function(x,
                      maxFeatures = 5000,
                      selectors = NULL,
                      lazy = FALSE,
-                     public = TRUE,
+                     public = FALSE,
                      add_metadata = TRUE,
                      timePrefix = TRUE,
                      quiet = FALSE) {
@@ -559,11 +559,13 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
   if (is.na(ee_user$gcs_cre)) {
     gcs_credential <- ee_create_credentials_gcs(ee_user$email)
     ee_save_credential(pgcs = gcs_credential$path)
-    message(
-      "\nGoogle Cloud Storage credentials were not loaded.",
-      " Running ee_Initialize(user = '", ee_user$email, "', gcs = TRUE)",
-      " to fix."
-    )
+    if (!quiet) {
+      message(
+        "\nGoogle Cloud Storage credentials were not loaded.",
+        " Running ee_Initialize(gcs = TRUE)",
+        " to fix."
+      )
+    }
   }
 
 

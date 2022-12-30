@@ -14,7 +14,7 @@ ee_as_sf(
   maxFeatures = 5000,
   selectors = NULL,
   lazy = FALSE,
-  public = TRUE,
+  public = FALSE,
   add_metadata = TRUE,
   timePrefix = TRUE,
   quiet = FALSE

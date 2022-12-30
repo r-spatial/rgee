@@ -1,7 +1,6 @@
 context("rgee: sf_as_ee test")
-skip_if_no_pypkg()
-# -------------------------------------------------------------------------
 
+# -------------------------------------------------------------------------
 # test_that("ee_help_addins 1", {
 #   img <- ee$Image(0)
 #   test01 <- expect_warning(ee_help_addins(debug = FALSE, content = "ee$Image$clip"))

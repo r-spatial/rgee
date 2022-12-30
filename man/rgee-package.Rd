@@ -82,7 +82,6 @@ and functions as well as sub-modules (e.g. ee$Image, ee$FeatureCollection$first,
 \tabular{ll}{
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 \code{\link{ee_clean_container}}\tab Delete files from either a Folder or a Bucket. \cr
-\code{\link{ee_clean_credentials}}\tab Delete Credentials. \cr
 \code{\link{ee_clean_pyenv}}\tab Remove rgee system variables from .Renviron. \cr
 ---------------------------\tab --------------------------------------------------------------------------------------------------- \cr
 }

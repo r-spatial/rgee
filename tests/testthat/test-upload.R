@@ -1,36 +1,32 @@
 context("rgee: ee_upload test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 
 ee_Initialize(gcs = TRUE, drive = TRUE)
 
 test_that("local_to_gcs - character - fine grained access",{
-  skip_if_no_credentials()
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_f(), predefinedAcl = "private")
-  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_f(), predefinedAcl = "private", quiet = TRUE)
+  gcsuri <- local_to_gcs(x = tif, bucket = "rgeedev2", predefinedAcl = "private")
+  gcsuri <- local_to_gcs(x = tif, bucket = "rgeedev2", predefinedAcl = "private", quiet = TRUE)
   expect_type(gcsuri,'character')
 })
 
 
 test_that("local_to_gcs - character - uniform access",{
-  skip_if_no_credentials()
   # Define an image.
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_uniform_f(), predefinedAcl = "bucketLevel")
-  gcsuri <- local_to_gcs(x = tif, bucket = gcs_bucket_uniform_f(), predefinedAcl = "bucketLevel", quiet = TRUE)
+  gcsuri <- local_to_gcs(x = tif, bucket = "rgeedev2", predefinedAcl = "bucketLevel")
+  gcsuri <- local_to_gcs(x = tif, bucket = "rgeedev2", predefinedAcl = "bucketLevel", quiet = TRUE)
   expect_type(gcsuri,'character')
 })
 
 # ee_upload with bucket -----------------------------------------------------
 test_that("gcs_to_ee_table ", {
-  skip_if_no_credentials()
   nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"))
   assetId <- sprintf("%s/%s",ee_get_assethome(),'sf_nc')
   zipfile <- ee_utils_shp_to_zip(nc)
   gs_uri <- local_to_gcs(x = zipfile,
-                         bucket = gcs_bucket_f())
+                         bucket = "rgeedev2")
   manifest <- ee_utils_create_manifest_table(
     gs_uri = gs_uri,
     assetId = assetId
@@ -47,7 +43,6 @@ test_that("gcs_to_ee_table ", {
 
 
 test_that("gcs_to_ee_image ", {
-  skip_if_no_credentials()
   # Get the filename of a image
   tif <- system.file("tif/L7_ETMs.tif", package = "stars")
   x <- stars::read_stars(tif)
@@ -56,7 +51,7 @@ test_that("gcs_to_ee_image ", {
 
   # Method 1
   # 1. Move from local to gcs
-  gs_uri <- local_to_gcs(x = tif, bucket = gcs_bucket_f())
+  gs_uri <- local_to_gcs(x = tif, bucket = "rgeedev2")
 
   manifest <- ee_utils_create_manifest_image(
     gs_uri = gs_uri,

@@ -30,8 +30,8 @@ is cached in the path \code{~/.config/earthengine/}.}
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential is cached in the path \code{~/.config/earthengine/}.}
 
-\item{credentials}{OAuth2 credentials. 'persistent' (default) means
-use credentials already stored in the filesystem, or raise an explanatory
+\item{credentials}{OAuth2 GEE credentials. 'persistent' (default) means
+use GEE credentials already stored in the filesystem, or raise an explanatory
 exception guiding the user to create those credentials.}
 
 \item{opt_url}{The base url for the EarthEngine REST API to connect to.}
@@ -65,9 +65,7 @@ Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
-\code{~/.config/earthengine/}. If a user does not specify the "user"
-argument, all user credentials are saved in the the subdirectory
-\code{~/.config/earthengine/ndef}.
+\code{~/.config/earthengine/}.
 }
 \examples{
 \dontrun{
