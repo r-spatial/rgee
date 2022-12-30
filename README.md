@@ -2,7 +2,7 @@
   <br>
   <a href="https://github.com/r-spatial/rgee/"><img src="https://user-images.githubusercontent.com/16768318/118376965-5f7dca80-b5cb-11eb-9a82-47876680a3e6.png" alt="Markdownify" width="200"></a>
   <a href="https://github.com/r-earthengine/rgeeExtra/"><img src="https://user-images.githubusercontent.com/16768318/118376968-63a9e800-b5cb-11eb-83e7-3f36299e17cb.png" alt="Markdownify" width="200"></a>
-  <a href="https://github.com/r-earthengine/rgeebook/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>
+  <a href="https://r-earthengine.com/rgeebook/"><img src="https://user-images.githubusercontent.com/16768318/118376966-60aef780-b5cb-11eb-8df2-ca70dcfe04c5.png" alt="Markdownify" width="200"></a>
   <br>
   rgee: Google Earth Engine for R
   <br>
@@ -92,7 +92,7 @@ image$bandNames()$getInfo()
 
 ## How to use
 
-**NOTE: If you want to avoid to always set RETICULATE_PYTHON and EARTHENGINE_GCLOUD, please createa a [.Renviron file](https://cran.r-project.org/web/packages/startup/vignettes/startup-intro.html)**
+**NOTE: Create a [.Renviron file](https://cran.r-project.org/web/packages/startup/vignettes/startup-intro.html) file to prevent setting RETICULATE_PYTHON and EARTHENGINE_GCLOUD every time you authenticate/init your account.**
 
 ``` r
 library(rgee)
@@ -100,9 +100,11 @@ library(rgee)
 # Set your Python ENV
 Sys.setenv("RETICULATE_PYTHON" = "/usr/bin/python3")
 
-# Set Google Cloud SDK
+# Set Google Cloud SDK. Only need it the first time you log in. 
 Sys.setenv("EARTHENGINE_GCLOUD" = "home/csaybar/google-cloud-sdk/bin/")
+ee_Authenticate()
 
+# Init your Earth Session  
 ee_Initialize()
 ```
 
@@ -121,7 +123,7 @@ library(remotes)
 install_github("r-spatial/rgee")
 ```
 
-Additionally, `rgee` depends on the [Python packages](https://rstudio.github.io/reticulate/articles/package.html): [numpy](https://pypi.org/project/numpy/) and [ee](https://pypi.org/project/earthengine-api/) and **requires [gcloud CLI](https://cloud.google.com/sdk/docs/install#deb) to authenticate users**. The next example shows how to install rgee in Linux (If you are trying to use rgee in a server, see this example in Rstudio cloud -- https://posit.cloud/content/5175749)
+Additionally, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The next example shows how to set rgee up into a fresh computer with Ubuntu (If you are trying to use rgee in a server, see this example in Rstudio cloud -- https://posit.cloud/content/5175749)
 
 ``` r
 install.packages(c("remotes", "googledrive"))
@@ -144,8 +146,6 @@ Sys.setenv("EARTHENGINE_GCLOUD" = sprintf("%s/google-cloud-sdk/bin/", HOME))
 
 # 4 Install rgee Python dependencies
 ee_install()
-## IMPORTANT!! You might need to TERMINATE YOUR R SESSION IN RSTUDIO!.
-
 
 # 5. Authenticate and init your EE session
 ee_Initialize()
@@ -469,13 +469,7 @@ animation %>%
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
-## Quick Start User's Guide for rgee
-
-<a href="https://bit.ly/35W0pwa"><img src="https://user-images.githubusercontent.com/16768318/88080933-5b1c8880-cb45-11ea-9546-f0640da13997.png" height="99"/></a> <a href="https://bit.ly/3iyxvYi"><img src="https://user-images.githubusercontent.com/16768318/86457619-8ef45300-bce9-11ea-9f08-7c1ee14071fb.png" height="100"/></a> <a href="https://ambarja.github.io/Handbook_rgee/pdf/vol01.pdf"><img src="https://user-images.githubusercontent.com/16768318/86457622-90be1680-bce9-11ea-92f0-78cfb915c4bc.png" height="101"/></a>
-
-  **Created by:** - EN and POR: Andres Luiz Lima Costa <https://bit.ly/3p1DFm9> - SPA: Antony Barja Ingaruca <https://ambarja.github.io/>
-
-  ## Code of Conduct
+## Code of Conduct
 
   Please note that the `rgee` project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
