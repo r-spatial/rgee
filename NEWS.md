@@ -12,7 +12,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# rgee 1.1.3.9000
+
+# rgee 1.1.6
 
 - ee_Initialize now supports EE API > 0.1.310.
 - ee_Authenticate added.
