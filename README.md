@@ -123,7 +123,7 @@ library(remotes)
 install_github("r-spatial/rgee")
 ```
 
-Additionally, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The next example shows how to set rgee up into a fresh computer with Ubuntu (If you are trying to use rgee in a server, see this example in Rstudio cloud -- https://posit.cloud/content/5175749)
+Additionally, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The next example shows how to set rgee up on a new Ubuntu computer (If you are trying to use rgee in a server, see this example in Rstudio cloud -- https://posit.cloud/content/5175749)
 
 ``` r
 install.packages(c("remotes", "googledrive"))
