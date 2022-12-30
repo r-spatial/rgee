@@ -1,15 +1,6 @@
 context("rgee: ee_Initialize() test")
-skip_if_no_pypkg()
+
 # -------------------------------------------------------------------------
-
-test_that("get_authorization_url is working well?",{
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- rgee:::ee_source_python(oauth_func_path)
-  code_challenge <- ee_utils_py_to_r(utils_py$create_codes())
-  ee_url <- ee$oauth$get_authorization_url(code_challenge[[2]])
-  expect_type(ee_url,'character')
-})
-
 test_that("complex init",{
   out <- tryCatch(
     expr = ee_Initialize(drive = TRUE,
@@ -50,10 +41,6 @@ test_that("ee_connect_to_py",{
   expect_error(rgee:::ee_connect_to_py("demo.py"))
 })
 
-test_that("ee_install_set_init_message", {
-  response <- rgee:::ee_init_message(debug = TRUE)
-  testthat::expect_true(response)
-})
 
 test_that("ee_install_set_init_message", {
   ee_Initialize(drive = TRUE)

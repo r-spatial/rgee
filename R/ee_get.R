@@ -128,7 +128,7 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
 
 
   if (is.null(time_start)) {
-    time_start <- NA
+    time_start <- rep(NA, length(image_id))
   } else {
     time_start <- as.POSIXct(
       x = time_start / 1000,

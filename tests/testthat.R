@@ -58,7 +58,6 @@ gcs_bucket_uniform_f <- function(){
 have_ee <- reticulate::py_module_available("ee")
 have_numpy <- reticulate::py_module_available("numpy")
 if (have_ee & have_numpy) {
-ee_Initialize(drive = TRUE, gcs = TRUE)
+  ee_Initialize(drive = TRUE, gcs = TRUE)
 }
 
-test_check("rgee")

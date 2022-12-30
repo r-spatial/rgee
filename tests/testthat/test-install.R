@@ -1,5 +1,5 @@
 context("rgee: ee_install test")
-skip_if_no_pypkg()
+
 # -------------------------------------------------------------------------
 
 ### Instalation module

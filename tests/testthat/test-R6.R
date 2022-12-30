@@ -1,5 +1,4 @@
 context("rgee: sf_as_ee test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 
 
@@ -203,7 +202,7 @@ test_that("Map$addLayer r6map", {
 
 test_that("Map$centerObject_COG r6map", {
   # amazon
-  resource <- "https://s3-us-west-2.amazonaws.com/planet-disaster-data/hurricane-harvey/SkySat_Freeport_s03_20170831T162740Z3.tif"
+  resource <- "https://oin-hotosm.s3.amazonaws.com/56f9b5a963ebf4bc00074e70/0/56f9c2d42b67227a79b4faec.tif"
   visParams <- list(nodata = 0, expression = "B1*1+B2*4+B3*2", rescale = "0, 2000", colormap_name = "viridis")
   Map$centerObject(resource)
   Map$addLayer(resource, visParams = visParams, shown = TRUE)

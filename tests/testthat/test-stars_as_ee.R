@@ -1,5 +1,4 @@
 context("rgee: stars_as_ee test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 ee_Initialize(gcs = TRUE, drive = TRUE)
 library(stars)
@@ -14,14 +13,14 @@ test_that("stars_as_ee", {
     x = x,
     overwrite = TRUE,
     assetId = assetId,
-    bucket = "rgee_dev"
+    bucket = "rgeedev2"
   )
 
   ee_stars_02 <- stars_as_ee(
     x = x,
     overwrite = TRUE,
     assetId = assetId,
-    bucket = "rgee_dev",
+    bucket = "rgeedev2",
     monitoring = FALSE
   )
   expect_s3_class(ee_stars_01, "ee.image.Image")

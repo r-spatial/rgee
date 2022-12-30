@@ -68,10 +68,9 @@ ee_Initialize <- function(user = NULL,
                           ...
 ) {
   # Set google-cloud-sdk in your PATH systen
-  sdkpath <- sprintf("%s/google-cloud-sdk/bin/", Sys.getenv("HOME"))
-  if (!grepl(sdkpath, Sys.getenv("PATH"))) {
-    Sys.setenv(PATH = sprintf("%s:%s", Sys.getenv("PATH"), sdkpath))
-  }
+  gcloud_path <- Sys.getenv("EARTHENGINE_GCLOUD", unset = NA)
+  if (!is.na(gcloud_path))
+    Sys.setenv(PATH = sprintf("%s:%s", Sys.getenv("PATH"), gcloud_path))
 
   # Check sanity of earth-engine and return ee_utils.py module
   init <- ee_check_init()

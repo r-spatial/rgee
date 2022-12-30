@@ -1,5 +1,10 @@
 context("rgee: ee_check test")
-skip_if_no_pypkg()
+
+library(sf)
+library(rgee)
+
+ee_Initialize(drive = TRUE, gcs = TRUE)
+
 # -------------------------------------------------------------------------
 
 test_that("simple ee_check ",{
@@ -25,10 +30,8 @@ test_that("ee_wrong_message",{
 # })
 
 
-test_that("ee_install check", {
-  message = ee_install(confirm = FALSE)
-  ee_clean_pyenv()
-  expect_true(message)
-})
-
-
+#test_that("ee_install check", {
+  #message = ee_install(confirm = FALSE)
+  #ee_clean_pyenv()
+  #expect_true(message)
+#})

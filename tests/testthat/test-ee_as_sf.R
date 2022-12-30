@@ -1,5 +1,5 @@
 context("rgee: ee_as_sf test")
-skip_if_no_pypkg()
+
 # -------------------------------------------------------------------------
 
 # Load and filter watersheds from a data table.
@@ -32,9 +32,8 @@ test_that("sf - drive",{
 })
 
 test_that("sf - gcs",{
-  skip_if_no_credentials()
   mysheds <- ee_as_sf(ee$Feature(sheds$first()),via = "gcs",
-                      container = gcs_bucket_f())
+                      container = "rgeedev2")
   expect_s3_class(mysheds,"sf")
 })
 
@@ -61,7 +60,7 @@ test_that("ee_as_sf - gcs - dsn",{
   ee_randomPoints <- ee_as_sf(
     x = ee$Feature(sheds$first()),
     dsn = tempfile(fileext = ".geojson"),
-    container = "rgee_dev",
+    container = "rgeedev2",
     via = "gcs",
     lazy = TRUE
   )

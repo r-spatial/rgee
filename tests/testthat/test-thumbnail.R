@@ -1,5 +1,4 @@
 context("rgee: ee_as_thumbnail test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 
 ### 1. Data
@@ -31,7 +30,7 @@ test_that("ee_as_thumbnail full parameters", {
                                   raster = TRUE,
                                   vizparams = list(min = 0, max = 5000))
   arequipa_dem <- arequipa_dem * 5000
-  expect_equal(max(getValues(arequipa_dem)), 5000)
+  expect_equal(max(raster::getValues(arequipa_dem)), 5000)
 })
 
 test_that("ee_as_thumbnail min-max", {

@@ -701,7 +701,7 @@ ee_table_to_asset <- function(collection,
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
 #' @param overwrite A boolean argument that indicates
-#' whether "filename" should be overwritten. By default TRUE.
+#' whether filename should be overwritten. By default TRUE.
 #' @param consider Interactive. See details.
 #' @param public Logical. If TRUE, a public link to the Google Drive resource is
 #' created.
@@ -711,19 +711,19 @@ ee_table_to_asset <- function(collection,
 #'
 #' @details
 #'
-#' The task argument needs a status as task "COMPLETED" to work, due that the
-#' parameters necessary to identify EE objects into Google Drive are obtained
-#' from \cr \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
+#'The task argument requires a status of "COMPLETED" because
+#'the parameters required to identify EE items in Google Drive
+#'are retrieved from  \cr \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
 #'
-#' \code{consider} argument is necessary due that Google Drive permits users to
-#' create files with the same name. \code{consider} uses an interactive R
-#' session by default to help users identify just the files that they want to
-#' download. Additionally, the options "last" and "all" are implemented. "last"
-#' will download just the last file saved in Google Drive while with "all" all
-#' files will be downloaded.
+#'Due to the fact that Google Drive allows users to create files with the
+#'same name, the \code{consider} argument is required. It use an interactive
+#'R session by default to assist users in identifying the specific files
+#'they wish to download. Additionally, "last" and "all" settings are
+#'provided. "last" will only download the most recently saved file in
+#'Google Drive, whereas "all" will download all files with the same name.
 #'
-#' Finally, if the argument \code{metadata} is TRUE, a list with the
-#' following elements are exported join with the output filename (dsn):
+#' Finally, if the argument \code{metadata} is TRUE, a list containing the
+#' following elements is exported and appended to the output filename (dsn):
 #'
 #' \itemize{
 #'  \item{\bold{ee_id: }}{Name of the Earth Engine task.}
@@ -973,18 +973,20 @@ ee_drive_to_local <- function(task,
 #' @param overwrite A boolean argument that indicates indicating
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param public Logical. If TRUE, a public link to Google Cloud Storage
-#' resource is created.
+#' resource is created. "Public Access Prevention" may need to be removed.
+#' In addition, the bucket access control configuration must be "fine-grained".
+#' See GCS public files documentation for more details.
 #' @param metadata Logical. If TRUE, export the metadata related to the Google
 #' Cloud Storage resource. See details.
 #' @param quiet Logical. Suppress info message
 #' @details
 #'
-#' The task argument needs "COMPLETED" task state to work due to that the parameters
-#' necessaries to locate the file into Google Cloud Storage are obtained from \cr
-#' \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
+#'The task argument requires a status of "COMPLETED" because
+#'the parameters required to identify EE items in Google Drive
+#'are retrieved from \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}.
 #'
-#' If the argument \code{metadata} is TRUE, a list with the
-#' following elements is exported join with the output filename (dsn):
+#' If the argument \code{metadata} is TRUE, a list containing the following
+#' elements is exported and appended to the output filename (dsn):
 #'
 #' \itemize{
 #'   \item{\bold{ee_id: }}{Name of the Earth Engine task.}

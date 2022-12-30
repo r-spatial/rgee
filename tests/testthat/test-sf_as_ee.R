@@ -1,5 +1,4 @@
 context("rgee: sf_as_ee test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 ee_Initialize(gcs = TRUE, drive = TRUE)
 
@@ -44,7 +43,6 @@ test_that("sf_as_ee - getInfo_to_asset", {
 })
 
 test_that("sf_as_ee - gcs_to_asset", {
-  skip_if_no_credentials()
   remove_id <- sprintf("%s/sf_as_ee_test", ee_get_assethome())
   p <- sf::read_sf(filename) %>%
     sf::st_as_sf() %>%
@@ -53,7 +51,7 @@ test_that("sf_as_ee - gcs_to_asset", {
     sf_as_ee(
       assetId = remove_id,
       overwrite = TRUE,
-      bucket = gcs_bucket_f(),
+      bucket = "rgeedev2",
       via = "gcs_to_asset")
   expect_is(p$geometry(), "ee.geometry.Geometry")
 })
@@ -121,3 +119,4 @@ test_that("bucket error", {
     ee_table_to_gcs() %>%
     expect_error()
 })
+
