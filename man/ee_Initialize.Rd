@@ -14,6 +14,7 @@ ee_Initialize(
   http_transport = NULL,
   project = NULL,
   quiet = FALSE,
+  auth_mode = "notebook",
   auth_quiet = FALSE,
   ...
 )
@@ -43,6 +44,15 @@ exception guiding the user to create those credentials.}
 \item{project}{The client project ID or number to use when making API calls.}
 
 \item{quiet}{Logical. Suppress info messages.}
+
+\item{auth_mode}{The authentication mode. One of:
+\itemize{
+\item{1. }{paste - send user to accounts.google.com to get a pastable token}
+\item{2. }{notebook - send user to notebook authenticator page}
+\item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
+\item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
+\item{5. }{None - a default mode is chosen based on your environment.}
+}}
 
 \item{auth_quiet}{Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
 do not require interactive prompts and force --no-browser mode for gcloud.}

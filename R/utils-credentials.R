@@ -164,7 +164,10 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(user, auth_quiet, ee_utils, auth_params=NULL, ...) {
+ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_utils, auth_params=NULL, ...) {
+  # Check sanity of earth-engine and return ee_utils.py module
+  init <- ee_check_init()
+  ee_utils <- init$ee_utils
 
   # setting ee folder
   if (is.null(user)) {
@@ -193,9 +196,9 @@ ee_create_credentials_earthengine <- function(user, auth_quiet, ee_utils, auth_p
   } else {
     # Run authenticate
     if (is.null(auth_params)) {
-      extra_params = append(list(...), list(quiet = auth_quiet))
+      extra_params = append(list(...), list(quiet = auth_quiet, auth_mode = auth_mode))
     } else {
-      extra_params = append(auth_params, list(quiet = auth_quiet))
+      extra_params = append(auth_params, list(quiet = auth_quiet, auth_mode = auth_mode))
     }
 
     do.call(ee$Authenticate, extra_params)

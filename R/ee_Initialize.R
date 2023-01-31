@@ -29,6 +29,14 @@
 #' @param quiet Logical. Suppress info messages.
 #' @param auth_quiet Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
 #' do not require interactive prompts and force --no-browser mode for gcloud.
+#' @param auth_mode The authentication mode. One of:
+#' \itemize{
+#'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
+#'  \item{2. }{notebook - send user to notebook authenticator page}
+#'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
+#'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
+#'  \item{5. }{None - a default mode is chosen based on your environment.}
+#' }
 #' @param ... Extra exporting argument. See \link{ee_Authenticate}.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -64,9 +72,11 @@ ee_Initialize <- function(user = NULL,
                           http_transport=NULL,
                           project=NULL,
                           quiet = FALSE,
+                          auth_mode = "notebook",
                           auth_quiet = FALSE,
                           ...
 ) {
+
   # Set google-cloud-sdk in your PATH systen
   gcloud_path <- Sys.getenv("EARTHENGINE_GCLOUD", unset = NA)
   if (!is.na(gcloud_path))
@@ -122,7 +132,7 @@ ee_Initialize <- function(user = NULL,
   if (!quiet) ee_message_04(init = TRUE)
 
   # If user is not NULL copy the credentials from sub to main folder
-  ee_create_credentials_earthengine(user, auth_quiet, ee_utils, ...)
+  ee_create_credentials_earthengine(user, auth_mode, auth_quiet, ee_utils, ...)
 
   ee$Initialize(
     credentials=credentials,
@@ -203,7 +213,7 @@ ee_Authenticate <- function(
     gcs = FALSE,
     authorization_code = NULL,
     code_verifier = NULL,
-    auth_mode = NULL,
+    auth_mode = "notebook",
     scopes = NULL,
     quiet = FALSE,
     verbose = TRUE) {
@@ -245,13 +255,13 @@ ee_Authenticate <- function(
     auth_params <- list(
       authorization_code = authorization_code,
       code_verifier = code_verifier,
-      auth_mode = auth_mode,
       scopes = scopes
     )
 
     # Copy credentials
     ee_create_credentials_earthengine(
       user,
+      auth_mode,
       quiet,
       ee_utils,
       auth_params
@@ -322,7 +332,7 @@ ee_Authenticate <- function(
 ee_users <- function(quiet = FALSE) {
   #space among columns
   wsc <- "     "
-  title  <- c('user', ' EE', ' GCS', ' GD')
+  title  <- c('user', ' EE', ' GD', ' GCS')
 
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)

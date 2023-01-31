@@ -11,7 +11,7 @@ ee_Authenticate(
   gcs = FALSE,
   authorization_code = NULL,
   code_verifier = NULL,
-  auth_mode = NULL,
+  auth_mode = "notebook",
   scopes = NULL,
   quiet = FALSE,
   verbose = TRUE
