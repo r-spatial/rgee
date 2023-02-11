@@ -770,7 +770,7 @@ ee_image_info <- function(image,
   )
 
   geotransform <- unlist(img_proj$transform)
-  img_proj_wkt <- ee_utils_get_crs(img_proj$crs)
+  img_proj_wkt <- sf::st_crs(ee_utils_get_crs(band_metadata$crs))
 
   img_totalarea <- ee_as_sf(image$geometry()) %>%
     sf::st_transform(img_proj_wkt)

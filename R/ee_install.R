@@ -231,7 +231,7 @@ ee_install <- function(py_env = "rgee",
   )
 
   reticulate::py_install(
-    packages = c("earthengine-api", "numpy"),
+    packages = c("earthengine-api", "numpy", "ee_extra"),
     envname = rgee_path
   )
 

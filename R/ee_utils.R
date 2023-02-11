@@ -54,54 +54,6 @@ ee_utils_shp_to_zip <- function(x,
 }
 
 
-#' Wrap an R function in a Python function with the same signature.
-#' @author Yuan Tang and J.J. Allaire
-#'
-#' @description This function could wrap an R function in a Python
-#' function with the same signature. Note that the signature of the
-#' R function must not contain esoteric Python-incompatible constructs.
-#'
-#' @note \code{\link[reticulate]{py_func}} has been renamed to ee_utils_pyfunc
-#' just to maintain the rgee functions name's style. All recognition
-#' for this function must always be given to \pkg{reticulate}.
-#' @return A Python function that calls the R function `f` with the same
-#' signature.
-#' @param f An R function
-#'
-#' @family ee_utils functions
-#'
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' # Earth Engine List
-#' ee_SimpleList <- ee$List$sequence(0, 12)
-#' ee_NewList <- ee_SimpleList$map(
-#'   ee_utils_pyfunc(
-#'     function(x) {
-#'       ee$Number(x)$add(x)
-#'     }
-#'   )
-#' )
-#'
-#' ee_NewList$getInfo()
-#'
-#' # Earth Engine ImageCollection
-#' constant1 <- ee$Image(1)
-#' constant2 <- ee$Image(2)
-#' ee_ic <- ee$ImageCollection(c(constant2, constant1))
-#' ee_newic <- ee_ic$map(
-#'   ee_utils_pyfunc(
-#'     function(x) ee$Image(x)$add(x)
-#'   )
-#' )
-#' ee_newic$mean()$getInfo()$type
-#' }
-#' @export
-ee_utils_pyfunc <- reticulate::py_func
-
-
 #' Search into the Earth Engine Data Catalog
 #'
 #' @param ee_search_dataset Character that represents the EE dataset ID.
@@ -486,4 +438,96 @@ ee_utils_sak_validate <- function(sakfile, bucket, quiet = FALSE) {
     )
 
     invisible(TRUE)
+}
+
+
+
+#' Obtain parameters from a Python string
+#' @noRd
+get_signature <- function (sigs) {
+  sig_names <- names(sigs)
+  signature_strings <- lapply(sig_names, function(k) {
+    if (identical(sigs[[k]], quote(expr = )))
+      k
+    else {
+      py_value_str <- ifelse(
+        is.character(sigs[[k]]),
+        paste0("'", sigs[[k]], "'"),
+        as.character(r_to_py(eval(sigs[[k]]))))
+      paste0(k, "=", py_value_str)
+    }
+  })
+  paste(signature_strings, collapse = ", ")
+}
+
+
+
+#' Wrap an R function in a Python function with the same signature.
+#' @author Yuan Tang and J.J. Allaire
+#'
+#' @description This function could wrap an R function in a Python
+#' function with the same signature. Note that the signature of the
+#' R function must not contain esoteric Python-incompatible constructs.
+#'
+#' @note \code{\link[reticulate]{py_func}} has been renamed to ee_utils_pyfunc
+#' just to maintain the rgee functions name's style. All recognition
+#' for this function must always be given to \pkg{reticulate}.
+#' @return A Python function that calls the R function `f` with the same
+#' signature.
+#' @param f An R function
+#'
+#' @family ee_utils functions
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_Initialize()
+#'
+#' # Earth Engine List
+#' ee_SimpleList <- ee$List$sequence(0, 12)
+#' ee_NewList <- ee_SimpleList$map(
+#'   ee_utils_pyfunc(
+#'     function(x) {
+#'       ee$Number(x)$add(x)
+#'     }
+#'   )
+#' )
+#'
+#' ee_NewList$getInfo()
+#'
+#' # Earth Engine ImageCollection
+#' constant1 <- ee$Image(1)
+#' constant2 <- ee$Image(2)
+#' ee_ic <- ee$ImageCollection(c(constant2, constant1))
+#' ee_newic <- ee_ic$map(
+#'   ee_utils_pyfunc(
+#'     function(x) ee$Image(x)$add(x)
+#'   )
+#' )
+#' ee_newic$mean()$getInfo()$type
+#' }
+#' @export
+ee_utils_pyfunc <- function (f) {
+  tryCatch({
+    sigs <- formals(f)
+    if (is.null(sigs)) {
+      func_signature <- func_pass_args <- ""
+    }
+    else {
+      func_signature <- get_signature(sigs)
+      func_pass_args <- get_signature(lapply(sigs, function(sig) quote(expr = )))
+    }
+    decostringfunc <- paste0(
+      "\ndef wrap_fn(__deco__):\n  def __magick__(%s):\n",
+      "    return __deco__(%s)\n  return __magick__\n"
+    )
+    wrap_fn_util <- reticulate::py_run_string(
+      code = sprintf(decostringfunc, func_signature, func_pass_args)
+    )
+    wrap_fn_util$wrap_fn(f)
+  }, error = function(e) {
+    stop(paste0("The R function's signature must not contains esoteric ",
+                "Python-incompatible constructs. Detailed traceback: \n",
+                e$message))
+  })
 }
