@@ -11,14 +11,17 @@ ee_help_addins <- function(content=NULL, debug=FALSE) {
   if (selected_content == "") {
     condition <- try(ee_get_eefunc())
     if (isFALSE(condition)) {
-      try(ee_help(ee_get_eefunc(-1)), silent = TRUE)
+      msg <- try(ee_help(ee_get_eefunc(-1)), silent = TRUE)
     } else {
-      try(ee_help(ee_get_eefunc()), silent = TRUE)
+      msg <- try(ee_help(ee_get_eefunc()), silent = TRUE)
     }
-    # If first select the text and after that Ctrl + Enter
+      # If first select the text and after that Ctrl + Enter
   } else {
     selected_content_filtered <- gsub("\n|[[:space:]]","", selected_content)
-    try(ee_help(selected_content_filtered), silent = TRUE)
+    msg <- try(ee_help(selected_content_filtered), silent = TRUE)
+  }
+  if (inherits(msg, "help_files_with_topic")) {
+    print(msg)
   }
   invisible(TRUE)
 }
