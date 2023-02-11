@@ -134,13 +134,29 @@ ee_Initialize <- function(user = NULL,
   # If user is not NULL copy the credentials from sub to main folder
   ee_create_credentials_earthengine(user, auth_mode, auth_quiet, ee_utils, ...)
 
-  ee$Initialize(
-    credentials=credentials,
-    opt_url=opt_url,
-    cloud_api_key=cloud_api_key,
-    http_transport=http_transport,
-    project=project
-  )
+  tryCatch(expr = {
+    ee$Initialize(
+      credentials=credentials,
+      opt_url=opt_url,
+      cloud_api_key=cloud_api_key,
+      http_transport=http_transport,
+      project=project
+    )
+  }, error = function(e) {
+     if (grepl("Token has been expired", e)) {
+       ee_Authenticate(
+         user = user,
+         earthengine = TRUE
+       )
+       ee$Initialize(
+         credentials=credentials,
+         opt_url=opt_url,
+         cloud_api_key=cloud_api_key,
+         http_transport=http_transport,
+         project=project
+       )
+     }
+  })
 
   if (!quiet) ee_message_04(init = FALSE)
 
