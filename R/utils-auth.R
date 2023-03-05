@@ -61,9 +61,9 @@ test_drive_privileges <-function(user=NULL) {
   ee_check_packages("ee_Initialize(..., drive=TRUE)", "gargle")
 
   if (is.null(user)) {
-    msg <- sprintf("ee_clean_credentials()")
+    msg <- sprintf("ee_clean_user_credentials()")
   } else {
-    msg <- sprintf("ee_clean_credentials('%s')", user)
+    msg <- sprintf("ee_clean_user_credentials('%s')", user)
   }
 
   # this will break in GD API v4 ...
