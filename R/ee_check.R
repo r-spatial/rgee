@@ -48,7 +48,8 @@ ee_check <- function(user = NULL, quiet = FALSE) {
     ee_check_credentials(quiet = quiet)
   }
   # gcloud is need it to authenticate but no for initialize.
-  ee_check_gcloud()
+  # ee_check_gcloud()
+
   invisible(TRUE)
 }
 
