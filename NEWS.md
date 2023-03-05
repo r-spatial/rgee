@@ -15,12 +15,18 @@ vignette: >
 
 # rgee 1.1.6
 
-- ee_Initialize now supports EE API > 0.1.310.
-- ee_Authenticate added.
-- Preventive message added to ee_get_date_ic (thanks @zackarno)
-- Critical bug solved in ee_check, see changes [here](https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795) (thanks @MartinHoldrege)
-- rgee use 'auth_mode = "notebook"' by default.
-- 'ee_clean_user_credentials' added. It will help users the remove their deprecated credentials. It remove the credentials rather than overwrite them as ee_Authenticate does.
+
+- The ee_check function does not authenticate gcloud.
+- ee_Initialize now supports EE API versions greater than 0.1.310.
+- Added ee_Authenticate function for authentication.
+- Added a preventive message to ee_get_date_ic, thanks to @zackarno.
+- Resolved a critical bug in ee_check, view changes here: https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795, thanks to @MartinHoldrege.
+- rgee now uses 'auth_mode = "notebook"' by default.
+- Added 'ee_clean_user_credentials' function to remove deprecated credentials. This function removes credentials instead of overwriting them, as ee_Authenticate does.
+
+
+
+
 # rgee 1.1.3
 
 - Fixed a bug in ee_as_sf  (@MatthieuStigler).
