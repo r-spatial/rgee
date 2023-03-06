@@ -8,8 +8,9 @@
 #' Otherwise, it will be forced. If not specified, image bounds are taken.
 #' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
-#' @param via Character. Method to export the image. Two methods are
-#' implemented: "drive", "gcs". See details.
+#' @param via Character. Method to export the image. Three methods are
+#' implemented: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
+#' Use "getDownloadURL" for small images. Default "getDownloadURL".
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
@@ -17,6 +18,9 @@
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param grid_batch Numeric. Argument used if via is set as "getDownloadURL".
+#' The number of pixels to download in each batch without considering the number
+#' of bands. Default to 1048576 -(1024*1024).
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' See details.
@@ -101,7 +105,14 @@
 #'   geodesic = FALSE
 #' )
 #'
-#' ## drive - Method 01
+#' ## getDownloadURL - Method 01 (for small images)
+#' img_02 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   scale = 10
+#' )
+#'
+#' ## drive - Method 02
 #' # Simple
 #' img_02 <- ee_as_stars(
 #'   image = img,
@@ -120,7 +131,7 @@
 #' img_02_result <- img_02 %>% ee_utils_future_value()
 #' attr(img_02_result, "metadata") # metadata
 #'
-#' ## gcs - Method 02
+#' ## gcs - Method 03
 #' # Simple
 #' img_03 <- ee_as_stars(
 #'   image = img,
@@ -149,17 +160,40 @@
 ee_as_stars <- function(image,
                         region = NULL,
                         dsn = NULL,
-                        via = "drive",
+                        via = "getDownloadURL",
                         container = "rgee_backup",
                         scale = NULL,
                         maxPixels = 1e9,
+                        grid_batch = 1024*1024,
                         lazy = FALSE,
                         public = FALSE,
                         add_metadata = TRUE,
                         timePrefix = TRUE,
                         quiet = FALSE,
                         ...) {
-  ee_check_packages("ee_as_stars", c("stars", "sf", "future"))
+  ee_check_packages("ee_as_stars", c("stars", "sf", "future", "terra"))
+
+  if (via == "getDownloadURL") {
+    if (is.null(scale)) {
+      stop("getDownloadURL needs to define the scale argument.")
+    }
+
+    if (is.null(dsn)) {
+      dsn <- tempfile(fileext = ".tif")
+    }
+
+    rast_obj <- ee_image_local_getDownloadURL(
+      image = image,
+      dsn = dsn,
+      quiet = quiet,
+      scale = scale,
+      grid_batch = grid_batch,
+      export = "stars",
+      format = "GEO_TIFF",
+      geometry = region
+    )
+    return(rast_obj)
+  }
 
   # 1. From Earth Engine to the container (drive or gcs)
   # Initialize the task! depending of the argument "via", the arguments
@@ -214,18 +248,19 @@ ee_as_stars <- function(image,
 
 
 
-#' Convert an Earth Engine (EE) image in a raster object
+#' Convert an Earth Engine (EE) image in a SpatRaster object
 #'
-#' Convert an ee$Image in a raster object
+#' Convert an ee$Image in a SpatRaster object
 #'
-#' @param image ee$Image to be converted into a raster object.
+#' @param image ee$Image to be converted into a SpatRaster object.
 #' @param region EE Geometry (ee$Geometry$Polygon) which specifies the region
 #' to export. CRS needs to be the same that the argument \code{image}.
 #' Otherwise, it will be forced. If not specified, image bounds are taken.
 #' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
-#' @param via Character. Method to export the image. Two methods are
-#' implemented: "drive", "gcs". See details.
+#' @param via Character. Method to export the image. Three methods are
+#' implemented: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
+#' Use "getDownloadURL" for small images.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
@@ -233,6 +268,9 @@ ee_as_stars <- function(image,
 #' @param maxPixels Numeric. The maximum allowed number of pixels in the
 #' exported image. The task will fail if the exported region covers
 #' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param grid_batch Numeric. Argument used if via is set as "getDownloadURL". The number of
+#' pixels to download in each batch without considering the number of bands. Default
+#' to 1048576 -(1024*1024).
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' See details.
@@ -245,11 +283,10 @@ ee_as_stars <- function(image,
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' \link{ee_image_to_gcs}.
 #' @details
-#' \code{ee_as_raster} supports the download of \code{ee$Images}
-#' by two different options: "drive"
+#' \code{ee_as_rast} supports the download of \code{ee$Images} using: "drive"
 #' (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' Google Cloud Storage}). In both cases, \code{ee_as_stars} works as follow:
+#' Google Cloud Storage}). In both cases, \code{ee_as_rast} performs as follows:
 #' \itemize{
 #'   \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 #'   move the \code{ee$Image} from Earth Engine to the intermediate container
@@ -282,7 +319,8 @@ ee_as_stars <- function(image,
 #'         \item{\bold{gcs_URI: }}{gs:// link to the image.}
 #'     }
 #'   }
-#'   Run \code{raster@history@metadata} to get the list.
+#'
+#'   Run \code{attr(stars, "metadata")} to get the list.
 #'  }
 #' }
 #'
@@ -290,7 +328,7 @@ ee_as_stars <- function(image,
 #' a look at the
 #' \href{https://developers.google.com/earth-engine/guides/exporting}{Google
 #' Earth Engine Guide - Export data}.
-#' @return A RasterStack object
+#' @return A SpatRaster object
 #' @family image download functions
 #' @examples
 #' \dontrun{
@@ -315,16 +353,23 @@ ee_as_stars <- function(image,
 #'   geodesic = FALSE
 #' )
 #'
-#' ## drive - Method 01
+#' ## getDownloadURL - Method 01 (for small images)
+#' img_02 <- ee_as_stars(
+#'   image = img,
+#'   region = geometry,
+#'   scale = 10
+#' )
+#'
+#' ## drive - Method 02
 #' # Simple
-#' img_02 <- ee_as_raster(
+#' img_02 <- ee_as_rast(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive"
 #' )
 #'
 #' # Lazy
-#' img_02 <- ee_as_raster(
+#' img_02 <- ee_as_rast(
 #'   image = img,
 #'   region = geometry,
 #'   via = "drive",
@@ -332,11 +377,11 @@ ee_as_stars <- function(image,
 #' )
 #'
 #' img_02_result <- img_02 %>% ee_utils_future_value()
-#' img_02_result@history$metadata # metadata
+#' attr(img_02_result, "metadata") # metadata
 #'
-#' ## gcs - Method 02
+#' ## gcs - Method 03
 #' # Simple
-#' img_03 <- ee_as_raster(
+#' img_03 <- ee_as_rast(
 #'  image = img,
 #'  region = geometry,
 #'  container = "rgee_dev",
@@ -344,7 +389,7 @@ ee_as_stars <- function(image,
 #' )
 #'
 #' # Lazy
-#' img_03 <- ee_as_raster(
+#' img_03 <- ee_as_rast(
 #'  image = img,
 #'  region = geometry,
 #'  container = "rgee_dev",
@@ -353,27 +398,52 @@ ee_as_stars <- function(image,
 #' )
 #'
 #' img_03_result <- img_03 %>% ee_utils_future_value()
-#' img_03_result@history$metadata # metadata
+#' attr(img_03_result, "metadata") # metadata
 #'
 #' # OPTIONAL: clean containers
 #' # ee_clean_container(name = "rgee_backup", type = "drive")
 #' # ee_clean_container(name = "rgee_dev", type = "gcs")
 #' }
 #' @export
-ee_as_raster <- function(image,
-                         region = NULL,
-                         dsn = NULL,
-                         via = "drive",
-                         container = "rgee_backup",
-                         scale = NULL,
-                         maxPixels = 1e9,
-                         lazy = FALSE,
-                         public = FALSE,
-                         add_metadata = TRUE,
-                         timePrefix = TRUE,
-                         quiet = FALSE,
-                         ...) {
-  ee_check_packages("ee_as_raster", c("raster"))
+ee_as_rast <- function(image,
+                       region = NULL,
+                       dsn = NULL,
+                       via = "getDownloadURL",
+                       container = "rgee_backup",
+                       scale = NULL,
+                       maxPixels = 1e9,
+                       grid_batch = 1024*1024,
+                       lazy = FALSE,
+                       public = FALSE,
+                       add_metadata = TRUE,
+                       timePrefix = TRUE,
+                       quiet = FALSE,
+                       ...) {
+
+  ee_check_packages("ee_as_stars", c("terra", "sf", "future"))
+
+
+  if (via == "getDownloadURL") {
+    if (is.null(scale)) {
+      stop("getDownloadURL needs to define the scale argument.")
+    }
+
+    if (is.null(dsn)) {
+      dsn <- tempfile(fileext = ".tif")
+    }
+
+    rast_obj <- ee_image_local_getDownloadURL(
+      image = image,
+      dsn = dsn,
+      quiet = quiet,
+      scale = scale,
+      grid_batch = grid_batch,
+      export = "terra",
+      format = "GEO_TIFF",
+      geometry = region
+    )
+    return(rast_obj)
+  }
 
   ee_task <- ee_init_task(
     image = image,
@@ -408,7 +478,7 @@ ee_as_raster <- function(image,
       ee$List$getInfo()
 
     # Create a proxy-star object
-    ee_read_raster(img_dsn$dsn, band_names, img_dsn$metadata)
+    ee_read_rast(img_dsn$dsn, band_names, img_dsn$metadata)
   }
 
   if (lazy) {
@@ -866,6 +936,22 @@ ee_read_raster <- function(img_dsn, band_names, metadata) {
 }
 
 
+#' helper function to read raster (ee_as_raster)
+#' @noRd
+ee_read_rast <- function(img_dsn, band_names, metadata) {
+  if (length(img_dsn) > 1) {
+    message(
+      "NOTE: To avoid memory excess problems, ee_as_rast will",
+      " not build Raster objects for large images."
+    )
+    img_dsn
+  } else {
+    dsn_raster <- terra::rast(img_dsn)
+    attr(dsn_raster, "metadata") <- list(metadata = metadata)
+    dsn_raster
+  }
+}
+
 #' Get the current image
 #' @noRd
 ee_get_current_email <- function() {
@@ -875,4 +961,175 @@ ee_get_current_email <- function() {
   read.table(file = sprintf("%s/rgee_sessioninfo.txt", ee_path),
              header = TRUE,
              stringsAsFactors = FALSE)[["email"]]
+}
+
+
+
+
+#' Download a raster using getDownloadURL
+#' @param image The image to download
+#' @param dsn The destination file name
+#' @param quiet If TRUE, suppress messages,
+#' @param scale The scale to download
+#' @param grid_batch The side of a square matrix. It is used to split the image in n parts.
+#' @param export The export type. It can be "terra", "stars" or "file". If "file" is used,
+#' the function returns the file name.
+#' @param geometry The geometry to download. It can be a sf object or a ee.Geometry object.
+#' @noRd
+ee_image_local_getDownloadURL <- function(
+    image,
+    dsn,
+    geometry,
+    scale,
+    grid_batch = 1024*1024,
+    export = "terra",
+    format = "GEO_TIFF",
+    quiet=FALSE,
+    ...
+) {
+  # Check if geometry if sf or ee
+  if (inherits(geometry, "sfc")) {
+    geom_sf <- geometry
+    geom_ee <- sf_as_ee(geom_sf)
+  } else if(inherits(geometry, "sf")) {
+    geom_sf <- geometry[["geometry"]]
+    geom_ee <- sf_as_ee(geom_sf)
+  } else if(inherits(geometry, "ee.geometry.Geometry")) {
+    geom_ee <- geometry
+    geom_sf <- ee_as_sf(geom_ee)
+  } else {
+    stop("Geometry must be either an sf object or an ee.geometry.Geometry object.")
+  }
+
+  # If the area is large, make a grid of tiles
+  geom_area <- sf::st_area(geom_sf) %>% as.numeric()
+  large_condition <- geom_area  / (grid_batch * (scale**2))
+
+  if (large_condition <= 1) {
+    ee_image_local_getDownloadURL_nocheck(
+      image = image,
+      geom_ee = geom_ee,
+      scale = scale,
+      dsn = dsn,
+      grid_batch = grid_batch,
+      export = export,
+      format = format
+    )
+  } else {
+    # Split the total geometry in small patches
+    nsplits <- ceiling(large_condition)
+    geom_sf_batch <- sf::st_make_grid(geom_sf, n = c(nsplits, 1))
+    crs_fullimg <- sf::st_crs(geom_sf_batch)
+    crs_fullimg_epsg <- crs_fullimg$epsg
+
+    if (is.na(crs_fullimg_epsg)) {
+      if (grepl("4326", crs_fullimg$input)) {
+        crs_fullimg_epsg_str <- "EPSG:4326"
+      }  else {
+        stop("sf::st_crs can not determinate the EPSG.")
+      }
+    } else {
+      crs_fullimg_epsg_str <- sprintf("EPSG:%s", crs_fullimg_epsg)
+    }
+
+    # Create n tmp files
+    tmpfiles <- sapply(
+      X = 1:nsplits,
+      FUN = function(x) {
+        tempfile(
+          pattern = sprintf("rgee_getDownloadURL_%02d_", x),
+          fileext = ".tif"
+        )
+      })
+
+    counter <- 1
+    for (index in 1:nsplits) {
+      if (!quiet) {
+        taskname_b <- basename(tmpfiles[index])
+        taskname_id <- gsub("rgee_getDownloadURL_|\\.tif$", "", taskname_b)
+        taskname_f <- sprintf("EETask: T%s", taskname_id)
+        cat(sprintf("\r %s Downloading image patches ... [%s/%s]", taskname_f, counter, nsplits))
+        counter <- counter + 1
+      }
+
+      ee_image_local_getDownloadURL_nocheck(
+        image = image,
+        geom_ee = sf_as_ee(geom_sf_batch[index], proj = crs_fullimg_epsg_str),
+        scale = scale,
+        dsn = tmpfiles[index],
+        grid_batch = grid_batch,
+        export = "file",
+        format = format
+      )
+    }
+
+    fullimg <- terra::merge(terra::sprc(tmpfiles))
+    terra::writeRaster(x = fullimg, filename = dsn, overwrite = TRUE)
+
+    # merge
+    if (export  == "terra") {
+      fullimg
+    } else if (export  == "file") {
+      dsn
+    } else if (export == "stars") {
+      stars::read_stars(dsn)
+    } else {
+      stop("export argument must be either 'terra' or 'stars'")
+    }
+  }
+}
+
+
+#' Auxiliary function to ee_image_local_getDownloadURL, it helps to download a
+#' specific image patch.
+#' @param ... Additional arguments to pass to download.file.
+#' @noRd
+ee_image_local_getDownloadURL_nocheck <- function(
+    image,
+    geom_ee,
+    scale,
+    dsn = NULL,
+    grid_batch = 1024,
+    export = "terra",
+    format = "GEO_TIFF",
+    ...
+) {
+
+  # if dsn is NULL, return a temp file
+  if (is.null(dsn)) {
+    dsn <- tempfile()
+  }
+
+  local_id <- image %>%
+    ee$Image$getDownloadURL(
+      list(
+        scale = scale,
+        format = "GEO_TIFF",
+        region = geom_ee,
+        filePerBand = FALSE
+      )
+    )
+
+  # Download the image
+  tryCatch(
+    expr = download.file(url = local_id, destfile = dsn, quiet = TRUE, ...),
+    error = function(e) {
+      message(e)
+      stop(
+        "An error occurred while downloading the file. If GEE return a memory limit error message",
+        ", try download using a smaller grid_batch. Current grid_batch is ", grid_batch, "."
+      )
+    }
+  )
+
+  # Export the results as a raster object
+  if (export == "terra") {
+    terra::rast(dsn)
+  } else if (export == "stars") {
+    stars::read_stars(dsn)
+  } else if (export == "file") {
+    dsn
+  } else {
+    stop("export argument must be either 'terra' or 'stars'")
+  }
 }

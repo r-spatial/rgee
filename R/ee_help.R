@@ -34,7 +34,7 @@ ee_help <- function(eeobject, browser = FALSE) {
 
   ic_mans <- rgeeExtracheckmans(eeobject_name, "ic")
   if (!is.na(ic_mans[1])) {
-    return(image_mans)
+    return(ic_mans)
   }
 
   #obs : simple earth engine objects like ee$Number will return NULL
