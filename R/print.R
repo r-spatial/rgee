@@ -11,7 +11,7 @@ print.ee.computedobject.ComputedObject <-
     if (type == "json") {
       str(x)
     } else if (type == "simply") {
-      cat(paste0("EarthEngine Object: ", x$name()))
+      cat(paste0("EarthEngine Object: ", x$name(), "\n"))
     } else if (type == "ee_print") {
       ee_print(x)
     }
