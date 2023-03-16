@@ -1,5 +1,5 @@
 ---
-title: "**Best Practices**"
+title: "Best Practices"
 output:
   html_document:
     toc: true
@@ -12,23 +12,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}    
 ---
-
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
-
 
   ```{r setup, include=FALSE}
   knitr::opts_chunk$set(eval = FALSE)
@@ -46,7 +29,7 @@ Earth Engine server objects are objects with constructors that start with `ee` (
 To avoid unintended behavior, do not mix client and server functions in your script as discussed [here](https://developers.google.com/earth-engine/guides/debugging). See [this page](https://developers.google.com/earth-engine/guides/client_server) for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:
 
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Error** — This code doesn't work!
 
 
@@ -65,7 +48,7 @@ object and can not be used with client-side functionality such as the `seq_len` 
 A situation in which you may want to use for-loops is with to display results 
 with `Map`, since the Map object and methods are client-side.
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Use client functions for display Earth Engine spatial objects.
 
 
@@ -88,7 +71,7 @@ Reduce('+', display_l8ts)
 Conversely, `map()` is a server function and client functionality won't work 
 inside the function passed to map(). For example:
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Error** — This code doesn't work!
 
 ```{r}
@@ -101,7 +84,7 @@ foobar <- table$map(function(f) {
 })
 ```
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Use `map()` `set()`.
 
 ```{r}
@@ -125,7 +108,7 @@ and `print()` the result. Note that you can not print a collection with more
 
 Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a `List` or `Array` type. Unless you need random access to collection elements (i.e. you need to get the i'th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Bad** — Don't convert to list unnecessarily!
 
 ```{r}
@@ -138,7 +121,7 @@ print(list$get(13)$getInfo()) # User memory limit exceeded.
 
 Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use `filter()`:
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Use `filter()`.
 
 ```{r}
@@ -151,7 +134,7 @@ Note that you should [use filters as early as possible in your analysis](https:/
 
 Do not use `ee.Algorithms.If()` to implement branching logic, especially in a mapped function. As the following example illustrates, `ee.Algorithms.If()` can be memory intensive and is not recommended:
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Bad** — Don't use `If()`:
 
 ```{r}
@@ -176,7 +159,7 @@ function may return nulls and they will be dropped in the resultant collection.
 That can be useful (without `If()`), but here the easiest solution is to use a
 filter:
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Use `filter()`.
 
 ```{r}
@@ -334,7 +317,7 @@ See the debugging page for examples of using `Export` to resolve [Computation](h
 
 Using `clip()` unnecessarily will increase computation time. Avoid `clip()` unless it's necessary to your analysis. If you're not sure, don't clip. An example of a bad use of clip:
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Bad** — Don't clip inputs unnecessarily!
 
 ```{r}
@@ -363,7 +346,7 @@ print(unnecessaryClip$getInfo())
 
 Clipping the input images can be skipped entirely, because the region is specified in the `reduceRegion()` call:
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Specify the region on the output.
 
 ```{r}
@@ -574,7 +557,7 @@ Map$addLayer(optimizedConvolution, viz, "optimizedConvolution")
 
 Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see [this reference](https://www.deeplearning.ai/programs/)). The following example demonstrates how requesting too much training data can result in the dreaded "Computed value is too large" error:
 
-<img src="thumb_down.png" width=25px>
+<img src="images/thumb_down.png" width=25px>
 &nbsp; **Bad** — Don't sample too much data!
 
 ```{r}
@@ -604,7 +587,7 @@ print(classifier$explain()) # Computed value is too large
 
 The better approach is to start with a moderate amount of data and tune the hyperparameters of the classifier to determine if you can achieve your desired accuracy:
 
-<img src="thumb_up.png" width=25px>
+<img src="images/thumb_up.png" width=25px>
 &nbsp; **Good** — Tune hyperparameters.
 
 ```{r}

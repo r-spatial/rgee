@@ -1,49 +1,3 @@
-#' Delete Credentials
-#'
-#' Delete all the credentials according to a specific user. The credentials
-#' (Google Earth Engine, Google Drive and Google Cloud Storage) are created
-#' after running `ee_Initialize(...)` successfully. They are saved in
-#' the path `rgee::ee_get_earthengine_path()`.
-#'
-#' @param user Character. Earth Engine user (e.g. `data.colec.fbf`).
-#' @param quiet Logical. Suppress info messages.
-#' @return No return value, called for cleaning Google Drive, Google Cloud Storage,
-#' and/or Earth Engine credentials.
-#' @family ee_clean functions
-#' @export
-ee_clean_credentials <- function(user='not_defined', quiet = FALSE) {
-  oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
-  utils_py <- ee_source_python(oauth_func_path)
-  ee_path <- ee_utils_py_to_r(utils_py$ee_path())
-  user_clean <- gsub("@gmail.com", "", user)
-
-  if (user == 'not_defined') {
-    user_clean <- 'ndef'
-  }
-
-  path_to_delete <- sprintf("%s/%s", ee_path, user_clean)
-
-  if (!dir.exists(path_to_delete)) {
-    if (!quiet) {
-      cat('The path:', path_to_delete, ' does not exist!\n')
-    }
-  }
-
-  if (!quiet && dir.exists(path_to_delete)) {
-    cat(
-      sprintf("Credentials in %s has been deleted.\n",
-              sprintf("%s/%s", ee_path, user_clean)))
-  }
-
-  unlink(x = path_to_delete, recursive = TRUE, force = TRUE)
-  unlink(list.files(ee_path, "@gmail.com", full.names = TRUE))
-  unlink(list.files(ee_path, ".json", full.names = TRUE))
-  unlink(list.files(ee_path, "credentials", full.names = TRUE))
-  unlink(list.files(ee_path, "rgee_sessioninfo.txt", full.names = TRUE))
-
-  invisible(TRUE)
-}
-
 #' Remove rgee system variables from .Renviron
 #'
 #' @param Renviron Character. If it is "global" the environment variables in
@@ -223,4 +177,96 @@ ee_clean_container <- function(name = "rgee_backup",
     stop("type argument invalid.")
   }
   invisible(TRUE)
+}
+
+#' Clean credentials for a specific user
+#'
+#' @param user Character (optional, e.g. `data.colec.fbf`). The user
+#' to remove credentials (See \code{~/.config/earthengine/}). A 'user' represents
+#' a set of credentials that certificate a specific Google identity.
+#' @param earthengine Logical. The earthengine credential.
+#' @param drive Logical. The Google Drive credential.
+#' @param gcs Logical. The Google Cloud Storage credential.
+#'
+#' @family ee_clean functions
+#' @return No return value, called for cleaning the path \code{~/.config/earthengine/}
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#'
+#' # Delete caducated credentials for a specific user
+#' ee_clean_user_credentials(earthengine=TRUE, drive=TRUE)
+#' ee_users()
+#' }
+#' @export
+ee_clean_user_credentials <- function(
+    user = NULL,
+    earthengine = TRUE,
+    drive = TRUE,
+    gcs = FALSE
+) {
+
+  # Detect user folder
+  init <- ee_check_init()
+  ee_utils <- init$ee_utils
+  ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
+
+  # remove credentials from the main folder
+  ee_clean_credentials_from_folder(
+    ee_path = ee_path,
+    earthengine = earthengine,
+    drive = drive,
+    gcs = gcs
+  )
+
+  if (!is.null(user)) {
+    ee_path_user <- sprintf("%s/%s", ee_path, user)
+    ee_clean_credentials_from_folder(
+      ee_path = ee_path_user,
+      earthengine = earthengine,
+      drive = drive,
+      gcs = gcs
+    )
+  }
+  invisible(TRUE)
+}
+
+#' Remove credentials files from a specific folder
+#' @noRd
+ee_clean_credentials_from_folder <- function(ee_path, earthengine, drive, gcs) {
+  usermainfiles <- setdiff(
+    list.files(ee_path) ,
+    list.dirs(ee_path, recursive = FALSE, full.names = FALSE)
+  ) # Find user files
+  usermainfiles_fullname <- sprintf("%s/%s", ee_path, usermainfiles)
+
+  # Remove EE credential if exists
+  if (earthengine) {
+    eecre <- usermainfiles_fullname[grepl("credentials$", usermainfiles)]
+    file.remove(eecre)
+  }
+
+  # Remove GD credential if exists
+  if (drive) {
+    # maybe not the optimal way to detect if a file is a GD credential
+    gdcre <- usermainfiles_fullname[
+      grepl(".*_.*@.*", basename(usermainfiles))
+    ]
+    file.remove(gdcre)
+  }
+
+  # Remove GCS credential if it exists
+  if (gcs) {
+    gcscre <- usermainfiles_fullname[
+      grepl("\\.json$", basename(usermainfiles))
+    ]
+    file.remove(gcscre)
+  }
+
+  # Delete the .txt file if it exists
+  txtlocfile <- grepl("\\.txt$", basename(usermainfiles))
+  if (any(txtlocfile)) {
+    txtfile <- usermainfiles_fullname[txtlocfile]
+    file.remove(txtfile)
+  }
 }

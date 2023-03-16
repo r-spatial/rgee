@@ -54,54 +54,6 @@ ee_utils_shp_to_zip <- function(x,
 }
 
 
-#' Wrap an R function in a Python function with the same signature.
-#' @author Yuan Tang and J.J. Allaire
-#'
-#' @description This function could wrap an R function in a Python
-#' function with the same signature. Note that the signature of the
-#' R function must not contain esoteric Python-incompatible constructs.
-#'
-#' @note \code{\link[reticulate]{py_func}} has been renamed to ee_utils_pyfunc
-#' just to maintain the rgee functions name's style. All recognition
-#' for this function must always be given to \pkg{reticulate}.
-#' @return A Python function that calls the R function `f` with the same
-#' signature.
-#' @param f An R function
-#'
-#' @family ee_utils functions
-#'
-#' @examples
-#' \dontrun{
-#' library(rgee)
-#' ee_Initialize()
-#'
-#' # Earth Engine List
-#' ee_SimpleList <- ee$List$sequence(0, 12)
-#' ee_NewList <- ee_SimpleList$map(
-#'   ee_utils_pyfunc(
-#'     function(x) {
-#'       ee$Number(x)$add(x)
-#'     }
-#'   )
-#' )
-#'
-#' ee_NewList$getInfo()
-#'
-#' # Earth Engine ImageCollection
-#' constant1 <- ee$Image(1)
-#' constant2 <- ee$Image(2)
-#' ee_ic <- ee$ImageCollection(c(constant2, constant1))
-#' ee_newic <- ee_ic$map(
-#'   ee_utils_pyfunc(
-#'     function(x) ee$Image(x)$add(x)
-#'   )
-#' )
-#' ee_newic$mean()$getInfo()$type
-#' }
-#' @export
-ee_utils_pyfunc <- reticulate::py_func
-
-
 #' Search into the Earth Engine Data Catalog
 #'
 #' @param ee_search_dataset Character that represents the EE dataset ID.
@@ -246,12 +198,12 @@ ee_utils_future_value <- function(future, stdout = TRUE, signal = TRUE, ...) {
 #'
 #' ee_Initialize()
 #'
-#' sakfile <- "/home/rgee_dev/sak_file.json"
-#' # Copy sakfile to the users 'csaybar' and 'ndef'
-#' ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
+#' # sakfile <- "/home/rgee_dev/sak_file.json"
+#' ## Copy sakfile to the users 'csaybar' and 'ndef'
+#' # ee_utils_sak_copy(sakfile = sakfile, users = c("csaybar", "ndef"))
 #'
-#' # Copy the sakfile of the user1 to the user2 and user3.
-#' ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))
+#' # # Copy the sakfile of the user1 to the user2 and user3.
+#' # ee_utils_sak_copy(users = c("csaybar", "ndef", "ryali93"))
 #' }
 #' @export
 ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FALSE) {
@@ -260,54 +212,76 @@ ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FAL
 
   # Check if the user exists
   main_ee_dir <- dirname(ee_get_earthengine_path())
-  condition <- dir.exists(sprintf("%s/%s", main_ee_dir, users))
-  if (!all(condition)) {
-    stop(sprintf("The user %s does not exist.", crayon::bold(users[!condition])))
-  }
 
-
-  if (missing(sakfile)) {
-    user_ref <- sprintf("%s/%s", main_ee_dir, users)[1]
-    sakfile <- list.files(user_ref, '\\.json$', recursive = TRUE, full.names = TRUE)
-    if (length(sakfile) == 0) {
-      stop("The first user does not have a Service Account Key (SaK) assigned.")
-    }
-    other_users <- sprintf("%s/%s", main_ee_dir, users)[-1]
-    users <- basename(other_users)
-  }
-
-  if (is.null(users)) {
-    ee_users <- tryCatch(
-      expr = ee_get_earthengine_path(),
-      error = function(e) {
-        ee_Initialize()
-        ee_get_earthengine_path()
-      }
-    )
-  } else {
-    ee_users <- sprintf("%s/%s", dirname(ee_get_earthengine_path()), users)
-  }
-
-  for (ee_user in ee_users) {
+  if(is.null(users)) {
     # 1. Remove previous Sak
-    file.remove(list.files(ee_user, pattern = "\\.json$", full.names = TRUE))
+    ee_path <- ee_get_earthengine_path()
+    file.remove(list.files(ee_path, pattern = "\\.json$", full.names = TRUE))
 
     # 2. Copy new SaKfile
     file.copy(
       from = sakfile,
-      to = sprintf("%s/rgee_sak.json", ee_user),
+      to = sprintf("%s/rgee_sak.json", ee_path),
       overwrite = TRUE
     )
-  }
 
-  if (delete) {
-    file.remove(sakfile)
-  }
+    if (delete) {
+      file.remove(sakfile)
+    }
 
-  if (!quiet) {
-    cat("SaK copy successfully")
+    if (!quiet) {
+      cat("SaK copy successfully")
+    }
+  } else {
+    condition <- dir.exists(sprintf("%s/%s", main_ee_dir, users))
+    if (!all(condition)) {
+      stop(sprintf("The user %s does not exist.", crayon::bold(users[!condition])))
+    }
+
+
+    if (missing(sakfile)) {
+      user_ref <- sprintf("%s/%s", main_ee_dir, users)[1]
+      sakfile <- list.files(user_ref, '\\.json$', recursive = TRUE, full.names = TRUE)
+      if (length(sakfile) == 0) {
+        stop("The first user does not have a Service Account Key (SaK) assigned.")
+      }
+      other_users <- sprintf("%s/%s", main_ee_dir, users)[-1]
+      users <- basename(other_users)
+    }
+
+    if (is.null(users)) {
+      ee_users <- tryCatch(
+        expr = ee_get_earthengine_path(),
+        error = function(e) {
+          ee_Initialize()
+          ee_get_earthengine_path()
+        }
+      )
+    } else {
+      ee_users <- sprintf("%s/%s", dirname(ee_get_earthengine_path()), users)
+    }
+
+    for (ee_user in ee_users) {
+      # 1. Remove previous Sak
+      file.remove(list.files(ee_user, pattern = "\\.json$", full.names = TRUE))
+
+      # 2. Copy new SaKfile
+      file.copy(
+        from = sakfile,
+        to = sprintf("%s/rgee_sak.json", ee_user),
+        overwrite = TRUE
+      )
+    }
+
+    if (delete) {
+      file.remove(sakfile)
+    }
+
+    if (!quiet) {
+      cat("SaK copy successfully")
+    }
+    sprintf("%s/rgee_sak.json", ee_users)
   }
-  sprintf("%s/rgee_sak.json", ee_users)
 }
 
 
@@ -335,175 +309,225 @@ ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FAL
 #' ee_utils_sak_validate()
 #' }
 #' @export
-ee_utils_sak_validate <- function(sakfile, bucket = NULL, quiet = FALSE) {
-  ee_check_packages(
-    fn_name = "ee_utils_sak_validation",
-    packages = c("googleCloudStorageR", "jsonlite")
-  )
-
-  if (missing(sakfile)) {
-    sakfile <- list.files(
-      path = ee_get_earthengine_path(),
-      pattern = "\\.json$",
-      recursive = TRUE,
-      full.names = TRUE
-    )[1]
-  }
-
-  # Load the GCS credential
-  googleCloudStorageR::gcs_auth(sakfile)
-
-  # Read the file to get the project id
-  project_id <- jsonlite::read_json(sakfile)$project_id
-
-  # Create a random name
-  random_name <- function() {
-    paste0(
-      sapply(1:2, function(x) gsub("file", "", basename(tempfile()))),
-      collapse = "_"
+ee_utils_sak_validate <- function(sakfile, bucket, quiet = FALSE) {
+    ee_check_packages(
+        fn_name = "ee_utils_sak_validation",
+        packages = c("googleCloudStorageR", "jsonlite")
     )
-  }
 
-  if (!quiet) {
-    cat(
-      cli::rule(
-        left = crayon::bold("SaK validator"),
-        right = "The test should take ~1 min. Please wait."
-      )
+    if (missing(sakfile)) {
+        sakfile <- list.files(
+            path = ee_get_earthengine_path(),
+            pattern = "\\.json$",
+            recursive = TRUE,
+            full.names = TRUE
+        )[1]
+    }
+
+    # Load the GCS credential
+    googleCloudStorageR::gcs_auth(sakfile)
+
+    # Read the file to get the project id
+    project_id <- jsonlite::read_json(sakfile)$project_id
+
+    if (!quiet) {
+        cat(
+            cli::rule(
+                left = crayon::bold("SaK validator"),
+                right = "The test should take ~1 min. Please wait."
+            )
+        )
+        cat("\n")
+    }
+    bucket_rname <- bucket
+
+    # TEST 02
+    demo_data <- data.frame(a = 1:10, b = 1:10)
+    result02 <- tryCatch(
+        expr = {
+            suppressMessages(
+                googleCloudStorageR::gcs_upload(
+                    file = demo_data,
+                    name = "demo_data.csv",
+                    bucket = bucket_rname,
+                    predefinedAcl = "bucketLevel"
+                )
+            )
+            TRUE
+        }, error = function(e) {
+          message(e)
+          message("\nAn ERROR was raised when rgee tried to write in your GCS bucket.")
+          return(FALSE)
+        }
     )
-    cat("\n")
-  }
 
-  # Create a bucket (try two times) - TEST 01
-  if (is.null(bucket)) {
-    bucket_rname <- random_name()
-    result01 <- tryCatch(
+    if (!quiet & result02) {
+        cat(
+            sprintf(
+                "%s : %s \n",
+                crayon::bold("Upload GCS objects"),
+                crayon::green$bold("OK!")
+            )
+        )
+    }
+
+    # Download data
+    result03 <- tryCatch(
       expr = {
         suppressMessages(
-          googleCloudStorageR::gcs_create_bucket(bucket_rname, project_id)
+          googleCloudStorageR::gcs_get_object(
+            object_name = "demo_data.csv",
+            bucket = bucket_rname,
+            saveToDisk = tempfile(fileext = ".csv"),
+            overwrite = TRUE
+          )
         )
         TRUE
-      },
-      error = function(e) {
+      }, error = function(e) {
         message(e)
-        message("\nAn ERROR raised when rgee tries to create a GCS bucket.")
+        message("\nAn ERROR was raised when GEE tried to write your GCS bucket.")
         return(FALSE)
       }
     )
 
-    if (!quiet & result01) {
+    if (!quiet & result03) {
       cat(
         sprintf(
           "%s : %s \n",
-          crayon::bold("Bucket creation"),
+          crayon::bold("Download GCS objects"),
           crayon::green$bold("OK!")
         )
       )
     }
-  } else {
-    bucket_rname <- bucket
-  }
 
-  # TEST 02
-  demo_data <- data.frame(a = 1:10, b = 1:10)
-  result02 <- tryCatch(
-    expr = {
-      suppressMessages(
-        googleCloudStorageR::gcs_upload(
-          file = demo_data,
-          name = "demo_data.csv",
-          bucket = bucket_rname,
-          predefinedAcl = "bucketLevel"
+    # Check GCS and GEE sync
+    result04 <- tryCatch(
+      expr = {
+        demo_sf <- ee_as_sf(
+          x = ee$Geometry$Point(c(0, 0 )),
+          via = "gcs", container = bucket_rname,
+          quiet = TRUE,
+          public = FALSE
+        )
+        suppressMessages(
+          googleCloudStorageR::gcs_delete_object(
+            object_name = attr(demo_sf, "metadata")$metadata$gcs_name,
+            bucket = bucket_rname
+          )
+        )
+        TRUE
+      }, error = function(e) {
+        message(e)
+        message("\nAn ERROR was raised when rgee tried to sync GEE & GCS.")
+        return(FALSE)
+      }
+    )
+
+    if (!quiet & result04) {
+      cat(
+        sprintf(
+          "%s : %s \n",
+          crayon::bold("GEE & GCS sync"),
+          crayon::green$bold("OK!")
         )
       )
-      TRUE
-    }, error = function(e) {
-      message(e)
-      message("\nAn ERROR raised when rgee tries to write in your GCS bucket.")
-      return(FALSE)
     }
-  )
 
-  if (!quiet & result02) {
-    cat(
-      sprintf(
-        "%s : %s \n",
-        crayon::bold("Upload GCS objects"),
-        crayon::green$bold("OK!")
-      )
-    )
-  }
-
-  # Download data
-  result03 <- tryCatch(
-    expr = {
-      suppressMessages(
-        googleCloudStorageR::gcs_get_object(
-          object_name = "demo_data.csv",
-          bucket = bucket_rname,
-          saveToDisk = tempfile(fileext = ".csv"),
-          overwrite = TRUE
-        )
-      )
-      TRUE
-    }, error = function(e) {
-      message(e)
-      message("\nAn ERROR raised when rgee tries to read your GCS bucket.")
-      return(FALSE)
-    }
-  )
-
-  if (!quiet & result03) {
-    cat(
-      sprintf(
-        "%s : %s \n",
-        crayon::bold("Download GCS objects"),
-        crayon::green$bold("OK!")
-      )
-    )
-  }
-
-  # Check GCS and GEE sync
-  result04 <- tryCatch(
-    expr = {
-      demo_sf <- ee_as_sf(
-        x = ee$Geometry$Point(c(0, 0 )),
-        via = "gcs", container = bucket_rname,
-        quiet = TRUE,
-        public = FALSE
-      )
-      suppressMessages(
-        googleCloudStorageR::gcs_delete_object(
-          object_name = attr(demo_sf, "metadata")$metadata$gcs_name,
-          bucket = bucket_rname
-        )
-      )
-      TRUE
-    }, error = function(e) {
-      message(e)
-      message("\nAn ERROR raised when rgee tries to sync GEE & GCS.")
-      return(FALSE)
-    }
-  )
-
-  if (!quiet & result04) {
-    cat(
-      sprintf(
-        "%s : %s \n",
-        crayon::bold("GEE & GCS sync"),
-        crayon::green$bold("OK!")
-      )
-    )
-  }
-
-  suppressMessages(
-    googleCloudStorageR::gcs_delete_object("demo_data.csv", bucket_rname)
-  )
-
-  if (is.null(bucket)) {
     suppressMessages(
-      googleCloudStorageR::gcs_delete_bucket(bucket_rname)
+      googleCloudStorageR::gcs_delete_object("demo_data.csv", bucket_rname)
     )
-  }
-  invisible(TRUE)
+
+    invisible(TRUE)
+}
+
+
+
+#' Obtain parameters from a Python string
+#' @noRd
+get_signature <- function (sigs) {
+  sig_names <- names(sigs)
+  signature_strings <- lapply(sig_names, function(k) {
+    if (identical(sigs[[k]], quote(expr = )))
+      k
+    else {
+      py_value_str <- ifelse(
+        is.character(sigs[[k]]),
+        paste0("'", sigs[[k]], "'"),
+        as.character(r_to_py(eval(sigs[[k]]))))
+      paste0(k, "=", py_value_str)
+    }
+  })
+  paste(signature_strings, collapse = ", ")
+}
+
+
+
+#' Wrap an R function in a Python function with the same signature.
+#' @author Yuan Tang and J.J. Allaire
+#'
+#' @description This function could wrap an R function in a Python
+#' function with the same signature. Note that the signature of the
+#' R function must not contain esoteric Python-incompatible constructs.
+#'
+#' @note \code{\link[reticulate]{py_func}} has been renamed to ee_utils_pyfunc
+#' just to maintain the rgee functions name's style. All recognition
+#' for this function must always be given to \pkg{reticulate}.
+#' @return A Python function that calls the R function `f` with the same
+#' signature.
+#' @param f An R function
+#'
+#' @family ee_utils functions
+#'
+#' @examples
+#' \dontrun{
+#' library(rgee)
+#' ee_Initialize()
+#'
+#' # Earth Engine List
+#' ee_SimpleList <- ee$List$sequence(0, 12)
+#' ee_NewList <- ee_SimpleList$map(
+#'   ee_utils_pyfunc(
+#'     function(x) {
+#'       ee$Number(x)$add(x)
+#'     }
+#'   )
+#' )
+#'
+#' ee_NewList$getInfo()
+#'
+#' # Earth Engine ImageCollection
+#' constant1 <- ee$Image(1)
+#' constant2 <- ee$Image(2)
+#' ee_ic <- ee$ImageCollection(c(constant2, constant1))
+#' ee_newic <- ee_ic$map(
+#'   ee_utils_pyfunc(
+#'     function(x) ee$Image(x)$add(x)
+#'   )
+#' )
+#' ee_newic$mean()$getInfo()$type
+#' }
+#' @export
+ee_utils_pyfunc <- function (f) {
+  tryCatch({
+    sigs <- formals(f)
+    if (is.null(sigs)) {
+      func_signature <- func_pass_args <- ""
+    }
+    else {
+      func_signature <- get_signature(sigs)
+      func_pass_args <- get_signature(lapply(sigs, function(sig) quote(expr = )))
+    }
+    decostringfunc <- paste0(
+      "\ndef wrap_fn(__deco__):\n  def __magick__(%s):\n",
+      "    return __deco__(%s)\n  return __magick__\n"
+    )
+    wrap_fn_util <- reticulate::py_run_string(
+      code = sprintf(decostringfunc, func_signature, func_pass_args)
+    )
+    wrap_fn_util$wrap_fn(f)
+  }, error = function(e) {
+    stop(paste0("The R function's signature must not contains esoteric ",
+                "Python-incompatible constructs. Detailed traceback: \n",
+                e$message))
+  })
 }

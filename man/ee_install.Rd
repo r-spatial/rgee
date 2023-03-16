@@ -18,13 +18,10 @@ to be used by rgee.}
 \item{earthengine_version}{Character. The Earth Engine Python API version
 to install. By default \code{rgee::ee_version()}.}
 
-\item{python_version}{Only windows users. The version of Python to be used in
-this conda environment. The associated Python package from conda will be requested
-as python={python_version}. When NULL, the default python package will be
+\item{python_version}{Only windows users. The Python version to be used in
+this conda environment. When NULL, the default python package will be
 used instead. For example, use python_version = "3.6" to request that the
-conda environment be created with a copy of Python 3.6. This argument will be
-ignored if python is specified as part of the packages argument, for backwards
-compatibility.}
+conda environment be created with a copy of Python 3.6.}
 
 \item{confirm}{Logical. Confirm before restarting R?.}
 }
@@ -38,18 +35,21 @@ Create an isolated Python virtual environment with all rgee dependencies.
 \item{1. }{If you do not count with a Python environment, it will display
 an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}
 (a free minimal installer for conda).}
-\item{2. }{Remove the previous Python environment defined in \code{py_env} if
-it exist.}
-\item{3. }{Create a new Python environment (See \code{py_env}).}
-\item{4. }{ Set the environment variable EARTHENGINE_PYTHON. It is used to
-define RETICULATE_PYTHON when the library is loaded. See this
+\item{2. }{If it exists,  delete the previous Python environment specified in
+the \code{py_env} argument.}
+\item{3. }{Create a new Python environment (See \code{py_env}) argument.}
+\item{4. }{Set the environment variable EARTHENGINE_PYTHON and EARTHENGINE_ENV.
+It is used to define RETICULATE_PYTHON when the library is loaded. See this
 \href{https://rstudio.github.io/reticulate/articles/versions.html}{article}
-for further details.
+for further details.}
+\item{5. }{Install rgee Python dependencies. Using \code{reticulate::py_install}.}
+\item{6. }{Interactive menu to confirm if restart the R session to see changes.}
 }
-\item{5. }{Install rgee Python dependencies. Using
-\code{reticulate::py_install}.}
-\item{6. }{Interactive menu to confirm if restart the R session to see
-changes.}
+}
+\examples{
+\dontrun{
+library(rgee)
+# ee_install()
 }
 }
 \seealso{

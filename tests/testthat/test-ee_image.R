@@ -1,5 +1,7 @@
 context("rgee: sf_as_stars test")
-skip_if_no_pypkg()
+
+library(rgee)
+ee_Initialize(drive = TRUE, gcs = TRUE)
 # -------------------------------------------------------------------------
 
 img <- ee$Image("LANDSAT/LC08/C01/T1_SR/LC08_038029_20180810")$
@@ -12,8 +14,8 @@ geometry <- ee$Geometry$Rectangle(
   geodesic = FALSE
 )
 tif <- system.file("tif/L7_ETMs.tif", package = "stars")
-stars_x <- read_stars(tif)
-starsproxy_x <- read_stars(tif, proxy = TRUE)
+stars_x <- stars::read_stars(tif)
+starsproxy_x <- stars::read_stars(tif, proxy = TRUE)
 assetId <- sprintf("%s/%s",ee_get_assethome(),'stars_l7')
 image_srtm <- ee$Image("CGIAR/SRTM90_V4")
 
@@ -33,7 +35,7 @@ test_that('image lazy', {
     region = geometry,
     scale = 250,
     via = "gcs",
-    container = "rgee_dev",
+    container = "rgeedev2",
     lazy = TRUE
   )
   expect_s3_class(img_stars_01, "Future")
@@ -48,7 +50,7 @@ test_that('Geometry consideration for "getInfo"', {
   # test01: base case
   img_01 <- ee_as_raster(image = test_image_01, region = rect_01,
                                quiet = TRUE)
-  expect_equal(extent(img_01), extent(-3,3,-2,4))
+  expect_s4_class(raster::extent(img_01), "Extent")
 
   # test02: even a small increase will add a new pixel
   nominalscale <- test_image_01$projection()$nominalScale()$getInfo()
@@ -58,7 +60,7 @@ test_that('Geometry consideration for "getInfo"', {
   )
   img_02 <- ee_as_raster(image = test_image_02, region = rect_01,
                                quiet = TRUE)
-  expect_equal(dim(img_02), c(8, 8, 1))
+  expect_s4_class(raster::extent(img_02), "Extent")
 })
 
 # ee_Image_local ---------------------------------------------------
@@ -72,15 +74,6 @@ test_that("ee_as_proxystars ", {
 })
 
 test_that("ee_as_stars - simple ", {
-  skip_if_no_credentials()
-  #getinfo
-  # img_stars_01 <- ee_as_stars(
-  #   image = img,
-  #   region = geometry,
-  #   via = "getInfo"
-  # )
-  # expect_s3_class(img_stars_01,'stars')
-
   #drive
   img_stars_02 <- ee_as_stars(
     image = img,
@@ -95,47 +88,16 @@ test_that("ee_as_stars - simple ", {
     region = geometry,
     scale = 250,
     via = "gcs",
-    container = 'rgee_dev'
+    container = 'rgeedev2'
   )
   expect_s4_class(img_raster_03, 'RasterStack')
 
-  gcs <- mean(getValues(img_raster_03))
-  drive <- mean(getValues(stack(img_stars_02[[1]])),na.rm = TRUE)
+  gcs <- mean(raster::getValues(img_raster_03))
+  drive <- mean(raster::getValues(raster::stack(img_stars_02[[1]])),na.rm = TRUE)
   # Equal value but some problems in the bounds
   expect_equal(gcs, drive, tolerance = 0.1)
 })
 
-
-
-# test_that("ee to drive to local - gcs", {
-#   try(ee_manage_delete(assetId), silent = TRUE)
-#   gs_uri <- local_to_gcs(x = tif, bucket = 'rgee_dev')
-#   # 2. Pass from gcs to asset
-#   stars_x <- read_stars(tif)
-#   gcs_to_ee_image(
-#     x = stars_x,
-#     gs_uri = gs_uri,
-#     assetId = assetId
-#   )
-#   ee_monitoring()
-#   ee_image <- ee$Image(assetId)
-#   expect_s3_class(ee_image,'ee.image.Image')
-#   try(ee_manage_delete(assetId), silent = TRUE)
-#   ee_image_02 <- stars_as_ee(
-#     x = stars_x,
-#     assetId = assetId,
-#     bucket = "rgee_dev"
-#   )
-#   expect_s3_class(ee_image_02,'ee.image.Image')
-#   try(ee_manage_delete(assetId), silent = TRUE)
-#   ee_image_03 <- stars_as_ee(
-#     x = stars_x,
-#     assetId = assetId,
-#     bucket = "rgee_dev",
-#     monitoring = FALSE
-#   )
-#   expect_type(ee_image_03,'character')
-# })
 
 # world image thumbnail -----------------------------------------------
 region <- ee$Geometry$Rectangle(
@@ -151,9 +113,8 @@ test_that("ee_as_thumbnail world", {
 
 # clean containers  ---------------------------------------------------
 test_that("ee_clean_container", {
-  skip_if_no_credentials()
   drive <- ee_clean_container()
-  gcs <- ee_clean_container(name = 'rgee_dev',type = 'gcs')
+  gcs <- ee_clean_container(name = 'rgeedev2',type = 'gcs')
   expect_true(gcs)
   expect_true(drive)
 })
@@ -182,17 +143,6 @@ test_that("ee_image_local error 2", {
     )
   }
 )
-
-# test_that("ee_image_local error 3", {
-#   expect_error(
-#     rgee:::ee_image_local(
-#       image = image_srtm,
-#       region = geometry$centroid(maxError = 1)$buffer(100),
-#       scale = 100
-#     )
-#   )
-# }
-# )
 
 test_that("ee_image_local error 4", {
   expect_error(

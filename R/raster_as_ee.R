@@ -40,7 +40,7 @@
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
+#' ee_monitoring(max_attempts = Inf)
 #'
 #' # OPTIONAL: Display results
 #' ee_stars_01 <- ee$Image(assetId)
@@ -114,7 +114,7 @@ stars_as_ee <- function(x,
   )
 
   if (isTRUE(monitoring)) {
-    ee_monitoring()
+    ee_monitoring(max_attempts = Inf)
     ee$Image(assetId)
   } else {
     ee$Image(assetId)
@@ -167,7 +167,7 @@ stars_as_ee <- function(x,
 #' )
 #'
 #' # OPTIONAL: Monitoring progress
-#' ee_monitoring()
+#' ee_monitoring(max_attempts = Inf)
 #'
 #' # OPTIONAL: Display results
 #' ee_stars_01 <- ee$Image(assetId)

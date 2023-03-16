@@ -1,5 +1,4 @@
 context("rgee: ee_manage test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 try(ee_manage_delete(path_asset = sprintf("%s/rgee/",ee_get_assethome())))
 

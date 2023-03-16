@@ -192,7 +192,6 @@ Map$reset()
 \dontrun{
 library(sf)
 library(rgee)
-library(rgeeExtra)
 
 ee_Initialize()
 
@@ -204,8 +203,8 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
-  filterBounds(nc) \%>\%
-  ee_get(0:2)
+  filterBounds(nc)
+ee_s2 <- ee$ImageCollection(ee_s2$toList(2))
 
 Map$centerObject(nc$geometry())
 Map$addLayers(eeObject = ee_s2,position = "right")
@@ -654,7 +653,6 @@ A \code{EarthEngineMap} object.
 \preformatted{\dontrun{
 library(sf)
 library(rgee)
-library(rgeeExtra)
 
 ee_Initialize()
 
@@ -666,8 +664,8 @@ nc <- st_read(system.file("shape/nc.shp", package = "sf")) \%>\%
 
 ee_s2 <- ee$ImageCollection("COPERNICUS/S2")$
   filterDate("2016-01-01", "2016-01-31")$
-  filterBounds(nc) \%>\%
-  ee_get(0:2)
+  filterBounds(nc)
+ee_s2 <- ee$ImageCollection(ee_s2$toList(2))
 
 Map$centerObject(nc$geometry())
 Map$addLayers(eeObject = ee_s2,position = "right")

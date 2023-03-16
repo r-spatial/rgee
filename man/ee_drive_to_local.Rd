@@ -21,7 +21,7 @@ ee_drive_to_local(
 file will be assigned.}
 
 \item{overwrite}{A boolean argument that indicates
-whether "filename" should be overwritten. By default TRUE.}
+whether filename should be overwritten. By default TRUE.}
 
 \item{consider}{Interactive. See details.}
 
@@ -42,19 +42,19 @@ Drive resource on their system. Otherwise, a list with two elements
 Move results of an EE task saved in Google Drive to a local directory.
 }
 \details{
-The task argument needs a status as task "COMPLETED" to work, due that the
-parameters necessary to identify EE objects into Google Drive are obtained
-from \cr \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
+The task argument requires a status of "COMPLETED" because
+the parameters required to identify EE items in Google Drive
+are retrieved from  \cr \code{ee$batch$Export$*$toDrive(...)$start()$status()}.
 
-\code{consider} argument is necessary due that Google Drive permits users to
-create files with the same name. \code{consider} uses an interactive R
-session by default to help users identify just the files that they want to
-download. Additionally, the options "last" and "all" are implemented. "last"
-will download just the last file saved in Google Drive while with "all" all
-files will be downloaded.
+Due to the fact that Google Drive allows users to create files with the
+same name, the \code{consider} argument is required. It use an interactive
+R session by default to assist users in identifying the specific files
+they wish to download. Additionally, "last" and "all" settings are
+provided. "last" will only download the most recently saved file in
+Google Drive, whereas "all" will download all files with the same name.
 
-Finally, if the argument \code{metadata} is TRUE, a list with the
-following elements are exported join with the output filename (dsn):
+Finally, if the argument \code{metadata} is TRUE, a list containing the
+following elements is exported and appended to the output filename (dsn):
 
 \itemize{
 \item{\bold{ee_id: }}{Name of the Earth Engine task.}

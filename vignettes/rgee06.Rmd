@@ -13,23 +13,6 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 ---
 
-<link rel="preconnect" href="https://fonts.gstatic.com"> <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-```{=html}
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
-```
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = FALSE)
 ```
@@ -50,7 +33,7 @@ Map$addLayer(log1p(img), list(min = 0, max = 7))
 
 <br>
 <center>
-<img src=https://user-images.githubusercontent.com/16768318/146937907-17ba9a1c-c37d-4de1-9c61-5c7ee2d18aab.png>
+<img src="images/r6_01.png">
 </center>
 <br>
 
@@ -62,7 +45,7 @@ Instead of using GEE API for creating interactive maps, we will use [**titiler**
 
 <br>
 <center>
-<img src=https://user-images.githubusercontent.com/10407788/98711823-7f4de080-2353-11eb-9c8a-8a46550651ae.png>
+<img src="images/r6_02.png">
 </center>
 <br>
 
@@ -144,17 +127,17 @@ googleCloudStorageR::gcs_update_object_acl(
 )
 ```
 
-Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint [`https://api.cogeo.xyz/docs`](`https://api.cogeo.xyz/docs`). 
+Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint: https://api.cogeo.xyz/docs. 
 
 
-```{r eval=TRUE, echo=FALSE}
+```{r eval=FALSE, echo=FALSE}
 library(rgee)
 gcs_l8_name  <- "l8demo2" # name of the image in GCS.
 BUCKET_NAME <- "rgee_examples" # set here your bucket name
 ```
 
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 img_id <- sprintf("https://storage.googleapis.com/%s/%s.tif", BUCKET_NAME, gcs_l8_name)
 visParams <- list(bands=c("SR_B4","SR_B3","SR_B2"), min = 8000, max = 20000, nodata = 0)
 Map$centerObject(img_id)
@@ -170,7 +153,7 @@ If you prefer to use [titiler syntax](https://api.cogeo.xyz/docs), set the param
 `titiler_viz_convert` as FALSE.
 
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 visParams <- list(expression = "B4,B3,B2", rescale = "8000, 20000", resampling_method = "cubic")
 Map$addLayer(
   eeObject = img_id, 

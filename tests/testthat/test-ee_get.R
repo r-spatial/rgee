@@ -1,5 +1,4 @@
 context("rgee: ee_get test")
-skip_if_no_pypkg()
 
 library(rgee)
 library(sf)

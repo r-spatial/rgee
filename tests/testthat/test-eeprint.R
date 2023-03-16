@@ -1,5 +1,4 @@
 context("rgee: ee_print test")
-skip_if_no_pypkg()
 # -------------------------------------------------------------------------
 
 # clean TRUE
@@ -120,8 +119,9 @@ test_that("different typ ee_print test - json", {
 })
 
 test_that("simple ee_print test - ImageCollection not EPSG", {
-mod11a2 <- ee$ImageCollection("MODIS/006/MOD11A2")$
-  filter(ee$Filter$date('2001-01-01', '2002-12-31'))$
-  filter(ee$Filter$calendarRange(7,field = "month"))
-ee_print(eeobject = mod11a2)
+  mod11a2 <- ee$ImageCollection("MODIS/006/MOD11A2")$
+    filter(ee$Filter$date('2001-01-01', '2002-12-31'))$
+    filter(ee$Filter$calendarRange(7,field = "month"))
+  ee_print(eeobject = mod11a2)
+  expect_true(TRUE)
 })

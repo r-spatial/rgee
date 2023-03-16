@@ -154,7 +154,7 @@ ee_as_stars <- function(image,
                         scale = NULL,
                         maxPixels = 1e9,
                         lazy = FALSE,
-                        public = TRUE,
+                        public = FALSE,
                         add_metadata = TRUE,
                         timePrefix = TRUE,
                         quiet = FALSE,
@@ -368,7 +368,7 @@ ee_as_raster <- function(image,
                          scale = NULL,
                          maxPixels = 1e9,
                          lazy = FALSE,
-                         public = TRUE,
+                         public = FALSE,
                          add_metadata = TRUE,
                          timePrefix = TRUE,
                          quiet = FALSE,
@@ -674,7 +674,7 @@ ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet) 
 #' Passing an Earth Engine Image from GD to Local
 #' @noRd
 ee_image_local_drive <- function(task, dsn, metadata, public, quiet) {
-  ee_monitoring(task = task, quiet = quiet)
+  ee_monitoring(task = task, quiet = quiet, max_attempts = Inf)
   # From Google Drive to local
   if (isFALSE(quiet)) {
     cat('Moving image from Google Drive to Local ... Please wait  \n')
@@ -698,7 +698,7 @@ ee_image_local_drive <- function(task, dsn, metadata, public, quiet) {
 #' @noRd
 ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
   # earth engine monitoring
-  ee_monitoring(task = task, quiet = quiet)
+  ee_monitoring(task = task, quiet = quiet, max_attempts = Inf)
 
   # From Google Cloud Storage to local
   if(isFALSE(quiet)) {
@@ -770,7 +770,7 @@ ee_image_info <- function(image,
   )
 
   geotransform <- unlist(img_proj$transform)
-  img_proj_wkt <- ee_utils_get_crs(img_proj$crs)
+  img_proj_wkt <- sf::st_crs(ee_utils_get_crs(band_metadata$crs))
 
   img_totalarea <- ee_as_sf(image$geometry()) %>%
     sf::st_transform(img_proj_wkt)

@@ -128,7 +128,7 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
 
 
   if (is.null(time_start)) {
-    time_start <- NA
+    time_start <- rep(NA, length(image_id))
   } else {
     time_start <- as.POSIXct(
       x = time_start / 1000,
@@ -137,6 +137,16 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
     )
   }
 
+  #  Stop process if time_start and image_id do not have the same length
+  if (length(time_start) != length(image_id)) {
+    stop(
+      "Imposible to create a data.frame with:\n",
+      "system:id -> ", length(time_start),
+      sprintf(" [%s, ...., %s]", time_start[1], time_start[length(time_start)]),
+      "\nsystem:time_stars -> ", length(image_id),
+      sprintf(" [%s, ...., %s]", image_id[1], image_id[length(image_id)])
+    )
+  }
   # Getting time_end
   if (!time_end) {
     return(
@@ -150,6 +160,9 @@ ee_get_date_ic <- function(x, time_end = FALSE) {
     time_end <- ee_utils_py_to_r(
       ee_utils$eedate_to_rdate_ic(x, "system:time_end")
     )
+    if (is.null(time_end)) {
+      time_end <- rep(NA, length(time_start))
+    }
     time_end <- as.POSIXct(
       x = time_end / 1000,
       origin = "1970-01-01",
@@ -194,7 +207,13 @@ ee_get_earthengine_path <- function() {
       "run rgee::ee_Initialize() to fixed."
     )
   }
-  return(sprintf("%s/%s/", ee_path, user))
+
+  if (user == "ndef") {
+    ee_path
+  } else {
+    sprintf("%s/%s/", ee_path, user)
+  }
+
 }
 
 

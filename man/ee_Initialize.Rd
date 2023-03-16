@@ -8,8 +8,15 @@ ee_Initialize(
   user = NULL,
   drive = FALSE,
   gcs = FALSE,
-  display = FALSE,
-  quiet = FALSE
+  credentials = "persistent",
+  opt_url = NULL,
+  cloud_api_key = NULL,
+  http_transport = NULL,
+  project = NULL,
+  quiet = FALSE,
+  auth_mode = "notebook",
+  auth_quiet = FALSE,
+  ...
 )
 }
 \arguments{
@@ -24,9 +31,33 @@ is cached in the path \code{~/.config/earthengine/}.}
 \item{gcs}{Logical (optional). If TRUE, the Google Cloud Storage
 credential is cached in the path \code{~/.config/earthengine/}.}
 
-\item{display}{Logical. If TRUE, display the earthengine authentication URL.}
+\item{credentials}{OAuth2 GEE credentials. 'persistent' (default) means
+use GEE credentials already stored in the filesystem, or raise an explanatory
+exception guiding the user to create those credentials.}
+
+\item{opt_url}{The base url for the EarthEngine REST API to connect to.}
+
+\item{cloud_api_key}{An optional API key to use the Cloud API.}
+
+\item{http_transport}{The http transport method to use when making requests.}
+
+\item{project}{The client project ID or number to use when making API calls.}
 
 \item{quiet}{Logical. Suppress info messages.}
+
+\item{auth_mode}{The authentication mode. One of:
+\itemize{
+\item{1. }{paste - send user to accounts.google.com to get a pastable token}
+\item{2. }{notebook - send user to notebook authenticator page}
+\item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
+\item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
+\item{5. }{None - a default mode is chosen based on your environment.}
+}}
+
+\item{auth_quiet}{Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
+do not require interactive prompts and force --no-browser mode for gcloud.}
+
+\item{...}{Extra exporting argument. See \link{ee_Authenticate}.}
 }
 \value{
 No return value, called for initializing the earthengine-api.
@@ -39,14 +70,12 @@ allows you to grant permission to manage resources. This function is
 a wrapper around \code{rgee::ee$Initialize()}.
 }
 \details{
-\code{ee_Initialize(...)} can manage Google Drive, and Google
+\code{ee_Initialize()} can manage Google Drive, and Google
 Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
-\code{~/.config/earthengine/}. If a user does not specify the "user"
-argument, all user credentials are saved in the the subdirectory
-\code{~/.config/earthengine/ndef}.
+\code{~/.config/earthengine/}.
 }
 \examples{
 \dontrun{

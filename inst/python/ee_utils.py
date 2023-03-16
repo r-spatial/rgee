@@ -46,10 +46,17 @@ def _base64param(byte_string):
 
 
 # ee_Initialize.R --> ee_create_credentials_earthengine
-def create_codes():
-    code_verifier = _base64param(os.urandom(32))
-    code_challenge = _base64param(hashlib.sha256(code_verifier).digest())
-    return code_verifier, code_challenge
+def create_codes(*nonce_keys):
+    """Makes random nonces, and adds PKCE challenges for each _verifier nonce."""
+    table = {}
+    for key in nonce_keys:
+        table[key] = _base64param(os.urandom(32))
+        if key.endswith('_verifier'):
+            # Generate a challenge that the server will use to ensure that requests
+            # only work with our verifiers.  https://tools.ietf.org/html/rfc7636
+            pkce_challenge = _base64param(hashlib.sha256(table[key]).digest())
+            table[key.replace('_verifier', '_challenge')] = pkce_challenge
+    return {k: v.decode() for k, v in table.items()}
 
 
 # Get current Earth Engine version

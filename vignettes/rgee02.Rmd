@@ -1,5 +1,5 @@
 ---
-title: "**Considerations**"
+title: "Considerations"
 output:
   html_document:
     toc: true
@@ -12,22 +12,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}    
 ---
-
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-<style type="text/css">
-  body{
-    font-size: 15pt;
-    font-family: 'Roboto', sans-serif;
-  }
-  pre code{
-    font-size: 12pt;
-  }
-  .list-group-item:last-child{
-    font-size: 11pt;
-    font-weight: bold;
-  }
-</style>
 
 Thanks to **reticulate** is it possible to embed a Python session within an R session. The **[Earth Engine Python API](https://pypi.org/project/earthengine-api/)** and **rgee** share the **same modules, classes, functions, and methods**. In other words, the logic of the syntax is the same and just as fast (just change **.** by a **$**). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify **four** bug-potential cases. Each of them is explained in-depth below.
 

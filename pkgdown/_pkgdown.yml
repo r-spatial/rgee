@@ -53,6 +53,7 @@ reference:
       - ee_check
       - ee_check_python
       - ee_check_credentials
+      - ee_check_gcloud
 
   - title: "Clean"
     contents:
@@ -60,14 +61,10 @@ reference:
       - ee_clean_credentials
       - ee_clean_pyenv
 
-  - title: "Subsetting"
-    contents:
-      - ee_get
-      - ee_subsetting
-
   - title: "Session management"
     contents:
       - ee_Initialize
+      - ee_Authenticate
       - ee_version
       - ee_user_info
       - ee_users
@@ -151,15 +148,6 @@ reference:
       - print.ee.computedobject.ComputedObject
       - ee_monitoring
 
-  - title: "rgee Operator"
-    contents:
-      - Math-methods
-      - Ops-methods
-      - Summary-methods
-      - ee_length
-      - ee_length_ic
-      - ee_name
-
   - title: "Utils"
     contents:
       - ee_utils_py_to_r
@@ -169,9 +157,6 @@ reference:
       - ee_utils_create_manifest_image
       - ee_utils_create_manifest_table
       - ee_utils_get_crs
-      - ee_utils_gif_annotate
-      - ee_utils_gif_creator
-      - ee_utils_gif_save
       - ee_utils_future_value
       - ee_utils_dataset_display
       - ee_utils_cog_metadata

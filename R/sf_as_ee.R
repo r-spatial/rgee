@@ -115,7 +115,7 @@
 #'   monitoring = FALSE,
 #'   via = 'gcs_to_asset'
 #' )
-#' ee_monitoring()
+#' ee_monitoring(max_attempts = Inf)
 #' }
 #' @export
 sf_as_ee <- function(x,
@@ -228,7 +228,7 @@ sf_as_ee <- function(x,
 
     if (isTRUE(monitoring)) {
       ee$batch$Task$start(ee_task)
-      ee_monitoring(ee_task)
+      ee_monitoring(ee_task, max_attempts = Inf)
       ee$FeatureCollection(assetId)
     } else {
       ee$batch$Task$start(ee_task)
@@ -305,7 +305,7 @@ sf_as_ee <- function(x,
     )
 
     if (isTRUE(monitoring)) {
-      ee_monitoring()
+      ee_monitoring(max_attempts = Inf)
       ee$FeatureCollection(assetId)
     } else {
       ee$FeatureCollection(assetId)

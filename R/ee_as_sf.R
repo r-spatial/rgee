@@ -1,6 +1,6 @@
-#' Convert an Earth Engine table in an sf object
+#' Convert an Earth Engine table into a sf object
 #'
-#' @param x Earth Engine table (ee$FeatureCollection) to be converted in an sf
+#' @param x Earth Engine table (ee$FeatureCollection) to be converted into a sf
 #' object.
 #' @param dsn Character. Output filename. In case \code{dsn} is missing,
 #' a shapefile is created in the \code{tmp()} directory.
@@ -9,13 +9,13 @@
 #' @param via Character. Method to export the image. Three method are
 #' implemented: "getInfo", "drive", "gcs". See details.
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into (ignore if \code{via} is not defined as "drive" or
+#' to be exported into (ignored if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param crs Integer or Character. Coordinate Reference System (CRS)
 #' for the EE table. If it is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
 #' @param maxFeatures Numeric. The maximum allowed number of features to
-#' export (ignore if \code{via} is not set as "getInfo"). The task will fail
+#' export (ignored if \code{via} is not set as "getInfo"). The task will fail
 #' if the exported region covers more features than the specified in
 #' \code{maxFeatures}. Defaults to 5000.
 #' @param selectors The list of properties to include in the output, as a
@@ -42,17 +42,17 @@
 #' direct and faster download. However, there is a limitation of 5000 features by
 #' request, making it not recommendable for large FeatureCollection. Instead of
 #' "getInfo", the options: "drive" and "gcs" are suitable for large FeatureCollections
-#' due to the use of an intermediate container. When via is set as "drive" or "gcs"
+#' due to the use of an intermediate container. When \code{via} is set as "drive" or "gcs"
 #' \code{ee_as_sf} perform the following steps:
 #' \itemize{
 #'   \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 #'   move the EE Table from Earth Engine to the file storage system (Google Drive
 #'   or Google Cloud Storage) specified in the argument \code{via}.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-#'   monitored. This is useful to lunch several tasks simultaneously and
+#'   monitored. This is useful to launch several tasks simultaneously and
 #'   calls them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
-#'   the EE Table is stored on the path specified in the argument
+#'   the EE Table is stored under the path specified by the argument
 #'   \code{dsn}.}
 #'   \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 #'   with the following elements is added to the sf object.
@@ -80,7 +80,7 @@
 #'  }
 #' }
 #'
-#' For getting more information about exporting data from Earth Engine, take
+#' To get more information about exporting data from Earth Engine, take
 #' a look at the
 #' \href{https://developers.google.com/earth-engine/guides/exporting}{Google
 #' Earth Engine Guide - Export data}.
@@ -138,7 +138,7 @@ ee_as_sf <- function(x,
                      maxFeatures = 5000,
                      selectors = NULL,
                      lazy = FALSE,
-                     public = TRUE,
+                     public = FALSE,
                      add_metadata = TRUE,
                      timePrefix = TRUE,
                      quiet = FALSE) {
@@ -280,8 +280,8 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
   # using getInfo).
   fc_size <- 5000
 
-  # If maxFeatures is greather than 5000 estimate the number of elements.
-  if (maxFeatures > 5000) {
+  # If maxFeatures is different than 5000 estimate the number of elements.
+  if (maxFeatures != 5000) {
     if (!quiet) {
       cat("Number of features: Calculating ...")
     }
@@ -290,7 +290,7 @@ ee_fc_to_sf_getInfo_batch <- function(x_fc, dsn, maxFeatures, overwrite, quiet) 
       ee$FeatureCollection$size() %>%
       ee$Number$getInfo()
     if (!quiet) {
-      cat(sprintf("\rNumber of features: %s \n", fc_size))
+      cat(sprintf("\rNumber of features: %s                     \n", fc_size))
     }
   }
 
@@ -503,7 +503,7 @@ ee_init_task_drive_fc <- function(x_fc, dsn, container, table_id,
 #' from drive to local
 #' @noRd
 ee_sf_drive_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
-  ee_monitoring(task = table_task, quiet = quiet)
+  ee_monitoring(task = table_task, quiet = quiet, max_attempts = Inf)
 
   if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
     stop(ee$batch$Task$status(table_task)[["error_message"]])
@@ -559,11 +559,13 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
   if (is.na(ee_user$gcs_cre)) {
     gcs_credential <- ee_create_credentials_gcs(ee_user$email)
     ee_save_credential(pgcs = gcs_credential$path)
-    message(
-      "\nGoogle Cloud Storage credentials were not loaded.",
-      " Running ee_Initialize(user = '", ee_user$email, "', gcs = TRUE)",
-      " to fix."
-    )
+    if (!quiet) {
+      message(
+        "\nGoogle Cloud Storage credentials were not loaded.",
+        " Running ee_Initialize(gcs = TRUE)",
+        " to fix."
+      )
+    }
   }
 
 
@@ -603,7 +605,7 @@ ee_init_task_gcs_fc <- function(x_fc, dsn, container, table_id,
 #' from GCS to local
 #' @noRd
 ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet) {
-  ee_monitoring(task = table_task, quiet = quiet)
+  ee_monitoring(task = table_task, quiet = quiet, max_attempts = Inf)
 
   if (ee$batch$Task$status(table_task)[["state"]] != "COMPLETED") {
     stop(ee$batch$Task$status(table_task)[["error_message"]])
