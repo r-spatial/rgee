@@ -384,8 +384,8 @@ ee_as_raster <- function(image,
     container = container,
     maxPixels = maxPixels,
     timePrefix = timePrefix,
-    quiet = quiet,
-    ...
+    quiet = quiet
+    ,...
   )
 
   user_email <- ee_get_current_email()
