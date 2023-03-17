@@ -193,10 +193,15 @@ ee_Dataset_creator <- function(eeDataset) {
 
 #' Create session info of the last init inside the
 #' folder ~/.config/earthengine/
-#' @noRd
+#' @param email
+#' @param user
+#' @param drive_cre
+#' @param drive_path
+#' @param gcs_cre
 ee_sessioninfo <- function(email = NULL,
                            user = NULL,
                            drive_cre = NULL,
+                           drive_path = NULL,
                            gcs_cre = NULL) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
@@ -204,11 +209,17 @@ ee_sessioninfo <- function(email = NULL,
     "%s/rgee_sessioninfo.txt",
     ee_utils_py_to_r(utils_py$ee_path())
   )
+
   if (is.null(email)) {
     email <- NA
   }
+
+  if (is.null(drive_path)) {
+    drive_path <- NA
+  }
+
   df <- data.frame(
-    email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,
+    email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,drive_path = drive_path,
     stringsAsFactors = FALSE
   )
   write.table(df, sessioninfo, row.names = FALSE)

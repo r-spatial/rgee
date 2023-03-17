@@ -37,6 +37,11 @@
 #'  \item{4. }{appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file}
 #'  \item{5. }{None - a default mode is chosen based on your environment.}
 #' }
+#' @param email User email (Optional)
+#' @param drive_path Path to a google drive authorization token.
+#' @param use_oob Should out of band authentication be used for Google Drive?
+#' Default is FALSE.
+#' @param cred_path Optional path to google drive credentials (Default is NULL)
 #' @param ... Extra exporting argument. See \link{ee_Authenticate}.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -74,20 +79,24 @@ ee_Initialize <- function(user = NULL,
                           quiet = FALSE,
                           auth_mode = "notebook",
                           auth_quiet = FALSE,
+                          email = NULL,
+                          drive_path = NULL,
+                          use_oob = FALSE,
+                          cred_path = NULL,
                           ...
 ) {
 
   # Set google-cloud-sdk in your PATH systen
   gcloud_path <- Sys.getenv("EARTHENGINE_GCLOUD", unset = NA)
-  if (!is.na(gcloud_path))
+  if (!is.na(gcloud_path)){
     Sys.setenv(PATH = sprintf("%s:%s", Sys.getenv("PATH"), gcloud_path))
-
+    }
   # Check sanity of earth-engine and return ee_utils.py module
   init <- ee_check_init()
   ee_utils <- init$ee_utils
 
   # rgee init message
-  if (!quiet) ee_message_01(user, init$earthengine_version)
+  if (!quiet){ ee_message_01(user, init$earthengine_version)}
 
   # If user is not NULL create, then save the credentials in a subfolder.
   if (!is.null(user)) {
@@ -109,7 +118,11 @@ ee_Initialize <- function(user = NULL,
     if (!quiet) ee_message_02(init = TRUE)
 
     # If the user is not NULL copy the drive credential in the subfolder
-    drive_credentials <- ee_create_credentials_drive(user, ee_utils, quiet = quiet)
+    drive_credentials <- ee_create_credentials_drive(user,
+                                                     ee_utils,
+                                                     quiet = quiet,
+                                                     drive_path = drive_path,
+                                                     use_oob = use_oob)
     test_drive_privileges(user)
 
     if (!quiet) ee_message_02(init = FALSE)
@@ -129,10 +142,13 @@ ee_Initialize <- function(user = NULL,
   ## rgee session file
   options(rgee.gcs.auth = gcs_credentials[["path"]])
 
-  if (!quiet) ee_message_04(init = TRUE)
+  if (!quiet){ ee_message_04(init = TRUE)}
 
   # If user is not NULL copy the credentials from sub to main folder
-  ee_create_credentials_earthengine(user, auth_mode, auth_quiet, ee_utils, ...)
+  ee_create_credentials_earthengine(user, auth_mode, auth_quiet, ee_utils,
+                                    cred_path = cred_path
+                                    #, ...
+                                    )
 
   tryCatch(expr = {
     ee$Initialize(
@@ -158,20 +174,21 @@ ee_Initialize <- function(user = NULL,
      }
   })
 
-  if (!quiet) ee_message_04(init = FALSE)
+  if (!quiet){ ee_message_04(init = FALSE)}
 
   # check if the GEE acount has been created a GEE mainfolder
   ee_user <- ee_check_root_folder()
 
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(
-    email = if (is.null(user)) "ndef" else user,
+    email = if(!is.null(email)){email}else{if (is.null(user)){ "ndef" }else{ user}},
     user = ee_user,
-    drive_cre = drive_credentials,
-    gcs_cre = gcs_credentials[["path"]]
+    drive_cre = drive_credentials$drive_credentials,
+    gcs_cre = gcs_credentials[["path"]],
+    drive_path = drive_credentials$drive_path
   )
 
-  if (!quiet) ee_message_06(gcs_credentials, ee_user)
+  if (!quiet){ ee_message_06(gcs_credentials, ee_user)}
 
   # Add Dataset attribute
   eeDataset <- jsonlite::read_json(system.file("dataset.json", package="rgee"))

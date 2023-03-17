@@ -1,6 +1,11 @@
 #' Create credentials - Google Drive
 #' @noRd
-ee_create_credentials_drive <- function(user=NULL, ee_utils, quiet) {
+ee_create_credentials_drive <- function(user=NULL,
+                                        email = NULL,
+                                        ee_utils,
+                                        quiet,
+                                        drive_path = NULL,
+                                        use_oob = FALSE) {
   # check googledrive R package installation
   ee_check_packages("ee_Initialize", "googledrive")
 
@@ -18,28 +23,58 @@ ee_create_credentials_drive <- function(user=NULL, ee_utils, quiet) {
     ee_path_user <- sprintf("%s/%s", ee_path, user)
   }
 
-  # Load GD credentials (googledrive::drive_auth)
-  repeat {
-    full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-    drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
 
-    # If the googledrive credential does not exist run googledrive::drive_auth
-    if (!any(drive_condition)) {
-      suppressMessages(
-        googledrive::drive_auth(
-          email = NULL,
-          cache = ee_path_user
-        )
-      )
-    } else {
-      drive_credentials <- full_credentials[drive_condition]
-      email <- sub("^[^_]*_", "", basename(drive_credentials)) # Obtain the email
+    #if an auth token is supplied, use that first
+
+    if(!is.null(drive_path)){
+
+      token_info <- jsonlite::read_json(drive_path)
+
+      #grab email if not supplied
+
+        if(is.null(email)){
+
+          email <- token_info$client_email
+        }
+
+      # authorization
+
       suppressMessages(
         googledrive::drive_auth(
           email = email,
-          cache = ee_path_user
+          path = drive_path,
+          use_oob = use_oob)
+
         )
-      )
+
+
+    }else{
+
+
+        # Load GD credentials (googledrive::drive_auth)
+            repeat {
+              full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+              drive_condition <- grepl(".*_.*@.*", basename(full_credentials))
+
+              # If the googledrive credential does not exist run googledrive::drive_auth
+              if (!any(drive_condition)) {
+                suppressMessages(
+                  googledrive::drive_auth(
+                    email = NULL,
+                    cache = ee_path_user
+                  )
+                )
+              } else {
+                drive_credentials <- full_credentials[drive_condition]
+                email <- sub("^[^_]*_", "", basename(drive_credentials)) # Obtain the email
+                suppressMessages(
+                  googledrive::drive_auth(
+                    email = email,
+                    cache = ee_path_user
+                  )
+                )
+
+        }
 
       # This lines is to avoid that users have multiple token file.
       # It delete the older one if the system detect two different token files.
@@ -58,7 +93,7 @@ ee_create_credentials_drive <- function(user=NULL, ee_utils, quiet) {
   }
 
   # Move credential to the main folder is user is set
-  if (!is.null(user)) {
+  if (!is.null(user) & is.null(drive_path)) {
     # Clean previous and copy new GD credentials in ./earthengine folder
     clean_drive <- list.files(ee_path, ".*_.*@.*", full.names = TRUE) %in% list.dirs(ee_path)
     unlink(
@@ -70,7 +105,14 @@ ee_create_credentials_drive <- function(user=NULL, ee_utils, quiet) {
       overwrite = TRUE
     )
   }
-  invisible(drive_credentials)
+
+
+  if(!exists("drive_credentials")){drive_credentials <- NA}
+  credentials_output <- data.frame(drive_credentials = drive_credentials,
+                                   drive_path = drive_path)
+
+  invisible(credentials_output)
+
 }
 
 
@@ -164,7 +206,8 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_utils, auth_params=NULL, ...) {
+#' @param cred_path A path to your earth engine credentials
+ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_utils, auth_params=NULL, cred_path = NULL, ...) {
   # Check sanity of earth-engine and return ee_utils.py module
   init <- ee_check_init()
   ee_utils <- init$ee_utils
@@ -177,6 +220,18 @@ ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_ut
     ee_path <- ee_utils_py_to_r(ee_utils$ee_path())
     ee_path_user <- sprintf("%s/%s", ee_path, user)
   }
+
+  #If path file is specified, copy it to where it needs to be
+  if(!is.null(cred_path)){
+
+    path_condition <- file.copy(
+      from = cred_path,
+      to = sprintf("%s/credentials", ee_path_user),
+      overwrite = TRUE
+    )
+
+  }
+
 
   # Obtain the path of the sub-folder credentials
   user_ee_credential <- sprintf("%s/credentials", ee_path_user)

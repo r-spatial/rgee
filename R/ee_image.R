@@ -188,7 +188,10 @@ ee_as_stars <- function(image,
       via = via,
       metadata = add_metadata,
       public = public,
-      quiet = quiet
+      quiet = quiet,
+      drive_path = drive_path,
+      use_oob = use_oob
+
     )
 
     # Copy band names
@@ -372,7 +375,11 @@ ee_as_raster <- function(image,
                          add_metadata = TRUE,
                          timePrefix = TRUE,
                          quiet = FALSE,
+                         drive_path = NULL,
+                         use_oob = NULL,
+
                          ...) {
+
   ee_check_packages("ee_as_raster", c("raster"))
 
   ee_task <- ee_init_task(
@@ -385,7 +392,7 @@ ee_as_raster <- function(image,
     maxPixels = maxPixels,
     timePrefix = timePrefix,
     quiet = quiet
-    ,...
+   #,...
   )
 
   user_email <- ee_get_current_email()
@@ -399,7 +406,9 @@ ee_as_raster <- function(image,
       via = via,
       metadata = add_metadata,
       public = public,
-      quiet = quiet
+      quiet = quiet,
+      drive_path = drive_path,
+      use_oob = use_oob
     )
 
     # Copy band names
@@ -454,10 +463,14 @@ ee_init_task <- function(image,
 
   if (via == "drive") {
     ee_init_task_drive(image, region, dsn, scale, maxPixels,
-                       timePrefix, container, quiet, ...)
+                       timePrefix, container, quiet
+                       #, ...
+                       )
   } else if (via == "gcs") {
     ee_init_task_gcs(image, region, dsn, scale, maxPixels,
-                     timePrefix, container, quiet, ...)
+                     timePrefix, container, quiet
+                     #, ...
+                     )
   } else {
     stop("via argument invalid")
   }
@@ -466,7 +479,9 @@ ee_init_task <- function(image,
 #' Create a Export task to GD
 #' @noRd
 ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
-                               container, quiet, ...) {
+                               container, quiet
+                               , ...
+                               ) {
 
   extras <- list(...)
 
@@ -511,7 +526,7 @@ ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
   }
 
   # Are GD credentials loaded?
-  if (is.na(ee_user$drive_cre)) {
+  if (is.na(ee_user$drive_cre) & is.na(ee_user$drive_path)) {
     drive_credential <- ee_create_credentials_drive(ee_user$email)
     ee_save_credential(pdrive = drive_credential)
     # ee_Initialize(user = ee_user$email, drive = TRUE)
@@ -537,8 +552,8 @@ ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
     fileFormat = "GEO_TIFF",
     region = region,
     maxPixels = maxPixels,
-    fileNamePrefix = file_name,
-    ...
+    fileNamePrefix = file_name
+    #,...
   )
 
   # download parameter display
@@ -658,9 +673,14 @@ ee_init_task_gcs <- function(image, region, dsn, scale, maxPixels,
 
 #' Passing an Earth Engine Image to Local
 #' @noRd
-ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet) {
+ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet,
+                           drive_path = NULL, use_oob = FALSE) {
+
   if (via == "drive") {
-    ee_create_credentials_drive(user_email)
+    ee_create_credentials_drive(email = user_email,
+                                drive_path = drive_path,
+                                use_oob = use_oob)
+
     ee_image_local_drive(task, dsn, metadata, public, quiet)
   } else if (via == "gcs") {
     ee_create_credentials_gcs(user_email)
