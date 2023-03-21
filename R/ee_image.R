@@ -798,6 +798,7 @@ ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
 #' @param image Single-band EE Image object.
 #' @param getsize Logical. If TRUE, the size of the object
 #' is estimated.
+#' @param band_metadata A list with image properties. If NULL it will be generated automatically.
 #' @param compression_ratio Numeric. Measurement of the relative data size
 #' reduction produced by a data compression algorithm (ignored if
 #' \code{getsize} is FALSE). By default is 20.
@@ -820,6 +821,7 @@ ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
 #' }
 #' @export
 ee_image_info <- function(image,
+                          band_metadata = NULL,
                           getsize = TRUE,
                           compression_ratio = 20,
                           quiet = FALSE) {
@@ -827,6 +829,12 @@ ee_image_info <- function(image,
   ee_check_packages("ee_image_info", "sf")
 
   band_length <- length(image$bandNames()$getInfo())
+
+  if (is.null(band_metadata)) {
+    band_info <- ee$Image$getInfo(image)
+    band_properties <- band_info$properties
+    band_metadata <- band_info$bands[[1]]
+  }
 
   # if (band_length != 1) {
   #   stop("ee_image_info needs that image only has one band.")

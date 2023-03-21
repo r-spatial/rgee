@@ -381,6 +381,7 @@ ee_print.ee.image.Image <- function(eeobject,
 
     band_metadata_geom <- ee_image_info(
       image = selected_img,
+      band_metadata = band_metadata,
       compression_ratio =  compression_ratio,
       quiet = TRUE
     )
