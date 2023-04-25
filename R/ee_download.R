@@ -815,7 +815,9 @@ ee_drive_to_local <- function(task,
 
   # Check credentials
   ee_user <- ee_exist_credentials()
-  if (is.na(ee_user[["drive_cre"]])) {
+
+
+  if (is.na(ee_user[["drive_cre"]]) & is.na(ee_user[["drive_cred_path"]])) {
     drive_credential <- ee_create_credentials_drive(ee_user$email)
     ee_save_credential(pdrive = drive_credential)
     message(

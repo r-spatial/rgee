@@ -202,7 +202,8 @@ ee_sessioninfo <- function(email = NULL,
                            user = NULL,
                            drive_cre = NULL,
                            drive_path = NULL,
-                           gcs_cre = NULL) {
+                           gcs_cre = NULL,
+                           drive_cred_path = NULL) {
   oauth_func_path <- system.file("python/ee_utils.py", package = "rgee")
   utils_py <- ee_source_python(oauth_func_path)
   sessioninfo <- sprintf(
@@ -218,8 +219,25 @@ ee_sessioninfo <- function(email = NULL,
     drive_path <- NA
   }
 
+  if (is.null(user)) {
+    user <- NA
+  }
+
+  if (is.null(drive_cre)) {
+    drive_cre <- NA
+  }
+
+  if (is.null(gcs_cre)) {
+    gcs_cre <- NA
+  }
+
   df <- data.frame(
-    email = email, user = user, drive_cre = drive_cre, gcs_cre = gcs_cre,drive_path = drive_path,
+    email = email,
+    user = user,
+    drive_cre = drive_cre,
+    gcs_cre = gcs_cre,
+    drive_path = drive_path,
+    drive_cred_path = drive_cred_path,
     stringsAsFactors = FALSE
   )
   write.table(df, sessioninfo, row.names = FALSE)

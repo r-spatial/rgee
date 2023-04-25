@@ -189,7 +189,7 @@ ee_as_stars <- function(image,
       metadata = add_metadata,
       public = public,
       quiet = quiet,
-      drive_path = drive_path,
+      drive_cred_path = drive_cred_path,
       use_oob = use_oob
 
     )
@@ -375,7 +375,7 @@ ee_as_raster <- function(image,
                          add_metadata = TRUE,
                          timePrefix = TRUE,
                          quiet = FALSE,
-                         drive_path = NULL,
+                         drive_cred_path = NULL,
                          use_oob = NULL,
 
                          ...) {
@@ -407,7 +407,7 @@ ee_as_raster <- function(image,
       metadata = add_metadata,
       public = public,
       quiet = quiet,
-      drive_path = drive_path,
+      drive_cred_path = drive_cred_path,
       use_oob = use_oob
     )
 
@@ -526,7 +526,7 @@ ee_init_task_drive <- function(image, region, dsn, scale, maxPixels, timePrefix,
   }
 
   # Are GD credentials loaded?
-  if (is.na(ee_user$drive_cre) & is.na(ee_user$drive_path)) {
+  if (is.na(ee_user$drive_cre) & is.na(ee_user$drive_cred_path)) {
     drive_credential <- ee_create_credentials_drive(ee_user$email)
     ee_save_credential(pdrive = drive_credential)
     # ee_Initialize(user = ee_user$email, drive = TRUE)
@@ -674,14 +674,19 @@ ee_init_task_gcs <- function(image, region, dsn, scale, maxPixels,
 #' Passing an Earth Engine Image to Local
 #' @noRd
 ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet,
-                           drive_path = NULL, use_oob = FALSE) {
+                           drive_cred_path = NULL, use_oob = FALSE) {
 
   if (via == "drive") {
     ee_create_credentials_drive(email = user_email,
-                                drive_path = drive_path,
+                                drive_cred_path = drive_cred_path,
                                 use_oob = use_oob)
 
-    ee_image_local_drive(task, dsn, metadata, public, quiet)
+    ee_image_local_drive(task,
+                         dsn,
+                         metadata,
+                         public,
+                         quiet)
+
   } else if (via == "gcs") {
     ee_create_credentials_gcs(user_email)
     ee_image_local_gcs(task, dsn, metadata, public, quiet)

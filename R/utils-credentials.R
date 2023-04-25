@@ -4,7 +4,7 @@ ee_create_credentials_drive <- function(user=NULL,
                                         email = NULL,
                                         ee_utils,
                                         quiet,
-                                        drive_path = NULL,
+                                        drive_cred_path = NULL,
                                         use_oob = FALSE) {
   # check googledrive R package installation
   ee_check_packages("ee_Initialize", "googledrive")
@@ -26,9 +26,9 @@ ee_create_credentials_drive <- function(user=NULL,
 
     #if an auth token is supplied, use that first
 
-    if(!is.null(drive_path)){
+    if(!is.null(drive_cred_path)){
 
-      token_info <- jsonlite::read_json(drive_path)
+      token_info <- jsonlite::read_json(drive_cred_path)
 
       #grab email if not supplied
 
@@ -42,7 +42,7 @@ ee_create_credentials_drive <- function(user=NULL,
       suppressMessages(
         googledrive::drive_auth(
           email = email,
-          path = drive_path,
+          path = drive_cred_path,
           use_oob = use_oob)
 
         )
@@ -93,7 +93,7 @@ ee_create_credentials_drive <- function(user=NULL,
   }
 
   # Move credential to the main folder is user is set
-  if (!is.null(user) & is.null(drive_path)) {
+  if (!is.null(user) & is.null(drive_cred_path)) {
     # Clean previous and copy new GD credentials in ./earthengine folder
     clean_drive <- list.files(ee_path, ".*_.*@.*", full.names = TRUE) %in% list.dirs(ee_path)
     unlink(
@@ -109,7 +109,7 @@ ee_create_credentials_drive <- function(user=NULL,
 
   if(!exists("drive_credentials")){drive_credentials <- NA}
   credentials_output <- data.frame(drive_credentials = drive_credentials,
-                                   drive_path = drive_path)
+                                   drive_cred_path = drive_cred_path)
 
   invisible(credentials_output)
 
@@ -126,7 +126,9 @@ ee_create_credentials_drive <- function(user=NULL,
 #' (https://console.cloud.google.com/apis/credentials/serviceaccountkey/).
 #' Is necessary to save it (manually) inside the folder ~/.R/earthengine/USER/.
 #' @noRd
-ee_create_credentials_gcs_ <- function(user, ee_utils) {
+ee_create_credentials_gcs_ <- function(user,
+                                       ee_utils,
+                                       gcs_cred_path = NULL) {
   # check packages
   ee_check_packages("ee_Initialize", "googleCloudStorageR")
 
@@ -143,36 +145,41 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
     ee_path_user <- sprintf("%s/%s", ee_path, user)
   }
 
-  # gcs_credentials
-  full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
-  gcs_condition <- grepl(".json", full_credentials)
+  if(is.null(gcs_cred_path)){
 
-  if (!any(gcs_condition)) {
-    gcs_text <- paste(
-      sprintf("Unable to find a service account key (SAK) file in: %s",  crayon::bold(ee_path_user)),
-      "To solve this problem:",
-      "  1) download it from your Google cloud console",
-      "  2) validate it using rgee::ee_utils_sak_validate [OPTIONAL].",
-      "  3) Use rgee::ee_utils_sak_copy to set the SaK in rgee.",
-      "A tutorial to obtain the SAK file is available at:",
-      "> https://r-spatial.github.io/rgee/articles/rgee05.html",
-      crayon::bold("As long as you haven't saved a SKA file, the following functions will not work:"),
-      "- rgee::ee_gcs_to_local()",
-      "- ee_extract(..., via = \"gcs\")",
-      "- ee_as_raster(..., via = \"gcs\")",
-      "- ee_as_stars(..., via = \"gcs\")",
-      "- ee_as_sf(..., via = \"gcs\")",
-      "- sf_as_ee(..., via = \"gcs_to_asset\")",
-      "- gcs_to_ee_image",
-      "- raster_as_ee",
-      "- local_to_gcs",
-      "- stars_as_ee",
-      sep = "\n"
-    )
-    gcs_info <- list(path = NA, message = gcs_text)
-  } else {
-    gcs_credentials <- full_credentials[gcs_condition]
-    googleCloudStorageR::gcs_auth(gcs_credentials)
+    # gcs_credentials
+    full_credentials <- list.files(path = ee_path_user, full.names = TRUE)
+    gcs_condition <- grepl(".json", full_credentials)
+
+    if (!any(gcs_condition)) {
+      gcs_text <- paste(
+        sprintf("Unable to find a service account key (SAK) file in: %s",  crayon::bold(ee_path_user)),
+        "To solve this problem:",
+        "  1) download it from your Google cloud console",
+        "  2) validate it using rgee::ee_utils_sak_validate [OPTIONAL].",
+        "  3) Use rgee::ee_utils_sak_copy to set the SaK in rgee.",
+        "A tutorial to obtain the SAK file is available at:",
+        "> https://r-spatial.github.io/rgee/articles/rgee05.html",
+        crayon::bold("As long as you haven't saved a SKA file, the following functions will not work:"),
+        "- rgee::ee_gcs_to_local()",
+        "- ee_extract(..., via = \"gcs\")",
+        "- ee_as_raster(..., via = \"gcs\")",
+        "- ee_as_stars(..., via = \"gcs\")",
+        "- ee_as_sf(..., via = \"gcs\")",
+        "- sf_as_ee(..., via = \"gcs_to_asset\")",
+        "- gcs_to_ee_image",
+        "- raster_as_ee",
+        "- local_to_gcs",
+        "- stars_as_ee",
+        sep = "\n"
+      )
+      gcs_info <- list(path = NA, message = gcs_text)
+    } else {
+      gcs_credentials <- full_credentials[gcs_condition]
+      googleCloudStorageR::gcs_auth(gcs_credentials)
+
+    }
+
 
     if (!is.null(user)) {
       unlink(list.files(ee_path, ".json", full.names = TRUE))
@@ -206,8 +213,8 @@ ee_create_credentials_gcs_ <- function(user, ee_utils) {
 #' where they can be automatically refreshed, as necessary.
 #' }
 #' @noRd
-#' @param cred_path A path to your earth engine credentials
-ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_utils, auth_params=NULL, cred_path = NULL, ...) {
+#' @param ee_cred_path A path to your earth engine credentials
+ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_utils, auth_params=NULL, ee_cred_path = NULL, ...) {
   # Check sanity of earth-engine and return ee_utils.py module
   init <- ee_check_init()
   ee_utils <- init$ee_utils
@@ -222,10 +229,10 @@ ee_create_credentials_earthengine <- function(user, auth_mode, auth_quiet, ee_ut
   }
 
   #If path file is specified, copy it to where it needs to be
-  if(!is.null(cred_path)){
+  if(!is.null(ee_cred_path)){
 
     path_condition <- file.copy(
-      from = cred_path,
+      from = ee_cred_path,
       to = sprintf("%s/credentials", ee_path_user),
       overwrite = TRUE
     )

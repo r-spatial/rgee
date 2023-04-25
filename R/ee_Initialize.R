@@ -38,10 +38,11 @@
 #'  \item{5. }{None - a default mode is chosen based on your environment.}
 #' }
 #' @param email User email (Optional)
-#' @param drive_path Path to a google drive authorization token.
 #' @param use_oob Should out of band authentication be used for Google Drive?
 #' Default is FALSE.
-#' @param cred_path Optional path to google drive credentials (Default is NULL)
+#' @param drive_cred_path Optional path to google drive credentials JSON key (Default is NULL)
+#' @param gcs_cred_path Optional path to google cloud storage credentials JSON key (Default is NULL)
+#' @param ee_cred_path Optional path to earth engine JSON key (Default is NULL)
 #' @param ... Extra exporting argument. See \link{ee_Authenticate}.
 #'
 #' @importFrom utils read.table browseURL write.table packageVersion
@@ -82,15 +83,24 @@ ee_Initialize <- function(user = NULL,
                           email = NULL,
                           drive_path = NULL,
                           use_oob = FALSE,
-                          cred_path = NULL,
+                          drive_cred_path = NULL,
+                          gcs_cred_path = NULL,
+                          ee_cred_path = NULL,
                           ...
 ) {
 
   # Set google-cloud-sdk in your PATH systen
   gcloud_path <- Sys.getenv("EARTHENGINE_GCLOUD", unset = NA)
+
+  #If provided, set GCS path
+    if(!is.null(gcs_cred_path)){
+      Sys.setenv("GCS_AUTH_FILE" = gcs_cred_path)
+    }
+
   if (!is.na(gcloud_path)){
     Sys.setenv(PATH = sprintf("%s:%s", Sys.getenv("PATH"), gcloud_path))
-    }
+  }
+
   # Check sanity of earth-engine and return ee_utils.py module
   init <- ee_check_init()
   ee_utils <- init$ee_utils
@@ -115,28 +125,28 @@ ee_Initialize <- function(user = NULL,
     ee_check_packages("ee_Initialize", "googledrive")
 
     # drive init message
-    if (!quiet) ee_message_02(init = TRUE)
+    if (!quiet){ ee_message_02(init = TRUE)}
 
     # If the user is not NULL copy the drive credential in the subfolder
     drive_credentials <- ee_create_credentials_drive(user,
                                                      ee_utils,
                                                      quiet = quiet,
-                                                     drive_path = drive_path,
+                                                     drive_cred_path = drive_cred_path,
                                                      use_oob = use_oob)
     test_drive_privileges(user)
 
-    if (!quiet) ee_message_02(init = FALSE)
+    if (!quiet){ ee_message_02(init = FALSE)}
   }
 
   if (gcs) {
     ee_check_packages("ee_Initialize", "googleCloudStorageR")
 
-    if (!quiet) ee_message_03(init=TRUE, gcs_credentials)
+    if (!quiet){ ee_message_03(init=TRUE, gcs_credentials)}
 
     # Load GCS credentials
     gcs_credentials <- ee_create_credentials_gcs(user, ee_utils)
 
-    if (!quiet) ee_message_03(init=FALSE, gcs_credentials)
+    if (!quiet){ ee_message_03(init=FALSE, gcs_credentials)}
   }
 
   ## rgee session file
@@ -145,8 +155,11 @@ ee_Initialize <- function(user = NULL,
   if (!quiet){ ee_message_04(init = TRUE)}
 
   # If user is not NULL copy the credentials from sub to main folder
-  ee_create_credentials_earthengine(user, auth_mode, auth_quiet, ee_utils,
-                                    cred_path = cred_path
+  ee_create_credentials_earthengine(user,
+                                    auth_mode,
+                                    auth_quiet,
+                                    ee_utils,
+                                    ee_cred_path = ee_cred_path
                                     #, ...
                                     )
 
@@ -180,12 +193,13 @@ ee_Initialize <- function(user = NULL,
   ee_user <- ee_check_root_folder()
 
   options(rgee.ee_user = ee_user)
+
   ee_sessioninfo(
     email = if(!is.null(email)){email}else{if (is.null(user)){ "ndef" }else{ user}},
     user = ee_user,
     drive_cre = drive_credentials$drive_credentials,
     gcs_cre = gcs_credentials[["path"]],
-    drive_path = drive_credentials$drive_path
+    drive_cred_path = drive_credentials$drive_cred_path
   )
 
   if (!quiet){ ee_message_06(gcs_credentials, ee_user)}
@@ -329,6 +343,7 @@ ee_Authenticate <- function(
 
     # gcs init message
     if (verbose) ee_message_03(init = TRUE, gcs_credentials)
+
 
     # Create the gcs credential
     gcs_credentials <- ee_create_credentials_gcs(user=user, ee_utils)
