@@ -114,7 +114,7 @@ ee_clean_container <- function(name = "rgee_backup",
 
   if (type == "drive") {
     ee_check_packages("ee_download_drive", "googledrive")
-    if (is.na(ee_user[["drive_cre"]])) {
+    if (is.na(ee_user[["drive_cre"]]) & is.na(ee_user[["drive_cred_path"]])) {
       stop(
         "Google Drive credentials were not loaded.",
         ' Run ee_Initialize(user = "myemail", drive = TRUE)',
