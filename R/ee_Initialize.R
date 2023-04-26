@@ -190,7 +190,8 @@ ee_Initialize <- function(user = NULL,
   if (!quiet){ ee_message_04(init = FALSE)}
 
   # check if the GEE acount has been created a GEE mainfolder
-  ee_user <- ee_check_root_folder()
+
+    ee_user <- ee_check_root_folder()
 
   options(rgee.ee_user = ee_user)
 
