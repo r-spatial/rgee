@@ -681,7 +681,7 @@ ee_image_local <- function(task, user_email, dsn, via, metadata, public, quiet,
                                 drive_cred_path = drive_cred_path,
                                 use_oob = use_oob)
 
-    ee_image_local_drive(task,
+    ee_image_local_drive(task = task,
                          dsn,
                          metadata,
                          public,
