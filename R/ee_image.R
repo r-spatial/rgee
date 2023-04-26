@@ -77,6 +77,7 @@
 #' Earth Engine Guide - Export data}.
 #' @return A stars-proxy object
 #' @family image download functions
+#' @param drive_cred_path Path to a Google drive JSON token
 #' @export
 #' @examples
 #' \dontrun{
@@ -158,7 +159,9 @@ ee_as_stars <- function(image,
                         add_metadata = TRUE,
                         timePrefix = TRUE,
                         quiet = FALSE,
+                        drive_cred_path = NULL,
                         ...) {
+
   ee_check_packages("ee_as_stars", c("stars", "sf", "future"))
 
   # 1. From Earth Engine to the container (drive or gcs)
@@ -173,8 +176,8 @@ ee_as_stars <- function(image,
     maxPixels = maxPixels,
     container = container,
     timePrefix = timePrefix,
-    quiet = quiet,
-    ...
+    quiet = quiet
+    #,...
   )
 
   user_email <- ee_get_current_email()

@@ -25,6 +25,7 @@
 #' a prefix to export files. This parameter helps to avoid exported files
 #' with the same name. By default TRUE.
 #' @param quiet Logical. Suppress info message
+#' @param drive_cred_path Path to Google Drive JSON token.
 #' @param ... Extra exporting argument. See \link{ee_image_to_drive} and
 #' @details
 #' \code{ee_imagecollection_to_local} supports the download of \code{ee$Images}
@@ -131,6 +132,7 @@ ee_imagecollection_to_local <- function(ic,
                                         add_metadata = TRUE,
                                         timePrefix = TRUE,
                                         quiet = FALSE,
+                                        drive_cred_path = NULL,
                                         ...) {
   # check packages
   ee_check_packages("ee_imagecollection_to_local", "sf")
@@ -204,6 +206,7 @@ ee_imagecollection_to_local <- function(ic,
   }
 
   ic_files <- list()
+
   for (r_index in seq_len(ic_count)) {
     index <- r_index - 1
     image <- ic %>%
@@ -226,7 +229,8 @@ ee_imagecollection_to_local <- function(ic,
       public = public,
       add_metadata = add_metadata,
       timePrefix = timePrefix,
-      quiet = TRUE
+      quiet = TRUE,
+      drive_cred_path = drive_cred_path
     )
 
     if (!lazy) {
