@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
       
 
-      </header><script src="rgee02_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Considerations</h1>
@@ -130,12 +130,23 @@
 
     
     
-<p>Thanks to <strong>reticulate</strong> is it possible to embed a Python session within an R session. The <strong><a href="https://pypi.org/project/earthengine-api/" class="external-link">Earth Engine Python API</a></strong> and <strong>rgee</strong> share the <strong>same modules, classes, functions, and methods</strong>. In other words, the logic of the syntax is the same and just as fast (just change <strong>.</strong> by a <strong>$</strong>). Notwithstanding, differences in the language design of R and Python might cause some problems in specific scenarios. We identify <strong>four</strong> bug-potential cases. Each of them is explained in-depth below.</p>
+<p>Thanks to <strong>reticulate</strong> is it possible to embed a
+Python session within an R session. The <strong><a href="https://pypi.org/project/earthengine-api/" class="external-link">Earth Engine Python
+API</a></strong> and <strong>rgee</strong> share the <strong>same
+modules, classes, functions, and methods</strong>. In other words, the
+logic of the syntax is the same and just as fast (just change
+<strong>.</strong> by a <strong>$</strong>). Notwithstanding,
+differences in the language design of R and Python might cause some
+problems in specific scenarios. We identify <strong>four</strong>
+bug-potential cases. Each of them is explained in-depth below.</p>
 <div class="section level3">
 <h3 id="the-map-message-error">
 <strong>1. The map message error:</strong><a class="anchor" aria-label="anchor" href="#the-map-message-error"></a>
 </h3>
-<p>This issue happens when the <strong>map</strong> method is used while: (1) running a reticulate version lower than &lt; 1.14 (please update it!); or (2) leading with <strong>ee$List</strong> objects. For instance:</p>
+<p>This issue happens when the <strong>map</strong> method is used
+while: (1) running a reticulate version lower than &lt; 1.14 (please
+update it!); or (2) leading with <strong>ee$List</strong> objects. For
+instance:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
 <span><span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span></span>
@@ -160,7 +171,10 @@
 <span><span class="co">#&gt;     self._body = body(*variables)</span></span>
 <span><span class="co">#&gt;   File "/home/aybarpc01/R/x86_64-pc-linux-gnu-library/3.6/reticulate/python/rpytools/call.py", line 21, in python_function</span></span>
 <span><span class="co">#&gt;     raise RuntimeError(res[kErrorKey])</span></span></code></pre></div>
-<p>The code before is perfectly valid but <code>rgee</code> will produce an error. This problem should be easily solved by adding the function <strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions before to send it to <code>reticulate</code>. Let’s see:</p>
+<p>The code before is perfectly valid but <code>rgee</code> will produce
+an error. This problem should be easily solved by adding the function
+<strong>ee_utils_pyfunc</strong>. It will permit to wrap R functions
+before to send it to <code>reticulate</code>. Let’s see:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
 <span><span class="va">ee</span><span class="op">$</span><span class="fu">Initialize</span><span class="op">(</span><span class="op">)</span></span>
@@ -177,33 +191,40 @@
 <h3 id="do-not-forget-the-l">
 <strong>2. Do not forget the L</strong><a class="anchor" aria-label="anchor" href="#do-not-forget-the-l"></a>
 </h3>
-<p>By default, when you define a number in R it will produce a <strong>double precision</strong> value. This does not happen in Python because, by default it will create an <strong>int</strong> value.</p>
+<p>By default, when you define a number in R it will produce a
+<strong>double precision</strong> value. This does not happen in Python
+because, by default it will create an <strong>int</strong> value.</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="bu">type</span>(<span class="dv">1</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;class 'int'&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(<span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;class 'int'&gt;</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "numeric"</span></span></code></pre></div>
 <p>But why does this matter? Let’s explain with an example:</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>ee.Initialize()</span>
-<span id="cb5-2"><a href="#cb5-2"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>and_bitwise.getInfo()</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; 32</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ee.Initialize()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>and_bitwise <span class="op">=</span> ee.Number(<span class="dv">32</span>).bitwiseAnd(<span class="dv">100</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>and_bitwise.getInfo()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 32</span></span></code></pre></div>
 <p><strong>R</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>and_bitwise =<span class="st"> </span>ee<span class="op">$</span><span class="kw">Number</span>(<span class="dv">32</span>)<span class="op">$</span><span class="kw">bitwiseAnd</span>(<span class="dv">100</span>) <span class="co">#caution: silent error</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>and_bitwise<span class="op">$</span><span class="kw">getInfo</span>()</span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">Traceback</span> (most recent call last)<span class="op">:</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="st">  </span>File <span class="st">"&lt;stdin&gt;"</span>, line <span class="dv">1</span>, <span class="cf">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="st">  </span>File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py"</span>, line <span class="dv">95</span>, <span class="cf">in</span> getInfo</span>
-<span id="cb6-6"><a href="#cb6-6"></a>    return <span class="kw">data.computeValue</span>(self)</span>
-<span id="cb6-7"><a href="#cb6-7"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">490</span>, <span class="cf">in</span> computeValue</span>
-<span id="cb6-8"><a href="#cb6-8"></a>    return <span class="kw">send_</span>(<span class="st">'/value'</span>, ({<span class="st">'json'</span><span class="op">:</span><span class="st"> </span><span class="kw">obj.serialize</span>(), <span class="st">'json_format'</span><span class="op">:</span><span class="st"> 'v2'</span>}))</span>
-<span id="cb6-9"><a href="#cb6-9"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">1186</span>, <span class="cf">in</span> send_</span>
-<span id="cb6-10"><a href="#cb6-10"></a>    raise <span class="kw">ee_exception.EEException</span>(json_content[<span class="st">'error'</span>][<span class="st">'message'</span>])</span>
-<span id="cb6-11"><a href="#cb6-11"></a>ee.ee_exception.EEException<span class="op">:</span><span class="st"> </span>Number.bitwiseAnd<span class="op">:</span><span class="st"> </span>Bitwise operands must be integer only.</span></code></pre></div>
-<p>Users need to take into consideration that most of the arguments of the Earth Engine methods are strict to admit only <strong>integer values</strong>. The creation of integers in R is quite simple; you just need to add the letter <strong>L</strong> to the end of the specific number or employ the function <code>as.integer</code>. The <strong>correct code</strong> in R would be:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>and_bitwise <span class="ot">=</span> ee<span class="sc">$</span><span class="fu">Number</span>(<span class="dv">32</span>)<span class="sc">$</span><span class="fu">bitwiseAnd</span>(<span class="dv">100</span>) <span class="co">#caution: silent error</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>and_bitwise<span class="sc">$</span><span class="fu">getInfo</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">Traceback</span> (most recent call last)<span class="sc">:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  File <span class="st">"&lt;stdin&gt;"</span>, line <span class="dv">1</span>, <span class="cf">in</span> <span class="sc">&lt;</span>module<span class="sc">&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/computedobject.py"</span>, line <span class="dv">95</span>, <span class="cf">in</span> getInfo</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    return <span class="fu">data.computeValue</span>(self)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">490</span>, <span class="cf">in</span> computeValue</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    return <span class="fu">send_</span>(<span class="st">'/value'</span>, ({<span class="st">'json'</span><span class="sc">:</span> <span class="fu">obj.serialize</span>(), <span class="st">'json_format'</span><span class="sc">:</span> <span class="st">'v2'</span>}))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  File <span class="st">"/home/aybarpc01/.local/lib/python3.7/site-packages/ee/data.py"</span>, line <span class="dv">1186</span>, <span class="cf">in</span> send_</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    raise <span class="fu">ee_exception.EEException</span>(json_content[<span class="st">'error'</span>][<span class="st">'message'</span>])</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>ee.ee_exception.EEException<span class="sc">:</span> Number.bitwiseAnd<span class="sc">:</span> Bitwise operands must be integer only.</span></code></pre></div>
+<p>Users need to take into consideration that most of the arguments of
+the Earth Engine methods are strict to admit only <strong>integer
+values</strong>. The creation of integers in R is quite simple; you just
+need to add the letter <strong>L</strong> to the end of the specific
+number or employ the function <code>as.integer</code>. The
+<strong>correct code</strong> in R would be:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">and_bitwise</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Number</span><span class="op">(</span><span class="fl">32L</span><span class="op">)</span><span class="op">$</span><span class="fu">bitwiseAnd</span><span class="op">(</span><span class="fl">100L</span><span class="op">)</span></span>
 <span><span class="va">and_bitwise</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span></span>
@@ -213,11 +234,15 @@
 <h3 id="be-careful-with-eedate">
 <strong>3. Be careful with ee$Date</strong><a class="anchor" aria-label="anchor" href="#be-careful-with-eedate"></a>
 </h3>
-<p>This problem also appears due to differences between the design of R and Python as programming languages. Currently, R only supports integer data type of 32 bits. Such integers can only count up to about 2 billion. Unfortunately, this range is insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/" class="external-link">Google Earth Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time" class="external-link">UNIX epoch</a>.</p>
+<p>This problem also appears due to differences between the design of R
+and Python as programming languages. Currently, R only supports integer
+data type of 32 bits. Such integers can only count up to about 2
+billion. Unfortunately, this range is insufficient to deal with <a href="https://developers.google.com/earth-engine/glossary/" class="external-link">Google Earth
+Engine timestamp</a> which is saved in milliseconds since the <a href="https://en.wikipedia.org/wiki/Unix_time" class="external-link">UNIX epoch</a>.</p>
 <p><strong>Python</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>my_date.getInfo()</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; {'type': 'Date', 'value': 631152000000} # greater than 2 billion</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>my_date <span class="op">=</span> ee.Date(<span class="st">'1990-01-01'</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>my_date.getInfo()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; {'type': 'Date', 'value': 631152000000} # greater than 2 billion</span></span></code></pre></div>
 <p><strong>R</strong></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_date</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="st">'1990-01-01'</span><span class="op">)</span></span>
@@ -227,7 +252,11 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $value</span></span>
 <span><span class="co">#&gt; [1] -208192512</span></span></code></pre></div>
-<p>The problems with <code>ee$Date</code> just appear in the last mile (Python to R or vice-versa, <code>reticulate</code>), and they should not be too severe if treated with care. <code>rgee</code> implements two functions to deal with Earth Engine dates: <code>eedate_to_rdate</code> and <code>rdate_to_eedate</code>.</p>
+<p>The problems with <code>ee$Date</code> just appear in the last mile
+(Python to R or vice-versa, <code>reticulate</code>), and they should
+not be too severe if treated with care. <code>rgee</code> implements two
+functions to deal with Earth Engine dates: <code>eedate_to_rdate</code>
+and <code>rdate_to_eedate</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Era5 dataset</span></span>
 <span><span class="va">era_img</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"ECMWF/ERA5/DAILY"</span><span class="op">)</span><span class="op">$</span></span>
@@ -244,13 +273,25 @@
 <h3 id="take-into-consideration-reserved-words-in-r">
 <strong>4. Take into consideration reserved words in R</strong><a class="anchor" aria-label="anchor" href="#take-into-consideration-reserved-words-in-r"></a>
 </h3>
-<p>A reserved word is a word that cannot be used as an identifier, such as the name of a variable or a function. According with <code><a href="https://rdrr.io/r/base/Reserved.html" class="external-link">?reserved</a></code>, the reserved words in R’s parser are: <code>if</code>, <code>else</code>, <strong><code>repeat</code></strong>, <code>while</code>, <code>function</code>, <code>for</code>, <code>in</code>, <code><a href="https://rdrr.io/r/base/Control.html" class="external-link">next</a></code>, <code><a href="https://rdrr.io/r/base/Control.html" class="external-link">break</a></code>, <code>TRUE</code>, <code>FALSE</code>, <code>NULL</code>, <code>Inf</code>, <code>NaN</code>, <code>NA</code>, <code>NA_integer_</code>, <code>NA_real_</code>, <code>NA_complex_</code>, <code>NA_character_</code>. Of these words, the only one that is part of the Earth Engine API is <strong>repeat</strong>.</p>
-<p>We can find <strong>repeat</strong> as a method for an Earth Engine List object. See <strong><a href="https://developers.google.com/earth-engine/apidocs/ee-list-repeat" class="external-link"><code>ee$List$repeat(value, count)</code></a></strong>:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">library</span>(rgee)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="kw">ee_Initialize</span>()</span>
-<span id="cb11-3"><a href="#cb11-3"></a>ee_list &lt;-<span class="st"> </span>ee<span class="op">$</span><span class="kw">List</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</span>
-<span id="cb11-4"><a href="#cb11-4"></a>ee_list<span class="op">$</span><span class="cf">repeat</span>(<span class="dv">10</span>,<span class="dv">2</span>)<span class="op">$</span><span class="kw">getInfo</span>()</span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; Error: unexpected 'repeat' in "ee_list$repeat"</span></span></code></pre></div>
+<p>A reserved word is a word that cannot be used as an identifier, such
+as the name of a variable or a function. According with
+<code><a href="https://rdrr.io/r/base/Reserved.html" class="external-link">?reserved</a></code>, the reserved words in R’s parser are:
+<code>if</code>, <code>else</code>,
+<strong><code>repeat</code></strong>, <code>while</code>,
+<code>function</code>, <code>for</code>, <code>in</code>,
+<code><a href="https://rdrr.io/r/base/Control.html" class="external-link">next</a></code>, <code><a href="https://rdrr.io/r/base/Control.html" class="external-link">break</a></code>, <code>TRUE</code>,
+<code>FALSE</code>, <code>NULL</code>, <code>Inf</code>,
+<code>NaN</code>, <code>NA</code>, <code>NA_integer_</code>,
+<code>NA_real_</code>, <code>NA_complex_</code>,
+<code>NA_character_</code>. Of these words, the only one that is part of
+the Earth Engine API is <strong>repeat</strong>.</p>
+<p>We can find <strong>repeat</strong> as a method for an Earth Engine
+List object. See <strong><a href="https://developers.google.com/earth-engine/apidocs/ee-list-repeat" class="external-link"><code>ee$List$repeat(value, count)</code></a></strong>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgee)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ee_Initialize</span>()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ee_list <span class="ot">&lt;-</span> ee<span class="sc">$</span><span class="fu">List</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ee_list<span class="sc">$</span><span class="cf">repeat</span>(<span class="dv">10</span>,<span class="dv">2</span>)<span class="sc">$</span><span class="fu">getInfo</span>()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Error: unexpected 'repeat' in "ee_list$repeat"</span></span></code></pre></div>
 <p>To avoid this error use backticks/quotation marks:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
@@ -276,7 +317,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

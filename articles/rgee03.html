@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
       
 
-      </header><script src="rgee03_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Best Practices</h1>
@@ -130,23 +130,43 @@
 
     
     
-<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">Google Earth Engine Documentation</a>.</strong></p>
-<p>This doc describes coding practices that are intended to maximize the chance of success for complex or expensive Earth Engine computations.</p>
+<p><strong>Adapted from <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">Google
+Earth Engine Documentation</a>.</strong></p>
+<p>This doc describes coding practices that are intended to maximize the
+chance of success for complex or expensive Earth Engine
+computations.</p>
 <div class="section level2">
 <h2 id="avoid-mixing-client-functions-and-objects-with-server-functions-and-objects">
-<strong>Avoid mixing client functions and objects with server functions and objects</strong><a class="anchor" aria-label="anchor" href="#avoid-mixing-client-functions-and-objects-with-server-functions-and-objects"></a>
+<strong>Avoid mixing client functions and objects with server
+functions and objects</strong><a class="anchor" aria-label="anchor" href="#avoid-mixing-client-functions-and-objects-with-server-functions-and-objects"></a>
 </h2>
-<p>Earth Engine server objects are objects with constructors that start with <code>ee</code> (e.g. ee$Image, ee$Reducer) and any methods on such objects are server functions. Any object not constructed in this manner is a client object. Client objects may come from the R Earth Engine client (e.g. Map) or the R language (e.g. date, data.frame, c(), list()).</p>
-<p>To avoid unintended behavior, do not mix client and server functions in your script as discussed <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">here</a>. See <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">this page</a> for in-depth explanation of client vs. server in Earth Engine. The following example illustrates the dangers of mixing client and server functionality:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
+<p>Earth Engine server objects are objects with constructors that start
+with <code>ee</code> (e.g. ee$Image, ee$Reducer) and any methods on such
+objects are server functions. Any object not constructed in this manner
+is a client object. Client objects may come from the R Earth Engine
+client (e.g. Map) or the R language (e.g. date, data.frame, c(),
+list()).</p>
+<p>To avoid unintended behavior, do not mix client and server functions
+in your script as discussed <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">here</a>.
+See <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">this
+page</a> for in-depth explanation of client vs. server in Earth Engine.
+The following example illustrates the dangers of mixing client and
+server functionality:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong>
+— This code doesn’t work!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Won't work.</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="st">'No!'</span><span class="op">)</span> </span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Can you spot the error? Note that <code>table$size()</code> is a server method on a server object and can not be used with client-side functionality such as the <code>seq_len</code> function.</p>
-<p>A situation in which you may want to use for-loops is with to display results with <code>Map</code>, since the Map object and methods are client-side.</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use client functions for display Earth Engine spatial objects.</p>
+<p>Can you spot the error? Note that <code>table$size()</code> is a
+server method on a server object and can not be used with client-side
+functionality such as the <code>seq_len</code> function.</p>
+<p>A situation in which you may want to use for-loops is with to display
+results with <code>Map</code>, since the Map object and methods are
+client-side.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Use client functions for display Earth Engine spatial objects.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8_ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
 <span>  <span class="st">"LANDSAT/LC08/C01/T1/LC08_044034_%s"</span>,</span>
@@ -161,8 +181,11 @@
 <span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">centerObject</span><span class="op">(</span><span class="va">ee_l8</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span><span class="st">'+'</span>, <span class="va">display_l8ts</span><span class="op">)</span></span></code></pre></div>
-<p>Conversely, <code>map()</code> is a server function and client functionality won’t work inside the function passed to map(). For example:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong> — This code doesn’t work!</p>
+<p>Conversely, <code>map()</code> is a server function and client
+functionality won’t work inside the function passed to map(). For
+example:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong>
+— This code doesn’t work!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
 <span></span>
@@ -171,7 +194,8 @@
 <span>  <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>; <span class="co"># Can't use a client function here.</span></span>
 <span>  <span class="co"># Can't Export, either.</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code>map()</code> <code>set()</code>.</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Use <code>map()</code> <code>set()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
 <span></span>
@@ -181,32 +205,52 @@
 <span>  <span class="va">f</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">"area_sq_meters"</span>, <span class="va">f</span><span class="op">$</span><span class="fu">area</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">withMoreProperties</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"area_sq_meters"</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>You can also <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> the collection based on computed or existing properties and <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code> the result. Note that you can not print a collection with more 5000 elements. If you get the “Collection query aborted after accumulating over 5000 elements” error, <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> or <code>limit()</code> the collection before printing.</p>
+<p>You can also <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> the collection based on computed
+or existing properties and <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code> the result. Note that
+you can not print a collection with more 5000 elements. If you get the
+“Collection query aborted after accumulating over 5000 elements” error,
+<code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> or <code>limit()</code> the collection before
+printing.</p>
 </div>
 <div class="section level2">
 <h2 id="avoid-converting-to-list-unnecessarily">
 <strong>Avoid converting to list unnecessarily</strong><a class="anchor" aria-label="anchor" href="#avoid-converting-to-list-unnecessarily"></a>
 </h2>
-<p>Collections in Earth Engine are processed using optimizations that are broken by converting the collection to a <code>List</code> or <code>Array</code> type. Unless you need random access to collection elements (i.e. you need to get the i’th element of a collection), use filters on the collection to access individual collection elements. The following example illustrates the difference between type conversion (not recommended) and filtering (recommended) to access an element in a collection:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t convert to list unnecessarily!</p>
+<p>Collections in Earth Engine are processed using optimizations that
+are broken by converting the collection to a <code>List</code> or
+<code>Array</code> type. Unless you need random access to collection
+elements (i.e. you need to get the i’th element of a collection), use
+filters on the collection to access individual collection elements. The
+following example illustrates the difference between type conversion
+(not recommended) and filtering (recommended) to access an element in a
+collection:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+Don’t convert to list unnecessarily!</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>;</span>
 <span></span>
 <span><span class="co"># Do NOT do this!!</span></span>
 <span><span class="va">list</span> <span class="op">&lt;-</span> <span class="va">table</span><span class="op">$</span><span class="fu">toList</span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">size</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">list</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="fl">13</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># User memory limit exceeded.</span></span></code></pre></div>
-<p>Note that you can easily trigger errors by converting a collection to a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p>Note that you can easily trigger errors by converting a collection to
+a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>:</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Niger'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Note that you should <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">use filters as early as possible in your analysis</a>.</p>
+<p>Note that you should <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">use
+filters as early as possible in your analysis</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="avoid-ee-algorithms-if">
 <strong>Avoid ee.Algorithms.If()</strong><a class="anchor" aria-label="anchor" href="#avoid-ee-algorithms-if"></a>
 </h2>
-<p>Do not use <code>ee.Algorithms.If()</code> to implement branching logic, especially in a mapped function. As the following example illustrates, <code>ee.Algorithms.If()</code> can be memory intensive and is not recommended:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t use <code>If()</code>:</p>
+<p>Do not use <code>ee.Algorithms.If()</code> to implement branching
+logic, especially in a mapped function. As the following example
+illustrates, <code>ee.Algorithms.If()</code> can be memory intensive and
+is not recommended:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+Don’t use <code>If()</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">ee.FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
 <span></span>
@@ -221,17 +265,32 @@
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">veryBad</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># User memory limit exceeded.</span></span>
 <span></span>
 <span><span class="co"># If() may evaluate both the true and false cases.</span></span></code></pre></div>
-<p>Note that the second argument to <code>map()</code> is <code>TRUE</code>. This means that the mapped function may return nulls and they will be dropped in the resultant collection. That can be useful (without <code>If()</code>), but here the easiest solution is to use a filter:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
+<p>Note that the second argument to <code>map()</code> is
+<code>TRUE</code>. This means that the mapped function may return nulls
+and they will be dropped in the resultant collection. That can be useful
+(without <code>If()</code>), but here the easiest solution is to use a
+filter:</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Chad'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>As shown in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">this tutorial</a>, a functional programming approach using filters is the correct way to apply one logic to some elements of a collection and another logic to the other elements of the collection.</p>
+<p>As shown in <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">this
+tutorial</a>, a functional programming approach using filters is the
+correct way to apply one logic to some elements of a collection and
+another logic to the other elements of the collection.</p>
 </div>
 <div class="section level2">
 <h2 id="avoid-reproject">
 <strong>Avoid reproject()</strong><a class="anchor" aria-label="anchor" href="#avoid-reproject"></a>
 </h2>
-<p>Don’t use <code>reproject</code> unless absolutely necessary. One reason you might want to use reproject() is to force <code>Map</code> display computations to happen at a specific scale so you can examine the results at your desired scale of analysis. In the next example, patches of hot pixels are computed and the count of pixels in each patch is computed. Run the example and click on one of the patches. Note that the count of pixels differs between the reprojected data the data that has not been reprojected.</p>
+<p>Don’t use <code>reproject</code> unless absolutely necessary. One
+reason you might want to use reproject() is to force <code>Map</code>
+display computations to happen at a specific scale so you can examine
+the results at your desired scale of analysis. In the next example,
+patches of hot pixels are computed and the count of pixels in each patch
+is computed. Run the example and click on one of the patches. Note that
+the count of pixels differs between the reprojected data the data that
+has not been reprojected.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span></span>
 <span><span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.405</span>, <span class="fl">37.786</span><span class="op">)</span><span class="op">)</span></span>
@@ -253,13 +312,23 @@
 <span><span class="va">reprojected</span> <span class="op">&lt;-</span> <span class="va">objectSize</span><span class="op">$</span><span class="fu">reproject</span><span class="op">(</span><span class="va">hotspots</span><span class="op">$</span><span class="fu">projection</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">objectSize</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size No Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">reprojected</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">256</span><span class="op">)</span>, <span class="st">"Size Reproject"</span>, <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/guides/scale" class="external-link">scale of analysis</a> is set by the Code Editor zoom level. By calling <code>reproject()</code> you set the scale of the computation instead of the Map display. Use <code>reproject()</code> with extreme caution for reasons described in <a href="https://developers.google.com/earth-engine/guides/projections" class="external-link">this doc</a>.</p>
+<p>The reason for the discrepancy is because the <a href="https://developers.google.com/earth-engine/guides/scale" class="external-link">scale of
+analysis</a> is set by the Code Editor zoom level. By calling
+<code>reproject()</code> you set the scale of the computation instead of
+the Map display. Use <code>reproject()</code> with extreme caution for
+reasons described in <a href="https://developers.google.com/earth-engine/guides/projections" class="external-link">this
+doc</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="filter-and-select-first">
 <strong>Filter and select() first</strong><a class="anchor" aria-label="anchor" href="#filter-and-select-first"></a>
 </h2>
-<p>In general, filter input collections by time, location and/or metadata prior to doing anything else with the collection. Apply more selective filters before less selective filters. Spatial and/or temporal filters are often more selective. For example, note that <code><a href="https://rdrr.io/pkg/raster/man/select.html" class="external-link">select()</a></code> and <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> are applied before <code>map()</code>:</p>
+<p>In general, filter input collections by time, location and/or
+metadata prior to doing anything else with the collection. Apply more
+selective filters before less selective filters. Spatial and/or temporal
+filters are often more selective. For example, note that
+<code><a href="https://rdrr.io/pkg/raster/man/select.html" class="external-link">select()</a></code> and <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> are applied before
+<code>map()</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">images</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2_SR"</span><span class="op">)</span></span>
 <span><span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.463</span>, <span class="fl">37.768</span><span class="op">)</span><span class="op">)</span></span>
@@ -290,7 +359,15 @@
 <h2 id="use-updatemask-instead-of-mask">
 <strong>Use updateMask() instead of mask()</strong><a class="anchor" aria-label="anchor" href="#use-updatemask-instead-of-mask"></a>
 </h2>
-<p>The difference between <code>updateMask()</code> and <code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> is that the former does a logical <code>and()</code> of the argument (the new mask) and the existing image mask whereas <code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> simply replaces the image mask with the argument. The danger of the latter is that you can unmask pixels unintentionally. In this example, the goal is to mask pixels less than or equal to 300 meters elevation. As you can see (zoom out), using <code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> causes a lot of pixels to become unmasked, pixels that don’t belong in the image of interest:</p>
+<p>The difference between <code>updateMask()</code> and
+<code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> is that the former does a logical <code>and()</code>
+of the argument (the new mask) and the existing image mask whereas
+<code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> simply replaces the image mask with the argument.
+The danger of the latter is that you can unmask pixels unintentionally.
+In this example, the goal is to mask pixels less than or equal to 300
+meters elevation. As you can see (zoom out), using <code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code>
+causes a lot of pixels to become unmasked, pixels that don’t belong in
+the image of interest:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_SR"</span><span class="op">)</span></span>
 <span><span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.40554461769182</span>, <span class="fl">37.786807309873716</span><span class="op">)</span><span class="op">)</span></span>
@@ -317,7 +394,10 @@
 <h2 id="combine-reducers">
 <strong>Combine reducers</strong><a class="anchor" aria-label="anchor" href="#combine-reducers"></a>
 </h2>
-<p>If you need multiple statistics (e.g. mean and standard deviation) from a single input (e.g. an image region), it is more efficient to combine reducers. For example, to get image statistics, combine reducers as follows:</p>
+<p>If you need multiple statistics (e.g. mean and standard deviation)
+from a single input (e.g. an image region), it is more efficient to
+combine reducers. For example, to get image statistics, combine reducers
+as follows:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'COPERNICUS/S2/20150821T111616_20160314T094808_T30UWU'</span><span class="op">)</span></span>
 <span></span>
@@ -337,13 +417,26 @@
 <span><span class="co"># Extract means and SDs to images.</span></span>
 <span><span class="va">meansImage</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">toImage</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'.*_mean'</span><span class="op">)</span></span>
 <span><span class="va">sdsImage</span> <span class="op">&lt;-</span> <span class="va">stats</span><span class="op">$</span><span class="fu">toImage</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'.*_stdDev'</span><span class="op">)</span></span></code></pre></div>
-<p>In this example, note that the mean reducer is combined with the standard deviation reducer and <code>sharedInputs</code> is true to enable a single pass through the input pixels. In the output dictionary, the name of the reducer is appended to the band name. To get mean and SD images (for example to normalize the input image), you can turn the values into an image and use regexes to extract means and SDs individually as demonstrated in the example.</p>
+<p>In this example, note that the mean reducer is combined with the
+standard deviation reducer and <code>sharedInputs</code> is true to
+enable a single pass through the input pixels. In the output dictionary,
+the name of the reducer is appended to the band name. To get mean and SD
+images (for example to normalize the input image), you can turn the
+values into an image and use regexes to extract means and SDs
+individually as demonstrated in the example.</p>
 </div>
 <div class="section level2">
 <h2 id="use-export">
 <strong>Use Export</strong><a class="anchor" aria-label="anchor" href="#use-export"></a>
 </h2>
-<p>For computations that result in “User memory limit exceeded” or “Computation timed out” errors in the Code Editor, the same computations may be able to succeed by using <code>Export</code>. This is because the timeouts are longer and the allowable memory footprint is larger when running in the batch system (where exports run). (There are other approaches you may want to try first as detailed in the debugging doc). Continuing the previous example, suppose that dictionary returned an error. You could obtain the results by doing something like:</p>
+<p>For computations that result in “User memory limit exceeded” or
+“Computation timed out” errors in the Code Editor, the same computations
+may be able to succeed by using <code>Export</code>. This is because the
+timeouts are longer and the allowable memory footprint is larger when
+running in the batch system (where exports run). (There are other
+approaches you may want to try first as detailed in the debugging doc).
+Continuing the previous example, suppose that dictionary returned an
+error. You could obtain the results by doing something like:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">link</span> <span class="op">&lt;-</span> <span class="st">'86836482971a35a5e735a17e93c23272'</span></span>
 <span><span class="va">task</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">batch</span><span class="op">$</span><span class="va">Export</span><span class="op">$</span><span class="va">table</span><span class="op">$</span><span class="fu">toDrive</span><span class="op">(</span></span>
@@ -363,15 +456,26 @@
 <span></span>
 <span><span class="va">exported_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_drive_to_local.html">ee_drive_to_local</a></span><span class="op">(</span>task <span class="op">=</span> <span class="va">task</span>,dsn <span class="op">=</span> <span class="st">"exported_stats.csv"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">exported_stats</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the link is embedded into the asset name, for reproducibility. Also note that if you want to export <code>toAsset</code>, you will need to supply a geometry, which can be anything, for example the image centroid, which is small and cheap to compute. (i.e. don’t use a complex geometry if you don’t need it).</p>
-<p>See the debugging page for examples of using <code>Export</code> to resolve <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Computation</a> timed out and <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Too many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/guides/exporting" class="external-link">this doc</a> for details on exporting in general.</p>
+<p>Note that the link is embedded into the asset name, for
+reproducibility. Also note that if you want to export
+<code>toAsset</code>, you will need to supply a geometry, which can be
+anything, for example the image centroid, which is small and cheap to
+compute. (i.e. don’t use a complex geometry if you don’t need it).</p>
+<p>See the debugging page for examples of using <code>Export</code> to
+resolve <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Computation</a>
+timed out and <a href="https://developers.google.com/earth-engine/guides/debugging" class="external-link">Too
+many concurrent aggregations</a>. See <a href="https://developers.google.com/earth-engine/guides/exporting" class="external-link">this
+doc</a> for details on exporting in general.</p>
 </div>
 <div class="section level2">
 <h2 id="if-you-dont-need-to-clip-dont-use-clip">
 <strong>If you don’t need to clip, don’t use clip() </strong><a class="anchor" aria-label="anchor" href="#if-you-dont-need-to-clip-dont-use-clip"></a>
 </h2>
-<p>Using <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unnecessarily will increase computation time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unless it’s necessary to your analysis. If you’re not sure, don’t clip. An example of a bad use of clip:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t clip inputs unnecessarily!</p>
+<p>Using <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unnecessarily will increase computation
+time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unless it’s necessary to your analysis.
+If you’re not sure, don’t clip. An example of a bad use of clip:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+Don’t clip inputs unnecessarily!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
 <span><span class="va">l8sr</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_SR'</span><span class="op">)</span></span>
@@ -394,8 +498,10 @@
 <span>    maxPixels <span class="op">=</span> <span class="fl">1e10</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">unnecessaryClip</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Clipping the input images can be skipped entirely, because the region is specified in the <code>reduceRegion()</code> call:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Specify the region on the output.</p>
+<p>Clipping the input images can be skipped entirely, because the region
+is specified in the <code>reduceRegion()</code> call:</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Specify the region on the output.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">noClipNeeded</span> <span class="op">&lt;-</span> <span class="va">l8sr</span><span class="op">$</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="st">'B4'</span><span class="op">)</span><span class="op">$</span>                          <span class="co"># Good.</span></span>
@@ -409,13 +515,17 @@
 <span>    maxPixels <span class="op">=</span> <span class="fl">1e10</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">noClipNeeded</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">this example</a>.</p>
+<p>If this computation times out, <code>Export</code> it as in <a href="https://developers.google.com/earth-engine/guides/best_practices" class="external-link">this
+example</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="if-you-need-to-clip-with-a-complex-collection-use-cliptocollection">
-<strong>If you need to clip with a complex collection, use clipToCollection()</strong><a class="anchor" aria-label="anchor" href="#if-you-need-to-clip-with-a-complex-collection-use-cliptocollection"></a>
+<strong>If you need to clip with a complex collection, use
+clipToCollection()</strong><a class="anchor" aria-label="anchor" href="#if-you-need-to-clip-with-a-complex-collection-use-cliptocollection"></a>
 </h2>
-<p>If you really need to clip something, and the geometries you want to use for clipping are in a collection, use <code>clipToCollection()</code>:</p>
+<p>If you really need to clip something, and the geometries you want to
+use for clipping are in a collection, use
+<code>clipToCollection()</code>:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecoregions</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'RESOLVE/ECOREGIONS/2017'</span><span class="op">)</span></span>
 <span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'JAXA/ALOS/AW3D30_V1_1'</span><span class="op">)</span></span>
@@ -434,13 +544,21 @@
 <span>  <span class="fu">clipToCollection</span><span class="op">(</span><span class="va">complexCollection</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">clippedTheRightWay</span>, <span class="op">{</span><span class="op">}</span>, <span class="st">'clippedTheRightWay'</span>, <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>Do NOT use <code>featureCollection.geometry()</code> or <code>featureCollection.union()</code> on large and/or complex collections, which can be more memory intensive.</p>
+<p>Do NOT use <code>featureCollection.geometry()</code> or
+<code>featureCollection.union()</code> on large and/or complex
+collections, which can be more memory intensive.</p>
 </div>
 <div class="section level2">
 <h2 id="dont-use-a-complex-collection-as-the-region-for-a-reducer">
-<strong>Don’t use a complex collection as the region for a reducer</strong><a class="anchor" aria-label="anchor" href="#dont-use-a-complex-collection-as-the-region-for-a-reducer"></a>
+<strong>Don’t use a complex collection as the region for a
+reducer</strong><a class="anchor" aria-label="anchor" href="#dont-use-a-complex-collection-as-the-region-for-a-reducer"></a>
 </h2>
-<p>If you need to do a spatial reduction such that the reducer pools inputs from multiple regions in a <code>FeatureCollection</code>, don’t supply <code>featureCollection.geometry()</code> as the <code>geometry</code> input to the reducer. Instead, use <code>clipToCollection()</code> and a region large enough to encompass the bounds of the collection. For example:</p>
+<p>If you need to do a spatial reduction such that the reducer pools
+inputs from multiple regions in a <code>FeatureCollection</code>, don’t
+supply <code>featureCollection.geometry()</code> as the
+<code>geometry</code> input to the reducer. Instead, use
+<code>clipToCollection()</code> and a region large enough to encompass
+the bounds of the collection. For example:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecoregions</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'RESOLVE/ECOREGIONS/2017'</span><span class="op">)</span></span>
 <span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'JAXA/ALOS/AW3D30_V1_1'</span><span class="op">)</span></span>
@@ -467,7 +585,13 @@
 <h2 id="use-a-non-zero-errormargin">
 <strong>Use a non-zero errorMargin</strong><a class="anchor" aria-label="anchor" href="#use-a-non-zero-errormargin"></a>
 </h2>
-<p>For possibly expensive geometry operations, use the largest error margin possible given the required precision of the computation. The error margin specifies the maximum allowable error (in meters) permitted during operations on geometries (e.g. during reprojection). Specifying a small error margin can result in the need to densify geometries (with coordinates), which can be memory intensive. It’s good practice to specify as large an error margin as possible for your computation:</p>
+<p>For possibly expensive geometry operations, use the largest error
+margin possible given the required precision of the computation. The
+error margin specifies the maximum allowable error (in meters) permitted
+during operations on geometries (e.g. during reprojection). Specifying a
+small error margin can result in the need to densify geometries (with
+coordinates), which can be memory intensive. It’s good practice to
+specify as large an error margin as possible for your computation:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecoregions</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">"RESOLVE/ECOREGIONS/2017"</span><span class="op">)</span></span>
 <span><span class="va">complexCollection</span> <span class="op">&lt;-</span> <span class="va">ecoregions</span><span class="op">$</span><span class="fu">limit</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
@@ -483,9 +607,14 @@
 </div>
 <div class="section level2">
 <h2 id="dont-use-a-ridiculously-small-scale-with-reducetovectors">
-<strong>Don’t use a ridiculously small scale with reduceToVectors()</strong><a class="anchor" aria-label="anchor" href="#dont-use-a-ridiculously-small-scale-with-reducetovectors"></a>
+<strong>Don’t use a ridiculously small scale with
+reduceToVectors()</strong><a class="anchor" aria-label="anchor" href="#dont-use-a-ridiculously-small-scale-with-reducetovectors"></a>
 </h2>
-<p>If you want to convert a raster to a vector, use an appropriate scale. Specifying a very small scale can substantially increase computation cost. Set scale as high as possible give the required precision. For example, to get polygons representing global land masses:</p>
+<p>If you want to convert a raster to a vector, use an appropriate
+scale. Specifying a very small scale can substantially increase
+computation cost. Set scale as high as possible give the required
+precision. For example, to get polygons representing global land
+masses:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">etopo</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'NOAA/NGDC/ETOPO1'</span><span class="op">)</span></span>
 <span></span>
@@ -516,13 +645,18 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span><span class="va">vectors</span>, <span class="op">{</span><span class="op">}</span>, <span class="st">"vectors"</span><span class="op">)</span></span></code></pre></div>
-<p>In the previous example, note the use of a non-geodesic polygon for use in global reductions.</p>
+<p>In the previous example, note the use of a non-geodesic polygon for
+use in global reductions.</p>
 </div>
 <div class="section level2">
 <h2 id="dont-use-reducetovectors-with-reduceregions">
-<strong>Don’t use reduceToVectors() with reduceRegions()</strong><a class="anchor" aria-label="anchor" href="#dont-use-reducetovectors-with-reduceregions"></a>
+<strong>Don’t use reduceToVectors() with
+reduceRegions()</strong><a class="anchor" aria-label="anchor" href="#dont-use-reducetovectors-with-reduceregions"></a>
 </h2>
-<p>Don’t use a <code>FeatureCollection</code> returned by <code>reduceToVectors()</code> as an input to <code>reduceRegions()</code>. Instead, add the bands you want to reduce before calling <code>reduceToVectors()</code>:</p>
+<p>Don’t use a <code>FeatureCollection</code> returned by
+<code>reduceToVectors()</code> as an input to
+<code>reduceRegions()</code>. Instead, add the bands you want to reduce
+before calling <code>reduceToVectors()</code>:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">etopo</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'NOAA/NGDC/ETOPO1'</span><span class="op">)</span></span>
 <span><span class="va">mod11a1</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'MODIS/006/MOD11A1'</span><span class="op">)</span></span>
@@ -545,13 +679,20 @@
 <span>  maxPixels <span class="op">=</span> <span class="fl">1e10</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">means</span><span class="op">$</span><span class="fu">limit</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Note that other ways of reducing pixels of one image within zones of another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">reduceConnectedCommponents()</a> and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">grouping reducers</a>.</p>
+<p>Note that other ways of reducing pixels of one image within zones of
+another include <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">reduceConnectedCommponents()</a>
+and/or <a href="https://developers.google.com/earth-engine/api_docs#ee.image.reduceconnectedcomponents/" class="external-link">grouping
+reducers</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="use-fastdistancetransform-for-neighborhood-operations">
-<strong>Use fastDistanceTransform() for neighborhood operations</strong><a class="anchor" aria-label="anchor" href="#use-fastdistancetransform-for-neighborhood-operations"></a>
+<strong>Use fastDistanceTransform() for neighborhood
+operations</strong><a class="anchor" aria-label="anchor" href="#use-fastdistancetransform-for-neighborhood-operations"></a>
 </h2>
-<p>For some convolution operations, <code>fastDistanceTransform()</code> may be more efficient than <code>reduceNeighborhood()</code> or <code><a href="https://rdrr.io/r/stats/convolve.html" class="external-link">convolve()</a></code>. For example, to do erosion and/or dilation of binary inputs:</p>
+<p>For some convolution operations, <code>fastDistanceTransform()</code>
+may be more efficient than <code>reduceNeighborhood()</code> or
+<code><a href="https://rdrr.io/r/stats/convolve.html" class="external-link">convolve()</a></code>. For example, to do erosion and/or dilation of
+binary inputs:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">aw3d30</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">"JAXA/ALOS/AW3D30_V1_1"</span><span class="op">)</span></span>
 <span></span>
@@ -575,7 +716,9 @@
 <h2 id="use-the-optimizations-in-reduceneighborhood">
 <strong>Use the optimizations in reduceNeighborhood()</strong><a class="anchor" aria-label="anchor" href="#use-the-optimizations-in-reduceneighborhood"></a>
 </h2>
-<p>If you need to perform a convolution and can’t use <code>fastDistanceTransform()</code>, use the optimizations in <code>reduceNeighborhood()</code>.</p>
+<p>If you need to perform a convolution and can’t use
+<code>fastDistanceTransform()</code>, use the optimizations in
+<code>reduceNeighborhood()</code>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span></span>
 <span><span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span></span>
@@ -597,8 +740,15 @@
 <h2 id="dont-sample-more-data-than-you-need">
 <strong>Don’t sample more data than you need</strong><a class="anchor" aria-label="anchor" href="#dont-sample-more-data-than-you-need"></a>
 </h2>
-<p>Resist the urge to increase your training dataset size unnecessarily. Although increasing the amount of training data is an effective machine learning strategy in some circumstances, it can also increase computational cost with no corresponding increase in accuracy. (For an understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/" class="external-link">this reference</a>). The following example demonstrates how requesting too much training data can result in the dreaded “Computed value is too large” error:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> — Don’t sample too much data!</p>
+<p>Resist the urge to increase your training dataset size unnecessarily.
+Although increasing the amount of training data is an effective machine
+learning strategy in some circumstances, it can also increase
+computational cost with no corresponding increase in accuracy. (For an
+understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/" class="external-link">this reference</a>). The
+following example demonstrates how requesting too much training data can
+result in the dreaded “Computed value is too large” error:</p>
+<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+Don’t sample too much data!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span></span>
 <span><span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span></span>
@@ -622,8 +772,11 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">classifier</span><span class="op">$</span><span class="fu">explain</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># Computed value is too large</span></span></code></pre></div>
-<p>The better approach is to start with a moderate amount of data and tune the hyperparameters of the classifier to determine if you can achieve your desired accuracy:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> — Tune hyperparameters.</p>
+<p>The better approach is to start with a moderate amount of data and
+tune the hyperparameters of the classifier to determine if you can
+achieve your desired accuracy:</p>
+<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+Tune hyperparameters.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_RT"</span><span class="op">)</span></span>
 <span><span class="va">composite</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Algorithms</span><span class="op">$</span><span class="va">Landsat</span><span class="op">$</span><span class="fu">simpleComposite</span><span class="op">(</span><span class="va">l8raw</span><span class="op">)</span></span>
@@ -679,13 +832,19 @@
 <span>  xlab <span class="op">=</span> <span class="st">"value"</span>,</span>
 <span>  main <span class="op">=</span> <span class="st">"Hyperparameter tunning (minLeafPopulation)"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>In this example, the classifier is already very accurate, so there’s not much tuning to do. You might want to choose the smallest tree possible (i.e. largest <code>minLeafPopulation</code>) that still has the required accuracy.</p>
+<p>In this example, the classifier is already very accurate, so there’s
+not much tuning to do. You might want to choose the smallest tree
+possible (i.e. largest <code>minLeafPopulation</code>) that still has
+the required accuracy.</p>
 </div>
 <div class="section level2">
 <h2 id="export-intermediate-results">
 <strong>Export intermediate results</strong><a class="anchor" aria-label="anchor" href="#export-intermediate-results"></a>
 </h2>
-<p>Suppose your objective is to take samples from a relatively complex computed image. It is often more efficient to <code>Export</code> the image <code>toAsset()</code>, load the exported image, then sample. For example:</p>
+<p>Suppose your objective is to take samples from a relatively complex
+computed image. It is often more efficient to <code>Export</code> the
+image <code>toAsset()</code>, load the exported image, then sample. For
+example:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">image</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="st">'UMD/hansen/global_forest_change_2018_v1_6'</span><span class="op">)</span></span>
 <span><span class="va">geometry</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Polygon</span><span class="op">(</span></span>
@@ -777,14 +936,24 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Export the large sample...</span></span></code></pre></div>
-<p>In this example, note that the imagery is exported as float. Don’t export at double precision unless absolutely necessary.</p>
-<p>Once the export is completed, reload the asset and proceed with sampling from it. Note that a very small sample over a very small test area is run first, for debugging. When that is shown to succeed, take a larger sample and export it. Such large samples typically need to be exported. Do not expect such samples to be available interactively (for example through <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code>) or useable (for example as input to a classifier) without exporting them first.</p>
+<p>In this example, note that the imagery is exported as float. Don’t
+export at double precision unless absolutely necessary.</p>
+<p>Once the export is completed, reload the asset and proceed with
+sampling from it. Note that a very small sample over a very small test
+area is run first, for debugging. When that is shown to succeed, take a
+larger sample and export it. Such large samples typically need to be
+exported. Do not expect such samples to be available interactively (for
+example through <code><a href="../reference/print.ee.computedobject.ComputedObject.html">print()</a></code>) or useable (for example as input
+to a classifier) without exporting them first.</p>
 </div>
 <div class="section level2">
 <h2 id="join-vs--map-filter">
 <strong>Join vs. map-filter</strong><a class="anchor" aria-label="anchor" href="#join-vs--map-filter"></a>
 </h2>
-<p>Suppose you want to join collections based on time, location or some metadata property. Generally, this is most efficiently accomplished with a join. The following example does a spatio-temporal join between the Landsat 8 and Sentinel-2 collections:</p>
+<p>Suppose you want to join collections based on time, location or some
+metadata property. Generally, this is most efficiently accomplished with
+a join. The following example does a spatio-temporal join between the
+Landsat 8 and Sentinel-2 collections:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -808,7 +977,9 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">joined</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Although you should try a join first (<code>Export</code> if needed), occasionally a <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> within a <code>map()</code> can also be effective, particularly for very large collections.</p>
+<p>Although you should try a join first (<code>Export</code> if needed),
+occasionally a <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> within a <code>map()</code> can
+also be effective, particularly for very large collections.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">filterBounds</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2.0205</span>, <span class="fl">48.647</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -833,10 +1004,23 @@
 </div>
 <div class="section level2">
 <h2 id="reduceregion-vs--reduceregions-vs--for-loop">
-<strong>reduceRegion() vs. reduceRegions() vs. for-loop</strong><a class="anchor" aria-label="anchor" href="#reduceregion-vs--reduceregions-vs--for-loop"></a>
+<strong>reduceRegion() vs. reduceRegions()
+vs. for-loop</strong><a class="anchor" aria-label="anchor" href="#reduceregion-vs--reduceregions-vs--for-loop"></a>
 </h2>
-<p>Calling <code>reduceRegions()</code> with a very large or complex <code>FeatureCollection</code> as input may result in the dreaded “Computed value is too large” error. One potential solution is to map <code>reduceRegion()</code> over the <code>FeatureCollection</code> instead. Another potential solution is to use a (gasp) for-loop. Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/guides/getstarted" class="external-link">here</a>, <a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">here</a> and <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">here</a>, <code>reduceRegion()</code> can be implemented in a for-loop to perform large reductions.</p>
-<p>Suppose your objective is to obtain the mean of pixels (or any statistic) in each feature in a <code>FeatureCollection</code> for each image in an <code>ImageCollection</code>. The following example compares the three approaches previously described:</p>
+<p>Calling <code>reduceRegions()</code> with a very large or complex
+<code>FeatureCollection</code> as input may result in the dreaded
+“Computed value is too large” error. One potential solution is to map
+<code>reduceRegion()</code> over the <code>FeatureCollection</code>
+instead. Another potential solution is to use a (gasp) for-loop.
+Although this is strongly discouraged in Earth Engine as described <a href="https://developers.google.com/earth-engine/guides/getstarted" class="external-link">here</a>,
+<a href="https://developers.google.com/earth-engine/tutorials/tutorial_js_03" class="external-link">here</a>
+and <a href="https://developers.google.com/earth-engine/guides/client_server" class="external-link">here</a>,
+<code>reduceRegion()</code> can be implemented in a for-loop to perform
+large reductions.</p>
+<p>Suppose your objective is to obtain the mean of pixels (or any
+statistic) in each feature in a <code>FeatureCollection</code> for each
+image in an <code>ImageCollection</code>. The following example compares
+the three approaches previously described:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Table of countries.</span></span>
 <span><span class="va">countriesTable</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">"USDOS/LSIB_SIMPLE/2017"</span><span class="op">)</span></span>
@@ -923,13 +1107,26 @@
 <span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="fu">merge</span><span class="op">(</span><span class="va">fc</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Note that the <code>first()</code> thing from each collection is printed, for debugging purposes. You should not expect that the complete result will be available interactively: you’ll need to <code>Export</code>. Also note that for-loops should be used with extreme caution and only as a last resort. Finally, the for-loop requires manually obtaining the size of the input collection and hardcoding that in the appropriate locations. If any of that sounds unclear to you, don’t use a for-loop.</p>
+<p>Note that the <code>first()</code> thing from each collection is
+printed, for debugging purposes. You should not expect that the complete
+result will be available interactively: you’ll need to
+<code>Export</code>. Also note that for-loops should be used with
+extreme caution and only as a last resort. Finally, the for-loop
+requires manually obtaining the size of the input collection and
+hardcoding that in the appropriate locations. If any of that sounds
+unclear to you, don’t use a for-loop.</p>
 </div>
 <div class="section level2">
 <h2 id="use-forward-differencing-for-neighbors-in-time">
 <strong>Use forward differencing for neighbors in time</strong><a class="anchor" aria-label="anchor" href="#use-forward-differencing-for-neighbors-in-time"></a>
 </h2>
-<p>Suppose you have a temporally sorted <code>ImageCollection</code> (i.e. a time series) and you want to compare each image to the previous (or next) image. Rather than use <code><a href="https://rstudio.github.io/reticulate/reference/iterate.html" class="external-link">iterate()</a></code> for this purpose, it may be more efficient to use an array-based forward differencing. The following example uses this method to de-duplicate the Sentinel-2 collection, where duplicates are defined as images with the same day of year:</p>
+<p>Suppose you have a temporally sorted <code>ImageCollection</code>
+(i.e. a time series) and you want to compare each image to the previous
+(or next) image. Rather than use <code><a href="https://rstudio.github.io/reticulate/reference/iterate.html" class="external-link">iterate()</a></code> for this
+purpose, it may be more efficient to use an array-based forward
+differencing. The following example uses this method to de-duplicate the
+Sentinel-2 collection, where duplicates are defined as images with the
+same day of year:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sentinel2</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"COPERNICUS/S2"</span><span class="op">)</span></span>
 <span><span class="va">sf</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Geometry</span><span class="op">$</span><span class="fu">Point</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">122.47555371521855</span>, <span class="fl">37.76884708376152</span><span class="op">)</span><span class="op">)</span></span>
@@ -992,7 +1189,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

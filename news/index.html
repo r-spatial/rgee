@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -93,11 +93,22 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.1.3.9000" id="rgee-1139000">rgee 1.1.3.9000<a class="anchor" aria-label="anchor" href="#rgee-1139000"></a></h2>
-<ul><li>ee_Initialize now supports EE API &gt; 0.1.310.</li>
-<li>ee_Authenticate added.</li>
-<li>Preventive message added to ee_get_date_ic (thanks <a href="https://github.com/zackarno" class="external-link">@zackarno</a>)</li>
-<li>Critical bug solved in ee_check, see changes <a href="https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795" class="external-link">here</a> (thanks <a href="https://github.com/MartinHoldrege" class="external-link">@MartinHoldrege</a>)</li>
+<h2 class="page-header" data-toc-text="1.1.6.9999" id="rgee-1169999">rgee 1.1.6.9999<a class="anchor" aria-label="anchor" href="#rgee-1169999"></a></h2>
+<ul><li>Fix a bug in ee_image_info strsplit(code, “:”) : object ‘band_metadata’ not found. Thanks <a href="https://github.com/TianyaImpression" class="external-link">@TianyaImpression</a>.</li>
+<li>Fix a bug in VScode studio when getOption(“rgee.print.option”) is “simple”.</li>
+<li>ee_as_raster (raster) is deprecated in favour to ee_as_rast (terra).</li>
+<li>
+<code>via</code> argument in ee_as_stars, and ee_as_rast have a new option called “getDownloadURL”. via=“getDownloadURL” is the new default. getDownloadURL permit download small images x800% faster.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.6" id="rgee-116">rgee 1.1.6<a class="anchor" aria-label="anchor" href="#rgee-116"></a></h2>
+<ul><li>The ee_check function does not authenticate gcloud.</li>
+<li>ee_Initialize now supports EE API versions greater than 0.1.310.</li>
+<li>Added ee_Authenticate function for authentication.</li>
+<li>Added a preventive message to ee_get_date_ic, thanks to <a href="https://github.com/zackarno" class="external-link">@zackarno</a>.</li>
+<li>Resolved a critical bug in ee_check, view changes here: <a href="https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795" class="external-link uri">https://github.com/r-spatial/rgee/pull/251/commits/9f6eeb00d5f26c48b7c95aa6c8a4d2feee04c795</a>, thanks to <a href="https://github.com/MartinHoldrege" class="external-link">@MartinHoldrege</a>.</li>
+<li>rgee now uses ‘auth_mode = “notebook”’ by default.</li>
+<li>Added ‘ee_clean_user_credentials’ function to remove deprecated credentials. This function removes credentials instead of overwriting them, as ee_Authenticate does.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.3" id="rgee-113">rgee 1.1.3<small>2022-03-16</small><a class="anchor" aria-label="anchor" href="#rgee-113"></a></h2>
@@ -304,7 +315,8 @@
 <li>add a new logical argument called ‘strict’ to <strong>ee_manage_delete</strong>. If TRUE, the existence of the asset will be evaluate before to perform the task.</li>
 <li>Fix a bug in ee_Initialize, now users without an Earth Engine Assets home root will see a message.</li>
 <li>Fix a minor bug when ee_Initialize change of user, now before to change of user the GCS and GD credentials will be deleted.</li>
-<li>ee_check completely renovated.<ul><li>New diagnostic messages.</li>
+<li>ee_check completely renovated.
+<ul><li>New diagnostic messages.</li>
 <li>Fix a minor bug when testing GCS credentials.</li>
 <li>The file ee_check.py was deleted.</li>
 </ul></li>
@@ -408,7 +420,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

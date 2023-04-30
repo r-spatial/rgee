@@ -21,7 +21,7 @@ a wrapper around rgee::ee$Initialize()."><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -116,6 +116,7 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
 <span>  http_transport <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  project <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  auth_mode <span class="op">=</span> <span class="st">"notebook"</span>,</span>
 <span>  auth_quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -141,8 +142,8 @@ credential is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
 
 
 <dt>credentials</dt>
-<dd><p>OAuth2 credentials. 'persistent' (default) means
-use credentials already stored in the filesystem, or raise an explanatory
+<dd><p>OAuth2 GEE credentials. 'persistent' (default) means
+use GEE credentials already stored in the filesystem, or raise an explanatory
 exception guiding the user to create those credentials.</p></dd>
 
 
@@ -164,6 +165,15 @@ exception guiding the user to create those credentials.</p></dd>
 
 <dt>quiet</dt>
 <dd><p>Logical. Suppress info messages.</p></dd>
+
+
+<dt>auth_mode</dt>
+<dd><p>The authentication mode. One of:</p><ul><li><p>1. paste - send user to accounts.google.com to get a pastable token</p></li>
+<li><p>2. notebook - send user to notebook authenticator page</p></li>
+<li><p>3. gcloud - use gcloud to obtain credentials (will set appdefault)</p></li>
+<li><p>4. appdefault - read from existing $GOOGLE_APPLICATION_CREDENTIALS file</p></li>
+<li><p>5. None - a default mode is chosen based on your environment.</p></li>
+</ul></dd>
 
 
 <dt>auth_quiet</dt>
@@ -188,9 +198,7 @@ Cloud Storage resources using the R packages googledrive and
 googlecloudStorageR, respectively. By default, rgee does not require
 them. These are only necessary to enable rgee I/O functionality.
 All user credentials are saved in the directory
-<code>~/.config/earthengine/</code>. If a user does not specify the "user"
-argument, all user credentials are saved in the the subdirectory
-<code>~/.config/earthengine/ndef</code>.</p>
+<code>~/.config/earthengine/</code>.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -223,7 +231,7 @@ argument, all user credentials are saved in the the subdirectory
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -18,7 +18,7 @@ Earth Engine Image."><meta property="og:image" content="https://r-spatial.github
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -100,13 +100,23 @@ Earth Engine Image.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_image_info</span><span class="op">(</span><span class="va">image</span>, getsize <span class="op">=</span> <span class="cn">TRUE</span>, compression_ratio <span class="op">=</span> <span class="fl">20</span>, quiet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_image_info</span><span class="op">(</span></span>
+<span>  <span class="va">image</span>,</span>
+<span>  band_metadata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  getsize <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  compression_ratio <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>image</dt>
 <dd><p>Single-band EE Image object.</p></dd>
+
+
+<dt>band_metadata</dt>
+<dd><p>A list with image properties. If NULL it will be generated automatically.</p></dd>
 
 
 <dt>getsize</dt>
@@ -161,7 +171,7 @@ size (image_size).</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

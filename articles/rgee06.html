@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -117,7 +117,7 @@
 
       
 
-      </header><script src="rgee06_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>How to integrate Rmarkdown and rgee</h1>
@@ -134,7 +134,8 @@
 <h2 id="the-problem">
 <strong>1. The problem</strong><a class="anchor" aria-label="anchor" href="#the-problem"></a>
 </h2>
-<p>GEE offers on-the-fly computation for rendering EE spatial objects:</p>
+<p>GEE offers on-the-fly computation for rendering EE spatial
+objects:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">rgeeExtra</span><span class="op">)</span></span>
@@ -147,18 +148,28 @@
 <img src="images/r6_01.png">
 </center>
 <p><br></p>
-<p>However, this interactive map service <strong>is temporary</strong>, disappearing after a short period of time (~ 4 hours). This makes <code>Map$addLayer</code> unusable for report generation. In this vignette, we will learn to create a <strong>permanent interactive map</strong>.</p>
+<p>However, this interactive map service <strong>is temporary</strong>,
+disappearing after a short period of time (~ 4 hours). This makes
+<code>Map$addLayer</code> unusable for report generation. In this
+vignette, we will learn to create a <strong>permanent interactive
+map</strong>.</p>
 </div>
 <div class="section level2">
 <h2 id="a-tentative-workaround">
 <strong>2. A tentative workaround</strong><a class="anchor" aria-label="anchor" href="#a-tentative-workaround"></a>
 </h2>
-<p>Instead of using GEE API for creating interactive maps, we will use <a href="https://github.com/developmentseed/titiler" class="external-link"><strong>titiler</strong></a>. titiler creates web map tiles dynamically based on COG (STAC) resources. Since an exported EE task to retrieve images can return a COG, we just have to move these results to a <strong>storage web service with <a href="https://www.cogeo.org/" class="external-link">HTTP GET range requests</a></strong>.</p>
+<p>Instead of using GEE API for creating interactive maps, we will use
+<a href="https://github.com/developmentseed/titiler" class="external-link"><strong>titiler</strong></a>.
+titiler creates web map tiles dynamically based on COG (STAC) resources.
+Since an exported EE task to retrieve images can return a COG, we just
+have to move these results to a <strong>storage web service with <a href="https://www.cogeo.org/" class="external-link">HTTP GET range requests</a></strong>.</p>
 <br><center>
 <img src="images/r6_02.png">
 </center>
 <p><br></p>
-<p>Fortunately, <a href="https://cloud.google.com/storage/docs/json_api/v1/objects/get" class="external-link">GCS counts with this feature</a>, so if we manage to move our results to GCS, the work would be already done :)</p>
+<p>Fortunately, <a href="https://cloud.google.com/storage/docs/json_api/v1/objects/get" class="external-link">GCS
+counts with this feature</a>, so if we manage to move our results to
+GCS, the work would be already done :)</p>
 <pre><code>GET /OBJECT_NAME HTTP/1.1
 Host: BUCKET_NAME.storage.googleapis.com
 Content-Length: 0
@@ -172,7 +183,10 @@ If-Unmodified-Since: DATE</code></pre>
 <div class="section level2">
 <h2 id="show-me-the-code">3. Show me the code!<a class="anchor" aria-label="anchor" href="#show-me-the-code"></a>
 </h2>
-<p>First, load <code>rgee</code> and <code>googleCloudStorageR</code> and initialize the EE API. You must have correctly configured a service account key, if not check our tutorial “<a href="https://r-spatial.github.io/rgee/articles/rgee05.html"><strong>how to integrate Google Cloud Storage and rgee</strong></a>”.</p>
+<p>First, load <code>rgee</code> and <code>googleCloudStorageR</code>
+and initialize the EE API. You must have correctly configured a service
+account key, if not check our tutorial “<a href="https://r-spatial.github.io/rgee/articles/rgee05.html"><strong>how
+to integrate Google Cloud Storage and rgee</strong></a>”.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://code.markedmondson.me/googleCloudStorageR/" class="external-link">googleCloudStorageR</a></span><span class="op">)</span></span>
@@ -207,7 +221,13 @@ If-Unmodified-Since: DATE</code></pre>
 <span><span class="op">)</span></span>
 <span><span class="va">task</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/ee_monitoring.html">ee_monitoring</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Titiler needs resources downloadable for anyone. Therefore, <strong>we recommend you to work with GCS buckets with fine-grained access</strong>. In this way, you can decide individually which objects to make public. On the other hand, if you decide to work with buckets with uniform access, you will have to expose the entire bucket!. The code below makes a specific object in your bucket <strong>public to internet</strong>.</p>
+<p>Titiler needs resources downloadable for anyone. Therefore,
+<strong>we recommend you to work with GCS buckets with fine-grained
+access</strong>. In this way, you can decide individually which objects
+to make public. On the other hand, if you decide to work with buckets
+with uniform access, you will have to expose the entire bucket!. The
+code below makes a specific object in your bucket <strong>public to
+internet</strong>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Make PUBLIC the GCS object </span></span>
 <span><span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_update_object_acl.html" class="external-link">gcs_update_object_acl</a></span><span class="op">(</span></span>
@@ -215,7 +235,8 @@ If-Unmodified-Since: DATE</code></pre>
 <span>  bucket <span class="op">=</span> <span class="va">BUCKET_NAME</span>,</span>
 <span>  entity_type <span class="op">=</span> <span class="st">"allUsers"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Finally, use <code>Map$addLayer</code> to display the COG resource. By default, <code>Map$addLayer</code> use the open endpoint: <a href="https://api.cogeo.xyz/docs" class="external-link uri">https://api.cogeo.xyz/docs</a>.</p>
+<p>Finally, use <code>Map$addLayer</code> to display the COG resource.
+By default, <code>Map$addLayer</code> use the open endpoint: <a href="https://api.cogeo.xyz/docs" class="external-link uri">https://api.cogeo.xyz/docs</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"https://storage.googleapis.com/%s/%s.tif"</span>, <span class="va">BUCKET_NAME</span>, <span class="va">gcs_l8_name</span><span class="op">)</span></span>
 <span><span class="va">visParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SR_B4"</span>,<span class="st">"SR_B3"</span>,<span class="st">"SR_B2"</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">8000</span>, max <span class="op">=</span> <span class="fl">20000</span>, nodata <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -226,7 +247,9 @@ If-Unmodified-Since: DATE</code></pre>
 <span>  name <span class="op">=</span> <span class="st">"My_first_COG"</span>,</span>
 <span>  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>If you prefer to use <a href="https://api.cogeo.xyz/docs" class="external-link">titiler syntax</a>, set the parameter <code>titiler_viz_convert</code> as FALSE.</p>
+<p>If you prefer to use <a href="https://api.cogeo.xyz/docs" class="external-link">titiler
+syntax</a>, set the parameter <code>titiler_viz_convert</code> as
+FALSE.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">visParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>expression <span class="op">=</span> <span class="st">"B4,B3,B2"</span>, rescale <span class="op">=</span> <span class="st">"8000, 20000"</span>, resampling_method <span class="op">=</span> <span class="st">"cubic"</span><span class="op">)</span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
@@ -256,7 +279,7 @@ If-Unmodified-Since: DATE</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -99,17 +99,43 @@
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ee_Authenticate</span><span class="op">(</span></span>
+<span>  user <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  earthengine <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  drive <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  gcs <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  authorization_code <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  code_verifier <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  auth_mode <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  auth_mode <span class="op">=</span> <span class="st">"notebook"</span>,</span>
 <span>  scopes <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  quiet <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>authorization_code</dt>
+    <dl><dt>user</dt>
+<dd><p>Character (optional). If is a character, the credentials are saved in
+the dirpath: ~/.config/earthengine/$user. If is NULL, the credentials are stored
+in ~/.config/earthengine.</p></dd>
+
+
+<dt>earthengine</dt>
+<dd><p>Logical (optional). If TRUE, the EarthEngine credential
+is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+
+
+<dt>drive</dt>
+<dd><p>Logical (optional). If TRUE, the drive credential
+is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+
+
+<dt>gcs</dt>
+<dd><p>Logical (optional). If TRUE, the Google Cloud Storage
+credential is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+
+
+<dt>authorization_code</dt>
 <dd><p>An optional authorization code.</p></dd>
 
 
@@ -133,7 +159,11 @@
 
 
 <dt>quiet</dt>
-<dd><p>If TRUE, do not require interactive prompts.</p></dd>
+<dd><p>If TRUE, do not require interactive prompts and force --no-browser mode for gcloud.</p></dd>
+
+
+<dt>verbose</dt>
+<dd><p>Logical. Suppress info messages.</p></dd>
 
 </dl></div>
 
@@ -163,7 +193,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

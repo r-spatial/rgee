@@ -61,6 +61,9 @@
     <loc>https://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc>
   </url>
   <url>
+    <loc>https://r-spatial.github.io/rgee/reference/ee_as_rast.html</loc>
+  </url>
+  <url>
     <loc>https://r-spatial.github.io/rgee/reference/ee_as_raster.html</loc>
   </url>
   <url>
@@ -79,10 +82,10 @@
     <loc>https://r-spatial.github.io/rgee/reference/ee_clean_container.html</loc>
   </url>
   <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_credentials.html</loc>
+    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_pyenv.html</loc>
   </url>
   <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_pyenv.html</loc>
+    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_user_credentials.html</loc>
   </url>
   <url>
     <loc>https://r-spatial.github.io/rgee/reference/ee_drive_to_local.html</loc>

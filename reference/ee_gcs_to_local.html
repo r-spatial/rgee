@@ -18,7 +18,7 @@ directory."><meta property="og:image" content="https://r-spatial.github.io/rgee/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rgee</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.6.9999</span>
       </span>
     </div>
 
@@ -123,7 +123,9 @@ file (i.e. <code><a href="https://rdrr.io/r/base/tempfile.html" class="external-
 
 <dt>public</dt>
 <dd><p>Logical. If TRUE, a public link to Google Cloud Storage
-resource is created.</p></dd>
+resource is created. "Public Access Prevention" may need to be removed.
+In addition, the bucket access control configuration must be "fine-grained".
+See GCS public files documentation for more details.</p></dd>
 
 
 <dt>metadata</dt>
@@ -150,10 +152,11 @@ Cloud Storage resource on their system. Otherwise, a list with two elements
     </div>
     <div id="details">
     <h2>Details</h2>
-    <p>The task argument needs "COMPLETED" task state to work due to that the parameters
-necessaries to locate the file into Google Cloud Storage are obtained from <br><code>ee$batch$Export$*$toCloudStorage(...)$start()$status()</code>.</p>
-<p>If the argument <code>metadata</code> is TRUE, a list with the
-following elements is exported join with the output filename (dsn):</p>
+    <p>The task argument requires a status of "COMPLETED" because
+the parameters required to identify EE items in Google Drive
+are retrieved from <code>ee$batch$Export$*$toCloudStorage(...)$start()$status()</code>.</p>
+<p>If the argument <code>metadata</code> is TRUE, a list containing the following
+elements is exported and appended to the output filename (dsn):</p>
 <ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
 <li><p><b>gcs_name: </b>Name of the Table in Google Cloud Storage.</p></li>
 <li><p><b>gcs_bucket: </b>Name of the bucket.</p></li>
@@ -243,7 +246,7 @@ following elements is exported join with the output filename (dsn):</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
