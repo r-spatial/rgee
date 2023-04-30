@@ -52,14 +52,16 @@ reference:
     contents:
       - ee_check
       - ee_check_python
+      - ee_check_python_packages
       - ee_check_credentials
       - ee_check_gcloud
+      - ee_check_task_status
 
   - title: "Clean"
     contents:
       - ee_clean_container
-      - ee_clean_credentials
       - ee_clean_pyenv
+      - ee_clean_user_credentials
 
   - title: "Session management"
     contents:
@@ -87,6 +89,7 @@ reference:
   - title: "Image download"
     contents:
       - ee_as_raster
+      - ee_as_rast
       - ee_as_stars
       - ee_as_thumbnail
       - ee_image_to_asset
