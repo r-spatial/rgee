@@ -170,7 +170,7 @@ rgee::ee_install_set_pyenv(
 
 Take into account that the Python PATH you set must have earthengine-api and numpy installed. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
-If you are using MacOS or Linux, you can choose another option of setting the Python PATH directly:
+If you are using MacOS or Linux, you can choose setting the Python PATH directly:
 
 ``` r
 rgee::ee_install_set_pyenv(
@@ -179,7 +179,7 @@ rgee::ee_install_set_pyenv(
 )
 ```
 
-However, [**rgee::ee_install_upgrade**](https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html) and [**reticulate::py_install**](https://rstudio.github.io/reticulate/reference/py_install.html) will not be able to function until you have set up a Python ENV.
+However, [**rgee::ee_install_upgrade**](https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html) and [**reticulate::py_install**](https://rstudio.github.io/reticulate/reference/py_install.html) will not work until you have set up a Python ENV.
 
 3.  Use the Python PATH setting support that offer [Rstudio v.1.4 \>](https://blog.rstudio.com/2020/10/07/rstudio-v1-4-preview-python-support/). See this [tutorial](https://github.com/r-spatial/rgee/tree/help/rstudio/).
 
