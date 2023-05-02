@@ -293,7 +293,7 @@ Read the `nc` shapefile.
 nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
 ```
 
-Map each image from 2001 to extract the monthly precipitation (Pr) from the [Terraclimate dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/)
+We will use the [Terraclimate dataset](https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/) to extract the monthly precipitation (Pr) from 2001
 
 ``` r
 terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
@@ -303,7 +303,7 @@ terraclimate <- ee$ImageCollection("IDAHO_EPSCOR/TERRACLIMATE") %>%
   ee$Image$rename(sprintf("PP_%02d",1:12)) # rename the bands of an image
 ```
 
-Extract monthly precipitation values from the Terraclimate ImageCollection through `ee_extract`. `ee_extract` works similar to `raster::extract`, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).
+`ee_extract` will help you to extract monthly precipitation values from the Terraclimate ImageCollection. `ee_extract` works similar to `raster::extract`, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).
 
 ``` r
 ee_nc_rain <- ee_extract(x = terraclimate, y = nc["NAME"], sf = FALSE)
@@ -330,7 +330,7 @@ ee_nc_rain %>%
 
   ### 3. Create an NDVI-animation ([JS version](https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/))
 
-  Install and load `sf`, after that, initialize the Earth Engine R API.
+ Install and load `sf`. after that, initialize the Earth Engine R API.
 
 ``` r
 library(magick)
@@ -349,7 +349,7 @@ mask <- system.file("shp/arequipa.shp", package = "rgee") %>%
 region <- mask$geometry()$bounds()
 ```
 
-Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection` and select the NDVI band.
+Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an `ee.ImageCollection` and then, select the NDVI band.
 
 ``` r
 col <- ee$ImageCollection('MODIS/006/MOD13A2')$select('NDVI')
@@ -365,20 +365,20 @@ col <- col$map(function(img) {
 distinctDOY <- col$filterDate('2013-01-01', '2014-01-01')
 ```
 
-Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.
+Now, let's define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.
 
 ``` r
 filter <- ee$Filter$equals(leftField = 'doy', rightField = 'doy')
 ```
 
-Define a join; convert the resulting FeatureCollection to an ImageCollection.
+Define a join and convert the resulting FeatureCollection to an ImageCollection... it will take you only 2 lines of code!
 
 ``` r
 join <- ee$Join$saveAll('doy_matches')
 joinCol <- ee$ImageCollection(join$apply(distinctDOY, col, filter))
 ```
 
-Apply median reduction among matching DOY collections.
+Apply median reduction among the matching DOY collections.
 
 ``` r
 comp <- joinCol$map(function(img) {
@@ -389,7 +389,7 @@ comp <- joinCol$map(function(img) {
 })
 ```
 
-Define RGB visualization parameters.
+Almost ready! but let's define RGB visualization parameters first.
 
 ``` r
 visParams = list(
@@ -413,7 +413,7 @@ rgbVis <- comp$map(function(img) {
 })
 ```
 
-Define GIF visualization parameters.
+Let's animate this. Define GIF visualization parameters.
 
 ``` r
 gifParams <- list(
@@ -434,7 +434,7 @@ dates_modis_mabbr <- distinctDOY %>%
   '['(month.abb, .) # subset around month abbreviations
 ```
 
-Use ee_utils_gif\_\* functions to render the GIF animation and add some texts.
+And finally, use ee_utils_gif\_\* functions to render the GIF animation and add some texts.
 
 ``` r
 animation <- ee_utils_gif_creator(rgbVis, gifParams, mode = "wb")
@@ -465,7 +465,7 @@ animation %>%
   ## How does rgee work?
 
 
-  `rgee` is **not** a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate](https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will translate this request into Python and pass it to the `Earth Engine Python API`, which  converts the request to a `JSON` format. Finally, the request is received by the GEE Platform through a Web REST API. The **response** will follow the same path in reverse.
+  `rgee` is **not** a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in [active development](https://github.com/google/earthengine-api). So, how is it possible to run Earth Engine using R? the answer is [reticulate]! (https://rstudio.github.io/reticulate/). `reticulate` is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine **request** is created in R, `reticulate` will translate this request into Python and pass it to the `Earth Engine Python API`, which  converts the request to a `JSON` format. Finally, the request is received by the GEE Platform through a Web REST API. The **response** will follow the same path in reverse.
 
 ![workflow](https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png)
 
@@ -479,9 +479,9 @@ animation %>%
 
 ## Share the love
 
-Think **rgee** is useful? Let others discover it, by telling them in person via Twitter or a blog post.
+Enjoying **rgee**? Let others know about it! Share it on Twitter, LinkedIN or in a blog post to spread the word.
 
-Using **rgee** for a paper you are writing? Consider citing it
+Using **rgee** for your scientific article? here's how you can cite it
 
 ``` r
 citation("rgee")
