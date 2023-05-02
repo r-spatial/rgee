@@ -137,7 +137,7 @@ rgee is an R binding package for calling <a href="https://developers.google.com/
 <div class="section level2">
 <h2 id="what-is-google-earth-engine">What is Google Earth Engine?<a class="anchor" aria-label="anchor" href="#what-is-google-earth-engine"></a>
 </h2>
-<p><a href="https://earthengine.google.com/" class="external-link">Google Earth Engine</a> is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. <code>rgee</code> fills the gap <strong>by providing support for R!</strong>. Below you will find the comparison between the syntax of <code>rgee</code> and the two other Google-supported client libraries.</p>
+<p><a href="https://earthengine.google.com/" class="external-link">Google Earth Engine</a> is a cloud-based platform that enables users to access a petabyte-scale archive of remote sensing data and conduct geospatial analysis on Google’s infrastructure. Currently, Google offers support only for Python and JavaScript. <code>rgee</code> fills that gap <strong>by providing support for R!</strong>. Below, you will find a comparison between the syntax of <code>rgee</code> and the two other client libraries supported by Google.</p>
 <table class="table">
 <tr>
 <th>
@@ -205,7 +205,7 @@ R
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span></span>
 <span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></span></code></pre></div>
-<p>Additionally, <code>rgee</code> depends on <a href="https://pypi.org/project/numpy/" class="external-link">numpy</a> and <a href="https://pypi.org/project/earthengine-api/" class="external-link">earthengine-api</a> and requires <strong><a href="https://cloud.google.com/sdk/docs/install#deb" class="external-link">gcloud CLI</a></strong> to authenticate new users. The next example shows how to set rgee up on a new Ubuntu computer (If you are trying to use rgee in a server, see this example in Rstudio cloud – <a href="https://posit.cloud/content/5175749" class="external-link uri">https://posit.cloud/content/5175749</a>)</p>
+<p>Furthermore, <code>rgee</code> depends on <a href="https://pypi.org/project/numpy/" class="external-link">numpy</a> and <a href="https://pypi.org/project/earthengine-api/" class="external-link">earthengine-api</a> and it requires <strong><a href="https://cloud.google.com/sdk/docs/install#deb" class="external-link">gcloud CLI</a></strong> to authenticate new users. The following example shows how to install and set up ‘rgee’ on a new Ubuntu computer. If you intend to use rgee on a server, please refer to this example in RStudio Cloud.” – <a href="https://posit.cloud/content/5175749" class="external-link uri">https://posit.cloud/content/5175749</a>)</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"remotes"</span>, <span class="st">"googledrive"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-spatial/rgee"</span><span class="op">)</span></span>
@@ -237,21 +237,21 @@ R
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rgee</span><span class="fu">::</span><span class="fu"><a href="reference/ee_install.html">ee_install</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>Use <a href="https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html"><strong>ee_install_set_pyenv</strong></a> (Recommended for users with experience with Python environments)</li>
+<li>Use <a href="https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html"><strong>ee_install_set_pyenv</strong></a> (Recommended for users with experience in Python environments)</li>
 </ol>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rgee</span><span class="fu">::</span><span class="fu"><a href="reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span><span class="op">(</span></span>
 <span>  py_path <span class="op">=</span> <span class="st">"/home/csaybar/.virtualenvs/rgee/bin/python"</span>, <span class="co"># Change it for your own Python PATH</span></span>
 <span>  py_env <span class="op">=</span> <span class="st">"rgee"</span> <span class="co"># Change it for your own Python ENV</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Take into account that the Python PATH you set must have installed earthengine-api and numpy. The use of <strong>miniconda/anaconda is mandatory for Windows users,</strong> Linux and MacOS users could also use virtualenv. See <a href="https://rstudio.github.io/reticulate/articles/python_packages.html" class="external-link">reticulate</a> documentation for more details.</p>
-<p>Another option, only possible for MacOS and Linux, is just set the Python PATH:</p>
+<p>Take into account that the Python PATH you set must have earthengine-api and numpy installed. The use of <strong>miniconda/anaconda is mandatory for Windows users,</strong> Linux and MacOS users could also use virtualenv. See <a href="https://rstudio.github.io/reticulate/articles/python_packages.html" class="external-link">reticulate</a> documentation for more details.</p>
+<p>If you are using MacOS or Linux, you can choose setting the Python PATH directly:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rgee</span><span class="fu">::</span><span class="fu"><a href="reference/ee_install_set_pyenv.html">ee_install_set_pyenv</a></span><span class="op">(</span></span>
 <span>  py_path <span class="op">=</span> <span class="st">"/usr/bin/python3"</span>,</span>
 <span>  py_env <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>However, <a href="https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html"><strong>rgee::ee_install_upgrade</strong></a> and <a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link"><strong>reticulate::py_install</strong></a> will not work until you set a Python ENV.</p>
+<p>However, <a href="https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html"><strong>rgee::ee_install_upgrade</strong></a> and <a href="https://rstudio.github.io/reticulate/reference/py_install.html" class="external-link"><strong>reticulate::py_install</strong></a> will not work until you have set up a Python ENV.</p>
 <ol start="3" style="list-style-type: decimal">
 <li>Use the Python PATH setting support that offer <a href="https://blog.rstudio.com/2020/10/07/rstudio-v1-4-preview-python-support/" class="external-link">Rstudio v.1.4 &gt;</a>. See this <a href="https://github.com/r-spatial/rgee/tree/help/rstudio/" class="external-link">tutorial</a>.</li>
 </ol>
@@ -283,11 +283,11 @@ R
 <h2 id="package-conventions">Package Conventions<a class="anchor" aria-label="anchor" href="#package-conventions"></a>
 </h2>
 <ul>
-<li>All <code>rgee</code> functions have the prefix ee_. Auto-completion is your friend :).</li>
+<li>All <code>rgee</code> functions have the prefix ee_. Auto-completion is your best ally :).</li>
 <li>Full access to the Earth Engine API with the prefix <a href="https://developers.google.com/earth-engine/" class="external-link"><strong>ee$…</strong></a>.</li>
 <li>Authenticate and Initialize the Earth Engine R API with <a href="https://r-spatial.github.io/rgee/reference/ee_Initialize.html"><strong>ee_Initialize</strong></a>. It is necessary once per session!.</li>
 <li>
-<code>rgee</code> is “pipe-friendly”; we re-export %&gt;% but do not require its use.</li>
+<code>rgee</code> is “pipe-friendly”; we re-export %&gt;% but do not require to use it.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -300,25 +300,25 @@ R
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ee_Initialize.html">ee_Initialize</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Adds a band containing image date as years since 1991.</p>
+<p>Let’s create a new band containing the image date as years since 1991 by extracting the year of the image acquisition date and subtracting it from 1991.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">createTimeBand</span> <span class="op">&lt;-</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">year</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'year'</span><span class="op">)</span><span class="op">$</span><span class="fu">subtract</span><span class="op">(</span><span class="fl">1991L</span><span class="op">)</span></span>
+<span>  <span class="va">year</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">Date</span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'system:time_start'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">'year'</span><span class="op">)</span><span class="op">$</span><span class="fu">subtract</span><span class="op">(</span><span class="fl">1991L</span><span class="op">)</span> </span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="fu">Image</span><span class="op">(</span><span class="va">year</span><span class="op">)</span><span class="op">$</span><span class="fu">byte</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">addBands</span><span class="op">(</span><span class="va">img</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Map the time band creation helper over the <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/" class="external-link">night-time lights collection</a>.</p>
+<p>Use your TimeBand function to map it over the <a href="https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/" class="external-link">night-time lights collection</a>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">collection</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span></span>
 <span>  <span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'NOAA/DMSP-OLS/NIGHTTIME_LIGHTS'</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="st">'stable_lights'</span><span class="op">)</span><span class="op">$</span></span>
 <span>  <span class="fu">map</span><span class="op">(</span><span class="va">createTimeBand</span><span class="op">)</span></span></code></pre></div>
-<p>Compute a linear fit over the series of values at each pixel, visualizing the y-intercept in green, and positive/negative slopes as red/blue.</p>
+<p>Compute a linear fit over the series of values at each pixel, so that you can visualize the y-intercept as green, and the positive/negative slopes as red/blue.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">col_reduce</span> <span class="op">&lt;-</span> <span class="va">collection</span><span class="op">$</span><span class="fu">reduce</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">linearFit</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">col_reduce</span> <span class="op">&lt;-</span> <span class="va">col_reduce</span><span class="op">$</span><span class="fu">addBands</span><span class="op">(</span></span>
 <span>  <span class="va">col_reduce</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'scale'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ee_print.html">ee_print</a></span><span class="op">(</span><span class="va">col_reduce</span><span class="op">)</span></span></code></pre></div>
-<p>Create an interactive visualization!</p>
+<p>Let’s visualize our map!</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Map</span><span class="op">$</span><span class="fu">setCenter</span><span class="op">(</span><span class="fl">9.08203</span>, <span class="fl">47.39835</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
@@ -335,7 +335,7 @@ R
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_2-extract-precipitation-values">2. Extract precipitation values<a class="anchor" aria-label="anchor" href="#id_2-extract-precipitation-values"></a>
+<h3 id="id_2-lets-play-with-some-precipitation-values">2. Let’s play with some precipitation values<a class="anchor" aria-label="anchor" href="#id_2-lets-play-with-some-precipitation-values"></a>
 </h3>
 <p>Install and load <code>tidyverse</code> and <code>sf</code> R packages, and initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
