@@ -42,7 +42,7 @@ status"></a>
 
 ## What is Google Earth Engine?
 
-[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that lets users access a petabyte-scale archive of remote sensing data and run geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` fills the gap **by providing support for R!**. Below you will find the comparison between the syntax of `rgee` and the two other Google-supported client libraries.
+[Google Earth Engine](https://earthengine.google.com/) is a cloud-based platform that enables users to access a petabyte-scale archive of remote sensing data and conduct geospatial analysis on Google's infrastructure. Currently, Google offers support only for Python and JavaScript. `rgee` fills that gap **by providing support for R!**. Below, you will find a comparison between the syntax of `rgee` and the two other client libraries supported by Google.
 
 <table>
 <tr>
@@ -123,7 +123,7 @@ library(remotes)
 install_github("r-spatial/rgee")
 ```
 
-Additionally, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The next example shows how to set rgee up on a new Ubuntu computer (If you are trying to use rgee in a server, see this example in Rstudio cloud -- https://posit.cloud/content/5175749)
+Furthermore, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and it requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The following example shows how to install and set up 'rgee' on a new Ubuntu computer. If you intend to use rgee on a server, please refer to this example in RStudio Cloud." -- https://posit.cloud/content/5175749)
 
 ``` r
 install.packages(c("remotes", "googledrive"))
@@ -159,7 +159,7 @@ There are three different ways to install rgee Python dependencies:
 rgee::ee_install()
 ```
 
-2.  Use [**ee_install_set_pyenv**](https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html) (Recommended for users with experience with Python environments)
+2.  Use [**ee_install_set_pyenv**](https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html) (Recommended for users with experience in Python environments)
 
 ``` r
 rgee::ee_install_set_pyenv(
@@ -168,9 +168,9 @@ rgee::ee_install_set_pyenv(
 )
 ```
 
-Take into account that the Python PATH you set must have installed earthengine-api and numpy. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
+Take into account that the Python PATH you set must have earthengine-api and numpy installed. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
-Another option, only possible for MacOS and Linux, is just set the Python PATH:
+If you are using MacOS or Linux, you can choose another option of setting the Python PATH directly:
 
 ``` r
 rgee::ee_install_set_pyenv(
@@ -179,7 +179,7 @@ rgee::ee_install_set_pyenv(
 )
 ```
 
-However, [**rgee::ee_install_upgrade**](https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html) and [**reticulate::py_install**](https://rstudio.github.io/reticulate/reference/py_install.html) will not work until you set a Python ENV.
+However, [**rgee::ee_install_upgrade**](https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html) and [**reticulate::py_install**](https://rstudio.github.io/reticulate/reference/py_install.html) will not be able to function until you have set up a Python ENV.
 
 3.  Use the Python PATH setting support that offer [Rstudio v.1.4 \>](https://blog.rstudio.com/2020/10/07/rstudio-v1-4-preview-python-support/). See this [tutorial](https://github.com/r-spatial/rgee/tree/help/rstudio/).
 
@@ -215,10 +215,10 @@ ee_install_upgrade()
 
 ## Package Conventions
 
--   All `rgee` functions have the prefix ee\_. Auto-completion is your friend :).
+-   All `rgee` functions have the prefix ee\_. Auto-completion is your best ally :).
 -   Full access to the Earth Engine API with the prefix [**ee\$...**](https://developers.google.com/earth-engine/).
 -   Authenticate and Initialize the Earth Engine R API with [**ee_Initialize**](https://r-spatial.github.io/rgee/reference/ee_Initialize.html). It is necessary once per session!.
--   `rgee` is "pipe-friendly"; we re-export %\>% but do not require its use.
+-   `rgee` is "pipe-friendly"; we re-export %\>% but do not require to use it.
 
 ## Hello World
 
@@ -231,16 +231,16 @@ library(rgee)
 ee_Initialize()
 ```
 
-Adds a band containing image date as years since 1991.
+Let's create a new band containing the image date as years since 1991 by extracting the year of the image acquisition date and subtracting it from 1991.
 
 ``` r
 createTimeBand <-function(img) {
-  year <- ee$Date(img$get('system:time_start'))$get('year')$subtract(1991L)
+  year <- ee$Date(img$get('system:time_start'))$get('year')$subtract(1991L) 
   ee$Image(year)$byte()$addBands(img)
 }
 ```
 
-Map the time band creation helper over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/).
+Use your TimeBand function to map it over the [night-time lights collection](https://developers.google.com/earth-engine/datasets/catalog/NOAA_DMSP-OLS_NIGHTTIME_LIGHTS/).
 
 ``` r
 collection <- ee$
@@ -249,7 +249,7 @@ collection <- ee$
   map(createTimeBand)
 ```
 
-Compute a linear fit over the series of values at each pixel, visualizing the y-intercept in green, and positive/negative slopes as red/blue.
+Compute a linear fit over the series of values at each pixel, so that you can visualize the y-intercept as green, and the positive/negative slopes as red/blue.
 
 ``` r
 col_reduce <- collection$reduce(ee$Reducer$linearFit())
@@ -258,7 +258,7 @@ col_reduce <- col_reduce$addBands(
 ee_print(col_reduce)
 ```
 
-Create an interactive visualization!
+Let's visualize our map!
 
 ``` r
 Map$setCenter(9.08203, 47.39835, 3)
@@ -275,7 +275,7 @@ Map$addLayer(
 
 ![rgee_01](https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png)
 
-### 2. Extract precipitation values
+### 2. Let's play with some precipitation values
 
 Install and load `tidyverse` and `sf` R packages, and initialize the Earth Engine R API.
 
