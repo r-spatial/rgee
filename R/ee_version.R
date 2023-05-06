@@ -5,5 +5,5 @@
 #' @return Character. Earth Engine Python API version used to build rgee.
 #' @export
 ee_version <- function() {
- '0.1.351'
+ '0.1.352'
 }
