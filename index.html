@@ -347,14 +347,14 @@ R
 <p>Read the <code>nc</code> shapefile.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"shape/nc.shp"</span>, package <span class="op">=</span> <span class="st">"sf"</span><span class="op">)</span>, quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>Map each image from 2001 to extract the monthly precipitation (Pr) from the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/" class="external-link">Terraclimate dataset</a></p>
+<p>We will use the <a href="https://developers.google.com/earth-engine/datasets/catalog/IDAHO_EPSCOR_TERRACLIMATE/" class="external-link">Terraclimate dataset</a> to extract the monthly precipitation (Pr) from 2001</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">terraclimate</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"IDAHO_EPSCOR/TERRACLIMATE"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">"2001-01-01"</span>, <span class="st">"2002-01-01"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">"pr"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># Select only precipitation bands</span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">toBands</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># from imagecollection to image</span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"PP_%02d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="co"># rename the bands of an image</span></span></code></pre></div>
-<p>Extract monthly precipitation values from the Terraclimate ImageCollection through <code>ee_extract</code>. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/terra/man/extract.html" class="external-link">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
+<p><code>ee_extract</code> will help you to extract monthly precipitation values from the Terraclimate ImageCollection. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/terra/man/extract.html" class="external-link">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ee_nc_rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">terraclimate</span>, y <span class="op">=</span> <span class="va">nc</span><span class="op">[</span><span class="st">"NAME"</span><span class="op">]</span>, sf <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Use ggplot2 to generate a beautiful static plot!</p>
@@ -372,7 +372,7 @@ R
 <p><img src="https://user-images.githubusercontent.com/16768318/81945044-2cbd8280-95c3-11ea-9ef5-fd9f6fd5fe89.png" width="80%"></p>
 
 <p>### 3. Create an NDVI-animation (<a href="https://developers.google.com/earth-engine/tutorials/community/modis-ndvi-time-series-animation/" class="external-link">JS version</a>)</p>
-<p>Install and load <code>sf</code>, after that, initialize the Earth Engine R API.</p>
+<p>Install and load <code>sf</code>. after that, initialize the Earth Engine R API.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/magick/" class="external-link">magick</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/rgee/" class="external-link">rgee</a></span><span class="op">)</span></span>
@@ -385,7 +385,7 @@ R
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_read.html" class="external-link">st_read</a></span><span class="op">(</span>quiet <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="reference/sf_as_ee.html">sf_as_ee</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">region</span> <span class="op">&lt;-</span> <span class="va">mask</span><span class="op">$</span><span class="fu">geometry</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">bounds</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an <code>ee.ImageCollection</code> and select the NDVI band.</p>
+<p>Retrieve the MODIS Terra Vegetation Indices 16-Day Global 1km dataset as an <code>ee.ImageCollection</code> and then, select the NDVI band.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">col</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'MODIS/006/MOD13A2'</span><span class="op">)</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">'NDVI'</span><span class="op">)</span></span></code></pre></div>
 <p>Group images by composite date</p>
@@ -395,14 +395,14 @@ R
 <span>  <span class="va">img</span><span class="op">$</span><span class="fu">set</span><span class="op">(</span><span class="st">'doy'</span>, <span class="va">doy</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">distinctDOY</span> <span class="op">&lt;-</span> <span class="va">col</span><span class="op">$</span><span class="fu">filterDate</span><span class="op">(</span><span class="st">'2013-01-01'</span>, <span class="st">'2014-01-01'</span><span class="op">)</span></span></code></pre></div>
-<p>Define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.</p>
+<p>Now, let’s define a filter that identifies which images from the complete collection match the DOY from the distinct DOY collection.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">filter</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">equals</span><span class="op">(</span>leftField <span class="op">=</span> <span class="st">'doy'</span>, rightField <span class="op">=</span> <span class="st">'doy'</span><span class="op">)</span></span></code></pre></div>
-<p>Define a join; convert the resulting FeatureCollection to an ImageCollection.</p>
+<p>Define a join and convert the resulting FeatureCollection to an ImageCollection… it will take you only 2 lines of code!</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">join</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="va">Join</span><span class="op">$</span><span class="fu">saveAll</span><span class="op">(</span><span class="st">'doy_matches'</span><span class="op">)</span></span>
 <span><span class="va">joinCol</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="va">join</span><span class="op">$</span><span class="fu">apply</span><span class="op">(</span><span class="va">distinctDOY</span>, <span class="va">col</span>, <span class="va">filter</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Apply median reduction among matching DOY collections.</p>
+<p>Apply median reduction among the matching DOY collections.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">comp</span> <span class="op">&lt;-</span> <span class="va">joinCol</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">img</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">doyCol</span> <span class="op">=</span> <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">fromImages</span><span class="op">(</span></span>
@@ -410,7 +410,7 @@ R
 <span>  <span class="op">)</span></span>
 <span>  <span class="va">doyCol</span><span class="op">$</span><span class="fu">reduce</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Reducer</span><span class="op">$</span><span class="fu">median</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Define RGB visualization parameters.</p>
+<p>Almost ready! but let’s define RGB visualization parameters first.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">visParams</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  min <span class="op">=</span> <span class="fl">0.0</span>,</span>
@@ -428,7 +428,7 @@ R
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">img</span><span class="op">$</span><span class="va">visualize</span>, <span class="va">visParams</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
 <span>    <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">clip</span><span class="op">(</span><span class="va">mask</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Define GIF visualization parameters.</p>
+<p>Let’s animate this. Define GIF visualization parameters.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gifParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  region <span class="op">=</span> <span class="va">region</span>,</span>
@@ -443,7 +443,7 @@ R
 <span>  <span class="st">'[['</span><span class="op">(</span><span class="st">"time_start"</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># Select time_start column</span></span>
 <span>  <span class="fu">lubridate</span><span class="fu">::</span><span class="fu">month</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># Get the month component of the datetime</span></span>
 <span>  <span class="st">'['</span><span class="op">(</span><span class="va">month.abb</span>, <span class="va">.</span><span class="op">)</span> <span class="co"># subset around month abbreviations</span></span></code></pre></div>
-<p>Use ee_utils_gif_* functions to render the GIF animation and add some texts.</p>
+<p>And finally, use ee_utils_gif_* functions to render the GIF animation and add some texts.</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">animation</span> <span class="op">&lt;-</span> <span class="fu">ee_utils_gif_creator</span><span class="op">(</span><span class="va">rgbVis</span>, <span class="va">gifParams</span>, mode <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span></span>
 <span><span class="va">animation</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
@@ -467,7 +467,7 @@ R
 <p><img src="https://user-images.githubusercontent.com/16768318/77121867-203e0300-6a34-11ea-97ba-6bed74ef4300.gif"></p>
 
 <p>## How does rgee work?</p>
-<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in <a href="https://github.com/google/earthengine-api" class="external-link">active development</a>. So, how is it possible to run Earth Engine using R? the answer is <a href="https://rstudio.github.io/reticulate/" class="external-link">reticulate</a>. <code>reticulate</code> is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will translate this request into Python and pass it to the <code>Earth Engine Python API</code>, which converts the request to a <code>JSON</code> format. Finally, the request is received by the GEE Platform through a Web REST API. The <strong>response</strong> will follow the same path in reverse.</p>
+<p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in <a href="https://github.com/google/earthengine-api" class="external-link">active development</a>. So, how is it possible to run Earth Engine using R? the answer is [reticulate]! (<a href="https://rstudio.github.io/reticulate/" class="external-link uri">https://rstudio.github.io/reticulate/</a>). <code>reticulate</code> is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will translate this request into Python and pass it to the <code>Earth Engine Python API</code>, which converts the request to a <code>JSON</code> format. Finally, the request is received by the GEE Platform through a Web REST API. The <strong>response</strong> will follow the same path in reverse.</p>
 <div class="figure">
 <img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt=""><p class="caption">workflow</p>
 </div>
@@ -486,8 +486,8 @@ R
 <div class="section level2">
 <h2 id="share-the-love">Share the love<a class="anchor" aria-label="anchor" href="#share-the-love"></a>
 </h2>
-<p>Think <strong>rgee</strong> is useful? Let others discover it, by telling them in person via Twitter or a blog post.</p>
-<p>Using <strong>rgee</strong> for a paper you are writing? Consider citing it</p>
+<p>Enjoying <strong>rgee</strong>? Let others know about it! Share it on Twitter, LinkedIN or in a blog post to spread the word.</p>
+<p>Using <strong>rgee</strong> for your scientific article? here’s how you can cite it</p>
 <div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"rgee"</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>To cite rgee <span class="cf">in</span> publications use<span class="sc">:</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
