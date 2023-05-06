@@ -2,7 +2,7 @@
 #'
 #' Convert an ee$Image in a stars object.
 #'
-#' @param image ee$Image to be converted into a stars object.
+#' @param image ee$Image to be converted into a 'stars' object.
 #' @param region EE Geometry (ee$Geometry$Polygon) which specifies the region
 #' to export. CRS needs to be the same that the argument \code{image}.
 #' Otherwise, it will be forced. If not specified, image bounds are taken.
