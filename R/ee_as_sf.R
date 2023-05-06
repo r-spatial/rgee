@@ -14,11 +14,10 @@
 #' @param crs Integer or Character. Coordinate Reference System (CRS)
 #' for the EE table. If it is NULL, \code{ee_as_sf} will take the CRS of
 #' the first element.
-#' @param maxFeatures Numeric. The maximum allowed number of features to
-#' export (ignored if \code{via} is not set as "getInfo"). The task will fail
+#' @param maxFeatures Numeric. The maximum number of features allowed for export (ignore if \code{via} is not set as "getInfo"). The task will fail
 #' if the exported region covers more features than the specified in
-#' \code{maxFeatures}. Defaults to 5000.
-#' @param selectors The list of properties to include in the output, as a
+#' \code{maxFeatures}. Default is 5000.
+#' @param selectors List of properties to include in the output, as a
 #' list/vector of strings or a comma-separated string. By default, all properties are
 #' included.
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
@@ -28,9 +27,9 @@
 #' See details.
 #' @param add_metadata Add metadata to the sf object. See details.
 #' @param timePrefix Logical. Add current date and time (\code{Sys.time()}) as
-#' a prefix to export files. This parameter helps to avoid exported files
-#' with the same name. By default TRUE.
-#' @param quiet logical. Suppress info message.
+#' a prefix to export files. This parameter helps to prevent exported files from
+#' having the same name. By default TRUE.
+#' @param quiet Logical. Suppress info message.
 #' @importFrom methods as setMethod new is setGeneric
 #' @details
 #' \code{ee_as_sf} supports the download of \code{ee$Geometry}, \code{ee$Feature},
@@ -38,19 +37,19 @@
 #' "getInfo" (which make an REST call to retrieve the data), "drive"
 #' (which use \href{https://CRAN.R-project.org/package=googledrive}{Google Drive})
 #' and "gcs" (which use \href{https://CRAN.R-project.org/package=googleCloudStorageR}{
-#' Google Cloud Storage}). The advantage of use "getInfo" is a
-#' direct and faster download. However, there is a limitation of 5000 features by
-#' request, making it not recommendable for large FeatureCollection. Instead of
-#' "getInfo", the options: "drive" and "gcs" are suitable for large FeatureCollections
-#' due to the use of an intermediate container. When \code{via} is set as "drive" or "gcs"
-#' \code{ee_as_sf} perform the following steps:
+#' Google Cloud Storage}). The advantage of using "getInfo" is a
+#' direct and faster download. However, there is a limit of 5000 features by
+#' request, which makes it not recommendable for large FeatureCollection. Instead of
+#' "getInfo", the "drive" and "gcs" options are suitable for large FeatureCollections
+#' because they use an intermediate container. When \code{via} is set as "drive" or "gcs"
+#' \code{ee_as_sf} performs the following steps:
 #' \itemize{
 #'   \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 #'   move the EE Table from Earth Engine to the file storage system (Google Drive
-#'   or Google Cloud Storage) specified in the argument \code{via}.}
+#'   or Google Cloud Storage) specified in the \code{via} argument.}
 #'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
-#'   monitored. This is useful to launch several tasks simultaneously and
-#'   calls them later using \code{\link{ee_utils_future_value}} or
+#'   monitored. This is useful for launching several tasks simultaneously and
+#'   calling them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the EE Table is stored under the path specified by the argument
 #'   \code{dsn}.}
@@ -59,20 +58,20 @@
 #'   \itemize{
 #'     \item{\bold{if via is "drive":}}
 #'       \itemize{
-#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
-#'         \item{\bold{drive_name: }}{Name of the Table in Google Drive.}
-#'         \item{\bold{drive_id: }}{Id of the Table in Google Drive.}
-#'         \item{\bold{drive_download_link: }}{Download link to the table.}
+#'         \item{\bold{ee_id: }}{Earth Engine task name.}
+#'         \item{\bold{drive_name: }}{Google Drive table name}
+#'         \item{\bold{drive_id: }}{Google Drive table ID}
+#'         \item{\bold{drive_download_link: }}{Link to download the table}
 #'     }
 #'   }
 #'   \itemize{
 #'     \item{\bold{if via is "gcs":}}
 #'       \itemize{
-#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
-#'         \item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
-#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
-#'         \item{\bold{gcs_fileFormat: }}{Format of the table.}
-#'         \item{\bold{gcs_public_link: }}{Download link to the table.}
+#'         \item{\bold{ee_id: }}{Earth Engine task name.}
+#'         \item{\bold{gcs_name: }}{Google Cloud Storage table name}
+#'         \item{\bold{gcs_bucket: }}{Bucket name}
+#'         \item{\bold{gcs_fileFormat: }}{Table format}
+#'         \item{\bold{gcs_public_link: }}{Link to download the table.}
 #'         \item{\bold{gcs_URI: }}{gs:// link to the table.}
 #'     }
 #'   }

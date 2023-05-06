@@ -22,7 +22,7 @@ ee_as_stars(
 )
 }
 \arguments{
-\item{image}{ee$Image to be converted into a stars object.}
+\item{image}{ee$Image to be converted into a 'stars' object.}
 
 \item{region}{EE Geometry (ee$Geometry$Polygon) which specifies the region
 to export. CRS needs to be the same that the argument \code{image}.
