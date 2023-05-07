@@ -20,8 +20,8 @@ ee_check_credentials(quiet = FALSE)
 ee_check_gcloud()
 }
 \arguments{
-\item{user}{Character. User to check credentials. If it is not defined,
-ee_check will skip the check of credentials.}
+\item{user}{Character.User to check credentials. If this parameter is not defined,
+then the check for credentials will be skipped.}
 
 \item{quiet}{Logical. Suppress info message}
 }
@@ -29,7 +29,7 @@ ee_check will skip the check of credentials.}
 No return value, called for checking non-R rgee dependencies.
 }
 \description{
-R functions for checking Google credentials (Google Earth Engine,
+R function for checking Google credentials (Google Earth Engine,
 Google Drive and Google Cloud Storage), Python environment and
 Third-Party Python Packages used by rgee. Besides, from v0.1.304,
 earthengine-api (Python side) requires gcloud to manage
