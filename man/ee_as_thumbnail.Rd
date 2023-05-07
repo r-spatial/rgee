@@ -16,17 +16,14 @@ ee_as_thumbnail(
 \arguments{
 \item{image}{EE Image object to be converted into a stars object.}
 
-\item{region}{EE Geometry Rectangle (\code{ee$Geometry$Rectangle}) specifying
-the region to export.The CRS needs to be the same as the \code{x} argument.
-Otherwise, it will be forced.}
+\item{region}{EE Geometry Rectangle (ee$Geometry$Rectangle) specifies the region to be exported.
+The CRS must match the 'x' argument; otherwise, it will be forced.}
 
-\item{dimensions}{Numeric vector of length 2. Thumbnail dimensions in pixel
-units. If a single integer is provided, it defines the size of the
-image's larger aspect dimension and scales the smaller dimension
-proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
+\item{dimensions}{Numeric vector of length 2 that specifies the dimensions of the thumbnail image in pixels.
+If only one integer is provided, it determines the size of the larger dimension of the image and scales
+the other dimension proportionally. Defaults to 512 pixels for the larger image aspect dimension.}
 
-\item{vizparams}{A list that contains the visualization parameters.
-See details.}
+\item{vizparams}{A list containing the visualization parameters.See details.}
 
 \item{raster}{Logical. Should the thumbnail image be saved as a
 RasterStack object?}
@@ -43,7 +40,7 @@ RasterLayer R object from a
 }
 \details{
 \code{vizparams} set up the details of the thumbnail image. With
-\code{ee_as_thumbnail} only is possible to export one-band (G) or three-band
+\code{ee_as_thumbnail} allows exporting only one-band (G) or three-band
 (RGB) images. Several parameters can be passed on to control color,
 intensity, the maximum and minimum values, etc. The table below provides
 all the parameters that admit \code{ee_as_thumbnail}.
