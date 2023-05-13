@@ -17,14 +17,14 @@ ee_table_to_gcs(
 \arguments{
 \item{collection}{The feature collection to be exported.}
 
-\item{description}{Human-readable name of the task.}
+\item{description}{User-friendly name of the task.}
 
 \item{bucket}{The name of a Cloud Storage bucket for the export.}
 
 \item{fileNamePrefix}{Cloud Storage object name prefix
 for the export. Defaults to the name of the task.}
 
-\item{timePrefix}{Add current date and time as a prefix to files to export.}
+\item{timePrefix}{Prefixes the current date and time to the exported files.}
 
 \item{fileFormat}{The output format: "CSV" (default),
 "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".}

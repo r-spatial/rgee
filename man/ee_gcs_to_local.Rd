@@ -14,10 +14,10 @@ ee_gcs_to_local(
 )
 }
 \arguments{
-\item{task}{List generated after finished an EE task correctly. See details.}
+\item{task}{List generated after the EE task is correctly finished. See details.}
 
 \item{dsn}{Character. Output filename. If missing, a temporary
-file (i.e. \code{tempfile()}) is assigned.}
+file (i.e. \code{tempfile()}) will be assigned.}
 
 \item{public}{Logical. If TRUE, a public link to Google Cloud Storage
 resource is created. "Public Access Prevention" may need to be removed.
@@ -27,7 +27,7 @@ See GCS public files documentation for more details.}
 \item{metadata}{Logical. If TRUE, export the metadata related to the Google
 Cloud Storage resource. See details.}
 
-\item{overwrite}{A boolean argument that indicates indicating
+\item{overwrite}{A boolean argument that indicates
 whether "filename" should be overwritten. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}

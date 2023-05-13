@@ -24,30 +24,30 @@ ee_image_to_drive(
 )
 }
 \arguments{
-\item{image}{The image to be exported.}
+\item{image}{Image to be exported.}
 
-\item{description}{Human-readable name of the task.}
+\item{description}{User-friendly name of the task.}
 
-\item{folder}{The name of a folder in their Drive account to be
-exported into. By default "rgee-backup".}
+\item{folder}{Folder name in the user's Drive account where the export will be stored.
+Default is "rgee-backup".}
 
-\item{fileNamePrefix}{The Google Drive filename for the export. Defaults to
-the name of the task.}
+\item{fileNamePrefix}{Prefix for the export filename in Google Drive. Defaults to
+the task name.}
 
-\item{timePrefix}{Add current date and time as a prefix to files to export.}
+\item{timePrefix}{Prefixes the current date and time to the exported files.}
 
-\item{dimensions}{The dimensions of the exported image. It takes either a
-single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-WIDTH and HEIGHT are each positive integers.}
+\item{dimensions}{Defines the image dimensions for export.
+It can be specified as a single positive integer for the maximum dimension
+or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.}
 
 \item{region}{The lon,lat coordinates for a LinearRing or Polygon specifying
 the region to export. It can be specified as nested lists of numbers or a
 serialized string. Defaults to the image's region.}
 
-\item{scale}{The resolution in meters per pixel. Defaults to the native
+\item{scale}{Image resolution in meters per pixel. Defaults to the native
 resolution of the image asset unless a crsTransform is specified.}
 
-\item{crs}{The coordinate reference system of the exported image's
+\item{crs}{Coordinate reference system of the exported image's
 projection. Defaults to the image's default projection.}
 
 \item{crsTransform}{A comma-separated string of 6 numbers describing
@@ -56,18 +56,18 @@ image's projection, in the order: xScale, xShearing, xTranslation,
 yShearing, yScale, and yTranslation. Defaults to the image's native
 CRS transform.}
 
-\item{maxPixels}{The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.}
+\item{maxPixels}{Maximum number of pixels allowed in the exported image.
+The task will fail if the exported region exceeds this limit in the specified projection.
+Defaults to 100,000,000.}
 
-\item{shardSize}{Size in pixels of the shards in which this image
+\item{shardSize}{Size given in pixels of the shards in which the image
 will be computed. Defaults to 256.}
 
-\item{fileDimensions}{The dimensions in pixels of each image file,
-if the image is too large to fit in a single file. May specify a
-single number to indicate a square shape, or a list of two dimensions
-to indicate (width, height). Note that the image will still be clipped
-to the overall image dimensions. Must be a multiple of shardSize.}
+\item{fileDimensions}{Defines the pixel dimensions for each image file when the image size exceeds
+the capacity of a single file.To indicate a square shape, use a single number;
+for width and height, use a list of two dimensions.
+Please note that the image will be clipped to the overall image dimensions.
+The specified file dimensions must be a multiple of the shardSize.}
 
 \item{skipEmptyTiles}{If TRUE, skip writing empty (i.e., fully-masked)
 image tiles. Defaults to FALSE.}
@@ -80,7 +80,7 @@ options. **kwargs: Holds other keyword arguments that may have been
 deprecated, such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.}
 }
 \value{
-An unstarted Task that exports the image to Drive.
+An unstarted task that exports the image to Drive.
 }
 \description{
 Creates a task to export an EE Image to Drive.

@@ -15,7 +15,7 @@ ee_drive_to_local(
 )
 }
 \arguments{
-\item{task}{List generated after finished an EE task correctly. See details.}
+\item{task}{A generated list obtained after completing an Earth Engine task. See details.}
 
 \item{dsn}{Character. Output filename. If missing, a temporary
 file will be assigned.}
@@ -28,10 +28,10 @@ whether filename should be overwritten. By default TRUE.}
 \item{public}{Logical. If TRUE, a public link to the Google Drive resource is
 created.}
 
-\item{metadata}{Logical. If TRUE, export the metadata related to the Google
-Drive resource. See details.}
+\item{metadata}{Logical. If TRUE, the metadata related to the Google
+Drive resource will be exported. See details.}
 
-\item{quiet}{logical. Suppress info message.}
+\item{quiet}{Logical. Suppress info message.}
 }
 \value{
 If \code{metadata} is FALSE, will return the filename of the Google
