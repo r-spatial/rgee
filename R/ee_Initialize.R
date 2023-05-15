@@ -161,7 +161,14 @@ ee_Initialize <- function(user = NULL,
   if (!quiet) ee_message_04(init = FALSE)
 
   # check if the GEE acount has been created a GEE mainfolder
-  ee_user <- ee_check_root_folder()
+  ee_user <- tryCatch({
+    ee_check_root_folder()
+  }, error=function(e) {
+    stop(
+      "It looks like your EE credential has expired. Try running ee_Authenticate() again",
+      " or clean your credentials ee_clean_user_credentials()."
+    )
+  })
 
   options(rgee.ee_user = ee_user)
   ee_sessioninfo(

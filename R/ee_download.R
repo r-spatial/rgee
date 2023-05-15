@@ -1089,8 +1089,8 @@ ee_gcs_to_local <- function(task,
   }
   # Getting bucket name and filename
   gcs_ExportOptions <- task[["config"]][["fileExportOptions"]]
-  gcs_bucket <- gcs_ExportOptions[["gcsDestination"]][["bucket"]]
-  gcs_filename <- gcs_ExportOptions[["gcsDestination"]][["filenamePrefix"]]
+  gcs_bucket <- gcs_ExportOptions[["cloudStorageDestination"]][["bucket"]]
+  gcs_filename <- gcs_ExportOptions[["cloudStorageDestination"]][["filenamePrefix"]]
   gcs_fileFormat <- gcs_ExportOptions[["fileFormat"]]
 
   # Select a gcs file considering the filename and bucket
