@@ -2,7 +2,7 @@
 % Please edit documentation in R/ee_imagecollection.R
 \name{ee_imagecollection_to_local}
 \alias{ee_imagecollection_to_local}
-\title{Save an EE ImageCollection in their local system}
+\title{Save an EE ImageCollection to the local system.}
 \usage{
 ee_imagecollection_to_local(
   ic,
@@ -21,7 +21,7 @@ ee_imagecollection_to_local(
 )
 }
 \arguments{
-\item{ic}{ee$ImageCollection to be saved in the system.}
+\item{ic}{ee$ImageCollection to be saved to the system.}
 
 \item{region}{EE Geometry (ee$Geometry$Polygon). The
 CRS needs to be the same that the \code{ic} argument. Otherwise, it will be
@@ -30,7 +30,7 @@ forced.}
 \item{dsn}{Character. Output filename. If missing, a temporary file will
 be created for each image.}
 
-\item{via}{Character. Method to export the image. Two methods are implemented:
+\item{via}{Character. Method to export the image. Two methods are available:
 "drive", "gcs". See details.}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
@@ -40,9 +40,9 @@ to be exported into (ignored if \code{via} is not defined as "drive" or
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image.}
 
-\item{maxPixels}{Numeric. The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.}
+\item{maxPixels}{Numeric. The maximum allowable number of pixels in the exported image.
+If the exported region covers more pixels than the specified limit in the given projection,
+the task will fail. Defaults to 100,000,000.}
 
 \item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
 future::sequential}} object is created to evaluate the task in the future.
@@ -53,7 +53,7 @@ See details.}
 \item{add_metadata}{Add metadata to the stars_proxy object. See details.}
 
 \item{timePrefix}{Logical. Add current date and time (\code{Sys.time()}) as
-a prefix to export files. This parameter helps to avoid exported files
+a prefix to export files. This parameter helps to avoid exporting files
 with the same name. By default TRUE.}
 
 \item{quiet}{Logical. Suppress info message}
@@ -67,18 +67,18 @@ Otherwise, if add_metadata is TRUE, will return a list with extra information
 related to the exportation (see details).
 }
 \description{
-Save an EE ImageCollection in their local system
+Save an EE ImageCollection to the local system.
 }
 \details{
 \code{ee_imagecollection_to_local} supports the download of \code{ee$Images}
-by two different options: "drive"
+using two different options: "drive"
 (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 Google Cloud Storage}). In both cases, \code{ee_imagecollection_to_local}
 works as follow:
 \itemize{
-\item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
-move the \code{ee$Image} from Earth Engine to the intermediate container
+\item{1. }{A task  is initiate (i.e., \code{ee$batch$Task$start()}) to
+transfer the \code{ee$Image} from Earth Engine to the intermediate container
 specified in the argument \code{via}.}
 \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
 monitored. This is useful to lunch several tasks simultaneously and
@@ -86,8 +86,8 @@ calls them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
 the \code{ee$Images} are stored on the path specified in the argument
 \code{dsn}.}
-\item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
-with the following elements will be added to the argument \code{dsn}.
+\item{3. }{Finally, if the \code{add_metadata}  argument is set to TRUE,
+a list containing the following elements will be appended to the \code{dsn} argument.
 \itemize{
 \item{\bold{if via is "drive":}}
 \itemize{

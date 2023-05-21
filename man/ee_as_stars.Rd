@@ -24,7 +24,7 @@ ee_as_stars(
 \arguments{
 \item{image}{ee$Image to be converted into a 'stars' object.}
 
-\item{region}{EE Geometry (ee$Geometry$Polygon) which specifies the region
+\item{region}{EE Geometry (ee$Geometry$Polygon) that specifies the region
 to export. CRS needs to be the same that the argument \code{image}.
 Otherwise, it will be forced. If not specified, image bounds are taken.}
 
@@ -32,20 +32,20 @@ Otherwise, it will be forced. If not specified, image bounds are taken.}
 created.}
 
 \item{via}{Character. Method to export the image. Three methods are
-implemented: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
+available: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
 Use "getDownloadURL" for small images. Default "getDownloadURL".}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
 to be exported.}
 
-\item{scale}{Numeric. The resolution in meters per pixel. Defaults
+\item{scale}{Numeric. Image resolution given in meters per pixel. Defaults
 to the native resolution of the image.}
 
-\item{maxPixels}{Numeric. The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.}
+\item{maxPixels}{Numeric. The maximum allowable number of pixels in the exported
+image. If the exported region covers more pixels than the specified limit in the
+given projection, the task will fail. Defaults to 100,000,000.}
 
-\item{grid_batch}{Numeric. Argument used if via is set as "getDownloadURL".
+\item{grid_batch}{Numeric. Argument used if 'via' is set as "getDownloadURL".
 The number of pixels to download in each batch without considering the number
 of bands. Default to 1048576 -(1024*1024).}
 
