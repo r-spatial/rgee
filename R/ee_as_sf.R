@@ -618,6 +618,7 @@ ee_sf_gcs_local <- function(table_task, dsn, metadata, public, overwrite, quiet)
     overwrite = overwrite,
     quiet = quiet
   )
+
   if (is.character(local_files)) {
     local_files <- list(dsn = local_files)
   }
