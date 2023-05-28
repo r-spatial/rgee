@@ -6,26 +6,25 @@
 #' allows you to grant permission to manage resources. This function is
 #' a wrapper around `rgee::ee$Initialize()`.
 #'
-#' @param user Character (optional, e.g. `data.colec.fbf`). The user
-#' argument is used to create a folder inside the path
-#' \code{~/.config/earthengine/} that save all the credentials for a specific
-#' Google identity.
+#' @param user Character (optional, e.g. `data.colec.fbf`).  The user parameter
+#' is used to create a folder inside the path \code{~/.config/earthengine/}
+#' where all the credentials for a specific Google identity are saved.
 #'
-#' @param drive Logical (optional). If TRUE, the drive credential
-#' is cached in the path \code{~/.config/earthengine/}.
+#' @param drive Logical (optional). If set to TRUE, the drive credential will be
+#' cached in the path \code{~/.config/earthengine/}.
 #'
 #' @param gcs Logical (optional). If TRUE, the Google Cloud Storage
-#' credential is cached in the path \code{~/.config/earthengine/}.
+#' credential will be cached in the path \code{~/.config/earthengine/}.
 #'
 # @param display Logical. If TRUE, display the earthengine authentication URL.
 # (display url - useul for colab noteboks)
-#' @param credentials  OAuth2 GEE credentials. 'persistent' (default) means
-#' use GEE credentials already stored in the filesystem, or raise an explanatory
-#' exception guiding the user to create those credentials.
+#' @param credentials  OAuth2 GEE credentials. 'persistent' (default) means it will
+#' use the GEE credentials already stored in the filesystem. If the credentials are not found,
+#' it will raise an explanatory exception guiding the user to create those credentials.
 #' @param opt_url The base url for the EarthEngine REST API to connect to.
 #' @param cloud_api_key An optional API key to use the Cloud API.
-#' @param http_transport The http transport method to use when making requests.
-#' @param project The client project ID or number to use when making API calls.
+#' @param http_transport The HTTP transport method to use for making requests
+#' @param project The client project ID or number to be used for making API calls.
 #' @param quiet Logical. Suppress info messages.
 #' @param auth_quiet Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
 #' do not require interactive prompts and force --no-browser mode for gcloud.
