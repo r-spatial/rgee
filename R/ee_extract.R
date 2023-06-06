@@ -196,7 +196,7 @@ ee_extract <- function(x,
     #   message("NOTE: y is an sf object, running 'sf_as_ee(y$geometry)' to ",
     #           "convert in an ee$FeatureCollection object.")
     # }
-    ee_y <- sf_as_ee(y[["geometry"]], quiet = TRUE)
+    ee_y <- sf_as_ee(y[[attr(y, "sf_column")]], quiet = TRUE)
   } else if(any("sfc" %in%  class(y))) {
     sf_y <- sf::st_sf(id = seq_along(y), geometry = y)
     # if (!quiet) {
