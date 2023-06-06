@@ -9,9 +9,9 @@ rdate_to_eedate(date, timestamp = FALSE)
 \arguments{
 \item{date}{R date object}
 
-\item{timestamp}{Logical. If TRUE, return the date in milliseconds
-from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise return a
-EE date object. By default, FALSE.}
+\item{timestamp}{Logical. By default, FALSE. If TRUE, return the date in milliseconds
+from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise, return a
+EE date object.}
 }
 \value{
 \code{rdate_to_eedate} will return either a numeric timestamp or

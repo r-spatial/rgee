@@ -41,9 +41,9 @@ to be exported.}
 \item{scale}{Numeric. The resolution in meters per pixel. Defaults
 to the native resolution of the image.}
 
-\item{maxPixels}{Numeric. The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.}
+\item{maxPixels}{Numeric. The maximum allowable number of pixels in the exported
+image. If the exported region covers more pixels than the specified limit in the
+given projection, the task will fail. Defaults to 100,000,000.}
 
 \item{grid_batch}{Numeric. Argument used if via is set as "getDownloadURL". The number of
 pixels to download in each batch without considering the number of bands. Default

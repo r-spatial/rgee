@@ -16,11 +16,11 @@ ee_clean_user_credentials(
 to remove credentials (See \code{~/.config/earthengine/}). A 'user' represents
 a set of credentials that certificate a specific Google identity.}
 
-\item{earthengine}{Logical. The earthengine credential.}
+\item{earthengine}{Logical. Earthengine credential.}
 
-\item{drive}{Logical. The Google Drive credential.}
+\item{drive}{Logical. Google Drive credential.}
 
-\item{gcs}{Logical. The Google Cloud Storage credential.}
+\item{gcs}{Logical. Google Cloud Storage credential.}
 }
 \value{
 No return value, called for cleaning the path \code{~/.config/earthengine/}

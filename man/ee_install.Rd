@@ -18,10 +18,10 @@ to be used by rgee.}
 \item{earthengine_version}{Character. The Earth Engine Python API version
 to install. By default \code{rgee::ee_version()}.}
 
-\item{python_version}{Only windows users. The Python version to be used in
-this conda environment. When NULL, the default python package will be
-used instead. For example, use python_version = "3.6" to request that the
-conda environment be created with a copy of Python 3.6.}
+\item{python_version}{Only Windows users. The Python version to be used
+in this conda environment. If set to NULL, the default Python package will be used.
+For example, you can specify python_version = "3.6" to request the creation of the
+conda environment with a copy of Python 3.6.}
 
 \item{confirm}{Logical. Confirm before restarting R?.}
 }
@@ -32,11 +32,11 @@ No return value, called for installing non-R dependencies.
 Create an isolated Python virtual environment with all rgee dependencies.
 \code{ee_install} realize the following six (6) tasks:
 \itemize{
-\item{1. }{If you do not count with a Python environment, it will display
+\item{1. }{IIf you do not have a Python environment installed, it will display
 an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}
 (a free minimal installer for conda).}
-\item{2. }{If it exists,  delete the previous Python environment specified in
-the \code{py_env} argument.}
+\item{2. }{If it exists, the previous Python environment specified in
+the \code{py_env} argument will be deleted.}
 \item{3. }{Create a new Python environment (See \code{py_env}) argument.}
 \item{4. }{Set the environment variable EARTHENGINE_PYTHON and EARTHENGINE_ENV.
 It is used to define RETICULATE_PYTHON when the library is loaded. See this

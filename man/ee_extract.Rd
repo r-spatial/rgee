@@ -26,16 +26,16 @@ ee_extract(
 must take a single numeric value as an argument and return a single value.
 See details.}
 
-\item{scale}{A nominal scale in meters of the Image projection to work in.
+\item{scale}{A nominal scale given in meters of the Image projection to work in.
 By default 1000.}
 
-\item{sf}{Logical. Should return an sf object?}
+\item{sf}{Logical. Should the function return an sf object?}
 
-\item{via}{Character. Method to export the image. Three method are
-implemented: "getInfo", "drive", "gcs".}
+\item{via}{Character. Method for exporting the image.
+Three methods are available: "getInfo", "drive", "gcs".}
 
 \item{container}{Character. Name of the folder ('drive') or bucket ('gcs')
-to be exported into (ignore if \code{via} is not defined as "drive" or
+to export the image into (ignore if \code{via} is not defined as "drive" or
 "gcs").}
 
 \item{lazy}{Logical. If TRUE, a \code{\link[future:sequential]{
@@ -53,10 +53,10 @@ Column names are extracted from band names. Use \code{ee$Image$rename} to
 rename the bands of an \code{ee$Image}. See \code{ee_help(ee$Image$rename)}.
 }
 \description{
-Extract values from an \code{ee$Image} at the
-locations of a geometry object. Users can use \code{ee$Geometry$*},
-\code{ee$Feature}, \code{ee$FeatureCollection}, sf or sfc object to filter
-spatially. This function mimicking how \link[raster]{extract} currently works.
+Extract values from an \code{ee$Image} based on the locations of a geometry object.
+Users can utilize  \code{ee$Geometry$*}, \code{ee$Feature}, \code{ee$FeatureCollection},
+sf or sfc object for spatial filter.
+This function emulates the functionality of the existing \link[raster]{extract} method.
 }
 \details{
 The reducer functions that return one value are:

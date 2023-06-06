@@ -25,23 +25,22 @@ ee_image_to_asset(
 
 \item{assetId}{The destination asset ID.}
 
-\item{overwrite}{Logical. If TRUE, the assetId will be overwritten if
-it exists.}
+\item{overwrite}{Specifies whether to overwrite the assetId if it already exists.}
 
 \item{pyramidingPolicy}{The pyramiding policy to apply to each band
 in the image, a dictionary keyed by band name. Values must be one
 of: "mean", "sample", "min", "max", or "mode". Defaults to "mean".
 A special key, ".default", may be used to change the default for all bands.}
 
-\item{dimensions}{The dimensions of the exported image. It takes either a
-single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-WIDTH and HEIGHT are each positive integers.}
+\item{dimensions}{Defines the image dimensions for export.
+It can be specified as a single positive integer for the maximum dimension
+or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.}
 
 \item{region}{The lon,lat coordinates for a LinearRing or Polygon
 specifying the region to export. It can be specified as nested lists
 of numbers or a serialized string. Defaults to the image's region.}
 
-\item{scale}{The resolution in meters per pixel. Defaults to the native
+\item{scale}{Resolution given in meters per pixel. Defaults to the native
 resolution of the image asset unless a crsTransform is specified.}
 
 \item{crs}{The coordinate reference system of the exported image's
