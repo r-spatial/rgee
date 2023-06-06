@@ -174,17 +174,17 @@ style.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>R6Map$new()</code></a></p></li>
-<li><p><a href="#method-reset"><code>R6Map$reset()</code></a></p></li>
-<li><p><a href="#method-print"><code>R6Map$print()</code></a></p></li>
-<li><p><a href="#method-setCenter"><code>R6Map$setCenter()</code></a></p></li>
-<li><p><a href="#method-setZoom"><code>R6Map$setZoom()</code></a></p></li>
-<li><p><a href="#method-centerObject"><code>R6Map$centerObject()</code></a></p></li>
-<li><p><a href="#method-addLayer"><code>R6Map$addLayer()</code></a></p></li>
-<li><p><a href="#method-addLayers"><code>R6Map$addLayers()</code></a></p></li>
-<li><p><a href="#method-addLegend"><code>R6Map$addLegend()</code></a></p></li>
-<li><p><a href="#method-clone"><code>R6Map$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-EarthEngineMap-new"><code>R6Map$new()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-reset"><code>R6Map$reset()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-print"><code>R6Map$print()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-setCenter"><code>R6Map$setCenter()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-setZoom"><code>R6Map$setZoom()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-centerObject"><code>R6Map$centerObject()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-addLayer"><code>R6Map$addLayer()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-addLayers"><code>R6Map$addLayers()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-addLegend"><code>R6Map$addLegend()</code></a></p></li>
+<li><p><a href="#method-EarthEngineMap-clone"><code>R6Map$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-EarthEngineMap-new"></a><div class="section">
 <h3 id="method-new-">Method <code><a href="https://rdrr.io/r/methods/new.html" class="external-link">new()</a></code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Constructor of R6Map.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
@@ -216,7 +216,7 @@ style.</p></dd>
 <p>A new <code>EarthEngineMap</code> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-reset"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-reset"></a><div class="section">
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Reset to initial arguments.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
@@ -275,7 +275,7 @@ Map
 </div>
 
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="print.ee.computedobject.ComputedObject.html">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Display a <code>EarthEngineMap</code> object.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
@@ -287,7 +287,7 @@ Map
 <p>An <code>EarthEngineMap</code> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-setCenter"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-setCenter"></a><div class="section">
 <h3 id="method-setcenter-">Method <code>setCenter()</code><a class="anchor" aria-label="anchor" href="#method-setcenter-"></a></h3>
 <p>Centers the map view at the given coordinates with the given zoom level. If
 no zoom level is provided, it uses 10 by default.</p><div class="section">
@@ -334,7 +334,7 @@ Map
 </div>
 
 
-</div><p></p><hr><a id="method-setZoom"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-setZoom"></a><div class="section">
 <h3 id="method-setzoom-">Method <code>setZoom()</code><a class="anchor" aria-label="anchor" href="#method-setzoom-"></a></h3>
 <p>Sets the zoom level of the map.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
@@ -372,7 +372,7 @@ Map
 </div>
 
 
-</div><p></p><hr><a id="method-centerObject"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-centerObject"></a><div class="section">
 <h3 id="method-centerobject-">Method <code>centerObject()</code><a class="anchor" aria-label="anchor" href="#method-centerobject-"></a></h3>
 <p>Centers the map view on a given object. If no zoom level is provided, it
 will be predicted according to the bounds of the Earth Engine object
@@ -427,7 +427,7 @@ Map
 </div>
 
 
-</div><p></p><hr><a id="method-addLayer"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-addLayer"></a><div class="section">
 <h3 id="method-addlayer-">Method <code>addLayer()</code><a class="anchor" aria-label="anchor" href="#method-addlayer-"></a></h3>
 <p>Adds a given Earth Engine spatial object to the map as a layer</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
@@ -535,7 +535,7 @@ Map$reset()
 </div>
 
 
-</div><p></p><hr><a id="method-addLayers"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-addLayers"></a><div class="section">
 <h3 id="method-addlayers-">Method <code>addLayers()</code><a class="anchor" aria-label="anchor" href="#method-addlayers-"></a></h3>
 <p>Adds a given ee$ImageCollection to the map as multiple layers.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
@@ -619,7 +619,7 @@ Map$reset()
 </div>
 
 
-</div><p></p><hr><a id="method-addLegend"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-addLegend"></a><div class="section">
 <h3 id="method-addlegend-">Method <code><a href="https://rdrr.io/pkg/leaflet/man/addLegend.html" class="external-link">addLegend()</a></code><a class="anchor" aria-label="anchor" href="#method-addlegend-"></a></h3>
 <p>Adds a color legend to an EarthEngineMap.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
@@ -702,7 +702,7 @@ Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-EarthEngineMap-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>

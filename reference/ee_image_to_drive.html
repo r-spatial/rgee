@@ -124,31 +124,31 @@ This function is a wrapper around <br><code>ee$batch$Export$image$toDrive(...)</
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>image</dt>
-<dd><p>The image to be exported.</p></dd>
+<dd><p>Image to be exported.</p></dd>
 
 
 <dt>description</dt>
-<dd><p>Human-readable name of the task.</p></dd>
+<dd><p>User-friendly name of the task.</p></dd>
 
 
 <dt>folder</dt>
-<dd><p>The name of a folder in their Drive account to be
-exported into. By default "rgee-backup".</p></dd>
+<dd><p>Folder name in the user's Drive account where the export will be stored.
+Default is "rgee-backup".</p></dd>
 
 
 <dt>fileNamePrefix</dt>
-<dd><p>The Google Drive filename for the export. Defaults to
-the name of the task.</p></dd>
+<dd><p>Prefix for the export filename in Google Drive. Defaults to
+the task name.</p></dd>
 
 
 <dt>timePrefix</dt>
-<dd><p>Add current date and time as a prefix to files to export.</p></dd>
+<dd><p>Prefixes the current date and time to the exported files.</p></dd>
 
 
 <dt>dimensions</dt>
-<dd><p>The dimensions of the exported image. It takes either a
-single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-WIDTH and HEIGHT are each positive integers.</p></dd>
+<dd><p>Defines the image dimensions for export.
+It can be specified as a single positive integer for the maximum dimension
+or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.</p></dd>
 
 
 <dt>region</dt>
@@ -158,12 +158,12 @@ serialized string. Defaults to the image's region.</p></dd>
 
 
 <dt>scale</dt>
-<dd><p>The resolution in meters per pixel. Defaults to the native
+<dd><p>Image resolution in meters per pixel. Defaults to the native
 resolution of the image asset unless a crsTransform is specified.</p></dd>
 
 
 <dt>crs</dt>
-<dd><p>The coordinate reference system of the exported image's
+<dd><p>Coordinate reference system of the exported image's
 projection. Defaults to the image's default projection.</p></dd>
 
 
@@ -176,22 +176,22 @@ CRS transform.</p></dd>
 
 
 <dt>maxPixels</dt>
-<dd><p>The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.</p></dd>
+<dd><p>Maximum number of pixels allowed in the exported image.
+The task will fail if the exported region exceeds this limit in the specified projection.
+Defaults to 100,000,000.</p></dd>
 
 
 <dt>shardSize</dt>
-<dd><p>Size in pixels of the shards in which this image
+<dd><p>Size given in pixels of the shards in which the image
 will be computed. Defaults to 256.</p></dd>
 
 
 <dt>fileDimensions</dt>
-<dd><p>The dimensions in pixels of each image file,
-if the image is too large to fit in a single file. May specify a
-single number to indicate a square shape, or a list of two dimensions
-to indicate (width, height). Note that the image will still be clipped
-to the overall image dimensions. Must be a multiple of shardSize.</p></dd>
+<dd><p>Defines the pixel dimensions for each image file when the image size exceeds
+the capacity of a single file.To indicate a square shape, use a single number;
+for width and height, use a list of two dimensions.
+Please note that the image will be clipped to the overall image dimensions.
+The specified file dimensions must be a multiple of the shardSize.</p></dd>
 
 
 <dt>skipEmptyTiles</dt>
@@ -214,7 +214,7 @@ deprecated, such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.</
     <h2>Value</h2>
     
 
-<p>An unstarted Task that exports the image to Drive.</p>
+<p>An unstarted task that exports the image to Drive.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>

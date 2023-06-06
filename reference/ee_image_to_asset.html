@@ -130,8 +130,7 @@ This function is a wrapper around <code>ee$batch$Export$image$toAsset(...)</code
 
 
 <dt>overwrite</dt>
-<dd><p>Logical. If TRUE, the assetId will be overwritten if
-it exists.</p></dd>
+<dd><p>Specifies whether to overwrite the assetId if it already exists.</p></dd>
 
 
 <dt>pyramidingPolicy</dt>
@@ -142,9 +141,9 @@ A special key, ".default", may be used to change the default for all bands.</p><
 
 
 <dt>dimensions</dt>
-<dd><p>The dimensions of the exported image. It takes either a
-single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-WIDTH and HEIGHT are each positive integers.</p></dd>
+<dd><p>Defines the image dimensions for export.
+It can be specified as a single positive integer for the maximum dimension
+or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.</p></dd>
 
 
 <dt>region</dt>
@@ -154,7 +153,7 @@ of numbers or a serialized string. Defaults to the image's region.</p></dd>
 
 
 <dt>scale</dt>
-<dd><p>The resolution in meters per pixel. Defaults to the native
+<dd><p>Resolution given in meters per pixel. Defaults to the native
 resolution of the image asset unless a crsTransform is specified.</p></dd>
 
 

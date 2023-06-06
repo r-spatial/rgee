@@ -150,14 +150,13 @@ the first element.</p></dd>
 
 
 <dt>maxFeatures</dt>
-<dd><p>Numeric. The maximum allowed number of features to
-export (ignored if <code>via</code> is not set as "getInfo"). The task will fail
+<dd><p>Numeric. The maximum number of features allowed for export (ignore if <code>via</code> is not set as "getInfo"). The task will fail
 if the exported region covers more features than the specified in
-<code>maxFeatures</code>. Defaults to 5000.</p></dd>
+<code>maxFeatures</code>. Default is 5000.</p></dd>
 
 
 <dt>selectors</dt>
-<dd><p>The list of properties to include in the output, as a
+<dd><p>List of properties to include in the output, as a
 list/vector of strings or a comma-separated string. By default, all properties are
 included.</p></dd>
 
@@ -179,12 +178,12 @@ See details.</p></dd>
 
 <dt>timePrefix</dt>
 <dd><p>Logical. Add current date and time (<code><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time()</a></code>) as
-a prefix to export files. This parameter helps to avoid exported files
-with the same name. By default TRUE.</p></dd>
+a prefix to export files. This parameter helps to prevent exported files from
+having the same name. By default TRUE.</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>logical. Suppress info message.</p></dd>
+<dd><p>Logical. Suppress info message.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -200,32 +199,32 @@ and <code>ee$FeatureCollection</code> by three different options:
 "getInfo" (which make an REST call to retrieve the data), "drive"
 (which use <a href="https://CRAN.R-project.org/package=googledrive" class="external-link">Google Drive</a>)
 and "gcs" (which use <a href="https://CRAN.R-project.org/package=googleCloudStorageR" class="external-link">
-Google Cloud Storage</a>). The advantage of use "getInfo" is a
-direct and faster download. However, there is a limitation of 5000 features by
-request, making it not recommendable for large FeatureCollection. Instead of
-"getInfo", the options: "drive" and "gcs" are suitable for large FeatureCollections
-due to the use of an intermediate container. When <code>via</code> is set as "drive" or "gcs"
-<code>ee_as_sf</code> perform the following steps:</p><ul><li><p>1. A task is started (i.e., <code>ee$batch$Task$start()</code>) to
+Google Cloud Storage</a>). The advantage of using "getInfo" is a
+direct and faster download. However, there is a limit of 5000 features by
+request, which makes it not recommendable for large FeatureCollection. Instead of
+"getInfo", the "drive" and "gcs" options are suitable for large FeatureCollections
+because they use an intermediate container. When <code>via</code> is set as "drive" or "gcs"
+<code>ee_as_sf</code> performs the following steps:</p><ul><li><p>1. A task is started (i.e., <code>ee$batch$Task$start()</code>) to
 move the EE Table from Earth Engine to the file storage system (Google Drive
-or Google Cloud Storage) specified in the argument <code>via</code>.</p></li>
+or Google Cloud Storage) specified in the <code>via</code> argument.</p></li>
 <li><p>2. If the argument <code>lazy</code> is TRUE, the task will not be
-monitored. This is useful to launch several tasks simultaneously and
-calls them later using <code><a href="ee_utils_future_value.html">ee_utils_future_value</a></code> or
+monitored. This is useful for launching several tasks simultaneously and
+calling them later using <code><a href="ee_utils_future_value.html">ee_utils_future_value</a></code> or
 <code><a href="https://future.futureverse.org/reference/value.html" class="external-link">future::value</a></code>. At the end of this step,
 the EE Table is stored under the path specified by the argument
 <code>dsn</code>.</p></li>
 <li><p>3. Finally, if the argument <code>add_metadata</code> is TRUE, a list
 with the following elements is added to the sf object.
-</p><ul><li><p><b>if via is "drive":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>drive_name: </b>Name of the Table in Google Drive.</p></li>
-<li><p><b>drive_id: </b>Id of the Table in Google Drive.</p></li>
-<li><p><b>drive_download_link: </b>Download link to the table.</p></li>
+</p><ul><li><p><b>if via is "drive":</b></p><ul><li><p><b>ee_id: </b>Earth Engine task name.</p></li>
+<li><p><b>drive_name: </b>Google Drive table name</p></li>
+<li><p><b>drive_id: </b>Google Drive table ID</p></li>
+<li><p><b>drive_download_link: </b>Link to download the table</p></li>
 </ul></li>
-</ul><ul><li><p><b>if via is "gcs":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>gcs_name: </b>Name of the Table in Google Cloud Storage.</p></li>
-<li><p><b>gcs_bucket: </b>Name of the bucket.</p></li>
-<li><p><b>gcs_fileFormat: </b>Format of the table.</p></li>
-<li><p><b>gcs_public_link: </b>Download link to the table.</p></li>
+</ul><ul><li><p><b>if via is "gcs":</b></p><ul><li><p><b>ee_id: </b>Earth Engine task name.</p></li>
+<li><p><b>gcs_name: </b>Google Cloud Storage table name</p></li>
+<li><p><b>gcs_bucket: </b>Bucket name</p></li>
+<li><p><b>gcs_fileFormat: </b>Table format</p></li>
+<li><p><b>gcs_public_link: </b>Link to download the table.</p></li>
 <li><p><b>gcs_URI: </b>gs:// link to the table.</p></li>
 </ul></li>
 </ul>

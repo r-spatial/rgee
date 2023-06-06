@@ -119,11 +119,11 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>image</dt>
-<dd><p>ee$Image to be converted into a stars object.</p></dd>
+<dd><p>ee$Image to be converted into a 'stars' object.</p></dd>
 
 
 <dt>region</dt>
-<dd><p>EE Geometry (ee$Geometry$Polygon) which specifies the region
+<dd><p>EE Geometry (ee$Geometry$Polygon) that specifies the region
 to export. CRS needs to be the same that the argument <code>image</code>.
 Otherwise, it will be forced. If not specified, image bounds are taken.</p></dd>
 
@@ -135,7 +135,7 @@ created.</p></dd>
 
 <dt>via</dt>
 <dd><p>Character. Method to export the image. Three methods are
-implemented: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
+available: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
 Use "getDownloadURL" for small images. Default "getDownloadURL".</p></dd>
 
 
@@ -145,18 +145,18 @@ to be exported.</p></dd>
 
 
 <dt>scale</dt>
-<dd><p>Numeric. The resolution in meters per pixel. Defaults
+<dd><p>Numeric. Image resolution given in meters per pixel. Defaults
 to the native resolution of the image.</p></dd>
 
 
 <dt>maxPixels</dt>
-<dd><p>Numeric. The maximum allowed number of pixels in the
-exported image. The task will fail if the exported region covers
-more pixels in the specified projection. Defaults to 100,000,000.</p></dd>
+<dd><p>Numeric. The maximum allowable number of pixels in the exported
+image. If the exported region covers more pixels than the specified limit in the
+given projection, the task will fail. Defaults to 100,000,000.</p></dd>
 
 
 <dt>grid_batch</dt>
-<dd><p>Numeric. Argument used if via is set as "getDownloadURL".
+<dd><p>Numeric. Argument used if 'via' is set as "getDownloadURL".
 The number of pixels to download in each batch without considering the number
 of bands. Default to 1048576 -(1024*1024).</p></dd>
 

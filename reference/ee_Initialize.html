@@ -125,26 +125,25 @@ a wrapper around <code>rgee::ee$Initialize()</code>.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>user</dt>
-<dd><p>Character (optional, e.g. <code>data.colec.fbf</code>). The user
-argument is used to create a folder inside the path
-<code>~/.config/earthengine/</code> that save all the credentials for a specific
-Google identity.</p></dd>
+<dd><p>Character (optional, e.g. <code>data.colec.fbf</code>).  The user parameter
+is used to create a folder inside the path <code>~/.config/earthengine/</code>
+where all the credentials for a specific Google identity are saved.</p></dd>
 
 
 <dt>drive</dt>
-<dd><p>Logical (optional). If TRUE, the drive credential
-is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+<dd><p>Logical (optional). If set to TRUE, the drive credential will be
+cached in the path <code>~/.config/earthengine/</code>.</p></dd>
 
 
 <dt>gcs</dt>
 <dd><p>Logical (optional). If TRUE, the Google Cloud Storage
-credential is cached in the path <code>~/.config/earthengine/</code>.</p></dd>
+credential will be cached in the path <code>~/.config/earthengine/</code>.</p></dd>
 
 
 <dt>credentials</dt>
-<dd><p>OAuth2 GEE credentials. 'persistent' (default) means
-use GEE credentials already stored in the filesystem, or raise an explanatory
-exception guiding the user to create those credentials.</p></dd>
+<dd><p>OAuth2 GEE credentials. 'persistent' (default) means it will
+use the GEE credentials already stored in the filesystem. If the credentials are not found,
+it will raise an explanatory exception guiding the user to create those credentials.</p></dd>
 
 
 <dt>opt_url</dt>
@@ -156,11 +155,11 @@ exception guiding the user to create those credentials.</p></dd>
 
 
 <dt>http_transport</dt>
-<dd><p>The http transport method to use when making requests.</p></dd>
+<dd><p>The HTTP transport method to use for making requests</p></dd>
 
 
 <dt>project</dt>
-<dd><p>The client project ID or number to use when making API calls.</p></dd>
+<dd><p>The client project ID or number to be used for making API calls.</p></dd>
 
 
 <dt>quiet</dt>
