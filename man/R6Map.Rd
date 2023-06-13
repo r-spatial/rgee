@@ -269,21 +269,21 @@ style.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-EarthEngineMap-new}{\code{R6Map$new()}}
-\item \href{#method-EarthEngineMap-reset}{\code{R6Map$reset()}}
-\item \href{#method-EarthEngineMap-print}{\code{R6Map$print()}}
-\item \href{#method-EarthEngineMap-setCenter}{\code{R6Map$setCenter()}}
-\item \href{#method-EarthEngineMap-setZoom}{\code{R6Map$setZoom()}}
-\item \href{#method-EarthEngineMap-centerObject}{\code{R6Map$centerObject()}}
-\item \href{#method-EarthEngineMap-addLayer}{\code{R6Map$addLayer()}}
-\item \href{#method-EarthEngineMap-addLayers}{\code{R6Map$addLayers()}}
-\item \href{#method-EarthEngineMap-addLegend}{\code{R6Map$addLegend()}}
-\item \href{#method-EarthEngineMap-clone}{\code{R6Map$clone()}}
+\item \href{#method-new}{\code{R6Map$new()}}
+\item \href{#method-reset}{\code{R6Map$reset()}}
+\item \href{#method-print}{\code{R6Map$print()}}
+\item \href{#method-setCenter}{\code{R6Map$setCenter()}}
+\item \href{#method-setZoom}{\code{R6Map$setZoom()}}
+\item \href{#method-centerObject}{\code{R6Map$centerObject()}}
+\item \href{#method-addLayer}{\code{R6Map$addLayer()}}
+\item \href{#method-addLayers}{\code{R6Map$addLayers()}}
+\item \href{#method-addLegend}{\code{R6Map$addLegend()}}
+\item \href{#method-clone}{\code{R6Map$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-new"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-new}{}}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Constructor of R6Map.
 \subsection{Usage}{
@@ -308,8 +308,8 @@ A new \code{EarthEngineMap} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-reset"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-reset}{}}}
+\if{html}{\out{<a id="method-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-reset}{}}}
 \subsection{Method \code{reset()}}{
 Reset to initial arguments.
 \subsection{Usage}{
@@ -363,8 +363,8 @@ Map
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-print"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-print}{}}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
 \subsection{Method \code{print()}}{
 Display a \code{EarthEngineMap} object.
 \subsection{Usage}{
@@ -376,8 +376,8 @@ An \code{EarthEngineMap} object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-setCenter"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-setCenter}{}}}
+\if{html}{\out{<a id="method-setCenter"></a>}}
+\if{latex}{\out{\hypertarget{method-setCenter}{}}}
 \subsection{Method \code{setCenter()}}{
 Centers the map view at the given coordinates with the given zoom level. If
 no zoom level is provided, it uses 10 by default.
@@ -421,8 +421,8 @@ Map
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-setZoom"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-setZoom}{}}}
+\if{html}{\out{<a id="method-setZoom"></a>}}
+\if{latex}{\out{\hypertarget{method-setZoom}{}}}
 \subsection{Method \code{setZoom()}}{
 Sets the zoom level of the map.
 \subsection{Usage}{
@@ -461,8 +461,8 @@ Map
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-centerObject"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-centerObject}{}}}
+\if{html}{\out{<a id="method-centerObject"></a>}}
+\if{latex}{\out{\hypertarget{method-centerObject}{}}}
 \subsection{Method \code{centerObject()}}{
 Centers the map view on a given object. If no zoom level is provided, it
 will be predicted according to the bounds of the Earth Engine object
@@ -512,8 +512,8 @@ Map
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-addLayer"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-addLayer}{}}}
+\if{html}{\out{<a id="method-addLayer"></a>}}
+\if{latex}{\out{\hypertarget{method-addLayer}{}}}
 \subsection{Method \code{addLayer()}}{
 Adds a given Earth Engine spatial object to the map as a layer
 \subsection{Usage}{
@@ -608,8 +608,8 @@ Map$reset()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-addLayers"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-addLayers}{}}}
+\if{html}{\out{<a id="method-addLayers"></a>}}
+\if{latex}{\out{\hypertarget{method-addLayers}{}}}
 \subsection{Method \code{addLayers()}}{
 Adds a given ee$ImageCollection to the map as multiple layers.
 \subsection{Usage}{
@@ -682,8 +682,8 @@ Map$reset()
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-addLegend"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-addLegend}{}}}
+\if{html}{\out{<a id="method-addLegend"></a>}}
+\if{latex}{\out{\hypertarget{method-addLegend}{}}}
 \subsection{Method \code{addLegend()}}{
 Adds a color legend to an EarthEngineMap.
 \subsection{Usage}{
@@ -757,8 +757,8 @@ Map$addLegend(vis_qc, name = "Legend2", color_mapping = "character")
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-EarthEngineMap-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-EarthEngineMap-clone}{}}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -8,7 +8,7 @@ ee_as_stars(
   image,
   region = NULL,
   dsn = NULL,
-  via = "getDownloadURL",
+  via = "drive",
   container = "rgee_backup",
   scale = NULL,
   maxPixels = 1e+09,

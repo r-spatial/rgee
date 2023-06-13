@@ -160,7 +160,7 @@
 ee_as_stars <- function(image,
                         region = NULL,
                         dsn = NULL,
-                        via = "getDownloadURL",
+                        via = "drive",
                         container = "rgee_backup",
                         scale = NULL,
                         maxPixels = 1e9,
@@ -408,7 +408,7 @@ ee_as_stars <- function(image,
 ee_as_rast <- function(image,
                        region = NULL,
                        dsn = NULL,
-                       via = "getDownloadURL",
+                       via = "drive",
                        container = "rgee_backup",
                        scale = NULL,
                        maxPixels = 1e9,
@@ -432,16 +432,36 @@ ee_as_rast <- function(image,
       dsn <- tempfile(fileext = ".tif")
     }
 
-    rast_obj <- ee_image_local_getDownloadURL(
-      image = image,
-      dsn = dsn,
-      quiet = quiet,
-      scale = scale,
-      grid_batch = grid_batch,
-      export = "terra",
-      format = "GEO_TIFF",
-      geometry = region
-    )
+    # Download data
+    counter <- 1
+    while(TRUE) {
+        rast_obj <- tryCatch(
+          expr = {
+              ee_image_local_getDownloadURL(
+                image = image,
+                dsn = dsn,
+                quiet = quiet,
+                scale = scale,
+                grid_batch = grid_batch,
+                export = "terra",
+                format = "GEO_TIFF",
+                geometry = region
+              )
+          }, error = function(e) {
+              Sys.sleep(1)
+              if (counter > 4) {
+                  stop(e)
+              }
+              counter <- counter + 1
+              FALSE
+          }
+        )
+
+        if (inherits(rast_obj, "SpatRaster")) {
+            break
+        }
+    }
+
     return(rast_obj)
   }
 
