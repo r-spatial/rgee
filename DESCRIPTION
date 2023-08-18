@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 1.1.6.9999
+Version: 1.1.7
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -97,7 +97,7 @@ Depends:
     R (>= 3.3.0)
 Imports:
     methods,
-    reticulate (>= 1.24),
+    reticulate (>= 1.27),
     rstudioapi (>= 0.7),
     leaflet (>= 2.0.2),
     magrittr,
@@ -123,6 +123,7 @@ Suggests:
     spelling,
     testthat,
     future,
+    terra,
     covr,
     knitr,
     rmarkdown,

@@ -147,6 +147,7 @@ ee_connect_to_py <- function(path, n = 5) {
         "does not have the Python package \"earthengine-api\" installed. Do you restarted/terminated",
         "your R session after install miniconda or run ee_install()?",
         "If this is not the case, try:",
+        "> ee_install_upgrade(): Install the latest Earth Engine Python version.",
         "> reticulate::use_python(): Refresh your R session and manually set the Python environment with all rgee dependencies.",
         "> ee_install(): To create and set a Python environment with all rgee dependencies.",
         "> ee_install_set_pyenv(): To set a specific Python environment."
@@ -411,6 +412,9 @@ ee_message_05 <- function() {
 ee_message_06 <- function(gcs_credentials, ee_user) {
   cat("\r", crayon::green(cli::symbol[["tick"]]), crayon::blue("Earth Engine account:"),
       crayon::green(crayon::bold(ee_user)), "\n")
+  py_ee_config <- reticulate::py_config()
+  cat("\r", crayon::green(cli::symbol[["tick"]]), crayon::blue("Python Path:"),
+      crayon::green(crayon::bold(py_ee_config[["python"]])), "\n")
   cat(cli::rule(), "\n")
   if (!is.na(gcs_credentials[["message"]])) {
     message(gcs_credentials[["message"]])

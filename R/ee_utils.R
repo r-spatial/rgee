@@ -4,7 +4,7 @@
 #' @return An R object
 #' @export
 ee_utils_py_to_r <- function(x) {
-  p_r <- suppressWarnings(try(py_to_r(x), silent = TRUE))
+  p_r <- suppressWarnings(try(reticulate::py_to_r(x), silent = TRUE))
   if (class(p_r) %in% 'try-error') {
     return(x)
   } else {
@@ -453,7 +453,7 @@ get_signature <- function (sigs) {
       py_value_str <- ifelse(
         is.character(sigs[[k]]),
         paste0("'", sigs[[k]], "'"),
-        as.character(r_to_py(eval(sigs[[k]]))))
+        as.character(reticulate::r_to_py(eval(sigs[[k]]))))
       paste0(k, "=", py_value_str)
     }
   })

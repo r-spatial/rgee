@@ -2,7 +2,7 @@
 #' @param eeobject Earth Engine Object to print documentation.
 #' @param browser Logical. Display documentation in the browser.
 #' @importFrom reticulate py_function_docs
-#' @importFrom utils tail
+#' @importFrom utils tail help
 #' @family helper functions
 #' @return No return value, called for displaying Earth Engine documentation.
 #' @examples
@@ -620,5 +620,5 @@ rgeeExtracheckmans <- function(fun_name, type="image") {
   } else if (type=="ic") {
     checkmanfiles <- sprintf("%s%s", "ee_ImageCollection_", fun_name)
   }
-  help(checkmanfiles, package = "rgeeExtra", verbose = FALSE)
+  utils::help(checkmanfiles, package = "rgeeExtra", verbose = FALSE)
 }

@@ -1,7 +1,7 @@
 import ee
- 
+
 words = [
-    "#' Earth Engine API version", 
+    "#' Earth Engine API version",
     "#'",
     "#'",
     "#' @family session management functions",
@@ -9,7 +9,7 @@ words = [
     "#' @export",
     "ee_version <- function() {",
     " '%s'" % (ee.__version__),
-    "}"
+    "}",
 ]
 
 with open("R/ee_version.R", "w") as file:
