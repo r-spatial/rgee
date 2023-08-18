@@ -51,11 +51,11 @@ def create_codes(*nonce_keys):
     table = {}
     for key in nonce_keys:
         table[key] = _base64param(os.urandom(32))
-        if key.endswith('_verifier'):
+        if key.endswith("_verifier"):
             # Generate a challenge that the server will use to ensure that requests
             # only work with our verifiers.  https://tools.ietf.org/html/rfc7636
             pkce_challenge = _base64param(hashlib.sha256(table[key]).digest())
-            table[key.replace('_verifier', '_challenge')] = pkce_challenge
+            table[key.replace("_verifier", "_challenge")] = pkce_challenge
     return {k: v.decode() for k, v in table.items()}
 
 
