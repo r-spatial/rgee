@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.1
+# CITATION file created with {cffr} R package, v0.5.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.6.9999
+version: 1.1.7
 abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
   of the 'Earth Engine' API classes, modules, and functions are made available. Additional
   functions implemented include importing (exporting) of Earth Engine spatial objects,
@@ -60,16 +60,16 @@ references:
   authors:
   - family-names: Ushey
     given-names: Kevin
-    email: kevin@rstudio.com
+    email: kevin@posit.co
   - family-names: Allaire
     given-names: JJ
-    email: jj@rstudio.com
+    email: jj@posit.co
   - family-names: Tang
     given-names: Yuan
     email: terrytangyuan@gmail.com
     orcid: https://orcid.org/0000-0001-5243-233X
   year: '2023'
-  version: '>= 1.24'
+  version: '>= 1.27'
 - type: software
   title: rstudioapi
   abstract: 'rstudioapi: Safely Access the RStudio API'
@@ -82,13 +82,13 @@ references:
     email: kevin@rstudio.com
   - family-names: Allaire
     given-names: JJ
-    email: jj@rstudio.com
+    email: jj@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   - family-names: Ritchie
     given-names: Gary
-    email: gary@rstudio.com
+    email: gary@posit.co
   year: '2023'
   version: '>= 0.7'
 - type: software
@@ -126,7 +126,7 @@ references:
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
   notes: Imports
-  url: https://arxiv.org/abs/1403.2805
+  url: https://jeroen.r-universe.dev/jsonlite
   repository: https://CRAN.R-project.org/package=jsonlite
   authors:
   - family-names: Ooms
@@ -266,10 +266,9 @@ references:
   authors:
   - family-names: D'Agostino McGowan
     given-names: Lucy
-    email: ld.mcgowan@vanderbilt.edu
   - family-names: Bryan
     given-names: Jennifer
-    email: jenny@rstudio.com
+    email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
   year: '2023'
   version: '>= 2.0.0'
@@ -348,7 +347,7 @@ references:
   title: digest
   abstract: 'digest: Create Compact Hash Digests of R Objects'
   notes: Suggests
-  url: http://dirk.eddelbuettel.com/code/digest.html
+  url: https://dirk.eddelbuettel.com/code/digest.html
   repository: https://CRAN.R-project.org/package=digest
   authors:
   - family-names: Lucas
@@ -396,8 +395,10 @@ references:
     given-names: Bill
   - family-names: Schumacher
     given-names: Dirk
-  - family-names: Chang.
-    given-names: and Winston
+  - family-names: Chang
+    given-names: Winston
+  - family-names: Attali.
+    given-names: Dean
   year: '2023'
 - type: software
   title: spelling
@@ -423,7 +424,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2023'
 - type: software
   title: future
@@ -435,6 +436,18 @@ references:
   - family-names: Bengtsson
     given-names: Henrik
     email: henrikb@braju.com
+  year: '2023'
+- type: software
+  title: terra
+  abstract: 'terra: Spatial Data Analysis'
+  notes: Suggests
+  url: https://rspatial.org/
+  repository: https://CRAN.R-project.org/package=terra
+  authors:
+  - family-names: Hijmans
+    given-names: Robert J.
+    email: r.hijmans@gmail.com
+    orcid: https://orcid.org/0000-0001-5872-2872
   year: '2023'
 - type: software
   title: covr
@@ -468,35 +481,38 @@ references:
   authors:
   - family-names: Allaire
     given-names: JJ
-    email: jj@rstudio.com
+    email: jj@posit.co
   - family-names: Xie
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
   - family-names: McPherson
     given-names: Jonathan
-    email: jonathan@rstudio.com
+    email: jonathan@posit.co
   - family-names: Luraschi
     given-names: Javier
-    email: javier@rstudio.com
   - family-names: Ushey
     given-names: Kevin
-    email: kevin@rstudio.com
+    email: kevin@posit.co
   - family-names: Atkins
     given-names: Aron
-    email: aron@rstudio.com
+    email: aron@posit.co
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   - family-names: Cheng
     given-names: Joe
-    email: joe@rstudio.com
+    email: joe@posit.co
   - family-names: Chang
     given-names: Winston
-    email: winston@rstudio.com
+    email: winston@posit.co
   - family-names: Iannone
     given-names: Richard
-    email: rich@rstudio.com
+    email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2023'
 - type: software
