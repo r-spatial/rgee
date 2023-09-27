@@ -108,26 +108,25 @@ Imports:
     R6,
     cli
 Suggests:
-    leaflet.extras2,
     magick,
     geojsonio,
     sf,
     stars,
     googledrive (>= 2.0.0),
-    googleCloudStorageR (>= 0.6.0),
     gargle,
-    raster,
-    rgdal,
     httr,
     digest,
-    spelling,
     testthat,
     future,
     terra,
     covr,
     knitr,
     rmarkdown,
-    png
+    png,
+    googleCloudStorageR,
+    leaflet.extras2,
+    spelling,
+    raster
 URL: https://github.com/r-spatial/rgee/, https://r-spatial.github.io/rgee/, https://github.com/google/earthengine-api/
 BugReports: https://github.com/r-spatial/rgee/issues/
 VignetteBuilder: knitr
