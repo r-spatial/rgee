@@ -101,7 +101,11 @@ references:
   authors:
   - family-names: Cheng
     given-names: Joe
-    email: joe@rstudio.com
+    email: joe@posit.co
+  - family-names: Schloerke
+    given-names: Barret
+    email: barret@posit.co
+    orcid: https://orcid.org/0000-0001-9986-114X
   - family-names: Karambelkar
     given-names: Bhaskar
   - family-names: Xie
@@ -193,17 +197,6 @@ references:
     email: csardi.gabor@gmail.com
   year: '2023'
 - type: software
-  title: leaflet.extras2
-  abstract: 'leaflet.extras2: Extra Functionality for ''leaflet'' Package'
-  notes: Suggests
-  url: https://trafficonese.github.io/leaflet.extras2/
-  repository: https://CRAN.R-project.org/package=leaflet.extras2
-  authors:
-  - family-names: Sebastian
-    given-names: Gatscha
-    email: sebastian_gatscha@gmx.at
-  year: '2023'
-- type: software
   title: magick
   abstract: 'magick: Advanced Graphics and Image-Processing in R'
   notes: Suggests
@@ -273,19 +266,6 @@ references:
   year: '2023'
   version: '>= 2.0.0'
 - type: software
-  title: googleCloudStorageR
-  abstract: 'googleCloudStorageR: Interface with Google Cloud Storage API'
-  notes: Suggests
-  url: https://code.markedmondson.me/googleCloudStorageR/
-  repository: https://CRAN.R-project.org/package=googleCloudStorageR
-  authors:
-  - family-names: Edmondson
-    given-names: Mark
-    email: r@sunholo.com
-    orcid: https://orcid.org/0000-0002-8434-3881
-  year: '2023'
-  version: '>= 0.6.0'
-- type: software
   title: gargle
   abstract: 'gargle: Utilities for Working with Google APIs'
   notes: Suggests
@@ -303,34 +283,6 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2023'
-- type: software
-  title: raster
-  abstract: 'raster: Geographic Data Analysis and Modeling'
-  notes: Suggests
-  url: https://rspatial.org/raster
-  repository: https://CRAN.R-project.org/package=raster
-  authors:
-  - family-names: Hijmans
-    given-names: Robert J.
-    email: r.hijmans@gmail.com
-    orcid: https://orcid.org/0000-0001-5872-2872
-  year: '2023'
-- type: software
-  title: rgdal
-  abstract: 'rgdal: Bindings for the ''Geospatial'' Data Abstraction Library'
-  notes: Suggests
-  url: https://gdal.org
-  repository: https://CRAN.R-project.org/package=rgdal
-  authors:
-  - family-names: Bivand
-    given-names: Roger
-    email: Roger.Bivand@nhh.no
-    orcid: https://orcid.org/0000-0003-2392-6140
-  - family-names: Keitt
-    given-names: Tim
-  - family-names: Rowlingson
-    given-names: Barry
   year: '2023'
 - type: software
   title: httr
@@ -399,21 +351,6 @@ references:
     given-names: Winston
   - family-names: Attali.
     given-names: Dean
-  year: '2023'
-- type: software
-  title: spelling
-  abstract: 'spelling: Tools for Spell Checking in R'
-  notes: Suggests
-  url: https://docs.ropensci.org/spelling/
-  repository: https://CRAN.R-project.org/package=spelling
-  authors:
-  - family-names: Ooms
-    given-names: Jeroen
-    email: jeroen@berkeley.edu
-    orcid: https://orcid.org/0000-0002-4035-0289
-  - family-names: Hester
-    given-names: Jim
-    email: james.hester@rstudio.com
   year: '2023'
 - type: software
   title: testthat
@@ -525,6 +462,56 @@ references:
   - family-names: Urbanek
     given-names: Simon
     email: Simon.Urbanek@r-project.org
+  year: '2023'
+- type: software
+  title: googleCloudStorageR
+  abstract: 'googleCloudStorageR: Interface with Google Cloud Storage API'
+  notes: Suggests
+  url: https://code.markedmondson.me/googleCloudStorageR/
+  repository: https://CRAN.R-project.org/package=googleCloudStorageR
+  authors:
+  - family-names: Edmondson
+    given-names: Mark
+    email: r@sunholo.com
+    orcid: https://orcid.org/0000-0002-8434-3881
+  year: '2023'
+- type: software
+  title: leaflet.extras2
+  abstract: 'leaflet.extras2: Extra Functionality for ''leaflet'' Package'
+  notes: Suggests
+  url: https://trafficonese.github.io/leaflet.extras2/
+  repository: https://CRAN.R-project.org/package=leaflet.extras2
+  authors:
+  - family-names: Sebastian
+    given-names: Gatscha
+    email: sebastian_gatscha@gmx.at
+  year: '2023'
+- type: software
+  title: spelling
+  abstract: 'spelling: Tools for Spell Checking in R'
+  notes: Suggests
+  url: https://docs.ropensci.org/spelling/
+  repository: https://CRAN.R-project.org/package=spelling
+  authors:
+  - family-names: Ooms
+    given-names: Jeroen
+    email: jeroen@berkeley.edu
+    orcid: https://orcid.org/0000-0002-4035-0289
+  - family-names: Hester
+    given-names: Jim
+    email: james.hester@rstudio.com
+  year: '2023'
+- type: software
+  title: raster
+  abstract: 'raster: Geographic Data Analysis and Modeling'
+  notes: Suggests
+  url: https://rspatial.org/raster
+  repository: https://CRAN.R-project.org/package=raster
+  authors:
+  - family-names: Hijmans
+    given-names: Robert J.
+    email: r.hijmans@gmail.com
+    orcid: https://orcid.org/0000-0001-5872-2872
   year: '2023'
 identifiers:
 - type: url
