@@ -20,7 +20,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7.x'  # Use a flexible version
+          python-version: '3.x'  # Use a flexible version
 
       - name: install python packages
         run: |
