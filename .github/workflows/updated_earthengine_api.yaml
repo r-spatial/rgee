@@ -1,44 +1,51 @@
 # Based on: https://github.com/samapriya/Earth-Engine-Datasets-List/blob/master/.github/workflows/gee_catalog.yml
 # Author: Roy Samapriya
+# Edited by : Antony Barja
 name: gee_catalog_lightweight
 on:
   push:
     branches:
       - master
   schedule:
-    - cron:  '0 * * * *'
+    - cron: '0 * * * *'  # Ejecutar cada hora
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
       - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
+        uses: actions/checkout@v2  # Checkout the repository content to GitHub runner
 
       - name: setup python
         uses: actions/setup-python@v2
-          
+
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip          
-          pip install earthengine-api
+          python -m pip install --upgrade pip
+          pip install earthengine-api  # Instala cualquier paquete adicional necesario
+
       - name: dataset upgrade
         run: |
-          python3 ./.github/ee_up.py
-      - name: file_check
-        run: ls -l -a
-      - name: commit files
-        continue-on-error: true
+          python3 .github/db_up.py  # Ejecuta el script db_up.py para actualizar dataset.json
+
+      - name: delete old dataset.json
         run: |
+          rm -f inst/dataset.json  # Elimina el archivo dataset.json anterior si existe
+
+      - name: commit files
+        continue-on-error: true  # Continuar si no hay cambios para comprometer
+        run: |
+          cd $GITHUB_WORKSPACE
           today=$(date +"%Y-%m-%d %H:%M:%S")
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "updated earthengine version ${today}" -a
+          git status  # Verifica el estado de los archivos antes de commit
+          git commit -m "updated earthengine version ${today}" -a || echo "No changes to commit"  # Commit con mensaje dinámico de fecha
+
       - name: push changes
-        continue-on-error: true
+        continue-on-error: true  # Continuar si no hay cambios para empujar
         uses: ad-m/github-push-action@v0.6.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          branch: master  # Empuja los cambios a la rama master
