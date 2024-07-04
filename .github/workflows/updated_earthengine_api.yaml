@@ -1,5 +1,6 @@
 # Based on: https://github.com/samapriya/Earth-Engine-Datasets-List/blob/master/.github/workflows/gee_catalog.yml
 # Author: Roy Samapriya
+# Edited: Antony Barja
 name: gee_catalog_lightweight
 on:
   push:
