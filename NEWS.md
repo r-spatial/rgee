@@ -12,13 +12,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# rgee 1.1.6.9999
+# rgee 1.1.7
 
+- Add Python Path to ee_Initialize.
 - Fix a bug in ee_image_info strsplit(code, ":") : object 'band_metadata' not found. Thanks @TianyaImpression.
 - Fix a bug in VScode studio when getOption("rgee.print.option") is "simple".
 - ee_as_raster (raster) is deprecated in favour to ee_as_rast (terra).
-- `via` argument in ee_as_stars, and ee_as_rast have a new option called "getDownloadURL". via="getDownloadURL" is the new default. getDownloadURL permit download small images x800% 
-faster.
+- `via` argument in ee_as_stars, and ee_as_rast have a new option called "getDownloadURL".
 
 
 # rgee 1.1.6

@@ -4,9 +4,9 @@
 #' and "POSIXct") to Google Earth Engine (ee$Date).
 #'
 #' @param date R date object
-#' @param timestamp Logical. If TRUE, return the date in milliseconds
-#' from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise return a
-#' EE date object. By default, FALSE.
+#' @param timestamp Logical. By default, FALSE. If TRUE, return the date in milliseconds
+#' from the Unix Epoch (1970-01-01 00:00:00 UTC). Otherwise, return a
+#' EE date object.
 #' @family date functions
 #' @return \code{rdate_to_eedate} will return either a numeric timestamp or
 #' an ee$Date depending on the \code{timestamp} argument.
@@ -43,7 +43,7 @@ rdate_to_eedate <- function(date, timestamp = FALSE) {
 #'
 #' @details
 #' \code{eedate_to_rdate} is essential to avoid potential errors that
-#' might appear when users call to retrieve dates. Currently,
+#' might appear when users need to retrieve dates. Currently,
 #' R integer only supports 32 bit signed (such integers can only
 #' count up to about 2 billion). This range is notably insufficient for dealing
 #' with GEE date objects represented by timestamps in milliseconds since the

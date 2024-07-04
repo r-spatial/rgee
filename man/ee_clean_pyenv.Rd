@@ -10,8 +10,8 @@ ee_clean_pyenv(Renviron = "global")
 \item{Renviron}{Character. If it is "global" the environment variables in
 the .Renviron located in the Sys.getenv("HOME") folder will be deleted. On the
 other hand, if it is "local" the environment variables in the .Renviron on the
-working directory (getwd()) will be deleted. Finally, users can also enter a
-specific absolute path (see examples).}
+working directory (getwd()) will be deleted. Finally, users can also set a
+specific path (see examples).}
 }
 \value{
 No return value, called for cleaning environmental variables in

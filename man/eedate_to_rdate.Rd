@@ -22,7 +22,7 @@ Pass an Earth Engine date object to R
 }
 \details{
 \code{eedate_to_rdate} is essential to avoid potential errors that
-might appear when users call to retrieve dates. Currently,
+might appear when users need to retrieve dates. Currently,
 R integer only supports 32 bit signed (such integers can only
 count up to about 2 billion). This range is notably insufficient for dealing
 with GEE date objects represented by timestamps in milliseconds since the

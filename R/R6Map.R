@@ -3,7 +3,7 @@
 #' @description Create interactive visualizations of spatial EE objects
 #' (ee$Geometry, ee$Image, ee$Feature, and ee$FeatureCollection)
 #' using \code{leaflet}.
-#'
+#' @importFrom R6 R6Class
 #' @details
 #' `R6Map` uses the Earth Engine method
 #' \href{https://developers.google.com/earth-engine/api_docs#ee.data.getmapid/}{

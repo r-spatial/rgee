@@ -1,6 +1,6 @@
 Package: rgee
 Title: R Bindings for Calling the 'Earth Engine' API
-Version: 1.1.6.9999
+Version: 1.1.7
 Authors@R: 
     c(person(given = "Cesar",
              family = "Aybar",
@@ -92,12 +92,12 @@ License: Apache License (>= 2.0)
 Encoding: UTF-8
 LazyData: false
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends:
     R (>= 3.3.0)
 Imports:
     methods,
-    reticulate (>= 1.24),
+    reticulate (>= 1.27),
     rstudioapi (>= 0.7),
     leaflet (>= 2.0.2),
     magrittr,
@@ -108,25 +108,25 @@ Imports:
     R6,
     cli
 Suggests:
-    leaflet.extras2,
     magick,
     geojsonio,
     sf,
     stars,
     googledrive (>= 2.0.0),
-    googleCloudStorageR (>= 0.6.0),
     gargle,
-    raster,
-    rgdal,
     httr,
     digest,
-    spelling,
     testthat,
     future,
+    terra,
     covr,
     knitr,
     rmarkdown,
-    png
+    png,
+    googleCloudStorageR,
+    leaflet.extras2,
+    spelling,
+    raster
 URL: https://github.com/r-spatial/rgee/, https://r-spatial.github.io/rgee/, https://github.com/google/earthengine-api/
 BugReports: https://github.com/r-spatial/rgee/issues/
 VignetteBuilder: knitr

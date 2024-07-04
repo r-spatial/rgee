@@ -1,14 +1,14 @@
 #' Interface to check Python and non-R dependencies
 #'
-#' R functions for checking Google credentials (Google Earth Engine,
+#' R function for checking Google credentials (Google Earth Engine,
 #' Google Drive and Google Cloud Storage), Python environment and
 #' Third-Party Python Packages used by rgee. Besides, from v0.1.304,
 #' earthengine-api (Python side) requires gcloud to manage
 #' authentication (see \link{ee_Authenticate}).
 #' @name ee_check-tools
 #'
-#' @param user Character. User to check credentials. If it is not defined,
-#' ee_check will skip the check of credentials.
+#' @param user Character.User to check credentials. If this parameter is not defined,
+#' then the check for credentials will be skipped.
 #' @param quiet Logical. Suppress info message
 #'
 #' @importFrom reticulate py_available py_module_available py_discover_config

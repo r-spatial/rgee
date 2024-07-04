@@ -1,25 +1,25 @@
 #' Extract values from EE Images or ImageCollections objects
 #'
-#' Extract values from an \code{ee$Image} at the
-#' locations of a geometry object. Users can use \code{ee$Geometry$*},
-#' \code{ee$Feature}, \code{ee$FeatureCollection}, sf or sfc object to filter
-#' spatially. This function mimicking how \link[raster]{extract} currently works.
+#' Extract values from an \code{ee$Image} based on the locations of a geometry object.
+#' Users can utilize  \code{ee$Geometry$*}, \code{ee$Feature}, \code{ee$FeatureCollection},
+#' sf or sfc object for spatial filter.
+#' This function emulates the functionality of the existing \link[raster]{extract} method.
 #'
 #' @param x ee$Image.
 #' @param y ee$Geometry$*, ee$Feature, ee$FeatureCollection, sfc or sf objects.
 #' @param fun ee$Reducer object. Function to summarize the values. The function
 #' must take a single numeric value as an argument and return a single value.
 #' See details.
-#' @param scale A nominal scale in meters of the Image projection to work in.
+#' @param scale A nominal scale given in meters of the Image projection to work in.
 #' By default 1000.
-#' @param sf Logical. Should return an sf object?
+#' @param sf Logical. Should the function return an sf object?
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
 #' future::sequential}} object is created to evaluate the task in the future.
 #' Ignore if \code{via} is set as "getInfo". See details.
-#' @param via Character. Method to export the image. Three method are
-#' implemented: "getInfo", "drive", "gcs".
+#' @param via Character. Method for exporting the image.
+#' Three methods are available: "getInfo", "drive", "gcs".
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
-#' to be exported into (ignore if \code{via} is not defined as "drive" or
+#' to export the image into (ignore if \code{via} is not defined as "drive" or
 #' "gcs").
 #' @param quiet Logical. Suppress info message.
 #' @param ... ee$Image$reduceRegions additional parameters. See
@@ -196,7 +196,7 @@ ee_extract <- function(x,
     #   message("NOTE: y is an sf object, running 'sf_as_ee(y$geometry)' to ",
     #           "convert in an ee$FeatureCollection object.")
     # }
-    ee_y <- sf_as_ee(y[["geometry"]], quiet = TRUE)
+    ee_y <- sf_as_ee(y[[attr(y, "sf_column")]], quiet = TRUE)
   } else if(any("sfc" %in%  class(y))) {
     sf_y <- sf::st_sf(id = seq_along(y), geometry = y)
     # if (!quiet) {

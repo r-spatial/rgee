@@ -4,38 +4,38 @@
 #' This function is a wrapper around \cr
 #' \code{ee$batch$Export$image$toDrive(...)}.
 #'
-#' @param image The image to be exported.
-#' @param description Human-readable name of the task.
-#' @param folder The name of a folder in their Drive account to be
-#' exported into. By default "rgee-backup".
-#' @param fileNamePrefix The Google Drive filename for the export. Defaults to
-#' the name of the task.
-#' @param timePrefix Add current date and time as a prefix to files to export.
-#' @param dimensions The dimensions of the exported image. It takes either a
-#' single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-#' WIDTH and HEIGHT are each positive integers.
+#' @param image Image to be exported.
+#' @param description User-friendly name of the task.
+#' @param folder Folder name in the user's Drive account where the export will be stored.
+#' Default is "rgee-backup".
+#' @param fileNamePrefix Prefix for the export filename in Google Drive. Defaults to
+#' the task name.
+#' @param timePrefix  Prefixes the current date and time to the exported files.
+#' @param dimensions Defines the image dimensions for export.
+#' It can be specified as a single positive integer for the maximum dimension
+#' or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.
 #' @param region The lon,lat coordinates for a LinearRing or Polygon specifying
 #' the region to export. It can be specified as nested lists of numbers or a
 #' serialized string. Defaults to the image's region.
-#' @param scale The resolution in meters per pixel. Defaults to the native
+#' @param scale Image resolution in meters per pixel. Defaults to the native
 #' resolution of the image asset unless a crsTransform is specified.
-#' @param crs The coordinate reference system of the exported image's
+#' @param crs Coordinate reference system of the exported image's
 #' projection. Defaults to the image's default projection.
 #' @param crsTransform A comma-separated string of 6 numbers describing
 #' the affine transform of the coordinate reference system of the exported
 #' image's projection, in the order: xScale, xShearing, xTranslation,
 #' yShearing, yScale, and yTranslation. Defaults to the image's native
 #' CRS transform.
-#' @param maxPixels The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers
-#' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param shardSize Size in pixels of the shards in which this image
+#' @param maxPixels Maximum number of pixels allowed in the exported image.
+#' The task will fail if the exported region exceeds this limit in the specified projection.
+#' Defaults to 100,000,000.
+#' @param shardSize Size given in pixels of the shards in which the image
 #' will be computed. Defaults to 256.
-#' @param fileDimensions The dimensions in pixels of each image file,
-#' if the image is too large to fit in a single file. May specify a
-#' single number to indicate a square shape, or a list of two dimensions
-#' to indicate (width, height). Note that the image will still be clipped
-#' to the overall image dimensions. Must be a multiple of shardSize.
+#' @param fileDimensions Defines the pixel dimensions for each image file when the image size exceeds
+#' the capacity of a single file.To indicate a square shape, use a single number;
+#' for width and height, use a list of two dimensions.
+#' Please note that the image will be clipped to the overall image dimensions.
+#' The specified file dimensions must be a multiple of the shardSize.
 #' @param skipEmptyTiles If TRUE, skip writing empty (i.e., fully-masked)
 #' image tiles. Defaults to FALSE.
 #' @param fileFormat The string file format to which the image is exported.
@@ -44,7 +44,7 @@
 #' options. **kwargs: Holds other keyword arguments that may have been
 #' deprecated, such as 'crs_transform', 'driveFolder', and 'driveFileNamePrefix'.
 #'
-#' @return An unstarted Task that exports the image to Drive.
+#' @return An unstarted task that exports the image to Drive.
 #' @family image export task creator
 #' @examples
 #' \dontrun{
@@ -158,19 +158,19 @@ ee_image_to_drive <- function(image,
 #' \code{ee$batch$Export$image$toCloudStorage(...)}.
 #'
 #' @param image The image to be exported.
-#' @param description Human-readable name of the task.
-#' @param bucket The name of a Cloud Storage bucket for the export.
+#' @param description User-friendly name of the task.
+#' @param bucket Cloud Storage bucket name for the export.
 #' @param fileNamePrefix Cloud Storage object name prefix for the export.
 #' Defaults to the name of the task.
-#' @param timePrefix Add current date and time as a prefix to files to export.
-#' @param dimensions The dimensions of the exported image. Takes either a
-#' single positive integer as the maximum dimension or "WIDTHxHEIGHT"
-#' where WIDTH and HEIGHT are each positive integers.
+#' @param timePrefix Prefixes the current date and time to the exported files
+#' @param dimensions Defines the image dimensions for export.
+#' It can be specified as a single positive integer for the maximum dimension
+#' or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.
 #' @param region The lon,lat coordinates for a LinearRing or Polygon
 #' specifying the region to export. It can be specified as nested lists
 #' of numbers or a serialized string. Defaults to the image's region.
-#' @param scale The resolution in meters per pixel. Defaults to the native
-#' resolution of the image assset unless a crsTransform is specified.
+#' @param scale Image resolution in meters per pixel. Defaults to the native
+#' resolution of the image asset unless a crsTransform is specified.
 #' @param crs The coordinate reference system of the exported image's
 #' projection. Defaults to the image's default projection.
 #' @param crsTransform A comma-separated string of 6 numbers describing
@@ -178,16 +178,16 @@ ee_image_to_drive <- function(image,
 #' image's projection, in the order:
 #' xScale, xShearing, xTranslation, yShearing, yScale, and yTranslation.
 #' Defaults to the image's native CRS transform.
-#' @param maxPixels The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers more
-#' pixels in the specified projection. Defaults to 100,000,000.
-#' @param shardSize Size in pixels of the shards in which this image
+#' @param maxPixels Maximum number of pixels allowed in the exported image.
+#' The task will fail if the exported region exceeds this limit in the specified projection.
+#' Defaults to 100,000,000.
+#' @param shardSize Size given in pixels of the shards in which the image
 #' will be computed. Defaults to 256.
-#' @param fileDimensions The dimensions in pixels of each image file, if
-#' the image is too large to fit in a single file. May specify a single
-#' number to indicate a square shape, or a list of two dimensions to
-#' indicate (width, height). Note that the image will still be clipped to
-#' the overall image dimensions. Must be a multiple of shardSize.
+#' @param fileDimensions Defines the pixel dimensions for each image file when the image size exceeds
+#' the capacity of a single file.To indicate a square shape, use a single number;
+#' for width and height, use a list of two dimensions.
+#' Please note that the image will be clipped to the overall image dimensions.
+#' The specified file dimensions must be a multiple of the shardSize.
 #' @param skipEmptyTiles If TRUE, skip writing empty (i.e., fully-masked)
 #' image tiles. Defaults to FALSE.
 #' @param fileFormat The string file format to which the image is exported.
@@ -317,19 +317,18 @@ ee_image_to_gcs <- function(image,
 #' @param image The image to be exported.
 #' @param description Human-readable name of the task.
 #' @param assetId The destination asset ID.
-#' @param overwrite Logical. If TRUE, the assetId will be overwritten if
-#' it exists.
+#' @param overwrite Specifies whether to overwrite the assetId if it already exists.
 #' @param pyramidingPolicy The pyramiding policy to apply to each band
 #' in the image, a dictionary keyed by band name. Values must be one
 #' of: "mean", "sample", "min", "max", or "mode". Defaults to "mean".
 #' A special key, ".default", may be used to change the default for all bands.
-#' @param dimensions The dimensions of the exported image. It takes either a
-#' single positive integer as the maximum dimension or "WIDTHxHEIGHT" where
-#' WIDTH and HEIGHT are each positive integers.
+#' @param dimensions Defines the image dimensions for export.
+#' It can be specified as a single positive integer for the maximum dimension
+#' or in "WIDTHxHEIGHT" format, where WIDTH and HEIGHT are positive integers.
 #' @param region The lon,lat coordinates for a LinearRing or Polygon
 #' specifying the region to export. It can be specified as nested lists
 #' of numbers or a serialized string. Defaults to the image's region.
-#' @param scale The resolution in meters per pixel. Defaults to the native
+#' @param scale Resolution given in meters per pixel. Defaults to the native
 #' resolution of the image asset unless a crsTransform is specified.
 #' @param crs The coordinate reference system of the exported image's
 #' projection. Defaults to the image's default projection.
@@ -449,7 +448,7 @@ ee_image_to_asset <- function(image,
 #' This function is a wrapper around \code{ee$batch$Export$table$toDrive(...)}.
 #'
 #' @param collection The feature collection to be exported.
-#' @param description Human-readable name of the task.
+#' @param description User-friendly name of the task.
 #' @param folder The name of a unique folder in your Drive
 #' account to export into. Defaults to the root of the drive.
 #' @param fileNamePrefix The Google Drive filename for the
@@ -457,7 +456,7 @@ ee_image_to_asset <- function(image,
 #' @param timePrefix Add current date and time as a prefix to files to export.
 #' @param fileFormat The output format: "CSV" (default), "GeoJSON",
 #' "KML", "KMZ", "SHP", or "TFRecord".
-#' @param selectors The list of properties to include in the output,
+#' @param selectors A list of properties to include in the output,
 #' as a list of strings or a comma-separated string. By default, all
 #' properties are included. **kwargs: Holds other keyword arguments
 #' that may have been deprecated such as 'driveFolder' and
@@ -536,11 +535,11 @@ ee_table_to_drive <- function(collection,
 #' \code{ee$batch$Export$table$toCloudStorage(...)}.
 #'
 #' @param collection The feature collection to be exported.
-#' @param description Human-readable name of the task.
+#' @param description User-friendly name of the task.
 #' @param bucket The name of a Cloud Storage bucket for the export.
 #' @param fileNamePrefix Cloud Storage object name prefix
 #' for the export. Defaults to the name of the task.
-#' @param timePrefix Add current date and time as a prefix to files to export.
+#' @param timePrefix Prefixes the current date and time to the exported files.
 #' @param fileFormat The output format: "CSV" (default),
 #' "GeoJSON", "KML", "KMZ", "SHP", or "TFRecord".
 #' @param selectors The list of properties to include in the output,
@@ -697,7 +696,7 @@ ee_table_to_asset <- function(collection,
 #'
 #' Move results of an EE task saved in Google Drive to a local directory.
 #'
-#' @param task List generated after finished an EE task correctly. See details.
+#' @param task A generated list obtained after completing an Earth Engine task. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
 #' file will be assigned.
 #' @param overwrite A boolean argument that indicates
@@ -705,9 +704,9 @@ ee_table_to_asset <- function(collection,
 #' @param consider Interactive. See details.
 #' @param public Logical. If TRUE, a public link to the Google Drive resource is
 #' created.
-#' @param metadata Logical. If TRUE, export the metadata related to the Google
-#' Drive resource. See details.
-#' @param quiet logical. Suppress info message.
+#' @param metadata Logical. If TRUE, the metadata related to the Google
+#' Drive resource will be exported. See details.
+#' @param quiet Logical. Suppress info message.
 #'
 #' @details
 #'
@@ -967,10 +966,10 @@ ee_drive_to_local <- function(task,
 #' Move results of an EE task saved in Google Cloud Storage to a local
 #' directory.
 #'
-#' @param task List generated after finished an EE task correctly. See details.
+#' @param task List generated after the EE task is correctly finished. See details.
 #' @param dsn Character. Output filename. If missing, a temporary
-#' file (i.e. \code{tempfile()}) is assigned.
-#' @param overwrite A boolean argument that indicates indicating
+#' file (i.e. \code{tempfile()}) will be assigned.
+#' @param overwrite A boolean argument that indicates
 #' whether "filename" should be overwritten. By default TRUE.
 #' @param public Logical. If TRUE, a public link to Google Cloud Storage
 #' resource is created. "Public Access Prevention" may need to be removed.

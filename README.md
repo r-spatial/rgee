@@ -151,7 +151,7 @@ ee_install()
 ee_Initialize()
 ```
 
-There are three different ways to install rgee Python dependencies:
+There are three (3) different ways to install rgee Python dependencies:
 
 1.  Use [**ee_install**](https://r-spatial.github.io/rgee/reference/ee_install.html) (Highly recommended for users with no experience with Python environments)
 

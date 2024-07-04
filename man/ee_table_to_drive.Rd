@@ -17,7 +17,7 @@ ee_table_to_drive(
 \arguments{
 \item{collection}{The feature collection to be exported.}
 
-\item{description}{Human-readable name of the task.}
+\item{description}{User-friendly name of the task.}
 
 \item{folder}{The name of a unique folder in your Drive
 account to export into. Defaults to the root of the drive.}
@@ -30,7 +30,7 @@ export. Defaults to the name of the task.}
 \item{fileFormat}{The output format: "CSV" (default), "GeoJSON",
 "KML", "KMZ", "SHP", or "TFRecord".}
 
-\item{selectors}{The list of properties to include in the output,
+\item{selectors}{A list of properties to include in the output,
 as a list of strings or a comma-separated string. By default, all
 properties are included. **kwargs: Holds other keyword arguments
 that may have been deprecated such as 'driveFolder' and

@@ -2,23 +2,23 @@
 #'
 #' Convert an ee$Image in a stars object.
 #'
-#' @param image ee$Image to be converted into a stars object.
-#' @param region EE Geometry (ee$Geometry$Polygon) which specifies the region
+#' @param image ee$Image to be converted into a 'stars' object.
+#' @param region EE Geometry (ee$Geometry$Polygon) that specifies the region
 #' to export. CRS needs to be the same that the argument \code{image}.
 #' Otherwise, it will be forced. If not specified, image bounds are taken.
 #' @param dsn Character. Output filename. If missing, a temporary file is
 #' created.
 #' @param via Character. Method to export the image. Three methods are
-#' implemented: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
+#' available: "getDownloadURL", "drive", "gcs". For "drive" and "gcs" see details.
 #' Use "getDownloadURL" for small images. Default "getDownloadURL".
 #' @param container Character. Name of the folder ('drive') or bucket ('gcs')
 #' to be exported.
-#' @param scale Numeric. The resolution in meters per pixel. Defaults
+#' @param scale Numeric. Image resolution given in meters per pixel. Defaults
 #' to the native resolution of the image.
-#' @param maxPixels Numeric. The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers
-#' more pixels in the specified projection. Defaults to 100,000,000.
-#' @param grid_batch Numeric. Argument used if via is set as "getDownloadURL".
+#' @param maxPixels Numeric. The maximum allowable number of pixels in the exported
+#' image. If the exported region covers more pixels than the specified limit in the
+#' given projection, the task will fail. Defaults to 100,000,000.
+#' @param grid_batch Numeric. Argument used if 'via' is set as "getDownloadURL".
 #' The number of pixels to download in each batch without considering the number
 #' of bands. Default to 1048576 -(1024*1024).
 #' @param lazy Logical. If TRUE, a \code{\link[future:sequential]{
@@ -160,7 +160,7 @@
 ee_as_stars <- function(image,
                         region = NULL,
                         dsn = NULL,
-                        via = "getDownloadURL",
+                        via = "drive",
                         container = "rgee_backup",
                         scale = NULL,
                         maxPixels = 1e9,
@@ -265,9 +265,9 @@ ee_as_stars <- function(image,
 #' to be exported.
 #' @param scale Numeric. The resolution in meters per pixel. Defaults
 #' to the native resolution of the image.
-#' @param maxPixels Numeric. The maximum allowed number of pixels in the
-#' exported image. The task will fail if the exported region covers
-#' more pixels in the specified projection. Defaults to 100,000,000.
+#' @param maxPixels Numeric. The maximum allowable number of pixels in the exported
+#' image. If the exported region covers more pixels than the specified limit in the
+#' given projection, the task will fail. Defaults to 100,000,000.
 #' @param grid_batch Numeric. Argument used if via is set as "getDownloadURL". The number of
 #' pixels to download in each batch without considering the number of bands. Default
 #' to 1048576 -(1024*1024).
@@ -408,7 +408,7 @@ ee_as_stars <- function(image,
 ee_as_rast <- function(image,
                        region = NULL,
                        dsn = NULL,
-                       via = "getDownloadURL",
+                       via = "drive",
                        container = "rgee_backup",
                        scale = NULL,
                        maxPixels = 1e9,
@@ -432,16 +432,36 @@ ee_as_rast <- function(image,
       dsn <- tempfile(fileext = ".tif")
     }
 
-    rast_obj <- ee_image_local_getDownloadURL(
-      image = image,
-      dsn = dsn,
-      quiet = quiet,
-      scale = scale,
-      grid_batch = grid_batch,
-      export = "terra",
-      format = "GEO_TIFF",
-      geometry = region
-    )
+    # Download data
+    counter <- 1
+    while(TRUE) {
+        rast_obj <- tryCatch(
+          expr = {
+              ee_image_local_getDownloadURL(
+                image = image,
+                dsn = dsn,
+                quiet = quiet,
+                scale = scale,
+                grid_batch = grid_batch,
+                export = "terra",
+                format = "GEO_TIFF",
+                geometry = region
+              )
+          }, error = function(e) {
+              Sys.sleep(1)
+              if (counter > 4) {
+                  stop(e)
+              }
+              counter <- counter + 1
+              FALSE
+          }
+        )
+
+        if (inherits(rast_obj, "SpatRaster")) {
+            break
+        }
+    }
+
     return(rast_obj)
   }
 
@@ -796,9 +816,9 @@ ee_image_local_gcs <- function(task, dsn, metadata, public, quiet) {
 #' Earth Engine Image.
 #'
 #' @param image Single-band EE Image object.
-#' @param getsize Logical. If TRUE, the size of the object
-#' is estimated.
-#' @param band_metadata A list with image properties. If NULL it will be generated automatically.
+#' @param getsize Logical. If TRUE, the function will estimate the size
+#' of the object
+#' @param band_metadata A list with image properties. If NULL it will be  automatically generated.
 #' @param compression_ratio Numeric. Measurement of the relative data size
 #' reduction produced by a data compression algorithm (ignored if
 #' \code{getsize} is FALSE). By default is 20.

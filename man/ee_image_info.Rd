@@ -15,10 +15,10 @@ ee_image_info(
 \arguments{
 \item{image}{Single-band EE Image object.}
 
-\item{band_metadata}{A list with image properties. If NULL it will be generated automatically.}
+\item{band_metadata}{A list with image properties. If NULL it will be  automatically generated.}
 
-\item{getsize}{Logical. If TRUE, the size of the object
-is estimated.}
+\item{getsize}{Logical. If TRUE, the function will estimate the size
+of the object}
 
 \item{compression_ratio}{Numeric. Measurement of the relative data size
 reduction produced by a data compression algorithm (ignored if
