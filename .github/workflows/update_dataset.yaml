@@ -20,11 +20,11 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x'  # Use a flexible version
+          python-version: '3.x'
 
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip        
+          python -m pip install --upgrade pip
           pip install -U pip setuptools
           pip install pendulum beautifulsoup4 requests
 

@@ -19,11 +19,11 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.7.7' # install the python version needed
-          
+          python-version: '3.x' # install the python version needed
+
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip          
+          python -m pip install --upgrade pip
           pip install earthengine-api
       - name: dataset upgrade
         run: |
