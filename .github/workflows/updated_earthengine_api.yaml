@@ -18,14 +18,18 @@ jobs:
 
       - name: setup python
         uses: actions/setup-python@v2
-          
+
       - name: install python packages
         run: |
-          python -m pip install --upgrade pip          
+          python -m pip install --upgrade pip
           pip install earthengine-api
       - name: dataset upgrade
         run: |
           python3 ./.github/ee_up.py
+
+      - name: delete old dataset.json
+        run: |
+          rm -f inst/dataset.json
       - name: file_check
         run: ls -l -a
       - name: commit files
