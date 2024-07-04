@@ -12,17 +12,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="R Bindings for Calling the Earth Engine API">
-<meta property="og:description" content="Earth Engine &lt;https://earthengine.google.com/&gt; client library for R. All
-  of the Earth Engine API classes, modules, and functions are made available. Additional
-  functions implemented include importing (exporting) of Earth Engine spatial objects, 
-  extraction of time series, interactive map display, assets management interface, 
-  and metadata display. See &lt;https://r-spatial.github.io/rgee/&gt; for further details.">
+<meta property="og:description" content="Earth Engine &lt;https://earthengine.google.com/&gt; client library for R. All of the Earth Engine API classes, modules, and functions are made available. Additional functions implemented include importing (exporting) of Earth Engine spatial objects, extraction of time series, interactive map display, assets management interface, and metadata display. See &lt;https://r-spatial.github.io/rgee/&gt; for further details.">
 <meta property="og:image" content="https://r-spatial.github.io/rgee/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -152,18 +148,18 @@ R
 </tr>
 <tr>
 <td>
-<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">var</span> image <span class="op">=</span> ee<span class="op">.</span><span class="fu">Image</span>(db)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(image<span class="op">.</span><span class="fu">bandNames</span>())</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>#<span class="op">&gt;</span> <span class="st">'elevation'</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="kw">var</span> db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="kw">var</span> image <span class="op">=</span> ee<span class="op">.</span><span class="fu">Image</span>(db)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">print</span>(image<span class="op">.</span><span class="fu">bandNames</span>())</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>#<span class="op">&gt;</span> <span class="st">'elevation'</span></span></code></pre></div>
 </td>
 <td>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ee</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ee.Initialize()</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>image <span class="op">=</span> ee.Image(db)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>image.bandNames().getInfo()</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [u'elevation']</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="im">import</span> ee</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>ee.Initialize()</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>db <span class="op">=</span> <span class="st">'CGIAR/SRTM90_V4'</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>image <span class="op">=</span> ee.Image(db)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>image.bandNames().getInfo()</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt; [u'elevation']</span></span></code></pre></div>
 </td>
 <td>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -330,8 +326,8 @@ R
 <span>  <span class="op">)</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"stable lights trend"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<div class="figure">
-<img src="https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png" alt=""><p class="caption">rgee_01</p>
+<div class="float">
+<img src="https://user-images.githubusercontent.com/16768318/71565699-51e4a500-2aa9-11ea-83c3-9e1d32c82ba6.png" alt="rgee_01"><div class="figcaption">rgee_01</div>
 </div>
 </div>
 <div class="section level3">
@@ -354,7 +350,7 @@ R
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">map</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span><span class="op">$</span><span class="fu">select</span><span class="op">(</span><span class="st">"pr"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># Select only precipitation bands</span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">ImageCollection</span><span class="op">$</span><span class="fu">toBands</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="co"># from imagecollection to image</span></span>
 <span>  <span class="va">ee</span><span class="op">$</span><span class="va">Image</span><span class="op">$</span><span class="fu">rename</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"PP_%02d"</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">12</span><span class="op">)</span><span class="op">)</span> <span class="co"># rename the bands of an image</span></span></code></pre></div>
-<p><code>ee_extract</code> will help you to extract monthly precipitation values from the Terraclimate ImageCollection. <code>ee_extract</code> works similar to <code><a href="https://rdrr.io/pkg/terra/man/extract.html" class="external-link">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
+<p><code>ee_extract</code> will help you to extract monthly precipitation values from the Terraclimate ImageCollection. <code>ee_extract</code> works similar to <code><a href="https://rspatial.github.io/terra/reference/extract.html" class="external-link">raster::extract</a></code>, you just need to define: the ImageCollection object (x), the geometry (y), and a function to summarize the values (fun).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ee_nc_rain</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ee_extract.html">ee_extract</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">terraclimate</span>, y <span class="op">=</span> <span class="va">nc</span><span class="op">[</span><span class="st">"NAME"</span><span class="op">]</span>, sf <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>Use ggplot2 to generate a beautiful static plot!</p>
@@ -468,8 +464,8 @@ R
 
 <p>## How does rgee work?</p>
 <p><code>rgee</code> is <strong>not</strong> a native Earth Engine API like the Javascript or Python client. Developing an Earth Engine API from scratch would create too much maintenance burden, especially considering that the API is in <a href="https://github.com/google/earthengine-api" class="external-link">active development</a>. So, how is it possible to run Earth Engine using R? the answer is [reticulate]! (<a href="https://rstudio.github.io/reticulate/" class="external-link uri">https://rstudio.github.io/reticulate/</a>). <code>reticulate</code> is an R package designed to allow seamless interoperability between R and Python. When an Earth Engine <strong>request</strong> is created in R, <code>reticulate</code> will translate this request into Python and pass it to the <code>Earth Engine Python API</code>, which converts the request to a <code>JSON</code> format. Finally, the request is received by the GEE Platform through a Web REST API. The <strong>response</strong> will follow the same path in reverse.</p>
-<div class="figure">
-<img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt=""><p class="caption">workflow</p>
+<div class="float">
+<img src="https://user-images.githubusercontent.com/16768318/71569603-3341d680-2ac8-11ea-8787-4dd1fbba326f.png" alt="workflow"><div class="figcaption">workflow</div>
 </div>
 </div>
 </div>
@@ -488,21 +484,21 @@ R
 </h2>
 <p>Enjoying <strong>rgee</strong>? Let others know about it! Share it on Twitter, LinkedIN or in a blog post to spread the word.</p>
 <p>Using <strong>rgee</strong> for your scientific article? here’s how you can cite it</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"rgee"</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>To cite rgee <span class="cf">in</span> publications use<span class="sc">:</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  C Aybar, Q Wu, L Bautista, R Yali and A <span class="fu">Barja</span> (<span class="dv">2020</span>) rgee<span class="sc">:</span> An R</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  package <span class="cf">for</span> interacting with Google Earth Engine Journal of Open</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  Source Software URL https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>r<span class="sc">-</span>spatial<span class="sc">/</span>rgee<span class="sc">/</span>.</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a><span class="sc">@</span>Article{,</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  title <span class="ot">=</span> {rgee<span class="sc">:</span> An R package <span class="cf">for</span> interacting with Google Earth Engine},</span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  author <span class="ot">=</span> {Cesar Aybar and Quisheng Wu and Lesly Bautista and Roy Yali and Antony Barja},</span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  journal <span class="ot">=</span> {Journal of Open Source Software},</span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  year <span class="ot">=</span> {<span class="dv">2020</span>},</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">"rgee"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a>To cite rgee <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a>  C Aybar, Q Wu, L Bautista, R Yali and A <span class="fu">Barja</span> (<span class="dv">2020</span>) rgee<span class="sc">:</span> An R</span>
+<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>  package <span class="cf">for</span> interacting with Google Earth Engine Journal of Open</span>
+<span id="cb36-6"><a href="#cb36-6" tabindex="-1"></a>  Source Software URL https<span class="sc">:</span><span class="er">//</span>github.com<span class="sc">/</span>r<span class="sc">-</span>spatial<span class="sc">/</span>rgee<span class="sc">/</span>.</span>
+<span id="cb36-7"><a href="#cb36-7" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" tabindex="-1"></a>A BibTeX entry <span class="cf">for</span> LaTeX users is</span>
+<span id="cb36-9"><a href="#cb36-9" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" tabindex="-1"></a><span class="sc">@</span>Article{,</span>
+<span id="cb36-11"><a href="#cb36-11" tabindex="-1"></a>  title <span class="ot">=</span> {rgee<span class="sc">:</span> An R package <span class="cf">for</span> interacting with Google Earth Engine},</span>
+<span id="cb36-12"><a href="#cb36-12" tabindex="-1"></a>  author <span class="ot">=</span> {Cesar Aybar and Quisheng Wu and Lesly Bautista and Roy Yali and Antony Barja},</span>
+<span id="cb36-13"><a href="#cb36-13" tabindex="-1"></a>  journal <span class="ot">=</span> {Journal of Open Source Software},</span>
+<span id="cb36-14"><a href="#cb36-14" tabindex="-1"></a>  year <span class="ot">=</span> {<span class="dv">2020</span>},</span>
+<span id="cb36-15"><a href="#cb36-15" tabindex="-1"></a>}</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="credits">Credits<a class="anchor" aria-label="anchor" href="#credits"></a>
@@ -596,7 +592,7 @@ status"></a></li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -360,12 +360,12 @@ filters are often more selective. For example, note that
 <strong>Use updateMask() instead of mask()</strong><a class="anchor" aria-label="anchor" href="#use-updatemask-instead-of-mask"></a>
 </h2>
 <p>The difference between <code>updateMask()</code> and
-<code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> is that the former does a logical <code>and()</code>
+<code><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask()</a></code> is that the former does a logical <code>and()</code>
 of the argument (the new mask) and the existing image mask whereas
-<code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code> simply replaces the image mask with the argument.
+<code><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask()</a></code> simply replaces the image mask with the argument.
 The danger of the latter is that you can unmask pixels unintentionally.
 In this example, the goal is to mask pixels less than or equal to 300
-meters elevation. As you can see (zoom out), using <code><a href="https://rdrr.io/pkg/terra/man/mask.html" class="external-link">mask()</a></code>
+meters elevation. As you can see (zoom out), using <code><a href="https://rspatial.github.io/terra/reference/mask.html" class="external-link">mask()</a></code>
 causes a lot of pixels to become unmasked, pixels that don’t belong in
 the image of interest:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -1189,7 +1189,7 @@ same day of year:</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>

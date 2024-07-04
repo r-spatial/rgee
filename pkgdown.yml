@@ -1,5 +1,5 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   rgee01: rgee01.html
@@ -8,7 +8,7 @@ articles:
   rgee04: rgee04.html
   rgee05: rgee05.html
   rgee06: rgee06.html
-last_built: 2023-09-27T08:07Z
+last_built: 2024-07-04T17:18Z
 urls:
   reference: https://r-spatial.github.io/rgee/reference
   article: https://r-spatial.github.io/rgee/articles
