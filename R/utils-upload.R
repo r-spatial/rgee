@@ -632,8 +632,9 @@ ee_utils_get_crs <- function(code) {
 #' @param code The projection code.
 #' @noRd
 ee_utils_get_crs_web <- function(code) {
-  codetype <- tolower(strsplit(code,":")[[1]][1])
-  ee_code <- strsplit(code,":")[[1]][2]
+  codetype <- tolower(strsplit(code, ":")[[1]][1])
+  ee_code <- strsplit(code, ":")[[1]][2]
+
   if (codetype == 'epsg') {
     format <- "wkt"
     link <- sprintf('https://epsg.io/%s.%s', ee_code, format)
@@ -644,11 +645,18 @@ ee_utils_get_crs_web <- function(code) {
     crs_wkt <- tryCatch(
       expr = suppressWarnings(readLines(link)),
       error = function(e) {
-        message(sprintf("%s is down using %s ...", bold("spatialreference.org"), bold("web.archive.org")))
-        link <- sprintf("https://web.archive.org/web/https://spatialreference.org/ref/%s/%s/%s/", codetype, ee_code, format)
-        suppressWarnings(readLines(link))
+        message(sprintf("%s is down using %s ...", bold("spatialreference.org"), bold("GitHub backup")))
+        sr_org_data <- jsonlite::fromJSON("https://raw.githubusercontent.com/OSGeo/spatialreference.org/master/scripts/sr-org.json")
+        match_index <- which(sr_org_data$code == ee_code)
+        
+        if (length(match_index) == 0) {
+          # Instead of stopping, return a warning and a default value or NULL
+          warning(paste("SR-ORG code", ee_code, "not found in the dataset. Returning NULL."))
+          return(NULL)
+        }
+        sr_org_data$ogcwkt[match_index]
       }
     )
   }
-  ee_utils_py_to_r(crs_wkt)
+  return(ee_utils_py_to_r(crs_wkt))
 }
