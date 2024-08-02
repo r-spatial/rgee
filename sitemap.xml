@@ -1,240 +1,82 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://r-spatial.github.io/rgee/404.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/ISSUE_TEMPLATE.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee01.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee02.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee03.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee04.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee05.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/articles/rgee06.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/index.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/Map.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/R6Map.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_Authenticate.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_as_rast.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_as_raster.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_as_sf.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_as_stars.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_as_thumbnail.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_check-tools.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_container.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_pyenv.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_clean_user_credentials.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_drive_to_local.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_extract.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_gcs_to_local.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_get_assethome.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_get_date_ic.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_get_date_img.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_get_earthengine_path.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_help.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_image_info.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_image_to_asset.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_image_to_drive.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_image_to_gcs.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_imagecollection_to_local.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_install.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_manage-tools.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_monitoring.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_print.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_table_to_asset.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_table_to_drive.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_table_to_gcs.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_user_info.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_users.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_cog_metadata.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_json.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_image.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_table.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_dataset_display.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_future_value.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_get_crs.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_py_to_r.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_pyfunc.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_sak_copy.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_sak_validate.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/ee_version.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/eedate_to_rdate.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/gcs_to_ee_image.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/gcs_to_ee_table.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/map-operator.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/print.ee.computedobject.ComputedObject.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/raster_as_ee.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/rdate_to_eedate.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/rgee-package.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/sf_as_ee.html</loc>
-  </url>
-  <url>
-    <loc>https://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://r-spatial.github.io/rgee/404.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/CONTRIBUTING.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/ISSUE_TEMPLATE.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/LICENSE.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee01.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee02.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee03.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee04.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee05.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/articles/rgee06.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/authors.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/news/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/Map.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/R6Map.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_Authenticate.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_Initialize.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_as_rast.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_as_raster.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_as_sf.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_as_stars.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_as_thumbnail.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_check-tools.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_clean_container.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_clean_pyenv.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_clean_user_credentials.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_drive_to_local.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_extract.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_gcs_to_local.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_get_assethome.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_get_date_ic.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_get_date_img.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_get_earthengine_path.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_help.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_image_info.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_image_to_asset.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_image_to_drive.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_image_to_gcs.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_imagecollection_to_local.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_install.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_install_set_pyenv.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_install_upgrade.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_manage-tools.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_monitoring.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_print.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_table_to_asset.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_table_to_drive.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_table_to_gcs.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_user_info.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_users.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_cog_metadata.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_json.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_image.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_create_manifest_table.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_dataset_display.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_future_value.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_get_crs.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_py_to_r.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_pyfunc.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_sak_copy.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_sak_validate.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_utils_shp_to_zip.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/ee_version.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/eedate_to_rdate.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/gcs_to_ee_image.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/gcs_to_ee_table.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/index.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/local_to_gcs.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/map-operator.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/pipe.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/print.ee.computedobject.ComputedObject.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/raster_as_ee.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/rdate_to_eedate.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/rgee-package.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/sf_as_ee.html</loc></url>
+<url><loc>https://r-spatial.github.io/rgee/reference/stars_as_ee.html</loc></url>
 </urlset>
+
