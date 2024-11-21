@@ -24,7 +24,7 @@ ee_check_init <- function() {
   earthengine_version <- ee_utils_py_to_r(ee_utils$ee_getversion())
 
   # is earthengine-api greater than 0.1.317?
-  if (as.numeric(gsub("\\.","",earthengine_version)) < 01317) {
+  if (numeric_version(earthengine_version) < numeric_version("0.1.317")) {
     warning(
       "Update your earthengine-api installations to v0.1.317 or greater. ",
       "Earlier versions are not compatible with recent ",
