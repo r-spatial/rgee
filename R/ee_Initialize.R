@@ -136,7 +136,7 @@ ee_Initialize <- function(user = NULL,
   tryCatch(expr = {
     ee$Initialize(
       credentials=credentials,
-      opt_url=opt_url,
+      url=opt_url, # changed from opt_url to url with version 1.5.2
       cloud_api_key=cloud_api_key,
       http_transport=http_transport,
       project=project
@@ -149,7 +149,7 @@ ee_Initialize <- function(user = NULL,
        )
        ee$Initialize(
          credentials=credentials,
-         opt_url=opt_url,
+         url=opt_url, # changed from opt_url to url with version 1.5.2
          cloud_api_key=cloud_api_key,
          http_transport=http_transport,
          project=project
