@@ -154,6 +154,8 @@ ee_Initialize <- function(user = NULL,
          http_transport=http_transport,
          project=project
        )
+     } else {
+       warning(e)
      }
   })
 
