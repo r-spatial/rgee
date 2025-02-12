@@ -144,7 +144,7 @@ See <a href="https://developers.google.com/earth-engine/guides/client_server" cl
 page</a> for in-depth explanation of client vs. server in Earth Engine.
 The following example illustrates the dangers of mixing client and
 server functionality:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong>
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Error</strong>
 — This code doesn’t work!</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Won't work.</span></span>
@@ -157,7 +157,7 @@ functionality such as the <code>seq_len</code> function.</p>
 <p>A situation in which you may want to use for-loops is with to display
 results with <code>Map</code>, since the Map object and methods are
 client-side.</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Use client functions for display Earth Engine spatial objects.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8_ts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
@@ -176,7 +176,7 @@ Use client functions for display Earth Engine spatial objects.</p>
 <p>Conversely, <code>map()</code> is a server function and client
 functionality won’t work inside the function passed to map(). For
 example:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Error</strong>
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Error</strong>
 — This code doesn’t work!</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
@@ -186,7 +186,7 @@ example:</p>
 <span>  <span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>; <span class="co"># Can't use a client function here.</span></span>
 <span>  <span class="co"># Can't Export, either.</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Use <code>map()</code> <code>set()</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
@@ -216,7 +216,7 @@ filters on the collection to access individual collection elements. The
 following example illustrates the difference between type conversion
 (not recommended) and filtering (recommended) to access an element in a
 collection:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Bad</strong> —
 Don’t convert to list unnecessarily!</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span>;</span>
@@ -226,7 +226,7 @@ Don’t convert to list unnecessarily!</p>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">list</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="fl">13</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="co"># User memory limit exceeded.</span></span></code></pre></div>
 <p>Note that you can easily trigger errors by converting a collection to
 a list unnecessarily. The safer way is to use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Niger'</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="fu">first</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -241,7 +241,7 @@ filters as early as possible in your analysis</a>.</p>
 logic, especially in a mapped function. As the following example
 illustrates, <code>ee.Algorithms.If()</code> can be memory intensive and
 is not recommended:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Bad</strong> —
 Don’t use <code>If()</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="fu">ee.FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
@@ -262,7 +262,7 @@ Don’t use <code>If()</code>:</p>
 and they will be dropped in the resultant collection. That can be useful
 (without <code>If()</code>), but here the easiest solution is to use a
 filter:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Use <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">table</span><span class="op">$</span><span class="fu">filter</span><span class="op">(</span><span class="va">ee</span><span class="op">$</span><span class="va">Filter</span><span class="op">$</span><span class="fu">eq</span><span class="op">(</span><span class="st">'country_na'</span>, <span class="st">'Chad'</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -466,7 +466,7 @@ doc</a> for details on exporting in general.</p>
 <p>Using <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unnecessarily will increase computation
 time. Avoid <code><a href="https://rdrr.io/r/graphics/clip.html" class="external-link">clip()</a></code> unless it’s necessary to your analysis.
 If you’re not sure, don’t clip. An example of a bad use of clip:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Bad</strong> —
 Don’t clip inputs unnecessarily!</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">table</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">FeatureCollection</span><span class="op">(</span><span class="st">'USDOS/LSIB_SIMPLE/2017'</span><span class="op">)</span></span>
@@ -492,7 +492,7 @@ Don’t clip inputs unnecessarily!</p>
 <span><span class="fu"><a href="../reference/print.ee.computedobject.ComputedObject.html">print</a></span><span class="op">(</span><span class="va">unnecessaryClip</span><span class="op">$</span><span class="fu">getInfo</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Clipping the input images can be skipped entirely, because the region
 is specified in the <code>reduceRegion()</code> call:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Specify the region on the output.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">noClipNeeded</span> <span class="op">&lt;-</span> <span class="va">l8sr</span><span class="op">$</span></span>
@@ -739,7 +739,7 @@ computational cost with no corresponding increase in accuracy. (For an
 understanding of when to increase training dataset size, see <a href="https://www.deeplearning.ai/programs/" class="external-link">this reference</a>). The
 following example demonstrates how requesting too much training data can
 result in the dreaded “Computed value is too large” error:</p>
-<p><img src="images/thumb_down.png" width="25px">   <strong>Bad</strong> —
+<p><img src="images%2Fthumb_down.png" width="25px">   <strong>Bad</strong> —
 Don’t sample too much data!</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">'LANDSAT/LC08/C01/T1_RT'</span><span class="op">)</span></span>
@@ -767,7 +767,7 @@ Don’t sample too much data!</p>
 <p>The better approach is to start with a moderate amount of data and
 tune the hyperparameters of the classifier to determine if you can
 achieve your desired accuracy:</p>
-<p><img src="images/thumb_up.png" width="25px">   <strong>Good</strong> —
+<p><img src="images%2Fthumb_up.png" width="25px">   <strong>Good</strong> —
 Tune hyperparameters.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">l8raw</span> <span class="op">&lt;-</span> <span class="va">ee</span><span class="op">$</span><span class="fu">ImageCollection</span><span class="op">(</span><span class="st">"LANDSAT/LC08/C01/T1_RT"</span><span class="op">)</span></span>
@@ -1179,7 +1179,7 @@ same day of year:</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>

@@ -132,7 +132,7 @@ container</strong> for massive downloading/uploading of files which is
 more flexible than Google Drive. At today’s date (December 2021), GCS is
 free for <a href="https://cloud.google.com/artifact-registry/pricing" class="external-link">uses of less
 than 0.5 GB</a>.</p>
-<p><img src="images/r5_01.png"></p>
+<p><img src="images%2Fr5_01.png"></p>
 <div class="section level2">
 <h2 id="create-a-service-account-key">
 <strong>Create a Service Account Key</strong><a class="anchor" aria-label="anchor" href="#create-a-service-account-key"></a>
@@ -150,7 +150,7 @@ account</strong><a class="anchor" aria-label="anchor" href="#create-a-google-clo
 <p>Go to <a href="https://cloud.google.com/" class="external-link uri">https://cloud.google.com/</a>, and create an account. You
 will have to add your address and a credit card.</p>
 <br><center>
-<img src="images/r5_02.png">
+<img src="images%2Fr5_02.png">
 </center>
 <p><br></p>
 </div>
@@ -160,7 +160,7 @@ will have to add your address and a credit card.</p>
 </h4>
 <p>Go to console.</p>
 <br><center>
-<img src="images/r5_03.png">
+<img src="images%2Fr5_03.png">
 </center>
 <p><br></p>
 <p>If it is your first time using GCP, you are assigned a project named
@@ -169,12 +169,12 @@ project (<strong>OPTIONAL</strong>). First, click on ‘My first project’
 in the top blue bar, just to the right of ‘Google Cloud Platform’, and
 then ‘<strong>NEW PROJECT</strong>’.</p>
 <br><center>
-<img src="images/r5_04.png">
+<img src="images%2Fr5_04.png">
 </center>
 <p><br></p>
 <p>Create a project with the desired name.</p>
 <center>
-<img src="images/r5_05.png">
+<img src="images%2Fr5_05.png">
 </center>
 </div>
 <div class="section level4">
@@ -184,13 +184,13 @@ then ‘<strong>NEW PROJECT</strong>’.</p>
 <p>By default, the GCS API is activated. Make sure of it by typing
 “Cloud Storage API” in the search browser.</p>
 <br><center>
-<img src="images/r5_06.png">
+<img src="images%2Fr5_06.png">
 </center>
 <p><br></p>
 <p>Click on ‘Enable APIs and Services’ (if the API is turned off). A
 green checkmark as the image below means that the API is activated!</p>
 <br><center>
-<img src="images/r5_07.png">
+<img src="images%2Fr5_07.png">
 </center>
 <p><br></p>
 </div>
@@ -205,29 +205,29 @@ applications that require one or many GCP services. In our case,
 privileges</strong>. To create a service account, search for ‘Cloud
 Storage’ in the browser, and click on ‘Cloud Storage’ product.</p>
 <br><center>
-<img src="images/r5_08.png">
+<img src="images%2Fr5_08.png">
 </center>
 <p><br></p>
 <p>Click on ‘settings’.</p>
 <br><center>
-<img src="images/r5_09.png">
+<img src="images%2Fr5_09.png">
 </center>
 <p><br></p>
 <p>Click on ‘INTEROPERABILITY’, and then click on ‘CREATE A KEY FOR A
 SERVICE ACCOUNT’.</p>
 <br><center>
-<img src="images/r5_10.png">
+<img src="images%2Fr5_10.png">
 </center>
 <p><br></p>
 <p>Click on ‘CREATE NEW ACCOUNT’.</p>
 <br><center>
-<img src="images/r5_11.png">
+<img src="images%2Fr5_11.png">
 </center>
 <p><br></p>
 <p>Set a name (1), and define <strong>Storage Admin</strong>
 (<strong>DON’T FORGET THIS STEP!!</strong>) in role (3).</p>
 <br><center>
-<img src="images/r5_12.png">
+<img src="images%2Fr5_12.png">
 </center>
 <p><br></p>
 </div>
@@ -242,20 +242,20 @@ JSON file with your public/private RSA keys. First, click the small edit
 icon on the bottom right (three horizontal lines). Then, go to API &amp;
 Services and click on <strong>credentials</strong>.</p>
 <br><center>
-<img src="images/r5_13.png">
+<img src="images%2Fr5_13.png">
 </center>
 <p><br></p>
 <p>On the next page, click on the service account name.</p>
 <br><center>
-<img src="images/r5_14.png">
+<img src="images%2Fr5_14.png">
 </center>
 click on ‘KEYS’, ‘ADD KEY’, and ‘Create new key’.
 <center>
-<img src="images/r5_15.png">
+<img src="images%2Fr5_15.png">
 </center>
 <p><br> Then, select JSON format, and click ‘create’. <br></p>
 <center>
-<img src="images/r5_16.png">
+<img src="images%2Fr5_16.png">
 </center>
 <p><br></p>
 <p>This should prompt a save file window. Save the file to your hard
@@ -307,7 +307,7 @@ Cloud Storage.</p>
 <span><span class="co"># Create your own container</span></span>
 <span><span class="va">project_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ee_get_earthengine_path.html">ee_get_earthengine_path</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="va">.</span>, <span class="st">"\\.json$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">read_json</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://jeroen.r-universe.dev/jsonlite/reference/read_json.html" class="external-link">read_json</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="st">'$'</span><span class="op">(</span><span class="va">project_id</span><span class="op">)</span> <span class="co"># Get the Project ID</span></span>
 <span></span>
 <span><span class="fu">googleCloudStorageR</span><span class="fu">::</span><span class="fu"><a href="https://cloudyr.github.io/googleCloudStorageR//reference/gcs_create_bucket.html" class="external-link">gcs_create_bucket</a></span><span class="op">(</span><span class="st">"CHOOSE_A_BUCKET_NAME"</span>, projectId <span class="op">=</span> <span class="va">project_id</span><span class="op">)</span></span></code></pre></div>
@@ -328,17 +328,17 @@ GCS).</p>
 will use <strong>Uniform access</strong> (<strong>IAM is used alone to
 manage permissions</strong>) by default.</p>
 <br><center>
-<img src="images/r5_17.png">
+<img src="images%2Fr5_17.png">
 </center>
 <center>
-<img src="images/r5_18.png">
+<img src="images%2Fr5_18.png">
 </center>
 <p><br></p>
 <p>On the contrary if you use <a href="https://code.markedmondson.me/googleCloudStorageR/reference/gcs_create_bucket.html" class="external-link"><code>googleCloudStorageR::gcs_create_bucket</code></a>,
 it will use fine-grained access (<strong>IAM and ACLs to manage
 permissions</strong>).</p>
 <br><center>
-<img src="images/r5_19.png">
+<img src="images%2Fr5_19.png">
 </center>
 <p><br></p>
 <p>Why is this important?. It is important, because if you create a
@@ -390,7 +390,7 @@ successfully configured my SaK in my local system?</strong>. Well, the
 SaK ensures a smooth connection between your local environment and GCS,
 but <strong>not between GEE and GCS</strong>.</p>
 <br><center>
-<img src="images/r5_20.png">
+<img src="images%2Fr5_20.png">
 </center>
 <p><br></p>
 <p>For instance, imagine that you have access to 2 Google user accounts,
@@ -437,16 +437,16 @@ system</strong>.</p>
 <p>This error is quite easy to fix. Just go to the bucket in your Google
 Cloud Platform console.</p>
 <br><center>
-<img src="images/r5_21.png">
+<img src="images%2Fr5_21.png">
 </center>
 <p>Click on ‘PERMISSIONS’, and click on ‘ADD’.</p>
 <center>
-<img src="images/r5_22.png">
+<img src="images%2Fr5_22.png">
 </center>
 <p>Finally, add the Google user account of the <strong>EE USER</strong>.
 <strong>Do not forget to add ‘STORAGE ADMIN’ in the role!</strong></p>
 <center>
-<img src="images/r5_23.png">
+<img src="images%2Fr5_23.png">
 </center>
 <p><br></p>
 </div>
@@ -475,7 +475,7 @@ SaK, feel free to clearly detail your problem in <a href="https://github.com/r-s
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
       </footer>
