@@ -36,7 +36,7 @@
 #' @export
 ee_install <- function(py_env = "rgee",
                        earthengine_version = ee_version(),
-                       python_version = "3.8",
+                       python_version = "3.13",
                        confirm = interactive()) {
 
   #check packages
