@@ -65,7 +65,7 @@ print(image.bandNames())
 
 ``` python
 import ee
-ee.Initialize()
+ee.Initialize(project = "my-project-id")
 db = 'CGIAR/SRTM90_V4'
 image = ee.Image(db)
 image.bandNames().getInfo()
@@ -77,7 +77,7 @@ image.bandNames().getInfo()
 
 ``` r
 library(rgee)
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 db <- 'CGIAR/SRTM90_V4'
 image <- ee$Image(db)
 image$bandNames()$getInfo()
@@ -104,9 +104,18 @@ Sys.setenv("RETICULATE_PYTHON" = "/usr/bin/python3")
 Sys.setenv("EARTHENGINE_GCLOUD" = "home/csaybar/google-cloud-sdk/bin/")
 ee_Authenticate()
 
-# Init your Earth Session  
-ee_Initialize()
+# Initialize your Earth Engine Session 
+ee_Initialize(project = "my-project-id")
 ```
+
+### Earth Engine initialization 
+
+You will need to create and register a Google Cloud project to use Earth Engine (via rgee).
+See the following "Installation" section for instructions. The ID of the Cloud project will need to
+be supplied to `ee_Initialize` each time you start a new rgee session. Whenever you see "my-project-id"
+in rgee example code, replace the string with your specific Cloud project ID. For more information on
+these topics see about [Earth Engine access](https://developers.google.com/earth-engine/guides/access)
+and [authentication and inialization](https://developers.google.com/earth-engine/guides/auth) pages. 
 
 ## Installation
 
@@ -124,6 +133,9 @@ install_github("r-spatial/rgee")
 ```
 
 Furthermore, `rgee` depends on [numpy](https://pypi.org/project/numpy/) and [earthengine-api](https://pypi.org/project/earthengine-api/) and it requires **[gcloud CLI](https://cloud.google.com/sdk/docs/install#deb)** to authenticate new users. The following example shows how to install and set up 'rgee' on a new Ubuntu computer. If you intend to use rgee on a server, please refer to this example in RStudio Cloud." -- https://posit.cloud/content/5175749)
+
+Create and register a Google Cloud project. Follow the [Earth Engine access](
+  https://developers.google.com/earth-engine/guides/access#get_access_to_earth_engine) instructions. 
 
 ``` r
 install.packages(c("remotes", "googledrive"))
@@ -145,10 +157,11 @@ Sys.setenv("RETICULATE_PYTHON" = sprintf("%s/.local/share/r-miniconda/bin/python
 Sys.setenv("EARTHENGINE_GCLOUD" = sprintf("%s/google-cloud-sdk/bin/", HOME))
 
 # 4 Install rgee Python dependencies
-ee_install()
+ee_install() 
 
-# 5. Authenticate and init your EE session
-ee_Initialize()
+# 5. Authenticate and initialize your Earth Engine session
+# Replace "my-project-id" with the ID of the Cloud project you created above 
+ee_Initialize(project = "my-project-id") 
 ```
 
 There are three (3) different ways to install rgee Python dependencies:
@@ -168,7 +181,7 @@ rgee::ee_install_set_pyenv(
 )
 ```
 
-Take into account that the Python PATH you set must have earthengine-api and numpy installed. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
+Take into account that the Python PATH you set must have earthengine-api and `numpy installed. The use of **miniconda/anaconda is mandatory for Windows users,** Linux and MacOS users could also use virtualenv. See [reticulate](https://rstudio.github.io/reticulate/articles/python_packages.html) documentation for more details.
 
 If you are using MacOS or Linux, you can choose setting the Python PATH directly:
 
@@ -198,7 +211,7 @@ library(reticulate)
 library(rgee)
 
 # 1. Initialize the Python Environment
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 
 # 2. Install geemap in the same Python ENV that use rgee
 py_install("geemap")
@@ -209,7 +222,7 @@ Upgrade the [earthengine-api](https://pypi.org/project/earthengine-api/)
 
 ``` r
 library(rgee)
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 ee_install_upgrade()
 ```
 
@@ -228,7 +241,7 @@ Authenticate and Initialize the Earth Engine R API.
 
 ``` r
 library(rgee)
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 ```
 
 Let's create a new band containing the image date as years since 1991 by extracting the year of the image acquisition date and subtracting it from 1991.
@@ -284,7 +297,7 @@ library(tidyverse)
 library(rgee)
 library(sf)
 
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 ```
 
 Read the `nc` shapefile.
@@ -337,7 +350,7 @@ library(magick)
 library(rgee)
 library(sf)
 
-ee_Initialize()
+ee_Initialize(project = "my-project-id")
 ```
 
 Define the regional bounds of animation frames and a mask to clip the NDVI data by.
