@@ -3,7 +3,7 @@
 #' Create an isolated Python virtual environment with all rgee dependencies.
 #' \code{ee_install} realize the following six (6) tasks:
 #' \itemize{
-#'  \item{1. }{IIf you do not have a Python environment installed, it will display
+#'  \item{1. }{If you do not have a Python environment installed, it will display
 #'  an interactive menu to install [Miniconda](https://docs.conda.io/en/latest/miniconda.html)
 #'  (a free minimal installer for conda).}
 #'  \item{2. }{If it exists, the previous Python environment specified in
