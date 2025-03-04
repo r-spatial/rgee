@@ -42,7 +42,7 @@ sprintf("%s/credentials", dirname(rgee::ee_get_earthengine_path()))
 
 <br>
 
-If the file exists, then an [Oauth2 Credential](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html) object is created using a [refresh token](https://developers.google.com/identity/protocols/oauth2) grant. This *refresh token* must come from a Google account registered in GEE if not a *Bad Request error* will be invoked. Once the Oauth2 Credential is successfully loaded, it is dynamically passed to all EE methods (See [Initialize](https://github.com/google/earthengine-api/blob/b4c068924b1c7574ee717761cb9fe0499a3b932b/python/ee/__init__.py#L125)) in order to realize independent calls to the Web REST API. As you realize, the **_credentials_** file is crucial to interact with the EE API and if it does not exist on your system, it will simply not be possible to use rgee.
+If the file exists, then an [OAuth2 Credential](https://google-auth.readthedocs.io/en/stable/reference/google.oauth2.credentials.html) object is created using a [refresh token](https://developers.google.com/identity/protocols/oauth2) grant. This *refresh token* must come from a Google account registered in GEE if not a *Bad Request error* will be invoked. Once the Oauth2 Credential is successfully loaded, it is dynamically passed to all EE methods (See [Initialize](https://github.com/google/earthengine-api/blob/b4c068924b1c7574ee717761cb9fe0499a3b932b/python/ee/__init__.py#L125)) in order to realize independent calls to the Web REST API. As you realize, the **_credentials_** file is crucial to interact with the EE API and if it does not exist on your system, it will simply not be possible to use rgee.
 
 
 <center>
