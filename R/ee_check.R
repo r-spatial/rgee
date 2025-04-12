@@ -78,7 +78,8 @@ ee_check_python <- function(quiet = FALSE) {
       "rgee::ee_Initialize(). For more details run reticulate::py_available()"
     )
   }
-  if (utils::compareVersion(py_version, "3.5") == -1) {
+  
+  if (utils::compareVersion(as.character(py_version), "3.5") == -1) {
     stop("rgee needs Python 3.5 >=")
   }
   return(invisible(TRUE))
