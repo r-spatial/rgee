@@ -1,14 +1,20 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.5.0
+# --------------------------------------------
+# CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
+# --------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.7
+version: 1.1.7.000009
+doi: 10.32614/CRAN.package.rgee
+identifiers:
+- type: url
+  value: https://r-spatial.github.io/rgee/
+- type: url
+  value: https://github.com/google/earthengine-api/
 abstract: Earth Engine <https://earthengine.google.com/> client library for R. All
   of the 'Earth Engine' API classes, modules, and functions are made available. Additional
   functions implemented include importing (exporting) of Earth Engine spatial objects,
@@ -34,11 +40,10 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
   version: '>= 3.3.0'
 - type: software
   title: methods
@@ -46,11 +51,10 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2025'
 - type: software
   title: reticulate
   abstract: 'reticulate: Interface to ''Python'''
@@ -68,7 +72,8 @@ references:
     given-names: Yuan
     email: terrytangyuan@gmail.com
     orcid: https://orcid.org/0000-0001-5243-233X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.reticulate
   version: '>= 1.27'
 - type: software
   title: rstudioapi
@@ -89,7 +94,8 @@ references:
   - family-names: Ritchie
     given-names: Gary
     email: gary@posit.co
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rstudioapi
   version: '>= 0.7'
 - type: software
   title: leaflet
@@ -110,7 +116,8 @@ references:
     given-names: Bhaskar
   - family-names: Xie
     given-names: Yihui
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.leaflet
   version: '>= 2.0.2'
 - type: software
   title: magrittr
@@ -125,7 +132,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.magrittr
 - type: software
   title: jsonlite
   abstract: 'jsonlite: A Simple and Robust JSON Parser and Generator for R'
@@ -135,9 +143,10 @@ references:
   authors:
   - family-names: Ooms
     given-names: Jeroen
-    email: jeroen@berkeley.edu
+    email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.jsonlite
 - type: software
   title: processx
   abstract: 'processx: Execute and Control System Processes'
@@ -151,7 +160,8 @@ references:
     orcid: https://orcid.org/0000-0001-7098-9676
   - family-names: Chang
     given-names: Winston
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.processx
 - type: software
   title: leafem
   abstract: 'leafem: ''leaflet'' Extensions for ''mapview'''
@@ -162,18 +172,20 @@ references:
   - family-names: Appelhans
     given-names: Tim
     email: tim.appelhans@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.leafem
 - type: software
   title: crayon
   abstract: 'crayon: Colored Terminal Output'
   notes: Imports
-  url: https://github.com/r-lib/crayon#readme
+  url: https://r-lib.github.io/crayon/
   repository: https://CRAN.R-project.org/package=crayon
   authors:
   - family-names: Csárdi
     given-names: Gábor
     email: csardi.gabor@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.crayon
 - type: software
   title: R6
   abstract: 'R6: Encapsulated Classes with Reference Semantics'
@@ -183,8 +195,9 @@ references:
   authors:
   - family-names: Chang
     given-names: Winston
-    email: winston@stdout.org
-  year: '2023'
+    email: winston@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.R6
 - type: software
   title: cli
   abstract: 'cli: Helpers for Developing Command Line Interfaces'
@@ -194,8 +207,9 @@ references:
   authors:
   - family-names: Csárdi
     given-names: Gábor
-    email: csardi.gabor@gmail.com
-  year: '2023'
+    email: gabor@posit.co
+  year: '2025'
+  doi: 10.32614/CRAN.package.cli
 - type: software
   title: magick
   abstract: 'magick: Advanced Graphics and Image-Processing in R'
@@ -205,9 +219,10 @@ references:
   authors:
   - family-names: Ooms
     given-names: Jeroen
-    email: jeroen@berkeley.edu
+    email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.magick
 - type: software
   title: geojsonio
   abstract: 'geojsonio: Convert Data from and to ''GeoJSON'' or ''TopoJSON'''
@@ -225,7 +240,8 @@ references:
     given-names: Michael
     email: mike.mahoney.218@gmail.com
     orcid: https://orcid.org/0000-0003-2402-304X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.geojsonio
 - type: software
   title: sf
   abstract: 'sf: Simple Features for R'
@@ -237,7 +253,8 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.sf
 - type: software
   title: stars
   abstract: 'stars: Spatiotemporal Arrays, Raster and Vector Data Cubes'
@@ -249,7 +266,8 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.stars
 - type: software
   title: googledrive
   abstract: 'googledrive: An Interface to Google Drive'
@@ -263,7 +281,8 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.googledrive
   version: '>= 2.0.0'
 - type: software
   title: gargle
@@ -283,7 +302,8 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.gargle
 - type: software
   title: httr
   abstract: 'httr: Tools for Working with URLs and HTTP'
@@ -294,7 +314,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.httr
 - type: software
   title: digest
   abstract: 'digest: Create Compact Hash Digests of R Objects'
@@ -302,56 +323,12 @@ references:
   url: https://dirk.eddelbuettel.com/code/digest.html
   repository: https://CRAN.R-project.org/package=digest
   authors:
-  - family-names: Lucas
-    given-names: Dirk Eddelbuettel with contributions by Antoine
-    email: edd@debian.org
-  - family-names: Tuszynski
-    given-names: Jarek
-  - family-names: Bengtsson
-    given-names: Henrik
-  - family-names: Urbanek
-    given-names: Simon
-  - family-names: Frasca
-    given-names: Mario
-  - family-names: Lewis
-    given-names: Bryan
-  - family-names: Stokely
-    given-names: Murray
-  - family-names: Muehleisen
-    given-names: Hannes
-  - family-names: Murdoch
-    given-names: Duncan
-  - family-names: Hester
-    given-names: Jim
-  - family-names: Wu
-    given-names: Wush
-  - family-names: Kou
-    given-names: Qiang
-  - family-names: Onkelinx
-    given-names: Thierry
-  - family-names: Lang
-    given-names: Michel
-  - family-names: Simko
-    given-names: Viliam
-  - family-names: Hornik
-    given-names: Kurt
-  - family-names: Neal
-    given-names: Radford
-  - family-names: Bell
-    given-names: Kendon
-  - family-names: de Queljoe
-    given-names: Matthew
-  - family-names: Suruceanu
-    given-names: Ion
-  - family-names: Denney
-    given-names: Bill
-  - family-names: Schumacher
+  - family-names: Eddelbuettel
     given-names: Dirk
-  - family-names: Chang
-    given-names: Winston
-  - family-names: Attali.
-    given-names: Dean
-  year: '2023'
+    email: edd@debian.org
+    orcid: https://orcid.org/0000-0001-6419-907X
+  year: '2025'
+  doi: 10.32614/CRAN.package.digest
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
@@ -362,7 +339,8 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.testthat
 - type: software
   title: future
   abstract: 'future: Unified Parallel and Distributed Processing in R for Everyone'
@@ -373,7 +351,9 @@ references:
   - family-names: Bengtsson
     given-names: Henrik
     email: henrikb@braju.com
-  year: '2023'
+    orcid: https://orcid.org/0000-0002-7579-5165
+  year: '2025'
+  doi: 10.32614/CRAN.package.future
 - type: software
   title: terra
   abstract: 'terra: Spatial Data Analysis'
@@ -385,7 +365,8 @@ references:
     given-names: Robert J.
     email: r.hijmans@gmail.com
     orcid: https://orcid.org/0000-0001-5872-2872
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.terra
 - type: software
   title: covr
   abstract: 'covr: Test Coverage for Packages'
@@ -396,7 +377,8 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.f.hester@gmail.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.covr
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -408,7 +390,8 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.knitr
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -451,7 +434,8 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: png
   abstract: 'png: Read and write PNG images'
@@ -462,7 +446,8 @@ references:
   - family-names: Urbanek
     given-names: Simon
     email: Simon.Urbanek@r-project.org
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.png
 - type: software
   title: googleCloudStorageR
   abstract: 'googleCloudStorageR: Interface with Google Cloud Storage API'
@@ -474,7 +459,8 @@ references:
     given-names: Mark
     email: r@sunholo.com
     orcid: https://orcid.org/0000-0002-8434-3881
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.googleCloudStorageR
 - type: software
   title: leaflet.extras2
   abstract: 'leaflet.extras2: Extra Functionality for ''leaflet'' Package'
@@ -485,22 +471,24 @@ references:
   - family-names: Sebastian
     given-names: Gatscha
     email: sebastian_gatscha@gmx.at
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.leaflet.extras2
 - type: software
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
   notes: Suggests
-  url: https://docs.ropensci.org/spelling/
+  url: https://ropensci.r-universe.dev/spelling
   repository: https://CRAN.R-project.org/package=spelling
   authors:
   - family-names: Ooms
     given-names: Jeroen
-    email: jeroen@berkeley.edu
+    email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
   - family-names: Hester
     given-names: Jim
     email: james.hester@rstudio.com
-  year: '2023'
+  year: '2025'
+  doi: 10.32614/CRAN.package.spelling
 - type: software
   title: raster
   abstract: 'raster: Geographic Data Analysis and Modeling'
@@ -512,9 +500,6 @@ references:
     given-names: Robert J.
     email: r.hijmans@gmail.com
     orcid: https://orcid.org/0000-0001-5872-2872
-  year: '2023'
-identifiers:
-- type: url
-  value: https://r-spatial.github.io/rgee/
-- type: url
-  value: https://github.com/google/earthengine-api/
+  year: '2025'
+  doi: 10.32614/CRAN.package.raster
+
