@@ -159,8 +159,8 @@ sapply(doqq_dsn, '[[', 1)
 }
 \seealso{
 Other image download functions: 
-\code{\link{ee_as_raster}()},
 \code{\link{ee_as_rast}()},
+\code{\link{ee_as_raster}()},
 \code{\link{ee_as_stars}()},
 \code{\link{ee_as_thumbnail}()}
 }

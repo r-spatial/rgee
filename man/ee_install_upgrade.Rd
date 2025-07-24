@@ -30,7 +30,7 @@ library(rgee)
 }
 \seealso{
 Other ee_install functions: 
-\code{\link{ee_install_set_pyenv}()},
-\code{\link{ee_install}()}
+\code{\link{ee_install}()},
+\code{\link{ee_install_set_pyenv}()}
 }
 \concept{ee_install functions}

@@ -7,7 +7,7 @@
 ee_install(
   py_env = "rgee",
   earthengine_version = ee_version(),
-  python_version = "3.8",
+  python_version = "3.13",
   confirm = interactive()
 )
 }
@@ -32,7 +32,7 @@ No return value, called for installing non-R dependencies.
 Create an isolated Python virtual environment with all rgee dependencies.
 \code{ee_install} realize the following six (6) tasks:
 \itemize{
-\item{1. }{IIf you do not have a Python environment installed, it will display
+\item{1. }{If you do not have a Python environment installed, it will display
 an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}
 (a free minimal installer for conda).}
 \item{2. }{If it exists, the previous Python environment specified in

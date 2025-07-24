@@ -109,7 +109,7 @@ library(rgee)
 }
 \seealso{
 Other ee_install functions: 
-\code{\link{ee_install_upgrade}()},
-\code{\link{ee_install}()}
+\code{\link{ee_install}()},
+\code{\link{ee_install_upgrade}()}
 }
 \concept{ee_install functions}

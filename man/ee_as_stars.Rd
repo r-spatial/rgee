@@ -196,8 +196,8 @@ attr(img_03_result, "metadata") # metadata
 }
 \seealso{
 Other image download functions: 
-\code{\link{ee_as_raster}()},
 \code{\link{ee_as_rast}()},
+\code{\link{ee_as_raster}()},
 \code{\link{ee_as_thumbnail}()},
 \code{\link{ee_imagecollection_to_local}()}
 }
