@@ -201,31 +201,67 @@ with the same name. By default TRUE.</p></dd>
     <p><code>ee_as_rast</code> supports the download of <code>ee$Images</code> using: "drive"
 (<a href="https://CRAN.R-project.org/package=googledrive" class="external-link">Google Drive</a>) and "gcs"
 (<a href="https://CRAN.R-project.org/package=googleCloudStorageR" class="external-link">
-Google Cloud Storage</a>). In both cases, <code>ee_as_rast</code> performs as follows:</p><ul><li><p>1. A task is started (i.e., <code>ee$batch$Task$start()</code>) to
+Google Cloud Storage</a>). In both cases, <code>ee_as_rast</code> performs as follows:</p><dl><dt>1. </dt>
+<dd><p>A task is started (i.e., <code>ee$batch$Task$start()</code>) to
 move the <code>ee$Image</code> from Earth Engine to the intermediate container
-specified in the argument <code>via</code>.</p></li>
-<li><p>2. If the argument <code>lazy</code> is TRUE, the task is not be
+specified in the argument <code>via</code>.</p></dd>
+
+<dt>2. </dt>
+<dd><p>If the argument <code>lazy</code> is TRUE, the task is not be
 monitored. This is useful to lunch several tasks simultaneously and
 calls them later using <code><a href="ee_utils_future_value.html">ee_utils_future_value</a></code> or
 <code><a href="https://future.futureverse.org/reference/value.html" class="external-link">future::value</a></code>. At the end of this step,
 the <code>ee$Image</code> is stored on the path specified in the argument
-<code>dsn</code>.</p></li>
-<li><p>3. Finally, if the argument <code>add_metadata</code> is TRUE, a list
-with the following elements are added to the stars-proxy object.
-</p><ul><li><p><b>if via is "drive":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>drive_name: </b>Name of the Image in Google Drive.</p></li>
-<li><p><b>drive_id: </b>Id of the Image in Google Drive.</p></li>
-<li><p><b>drive_download_link: </b>Download link to the image.</p></li>
-</ul></li>
-</ul><ul><li><p><b>if via is "gcs":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>gcs_name: </b>Name of the Image in Google Cloud Storage.</p></li>
-<li><p><b>gcs_bucket: </b>Name of the bucket.</p></li>
-<li><p><b>gcs_fileFormat: </b>Format of the image.</p></li>
-<li><p><b>gcs_public_link: </b>Download link to the image.</p></li>
-<li><p><b>gcs_URI: </b>gs:// link to the image.</p></li>
-</ul></li>
-</ul>Run <code>attr(stars, "metadata")</code> to get the list.</li>
-</ul><p>For getting more information about exporting data from Earth Engine, take
+<code>dsn</code>.</p></dd>
+
+<dt>3. </dt>
+<dd><p>Finally, if the argument <code>add_metadata</code> is TRUE, a list
+with the following elements are added to the stars-proxy object.</p><dl><dt><b>if via is "drive":</b></dt>
+<dd>
+<dl><dt><b>ee_id: </b></dt>
+<dd><p>Name of the Earth Engine task.</p></dd>
+
+<dt><b>drive_name: </b></dt>
+<dd><p>Name of the Image in Google Drive.</p></dd>
+
+<dt><b>drive_id: </b></dt>
+<dd><p>Id of the Image in Google Drive.</p></dd>
+
+<dt><b>drive_download_link: </b></dt>
+<dd><p>Download link to the image.</p></dd>
+
+
+</dl></dd>
+
+
+</dl><dl><dt><b>if via is "gcs":</b></dt>
+<dd>
+<dl><dt><b>ee_id: </b></dt>
+<dd><p>Name of the Earth Engine task.</p></dd>
+
+<dt><b>gcs_name: </b></dt>
+<dd><p>Name of the Image in Google Cloud Storage.</p></dd>
+
+<dt><b>gcs_bucket: </b></dt>
+<dd><p>Name of the bucket.</p></dd>
+
+<dt><b>gcs_fileFormat: </b></dt>
+<dd><p>Format of the image.</p></dd>
+
+<dt><b>gcs_public_link: </b></dt>
+<dd><p>Download link to the image.</p></dd>
+
+<dt><b>gcs_URI: </b></dt>
+<dd><p>gs:// link to the image.</p></dd>
+
+
+</dl></dd>
+
+
+</dl><p>Run <code>attr(stars, "metadata")</code> to get the list.</p></dd>
+
+
+</dl><p>For getting more information about exporting data from Earth Engine, take
 a look at the
 <a href="https://developers.google.com/earth-engine/guides/exporting" class="external-link">Google
 Earth Engine Guide - Export data</a>.</p>

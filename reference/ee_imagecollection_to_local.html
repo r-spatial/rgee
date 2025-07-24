@@ -198,31 +198,67 @@ using two different options: "drive"
 (<a href="https://CRAN.R-project.org/package=googledrive" class="external-link">Google Drive</a>) and "gcs"
 (<a href="https://CRAN.R-project.org/package=googleCloudStorageR" class="external-link">
 Google Cloud Storage</a>). In both cases, <code>ee_imagecollection_to_local</code>
-works as follow:</p><ul><li><p>1. A task  is initiate (i.e., <code>ee$batch$Task$start()</code>) to
+works as follow:</p><dl><dt>1.</dt>
+<dd><p>A task  is initiate (i.e., <code>ee$batch$Task$start()</code>) to
 transfer the <code>ee$Image</code> from Earth Engine to the intermediate container
-specified in the argument <code>via</code>.</p></li>
-<li><p>2. If the argument <code>lazy</code> is TRUE, the task will not be
+specified in the argument <code>via</code>.</p></dd>
+
+<dt>2.</dt>
+<dd><p>If the argument <code>lazy</code> is TRUE, the task will not be
 monitored. This is useful to lunch several tasks simultaneously and
 calls them later using <code><a href="ee_utils_future_value.html">ee_utils_future_value</a></code> or
 <code><a href="https://future.futureverse.org/reference/value.html" class="external-link">future::value</a></code>. At the end of this step,
 the <code>ee$Images</code> are stored on the path specified in the argument
-<code>dsn</code>.</p></li>
-<li><p>3. Finally, if the <code>add_metadata</code>  argument is set to TRUE,
-a list containing the following elements will be appended to the <code>dsn</code> argument.
-</p><ul><li><p><b>if via is "drive":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>drive_name: </b>Name of the Image in Google Drive.</p></li>
-<li><p><b>drive_id: </b>Id of the Image in Google Drive.</p></li>
-<li><p><b>drive_download_link: </b>Download link to the image.</p></li>
-</ul></li>
-</ul><ul><li><p><b>if via is "gcs":</b></p><ul><li><p><b>ee_id: </b>Name of the Earth Engine task.</p></li>
-<li><p><b>gcs_name: </b>Name of the Image in Google Cloud Storage.</p></li>
-<li><p><b>gcs_bucket: </b>Name of the bucket.</p></li>
-<li><p><b>gcs_fileFormat: </b>Format of the image.</p></li>
-<li><p><b>gcs_public_link: </b>Download link to the image.</p></li>
-<li><p><b>gcs_URI: </b>gs:// link to the image.</p></li>
-</ul></li>
-</ul></li>
-</ul><p>For getting more information about exporting data from Earth Engine, take
+<code>dsn</code>.</p></dd>
+
+<dt>3.</dt>
+<dd><p>Finally, if the <code>add_metadata</code>  argument is set to TRUE,
+a list containing the following elements will be appended to the <code>dsn</code> argument.</p><dl><dt><b>if via is "drive":</b></dt>
+<dd>
+<dl><dt><b>ee_id: </b></dt>
+<dd><p>Name of the Earth Engine task.</p></dd>
+
+<dt><b>drive_name:</b></dt>
+<dd><p>Name of the Image in Google Drive.</p></dd>
+
+<dt><b>drive_id:</b></dt>
+<dd><p>Id of the Image in Google Drive.</p></dd>
+
+<dt><b>drive_download_link:</b></dt>
+<dd><p>Download link to the image.</p></dd>
+
+
+</dl></dd>
+
+
+</dl><dl><dt><b>if via is "gcs":</b></dt>
+<dd>
+<dl><dt><b>ee_id:</b></dt>
+<dd><p>Name of the Earth Engine task.</p></dd>
+
+<dt><b>gcs_name:</b></dt>
+<dd><p>Name of the Image in Google Cloud Storage.</p></dd>
+
+<dt><b>gcs_bucket:</b></dt>
+<dd><p>Name of the bucket.</p></dd>
+
+<dt><b>gcs_fileFormat:</b></dt>
+<dd><p>Format of the image.</p></dd>
+
+<dt><b>gcs_public_link:</b></dt>
+<dd><p>Download link to the image.</p></dd>
+
+<dt><b>gcs_URI:</b></dt>
+<dd><p>gs:// link to the image.</p></dd>
+
+
+</dl></dd>
+
+
+</dl></dd>
+
+
+</dl><p>For getting more information about exporting data from Earth Engine, take
 a look at the
 <a href="https://developers.google.com/earth-engine/guides/exporting" class="external-link">Google
 Earth Engine Guide - Export data</a>.</p>
@@ -230,8 +266,8 @@ Earth Engine Guide - Export data</a>.</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p>Other image download functions:
-<code><a href="ee_as_raster.html">ee_as_raster</a>()</code>,
 <code><a href="ee_as_rast.html">ee_as_rast</a>()</code>,
+<code><a href="ee_as_raster.html">ee_as_raster</a>()</code>,
 <code><a href="ee_as_stars.html">ee_as_stars</a>()</code>,
 <code><a href="ee_as_thumbnail.html">ee_as_thumbnail</a>()</code></p></div>
     </div>
