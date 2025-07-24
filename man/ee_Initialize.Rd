@@ -45,7 +45,7 @@ it will raise an explanatory exception guiding the user to create those credenti
 \item{quiet}{Logical. Suppress info messages.}
 
 \item{auth_mode}{The authentication mode. One of:
-\itemize{
+\describe{
 \item{1. }{paste - send user to accounts.google.com to get a pastable token}
 \item{2. }{notebook - send user to notebook authenticator page}
 \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}

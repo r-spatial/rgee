@@ -56,7 +56,7 @@ Google Drive, whereas "all" will download all files with the same name.
 Finally, if the argument \code{metadata} is TRUE, a list containing the
 following elements is exported and appended to the output filename (dsn):
 
-\itemize{
+\describe{
 \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 \item{\bold{drive_name: }}{Name of the Table in Google Drive.}
 \item{\bold{drive_id: }}{Id of the Table in Google Drive.}

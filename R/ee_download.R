@@ -724,7 +724,7 @@ ee_table_to_asset <- function(collection,
 #' Finally, if the argument \code{metadata} is TRUE, a list containing the
 #' following elements is exported and appended to the output filename (dsn):
 #'
-#' \itemize{
+#' \describe{
 #'  \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 #'  \item{\bold{drive_name: }}{Name of the Table in Google Drive.}
 #'  \item{\bold{drive_id: }}{Id of the Table in Google Drive.}
@@ -987,7 +987,7 @@ ee_drive_to_local <- function(task,
 #' If the argument \code{metadata} is TRUE, a list containing the following
 #' elements is exported and appended to the output filename (dsn):
 #'
-#' \itemize{
+#' \describe{
 #'   \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 #'   \item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
 #'   \item{\bold{gcs_bucket: }}{Name of the bucket.}

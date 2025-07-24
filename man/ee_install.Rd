@@ -31,7 +31,7 @@ No return value, called for installing non-R dependencies.
 \description{
 Create an isolated Python virtual environment with all rgee dependencies.
 \code{ee_install} realize the following six (6) tasks:
-\itemize{
+\describe{
 \item{1. }{If you do not have a Python environment installed, it will display
 an interactive menu to install \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}
 (a free minimal installer for conda).}

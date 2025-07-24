@@ -49,7 +49,7 @@ are retrieved from \code{ee$batch$Export$*$toCloudStorage(...)$start()$status()}
 If the argument \code{metadata} is TRUE, a list containing the following
 elements is exported and appended to the output filename (dsn):
 
-\itemize{
+\describe{
 \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 \item{\bold{gcs_name: }}{Name of the Table in Google Cloud Storage.}
 \item{\bold{gcs_bucket: }}{Name of the bucket.}

@@ -33,37 +33,37 @@
 #' (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 #' Google Cloud Storage}). In both cases, \code{ee_imagecollection_to_local}
 #' works as follow:
-#' \itemize{
-#'   \item{1. }{A task  is initiate (i.e., \code{ee$batch$Task$start()}) to
+#' \describe{
+#'   \item{1.}{A task  is initiate (i.e., \code{ee$batch$Task$start()}) to
 #'   transfer the \code{ee$Image} from Earth Engine to the intermediate container
 #'   specified in the argument \code{via}.}
-#'   \item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+#'   \item{2.}{If the argument \code{lazy} is TRUE, the task will not be
 #'   monitored. This is useful to lunch several tasks simultaneously and
 #'   calls them later using \code{\link{ee_utils_future_value}} or
 #'   \code{\link[future:value]{future::value}}. At the end of this step,
 #'   the \code{ee$Images} are stored on the path specified in the argument
 #'   \code{dsn}.}
-#'   \item{3. }{Finally, if the \code{add_metadata}  argument is set to TRUE,
+#'   \item{3.}{Finally, if the \code{add_metadata}  argument is set to TRUE,
 #'   a list containing the following elements will be appended to the \code{dsn} argument.
-#'   \itemize{
-#'     \item{\bold{if via is "drive":}}
-#'       \itemize{
+#'   \describe{
+#'     \item{\bold{if via is "drive":}}{
+#'       \describe{
 #'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
-#'         \item{\bold{drive_name: }}{Name of the Image in Google Drive.}
-#'         \item{\bold{drive_id: }}{Id of the Image in Google Drive.}
-#'         \item{\bold{drive_download_link: }}{Download link to the image.}
-#'     }
+#'         \item{\bold{drive_name:}}{Name of the Image in Google Drive.}
+#'         \item{\bold{drive_id:}}{Id of the Image in Google Drive.}
+#'         \item{\bold{drive_download_link:}}{Download link to the image.}
+#'     }}
 #'   }
-#'   \itemize{
-#'     \item{\bold{if via is "gcs":}}
-#'       \itemize{
-#'         \item{\bold{ee_id: }}{Name of the Earth Engine task.}
-#'         \item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
-#'         \item{\bold{gcs_bucket: }}{Name of the bucket.}
-#'         \item{\bold{gcs_fileFormat: }}{Format of the image.}
-#'         \item{\bold{gcs_public_link: }}{Download link to the image.}
-#'         \item{\bold{gcs_URI: }}{gs:// link to the image.}
-#'     }
+#'   \describe{
+#'     \item{\bold{if via is "gcs":}}{
+#'       \describe{
+#'         \item{\bold{ee_id:}}{Name of the Earth Engine task.}
+#'         \item{\bold{gcs_name:}}{Name of the Image in Google Cloud Storage.}
+#'         \item{\bold{gcs_bucket:}}{Name of the bucket.}
+#'         \item{\bold{gcs_fileFormat:}}{Format of the image.}
+#'         \item{\bold{gcs_public_link:}}{Download link to the image.}
+#'         \item{\bold{gcs_URI:}}{gs:// link to the image.}
+#'     }}
 #'   }
 #'  }
 #' }

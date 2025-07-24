@@ -36,7 +36,7 @@ credential is cached in the path \code{~/.config/earthengine/}.}
 \item{code_verifier}{PKCE verifier to prevent auth code stealing.}
 
 \item{auth_mode}{The authentication mode. One of:
-\itemize{
+\describe{
 \item{1. }{paste - send user to accounts.google.com to get a pastable token}
 \item{2. }{notebook - send user to notebook authenticator page}
 \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}

@@ -78,41 +78,41 @@ by two different options: "drive"
 (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 Google Cloud Storage}). In both cases, \code{ee_as_stars} works as follow:
-\itemize{
-\item{1. }{A task is started (i.e. \code{ee$batch$Task$start()}) to
+\describe{
+\item{1.}{A task is started (i.e. \code{ee$batch$Task$start()}) to
 move the \code{ee$Image} from Earth Engine to the intermediate container
 specified in the argument \code{via}.}
-\item{2. }{If the argument \code{lazy} is TRUE, the task will not be
+\item{2.}{If the argument \code{lazy} is TRUE, the task will not be
 monitored. This is useful to lunch several tasks simultaneously and
 calls them later using \code{\link{ee_utils_future_value}} or
 \code{\link[future:value]{future::value}}. At the end of this step,
 the \code{ee$Image} is stored on the path specified in the argument
 \code{dsn}.}
-\item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
+\item{3.}{Finally, if the argument \code{add_metadata} is TRUE, a list
 with the following elements is added to the stars-proxy object.
-\itemize{
-\item{\bold{if via is "drive":}}
-\itemize{
-\item{\bold{ee_id: }}{Name of the Earth Engine task.}
-\item{\bold{drive_name: }}{Name of the Image in Google Drive.}
-\item{\bold{drive_id: }}{Id of the Image in Google Drive.}
-\item{\bold{drive_download_link: }}{Download link to the image.}
+\describe{
+\item{\bold{if via is "drive":}}{
+\describe{
+\item{\bold{ee_id:}}{Name of the Earth Engine task.}
+\item{\bold{drive_name:}}{Name of the Image in Google Drive.}
+\item{\bold{drive_id:}}{Id of the Image in Google Drive.}
+\item{\bold{drive_download_link:}}{Download link to the image.}
+}}
 }
+\describe{
+\item{\bold{if via is "gcs":}}{
+\describe{
+\item{\bold{ee_id:}}{Name of the Earth Engine task.}
+\item{\bold{gcs_name:}}{Name of the Image in Google Cloud Storage.}
+\item{\bold{gcs_bucket:}}{Name of the bucket.}
+\item{\bold{gcs_fileFormat:}}{Format of the image.}
+\item{\bold{gcs_public_link:}}{Download link to the image.}
+\item{\bold{gcs_URI:}}{gs:// link to the image.}
+}}
 }
-\itemize{
-\item{\bold{if via is "gcs":}}
-\itemize{
-\item{\bold{ee_id: }}{Name of the Earth Engine task.}
-\item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
-\item{\bold{gcs_bucket: }}{Name of the bucket.}
-\item{\bold{gcs_fileFormat: }}{Format of the image.}
-\item{\bold{gcs_public_link: }}{Download link to the image.}
-\item{\bold{gcs_URI: }}{gs:// link to the image.}
 }
 }
 Run \code{attr(stars, "metadata")} to get the list.
-}
-}
 
 For getting more information about exporting data from Earth Engine, take
 a look at the

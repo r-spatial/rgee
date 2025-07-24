@@ -77,7 +77,7 @@ Convert an ee$Image in a SpatRaster object
 (\href{https://CRAN.R-project.org/package=googledrive}{Google Drive}) and "gcs"
 (\href{https://CRAN.R-project.org/package=googleCloudStorageR}{
 Google Cloud Storage}). In both cases, \code{ee_as_rast} performs as follows:
-\itemize{
+\describe{
 \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 move the \code{ee$Image} from Earth Engine to the intermediate container
 specified in the argument \code{via}.}
@@ -89,25 +89,25 @@ the \code{ee$Image} is stored on the path specified in the argument
 \code{dsn}.}
 \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 with the following elements are added to the stars-proxy object.
-\itemize{
-\item{\bold{if via is "drive":}}
-\itemize{
+\describe{
+\item{\bold{if via is "drive":}}{
+\describe{
 \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 \item{\bold{drive_name: }}{Name of the Image in Google Drive.}
 \item{\bold{drive_id: }}{Id of the Image in Google Drive.}
 \item{\bold{drive_download_link: }}{Download link to the image.}
+}}
 }
-}
-\itemize{
-\item{\bold{if via is "gcs":}}
-\itemize{
+\describe{
+\item{\bold{if via is "gcs":}}{
+\describe{
 \item{\bold{ee_id: }}{Name of the Earth Engine task.}
 \item{\bold{gcs_name: }}{Name of the Image in Google Cloud Storage.}
 \item{\bold{gcs_bucket: }}{Name of the bucket.}
 \item{\bold{gcs_fileFormat: }}{Format of the image.}
 \item{\bold{gcs_public_link: }}{Download link to the image.}
 \item{\bold{gcs_URI: }}{gs:// link to the image.}
-}
+}}
 }
 
 Run \code{attr(stars, "metadata")} to get the list.

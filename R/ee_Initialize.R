@@ -29,7 +29,7 @@
 #' @param auth_quiet Logical. \link{ee_Authenticate} quiet parameter. If TRUE,
 #' do not require interactive prompts and force --no-browser mode for gcloud.
 #' @param auth_mode The authentication mode. One of:
-#' \itemize{
+#' \describe{
 #'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
 #'  \item{2. }{notebook - send user to notebook authenticator page}
 #'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}
@@ -206,7 +206,7 @@ ee_Initialize <- function(user = NULL,
 #' @param authorization_code An optional authorization code.
 #' @param code_verifier PKCE verifier to prevent auth code stealing.
 #' @param auth_mode The authentication mode. One of:
-#' \itemize{
+#' \describe{
 #'  \item{1. }{paste - send user to accounts.google.com to get a pastable token}
 #'  \item{2. }{notebook - send user to notebook authenticator page}
 #'  \item{3. }{gcloud - use gcloud to obtain credentials (will set appdefault)}

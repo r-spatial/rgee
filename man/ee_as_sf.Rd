@@ -82,7 +82,7 @@ request, which makes it not recommendable for large FeatureCollection. Instead o
 "getInfo", the "drive" and "gcs" options are suitable for large FeatureCollections
 because they use an intermediate container. When \code{via} is set as "drive" or "gcs"
 \code{ee_as_sf} performs the following steps:
-\itemize{
+\describe{
 \item{1. }{A task is started (i.e., \code{ee$batch$Task$start()}) to
 move the EE Table from Earth Engine to the file storage system (Google Drive
 or Google Cloud Storage) specified in the \code{via} argument.}
@@ -94,25 +94,25 @@ the EE Table is stored under the path specified by the argument
 \code{dsn}.}
 \item{3. }{Finally, if the argument \code{add_metadata} is TRUE, a list
 with the following elements is added to the sf object.
-\itemize{
-\item{\bold{if via is "drive":}}
-\itemize{
+\describe{
+\item{\bold{if via is "drive":}}{
+\describe{
 \item{\bold{ee_id: }}{Earth Engine task name.}
 \item{\bold{drive_name: }}{Google Drive table name}
 \item{\bold{drive_id: }}{Google Drive table ID}
 \item{\bold{drive_download_link: }}{Link to download the table}
+}}
 }
-}
-\itemize{
-\item{\bold{if via is "gcs":}}
-\itemize{
+\describe{
+\item{\bold{if via is "gcs":}}{
+\describe{
 \item{\bold{ee_id: }}{Earth Engine task name.}
 \item{\bold{gcs_name: }}{Google Cloud Storage table name}
 \item{\bold{gcs_bucket: }}{Bucket name}
 \item{\bold{gcs_fileFormat: }}{Table format}
 \item{\bold{gcs_public_link: }}{Link to download the table.}
 \item{\bold{gcs_URI: }}{gs:// link to the table.}
-}
+}}
 }
 Run \code{attr(sf, "metadata")} to get the list.
 }
