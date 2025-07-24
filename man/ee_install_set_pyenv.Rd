@@ -16,7 +16,7 @@ ee_install_set_pyenv(
 \item{py_path}{The path to a Python interpreter}
 
 \item{py_env}{The name of the conda or venv environment. If
-NULL, \code{\link{ee_install_upgrade}} and \code{\link{py_install}} functions will not work.}
+NULL, \code{\link{ee_install_upgrade}} and \code{\link[reticulate]{py_install}} functions will not work.}
 
 \item{Renviron}{Character. If it is "global" the environment variables are set in
 the .Renviron located in the Sys.getenv("HOME") folder. On the other hand,  if
