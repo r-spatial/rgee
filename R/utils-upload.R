@@ -481,7 +481,8 @@ ee_utils_create_manifest_image <- function(gs_uri,
   )
 
   # Create a name
-  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  # name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  name <- assetId
 
   # from R date to JS timestamp: time_start + time_end
   time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
@@ -576,7 +577,8 @@ ee_utils_create_manifest_table <- function(gs_uri,
   )
 
   # Create a name
-  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  # name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  name <- assetId
 
   # Creating tileset
   sources <- list(
