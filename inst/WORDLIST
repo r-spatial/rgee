@@ -52,10 +52,12 @@ Loïc
 Lukasz
 MODIS
 MacOS
+MarShaikh
 Markert
 Miniconda
 Montero
 NDVI
+NONONOexe
 Numpy
 OAuth
 OGC
@@ -105,6 +107,7 @@ addins
 affine
 al
 allNonZero
+ambarja
 anyNonZero
 api
 appdefault
@@ -143,6 +146,7 @@ dbf
 de
 densify
 dev
+developmentseed
 devstorage
 differencing
 dir
@@ -269,6 +273,7 @@ strsplit
 tanh
 tensorflow
 terra
+testthat
 tif
 tim
 titiler
@@ -291,3 +296,4 @@ xyz
 yScale
 yShearing
 yTranslation
+yaml
