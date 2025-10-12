@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.7.000009
+version: 1.1.8
 doi: 10.32614/CRAN.package.rgee
 identifiers:
 - type: url
@@ -25,14 +25,18 @@ authors:
   given-names: Cesar
   email: csaybar@gmail.com
   orcid: https://orcid.org/0000-0003-2745-9535
+- family-names: Stigler
+  given-names: Matthieu
+  email: Matthieu.Stigler@gmail.com
+  orcid: https://orcid.org/0000-0002-6802-4290
 repository: https://CRAN.R-project.org/package=rgee
 repository-code: https://github.com/r-spatial/rgee/issues/
 url: https://github.com/r-spatial/rgee/
 contact:
-- family-names: Aybar
-  given-names: Cesar
-  email: csaybar@gmail.com
-  orcid: https://orcid.org/0000-0003-2745-9535
+- family-names: Stigler
+  given-names: Matthieu
+  email: Matthieu.Stigler@gmail.com
+  orcid: https://orcid.org/0000-0002-6802-4290
 references:
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
@@ -116,6 +120,10 @@ references:
     given-names: Bhaskar
   - family-names: Xie
     given-names: Yihui
+  - family-names: Aden-Buie
+    given-names: Garrick
+    email: garrick@posit.co
+    orcid: https://orcid.org/0000-0002-7111-0077
   year: '2025'
   doi: 10.32614/CRAN.package.leaflet
   version: '>= 2.0.2'
@@ -131,7 +139,7 @@ references:
     email: stefan@stefanbache.dk
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2025'
   doi: 10.32614/CRAN.package.magrittr
 - type: software
