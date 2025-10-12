@@ -218,6 +218,9 @@ ee_utils_sak_copy <- function(sakfile, users = NULL, delete = FALSE, quiet = FAL
     ee_path <- ee_get_earthengine_path()
     file.remove(list.files(ee_path, pattern = "\\.json$", full.names = TRUE))
 
+    # check SAK file there?
+    if(!file.exists(sakfile)) stop("Missing 'sakfile' file?")
+
     # 2. Copy new SaKfile
     file.copy(
       from = sakfile,
