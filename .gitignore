@@ -20,3 +20,5 @@ vignettes/*.R
 .github/workflows/pr-commands.yaml
 
 .github/workflows/R-CMD-check.yaml
+/doc/
+/Meta/
