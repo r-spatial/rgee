@@ -285,7 +285,12 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Cesar Aybar \email{csaybar@gmail.com} (\href{https://orcid.org/0000-0003-2745-9535}{ORCID})
+\strong{Maintainer}: Matthieu Stigler \email{Matthieu.Stigler@gmail.com} (\href{https://orcid.org/0000-0002-6802-4290}{ORCID})
+
+Authors:
+\itemize{
+  \item Cesar Aybar \email{csaybar@gmail.com} (\href{https://orcid.org/0000-0003-2745-9535}{ORCID})
+}
 
 Other contributors:
 \itemize{
