@@ -134,4 +134,3 @@ file.remove("credentials")
 <br>
 
 After a couple of minutes, the app will be available on shinyapps.io. 
-See our live demo in **https://cesar-aybar.shinyapps.io/rgee_app_demo/**.
