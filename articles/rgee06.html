@@ -154,7 +154,7 @@ map</strong>.</p>
 <a href="https://github.com/developmentseed/titiler" class="external-link"><strong>titiler</strong></a>.
 titiler creates web map tiles dynamically based on COG (STAC) resources.
 Since an exported EE task to retrieve images can return a COG, we just
-have to move these results to a <strong>storage web service with <a href="https://www.cogeo.org/" class="external-link">HTTP GET range requests</a></strong>.</p>
+have to move these results to a <strong>storage web service with <a href="https://cogeo.org/" class="external-link">HTTP GET range requests</a></strong>.</p>
 <br><center>
 <img src="images/r6_02.png">
 </center>
@@ -228,7 +228,7 @@ internet</strong>.</p>
 <span>  entity_type <span class="op">=</span> <span class="st">"allUsers"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Finally, use <code>Map$addLayer</code> to display the COG resource.
-By default, <code>Map$addLayer</code> use the open endpoint: <a href="https://api.cogeo.xyz/docs" class="external-link uri">https://api.cogeo.xyz/docs</a>.</p>
+By default, <code>Map$addLayer</code> use the open endpoint: <a href="https://developmentseed.org/titiler/" class="external-link uri">https://developmentseed.org/titiler/</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">img_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"https://storage.googleapis.com/%s/%s.tif"</span>, <span class="va">BUCKET_NAME</span>, <span class="va">gcs_l8_name</span><span class="op">)</span></span>
 <span><span class="va">visParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>bands<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SR_B4"</span>,<span class="st">"SR_B3"</span>,<span class="st">"SR_B2"</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">8000</span>, max <span class="op">=</span> <span class="fl">20000</span>, nodata <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
@@ -237,18 +237,17 @@ By default, <code>Map$addLayer</code> use the open endpoint: <a href="https://ap
 <span>  eeObject <span class="op">=</span> <span class="va">img_id</span>, </span>
 <span>  visParams <span class="op">=</span> <span class="va">visParams</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"My_first_COG"</span>,</span>
-<span>  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span></span>
+<span>  titiler_server <span class="op">=</span> <span class="st">"https://titiler.xyz/"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>If you prefer to use <a href="https://api.cogeo.xyz/docs" class="external-link">titiler
-syntax</a>, set the parameter <code>titiler_viz_convert</code> as
-FALSE.</p>
+<p>If you prefer to use <a href="https://developmentseed.org/titiler/" class="external-link">titiler syntax</a>, set the
+parameter <code>titiler_viz_convert</code> as FALSE.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">visParams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>expression <span class="op">=</span> <span class="st">"B4,B3,B2"</span>, rescale <span class="op">=</span> <span class="st">"8000, 20000"</span>, resampling_method <span class="op">=</span> <span class="st">"cubic"</span><span class="op">)</span></span>
 <span><span class="va">Map</span><span class="op">$</span><span class="fu">addLayer</span><span class="op">(</span></span>
 <span>  eeObject <span class="op">=</span> <span class="va">img_id</span>, </span>
 <span>  visParams <span class="op">=</span> <span class="va">visParams</span>,</span>
 <span>  name <span class="op">=</span> <span class="st">"My_first_COG"</span>,</span>
-<span>  titiler_server <span class="op">=</span> <span class="st">"https://api.cogeo.xyz/"</span>,</span>
+<span>  titiler_server <span class="op">=</span> <span class="st">"https://titiler.xyz/"</span>,</span>
 <span>  titiler_viz_convert <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
