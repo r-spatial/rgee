@@ -88,8 +88,8 @@ ee_utils_dataset_display <- function(ee_search_dataset) {
 #' Return metadata of a COG tile server
 #'
 #' @param resource Character that represents a COG tile server file.
-#' @param titiler_server TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".
-#' @param visParams Visualization parameters see "https://api.cogeo.xyz/docs".
+#' @param titiler_server TiTiler endpoint. Defaults to "https://developmentseed.org/titiler/".
+#' @param visParams Visualization parameters see "https://developmentseed.org/titiler/".
 #' @return A metadata list for a COG file.
 #' @examples
 #' \dontrun{
@@ -102,7 +102,7 @@ ee_utils_dataset_display <- function(ee_search_dataset) {
 #' ee_utils_cog_metadata(resource, visParams)
 #' }
 #' @export
-ee_utils_cog_metadata <- function(resource, visParams, titiler_server = "https://api.cogeo.xyz/") {
+ee_utils_cog_metadata <- function(resource, visParams, titiler_server = "https://developmentseed.org/titiler/") {
   response <- httr::GET(
     url = sprintf("%s/cog/metadata", titiler_server),
     config = httr::accept_json(),

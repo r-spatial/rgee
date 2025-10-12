@@ -41,7 +41,7 @@ However, this interactive map service **is temporary**, disappearing after a sho
 
 ## **2. A tentative workaround**
 
-Instead of using GEE API for creating interactive maps, we will use [**titiler**](https://github.com/developmentseed/titiler). titiler creates web map tiles dynamically based on COG (STAC) resources. Since an exported EE task to retrieve images can return a COG, we just have to move these results to a **storage web service with [HTTP GET range requests](https://www.cogeo.org/)**.
+Instead of using GEE API for creating interactive maps, we will use [**titiler**](https://github.com/developmentseed/titiler). titiler creates web map tiles dynamically based on COG (STAC) resources. Since an exported EE task to retrieve images can return a COG, we just have to move these results to a **storage web service with [HTTP GET range requests](https://cogeo.org/)**.
 
 <br>
 <center>
@@ -127,7 +127,7 @@ googleCloudStorageR::gcs_update_object_acl(
 )
 ```
 
-Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint: https://api.cogeo.xyz/docs. 
+Finally, use `Map$addLayer` to display the COG resource. By default, `Map$addLayer` use the open endpoint: https://developmentseed.org/titiler/. 
 
 
 ```{r eval=FALSE, echo=FALSE}
@@ -145,11 +145,11 @@ Map$addLayer(
   eeObject = img_id, 
   visParams = visParams,
   name = "My_first_COG",
-  titiler_server = "https://api.cogeo.xyz/"
+  titiler_server = "https://titiler.xyz/"
 )
 ```
 
-If you prefer to use [titiler syntax](https://api.cogeo.xyz/docs), set the parameter 
+If you prefer to use [titiler syntax](https://developmentseed.org/titiler/), set the parameter 
 `titiler_viz_convert` as FALSE.
 
 
@@ -159,7 +159,7 @@ Map$addLayer(
   eeObject = img_id, 
   visParams = visParams,
   name = "My_first_COG",
-  titiler_server = "https://api.cogeo.xyz/",
+  titiler_server = "https://titiler.xyz/",
   titiler_viz_convert = FALSE
 )
 ```

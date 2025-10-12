@@ -7,15 +7,15 @@
 ee_utils_cog_metadata(
   resource,
   visParams,
-  titiler_server = "https://api.cogeo.xyz/"
+  titiler_server = "https://developmentseed.org/titiler/"
 )
 }
 \arguments{
 \item{resource}{Character that represents a COG tile server file.}
 
-\item{visParams}{Visualization parameters see "https://api.cogeo.xyz/docs".}
+\item{visParams}{Visualization parameters see "https://developmentseed.org/titiler/".}
 
-\item{titiler_server}{TiTiler endpoint. Defaults to "https://api.cogeo.xyz/".}
+\item{titiler_server}{TiTiler endpoint. Defaults to "https://developmentseed.org/titiler/".}
 }
 \value{
 A metadata list for a COG file.
