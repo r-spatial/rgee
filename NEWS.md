@@ -14,9 +14,11 @@ vignette: >
 
 # rgee 1.1.8
 
+- Switched to @MatthieuStigler as package maintainer. 
+- Fix issue #380: ee_Initialize() fails because of deprecated argument?, pull issue submitted by @MatthieuStigler
+- Fix issue #392: ee_check_python(): Error in strsplit(a, "[.-]"): non-character argument, pull issue submitted by @MatthieuStigler 
+- Fix issue #378: ee_Initialize() does not show correct error message, pull issue submitted by @MatthieuStigler
 - Fix minor documentation issues.
-- Fix issues #392, #378 and #379
-- Merge pull request #393 from MatthieuStigler/master
 - Merge pull request #372 from NONONOexe/master
 - Merge pull request #364 from MarShaikh/master
 - Added tests using testthat
