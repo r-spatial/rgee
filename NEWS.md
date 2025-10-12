@@ -15,7 +15,8 @@ vignette: >
 # rgee 1.1.8
 
 - Fix minor documentation issues.
-- Fix issues #393, #392, #378 and #379
+- Fix issues #392, #378 and #379
+- Merge pull request #393 from MatthieuStigler/master
 - Merge pull request #372 from NONONOexe/master
 - Merge pull request #364 from MarShaikh/master
 - Added tests using testthat
