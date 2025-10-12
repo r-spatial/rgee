@@ -12,6 +12,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# rgee 1.1.8
+
+- Fix minor documentation issues.
+- Fix issues #393, #392, #378 and #379
+- Merge pull request #372 from NONONOexe/master
+- Merge pull request #364 from MarShaikh/master
+- Added tests using testthat
+- Merge pull request #365 from ambarja/master
+- Create update_dataset.yaml
+
 # rgee 1.1.7
 
 - Add Python Path to ee_Initialize.
