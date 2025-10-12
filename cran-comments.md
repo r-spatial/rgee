@@ -13,4 +13,6 @@ R CMD check succeeded
 
 # Comments to CRAN maintainers
 
-The package maintainer is now Matthieu Stigler.
+This submission changes the maintainer to Matthieu Stigler Matthieu.Stigler@gmail.com
+
+The 'Non-standard file/directory found at top level" in an earlier submission of 1.1.8 was fixed.
