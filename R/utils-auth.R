@@ -136,7 +136,7 @@ ee_connect_to_py <- function(path, n = 5) {
   ee_utils <- try(ee_source_python(oauth_func_path = path), silent = TRUE)
   # counter added to prevent problems with reticulate
   con_reticulate_counter <- 1
-  while (any(class(ee_utils) %in%  "try-error")) {
+  while(inherits(ee_utils, "try-error")) {
     ee_utils <- try(ee_source_python(path), silent = TRUE)
     con_reticulate_counter <- con_reticulate_counter + 1
     if (con_reticulate_counter == (n + 1)) {
@@ -144,8 +144,9 @@ ee_connect_to_py <- function(path, n = 5) {
       message_con <- c(
         sprintf("The current Python PATH: %s",
                 bold(python_path[["python"]])),
-        "does not have the Python package \"earthengine-api\" installed. Do you restarted/terminated",
-        "your R session after install miniconda or run ee_install()?",
+        "does not seem to have the Python package \"earthengine-api\" installed, or cannot load it properly.",
+        "The error message was:", ee_utils,
+        "Did you restart/terminate your R session after installing miniconda or running ee_install()?",
         "If this is not the case, try:",
         "> ee_install_upgrade(): Install the latest Earth Engine Python version.",
         "> reticulate::use_python(): Refresh your R session and manually set the Python environment with all rgee dependencies.",

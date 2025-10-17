@@ -12,6 +12,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# rgee 1.1.8.9000
+
+- Fix issue #396
+
 # rgee 1.1.8
 
 - Switched to @MatthieuStigler as package maintainer. 
