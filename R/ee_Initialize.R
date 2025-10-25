@@ -90,7 +90,7 @@ ee_Initialize <- function(user = NULL,
 
   # If user is not NULL create, then save the credentials in a subfolder.
   if (!is.null(user)) {
-    # Create user folder is it does not exist
+    # Create user folder if it does not exist
     ee_create_user_subfolder(ee_utils, user)
 
     # delete previous user credentials
