@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.8
+version: 1.1.8.9000
 doi: 10.32614/CRAN.package.rgee
 identifiers:
 - type: url
