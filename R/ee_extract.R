@@ -235,7 +235,7 @@ ee_extract <- function(x,
   # triplets save info about the value, the row_id (ee_ID) and col_id (imageId)
   create_tripplets <- function(img) {
     img_reduce_regions <- ee$Image$reduceRegions(
-      image = img,
+      img,
       collection = ee_y,
       reducer = fun,
       scale = scale,
