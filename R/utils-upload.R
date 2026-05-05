@@ -35,6 +35,8 @@ local_to_gcs <- function(x,
     stop("Cloud Storage bucket was not defined")
   }
 
+  bucket <- sub("^gs://", "", bucket)
+
   if (is.na(getOption("rgee.gcs.auth")) || is.null(getOption("rgee.gcs.auth"))) {
     stop(
       "Google Cloud Storage credentials were not loaded.",
@@ -480,8 +482,12 @@ ee_utils_create_manifest_image <- function(gs_uri,
     strict = FALSE
   )
 
-  # Create a name
-  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  # Cloud project paths are used as-is; legacy paths need the prefix prepended.
+  name <- if (grepl("^projects/[^/]+/assets/", assetId)) {
+    assetId
+  } else {
+    sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  }
 
   # from R date to JS timestamp: time_start + time_end
   time_start <- rdate_to_eedate(start_time, timestamp = TRUE)
@@ -575,8 +581,12 @@ ee_utils_create_manifest_table <- function(gs_uri,
     strict = FALSE
   )
 
-  # Create a name
-  name <- sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  # Cloud project paths are used as-is; legacy paths need the prefix prepended.
+  name <- if (grepl("^projects/[^/]+/assets/", assetId)) {
+    assetId
+  } else {
+    sprintf("projects/earthengine-legacy/assets/%s", assetId)
+  }
 
   # Creating tileset
   sources <- list(
