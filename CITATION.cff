@@ -8,7 +8,7 @@ message: 'To cite package "rgee" in publications use:'
 type: software
 license: Apache-2.0
 title: 'rgee: R Bindings for Calling the ''Earth Engine'' API'
-version: 1.1.8.9000
+version: 1.1.8.9001
 doi: 10.32614/CRAN.package.rgee
 identifiers:
 - type: url
@@ -44,10 +44,13 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
   version: '>= 3.3.0'
 - type: software
   title: methods
@@ -55,10 +58,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: reticulate
   abstract: 'reticulate: Interface to ''Python'''
@@ -76,7 +82,7 @@ references:
     given-names: Yuan
     email: terrytangyuan@gmail.com
     orcid: https://orcid.org/0000-0001-5243-233X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.reticulate
   version: '>= 1.27'
 - type: software
@@ -98,7 +104,7 @@ references:
   - family-names: Ritchie
     given-names: Gary
     email: gary@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rstudioapi
   version: '>= 0.7'
 - type: software
@@ -124,7 +130,7 @@ references:
     given-names: Garrick
     email: garrick@posit.co
     orcid: https://orcid.org/0000-0002-7111-0077
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.leaflet
   version: '>= 2.0.2'
 - type: software
@@ -140,7 +146,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.magrittr
 - type: software
   title: jsonlite
@@ -153,7 +159,7 @@ references:
     given-names: Jeroen
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.jsonlite
 - type: software
   title: processx
@@ -168,7 +174,7 @@ references:
     orcid: https://orcid.org/0000-0001-7098-9676
   - family-names: Chang
     given-names: Winston
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.processx
 - type: software
   title: leafem
@@ -180,7 +186,7 @@ references:
   - family-names: Appelhans
     given-names: Tim
     email: tim.appelhans@gmail.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.leafem
 - type: software
   title: crayon
@@ -192,7 +198,7 @@ references:
   - family-names: Csárdi
     given-names: Gábor
     email: csardi.gabor@gmail.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.crayon
 - type: software
   title: R6
@@ -204,7 +210,7 @@ references:
   - family-names: Chang
     given-names: Winston
     email: winston@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.R6
 - type: software
   title: cli
@@ -216,7 +222,7 @@ references:
   - family-names: Csárdi
     given-names: Gábor
     email: gabor@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.cli
 - type: software
   title: magick
@@ -229,7 +235,7 @@ references:
     given-names: Jeroen
     email: jeroenooms@gmail.com
     orcid: https://orcid.org/0000-0002-4035-0289
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.magick
 - type: software
   title: geojsonio
@@ -248,7 +254,7 @@ references:
     given-names: Michael
     email: mike.mahoney.218@gmail.com
     orcid: https://orcid.org/0000-0003-2402-304X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.geojsonio
 - type: software
   title: sf
@@ -261,7 +267,7 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.sf
 - type: software
   title: stars
@@ -274,7 +280,7 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.stars
 - type: software
   title: googledrive
@@ -289,7 +295,7 @@ references:
     given-names: Jennifer
     email: jenny@posit.co
     orcid: https://orcid.org/0000-0002-6983-2759
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.googledrive
   version: '>= 2.0.0'
 - type: software
@@ -310,7 +316,7 @@ references:
     given-names: Hadley
     email: hadley@posit.co
     orcid: https://orcid.org/0000-0003-4757-117X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.gargle
 - type: software
   title: httr
@@ -322,20 +328,20 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.httr
 - type: software
   title: digest
   abstract: 'digest: Create Compact Hash Digests of R Objects'
   notes: Suggests
-  url: https://dirk.eddelbuettel.com/code/digest.html
+  url: https://eddelbuettel.github.io/digest/
   repository: https://CRAN.R-project.org/package=digest
   authors:
   - family-names: Eddelbuettel
     given-names: Dirk
     email: edd@debian.org
     orcid: https://orcid.org/0000-0001-6419-907X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.digest
 - type: software
   title: testthat
@@ -347,7 +353,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.testthat
 - type: software
   title: future
@@ -360,7 +366,7 @@ references:
     given-names: Henrik
     email: henrikb@braju.com
     orcid: https://orcid.org/0000-0002-7579-5165
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.future
 - type: software
   title: terra
@@ -373,7 +379,13 @@ references:
     given-names: Robert J.
     email: r.hijmans@gmail.com
     orcid: https://orcid.org/0000-0001-5872-2872
-  year: '2025'
+  - family-names: Brown
+    given-names: Andrew
+    orcid: https://orcid.org/0000-0002-4565-533X
+  - family-names: Barbosa
+    given-names: Márcia
+    orcid: https://orcid.org/0000-0001-8972-7713
+  year: '2026'
   doi: 10.32614/CRAN.package.terra
 - type: software
   title: covr
@@ -385,7 +397,7 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.f.hester@gmail.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.covr
 - type: software
   title: knitr
@@ -398,7 +410,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: rmarkdown
@@ -442,19 +454,20 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: png
   abstract: 'png: Read and write PNG images'
   notes: Suggests
-  url: http://www.rforge.net/png/
+  url: https://www.rforge.net/png/
   repository: https://CRAN.R-project.org/package=png
   authors:
   - family-names: Urbanek
     given-names: Simon
     email: Simon.Urbanek@r-project.org
-  year: '2025'
+    orcid: https://orcid.org/0000-0003-2297-1732
+  year: '2026'
   doi: 10.32614/CRAN.package.png
 - type: software
   title: googleCloudStorageR
@@ -467,7 +480,7 @@ references:
     given-names: Mark
     email: r@sunholo.com
     orcid: https://orcid.org/0000-0002-8434-3881
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.googleCloudStorageR
 - type: software
   title: leaflet.extras2
@@ -479,7 +492,7 @@ references:
   - family-names: Sebastian
     given-names: Gatscha
     email: sebastian_gatscha@gmx.at
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.leaflet.extras2
 - type: software
   title: spelling
@@ -495,7 +508,7 @@ references:
   - family-names: Hester
     given-names: Jim
     email: james.hester@rstudio.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.spelling
 - type: software
   title: raster
@@ -508,6 +521,6 @@ references:
     given-names: Robert J.
     email: r.hijmans@gmail.com
     orcid: https://orcid.org/0000-0001-5872-2872
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.raster
 
