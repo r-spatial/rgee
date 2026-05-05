@@ -3,7 +3,7 @@
 #' Upload images or tables to Google Cloud Storage
 #'
 #' @param x Character. filename.
-#' @param bucket bucket name you are uploading to
+#' @template param_bucket
 #' @param predefinedAcl Specify user access to object. Passed to
 #' \code{googleCloudStorageR::gcs_upload}.
 #' @param quiet Logical. Suppress info message.

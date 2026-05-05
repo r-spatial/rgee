@@ -23,8 +23,9 @@
 #' Otherwise polygons use the left-inside rule, where interiors are on the
 #' left side of the shell's edges when walking the vertices in the given order.
 #' If unspecified, defaults to TRUE.
-#' @param bucket Character. Name of the bucket (GCS) to save intermediate files
-#' (ignore if \code{via} is not defined as "gcs_to_asset").
+#' @param bucket Character. GCS bucket name to save intermediate files,
+#' optionally including a subfolder path (e.g. \code{"mybucket/folder"}).
+#' Ignored if \code{via} is not \code{"gcs_to_asset"}.
 #' @param predefinedAcl Specify user access to object. Passed to
 #' \code{googleCloudStorageR::gcs_upload}.
 #' @param command_line_tool_path Character. Path to the Earth Engine command line
