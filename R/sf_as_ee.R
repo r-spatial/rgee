@@ -248,10 +248,11 @@ sf_as_ee <- function(x,
     if (is.null(bucket)) {
       stop("Cloud Storage bucket was not defined.")
     } else {
+      bucket_name <- strsplit(sub("^gs://", "", bucket), "/", fixed = TRUE)[[1]][1]
       tryCatch(
-        expr = googleCloudStorageR::gcs_get_bucket(bucket),
+        expr = googleCloudStorageR::gcs_get_bucket(bucket_name),
         error = function(e) {
-          stop(sprintf("The %s bucket was not found.", bucket))
+          stop(sprintf("The %s bucket was not found using googleCloudStorageR::gcs_get_bucket(%s).", bucket_name, bucket_name))
         }
       )
     }

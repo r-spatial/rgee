@@ -36,6 +36,16 @@ local_to_gcs <- function(x,
   }
 
   bucket <- sub("^gs://", "", bucket)
+  bucket_parts <- strsplit(bucket, "/", fixed = TRUE)[[1]]
+  bucket_name <- bucket_parts[1]
+  # optional subfolder path within the bucket
+  if (length(bucket_parts) > 1) {
+    ## e.g. bucket="upload_to_ee/folder_x", x="file.zip" -> "folder_x/file.zip"
+    gcs_object_name <- paste(c(bucket_parts[-1], basename(x)), collapse = "/")
+  } else {
+    ## e.g. bucket="upload_to_ee", x="file.zip" -> "file.zip"
+    gcs_object_name <- basename(x)
+  }
 
   if (is.na(getOption("rgee.gcs.auth")) || is.null(getOption("rgee.gcs.auth"))) {
     stop(
@@ -51,8 +61,8 @@ local_to_gcs <- function(x,
     files_gcs <- try(
       googleCloudStorageR::gcs_upload(
         file = x,
-        bucket = bucket,
-        name = basename(x),
+        bucket = bucket_name,
+        name = gcs_object_name,
         predefinedAcl = predefinedAcl),
         silent = TRUE
     )
@@ -60,8 +70,8 @@ local_to_gcs <- function(x,
       files_gcs <- try(
         googleCloudStorageR::gcs_upload(
           file = x,
-          bucket = bucket,
-          name = basename(x),
+          bucket = bucket_name,
+          name = gcs_object_name,
           predefinedAcl = predefinedAcl),
           silent = TRUE
         )
@@ -75,8 +85,8 @@ local_to_gcs <- function(x,
       suppressMessages(
         googleCloudStorageR::gcs_upload(
           file = x,
-          bucket = bucket,
-          name = basename(x),
+          bucket = bucket_name,
+          name = gcs_object_name,
           predefinedAcl = predefinedAcl
         )
       ),
@@ -87,8 +97,8 @@ local_to_gcs <- function(x,
         suppressMessages(
           googleCloudStorageR::gcs_upload(
             file = x,
-            bucket = bucket,
-            name = basename(x),
+            bucket = bucket_name,
+            name = gcs_object_name,
             predefinedAcl = predefinedAcl
           )
         ),
@@ -97,7 +107,7 @@ local_to_gcs <- function(x,
       count <- count + 1
     }
   }
-  sprintf("gs://%s/%s", bucket, basename(x))
+  sprintf("gs://%s/%s", bucket_name, gcs_object_name)
 }
 
 #' Move a zipped shapefile from GCS to their EE Assets
@@ -658,7 +668,7 @@ ee_utils_get_crs_web <- function(code) {
         message(sprintf("%s is down using %s ...", bold("spatialreference.org"), bold("GitHub backup")))
         sr_org_data <- jsonlite::fromJSON("https://raw.githubusercontent.com/OSGeo/spatialreference.org/master/scripts/sr-org.json")
         match_index <- which(sr_org_data$code == ee_code)
-        
+
         if (length(match_index) == 0) {
           # Instead of stopping, return a warning and a default value or NULL
           warning(paste("SR-ORG code", ee_code, "not found in the dataset. Returning NULL."))
