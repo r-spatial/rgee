@@ -134,8 +134,9 @@ if <code>via</code> argument is "getInfo".</p></dd>
 
 
 <dt id="arg-bucket">bucket<a class="anchor" aria-label="anchor" href="#arg-bucket"></a></dt>
-<dd><p>Character. Name of the bucket (GCS) to save intermediate files
-(ignore if <code>via</code> is not defined as "gcs_to_asset").</p></dd>
+<dd><p>Character. GCS bucket name to save intermediate files,
+optionally including a subfolder path (e.g. <code>"mybucket/folder"</code>).
+Ignored if <code>via</code> is not <code>"gcs_to_asset"</code>.</p></dd>
 
 
 <dt id="arg-predefinedacl">predefinedAcl<a class="anchor" aria-label="anchor" href="#arg-predefinedacl"></a></dt>
