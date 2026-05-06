@@ -9,7 +9,8 @@ local_to_gcs(x, bucket = NULL, predefinedAcl = "bucketLevel", quiet = FALSE)
 \arguments{
 \item{x}{Character. filename.}
 
-\item{bucket}{bucket name you are uploading to}
+\item{bucket}{Character. GCS bucket name, optionally including a subfolder
+path (e.g. \code{"mybucket"} or \code{"mybucket/folder"}).}
 
 \item{predefinedAcl}{Specify user access to object. Passed to
 \code{googleCloudStorageR::gcs_upload}.}

@@ -22,7 +22,8 @@ an ee$Image.}
 
 \item{assetId}{Character. Destination asset ID for the uploaded file.}
 
-\item{bucket}{Character. Name of the GCS bucket.}
+\item{bucket}{Character. GCS bucket name, optionally including a subfolder
+path (e.g. \code{"mybucket"} or \code{"mybucket/folder"}).}
 
 \item{predefinedAcl}{Specify user access to object. Passed to
 \code{googleCloudStorageR::gcs_upload}.}

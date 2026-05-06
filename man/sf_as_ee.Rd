@@ -29,8 +29,9 @@ implemented: 'getInfo', 'getInfo_to_asset' and 'gcs_to_asset'. See details.}
 \item{assetId}{Character. Destination asset ID for the uploaded file. Ignore
 if \code{via} argument is "getInfo".}
 
-\item{bucket}{Character. Name of the bucket (GCS) to save intermediate files
-(ignore if \code{via} is not defined as "gcs_to_asset").}
+\item{bucket}{Character. GCS bucket name to save intermediate files,
+optionally including a subfolder path (e.g. \code{"mybucket/folder"}).
+Ignored if \code{via} is not \code{"gcs_to_asset"}.}
 
 \item{predefinedAcl}{Specify user access to object. Passed to
 \code{googleCloudStorageR::gcs_upload}.}
