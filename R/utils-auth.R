@@ -47,12 +47,12 @@ ee_create_user_subfolder <- function(ee_utils, user) {
 
 #' Delete credentials in the main folder
 #' @noRd
-delete_credentials <- function(ee_utils) {
-  eepath <- ee_utils_py_to_r(ee_utils$ee_path())
-  eepath_files <- list.files(eepath, full.names = TRUE)
-  files_to_remove <- eepath_files[!dir.exists(eepath_files)]
-  lapply(files_to_remove, unlink)
-}
+# delete_credentials <- function(ee_utils) {
+#   eepath <- ee_utils_py_to_r(ee_utils$ee_path())
+#   eepath_files <- list.files(eepath, full.names = TRUE)
+#   files_to_remove <- eepath_files[!dir.exists(eepath_files)]
+#   lapply(files_to_remove, unlink)
+# }
 
 
 #' Testing 403 error in GD

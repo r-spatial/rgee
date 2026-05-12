@@ -93,8 +93,7 @@ ee_Initialize <- function(user = NULL,
     # Create user folder if it does not exist
     ee_create_user_subfolder(ee_utils, user)
 
-    # delete previous user credentials
-    delete_credentials(ee_utils)
+    # Deprectaed: delete previous user credentials: delete_credentials(ee_utils)
   }
 
   # Loading all the credentials: earthengine, drive and GCS.
