@@ -15,6 +15,7 @@ vignette: >
 # rgee 1.1.8.9000
 
 - Fix issue #396
+- fix: remove redundant `delete_credentials()` call in `ee_Initialize`
 
 # rgee 1.1.8
 
