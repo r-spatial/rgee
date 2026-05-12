@@ -7,7 +7,7 @@ on:
     branches:
       - master
   schedule:
-    - cron:  '0 1 * * *'
+    - cron:  '0 2 1,15 * *'  # bi-weekly, 1st and 15th of each month at 2am
 
 jobs:
   build:
